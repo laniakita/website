@@ -3,7 +3,14 @@ const { resolve } = require("node:path");
 const project = resolve(process.cwd(), "tsconfig.json");
 
 module.exports = {
-  extends: ["eslint-config-turbo"].map(require.resolve),
+  extends: [
+    "@vercel/style-guide/eslint/node",
+    "@vercel/style-guide/eslint/typescript",
+    "@vercel/style-guide/eslint/browser",
+    "@vercel/style-guide/eslint/react",
+    "@vercel/style-guide/eslint/next",
+    "eslint-config-turbo",
+  ].map(require.resolve),
   parserOptions: { project },
   globals: {
     React: true,
@@ -24,12 +31,3 @@ module.exports = {
     "import/no-default-export": "off",
   },
 };
-
-/* 
- *    "import/prefer-default-export": "warn",
-    "no-console": ["warn", { allow: ["error"] }],
-    "no-unused-vars": "warn",
-    "no-var": "error",
-    "@next/next/no-html-link-for-pages": "warn",
-    "prefer-const": "warn",
-  * */
