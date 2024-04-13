@@ -22,6 +22,14 @@ const nextConfigFunction = async (phase, { defaultConfig }) => {
       swDest: 'public/sw.js',
     });
     plugins.push(withSerwist);
+
+    const withMDX = (await import ('@next/mdx')).default({
+      options: {
+        remarkPlugins: [(await import('remark-gfm'))],
+        rehypePlugins: [(await import('@shikijs/rehype'))],
+      },
+    });
+    plugins.push(withMDX)
   }
 
   return plugins.reduce((acc, next) => next(acc), {
