@@ -1,13 +1,9 @@
 const { resolve } = require("node:path");
- 
+
 const project = resolve(process.cwd(), "tsconfig.json");
 
 module.exports = {
-  extends: [
-    "next/core-web-vitals",
-    "prettier",
-    "eslint-config-turbo",
-  ].map(require.resolve),
+  extends: ["eslint-config-turbo"].map(require.resolve),
   parserOptions: { project },
   globals: {
     React: true,
@@ -25,11 +21,15 @@ module.exports = {
   },
   ignorePatterns: [".next", "dist", "node_modules/"],
   rules: {
-    "import/prefer-default-export": "warn",
+    "import/no-default-export": "off",
+  },
+};
+
+/* 
+ *    "import/prefer-default-export": "warn",
     "no-console": ["warn", { allow: ["error"] }],
     "no-unused-vars": "warn",
     "no-var": "error",
     "@next/next/no-html-link-for-pages": "warn",
     "prefer-const": "warn",
-  },
-};
+  * */

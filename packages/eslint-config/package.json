@@ -1,14 +1,11 @@
 {
   "name": "@ahiakea/eslint-config",
+  "type": "modules",
   "license": "MIT",
   "version": "0.0.0",
   "private": true,
   "devDependencies": {
     "next": "14.2.1",
-    "eslint-config-turbo": "^1.12.4",
-    "eslint-plugin-mdx": "^3.1.5",
-    "eslint-config-next": "14.1.4",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-tailwindcss": "^3.15.1"
+    "eslint-config-turbo": "^1.12.4"
   }
 }
