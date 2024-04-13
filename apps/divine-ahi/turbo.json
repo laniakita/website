@@ -1,6 +1,10 @@
 {
   "extends": ["//"],
   "pipeline": {
+    "analyze": {
+      "env": ["ANALYZE"],
+      "dependsOn": ["build"]
+    },
     "build": {
       "outputs": [".next/**", "!.next/cache/**"]
     }
