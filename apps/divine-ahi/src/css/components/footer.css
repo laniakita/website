@@ -1,0 +1,5 @@
+@layer components {
+  .footer-nav-item {
+    @apply w-min text-lg capitalize text-ctp-text hover:text-ctp-mauve aria-[current]:text-ctp-mauve aria-[current]:underline;
+  }
+}

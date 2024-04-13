@@ -1,0 +1,24 @@
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html,
+  body,
+  #root {
+    @apply ctp-latte m-0 size-full bg-ctp-crust p-0 text-ctp-text dark:ctp-mocha;
+  }
+
+  main {
+    @apply min-h-full bg-ctp-crust;
+  }
+
+  a {
+    @apply text-ctp-mauve hover:text-ctp-mauve hover:underline;
+  }
+
+  canvas {
+    opacity: 0;
+    @apply animate-fade-in
+  }
+}

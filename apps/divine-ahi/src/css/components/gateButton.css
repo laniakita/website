@@ -1,0 +1,5 @@
+@layer components {
+  .gate-button {
+    @apply flex w-full items-center justify-center rounded-xl border border-ctp-surface0/60 bg-lightAccent/40 px-2 py-2 text-lg font-black text-ctp-base backdrop-blur-md hover:border-ctp-base hover:bg-lightAccent hover:text-ctp-crust dark:bg-darkAccent/40 hover:dark:bg-darkAccent lg:px-4 lg:py-4 lg:text-2xl;
+  }
+}
