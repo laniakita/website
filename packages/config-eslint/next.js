@@ -4,17 +4,23 @@ const project = resolve(process.cwd(), "tsconfig.json");
 
 module.exports = {
   extends: [
-    "plugin:tailwindcss/recommended",
     "next/core-web-vitals",
     "prettier",
     "eslint-config-turbo",
   ].map(require.resolve),
   parserOptions: { project },
+  globals: {
+    React: true,
+    JSX: true,
+  },
   settings: {
     "import/resolver": {
       typescript: {
         project,
       },
+    },
+    node: {
+      extensions: [".mjs", ".js", ".jsx", ".ts", ".tsx"],
     },
   },
   ignorePatterns: [".next", "dist", "node_modules/"],

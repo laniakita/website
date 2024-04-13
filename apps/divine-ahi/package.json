@@ -14,14 +14,15 @@
     "next": "14.2.1"
   },
   "devDependencies": {
-    "@repo/eslint-config": "workspace:*",
-    "@repo/typescript-config": "workspace:*",
+    "eslint-config-ahi": "workspace:*",
+    "typescript-config-ahi": "workspace:*",
     "@types/eslint": "^8.56.9",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "14.2.1",
+    "eslint-plugin-tailwindcss": "^3.15.1",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
