@@ -3,6 +3,7 @@
   "display": "Default",
   "compilerOptions": {
     "allowImportingTsExtensions": true,
+    "composite": true,
     "declaration": true,
     "declarationMap": true,
     "esModuleInterop": true,
