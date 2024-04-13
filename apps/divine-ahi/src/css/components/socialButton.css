@@ -1,0 +1,5 @@
+@layer components {
+  .social-button {
+    @apply flex items-center justify-center rounded-xl border border-ctp-surface0 text-ctp-text shadow-sm hover:bg-ctp-mauve hover:text-ctp-base hover:shadow-lg hover:shadow-ctp-mauve/30;
+  }
+}

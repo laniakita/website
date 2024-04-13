@@ -1,0 +1,15 @@
+@import 'tailwindcss/base';
+@import './base/global.css';
+@import 'tailwindcss/components';
+@import './components/footer.css';
+@import './components/gateButton.css';
+@import './components/layout01.css';
+@import './components/theme.css';
+@import './components/navbar.css';
+@import './components/socialButton.css';
+@import './components/searchButton.css';
+@import './components/preLoadButton.css';
+@import 'tailwindcss/utilities';
+@import './utilities/slider.css';
+@import './utilities/fades.css';
+@import './utilities/transitionColors.css';

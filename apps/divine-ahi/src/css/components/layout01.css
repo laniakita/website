@@ -1,0 +1,5 @@
+@layer components {
+  .layout01 {
+    @apply pt-[4rem];
+  }
+}
