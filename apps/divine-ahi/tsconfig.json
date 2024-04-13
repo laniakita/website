@@ -1,6 +1,12 @@
 {
   "extends": "@ahiakea/typescript-config/nextjs.json",
   "compilerOptions": {
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "esnext",
+      "webworker"
+    ],
     "plugins": [
       {
         "name": "next"
@@ -10,7 +16,10 @@
       "@/*": [
         "./src/*"
       ]
-    }
+    },
+    "types": [
+      "@serwist/next/typings"
+    ]
   },
   "include": [
     "next-env.d.ts",

@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import localFont from 'next/font/local';
-
+import { type ReactNode } from 'react';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'], display: 'swap', variable: '--font-inter' });
@@ -62,11 +62,7 @@ export const viewport: Viewport = {
   themeColor: '#000000',
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({children}: Readonly<{children: ReactNode;}>) {
   return (
     <html lang='en' dir='ltr' className={`${inter.variable} ${zeroxproto.variable}`}>
       <body className={inter.className}>{children}</body>
