@@ -8,6 +8,5 @@ const config: Config = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   presets: [sharedConfig],
-  plugins: [],
 };
 export default config;

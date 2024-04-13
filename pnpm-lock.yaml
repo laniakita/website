@@ -88,8 +88,11 @@ importers:
   packages/tailwindcss-config:
     devDependencies:
       '@ahiakea/typescript-config':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../typescript-config
+      '@catppuccin/tailwindcss':
+        specifier: ^0.1.6
+        version: 0.1.6(tailwindcss@3.4.3)
       tailwindcss:
         specifier: ^3.4.1
         version: 3.4.3
@@ -327,6 +330,14 @@ packages:
       '@babel/helper-string-parser': 7.24.1
       '@babel/helper-validator-identifier': 7.22.20
       to-fast-properties: 2.0.0
+    dev: true
+
+  /@catppuccin/tailwindcss@0.1.6(tailwindcss@3.4.3):
+    resolution: {integrity: sha512-V+Y0AwZ5SSyvOVAcDl7Ng30xy+m82OKnEJ+9+kcZZ7lRyXuZrAb2GScdq9XR3v+ggt8qiZ/G4TvaC9cJ88AAXA==}
+    peerDependencies:
+      tailwindcss: '>=3.0.0'
+    dependencies:
+      tailwindcss: 3.4.3
     dev: true
 
   /@eslint-community/eslint-utils@4.4.0(eslint@8.57.0):

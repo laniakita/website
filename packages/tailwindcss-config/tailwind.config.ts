@@ -11,6 +11,5 @@ const config: Omit<Config, "content"> = {
       },
     },
   },
-  plugins: [],
 };
 export default config;

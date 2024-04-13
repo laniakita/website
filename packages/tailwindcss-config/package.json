@@ -6,7 +6,8 @@
     ".": "./tailwind.config.ts"
   },
   "devDependencies": {
-    "@ahiakea/typescript-config": "workspace:*",
+    "@ahiakea/typescript-config": "workspace:^",
+    "@catppuccin/tailwindcss": "^0.1.6",
     "tailwindcss": "^3.4.1"
   }
 }
