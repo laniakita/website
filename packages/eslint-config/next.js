@@ -29,5 +29,6 @@ module.exports = {
   ignorePatterns: [".next", "dist", "node_modules/"],
   rules: {
     "import/no-default-export": "off",
+    "@typescript-eslint/explicit-function-return-type": "off"
   },
 };
