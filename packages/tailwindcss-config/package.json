@@ -8,6 +8,11 @@
   "devDependencies": {
     "@ahiakea/typescript-config": "workspace:^",
     "@catppuccin/tailwindcss": "^0.1.6",
+    "@iconify-json/ant-design": "^1.1.16",
+    "@iconify-json/fa": "^1.1.8",
+    "@iconify-json/fa6-brands": "^1.1.19",
+    "@iconify-json/ph": "^1.1.12",
+    "@iconify/tailwind": "^0.1.4",
     "@tailwindcss/typography": "^0.5.12",
     "tailwindcss": "^3.4.1"
   }
