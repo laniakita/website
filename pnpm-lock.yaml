@@ -33,6 +33,9 @@ importers:
       '@ahiakea/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
+      '@ahiakea/tailwindcss-config':
+        specifier: workspace:*
+        version: link:../../packages/tailwindcss-config
       '@ahiakea/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
@@ -81,6 +84,15 @@ importers:
       eslint-config-turbo:
         specifier: ^1.12.4
         version: 1.13.2(eslint@8.57.0)
+
+  packages/tailwindcss-config:
+    devDependencies:
+      '@ahiakea/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      tailwindcss:
+        specifier: ^3.4.1
+        version: 3.4.3
 
   packages/typescript-config: {}
 

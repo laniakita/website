@@ -15,6 +15,7 @@
   },
   "devDependencies": {
     "@ahiakea/eslint-config": "workspace:*",
+    "@ahiakea/tailwindcss-config": "workspace:*",
     "@ahiakea/typescript-config": "workspace:*",
     "@types/eslint": "^8.56.9",
     "@types/node": "^20",
