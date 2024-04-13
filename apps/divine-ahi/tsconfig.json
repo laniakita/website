@@ -1,5 +1,5 @@
 {
-  "extends": "typescript-config-ahi/nextjs.json",
+  "extends": "@ahiakea/typescript-config/nextjs.json",
   "compilerOptions": {
     "plugins": [
       {

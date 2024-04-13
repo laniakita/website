@@ -27,12 +27,6 @@ importers:
         specifier: ^18
         version: 18.2.0(react@18.2.0)
     devDependencies:
-      '@repo/eslint-config':
-        specifier: workspace:*
-        version: link:../../packages/config-eslint
-      '@repo/typescript-config':
-        specifier: workspace:*
-        version: link:../../packages/typescript-config
       '@types/eslint':
         specifier: ^8.56.9
         version: 8.56.9
@@ -45,6 +39,12 @@ importers:
       '@types/react-dom':
         specifier: ^18
         version: 18.2.25
+      config-eslint-ahi:
+        specifier: workspace:*
+        version: link:../../packages/config-eslint-ahi
+      config-typescript-ahi:
+        specifier: workspace:*
+        version: link:../../packages/typescript-config-ahi
       eslint:
         specifier: ^8
         version: 8.57.0
@@ -82,7 +82,27 @@ importers:
         specifier: ^3.15.1
         version: 3.15.1(tailwindcss@3.4.3)
 
+  packages/config-eslint-ahi:
+    devDependencies:
+      eslint-config-next:
+        specifier: 14.1.4
+        version: 14.1.4(eslint@8.57.0)(typescript@5.4.5)
+      eslint-config-prettier:
+        specifier: ^9.1.0
+        version: 9.1.0(eslint@8.57.0)
+      eslint-config-turbo:
+        specifier: ^1.12.4
+        version: 1.13.2(eslint@8.57.0)
+      eslint-plugin-mdx:
+        specifier: ^3.1.5
+        version: 3.1.5(eslint@8.57.0)
+      eslint-plugin-tailwindcss:
+        specifier: ^3.15.1
+        version: 3.15.1(tailwindcss@3.4.3)
+
   packages/typescript-config: {}
+
+  packages/typescript-config-ahi: {}
 
 packages:
 

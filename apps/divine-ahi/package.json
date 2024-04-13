@@ -14,8 +14,8 @@
     "next": "14.2.1"
   },
   "devDependencies": {
-    "eslint-config-ahi": "workspace:*",
-    "typescript-config-ahi": "workspace:*",
+    "@ahiakea/eslint-config": "workspace:*",
+    "@ahiakea/typescript-config": "workspace:*",
     "@types/eslint": "^8.56.9",
     "@types/node": "^20",
     "@types/react": "^18",
