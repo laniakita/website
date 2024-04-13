@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 import catppuccin from "@catppuccin/tailwindcss";
 import tailwindProse from "@tailwindcss/typography";
+import { addDynamicIconSelectors } from "@iconify/tailwind";
 
 const accent = "ctp-mauve";
 const invertAccent = "ctp-orange";
@@ -64,6 +65,10 @@ const config: Omit<Config, "content"> = {
       }),
     },
   },
-  plugins: [tailwindProse, catppuccin({ prefix: "ctp" })],
+  plugins: [
+    tailwindProse,
+    catppuccin({ prefix: "ctp" }),
+    addDynamicIconSelectors(),
+  ],
 };
 export default config;
