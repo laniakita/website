@@ -1,15 +1,23 @@
-import Link from "next/link";
+import path from 'node:path';
+import process from 'node:process';
+import Link from 'next/link';
+import { blogPostFinder } from '@/lib/utils/mdxlite';
 
-export default function Home() {
+
+export default async function Home() {
+  const folder = path.resolve(process.cwd(), 'src/content')
+  const test = await blogPostFinder(folder)
+  console.log(test)
+
   return (
     <main className='ctp-mocha'>
       <div className='flex h-screen w-full items-center justify-center bg-ctp-sky text-ctp-text'>
         testing <span className='icon-[ph--alien-fill]' />
-        <div className="flex flex-row gap-4">
-          <Link href="/about">about</Link>
-          <Link href="/credits">credits</Link>
-          <Link href="/terms">terms</Link>
-          <Link href="/privacy">privacy</Link>
+        <div className='flex flex-row gap-4'>
+          <Link href='/about'>about</Link>
+          <Link href='/credits'>credits</Link>
+          <Link href='/terms'>terms</Link>
+          <Link href='/privacy'>privacy</Link>
         </div>
       </div>
       <article className='prose prose-catppuccin'>
