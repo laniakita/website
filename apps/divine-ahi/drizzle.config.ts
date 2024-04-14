@@ -6,7 +6,7 @@ export default {
   out: './drizzle',
   driver: 'better-sqlite',
   dbCredentials: {
-    url: './src/lib/mdxlite/mdxlite.db',
+    url: 'mdxlite.db',
   },
   verbose: true,
 } satisfies Config;

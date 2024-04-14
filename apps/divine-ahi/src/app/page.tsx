@@ -1,13 +1,13 @@
 import path from 'node:path';
 import process from 'node:process';
 import Link from 'next/link';
-import { blogPostFinder } from '@/lib/utils/mdxlite';
+import { blogPostFinder, insertFromRawIndex } from '@/lib/utils/mdxlite';
 
 
 export default async function Home() {
   const folder = path.resolve(process.cwd(), 'src/content')
-  const test = await blogPostFinder(folder)
-  console.log(test)
+  await insertFromRawIndex(folder)
+  //console.log(test)
 
   return (
     <main className='ctp-mocha'>
