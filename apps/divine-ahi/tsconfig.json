@@ -28,7 +28,9 @@
     ".next/types/**/*.ts",
     "next.config.mjs",
     ".eslintrc.js",
-    "postcss.config.mjs"
+    "postcss.config.mjs",
+    "markdowndb.config.js",
+    "src/"
   ],
   "exclude": [
     "node_modules"
