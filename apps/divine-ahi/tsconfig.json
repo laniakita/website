@@ -23,14 +23,12 @@
   },
   "include": [
     "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts",
-    "next.config.mjs",
-    ".eslintrc.js",
-    "postcss.config.mjs",
-    "markdowndb.config.js",
-    "src/"
+    "./**/*.ts",
+    "./**/*.tsx",
+    "./**/*.js",
+    "./**/*.mjs",
+    ".next/types/**/*.ts"
+    
   ],
   "exclude": [
     "node_modules"

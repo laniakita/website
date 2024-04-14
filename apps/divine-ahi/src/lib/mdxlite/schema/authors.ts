@@ -1,13 +1,13 @@
 import { sqliteTable, integer, text, } from "drizzle-orm/sqlite-core"
 
-export interface Author {
+export interface Authors {
   id: number,
   name: string,
   bio?: string,
   mastodon?: string
 }
 
-export const author = sqliteTable('author', {
+export const authors = sqliteTable('authors', {
   id: integer('id').primaryKey(),
   name: text('name').notNull(),
   bio: text('bio'),
