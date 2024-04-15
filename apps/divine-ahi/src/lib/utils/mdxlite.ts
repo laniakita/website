@@ -14,6 +14,17 @@ export const queryPosts = async () => {
   return postsArr;
 };
 
+export const queryPostMetas = async () => {
+  const postsArr = await mdxlitedb.query.posts.findMany({
+    columns: {
+      rawContent: false,
+    },
+    orderBy: [desc(posts.date)],
+  });
+
+  return postsArr;
+};
+
 export const blogPostFinder = async (searchFolder: string) => {
   const openDirRes = [];
   try {

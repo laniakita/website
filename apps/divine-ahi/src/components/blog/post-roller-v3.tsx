@@ -2,19 +2,19 @@
 import { useMemo, useState } from 'react';
 import { usePostNumStore } from '@/providers/postnum-store-provider';
 import LoadMoreButton from '@/components/blog/load-more-button';
-import { PostPreviewV3 } from '@/components/blog/post-preview-v3';
-import { type PostHeaderProps } from '@/components/blog/post-header';
+import { FeaturedPostPreviewV3, PostPreviewV3 } from '@/components/blog/post-preview-v3';
+import type { PostTeaserObjectProps } from '@/app/blog/page';
+
 interface PreviewRollerV3Props {
-  dataArr: PostHeaderProps[];
+  dataArr: PostTeaserObjectProps[],
   baseUrl?: string;
   isCat?: boolean;
 }
 
-
-
 export default function PreviewRollerV3({ dataArr, isCat }: PreviewRollerV3Props) {
   const { postNum } = usePostNumStore((state) => state);
   const [canLoad, setCanLoad] = useState(true);
+  
   useMemo(() => {
     if (postNum > dataArr.length) {
       setCanLoad(false);
@@ -23,11 +23,11 @@ export default function PreviewRollerV3({ dataArr, isCat }: PreviewRollerV3Props
 
   return (
     <>
-      {!isCat && <PostPreviewV3 alt dataObj={dataArr[0]!} />}
+      {!isCat && <FeaturedPostPreviewV3 alt dataObj={dataArr[0]!} />}
       <div className='flex flex-col-reverse items-center justify-center md:flex-row md:items-start '>
         <div className='size-full'>
           <div className='flex flex-wrap'>
-            {dataArr.slice(isCat ? 0 : 1, postNum).map((post: PostHeaderProps) => (
+            {dataArr.slice(isCat ? 0 : 1, postNum).map((post: PostTeaserObjectProps) => (
               <div key={dataArr.indexOf(post)} className='basis-full md:basis-1/2 2xl:basis-1/3'>
                 <PostPreviewV3 dataObj={post} />
               </div>
