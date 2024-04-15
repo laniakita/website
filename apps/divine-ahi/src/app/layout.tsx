@@ -62,7 +62,7 @@ export const viewport: Viewport = {
   themeColor: '#000000',
 };
 
-export default function RootLayout({children}: Readonly<{children: ReactNode;}>) {
+export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang='en' dir='ltr' className={`${inter.variable} ${zeroxproto.variable}`}>
       <body className={inter.className}>{children}</body>

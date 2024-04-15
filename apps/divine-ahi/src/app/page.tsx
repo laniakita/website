@@ -1,12 +1,11 @@
-import path from 'node:path';
-import process from 'node:process';
+//import path from 'node:path';
+//import process from 'node:process';
 import Link from 'next/link';
-import { blogPostFinder, insertFromRawIndex } from '@/lib/utils/mdxlite';
+//import { blogPostFinder, insertFromRawIndex } from '@/lib/utils/mdxlite';
 
-
-export default async function Home() {
-  const folder = path.resolve(process.cwd(), 'src/content')
-  await insertFromRawIndex(folder)
+export default function Home() {
+  //const folder = path.resolve(process.cwd(), 'src/content')
+  //await insertFromRawIndex(folder)
   //console.log(test)
 
   return (

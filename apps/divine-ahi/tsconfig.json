@@ -1,36 +1,17 @@
 {
   "extends": "@ahiakea/typescript-config/nextjs.json",
   "compilerOptions": {
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "esnext",
-      "webworker"
-    ],
+    "lib": ["DOM", "DOM.Iterable", "esnext", "webworker"],
     "plugins": [
       {
         "name": "next"
       }
     ],
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"]
     },
-    "types": [
-      "@serwist/next/typings"
-    ]
+    "types": ["@serwist/next/typings"]
   },
-  "include": [
-    "next-env.d.ts",
-    "./**/*.ts",
-    "./**/*.tsx",
-    "./**/*.js",
-    "./**/*.mjs",
-    ".next/types/**/*.ts"
-    
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["next-env.d.ts", "./**/*.ts", "./**/*.tsx", "./**/*.js", "./**/*.mjs", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
 }

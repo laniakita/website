@@ -1,4 +1,5 @@
 # Full Stack Developer, with a lifelong love for the Arts
+
 Aloha! My name is Lani Akita (she/her) and this is my personal site and Full Stack Web Development blog.
 
 While the Web Industry (& the world) has changed dramatically since I started making websites 10+ years ago. A time When I was just a kid in the late 2000s uploading WordPress Blogs to free C-Panel hosts and routing them to free ".tk" & ".cc" domains. I am yet driven by an endless curiosity to learn, experiment, and to build bigger, better, more ambitious things.
@@ -6,22 +7,28 @@ While the Web Industry (& the world) has changed dramatically since I started ma
 As well, I remain to be a perpetual student and practicioner of the Arts, and will be until my very last day on Earth. I'm someone that loves to work in the digital medium, as I'm capable of both happily painting the days away in Krita with a graphics tablet and a stylus, as well as losing track of the time as I use WebGL to visualize and create interactive fractals. You can find some of my work on the Gallery page, Patreon, and also for sale on Etsy. ^-^
 
 # My current process
+
 When I am in a terminal window working with a spread of Neovim buffers, there is a lot of potential things I could be doing, so let me break it down.
 
-## Front-End + Back-End => Full-Stack 
+## Front-End + Back-End => Full-Stack
+
 1. The "meat and potatoes" of any application I create is written in TypeScript with Typed React or Svelte components, paired with their respective framework like Next.Js, or SvelteKit.
-   - Next and SvelteKit aren't the end all be all though by any means. For sites that aren't quite so JS heavy, and can make good use of the "interactive islands" architecture, Astro (a framework I see as a modern version of Gatsby) is something I'm currently experimenting with, and Deno's Fresh is next on my todo list (11ty is another framework and looks like a great alternative for even lighter sites, plus you can write Lit! how cool is that). For everything else, I've been quite liking Remix ever since it became possible to use it with Vite. 
+   - Next and SvelteKit aren't the end all be all though by any means. For sites that aren't quite so JS heavy, and can make good use of the "interactive islands" architecture, Astro (a framework I see as a modern version of Gatsby) is something I'm currently experimenting with, and Deno's Fresh is next on my todo list (11ty is another framework and looks like a great alternative for even lighter sites, plus you can write Lit! how cool is that). For everything else, I've been quite liking Remix ever since it became possible to use it with Vite.
 2. For authentication, I'm quite partial to a lovely little library called Lucia, which integrates perfectly with a Full-Stack framework that's capable of separating data flows between client and server, like those mentioned above. I'm also quite enthusiastic that it can hash passwords with Bun.password (because in the words of Clarkson, the SPEEEEEEED!).
+
 ## Back-End
+
 1. When working with relational databases I like to use a TypeScript ORM like drizzle, so I can sleep better at night. I also quite like its toolkit, drizzle studio, that visualizes the tables (and the data they contain) in quite an aesthetically pleasing way. Oh and the migration tool is cool too, you know, the thing that actually translates the ORM's schema to the SQL database.
 
 ## Front-End
-1. For styles I like to use tailwindcss, because writing CSS in classnames, while ugly, is both convenient and quite maleable to state changes. 
-   - Though I do occasionally find myself writing inline-styles on the rare occassion where I've run into race-conditions because tailwind's compilation step is a few steps too late. 
-     - For example, the react-three/drei ```<View />``` component, seems to do it's gl.scisor step before Tailwind compiles, and you wind up with some very odd visual glitches as Tailwind desparately tries to style the component (like it's height), but it's just too late as the ```<View />``` seemingly fails to appear, until one catches a few frames of it on a scroll down/up. Granted such a bug could've been my fault, but for whatever reason JSX-inline styles fixed that right away.
+
+1. For styles I like to use tailwindcss, because writing CSS in classnames, while ugly, is both convenient and quite maleable to state changes.
+   - Though I do occasionally find myself writing inline-styles on the rare occassion where I've run into race-conditions because tailwind's compilation step is a few steps too late.
+     - For example, the react-three/drei `<View />` component, seems to do it's gl.scisor step before Tailwind compiles, and you wind up with some very odd visual glitches as Tailwind desparately tries to style the component (like it's height), but it's just too late as the `<View />` seemingly fails to appear, until one catches a few frames of it on a scroll down/up. Granted such a bug could've been my fault, but for whatever reason JSX-inline styles fixed that right away.
 2. For WebGL, a web technology I'm currently obsessed with (could you tell? :3) as it happy scratches the Artsier parts of my brain. I'm currently enamoured with Three.Js (JavaScript library for WebGL) and respective third-party component libraries like react-three/fiber and threlte, for rapid development of WebGL scenes/applications.
 
 ## DevOps
+
 1. For deploying these applications, I tend to use serverless functions, in combo with a GitHub action to create a CI/CD pipeline, to build and run such web apps in either a Node.js or Bun runtime environment. For assets (images, videos, SQLite db file(s), etc.) I like to use a S3/S3 compatible bucket(s) from a cloud service provider.
 
 2. For things that can't (or shouldn't) be run serverless (and isn't worth the overhead of a microservice), I'll either spin up a nix-flavored server instance on "the cloud" and deploy things the ol' fashioned way (this used to mean setting up each linux system by hand, but I've found NixOS as a great way to automate this step), or I'll deploy a Kubernetes cluster.
