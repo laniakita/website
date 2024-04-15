@@ -1,5 +1,6 @@
-import { SpinningBox } from './screenInteractive';
-import ScreenLink from './screenLink';
+/* eslint-disable react/no-unknown-property -- jsx-eslint hostilities */
+import { SpinningBox } from './screen-interactive';
+import ScreenLink from './screen-link';
 
 export default function BlogScreen() {
   return (

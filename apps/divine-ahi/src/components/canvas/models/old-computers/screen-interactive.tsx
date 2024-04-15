@@ -1,3 +1,5 @@
+/* eslint-disable react/no-unknown-property -- jsx-eslint hostilities */
+/* eslint-disable no-multi-assign -- three.js built different */
 'use client';
 import { useRef, useCallback } from 'react';
 import { type MeshProps, useFrame, extend } from '@react-three/fiber';

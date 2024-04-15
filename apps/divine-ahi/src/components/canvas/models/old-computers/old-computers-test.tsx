@@ -1,3 +1,5 @@
+/* eslint-disable react/no-unknown-property -- jsx-eslint hostilities */
+/* eslint-disable @typescript-eslint/no-shadow -- three.js instances */
 'use client';
 
 /*
@@ -15,10 +17,10 @@ import React, { useMemo, useContext, createContext } from 'react';
 import { useGLTF, Merged } from '@react-three/drei';
 import { type GLTF } from 'three-stdlib';
 import { A11yUserPreferences } from '@react-three/a11y';
-import DecalScreenText from './screenDecal';
-import ShorkScreen from './hajScreen';
-import AboutScreen2 from './aboutScreen2';
-import BlogScreen from './blogScreen';
+import DecalScreenText from './screen-decal';
+import ShorkScreen from './haj-screen';
+import AboutScreen2 from './about-screen2';
+import BlogScreen from './blog-screen';
 
 type ActionName = string;
 interface GLTFAction extends AnimationClip {
@@ -146,7 +148,9 @@ export function CompInstances({ children, ...props }: JSX.IntrinsicElements['gro
   );
   return (
     <Merged meshes={instances} {...props}>
-      {(instances: ContextType) => <context.Provider value={instances}>{children}</context.Provider>}
+      { 
+        (instances: ContextType) => <context.Provider value={instances}>{children}</context.Provider> 
+      }
     </Merged>
   );
 }
@@ -156,39 +160,73 @@ export function CompModel(props: JSX.IntrinsicElements['group']) {
   const { nodes, materials } = useGLTF('/assets/models/old_computers-transformed.glb') as GLTFResult;
   return (
     <group {...props} dispose={null}>
+      {/* @ts-expect-error -- instances */}
       <instances.Object18 position={[-0.186, 0, -2.962]} rotation={[0, -0.064, 0]} scale={1.52} />
+
+      {/* @ts-expect-error -- instances */}
       <instances.Object26
         position={[-2.195, 2.188, -1.867]}
         rotation={[Math.PI, -0.512, -Math.PI / 2]}
         scale={[-1.52, 1.52, 1.52]}
       />
+
+      {/* @ts-expect-error -- instances */}
       <instances.Object140 position={[5.531, 2.183, 0.174]} scale={[-1, 1, 1]} />
+      
+      {/* @ts-expect-error -- instances */}
       <instances.Object142 position={[5.786, 0.943, 0.18]} scale={[-1, 1, 1]} />
+      
+      {/* @ts-expect-error -- instances */}
       <instances.Object144 position={[5.736, 1.565, 0.053]} scale={[-1, 1, 1]} />
+      {/* @ts-expect-error -- instances */}
       <instances.Object146 position={[5.428, 0.315, 0.373]} scale={[-1, 1, 1]} />
+      {/* @ts-expect-error -- instances */}
       <instances.Object148 position={[5.646, 2.794, 0.107]} scale={[-1, 1, 1]} />
+      {/* @ts-expect-error -- instances */}
       <instances.Object150 position={[5.562, 4.034, 0.348]} scale={[-1, 1, 1]} />
+      {/* @ts-expect-error -- instances */}
       <instances.Object152 position={[5.461, 3.412, 0.256]} scale={[-1, 1, 1]} />
+      {/* @ts-expect-error -- instances */}
       <instances.Object154 position={[5.868, 4.662, 0.081]} scale={[-1, 1, 1]} />
+      {/* @ts-expect-error -- instances */}
       <instances.Object156 position={[4.856, 0, -2.541]} scale={[-1, 1, 1]} />
+      {/* @ts-expect-error -- instances */}
       <instances.Object158 position={[5.525, 0, -0.854]} scale={[-1, 1, 1]} />
+      {/* @ts-expect-error -- instances */}
       <instances.Object160 position={[5.059, 0, -1.597]} scale={[-1, 1, 1]} />
+      {/* @ts-expect-error -- instances */}
       <instances.Object162 position={[4.05, 0, -2.962]} scale={[-1, 1, 1]} />
+      {/* @ts-expect-error -- instances */}
       <instances.Object164 position={[2.585, 0, -4.002]} scale={[-1, 1, 1]} />
+      {/* @ts-expect-error -- instances */}
       <instances.Object166 position={[3.289, 0, -3.098]} scale={[-1, 1, 1]} />
+      {/* @ts-expect-error -- instances */}
       <instances.Object168 position={[1.655, 0, -4.536]} scale={[-1, 1, 1]} />
+      {/* @ts-expect-error -- instances */}
       <instances.Object170 position={[0.59, 0, -4.701]} scale={[-1, 1, 1]} />
+      {/* @ts-expect-error -- instances */}
       <instances.Object19 position={[4.888, 1.833, -1.624]} scale={[-1, 1, 1]} />
+      {/* @ts-expect-error -- instances */}
       <instances.Object19 position={[4.888, 3.976, -1.624]} scale={[-1, 1, 1]} />
+      {/* @ts-expect-error -- instances */}
       <instances.Object20 position={[3.754, 1.833, -3.277]} scale={[-1, 1, 1]} />
+      {/* @ts-expect-error -- instances */}
       <instances.Object20 position={[3.754, 3.976, -3.277]} scale={[-1, 1, 1]} />
+      {/* @ts-expect-error -- instances */}
       <instances.Object176 position={[1.332, 1.833, -3.817]} scale={[-1, 1, 1]} />
+      {/* @ts-expect-error -- instances */}
       <instances.Object22 position={[3.767, 1.836, -2.98]} scale={[-1, 1, 1]} />
+      {/* @ts-expect-error -- instances */}
       <instances.Object22 position={[3.767, 3.979, -2.98]} scale={[-1, 1, 1]} />
+      {/* @ts-expect-error -- instances */}
       <instances.Object180 position={[4.856, 2.143, -2.541]} scale={[-1, 1, 1]} />
+      {/* @ts-expect-error -- instances */}
       <instances.Object184 position={[5.059, 2.143, -1.597]} scale={[-1, 1, 1]} />
+      {/* @ts-expect-error -- instances */}
       <instances.Object186 position={[4.05, 2.143, -2.962]} scale={[-1, 1, 1]} />
+      {/* @ts-expect-error -- instances */}
       <instances.Object188 position={[2.585, 2.143, -4.002]} scale={[-1, 1, 1]} />
+      {/* @ts-expect-error -- instances */}
       <instances.Object182 position={[5.525, 2.143, -0.854]} scale={[-1, 1, 1]} />
       {/* object190  */}
       <instancedMesh
@@ -261,7 +299,7 @@ export function CompModel(props: JSX.IntrinsicElements['group']) {
       <A11yUserPreferences>
         {/* Screen with Decals */}
         <DecalScreenText
-          text="laniakita.com"
+          text='laniakita.com'
           frame='Object_212'
           panel='Object_213'
           modelLink='/assets/models/old_computers-transformed.glb'
@@ -270,7 +308,7 @@ export function CompModel(props: JSX.IntrinsicElements['group']) {
         />
         <DecalScreenText
           invert
-          text="laniakita.com"
+          text='laniakita.com'
           frame='Object_206'
           panel='Object_207'
           modelLink='/assets/models/old_computers-transformed.glb'
@@ -279,7 +317,7 @@ export function CompModel(props: JSX.IntrinsicElements['group']) {
           rotation={[0, -0.793, -0]}
         />
         <DecalScreenText
-          text="laniakita.com"
+          text='laniakita.com'
           frame='Object_209'
           panel='Object_210'
           modelLink='/assets/models/old_computers-transformed.glb'
@@ -287,7 +325,7 @@ export function CompModel(props: JSX.IntrinsicElements['group']) {
           rotation={[0, 1.002, 0]}
         />
         <DecalScreenText
-          text="laniakita.com"
+          text='laniakita.com'
           frame='Object_209'
           panel='Object_210'
           modelLink='/assets/models/old_computers-transformed.glb'
@@ -296,7 +334,7 @@ export function CompModel(props: JSX.IntrinsicElements['group']) {
           scale={0.9}
         />
         <DecalScreenText
-          text="laniakita.com"
+          text='laniakita.com'
           frame='Object_215'
           panel='Object_216'
           modelLink='/assets/models/old_computers-transformed.glb'
@@ -304,7 +342,7 @@ export function CompModel(props: JSX.IntrinsicElements['group']) {
           rotation={[0, -Math.PI / 3, 0]}
         />
         <DecalScreenText
-          text="laniakita.com"
+          text='laniakita.com'
           invert
           frame='Object_215'
           panel='Object_216'
