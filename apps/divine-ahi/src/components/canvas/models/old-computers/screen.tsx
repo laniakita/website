@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unknown-property -- jsx-eslint hostilities */
 import { useGLTF } from '@react-three/drei';
 import { type Mesh } from 'three';
 import { type GroupProps } from '@react-three/fiber';

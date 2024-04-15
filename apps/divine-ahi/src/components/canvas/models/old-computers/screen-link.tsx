@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unknown-property -- jsx-eslint hostilities */
 'use client';
 import { useRef } from 'react';
 import { extend } from '@react-three/fiber';

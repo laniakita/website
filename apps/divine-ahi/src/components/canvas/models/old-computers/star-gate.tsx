@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unknown-property -- jsx-eslint hostilities */
 import React, { useRef, useCallback } from 'react';
 import { useGLTF, Text, MeshPortalMaterial } from '@react-three/drei';
 import { useFrame, extend } from '@react-three/fiber';

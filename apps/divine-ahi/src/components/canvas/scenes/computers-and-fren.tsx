@@ -1,3 +1,6 @@
+/* eslint-disable react/no-unknown-property -- jsx-eslint hostilities */
+/* eslint-disable @typescript-eslint/no-floating-promises -- three.js be built different */
+
 'use client';
 import { useRef, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
@@ -6,7 +9,7 @@ import { MeshReflectorMaterial, CameraControls, Stars } from '@react-three/drei'
 import { type Mesh, TextureLoader, Vector3, MathUtils } from 'three';
 import { geometry } from 'maath';
 import { A11yUserPreferences, useUserPreferences } from '@react-three/a11y';
-import { CompInstances, CompModel } from '@/components/canvas/models/OldComputers/oldComputers-test';
+import { CompInstances, CompModel } from '@/components/canvas/models/old-computers/old-computers-test';
 import { useDarkStore } from '@/providers/theme-store-provider';
 import { ShorkInstances, Shork } from '../models/shork/shork';
 
@@ -110,8 +113,8 @@ function CameraRig({ position = new Vector3(0, 0, 10), focus = new Vector3(0, 0,
     const meshName = searchParams.get(searchTarget);
 
     const setScene = () => {
-      if (active && (meshName !== '' || undefined || null)) {
-        const targetMesh = scene.getObjectByName(meshName!);
+      if (active && meshName) {
+        const targetMesh = scene.getObjectByName(meshName);
         if (targetMesh?.name !== meshName) {
           setTimeout(() => {
             setScene();

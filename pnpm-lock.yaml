@@ -34,7 +34,7 @@ importers:
         version: 3.0.0(@react-three/fiber@8.16.2)(react-dom@18.2.0)(react@18.2.0)(three@0.160.1)
       '@react-three/drei':
         specifier: ^9.105.1
-        version: 9.105.4(@react-three/fiber@8.16.2)(@types/react@18.2.77)(@types/three@0.163.0)(react-dom@18.2.0)(react@18.2.0)(three@0.160.1)
+        version: 9.105.4(@react-three/fiber@8.16.2)(@types/react@18.2.77)(@types/three@0.162.0)(react-dom@18.2.0)(react@18.2.0)(three@0.160.1)
       '@react-three/fiber':
         specifier: ^8.16.1
         version: 8.16.2(react-dom@18.2.0)(react@18.2.0)(three@0.160.1)
@@ -62,6 +62,9 @@ importers:
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
+      maath:
+        specifier: ^0.10.7
+        version: 0.10.7(@types/three@0.162.0)(three@0.160.1)
       mddb:
         specifier: ^0.9.5
         version: 0.9.5(@types/react@18.2.77)(better-sqlite3@9.5.0)(react@18.2.0)
@@ -102,6 +105,9 @@ importers:
       '@next/bundle-analyzer':
         specifier: ^14.2.1
         version: 14.2.1
+      '@react-three/eslint-plugin':
+        specifier: ^0.1.1
+        version: 0.1.1
       '@serwist/core':
         specifier: 9.0.0-preview.21
         version: 9.0.0-preview.21(typescript@5.4.5)
@@ -132,6 +138,9 @@ importers:
       '@types/react-dom':
         specifier: ^18
         version: 18.2.25
+      '@types/three':
+        specifier: ^0.162.0
+        version: 0.162.0
       autoprefixer:
         specifier: ^10.4.19
         version: 10.4.19(postcss@8.4.38)
@@ -1611,7 +1620,7 @@ packages:
       zustand: 3.7.2(react@18.2.0)
     dev: false
 
-  /@react-three/drei@9.105.4(@react-three/fiber@8.16.2)(@types/react@18.2.77)(@types/three@0.163.0)(react-dom@18.2.0)(react@18.2.0)(three@0.160.1):
+  /@react-three/drei@9.105.4(@react-three/fiber@8.16.2)(@types/react@18.2.77)(@types/three@0.162.0)(react-dom@18.2.0)(react@18.2.0)(three@0.160.1):
     resolution: {integrity: sha512-pBZQmaV4yuBXP/TMcWJc5RNm3v9CykOqQDg2tyjZHijV4aa8jf38ae7WyQa5zDjuZcrHlQd2IGMX0Ia2UTHEUA==}
     peerDependencies:
       '@react-three/fiber': '>=8.0'
@@ -1633,7 +1642,7 @@ packages:
       detect-gpu: 5.0.38
       glsl-noise: 0.0.0
       hls.js: 1.3.5
-      maath: 0.10.7(@types/three@0.163.0)(three@0.160.1)
+      maath: 0.10.7(@types/three@0.162.0)(three@0.160.1)
       meshline: 3.3.0(three@0.160.1)
       react: 18.2.0
       react-composer: 5.0.3(react@18.2.0)
@@ -1654,6 +1663,15 @@ packages:
       - '@types/three'
       - immer
     dev: false
+
+  /@react-three/eslint-plugin@0.1.1:
+    resolution: {integrity: sha512-n2tGHNhF3yzTar7lJkJPZeWFPH3C0jKb0Iws4zMelOQErqG3+xIfw3n8GQzL6olxuga/FP1tENl+UA+d6aa6Hg==}
+    dependencies:
+      '@babel/runtime': 7.24.4
+      eslint: 8.57.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
 
   /@react-three/fiber@8.16.2(react-dom@18.2.0)(react@18.2.0)(three@0.160.1):
     resolution: {integrity: sha512-3Z5FW8mxzomBbrw2iF0lNOAlNBr2OK6HR0NM416PzcTs0UcSoPj/nD4eqmrV5Kut6kvCc/TJua5LyeoPE7vSmw==}
@@ -1958,7 +1976,6 @@ packages:
 
   /@tweenjs/tween.js@23.1.1:
     resolution: {integrity: sha512-ZpboH7pCPPeyBWKf8c7TJswtCEQObFo3bOBYalm99NzZarATALYCo5OhbCa/n4RQyJyHfhkdx+hNrdL5ByFYDw==}
-    dev: false
 
   /@types/acorn@4.0.6:
     resolution: {integrity: sha512-veQTnWP+1D/xbxVrPC3zHnCZRjSrKfhbMUlEA43iMZLu7EsnTtkJklIuwrCPbOi8YkvDQAiW05VQQFvvz9oieQ==}
@@ -2089,7 +2106,15 @@ packages:
 
   /@types/stats.js@0.17.3:
     resolution: {integrity: sha512-pXNfAD3KHOdif9EQXZ9deK82HVNaXP5ZIF5RP2QG6OQFNTaY2YIetfrE9t528vEreGQvEPRDDc8muaoYeK0SxQ==}
-    dev: false
+
+  /@types/three@0.162.0:
+    resolution: {integrity: sha512-0j5yZcVukVIhrhSIC7+LmBPkkMoMuEJ1AfYBZfgNytdYqYREMuiyXWhYOMeZLBElTEAlJIZn7r2W3vqTIgjWlg==}
+    dependencies:
+      '@tweenjs/tween.js': 23.1.1
+      '@types/stats.js': 0.17.3
+      '@types/webxr': 0.5.15
+      fflate: 0.6.10
+      meshoptimizer: 0.18.1
 
   /@types/three@0.163.0:
     resolution: {integrity: sha512-uIdDhsXRpQiBUkflBS/i1l3JX14fW6Ot9csed60nfbZNXHDTRsnV2xnTVwXcgbvTiboAR4IW+t+lTL5f1rqIqA==}
@@ -2113,7 +2138,6 @@ packages:
 
   /@types/webxr@0.5.15:
     resolution: {integrity: sha512-nC9116Gd4N+CqTxqo6gvCfhAMAzgRcfS8ZsciNodHq8uwW4JCVKwhagw8yN0XmC7mHrLnWqniJpoVEiR+72Drw==}
-    dev: false
 
   /@typescript-eslint/eslint-plugin@7.6.0(@typescript-eslint/parser@7.2.0)(eslint@8.57.0)(typescript@5.4.5):
     resolution: {integrity: sha512-gKmTNwZnblUdnTIJu3e9kmeRRzV2j1a/LUO27KNNAnIC5zjy1aSvXSRp4rVNlmAoHlQ7HzX42NbKpcSr4jF80A==}
@@ -4651,7 +4675,6 @@ packages:
 
   /fflate@0.6.10:
     resolution: {integrity: sha512-IQrh3lEPM93wVCEczc9SaAOvkmcoQn/G8Bo1e8ZPlY3X3bnAxWaBdvTdvM1hP62iZp0BXWDy4vTAy4fF0+Dlpg==}
-    dev: false
 
   /fflate@0.8.2:
     resolution: {integrity: sha512-cPJU47OaAoCbg0pBvzsgpTPhmhqI5eJjh/JIu8tPj5q+T7iLvW/JAYUqmE7KOB4R1ZyEhzBaIQpQpardBF5z8A==}
@@ -5866,13 +5889,13 @@ packages:
       es5-ext: 0.10.64
     dev: true
 
-  /maath@0.10.7(@types/three@0.163.0)(three@0.160.1):
+  /maath@0.10.7(@types/three@0.162.0)(three@0.160.1):
     resolution: {integrity: sha512-zQ2xd7dNOIVTjAS+hj22fyj1EFYmOJX6tzKjZ92r6WDoq8hyFxjuGA2q950tmR4iC/EKXoMQdSipkaJVuUHDTg==}
     peerDependencies:
       '@types/three': '>=0.144.0'
       three: '>=0.144.0'
     dependencies:
-      '@types/three': 0.163.0
+      '@types/three': 0.162.0
       three: 0.160.1
     dev: false
 
@@ -6326,7 +6349,6 @@ packages:
 
   /meshoptimizer@0.18.1:
     resolution: {integrity: sha512-ZhoIoL7TNV4s5B6+rx5mC//fw8/POGyNxS/DZyCJeiZ12ScLfVwRE/GfsxwiTkMYYD5DmK2/JXnEVXqL4rF+Sw==}
-    dev: false
 
   /micromark-core-commonmark@1.1.0:
     resolution: {integrity: sha512-BgHO1aRbolh2hcrzL2d1La37V0Aoz73ymF8rAcKnohLy93titmv62E0gP8Hrx9PKcKrqCZ1BbLGbP3bEhoXYlw==}

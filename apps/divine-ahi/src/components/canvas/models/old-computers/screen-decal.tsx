@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unknown-property -- jsx-eslint hostilities */
 import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Decal, RenderTexture, PerspectiveCamera, Text } from '@react-three/drei';

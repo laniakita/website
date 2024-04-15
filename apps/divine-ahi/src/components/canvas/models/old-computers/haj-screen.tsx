@@ -1,9 +1,10 @@
+/* eslint-disable react/no-unknown-property -- jsx-eslint hostilities */
 import { useFrame } from '@react-three/fiber';
 import { useRef } from 'react';
 import { type Mesh } from 'three';
 import { useUserPreferences } from '@react-three/a11y';
 import { WireShork2 } from '@/components/canvas/models/shork/shork';
-import { ScreenInteractive } from './screenInteractive';
+import { ScreenInteractive } from './screen-interactive';
 
 export default function ShorkScreen() {
   const { a11yPrefersState } = useUserPreferences();
