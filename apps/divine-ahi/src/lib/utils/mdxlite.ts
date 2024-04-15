@@ -1,10 +1,18 @@
 import { opendir, readFile } from 'node:fs/promises';
 import matter from 'gray-matter';
-import { eq, and, or } from 'drizzle-orm';
+import { eq, and, or, desc } from 'drizzle-orm';
 import mdxlitedb from '@/lib/mdxlite/drizzle';
 import { authors } from '@/lib/mdxlite/schema/authors';
 import { categories } from '@/lib/mdxlite/schema/categories';
 import { posts } from '@/lib/mdxlite/schema/posts';
+
+export const queryPosts = async () => {
+  const postsArr = await mdxlitedb.query.posts.findMany({
+    orderBy: [desc(posts.date)],
+  });
+
+  return postsArr;
+};
 
 export const blogPostFinder = async (searchFolder: string) => {
   const openDirRes = [];

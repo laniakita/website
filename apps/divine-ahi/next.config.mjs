@@ -32,7 +32,7 @@ const nextConfigFunction = async (phase, { defaultConfig }) => {
     const withBundleAnalyzer = (await import('@next/bundle-analyzer')).default({
       enabled: process.env.ANALYZE === 'true',
     });
-    plugins.push(withBundleAnalyzer)
+    plugins.push(withBundleAnalyzer);
   }
 
   return plugins.reduce((acc, next) => next(acc), {

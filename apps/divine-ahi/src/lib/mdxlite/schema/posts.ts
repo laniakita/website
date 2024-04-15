@@ -3,13 +3,12 @@ import { relations } from 'drizzle-orm';
 import { authors } from './authors';
 import { categories } from './categories';
 
-
 export const authorsRelations = relations(authors, ({ many }) => ({
   posts: many(posts),
 }));
 
 export const categoryRelations = relations(categories, ({ many }) => ({
-  posts: many(posts)
+  posts: many(posts),
 }));
 
 export interface Posts {
@@ -29,11 +28,13 @@ export interface Posts {
 
 export const posts = sqliteTable('posts', {
   id: integer('id').primaryKey(),
-  authorName: text('author_name').references(() => authors.name, {onUpdate: 'cascade', onDelete: 'cascade'}).notNull(),
+  authorName: text('author_name')
+    .references(() => authors.name, { onUpdate: 'cascade', onDelete: 'cascade' })
+    .notNull(),
   date: text('date').notNull(),
   headline: text('headline').unique().notNull(),
   subheadline: text('subheadline'),
-  category: text('category').references(() => categories.title, {onUpdate: 'cascade', onDelete: 'cascade'}),
+  category: text('category').references(() => categories.title, { onUpdate: 'cascade', onDelete: 'cascade' }),
   heroFile: text('hero_file'),
   heroCredit: text('hero_credit'),
   heroCreditUrl: text('hero_credit_url'),
@@ -42,7 +43,6 @@ export const posts = sqliteTable('posts', {
   rawContent: text('raw_content'),
 });
 
-
 export const postsRelations = relations(posts, ({ one }) => ({
   author: one(authors, {
     fields: [posts.authorName],
@@ -50,6 +50,6 @@ export const postsRelations = relations(posts, ({ one }) => ({
   }),
   category: one(categories, {
     fields: [posts.category],
-    references: [categories.title]
-  })
+    references: [categories.title],
+  }),
 }));
