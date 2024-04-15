@@ -1,13 +1,18 @@
-/*
-import { Suspense } from 'react';
-import LoadingSpinner from '@/components/loadingSpinner';
+import { Suspense, useMemo } from 'react';
 import Link from 'next/link';
+import { getMDXComponent } from 'mdx-bundler/client';
 import { PostNumStoreProvider } from '@/providers/postnum-store-provider';
-import PreviewRollerV3 from '@/components/blog/postRollerV3';
-import Markdown from 'markdown-to-jsx';
-import { getAllCategoryTitles, getSinglePost, getPostsV3, getAllCategoryKeys } from '@/lib/bucketUtils';
-import { _Object } from '@aws-sdk/client-s3';
+import LoadingSpinner from '@/components/loading-spinner';
+import PreviewRollerV3 from '@/components/blog/post-roller-v3';
+import { queryCategoryDescr } from '@/lib/utils/mdxlite';
+import { resMdx } from '@/lib/utils/mdx-bundler-utils';
 
+
+//import path from 'node:path';
+//import process from 'node:process';
+//import { insertFromRawIndex } from '@/lib/utils/mdxlite';
+
+/*
 export const dynamicParams = false;
 export const revalidate = 86400;
 
@@ -21,11 +26,19 @@ export async function generateStaticParams() {
     category: title,
   }));
 }
+*/
 
 export default async function Page({ params }: { params: { category: string } }) {
-  const pageDataStr = await getSinglePost({ isDescr: true, category: params.category });
-  const catDataArr = await getPostsV3({category: params.category});
-  
+  //const folder = path.resolve(process.cwd(), 'src/content')
+  //await insertFromRawIndex(folder)
+
+    
+
+  //const pageDataStr = await getSinglePost({ isDescr: true, category: params.category });
+  //const catDataArr = await getPostsV3({category: params.category});
+  const descrQ = await queryCategoryDescr(params.category);
+  const descrSource = descrQ?.rawContent?.trim();
+  const resBundle = descrSource && await resMdx(descrSource, 'category-info')
 
   return (
     <Suspense fallback={<LoadingSpinner overrides='h-screen bg-black' />}>
@@ -42,19 +55,42 @@ export default async function Page({ params }: { params: { category: string } })
             <h3 className='font-mono text-xl font-semibold'>Posts tagged:</h3>
             <h1 className=' text-5xl font-black uppercase md:text-6xl'>#{params.category}</h1>
           </div>
-          {pageDataStr && <MDXtoJSX markdownString={pageDataStr} />}
+          { resBundle ? <Description code={resBundle.code} /> : ''}
         </div>
-        
-        <PostNumStoreProvider>
-          { catDataArr!.length >= 1 && <PreviewRollerV3 isCat={true} dataArr={catDataArr} /> }
-        </PostNumStoreProvider>
-        {/
-          { catMatches.length >= 1 &&  }
-        //}
       </div>
     </Suspense>
   );
 }
+
+function Description({ code }: { code: string }) {
+  const Component = useMemo(() => getMDXComponent(code), [code]);
+  return (
+    <div className='prose prose-catppuccin w-full max-w-2xl'>
+      <Component />
+    </div>
+  );
+}
+
+/*
+ *
+ *>
+          { catDataArr!.length >= 1 && <PreviewRollerV3 isCat={true} dataArr={catDataArr} /> }
+        </PostNumStoreProvider>
+
+
+function MDXtoJSX({ markdownString }: { markdownString: string }) {
+  return (
+    <div className='prose prose-catppuccin w-full max-w-2xl'>
+      <Markdown>{markdownString}</Markdown>
+    </div>
+  );
+}
+
+
+ *   <PostNumStoreProvider>
+          { catDataArr!.length >= 1 && <PreviewRollerV3 isCat={true} dataArr={catDataArr} /> }
+        </PostNumStoreProvider>
+
 
 function MDXtoJSX({ markdownString }: { markdownString: string }) {
   return (

@@ -36,7 +36,9 @@ const View = dynamic(() => import('@/components/canvas/view'), {
 export default function Page() {
   return (
     <div className='h-screen'>
-      <SceneOverlay />
+      <Suspense>
+        <SceneOverlay />
+      </Suspense>
       <View className='flex size-full items-center justify-center'>
         <Suspense fallback={<LoadingSpinner />}>
           <MinComputerShork />

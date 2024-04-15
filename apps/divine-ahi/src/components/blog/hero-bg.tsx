@@ -1,12 +1,8 @@
 'use client';
 
 import Image from 'next/image';
-import { type BaseProps } from '@/components/blog/post-preview-v3';
 import { shimmer, toBase64 } from '@/lib/utils/shimmer-utils';
 
-export interface HeroProps extends BaseProps {
-  blurUrl?: string;
-}
 
 export function HeroBg({ dataObject }: { dataObject: { heroImage?: string; heroAltText?: string } }) {
   const imageLoader = ({ src, width, quality }: { src?: string; width?: number; quality?: number }) => {
