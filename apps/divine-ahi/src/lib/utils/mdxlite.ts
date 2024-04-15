@@ -6,6 +6,13 @@ import { authors } from '@/lib/mdxlite/schema/authors';
 import { categories } from '@/lib/mdxlite/schema/categories';
 import { posts } from '@/lib/mdxlite/schema/posts';
 
+export const queryCategoryDescr = async (searchTitle: string) => {
+  const catDescr = await mdxlitedb.query.categories.findFirst({
+    where: eq(categories.title, searchTitle)
+  });
+  return catDescr
+}
+
 export const queryPosts = async () => {
   const postsArr = await mdxlitedb.query.posts.findMany({
     orderBy: [desc(posts.date)],
@@ -119,10 +126,12 @@ const handleAuthor = async (postObj: HandleAuthorProps) => {
 interface HandleCategoryProps {
   meta: { title: string };
   content: string;
+  rawStr: string;
 }
 
 const handleCategory = async (postObj: HandleCategoryProps) => {
-  //console.log('found category file');
+  console.log('found category file');
+  console.log(postObj)
   // check if postObj.meta.name == authors.name
   const checkRes = await mdxlitedb
     .select({
@@ -132,7 +141,7 @@ const handleCategory = async (postObj: HandleCategoryProps) => {
     .from(categories)
     .where(eq(categories.title, postObj.meta.title));
   if (checkRes.length > 0) {
-    //console.log('category info file exists trying update');
+    console.log('category info file exists trying update');
     // @ts-expect-error -- types exist because how else could checkRes have a length > 0?
     const { testId, testName } = checkRes[0];
     //console.log(`exists with ${testId as string}`);
@@ -142,17 +151,19 @@ const handleCategory = async (postObj: HandleCategoryProps) => {
       .set({
         title: postObj.meta.title,
         description: postObj.content,
+        rawContent: postObj.rawStr
       })
       .where(and(eq(categories.id, testId as number), eq(categories.title, testName as string)));
   }
   // insert into db
   if (checkRes.length === 0) {
-    //console.log("category doesn't exist, inserting into categories table");
+    console.log("category doesn't exist, inserting into categories table");
     await mdxlitedb
       .insert(categories)
       .values({
         title: postObj.meta.title,
         description: postObj.content,
+        rawContent: postObj.rawStr
       })
       .onConflictDoNothing();
   }

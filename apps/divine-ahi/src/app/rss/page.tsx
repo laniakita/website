@@ -1,9 +1,10 @@
-import { toXML } from "jstoxml";
-import { blogPostFinder } from "@/lib/postUtils";
+//import { toXML } from "jstoxml";
+//import { blogPostFinder } from "@/lib/post-utils";
 /*
 const blogPosts = await blogPostFinder()
 console.log(blogPosts)
 */
+/*
 const feedSetup = {
   title: `Lani Akita's Dev Blog`,
   link: "https://laniakita.com/blog",
@@ -15,7 +16,7 @@ const feedSetup = {
   webMaster: 'Lani Akita',
 
 };
-
+*/
 export default function Page() {
   return <div>This is where the RSS feed will go.</div>;
 }

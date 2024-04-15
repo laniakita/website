@@ -2,8 +2,6 @@ import path from 'node:path';
 import { readFile, access, opendir } from 'node:fs/promises';
 import matter from 'gray-matter';
 
-
-
 export const readMDXFile = async (folder: string, slug: string) => {
   const filePath = path.resolve(path.join(folder, `${slug}.mdx`));
 

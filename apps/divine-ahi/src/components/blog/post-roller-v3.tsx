@@ -23,7 +23,7 @@ export default function PreviewRollerV3({ dataArr, isCat }: PreviewRollerV3Props
 
   return (
     <>
-      {!isCat && <FeaturedPostPreviewV3 alt dataObj={dataArr[0]!} />}
+      {!isCat && <FeaturedPostPreviewV3 dataObj={dataArr[0]!} />}
       <div className='flex flex-col-reverse items-center justify-center md:flex-row md:items-start '>
         <div className='size-full'>
           <div className='flex flex-wrap'>
