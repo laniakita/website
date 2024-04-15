@@ -2,7 +2,7 @@
 import dynamic from 'next/dynamic';
 import { Suspense } from 'react';
 import LoadingSpinner from '@/components/loading-spinner';
-import SceneOverlay from './sceneOverlay';
+import SceneOverlay from '@/components/scene-overlay';
 
 const MinComputerShork = dynamic(
   () => import('@/components/canvas/scenes/computers-and-fren').then((mod) => mod.MinComputerShork),
