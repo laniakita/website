@@ -51,9 +51,11 @@ export function PostPreviewV3({ dataObj }: { dataObj: PostTeaserObjectProps }) {
   if (dataObj.heroFile && dataObj.heroAltText) {
     hasImage = true;
   }
+  
+  const catSerializer = dataObj.category?.replace(' ', '_')
 
   const linkTo = '';
-  const linkToCat = `/blog/${dataObj.category}`;
+  const linkToCat = `/blog/${catSerializer}`;
 
   const postedDate = dateGetter(dataObj.date);
 

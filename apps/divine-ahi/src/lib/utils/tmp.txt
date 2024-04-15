@@ -1,3 +1,32 @@
+  
+//import path from 'node:path';
+//import process from 'node:process';
+//import { insertFromRawIndex } from '@/lib/utils/mdxlite';
+
+/*
+export const dynamicParams = false;
+export const revalidate = 86400;
+
+export async function generateStaticParams() {
+  const getCatKeys = await getAllCategoryKeys()
+  const getCategoryParams = await getAllCategoryTitles(getCatKeys as Array<_Object>);
+  if (!getCategoryParams) {
+    return
+  }
+  return getCategoryParams.map((title) => ({
+    category: title,
+  }));
+}
+*/
+
+  //const folder = path.resolve(process.cwd(), 'src/content')
+  //await insertFromRawIndex(folder)
+
+    
+
+  //const pageDataStr = await getSinglePost({ isDescr: true, category: params.category });
+  //const catDataArr = await getPostsV3({category: params.category});
+
   // check if postObj.meta.name == authors.name
   /*
   const sq1 = mdxlitedb

@@ -13,6 +13,14 @@ export const queryCategoryDescr = async (searchTitle: string) => {
   return catDescr
 }
 
+export const queryPostsByCategory = async(category: string) => {
+  const postsInCategory = await mdxlitedb.query.posts.findMany({
+    where: eq(posts.category, category),
+    orderBy: [desc(posts.date)],
+  })
+  return postsInCategory
+}
+
 export const queryPosts = async () => {
   const postsArr = await mdxlitedb.query.posts.findMany({
     orderBy: [desc(posts.date)],
