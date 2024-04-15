@@ -1,0 +1,35 @@
+{
+  "navigationItems": ["Home", "Projects", "Blog", "Contact", "Credits", "Privacy", "Terms"],
+  "socialItems": [
+    {
+      "title": "Github",
+      "url": "https://github.com/laniakita",
+      "iconName": "icon-[ant-design--github-filled]",
+      "textSize": "text-5xl"
+    },
+    {
+      "title": "Mastodon",
+      "url": "https://joinmastodon.org/",
+      "iconName": "icon-[fa6-brands--mastodon]",
+      "textSize": "text-5xl"
+    },
+    {
+      "title": "Patreon",
+      "url": "https://patreon.com",
+      "iconName": "icon-[fa6-brands--patreon]",
+      "textSize": "text-4xl"
+    },
+    {
+      "title": "LinkedIn",
+      "url": "https://linkedin.com",
+      "iconName": "icon-[fa--linkedin]",
+      "textSize": "text-4xl"
+    },
+    {
+      "title": "RSS",
+      "url": "/rss",
+      "iconName": "icon-[ph--rss-bold]",
+      "textSize": "text-5xl"
+    }
+  ]
+}
