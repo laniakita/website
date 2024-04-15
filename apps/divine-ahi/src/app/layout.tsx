@@ -3,6 +3,10 @@ import { Inter } from 'next/font/google';
 import localFont from 'next/font/local';
 import { type ReactNode } from 'react';
 import '@/css/app.css';
+import { DarkStoreProvider } from '@/providers/theme-store-provider';
+import ThreeLayout from '@/components/dom/three-layout';
+import NavBar from '@/components/navbar/navbar';
+import Footer from '@/components/footer/footer';
 
 const inter = Inter({ subsets: ['latin'], display: 'swap', variable: '--font-inter' });
 
@@ -65,7 +69,15 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang='en' dir='ltr' className={`${inter.variable} ${zeroxproto.variable}`}>
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <DarkStoreProvider>
+          <ThreeLayout camera={{ fov: 45 }}>
+            <NavBar />
+            {children}
+            <Footer />
+          </ThreeLayout>
+        </DarkStoreProvider>
+      </body>
     </html>
   );
 }
