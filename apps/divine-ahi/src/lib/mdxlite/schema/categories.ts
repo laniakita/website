@@ -8,6 +8,6 @@ export interface Categories {
 
 export const categories = sqliteTable('categories', {
   id: integer('id').primaryKey(),
-  title: text('title').notNull(),
+  title: text('title').unique().notNull(),
   description: text('description'),
 });

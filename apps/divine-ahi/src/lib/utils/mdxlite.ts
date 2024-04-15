@@ -1,11 +1,10 @@
 import { opendir, readFile } from 'node:fs/promises';
 import matter from 'gray-matter';
-import { eq, and, or, sql } from 'drizzle-orm';
-import type { Authors } from '@/lib/mdxlite/schema/authors';
+import { eq, and, or } from 'drizzle-orm';
+import mdxlitedb from '@/lib/mdxlite/drizzle';
 import { authors } from '@/lib/mdxlite/schema/authors';
 import { categories } from '@/lib/mdxlite/schema/categories';
-import mdxlitedb from '@/lib/mdxlite/drizzle';
-import { posts } from '../mdxlite/schema/posts';
+import { posts } from '@/lib/mdxlite/schema/posts';
 
 export const blogPostFinder = async (searchFolder: string) => {
   const openDirRes = [];
@@ -46,6 +45,9 @@ export const insertFromRawIndex = async (searchFolder: string) => {
         if (postObj.meta.type === 'category') {
           await handleCategory(postObj as unknown as HandleCategoryProps);
         }
+        if (postObj.meta.type === 'post') {
+          await handlePost(postObj as unknown as HandlePostProps);
+        }
       }),
     );
   }
@@ -57,7 +59,7 @@ interface HandleAuthorProps {
 }
 
 const handleAuthor = async (postObj: HandleAuthorProps) => {
-  console.log('found author file');
+  //console.log('found author file');
   // check if postObj.meta.name == authors.name
   const checkRes = await mdxlitedb
     .select({
@@ -67,11 +69,11 @@ const handleAuthor = async (postObj: HandleAuthorProps) => {
     .from(authors)
     .where(eq(authors.name, postObj.meta.name));
   if (checkRes.length > 0) {
-    console.log('author exists trying update');
+    //console.log('author exists trying update');
     // @ts-expect-error -- types exist because how else could checkRes have a length > 0?
     const { testId, testName } = checkRes[0];
-    console.log(`exists with ${testId as string}`);
-    console.log(`exists with ${testName as string}`);
+    //console.log(`exists with ${testId as string}`);
+    //console.log(`exists with ${testName as string}`);
     await mdxlitedb
       .update(authors)
       .set({
@@ -83,7 +85,7 @@ const handleAuthor = async (postObj: HandleAuthorProps) => {
   }
   // insert into db
   if (checkRes.length === 0) {
-    console.log("author doesn't exist, inserting into authors table");
+    //console.log("author doesn't exist, inserting into authors table");
     await mdxlitedb
       .insert(authors)
       .values({
@@ -101,7 +103,7 @@ interface HandleCategoryProps {
 }
 
 const handleCategory = async (postObj: HandleCategoryProps) => {
-  console.log('found category file');
+  //console.log('found category file');
   // check if postObj.meta.name == authors.name
   const checkRes = await mdxlitedb
     .select({
@@ -111,11 +113,11 @@ const handleCategory = async (postObj: HandleCategoryProps) => {
     .from(categories)
     .where(eq(categories.title, postObj.meta.title));
   if (checkRes.length > 0) {
-    console.log('category info file exists trying update');
+    //console.log('category info file exists trying update');
     // @ts-expect-error -- types exist because how else could checkRes have a length > 0?
     const { testId, testName } = checkRes[0];
-    console.log(`exists with ${testId as string}`);
-    console.log(`exists with ${testName as string}`);
+    //console.log(`exists with ${testId as string}`);
+    //console.log(`exists with ${testName as string}`);
     await mdxlitedb
       .update(categories)
       .set({
@@ -126,7 +128,7 @@ const handleCategory = async (postObj: HandleCategoryProps) => {
   }
   // insert into db
   if (checkRes.length === 0) {
-    console.log("category doesn't exist, inserting into categories table");
+    //console.log("category doesn't exist, inserting into categories table");
     await mdxlitedb
       .insert(categories)
       .values({
@@ -139,97 +141,88 @@ const handleCategory = async (postObj: HandleCategoryProps) => {
 
 interface HandlePostProps {
   meta: {
+    author: string;
+    date: Date;
     headline: string;
     subheadline: string;
-    author: string;
     category: string;
-    date: string;
     heroFile: string;
     heroCredit: string;
     heroCreditUrlText: string;
     heroCreditUrl: string;
     heroAltText: string;
   };
-  content: string;
+  rawStr: string;
 }
 
-const handlePostProps = async (postObj: HandlePostProps) => {
-  console.log('found post file');
-  // check if postObj.meta.name == authors.name
-  const checkRes = await mdxlitedb
+const handlePost = async (postObj: HandlePostProps) => {
+  //const q1 = await mdxlitedb.query.authors.findMany();
+  //console.log(q1)
+  const authorQ = await mdxlitedb
+    .select({ name: authors.name })
+    .from(authors)
+    .where(eq(authors.name, postObj.meta.author));
+  const categoryQ = await mdxlitedb
+    .select({ title: categories.title })
+    .from(categories)
+    .where(eq(categories.title, postObj.meta.category));
+
+  const authorMatch = authorQ[0];
+  const categoryMatch = categoryQ[0];
+  const checkPostExists = await mdxlitedb
     .select({
       testId: posts.id,
       testHeadline: posts.headline,
-      testAuthor: posts.author,
       testDate: posts.date,
     })
     .from(posts)
     .where(
       or(
-        and(eq(posts.headline, postObj.meta.headline), eq(posts.author, postObj.meta.author)),
-        and(eq(posts.date, postObj.meta.date), eq(posts.author, postObj.meta.author)),
+        and(eq(posts.headline, postObj.meta.headline), eq(posts.date, postObj.meta.date.toUTCString())),
+        eq(posts.date, postObj.meta.date.toUTCString()),
       ),
     );
 
-  if (checkRes.length > 0) {
-    console.log('post file exists trying update');
-
-    // @ts-expect-error -- types exist because how else could checkRes have a length > 0?
-    const { testId, testHeadline, testDate, testAuthor } = checkRes[0];
-
-    console.log(`exists with ${testId as string}`);
-    console.log(`exists with ${testHeadline as string}`);
-    console.log(`exists with ${testDate as string}`);
-
-    await mdxlitedb
-      .update(posts)
-      .set({
+  if (typeof authorMatch?.name === 'string' && typeof categoryMatch?.title === 'string') {
+    if (checkPostExists.length > 0) {
+      // @ts-expect-error -- types exist because how else could checkPostExists have a length > 0?
+      const { testId, testHeadline, testDate } = checkPostExists[0];
+      await mdxlitedb
+        .update(posts)
+        .set({
+          authorName: postObj.meta.author,
+          date: postObj.meta.date.toUTCString(),
+          headline: postObj.meta.headline,
+          subheadline: postObj.meta.subheadline,
+          category: postObj.meta.category,
+          heroFile: postObj.meta.heroFile,
+          heroCredit: postObj.meta.heroCredit,
+          heroCreditUrlText: postObj.meta.heroCreditUrlText,
+          heroCreditUrl: postObj.meta.heroCreditUrl,
+          heroAltText: postObj.meta.heroAltText,
+          rawContent: postObj.rawStr,
+        })
+        .where(
+          or(
+            and(eq(posts.id, testId as number), eq(posts.headline, testHeadline as string)),
+            and(eq(posts.id, testId as number), eq(posts.date, testDate as string)),
+          ),
+        );
+    }
+    if (checkPostExists.length === 0) {
+      await mdxlitedb.insert(posts).values({
+        authorName: postObj.meta.author,
+        date: postObj.meta.date.toUTCString(),
         headline: postObj.meta.headline,
         subheadline: postObj.meta.subheadline,
-        author: postObj.meta.author,
         category: postObj.meta.category,
-        date: postObj.meta.date,
         heroFile: postObj.meta.heroFile,
         heroCredit: postObj.meta.heroCredit,
         heroCreditUrlText: postObj.meta.heroCreditUrlText,
         heroCreditUrl: postObj.meta.heroCreditUrl,
         heroAltText: postObj.meta.heroAltText,
-        content: postObj.content,
-      })
-      .where(
-        or(
-          and(eq(posts.id, testId as number), eq(posts.author, testAuthor as string)),
-          and(eq(posts.id, testId as number), eq(posts.date, testDate as string)),
-        ),
-      );
-  }
-  // insert into db
-  if (checkRes.length === 0) {
-    console.log("post doesn't exist, inserting into posts table");
-    const authorQ = await mdxlitedb
-      .select({ name: authors.name })
-      .from(authors)
-      .leftJoin(posts, eq(authors.name, postObj.meta.author));
-    const categoryQ = await mdxlitedb
-      .select({ title: categories.title })
-      .from(categories)
-      .leftJoin(posts, eq(categories.title, postObj.meta.category));
-    
-    await mdxlitedb
-      .insert(posts)
-      .values({
-        headline: postObj.meta.headline,
-        subheadline: postObj.meta.subheadline,
-        author: authorQ as unknown as string,
-        category: categoryQ as unknown as string,
-        date: postObj.meta.date,
-        heroFile: postObj.meta.heroFile,
-        heroCredit: postObj.meta.heroCredit,
-        heroCreditUrlText: postObj.meta.heroCreditUrlText,
-        heroCreditUrl: postObj.meta.heroCreditUrl,
-        heroAltText: postObj.meta.heroAltText,
-        content: postObj.content,
-      })
-      .onConflictDoNothing();
+        rawContent: postObj.rawStr,
+      });
+    }
   }
 };

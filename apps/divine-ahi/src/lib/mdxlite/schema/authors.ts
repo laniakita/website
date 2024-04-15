@@ -9,8 +9,9 @@ export interface Authors {
 
 export const authors = sqliteTable('authors', {
   id: integer('id').primaryKey(),
-  name: text('name').notNull(),
+  name: text('name').unique(),
   bio: text('bio'),
   mastodon: text('mastodon')
 });
+
 
