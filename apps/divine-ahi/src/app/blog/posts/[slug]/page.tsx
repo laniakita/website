@@ -5,7 +5,6 @@ import { querySinglePost } from '@/lib/utils/mdxlite';
 import { resMdx } from '@/lib/utils/mdx-bundler-utils';
 import { PostHeader } from '@/components/blog/post-header';
 import type { PostTeaserObjectProps } from '@/app/blog/page';
-import CodeHighlighter, { TestLight } from '@/components/code-highlighter';
 
 /*
 import { getRecentKeys, getSinglePost, getPostInfoFromKey } from '@/lib/bucketUtils';
