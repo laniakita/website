@@ -14,8 +14,6 @@ export async function generateStaticParams() {
   }));
 }
 
-
-
 export default async function Page({ params }: { params: { slug: string } }) {
   const slugDeserializer = params.slug.replaceAll('_', ' ');
   const postQ = await querySinglePost(slugDeserializer);
@@ -36,18 +34,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   };
 
   return (
-    <div className=' simple-color-trans -mb-0.5 min-h-full bg-ctp-base pt-6 dark:bg-ctp-crust md:pt-10 lg:pt-[5.5rem]'>
-      <div className='flex items-center justify-center px-4 md:px-10'>
-        <div className='w-full max-w-3xl '>
-          <div className='flex flex-wrap gap-2 font-mono text-sm lowercase'>
-            <Link href='/'>Home</Link>
-            <span>{`>`}</span>
-            <Link href='/blog'>Blog</Link>
-            <span>{`>`}</span>
-            <p>{params.slug}</p>
-          </div>
-        </div>
-      </div>
+    <div className=' simple-color-trans -mb-0.5 min-h-full bg-ctp-base dark:bg-ctp-crust lg:pt-10'>
       {resBundle ? <Post code={resBundle.code} teaserObj={headerData as PostTeaserObjectProps} /> : ''}
     </div>
   );
@@ -60,7 +47,7 @@ function Post({ code, teaserObj }: { code: string; teaserObj: PostTeaserObjectPr
       <PostHeader dataObject={teaserObj} />
       <div className='flex min-h-full items-center justify-center px-4 py-6 md:p-10'>
         <div className='prose prose-catppuccin min-h-full max-w-3xl prose-pre:ctp-mocha prose-code:text-base prose-pre:max-w-[92.5vw] prose-pre:overflow-visible prose-pre:bg-ctp-base'>
-          <Component  />
+          <Component />
         </div>
       </div>
     </article>
