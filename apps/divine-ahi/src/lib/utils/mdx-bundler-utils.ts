@@ -3,27 +3,47 @@ import { bundleMDX } from 'mdx-bundler';
 import remarkGfm from 'remark-gfm';
 import rehypeMdxImportMedia from 'rehype-mdx-import-media';
 import rehypeShiki from '@shikijs/rehype';
-import type { Options } from '@mdx-js/loader'; 
+import { rendererRich, transformerTwoslash } from '@shikijs/twoslash';
+import { createTwoslashFromCDN } from 'twoslash-cdn';
+import type { Options } from '@mdx-js/loader';
 
 export const resMdx = async (mdxStr: string, folderName: string) => {
-  const folder = path.resolve(process.cwd(), `src/content/${folderName}`)
+  const folder = path.resolve(process.cwd(), `content/${folderName}`);
   const processed = await bundleMDX({
     source: mdxStr,
     cwd: folder,
     mdxOptions(options: Options, frontmatter?: Record<string, any>) {
-      options.remarkPlugins = [...(options.remarkPlugins ?? []), remarkGfm]
-      options.rehypePlugins = [...(options.rehypePlugins ?? []), rehypeShiki, rehypeMdxImportMedia]
+      options.remarkPlugins = [...(options.remarkPlugins ?? []), remarkGfm];
+      options.rehypePlugins = [
+        ...(options.rehypePlugins ?? []),
+        [
+          rehypeShiki,
+          {
+            themes: {
+              light: 'catppuccin-latte',
+              dark: 'catppuccin-mocha',
+            },
+            transformers: [
+              transformerTwoslash({
+                renderer: rendererRich(),
+                explicitTrigger: true
+              })
+            ],
+          },
+        ],
+        rehypeMdxImportMedia,
+      ];
       return options;
     },
     esbuildOptions: (options) => {
       options.loader = {
         ...options.loader,
         '.png': 'dataurl',
-        '.jpg': 'dataurl'
+        '.jpg': 'dataurl',
       };
       return options;
     },
   });
-  const {code, frontmatter} = processed
-  return {code, frontmatter};
+  const { code, frontmatter } = processed;
+  return { code, frontmatter };
 };

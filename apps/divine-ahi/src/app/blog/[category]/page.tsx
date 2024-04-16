@@ -9,7 +9,7 @@ import { resMdx } from '@/lib/utils/mdx-bundler-utils';
 import type { PostTeaserObjectProps } from '../page';
 
 export default async function Page({ params }: { params: { category: string } }) {
-  const catDeserializer = params.category.replace('_', ' ')
+  const catDeserializer = params.category.replaceAll('_', ' ')
   const descrQ = await queryCategoryDescr(catDeserializer);
   const descrSource = descrQ?.rawContent?.trim();
   const resBundle = descrSource && (await resMdx(descrSource, 'category-info'));

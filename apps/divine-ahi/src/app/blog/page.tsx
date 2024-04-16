@@ -1,4 +1,4 @@
-import { queryPostMetas, queryPosts } from '@/lib/utils/mdxlite';
+import { queryPostMetas } from '@/lib/utils/mdxlite';
 import { PostNumStoreProvider } from '@/providers/postnum-store-provider';
 import PreviewRollerV3 from '@/components/blog/post-roller-v3';
 
@@ -25,7 +25,7 @@ export default async function BlogPage() {
           <PreviewRollerV3 dataArr={res as PostTeaserObjectProps[]} />
         ) : (
           <div className='flex h-screen items-center justify-center'>
-            <p>{"no posts found. hmm something's not right here."}</p>
+            <p>{`no posts found. hmm something's not right here.`}</p>
           </div>
         )}
       </div>

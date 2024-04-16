@@ -2,6 +2,7 @@ import Link from 'next/link';
 import dayjs, { extend } from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { HeroBg } from '@/components/blog/hero-bg';
+import type { PostTeaserObjectProps } from '@/app/blog/page';
 
 extend(relativeTime);
 
@@ -9,20 +10,7 @@ extend(relativeTime);
   baseUrl: string;
 } */
 
-export interface PostHeaderProps {
-  author: string;
-  date: Date;
-  headline: string;
-  subheadline?: string;
-  category: string;
-  heroFile?: string;
-  heroCredit?: string;
-  heroCreditUrlText?: string;
-  heroCreditUrl?: string;
-  heroAltText?: string;
-}
-
-export function PostHeader({ dataObject }: { dataObject: PostHeaderProps }) {
+export function PostHeader({ dataObject }: { dataObject: PostTeaserObjectProps}) {
   //const linkTo = baseUrl + "/blog/" + dataObject.category + "/" + dataObject.slug;
   //const linkToCat = baseUrl + "/blog/" + dataObject.category;
   return (
@@ -48,7 +36,7 @@ export function PostHeader({ dataObject }: { dataObject: PostHeaderProps }) {
  * the image again:
  * motion-safe:simple-color-trans bg-gradient-to-b from-ctp-crust/50 via-ctp-crust/80 to-ctp-crust backdrop-blur-md
  */
-export function PostHeaderTitleBlock({ dataObject }: { dataObject: PostHeaderProps }) {
+export function PostHeaderTitleBlock({ dataObject }: { dataObject: PostTeaserObjectProps }) {
   const postedDate = dayjs(dataObject.date).fromNow();
   return (
     <div className='flex w-full items-center justify-center px-4 py-6 md:p-10'>
@@ -69,7 +57,7 @@ export function PostHeaderTitleBlock({ dataObject }: { dataObject: PostHeaderPro
             {`By, `}
             <span>
               <Link href='/about' className='font-semibold'>
-                {dataObject.author}
+                {dataObject.authorName}
               </Link>
             </span>
           </p>

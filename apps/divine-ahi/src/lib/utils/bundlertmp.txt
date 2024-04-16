@@ -1,0 +1,52 @@
+ /* 
+  * p          transformers: [
+            transformerTwoslash({
+              renderer: rendererRich(),
+              explicitTrigger: true // <--
+            })
+          ],*/
+
+ [
+          rehypeShiki,
+          {
+            themes: {
+              light: 'catppuccin-latte',
+              dark: 'catppuccin-mocha',
+            },
+          },
+        ],
+
+experimental: {
+    urlImports: [
+      'https://esm.sh/'
+    ],
+  },
+
+/* eslint-disable import/no-unresolved -- enabled external imports via next.config.mjs */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment -- enabled external imports via next.config.mjs */
+/* eslint-disable @typescript-eslint/no-unsafe-call -- enabled external imports via next.config.mjs */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access -- enabled external imports via next.config.mjs */
+const storage = createStorage({
+  driver: indexedDbDriver({ base: 'twoslash-cdn' }),
+})
+
+const twoslash = createTwoslashFromCDN({
+  storage,
+  compilerOptions: {
+    lib: ['esnext', 'dom'],
+  },
+})
+
+const transformerTwoslash = createTransformerFactory(twoslash.runSync)({
+  renderer: rendererRich(),
+})
+/* @ts-expect-error -- declared external pkgs via webpack */
+import { createTransformerFactory, rendererRich } from 'https://esm.sh/@shikijs/twoslash@latest/core';
+/* @ts-expect-error -- declared external pkgs via webpack */
+import { codeToHtml } from 'https://esm.sh/shiki@latest';
+/* @ts-expect-error -- declared external pkgs via webpack */
+import { createStorage } from 'https://esm.sh/unstorage@latest';
+/* @ts-expect-error -- declared external pkgs via webpack */
+import indexedDbDriver from 'https://esm.sh/unstorage@latest/drivers/indexedb';
+/* @ts-expect-error -- declared external pkgs via webpack */
+import { createTwoslashFromCDN } from 'https://esm.sh/twoslash-cdn@latest';
