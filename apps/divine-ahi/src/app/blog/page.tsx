@@ -1,6 +1,7 @@
 import { queryPostMetas } from '@/lib/utils/mdxlite';
 import { PostNumStoreProvider } from '@/providers/postnum-store-provider';
 import PreviewRollerV3 from '@/components/blog/post-roller-v3';
+import NavBar from '@/components/navbar/navbar';
 
 export interface PostTeaserObjectProps {
   id: number;

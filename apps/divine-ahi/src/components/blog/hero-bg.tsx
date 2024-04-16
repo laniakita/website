@@ -2,19 +2,19 @@
 
 import Image from 'next/image';
 import { shimmer, toBase64 } from '@/lib/utils/shimmer-utils';
+import type { PostTeaserObjectProps } from '@/app/blog/page';
 
-
-export function HeroBg({ dataObject }: { dataObject: { heroImage?: string; heroAltText?: string } }) {
+export function HeroBg({dataObject}: {dataObject: PostTeaserObjectProps}) {
   const imageLoader = ({ src, width, quality }: { src?: string; width?: number; quality?: number }) => {
     return `/assets/featured-images/${src}?w=${width}&q=${quality ?? 75}`;
   };
   return (
     <>
-      {dataObject.heroImage && dataObject.heroAltText ? (
+      {dataObject.heroFile && dataObject.heroAltText ? (
         <div className='relative h-[60vh] min-h-[40rem]'>
           <Image
             loader={imageLoader}
-            src={dataObject.heroImage}
+            src={dataObject.heroFile}
             placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
             alt={dataObject.heroAltText}
             fill

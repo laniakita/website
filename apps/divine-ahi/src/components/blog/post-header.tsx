@@ -1,10 +1,14 @@
 import Link from 'next/link';
 import dayjs, { extend } from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import localizedFormat from 'dayjs/plugin/localizedFormat'
+import timezone from 'dayjs/plugin/timezone'
 import { HeroBg } from '@/components/blog/hero-bg';
 import type { PostTeaserObjectProps } from '@/app/blog/page';
 
 extend(relativeTime);
+extend(localizedFormat);
+extend(timezone);
 
 /* export interface HeaderProps extends HeroProps {
   baseUrl: string;
@@ -37,12 +41,12 @@ export function PostHeader({ dataObject }: { dataObject: PostTeaserObjectProps})
  * motion-safe:simple-color-trans bg-gradient-to-b from-ctp-crust/50 via-ctp-crust/80 to-ctp-crust backdrop-blur-md
  */
 export function PostHeaderTitleBlock({ dataObject }: { dataObject: PostTeaserObjectProps }) {
-  const postedDate = dayjs(dataObject.date).fromNow();
+  const postedDate = dayjs(dataObject.date).format('L LT');
   return (
     <div className='flex w-full items-center justify-center px-4 py-6 md:p-10'>
       <div className='flex w-full max-w-3xl flex-col gap-6'>
         <div className='space-y-2'>
-          <Link href={`/blog/${dataObject.category}`} className='w-fit font-mono text-xl font-semibold'>
+          <Link href={`/blog/${dataObject.category?.replaceAll(' ', '_')}`} className='w-fit font-mono text-xl font-semibold'>
             {dataObject.category}
           </Link>
           <h1 className='max-w-2xl text-5xl font-black uppercase supports-[text-wrap:balance]:text-balance md:text-6xl'>
