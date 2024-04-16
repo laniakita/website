@@ -10,7 +10,7 @@ function YTEmbed({ vidId }: { vidId: string }) {
         referrerPolicy='strict-origin-when-cross-origin'
         allowFullScreen
         className='h-[215px] flex-auto sm:h-[400px] md:h-[500px]'
-       />
+      />
     </div>
   );
 }

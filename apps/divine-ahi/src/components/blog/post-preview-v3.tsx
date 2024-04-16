@@ -46,15 +46,18 @@ const dateGetter = (dateString: string): DateGetterReturn | undefined => {
   }
 };
 
+
+
 export function PostPreviewV3({ dataObj }: { dataObj: PostTeaserObjectProps }) {
   let hasImage = false;
   if (dataObj.heroFile && dataObj.heroAltText) {
     hasImage = true;
   }
   
-  const catSerializer = dataObj.category?.replace(' ', '_')
+  const catSerializer = dataObj.category?.replaceAll(' ', '_')
+  const postSlugSerializer = dataObj.headline.replaceAll(' ', '_')
 
-  const linkTo = '';
+  const linkTo = `/blog/posts/${postSlugSerializer}`;
   const linkToCat = `/blog/${catSerializer}`;
 
   const postedDate = dateGetter(dataObj.date);
@@ -122,10 +125,16 @@ export function FeaturedPostPreviewV3({ dataObj }: { dataObj: PostTeaserObjectPr
     hasImage = true;
   }
 
-  const linkTo = '';
-  const linkToCat = `/blog/${dataObj.category}`;
+  const catSerializer = dataObj.category?.replaceAll(' ', '_')
+  const postSlugSerializer = dataObj.headline.replaceAll(' ', '_')
+
+  const linkTo = `/blog/posts/${postSlugSerializer}`;
+  const linkToCat = `/blog/${catSerializer}`;
 
   const postedDate = dateGetter(dataObj.date);
+
+
+
   return (
     <div
       className={`${hasImage ? 'pb-6 md:p-0 lg:pb-0' : 'py-6 md:p-0 lg:p-0'} motion-safe:simple-color-trans pointer-events-none flex size-full flex-col gap-6 border-y border-ctp-surface0 bg-ctp-base   hover:border-ctp-mauve has-[:focus]:border-ctp-mauve dark:bg-ctp-crust md:gap-0 md:border lg:flex-row-reverse lg:items-center lg:justify-between`}

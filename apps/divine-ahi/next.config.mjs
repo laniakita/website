@@ -6,6 +6,12 @@ const nextConfig = {
   images: {
     formats: ['image/avif', 'image/webp'],
   },
+  experimental: {
+    serverComponentsExternalPackages: [
+      "@shikijs/twoslash",
+    ],
+    urlImports: ['https://esm.sh/'],
+  },
   swcMinify: true,
 };
 

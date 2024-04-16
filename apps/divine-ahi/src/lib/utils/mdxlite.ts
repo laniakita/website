@@ -6,6 +6,13 @@ import { authors } from '@/lib/mdxlite/schema/authors';
 import { categories } from '@/lib/mdxlite/schema/categories';
 import { posts } from '@/lib/mdxlite/schema/posts';
 
+export const querySinglePost = async (searchHeadline: string) => {
+  const postRes = await mdxlitedb.query.posts.findFirst({
+    where: eq(posts.headline, searchHeadline)
+  })
+  return postRes
+}
+ 
 export const queryCategoryDescr = async (searchTitle: string) => {
   const catDescr = await mdxlitedb.query.categories.findFirst({
     where: eq(categories.title, searchTitle)

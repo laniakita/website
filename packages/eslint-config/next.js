@@ -31,6 +31,7 @@ module.exports = {
     "import/no-default-export": "off",
     "no-console": ["warn", { allow: ["warn", "error"] }],
     "no-unused-vars": "warn",
+    "prefer-named-capture-group": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-unused-vars": "warn",
     "@typescript-eslint/no-non-null-assertion": "off",
