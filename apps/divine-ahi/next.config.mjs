@@ -10,7 +10,6 @@ const nextConfig = {
     serverComponentsExternalPackages: [
       "@shikijs/twoslash",
     ],
-    urlImports: ['https://esm.sh/'],
   },
   swcMinify: true,
 };

@@ -4,7 +4,6 @@ import remarkGfm from 'remark-gfm';
 import rehypeMdxImportMedia from 'rehype-mdx-import-media';
 import rehypeShiki from '@shikijs/rehype';
 import { rendererRich, transformerTwoslash } from '@shikijs/twoslash';
-import { createTwoslashFromCDN } from 'twoslash-cdn';
 import type { Options } from '@mdx-js/loader';
 
 export const resMdx = async (mdxStr: string, folderName: string) => {
