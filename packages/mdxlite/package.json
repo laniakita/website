@@ -1,10 +1,15 @@
 {
   "name": "@ahiakea/mdxlite",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
-  "bin": {
-    "testing": "bin/main.mjs"
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "keywords": [],
+  "author": "Lani Akita",
+  "license": "GPLv3",
   "devDependencies": {
     "@ahiakea/typescript-config": "workspace:^"
   }

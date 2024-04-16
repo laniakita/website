@@ -20,6 +20,9 @@ importers:
 
   apps/divine-ahi:
     dependencies:
+      '@ahiakea/mdxlite':
+        specifier: workspace:*
+        version: link:../../packages/mdxlite
       '@mdx-js/loader':
         specifier: ^3.0.1
         version: 3.0.1(webpack@5.91.0)
@@ -204,6 +207,12 @@ importers:
       eslint-config-turbo:
         specifier: ^1.12.4
         version: 1.13.2(eslint@8.57.0)
+
+  packages/mdxlite:
+    devDependencies:
+      '@ahiakea/typescript-config':
+        specifier: workspace:^
+        version: link:../typescript-config
 
   packages/tailwindcss-config:
     devDependencies:
