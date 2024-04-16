@@ -1,0 +1,3 @@
+/* esm.sh - esbuild bundle(shiki@1.3.0/dist/langs/vue-interpolations) esnext production */
+var e=Object.freeze({fileTypes:[],injectTo:["source.vue","text.html.markdown","text.html.derivative","text.pug"],injectionSelector:"L:text.pug -comment -string.comment, L:text.html.derivative -comment.block, L:text.html.markdown -comment.block",name:"vue-interpolations",patterns:[{include:"source.vue#vue-interpolations"}],scopeName:"vue.interpolations"}),t=[e];export{t as default};
+//# sourceMappingURL=vue-interpolations.js.map

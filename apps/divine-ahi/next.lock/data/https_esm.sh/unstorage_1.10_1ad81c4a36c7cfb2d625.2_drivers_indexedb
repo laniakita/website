@@ -1,0 +1,5 @@
+/* esm.sh - unstorage@1.10.2/drivers/indexedb */
+import "/v135/unstorage@1.10.2/esnext/drivers/utils.js";
+import "/v135/idb-keyval@6.2.1/esnext/idb-keyval.mjs";
+export * from "/v135/unstorage@1.10.2/esnext/drivers/indexedb.js";
+export { default } from "/v135/unstorage@1.10.2/esnext/drivers/indexedb.js";

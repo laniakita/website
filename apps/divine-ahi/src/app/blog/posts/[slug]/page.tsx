@@ -5,6 +5,7 @@ import { querySinglePost } from '@/lib/utils/mdxlite';
 import { resMdx } from '@/lib/utils/mdx-bundler-utils';
 import { PostHeader } from '@/components/blog/post-header';
 import type { PostTeaserObjectProps } from '@/app/blog/page';
+import CodeBlock from '@/components/code-block';
 
 /*
 import { getRecentKeys, getSinglePost, getPostInfoFromKey } from '@/lib/bucketUtils';
@@ -68,6 +69,7 @@ export default async function Page({ params }: { params: { year: string; slug: s
           </div>
         </div>
       </div>
+      <CodeBlock />
       {resBundle ? <Post code={resBundle.code} teaserObj={headerData as PostTeaserObjectProps} /> : ''}
     </div>
   );
