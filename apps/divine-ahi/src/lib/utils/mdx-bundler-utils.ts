@@ -3,7 +3,7 @@ import { bundleMDX } from 'mdx-bundler';
 import remarkGfm from 'remark-gfm';
 import rehypeMdxImportMedia from 'rehype-mdx-import-media';
 import rehypeShiki from '@shikijs/rehype';
-import { transformerTwoslash } from '@shikijs/twoslash';
+import { rendererRich, transformerTwoslash } from '@shikijs/twoslash';
 import type { Options } from '@mdx-js/loader';
 
 export const resMdx = async (mdxStr: string, folderName: string, slug: string) => {
@@ -22,9 +22,11 @@ export const resMdx = async (mdxStr: string, folderName: string, slug: string) =
               light: 'catppuccin-latte',
               dark: 'catppuccin-mocha',
             },
+
             transformers: [
               transformerTwoslash({
                 explicitTrigger: true,
+                renderer: rendererRich(),
               }),
             ],
           },
