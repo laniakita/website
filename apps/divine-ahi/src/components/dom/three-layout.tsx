@@ -18,7 +18,7 @@ function ThreeLayout({ children, ...props }: ThreeLayoutProps & CanvasProps) {
       ref={ref}
       style={{
         position: 'relative',
-        width: '100vw',
+        width: '100%',
         height: '100%',
         overflow: 'auto',
         touchAction: 'auto',

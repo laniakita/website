@@ -1,0 +1,11 @@
+{
+  "name": "@ahiakea/mdxlite",
+  "version": "0.0.0",
+  "private": true,
+  "bin": {
+    "testing": "bin/main.mjs"
+  },
+  "devDependencies": {
+    "@ahiakea/typescript-config": "workspace:^"
+  }
+}
