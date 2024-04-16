@@ -3,38 +3,9 @@ import Link from 'next/link';
 import { getMDXComponent } from 'mdx-bundler/client';
 import { queryPostMetas, querySinglePost } from '@/lib/utils/mdxlite';
 import { resMdx } from '@/lib/utils/mdx-bundler-utils';
-import { PostHeader } from '@/components/blog/post-header';
 import type { PostTeaserObjectProps } from '@/app/blog/page';
+import { PostHeader } from '@/components/blog/post-header';
 
-/*
-import { getRecentKeys, getSinglePost, getPostInfoFromKey } from '@/lib/bucketUtils';
-import { PostHeader } from '@/components/blog/postHeader';
-import Markdown from 'markdown-to-jsx';
-import matter from 'gray-matter';
-
-import YTEmbed from '@/components/blog/ytEmbed';
-import { _Object } from '@aws-sdk/client-s3';
-
-export const runtime = 'edge';
-
-export const dynamicParams = false;
-export const revalidate = 86400;
-
-
-export async function generateStaticParams() {
-  const keySet = await getRecentKeys({});
-  const infoSet = keySet.map((keyObj) => {
-    const dataObj = getPostInfoFromKey(keyObj as _Object);
-    return dataObj;
-  });
-
-  return infoSet.map((postObj) => ({
-    year: postObj.year,
-    category: postObj.category,
-    slug: postObj.slug,
-  }));
-}
-*/
 
 export async function generateStaticParams() {
   const postMetas = await queryPostMetas();
@@ -94,22 +65,4 @@ function Post({ code, teaserObj }: { code: string; teaserObj: PostTeaserObjectPr
   );
 }
 
-/*components={{code: TestLight}}
- *
- *      <MDXtoJSX markdownString={postStr!}>
-        <PostHeader dataObject={matter(postStr!).data} />
-      </MDXtoJSX>
- *
-function MDXtoJSX({ markdownString, children }: { markdownString: string; children: any }) {
-  return (
-    <article>
-      {children}
-      <div className='flex min-h-full items-center justify-center px-4 py-6 md:p-10'>
-        <div className='prose prose-catppuccin min-h-full max-w-3xl prose-pre:ctp-mocha prose-pre:max-w-[92.5vw] prose-pre:bg-ctp-base'>
-          <Markdown options={{ overrides: { YTEmbed: { component: YTEmbed } } }}>{markdownString}</Markdown>
-        </div>
-      </div>
-    </article>
-  );
-}
-*/
+
