@@ -1,11 +1,9 @@
 import { useMemo } from 'react';
-import Link from 'next/link';
 import { getMDXComponent } from 'mdx-bundler/client';
 import { queryPostMetas, querySinglePost } from '@/lib/utils/mdxlite';
 import { resMdx } from '@/lib/utils/mdx-bundler-utils';
 import type { PostTeaserObjectProps } from '@/app/blog/page';
 import { PostHeader } from '@/components/blog/post-header';
-import CodeHighlighter from '@/components/code-highlighter';
 
 export async function generateStaticParams() {
   const postMetas = await queryPostMetas();
@@ -34,7 +32,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   };
 
   return (
-    <div className=' simple-color-trans -mb-0.5 min-h-full bg-ctp-base dark:bg-ctp-crust lg:pt-10'>
+    <div className='simple-color-trans -mb-0.5 min-h-full max-w-full bg-ctp-base dark:bg-ctp-crust lg:pt-10'>
       {resBundle ? <Post code={resBundle.code} teaserObj={headerData as PostTeaserObjectProps} /> : ''}
     </div>
   );
