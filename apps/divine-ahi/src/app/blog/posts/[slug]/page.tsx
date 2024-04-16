@@ -5,7 +5,7 @@ import { queryPostMetas, querySinglePost } from '@/lib/utils/mdxlite';
 import { resMdx } from '@/lib/utils/mdx-bundler-utils';
 import type { PostTeaserObjectProps } from '@/app/blog/page';
 import { PostHeader } from '@/components/blog/post-header';
-
+import CodeHighlighter from '@/components/code-highlighter';
 
 export async function generateStaticParams() {
   const postMetas = await queryPostMetas();
@@ -13,6 +13,8 @@ export async function generateStaticParams() {
     slug: postObj.headline.replaceAll(' ', '_'),
   }));
 }
+
+
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const slugDeserializer = params.slug.replaceAll('_', ' ');
@@ -57,12 +59,10 @@ function Post({ code, teaserObj }: { code: string; teaserObj: PostTeaserObjectPr
     <article>
       <PostHeader dataObject={teaserObj} />
       <div className='flex min-h-full items-center justify-center px-4 py-6 md:p-10'>
-        <div className='prose prose-catppuccin min-h-full max-w-3xl prose-pre:ctp-mocha prose-pre:max-w-[92.5vw] prose-pre:overflow-visible prose-pre:bg-ctp-base '>
-          <Component />
+        <div className='prose prose-catppuccin min-h-full max-w-3xl prose-pre:ctp-mocha prose-code:text-base prose-pre:max-w-[92.5vw] prose-pre:overflow-visible prose-pre:bg-ctp-base'>
+          <Component  />
         </div>
       </div>
     </article>
   );
 }
-
-
