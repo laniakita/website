@@ -1,0 +1,6 @@
+            transformers: [
+              transformerTwoslash({
+                renderer: rendererRich(),
+                explicitTrigger: true
+              })
+            ],

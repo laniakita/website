@@ -1,0 +1,3 @@
+/* esm.sh - esbuild bundle(shiki@1.3.0/dist/langs/angular-template) esnext production */
+import e from"/v135/shiki@1.3.0/esnext/dist/langs/angular-expression.js";var t=Object.freeze({injectTo:["text.html.derivative","text.html.derivative.ng","source.ts.ng"],injectionSelector:"L:text.html -comment",name:"angular-template",patterns:[{include:"#interpolation"}],repository:{interpolation:{begin:"{{",beginCaptures:{0:{name:"punctuation.definition.block.ts"}},contentName:"expression.ng",end:"}}",endCaptures:{0:{name:"punctuation.definition.block.ts"}},patterns:[{include:"expression.ng"}]}},scopeName:"template.ng",embeddedLangs:["angular-expression"]}),a=[...e,t];export{a as default};
+//# sourceMappingURL=angular-template.js.map

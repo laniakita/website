@@ -22,12 +22,6 @@ export const resMdx = async (mdxStr: string, folderName: string) => {
               light: 'catppuccin-latte',
               dark: 'catppuccin-mocha',
             },
-            transformers: [
-              transformerTwoslash({
-                renderer: rendererRich(),
-                explicitTrigger: true
-              })
-            ],
           },
         ],
         rehypeMdxImportMedia,

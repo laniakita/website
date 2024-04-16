@@ -1,0 +1,3 @@
+/* esm.sh - esbuild bundle(unstorage@1.10.2/drivers/indexedb) esnext production */
+import{defineDriver as s}from"/v135/unstorage@1.10.2/esnext/drivers/utils.js";import{get as m,set as o,clear as u,del as c,keys as l,createStore as d}from"/v135/idb-keyval@6.2.1/esnext/idb-keyval.mjs";var f="idb-keyval",I=s((t={})=>{let i=t.base&&t.base.length>0?`${t.base}:`:"",a=e=>i+e,r;return t.dbName&&t.storeName&&(r=d(t.dbName,t.storeName)),{name:f,options:t,async hasItem(e){return!(typeof await m(a(e),r)>"u")},async getItem(e){return await m(a(e),r)??null},setItem(e,n){return o(a(e),n,r)},removeItem(e){return c(a(e),r)},getKeys(){return l(r)},clear(){return u(r)}}});export{I as default};
+//# sourceMappingURL=indexedb.js.map
