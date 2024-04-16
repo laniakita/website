@@ -14,11 +14,11 @@ function ThreeLayout({ children, ...props }: ThreeLayoutProps & CanvasProps) {
   const ref = useRef<HTMLDivElement>(null!);
 
   return (
-    <main
+    <div
       ref={ref}
       style={{
         position: 'relative',
-        width: ' 100%',
+        width: '100vw',
         height: '100%',
         overflow: 'auto',
         touchAction: 'auto',
@@ -38,7 +38,7 @@ function ThreeLayout({ children, ...props }: ThreeLayoutProps & CanvasProps) {
         eventPrefix='client'
         {...props}
       />
-    </main>
+    </div>
   );
 }
 

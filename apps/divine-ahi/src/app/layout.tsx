@@ -73,7 +73,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
         <DarkStoreProvider>
           <ThreeLayout camera={{ fov: 45 }}>
             <NavBar />
-            {children}
+            <main>{children}</main>
             <Footer />
           </ThreeLayout>
         </DarkStoreProvider>
