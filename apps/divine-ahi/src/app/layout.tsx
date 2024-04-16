@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import localFont from 'next/font/local';
 import { type ReactNode } from 'react';
 import '@/css/app.css';
+import '@shikijs/twoslash/style-rich.css'
 import { DarkStoreProvider } from '@/providers/theme-store-provider';
 import ThreeLayout from '@/components/dom/three-layout';
 import NavBar from '@/components/navbar/navbar';

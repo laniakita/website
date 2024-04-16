@@ -3,10 +3,10 @@ import { bundleMDX } from 'mdx-bundler';
 import remarkGfm from 'remark-gfm';
 import rehypeMdxImportMedia from 'rehype-mdx-import-media';
 import rehypeShiki from '@shikijs/rehype';
-import { rendererRich, transformerTwoslash } from '@shikijs/twoslash';
+import { transformerTwoslash } from '@shikijs/twoslash';
 import type { Options } from '@mdx-js/loader';
 
-export const resMdx = async (mdxStr: string, folderName: string) => {
+export const resMdx = async (mdxStr: string, folderName: string, slug: string) => {
   const folder = path.resolve(process.cwd(), `content/${folderName}`);
   const processed = await bundleMDX({
     source: mdxStr,
@@ -22,6 +22,7 @@ export const resMdx = async (mdxStr: string, folderName: string) => {
               light: 'catppuccin-latte',
               dark: 'catppuccin-mocha',
             },
+            transformers: [transformerTwoslash()]
           },
         ],
         rehypeMdxImportMedia,
@@ -29,11 +30,14 @@ export const resMdx = async (mdxStr: string, folderName: string) => {
       return options;
     },
     esbuildOptions: (options) => {
+      options.outdir = `${process.cwd()}/public/assets/images/${folderName}/${slug}`;
       options.loader = {
         ...options.loader,
-        '.png': 'dataurl',
-        '.jpg': 'dataurl',
+        '.png': 'file',
+        '.jpg': 'file',
       };
+      options.publicPath = `/assets/images/${folderName}/${slug}`;
+      options.write = true;
       return options;
     },
   });
