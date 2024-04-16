@@ -1,11 +1,10 @@
 import { useMemo } from 'react';
 import Link from 'next/link';
 import { getMDXComponent } from 'mdx-bundler/client';
-import { querySinglePost } from '@/lib/utils/mdxlite';
+import { queryPostMetas, querySinglePost } from '@/lib/utils/mdxlite';
 import { resMdx } from '@/lib/utils/mdx-bundler-utils';
 import { PostHeader } from '@/components/blog/post-header';
 import type { PostTeaserObjectProps } from '@/app/blog/page';
-import CodeBlock from '@/components/code-block';
 
 /*
 import { getRecentKeys, getSinglePost, getPostInfoFromKey } from '@/lib/bucketUtils';
@@ -37,11 +36,18 @@ export async function generateStaticParams() {
 }
 */
 
-export default async function Page({ params }: { params: { year: string; slug: string } }) {
+export async function generateStaticParams() {
+  const postMetas = await queryPostMetas();
+  return postMetas.map((postObj) => ({
+    slug: postObj.headline.replaceAll(' ', '_'),
+  }));
+}
+
+export default async function Page({ params }: { params: { slug: string } }) {
   const slugDeserializer = params.slug.replaceAll('_', ' ');
   const postQ = await querySinglePost(slugDeserializer);
   const postSource = postQ?.rawContent?.trim();
-  const resBundle = postSource && (await resMdx(postSource, 'blog-posts'));
+  const resBundle = postSource && (await resMdx(postSource, 'blog-posts', params.slug));
   const headerData = postSource && {
     id: postQ?.id,
     authorName: postQ?.authorName,
@@ -69,7 +75,6 @@ export default async function Page({ params }: { params: { year: string; slug: s
           </div>
         </div>
       </div>
-      <CodeBlock />
       {resBundle ? <Post code={resBundle.code} teaserObj={headerData as PostTeaserObjectProps} /> : ''}
     </div>
   );
@@ -81,8 +86,8 @@ function Post({ code, teaserObj }: { code: string; teaserObj: PostTeaserObjectPr
     <article>
       <PostHeader dataObject={teaserObj} />
       <div className='flex min-h-full items-center justify-center px-4 py-6 md:p-10'>
-        <div className='prose prose-catppuccin min-h-full max-w-3xl prose-pre:ctp-mocha prose-pre:max-w-[92.5vw] prose-pre:bg-ctp-base'>
-          <Component  />
+        <div className='prose prose-catppuccin min-h-full max-w-3xl prose-pre:ctp-mocha prose-pre:max-w-[92.5vw] prose-pre:overflow-visible prose-pre:bg-ctp-base '>
+          <Component />
         </div>
       </div>
     </article>

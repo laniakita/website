@@ -43,46 +43,5 @@ Donec dolor est, rutrum vel dolor a, consectetur egestas purus. Mauris egestas v
 Integer auctor, neque vel varius hendrerit, urna sem gravida dolor, quis scelerisque purus nulla sit amet libero. Ut a felis et erat lobortis scelerisque non ut ligula. Ut a congue leo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nam felis lectus, rutrum in augue eget, vehicula porttitor odio. Aenean bibendum neque eu dui lacinia pretium. Etiam tristique sit amet tortor sed imperdiet. Etiam tincidunt risus non nisi placerat, ut cursus ante luctus. Donec scelerisque tellus at lectus cursus laoreet eget ut velit. Integer nec eleifend risus, ut commodo mi. Etiam odio dui, feugiat ac ullamcorper vel, scelerisque id magna.
 
 ```js
-import { PHASE_DEVELOPMENT_SERVER, PHASE_PRODUCTION_BUILD } from 'next/constants.js';
-import withBundleAnalyzer from '@next/bundle-analyzer';
-//import withPlaiceHolder from '@plaiceholder/next';
-import remarkGfm from 'remark-gfm';
-import createMdx from '@next/mdx';
-const bundleAnalyzer = withBundleAnalyzer({
-  enabled: process.env.ANALYZE === 'true',
-});
-
-const withMDX = createMdx({
-  options: {
-    remarkPlugins: [remarkGfm],
-    rehypePlugins: [],
-  },
-});
-
-const nextConfig = {
-  pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
-  reactStrictMode: true, // Recommended for the `pages` directory, default in `app`.
-  images: {},
-  swcMinify: true,
-};
-
-const nextConfigFunction = async (phase, { defaultConfig }) => {
-  const plugins = [withMDX, bundleAnalyzer];
-
-  if (phase === PHASE_DEVELOPMENT_SERVER || phase === PHASE_PRODUCTION_BUILD) {
-    const withSerwist = (await import('@serwist/next')).default({
-      swSrc: 'src/app/sw.ts',
-      swDest: 'public/sw.js',
-      disable: process.env.NODE_ENV === 'development',
-    });
-    plugins.push(withSerwist);
-  }
-
-  return plugins.reduce((acc, next) => next(acc), {
-    ...defaultConfig,
-    ...nextConfig,
-  });
-};
-
-export default nextConfigFunction;
+console.log()
 ```
