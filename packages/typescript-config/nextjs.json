@@ -13,6 +13,6 @@
     "moduleResolution": "Bundler",
     "noEmit": true,
     "plugins": [{ "name": "next" }],
-    "target": "ES6"
+    "target": "ES2017"
   }
 }

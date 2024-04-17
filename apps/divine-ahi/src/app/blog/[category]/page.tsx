@@ -4,7 +4,7 @@ import { getMDXComponent } from 'mdx-bundler/client';
 import { PostNumStoreProvider } from '@/providers/postnum-store-provider';
 import LoadingSpinner from '@/components/loading-spinner';
 import PreviewRollerV3 from '@/components/blog/post-roller-v3';
-import { queryCategoryDescr, queryPostsByCategory } from '@/lib/utils/mdxlite';
+import { queryCategoryDescr, queryPostsByCategory } from '@/lib/utils/mdxlite-utils';
 import { resMdx } from '@/lib/utils/mdx-bundler-utils';
 import type { PostTeaserObjectProps } from '../page';
 
