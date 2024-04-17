@@ -13,6 +13,7 @@
     "prettier": "^3.2.5",
     "turbo": "^1.13.2"
   },
+  "packageManager": "bun@1.1.2",
   "engines": {
     "node": ">=18"
   }
