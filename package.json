@@ -1,7 +1,7 @@
 {
   "name": "ahiakea",
   "private": true,
-  "workspaces": ["packages/**", "apps/**"],
+  "workspaces": ["packages/*", "apps/*"],
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
