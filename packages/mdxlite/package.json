@@ -5,11 +5,10 @@
   "description": "",
   "main": "index.js",
   "bin": {
-    "hello": "bin/hello.ts",
     "push": "bin/push.ts"
   },
   "scripts": {
-    "hello": "hello"
+    "push-to-db": "push"
   },
   "keywords": [],
   "author": "Lani Akita",
