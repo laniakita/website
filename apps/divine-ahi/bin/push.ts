@@ -1,15 +1,18 @@
 #! /usr/bin/env bun
-import { parseArgs } from "util";
-import path from "node:path";
-import { readdir } from "node:fs/promises";
-import matter from "gray-matter";
-import { handlePost, handleAuthor, handleCategory, HandlePostProps, HandleAuthorProps, HandleCategoryProps } from "../utils/mdxlite";
+/* eslint-disable no-undef -- bun is bun */
+/* eslint-disable no-console -- bun is bun */
+import { parseArgs } from 'node:util';
+import path from 'node:path';
+import { readdir } from 'node:fs/promises';
+import matter from 'gray-matter';
+import type { HandlePostProps, HandleAuthorProps, HandleCategoryProps } from '@/lib/utils/mdxlite-bun';
+import { handlePost, handleAuthor, handleCategory } from '@/lib/utils/mdxlite-bun';
 
 const { values, positionals } = parseArgs({
   args: Bun.argv,
   options: {
     content: {
-      type: "string",
+      type: 'string',
     },
     //schemas: {
     //  type: "string",
@@ -37,16 +40,15 @@ async function getMDXPathsFromContentFolder(contentFolder: string) {
     recursive: true,
   });
 
-  const newArr = await Promise.all(
-    testDir.map(async (item) => {
-      const itemSplit = item.split("/");
-      const lastItem = itemSplit.pop();
-      const fileExt = lastItem?.split(".")[1];
-      if (fileExt === "mdx" || fileExt === "md") {
-        return `${contentFolder}/${item}`;
-      }
-    }),
-  );
+  const newArr = testDir.map((item): string | undefined => {
+    const itemSplit = item.split('/');
+    const lastItem = itemSplit.pop();
+    const fileExt = lastItem?.split('.')[1];
+    if (fileExt === 'mdx' || fileExt === 'md') {
+      return `${contentFolder}/${item}`;
+    }
+    return undefined
+  });
 
   // need to purge undefined items
   const finalArr = newArr.filter((el) => el);
@@ -82,49 +84,43 @@ async function getPosts(contentFolder: string) {
 
 //console.log( await getPosts(searchFolder) )
 
-export const insertFromRawIndexV2 = async (searchFolder: string) => {
-  const rawPostArr = await getPosts(searchFolder);
-  let initFlag = true;
-  if (rawPostArr && initFlag == true) {
-    console.log("init! insert authors and categories first");
+export const insertFromRawIndexV2 = async (folderOfContent: string) => {
+  const rawPostArr = await getPosts(folderOfContent);
+  let stage2 = false;
+  if (rawPostArr.length > 0) {
+    console.log('init! insert authors and categories first');
     await Promise.all(
       rawPostArr.map(async (postObj) => {
-        if (postObj.meta.type === "authors") {
+        if (postObj.meta.type === 'authors') {
           await handleAuthor(postObj as unknown as HandleAuthorProps);
         }
-        if (postObj.meta.type === "category") {
+        if (postObj.meta.type === 'category') {
           await handleCategory(postObj as unknown as HandleCategoryProps);
         }
       }),
     );
-    initFlag = false;
-    console.log('success!')
+    stage2 = true;
+    console.log('success!');
   }
-  if (rawPostArr && !initFlag) {
-    console.log("phase 1 complete, inserting posts");
+  if (rawPostArr.length > 0 && stage2) {
+    console.log('phase 1 complete, inserting posts');
     await Promise.all(
       rawPostArr.map(async (postObj) => {
-        if (postObj.meta.type === "post") {
+        if (postObj.meta.type === 'post') {
           await handlePost(postObj as unknown as HandlePostProps);
         }
       }),
     );
-    console.log("all done!")
+    console.log('all done!');
   }
 };
 
-await insertFromRawIndexV2(searchFolder)
-
-
-
-
-
-
-
+await insertFromRawIndexV2(searchFolder);
 
 /* ======= V3 Work in Progess: DO NOT USE ======== */
 
 /* phase: needs work : get drizzle config + schemas */
+/*
 async function getSchemas(schemasPath: string) {
   // todo case of single schema.ts, instead of assuming folder of schemas
   const testDir = await readdir(schemasPath, {
@@ -133,10 +129,10 @@ async function getSchemas(schemasPath: string) {
 
   const newArr = await Promise.all(
     testDir.map(async (item) => {
-      const itemSplit = item.split("/");
+      const itemSplit = item.split('/');
       const lastItem = itemSplit.pop();
-      const fileExt = lastItem?.split(".")[1];
-      if (fileExt === "ts") {
+      const fileExt = lastItem?.split('.')[1];
+      if (fileExt === 'ts') {
         return `${schemasPath}/${item}`;
       }
     }),
@@ -146,6 +142,7 @@ async function getSchemas(schemasPath: string) {
   const finalArr = newArr.filter((el) => el);
   return finalArr;
 }
+*/
 
 //console.log(await getSchemas(schemas))
 
@@ -164,5 +161,3 @@ async function importFromSchemas(schemasPath: string) {
 }
 */
 //await importFromSchemas(schemas);
-
-
