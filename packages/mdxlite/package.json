@@ -17,7 +17,8 @@
   "devDependencies": {
     "@ahiakea/typescript-config": "workspace:^",
     "@types/bun": "^1.1.0",
-    "drizzle-kit": "^0.20.14"
+    "drizzle-kit": "^0.20.14",
+    "gray-matter": "^4.0.3"
   },
   "dependencies": {
     "drizzle-orm": "^0.30.8"
