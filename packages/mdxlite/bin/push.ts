@@ -37,7 +37,7 @@ async function getMDXPathsFromContentFolder(contentFolder: string) {
       const lastItem = itemSplit.pop();
       const fileExt = lastItem?.split(".")[1];
       if (fileExt === "mdx" || fileExt === "md") {
-        return item;
+        return `${contentFolder}/${item}`;
       }
     }),
   );
@@ -51,11 +51,11 @@ async function getMDXPathsFromContentFolder(contentFolder: string) {
 
 /* phase 2: with file paths, we can send them into a database */
 
-async function batchMdxProcessor(dataArr: string[]) {
+async function batchMdxProcessor(absPathArr: string[]) {
   const fileArr = await Promise.all(
-    dataArr.map(async (mdxFilePath: string) => {
+    absPathArr.map(async (mdxFilePath: string) => {
       const blob = Bun.file(mdxFilePath);
-      const str = blob.toString();
+      const str = await blob.text();
       const fileObj = {
         meta: matter(str).data,
         rawStr: str,
@@ -74,4 +74,4 @@ async function getPosts(contentFolder: string) {
   return mdxArr
 }
 
-console.log(await getPosts(searchFolder))
+//console.log( await getPosts(searchFolder) )
