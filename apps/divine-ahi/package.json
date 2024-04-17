@@ -40,7 +40,6 @@
     "zustand": "^4.5.2"
   },
   "devDependencies": {
-    "@ahiakea/mdxlite": "workspace:*",
     "@ahiakea/eslint-config": "workspace:*",
     "@ahiakea/tailwindcss-config": "workspace:*",
     "@ahiakea/typescript-config": "workspace:*",
@@ -50,6 +49,7 @@
     "@serwist/next": "9.0.0-preview.21",
     "@serwist/sw": "9.0.0-preview.21",
     "@types/better-sqlite3": "^7.6.9",
+    "@types/bun": "^1.1.0",
     "@types/eslint": "^8.56.9",
     "@types/jstoxml": "^2.0.4",
     "@types/mdx": "^2.0.13",

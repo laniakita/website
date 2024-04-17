@@ -75,6 +75,9 @@ export const blogPostFinder = async (searchFolder: string) => {
   }
 };
 
+
+
+
 export const insertFromRawIndex = async (searchFolder: string) => {
   const rawPostArr = await blogPostFinder(searchFolder);
   if (rawPostArr) {
@@ -94,13 +97,13 @@ export const insertFromRawIndex = async (searchFolder: string) => {
   }
 };
 
-interface HandleAuthorProps {
+export interface HandleAuthorProps {
   meta: { name: string; mastodon?: string };
   content: string;
 }
 
-const handleAuthor = async (postObj: HandleAuthorProps) => {
-  //console.log('found author file');
+export const handleAuthor = async (postObj: HandleAuthorProps) => {
+  console.log('found author file');
   // check if postObj.meta.name == authors.name
   const checkRes = await mdxlitedb
     .select({
@@ -110,11 +113,11 @@ const handleAuthor = async (postObj: HandleAuthorProps) => {
     .from(authors)
     .where(eq(authors.name, postObj.meta.name));
   if (checkRes.length > 0) {
-    //console.log('author exists trying update');
+    console.log('author exists trying update');
     // @ts-expect-error -- types exist because how else could checkRes have a length > 0?
     const { testId, testName } = checkRes[0];
-    //console.log(`exists with ${testId as string}`);
-    //console.log(`exists with ${testName as string}`);
+    console.log(`exists with ${testId as string}`);
+    console.log(`exists with ${testName as string}`);
     await mdxlitedb
       .update(authors)
       .set({
@@ -126,7 +129,7 @@ const handleAuthor = async (postObj: HandleAuthorProps) => {
   }
   // insert into db
   if (checkRes.length === 0) {
-    //console.log("author doesn't exist, inserting into authors table");
+    console.log("author doesn't exist, inserting into authors table");
     await mdxlitedb
       .insert(authors)
       .values({
@@ -138,15 +141,15 @@ const handleAuthor = async (postObj: HandleAuthorProps) => {
   }
 };
 
-interface HandleCategoryProps {
+export interface HandleCategoryProps {
   meta: { title: string };
   content: string;
   rawStr: string;
 }
 
-const handleCategory = async (postObj: HandleCategoryProps) => {
+export const handleCategory = async (postObj: HandleCategoryProps) => {
   console.log('found category file');
-  console.log(postObj)
+  //console.log(postObj)
   // check if postObj.meta.name == authors.name
   const checkRes = await mdxlitedb
     .select({
@@ -184,7 +187,7 @@ const handleCategory = async (postObj: HandleCategoryProps) => {
   }
 };
 
-interface HandlePostProps {
+export interface HandlePostProps {
   meta: {
     author: string;
     date: Date;
@@ -200,9 +203,11 @@ interface HandlePostProps {
   rawStr: string;
 }
 
-const handlePost = async (postObj: HandlePostProps) => {
+export const handlePost = async (postObj: HandlePostProps) => {
   //const q1 = await mdxlitedb.query.authors.findMany();
   //console.log(q1)
+  
+  console.log('found post')
   const authorQ = await mdxlitedb
     .select({ name: authors.name })
     .from(authors)
@@ -229,7 +234,9 @@ const handlePost = async (postObj: HandlePostProps) => {
     );
 
   if (typeof authorMatch?.name === 'string' && typeof categoryMatch?.title === 'string') {
+    console.log('author & category exists, inserting post')
     if (checkPostExists.length > 0) {
+      console.log('post exists, updating...')
       // @ts-expect-error -- types exist because how else could checkPostExists have a length > 0?
       const { testId, testHeadline, testDate } = checkPostExists[0];
       await mdxlitedb
@@ -255,6 +262,7 @@ const handlePost = async (postObj: HandlePostProps) => {
         );
     }
     if (checkPostExists.length === 0) {
+      console.log("post doesn't exist, inserting")
       await mdxlitedb.insert(posts).values({
         authorName: postObj.meta.author,
         date: postObj.meta.date.toUTCString(),
