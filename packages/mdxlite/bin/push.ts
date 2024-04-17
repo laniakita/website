@@ -2,7 +2,6 @@
 import { parseArgs } from "util";
 import path from "node:path";
 import { readdir } from "node:fs/promises";
-import { blogPostFinder } from "../utils/read-folder";
 import matter from "gray-matter";
 
 const { values, positionals } = parseArgs({
@@ -48,17 +47,17 @@ async function getMDXPathsFromContentFolder(contentFolder: string) {
   return finalArr;
 }
 
-console.log(await getMDXPathsFromContentFolder(searchFolder));
+//console.log(await getMDXPathsFromContentFolder(searchFolder));
 
 /* phase 2: with file paths, we can send them into a database */
-async function mdxProcessor(dataArr: string[]) {
+
+async function batchMdxProcessor(dataArr: string[]) {
   const fileArr = await Promise.all(
     dataArr.map(async (mdxFilePath: string) => {
       const blob = Bun.file(mdxFilePath);
       const str = blob.toString();
       const fileObj = {
         meta: matter(str).data,
-        content: matter(str).content,
         rawStr: str,
       };
       return fileObj;
@@ -66,3 +65,13 @@ async function mdxProcessor(dataArr: string[]) {
   );
   return fileArr;
 }
+
+/* phase 3: combine! */
+
+async function getPosts(contentFolder: string) {
+  const pathsArr = await getMDXPathsFromContentFolder(contentFolder)
+  const mdxArr = await batchMdxProcessor(pathsArr as string[])
+  return mdxArr
+}
+
+console.log(await getPosts(searchFolder))
