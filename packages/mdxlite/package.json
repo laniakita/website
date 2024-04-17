@@ -4,13 +4,19 @@
   "private": true,
   "description": "",
   "main": "index.js",
+  "bin": {
+    "hello": "bin/hello.ts"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "hello": "hello"
   },
   "keywords": [],
   "author": "Lani Akita",
   "license": "GPLv3",
   "devDependencies": {
     "@ahiakea/typescript-config": "workspace:^"
+  },
+  "dependencies": {
+    "@types/bun": "^1.1.0"
   }
 }
