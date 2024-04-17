@@ -11,6 +11,7 @@ const nextConfig = {
       "@shikijs/twoslash",
     ],
   },
+  transpilePackages: ["@ahiakea/mdxlite"],
   swcMinify: true,
 };
 
