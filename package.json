@@ -1,6 +1,7 @@
 {
   "name": "ahiakea",
   "private": true,
+  "workspaces": ["packages/**", "apps/**"],
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
@@ -12,7 +13,6 @@
     "prettier": "^3.2.5",
     "turbo": "^1.13.2"
   },
-  "packageManager": "pnpm@8.15.6",
   "engines": {
     "node": ">=18"
   }
