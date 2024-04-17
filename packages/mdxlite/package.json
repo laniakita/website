@@ -14,9 +14,11 @@
   "author": "Lani Akita",
   "license": "GPLv3",
   "devDependencies": {
-    "@ahiakea/typescript-config": "workspace:^"
+    "@ahiakea/typescript-config": "workspace:^",
+    "drizzle-kit": "^0.20.14"
   },
   "dependencies": {
-    "@types/bun": "^1.1.0"
+    "@types/bun": "^1.1.0",
+    "drizzle-orm": "^0.30.8"
   }
 }
