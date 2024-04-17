@@ -15,8 +15,6 @@
     devShells = forAllSystems (pkgs: {
       default = pkgs.mkShell {
         packages = with pkgs; [
-          nodePackages_latest.nodejs
-          corepack_latest
           turbo
           bun
           zsh
