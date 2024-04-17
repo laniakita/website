@@ -1,5 +1,25 @@
 {
   "extends": "@ahiakea/typescript-config/base.json",
-  "include": ["."],
-  "exclude": ["dist", "build", "node_modules"]
+  "compilerOptions": {
+    "allowJs": true,
+    "declaration": false,
+    "declarationMap": false,
+    "incremental": true,
+    "jsx": "preserve",
+    "lib": ["esnext", "DOM", "DOM.Iterable"],
+    "module": "esnext",
+    "moduleResolution": "Bundler",
+    "noEmit": true,
+    "target": "ES6"
+  },
+  "include": [
+    ".",
+    "**/*.ts",
+    "**/*.js"
+  ],
+  "exclude": [
+    "dist",
+    "build",
+    "node_modules"
+  ]
 }
