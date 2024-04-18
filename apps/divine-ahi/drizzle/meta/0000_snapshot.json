@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "sqlite",
-  "id": "d49a877a-5605-4c75-a565-42d848b68a43",
+  "id": "7f1d2986-7db9-400d-85aa-f46ff324da7a",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "authors": {
@@ -9,7 +9,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "integer",
+          "type": "text",
           "primaryKey": true,
           "notNull": true,
           "autoincrement": false
@@ -21,15 +21,15 @@
           "notNull": false,
           "autoincrement": false
         },
-        "bio": {
-          "name": "bio",
+        "mastodon": {
+          "name": "mastodon",
           "type": "text",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         },
-        "mastodon": {
-          "name": "mastodon",
+        "raw_content": {
+          "name": "raw_content",
           "type": "text",
           "primaryKey": false,
           "notNull": false,
@@ -54,7 +54,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "integer",
+          "type": "text",
           "primaryKey": true,
           "notNull": true,
           "autoincrement": false
@@ -64,13 +64,6 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false
-        },
-        "description": {
-          "name": "description",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false,
           "autoincrement": false
         },
         "raw_content": {

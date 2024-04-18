@@ -5,8 +5,9 @@ import { authors } from '@/lib/mdxlite/schema/authors';
 import { categories } from '@/lib/mdxlite/schema/categories';
 import { posts } from '@/lib/mdxlite/schema/posts';
 
+
 export interface HandleAuthorProps {
-  meta: { id: string, name: string; mastodon?: string };
+  meta: { name: string; mastodon?: string };
   rawStr: string;
 }
 
@@ -41,7 +42,7 @@ export const handleAuthor = async (postObj: HandleAuthorProps) => {
     await mdxlitedb
       .insert(authors)
       .values({
-        id: postObj.meta.id,
+        id: crypto.randomUUID(),
         name: postObj.meta.name,
         mastodon: postObj.meta.mastodon,
         rawContent: postObj.rawStr,
@@ -51,7 +52,7 @@ export const handleAuthor = async (postObj: HandleAuthorProps) => {
 };
 
 export interface HandleCategoryProps {
-  meta: { id: string, title: string };
+  meta: { title: string };
   content: string;
   rawStr: string;
 }
@@ -86,7 +87,7 @@ export const handleCategory = async (postObj: HandleCategoryProps) => {
     await mdxlitedb
       .insert(categories)
       .values({
-        id: postObj.meta.id,
+        id: crypto.randomUUID(),
         title: postObj.meta.title,
         rawContent: postObj.rawStr
       })
@@ -96,7 +97,6 @@ export const handleCategory = async (postObj: HandleCategoryProps) => {
 
 export interface HandlePostProps {
   meta: {
-    id: string;
     author: string;
     date: Date;
     headline: string;
@@ -168,8 +168,10 @@ export const handlePost = async (postObj: HandlePostProps) => {
     }
     if (checkPostExists.length === 0) {
       console.log("post doesn't exist, inserting")
+      
+
       await mdxlitedb.insert(posts).values({
-        id: postObj.meta.id,
+        id: crypto.randomUUID(),
         authorName: postObj.meta.author,
         date: postObj.meta.date.toUTCString(),
         headline: postObj.meta.headline,
