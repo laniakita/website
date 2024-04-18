@@ -10,7 +10,7 @@ import { PostHeader } from '@/components/blog/post-header';
 export async function generateStaticParams() {
   const postMetas = await queryPostMetas();
   return postMetas.map((postObj) => ({
-    postId: postObj.id,
+    postId: postObj.id.split('-')[0],
     slug: postObj.headline.replaceAll(' ', '_'),
   }));
 }
