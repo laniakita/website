@@ -1,15 +1,15 @@
 import { sqliteTable, integer, text } from 'drizzle-orm/sqlite-core';
 
 export interface Authors {
-  id: number;
+  id: string;
   name: string;
-  bio?: string;
   mastodon?: string;
+  rawContent?: string;
 }
 
 export const authors = sqliteTable('authors', {
-  id: integer('id').primaryKey(),
+  id: text('id').primaryKey(),
   name: text('name').unique(),
-  bio: text('bio'),
   mastodon: text('mastodon'),
+  rawContent: text('raw_content')
 });

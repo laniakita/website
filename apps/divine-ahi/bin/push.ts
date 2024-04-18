@@ -3,12 +3,13 @@
 /* eslint-disable no-console -- bun is bun */
 import { parseArgs } from 'node:util';
 import path from 'node:path';
+import crypto from 'node:crypto';
 import { readdir } from 'node:fs/promises';
 import matter from 'gray-matter';
-import kebabCase from 'lodash/kebabCase'
+import kebabCase from 'lodash/kebabCase';
 import type { HandlePostProps, HandleAuthorProps, HandleCategoryProps } from '@/lib/utils/mdxlite-bun';
 import { handlePost, handleAuthor, handleCategory } from '@/lib/utils/mdxlite-bun';
-
+import { uuid } from 'drizzle-orm/pg-core';
 
 const { values, positionals } = parseArgs({
   args: Bun.argv,
@@ -73,7 +74,8 @@ async function batchMdxProcessor(absPathArr: string[]) {
        * can find them.
        **/
       if (frontmatter.heroFile) {
-        const folderNameRaw = frontmatter.headline as string || frontmatter.title as string || frontmatter.name as string
+        const folderNameRaw =
+          (frontmatter.headline as string) || (frontmatter.title as string) || (frontmatter.name as string);
         const postSlug = kebabCase(folderNameRaw);
         const splitStr = mdxFilePath.split('/');
         const parentPath = splitStr.slice(0, splitStr.length - 1).join('/');
@@ -84,12 +86,29 @@ async function batchMdxProcessor(absPathArr: string[]) {
 
         frontmatter.heroFile = publicCopyPath;
       }
-      const fileObj = {
-        meta: frontmatter,
-        rawStr: str,
-      };
-      console.log(fileObj)
-      return fileObj;
+      if (frontmatter.type !== 'post') {
+        const fileObj = {
+          meta: frontmatter,
+          rawStr: str,
+        };
+        //console.log(fileObj);
+        return fileObj;
+      }
+      if (frontmatter.type === 'post') {
+        const postId = crypto.randomUUID()
+        //27cae34e-92b8-41f3-83f8-f419b6d1adeb <- something like that
+        let newMatter = frontmatter
+        newMatter = {
+          ...newMatter,
+          id: postId
+        }
+        const fileObj = {
+          meta: newMatter,
+          rawStr: str
+        }
+        console.log(fileObj)
+        return fileObj
+      }
     }),
   );
 
@@ -113,10 +132,10 @@ export const insertFromRawIndexV2 = async (folderOfContent: string) => {
     console.log('init! insert authors and categories first');
     await Promise.all(
       rawPostArr.map(async (postObj) => {
-        if (postObj.meta.type === 'authors') {
+        if (postObj!.meta.type === 'authors') {
           await handleAuthor(postObj as unknown as HandleAuthorProps);
         }
-        if (postObj.meta.type === 'category') {
+        if (postObj!.meta.type === 'category') {
           await handleCategory(postObj as unknown as HandleCategoryProps);
         }
       }),
@@ -128,7 +147,7 @@ export const insertFromRawIndexV2 = async (folderOfContent: string) => {
     console.log('phase 1 complete, inserting posts');
     await Promise.all(
       rawPostArr.map(async (postObj) => {
-        if (postObj.meta.type === 'post') {
+        if (postObj!.meta.type === 'post') {
           await handlePost(postObj as unknown as HandlePostProps);
         }
       }),
