@@ -6,14 +6,14 @@ import { resMdx } from '@/lib/utils/mdx-bundler-utils';
 import type { PostTeaserObjectProps } from '@/app/blog/page';
 import { PostHeader } from '@/components/blog/post-header';
 
-/*
+
 export async function generateStaticParams() {
   const postMetas = await queryPostMetas();
   return postMetas.map((postObj) => ({
-    id: postObj.id,
+    postId: postObj.id,
     slug: postObj.headline.replaceAll(' ', '_'),
   }));
-}*/
+}
 
 export default async function Page({ params }: { params: { postId: string; slug: string } }) {
   const slugDeserializer = params.slug.replaceAll('_', ' ');
