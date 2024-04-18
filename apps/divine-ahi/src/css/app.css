@@ -9,6 +9,7 @@
 @import './components/socialButton.css';
 @import './components/searchButton.css';
 @import './components/preLoadButton.css';
+@import './pages/mdx-prose.css';
 @import 'tailwindcss/utilities';
 @import './utilities/slider.css';
 @import './utilities/fades.css';

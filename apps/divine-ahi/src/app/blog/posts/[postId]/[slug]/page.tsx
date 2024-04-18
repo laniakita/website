@@ -6,13 +6,21 @@ import { resMdx } from '@/lib/utils/mdx-bundler-utils';
 import type { PostTeaserObjectProps } from '@/app/blog/page';
 import { PostHeader } from '@/components/blog/post-header';
 
-
 export async function generateStaticParams() {
   const postMetas = await queryPostMetas();
   return postMetas.map((postObj) => ({
     postId: postObj.id.split('-')[0],
     slug: postObj.headline.replaceAll(' ', '_'),
   }));
+}
+interface ParagraphProps {
+  children?: string;
+}
+function Paragraph(props: unknown) {
+  if (typeof (props as ParagraphProps).children === 'string') {
+    return <p {...(props as ParagraphProps)} />;
+  }
+  return <>{(props as ParagraphProps).children}</>;
 }
 
 export default async function Page({ params }: { params: { postId: string; slug: string } }) {
@@ -56,8 +64,8 @@ function Post({ code, teaserObj }: { code: string; teaserObj: PostTeaserObjectPr
     <article>
       <PostHeader dataObject={teaserObj} />
       <div className='flex min-h-full items-center justify-center px-4 py-6 md:p-10'>
-        <div className='prose prose-catppuccin min-h-full max-w-3xl prose-pre:ctp-mocha prose-code:text-base prose-pre:max-w-[92.5vw] prose-pre:overflow-visible prose-pre:bg-ctp-base'>
-          <Component />
+        <div className='prose-protocol-omega'>
+          <Component components={{ p: Paragraph }} />
         </div>
       </div>
     </article>
