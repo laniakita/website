@@ -6,8 +6,8 @@ import { categories } from '@/lib/mdxlite/schema/categories';
 import { posts } from '@/lib/mdxlite/schema/posts';
 
 export interface HandleAuthorProps {
-  meta: { name: string; mastodon?: string };
-  content: string;
+  meta: { id: string, name: string; mastodon?: string };
+  rawStr: string;
 }
 
 export const handleAuthor = async (postObj: HandleAuthorProps) => {
@@ -31,9 +31,9 @@ export const handleAuthor = async (postObj: HandleAuthorProps) => {
       .set({
         name: postObj.meta.name,
         mastodon: postObj.meta.mastodon,
-        bio: postObj.content,
+        rawContent: postObj.rawStr,
       })
-      .where(and(eq(authors.id, testId as number), eq(authors.name, testName as string)));
+      .where(and(eq(authors.id, testId as string), eq(authors.name, testName as string)));
   }
   // insert into db
   if (checkRes.length === 0) {
@@ -41,16 +41,17 @@ export const handleAuthor = async (postObj: HandleAuthorProps) => {
     await mdxlitedb
       .insert(authors)
       .values({
+        id: postObj.meta.id,
         name: postObj.meta.name,
         mastodon: postObj.meta.mastodon,
-        bio: postObj.content,
+        rawContent: postObj.rawStr,
       })
       .onConflictDoNothing();
   }
 };
 
 export interface HandleCategoryProps {
-  meta: { title: string };
+  meta: { id: string, title: string };
   content: string;
   rawStr: string;
 }
@@ -75,10 +76,9 @@ export const handleCategory = async (postObj: HandleCategoryProps) => {
       .update(categories)
       .set({
         title: postObj.meta.title,
-        description: postObj.content,
         rawContent: postObj.rawStr
       })
-      .where(and(eq(categories.id, testId as number), eq(categories.title, testName as string)));
+      .where(and(eq(categories.id, testId as string), eq(categories.title, testName as string)));
   }
   // insert into db
   if (checkRes.length === 0) {
@@ -86,8 +86,8 @@ export const handleCategory = async (postObj: HandleCategoryProps) => {
     await mdxlitedb
       .insert(categories)
       .values({
+        id: postObj.meta.id,
         title: postObj.meta.title,
-        description: postObj.content,
         rawContent: postObj.rawStr
       })
       .onConflictDoNothing();
@@ -96,6 +96,7 @@ export const handleCategory = async (postObj: HandleCategoryProps) => {
 
 export interface HandlePostProps {
   meta: {
+    id: string;
     author: string;
     date: Date;
     headline: string;
@@ -160,14 +161,15 @@ export const handlePost = async (postObj: HandlePostProps) => {
         })
         .where(
           or(
-            and(eq(posts.id, testId as number), eq(posts.headline, testHeadline as string)),
-            and(eq(posts.id, testId as number), eq(posts.date, testDate as string)),
+            and(eq(posts.id, testId as string), eq(posts.headline, testHeadline as string)),
+            and(eq(posts.id, testId as string), eq(posts.date, testDate as string)),
           ),
         );
     }
     if (checkPostExists.length === 0) {
       console.log("post doesn't exist, inserting")
       await mdxlitedb.insert(posts).values({
+        id: postObj.meta.id,
         authorName: postObj.meta.author,
         date: postObj.meta.date.toUTCString(),
         headline: postObj.meta.headline,

@@ -12,7 +12,7 @@ export const categoryRelations = relations(categories, ({ many }) => ({
 }));
 
 export interface Posts {
-  id: number;
+  id: string;
   authorName: string;
   date: string;
   headline: string;
@@ -27,7 +27,7 @@ export interface Posts {
 }
 
 export const posts = sqliteTable('posts', {
-  id: integer('id').primaryKey(),
+  id: text('id').primaryKey(),
   authorName: text('author_name')
     .references(() => authors.name, { onUpdate: 'cascade', onDelete: 'cascade' })
     .notNull(),

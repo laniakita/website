@@ -13,7 +13,7 @@ CREATE TABLE `categories` (
 );
 --> statement-breakpoint
 CREATE TABLE `posts` (
-	`id` integer PRIMARY KEY NOT NULL,
+	`id` text PRIMARY KEY NOT NULL,
 	`author_name` text NOT NULL,
 	`date` text NOT NULL,
 	`headline` text NOT NULL,
