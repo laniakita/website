@@ -1,14 +1,13 @@
 CREATE TABLE `authors` (
-	`id` integer PRIMARY KEY NOT NULL,
+	`id` text PRIMARY KEY NOT NULL,
 	`name` text,
-	`bio` text,
-	`mastodon` text
+	`mastodon` text,
+	`raw_content` text
 );
 --> statement-breakpoint
 CREATE TABLE `categories` (
-	`id` integer PRIMARY KEY NOT NULL,
+	`id` text PRIMARY KEY NOT NULL,
 	`title` text NOT NULL,
-	`description` text,
 	`raw_content` text
 );
 --> statement-breakpoint

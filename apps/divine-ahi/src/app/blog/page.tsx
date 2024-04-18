@@ -3,7 +3,7 @@ import { PostNumStoreProvider } from '@/providers/postnum-store-provider';
 import PreviewRollerV3 from '@/components/blog/post-roller-v3';
 
 export interface PostTeaserObjectProps {
-  id: number;
+  id: string;
   authorName: string;
   date: string;
   headline: string;
