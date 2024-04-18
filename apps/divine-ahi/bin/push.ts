@@ -47,7 +47,7 @@ async function getMDXPathsFromContentFolder(contentFolder: string) {
     if (fileExt === 'mdx' || fileExt === 'md') {
       return `${contentFolder}/${item}`;
     }
-    return undefined
+    return undefined;
   });
 
   // need to purge undefined items
@@ -64,15 +64,30 @@ async function batchMdxProcessor(absPathArr: string[]) {
     absPathArr.map(async (mdxFilePath: string) => {
       const blob = Bun.file(mdxFilePath);
       const str = await blob.text();
+      const frontmatter = matter(str).data;
+      if (frontmatter.heroFile) {
+        const splitStr = mdxFilePath.split('/');
+        const parentPath = splitStr.slice(0, splitStr.length - 1).join('/');
+        const imgToCopyFilePath = path.resolve(parentPath, frontmatter.heroFile as string);
+        const publicCopyPath = `/public/assets/hero-images/${splitStr.pop()!.split('.')[0]}/${(frontmatter.heroFile as string).split('/').pop()}` 
+        const imgFile = Bun.file(imgToCopyFilePath)
+        await Bun.write(`${process.cwd()}${publicCopyPath}`, imgFile)
+
+        frontmatter.heroFile = publicCopyPath
+      }
       const fileObj = {
-        meta: matter(str).data,
+        meta: frontmatter,
         rawStr: str,
       };
+      console.log(fileObj)
       return fileObj;
     }),
   );
+
   return fileArr;
 }
+
+
 
 /* phase 3: combine! */
 
