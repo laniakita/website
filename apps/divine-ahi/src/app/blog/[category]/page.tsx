@@ -4,9 +4,17 @@ import { getMDXComponent } from 'mdx-bundler/client';
 import { PostNumStoreProvider } from '@/providers/postnum-store-provider';
 import LoadingSpinner from '@/components/loading-spinner';
 import PreviewRollerV3 from '@/components/blog/post-roller-v3';
-import { queryCategoryDescr, queryPostsByCategory } from '@/lib/utils/mdxlite-utils';
+import { queryCategoryDescr, queryPostsByCategory, queryCategoryMetas } from '@/lib/utils/mdxlite-utils';
 import { resMdx } from '@/lib/utils/mdx-bundler-utils';
 import type { PostTeaserObjectProps } from '../page';
+
+
+export async function generateStaticParams() {
+  const catMetas = await queryCategoryMetas();
+  return catMetas.map((postObj) => ({
+    category: postObj.title.replaceAll(' ', '_'),
+  }));
+}
 
 export default async function Page({ params }: { params: { category: string } }) {
   const catDeserializer = params.category.replaceAll('_', ' ')

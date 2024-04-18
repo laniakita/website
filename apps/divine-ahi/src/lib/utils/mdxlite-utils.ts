@@ -50,3 +50,13 @@ export const queryPostMetas = async () => {
 
   return postsArr;
 };
+
+export const queryCategoryMetas = async () => {
+  const categoryArr = await mdxlitedb.query.categories.findMany({
+    columns: {
+      rawContent: false,
+    },
+  });
+
+  return categoryArr;
+};
