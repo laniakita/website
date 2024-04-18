@@ -2,6 +2,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import dayjs, { extend } from 'dayjs';
+import kebabCase from 'lodash/kebabCase'
 import relativeTime from 'dayjs/plugin/relativeTime';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import timezone from 'dayjs/plugin/timezone';
@@ -14,7 +15,7 @@ extend(timezone);
 
 const accentTextColor = 'text-ctp-mauve';
 const imageLoader = ({ src, width, quality }: { src?: string; width?: number; quality?: number }) => {
-  return `/assets/featured-images/${src}?w=${width}&q=${quality ?? 50}`;
+  return `${src}?w=${width}&q=${quality ?? 50}`;
 };
 
 interface DateGetterReturn {
@@ -56,8 +57,11 @@ export function PostPreviewV3({ dataObj }: { dataObj: PostTeaserObjectProps }) {
   
   const catSerializer = dataObj.category?.replaceAll(' ', '_')
   const postSlugSerializer = dataObj.headline.replaceAll(' ', '_')
-
-  const linkTo = `/blog/posts/${postSlugSerializer}`;
+  
+  /* chopping up the ID to only be the first bit is risky, but A E S T H E T I C 
+   * granted in the event we do get a collission, I could just perform a second query for the whole thing
+   * */
+  const linkTo = `/blog/posts/${dataObj.id.split('-')[0]}/${postSlugSerializer}`;
   const linkToCat = `/blog/${catSerializer}`;
 
   const postedDate = dateGetter(dataObj.date);
@@ -128,7 +132,7 @@ export function FeaturedPostPreviewV3({ dataObj }: { dataObj: PostTeaserObjectPr
   const catSerializer = dataObj.category?.replaceAll(' ', '_')
   const postSlugSerializer = dataObj.headline.replaceAll(' ', '_')
 
-  const linkTo = `/blog/posts/${postSlugSerializer}`;
+  const linkTo = `/blog/posts/${dataObj.id.split('-')[0]}/${postSlugSerializer}`;
   const linkToCat = `/blog/${catSerializer}`;
 
   const postedDate = dateGetter(dataObj.date);

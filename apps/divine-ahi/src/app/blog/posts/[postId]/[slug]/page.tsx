@@ -1,4 +1,4 @@
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { useMemo } from 'react';
 import { getMDXComponent } from 'mdx-bundler/client';
 import { queryPostMetas, querySinglePost } from '@/lib/utils/mdxlite-utils';
@@ -6,32 +6,41 @@ import { resMdx } from '@/lib/utils/mdx-bundler-utils';
 import type { PostTeaserObjectProps } from '@/app/blog/page';
 import { PostHeader } from '@/components/blog/post-header';
 
+/*
 export async function generateStaticParams() {
   const postMetas = await queryPostMetas();
   return postMetas.map((postObj) => ({
     id: postObj.id,
     slug: postObj.headline.replaceAll(' ', '_'),
   }));
-}
+}*/
 
-export default async function Page({ params }: { params: { id: string, slug: string } }) {
-  //const slugDeserializer = params.slug.replaceAll('_', ' ');
-  const postQ = await querySinglePost(params.id).catch((e: unknown) => { console.error('CRITICAL ERROR: ', e); notFound() })
+export default async function Page({ params }: { params: { postId: string; slug: string } }) {
+  const slugDeserializer = params.slug.replaceAll('_', ' ');
+  const postQ = await querySinglePost(params.postId, slugDeserializer).catch((err: unknown) => {
+    console.error(err);
+  });
+  if (!postQ) {
+    notFound();
+  }
+  if (slugDeserializer !== postQ.headline) {
+    redirect(`/blog/posts/${params.postId}/${postQ.headline.replaceAll(' ', '_')}`);
+  }
+  const postSource = postQ.rawContent?.trim();
 
-  const postSource = postQ?.rawContent?.trim();
   const resBundle = postSource && (await resMdx(postSource, 'blog-posts', params.slug));
   const headerData = postSource && {
-    id: postQ?.id,
-    authorName: postQ?.authorName,
-    date: postQ?.date,
-    headline: postQ?.headline,
-    subheadline: postQ?.subheadline,
-    category: postQ?.category,
-    heroFile: postQ?.heroFile,
-    heroCredit: postQ?.heroCredit,
-    heroCreditUrl: postQ?.heroCreditUrl,
-    heroCreditUrlText: postQ?.heroCreditUrlText,
-    heroAltText: postQ?.heroAltText,
+    id: postQ.id,
+    authorName: postQ.authorName,
+    date: postQ.date,
+    headline: postQ.headline,
+    subheadline: postQ.subheadline,
+    category: postQ.category,
+    heroFile: postQ.heroFile,
+    heroCredit: postQ.heroCredit,
+    heroCreditUrl: postQ.heroCreditUrl,
+    heroCreditUrlText: postQ.heroCreditUrlText,
+    heroAltText: postQ.heroAltText,
   };
 
   return (
