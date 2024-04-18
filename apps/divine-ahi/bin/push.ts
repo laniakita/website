@@ -80,7 +80,7 @@ async function batchMdxProcessor(absPathArr: string[]) {
         const parentPath = splitStr.slice(0, splitStr.length - 1).join('/');
         const imgToCopyFilePath = path.resolve(parentPath, frontmatter.heroFile as string);
         const publicCopyPath = `/public/assets/hero-images/${(frontmatter.heroFile as string).split('/').pop()}`;
-
+        const embedPublicCopyPath =  `/assets/hero-images/${(frontmatter.heroFile as string).split('/').pop()}`;
         const pathToCheck = path.join(currentDir, publicCopyPath)
         const constPublicImgFile = Bun.file(pathToCheck);
         const imgFile = Bun.file(imgToCopyFilePath);
@@ -98,7 +98,7 @@ async function batchMdxProcessor(absPathArr: string[]) {
           console.log('image is the same, not copying')
         }
 
-        frontmatter.heroFile = publicCopyPath;
+        frontmatter.heroFile = embedPublicCopyPath;
       }
       /* put it all together */
       const fileObj = {

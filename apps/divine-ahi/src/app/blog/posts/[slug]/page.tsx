@@ -1,3 +1,4 @@
+import { notFound } from 'next/navigation';
 import { useMemo } from 'react';
 import { getMDXComponent } from 'mdx-bundler/client';
 import { queryPostMetas, querySinglePost } from '@/lib/utils/mdxlite-utils';
@@ -8,13 +9,15 @@ import { PostHeader } from '@/components/blog/post-header';
 export async function generateStaticParams() {
   const postMetas = await queryPostMetas();
   return postMetas.map((postObj) => ({
+    id: postObj.id,
     slug: postObj.headline.replaceAll(' ', '_'),
   }));
 }
 
-export default async function Page({ params }: { params: { slug: string } }) {
-  const slugDeserializer = params.slug.replaceAll('_', ' ');
-  const postQ = await querySinglePost(slugDeserializer);
+export default async function Page({ params }: { params: { id: string, slug: string } }) {
+  //const slugDeserializer = params.slug.replaceAll('_', ' ');
+  const postQ = await querySinglePost(params.id).catch((e: unknown) => { console.error('CRITICAL ERROR: ', e); notFound() })
+
   const postSource = postQ?.rawContent?.trim();
   const resBundle = postSource && (await resMdx(postSource, 'blog-posts', params.slug));
   const headerData = postSource && {

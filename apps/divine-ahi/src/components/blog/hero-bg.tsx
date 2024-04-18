@@ -6,7 +6,7 @@ import type { PostTeaserObjectProps } from '@/app/blog/page';
 
 export function HeroBg({dataObject}: {dataObject: PostTeaserObjectProps}) {
   const imageLoader = ({ src, width, quality }: { src?: string; width?: number; quality?: number }) => {
-    return `/assets/featured-images/${src}?w=${width}&q=${quality ?? 75}`;
+    return `${src}?w=${width}&q=${quality ?? 75}`;
   };
   return (
     <>
