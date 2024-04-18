@@ -5,8 +5,10 @@ import { parseArgs } from 'node:util';
 import path from 'node:path';
 import { readdir } from 'node:fs/promises';
 import matter from 'gray-matter';
+import kebabCase from 'lodash/kebabCase'
 import type { HandlePostProps, HandleAuthorProps, HandleCategoryProps } from '@/lib/utils/mdxlite-bun';
 import { handlePost, handleAuthor, handleCategory } from '@/lib/utils/mdxlite-bun';
+
 
 const { values, positionals } = parseArgs({
   args: Bun.argv,
@@ -22,8 +24,8 @@ const { values, positionals } = parseArgs({
   allowPositionals: true,
 });
 
-console.log(values);
-console.log(positionals);
+//console.log(values);
+//console.log(positionals);
 
 /* phase 0: get local folder to read */
 
@@ -65,15 +67,22 @@ async function batchMdxProcessor(absPathArr: string[]) {
       const blob = Bun.file(mdxFilePath);
       const str = await blob.text();
       const frontmatter = matter(str).data;
+      /*
+       * if we have images in the frontmatter we can copy them over to the public folder,
+       * and save the path to the image starting from the public folder, in our db so Next
+       * can find them.
+       **/
       if (frontmatter.heroFile) {
+        const folderNameRaw = frontmatter.headline as string || frontmatter.title as string || frontmatter.name as string
+        const postSlug = kebabCase(folderNameRaw);
         const splitStr = mdxFilePath.split('/');
         const parentPath = splitStr.slice(0, splitStr.length - 1).join('/');
         const imgToCopyFilePath = path.resolve(parentPath, frontmatter.heroFile as string);
-        const publicCopyPath = `/public/assets/hero-images/${splitStr.pop()!.split('.')[0]}/${(frontmatter.heroFile as string).split('/').pop()}` 
-        const imgFile = Bun.file(imgToCopyFilePath)
-        await Bun.write(`${process.cwd()}${publicCopyPath}`, imgFile)
+        const publicCopyPath = `/public/assets/hero-images/${postSlug}/${(frontmatter.heroFile as string).split('/').pop()}`;
+        const imgFile = Bun.file(imgToCopyFilePath);
+        await Bun.write(`${process.cwd()}${publicCopyPath}`, imgFile);
 
-        frontmatter.heroFile = publicCopyPath
+        frontmatter.heroFile = publicCopyPath;
       }
       const fileObj = {
         meta: frontmatter,
@@ -86,8 +95,6 @@ async function batchMdxProcessor(absPathArr: string[]) {
 
   return fileArr;
 }
-
-
 
 /* phase 3: combine! */
 
