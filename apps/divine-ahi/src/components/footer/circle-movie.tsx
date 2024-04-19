@@ -13,8 +13,8 @@ export default function CircleMove(Props: CircleMovieProps) {
     animationDelayJit = '[animation-delay:_1s]',
     colorClass = 'bg-ctp-red',
     animationClass = 'animate-growygrowsleft',
-    posXClass = 'right-10',
-    posYClass = 'bottom-12 md:bottom-4',
+    posXClass = 'right-[10%]',
+    posYClass = 'bottom-[20%]',
     heightClass = 'h-[8rem] md:h-[10rem]',
     widthClass = 'w-[8rem]  md:w-[10rem]',
   } = Props;

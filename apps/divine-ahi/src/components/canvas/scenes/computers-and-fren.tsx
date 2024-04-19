@@ -126,7 +126,6 @@ function CameraRig({ position = new Vector3(0, 0, 10), focus = new Vector3(0, 0,
           cameraControlRef.current?.setLookAt(...position.toArray(), ...focus.toArray(), true);
         }
       }
-      
     };
     if (a11yPrefersState.prefersReducedMotion) {
       cameraControlRef.current!.smoothTime = 0;
@@ -147,19 +146,13 @@ function CameraRig({ position = new Vector3(0, 0, 10), focus = new Vector3(0, 0,
           enabled
           minPolarAngle={0}
           maxPolarAngle={Math.PI / 2}
-          mouseButtons-left="NONE"
-          mouseButtons-wheel="NONE"
-          mouseButtons-right="NONE"
-          mouseButtons-middle="NONE"
+          mouseButtons-left='NONE'
+          mouseButtons-wheel='NONE'
+          mouseButtons-right='NONE'
+          mouseButtons-middle='NONE'
         />
       ) : (
-        <CameraControls
-          ref={cameraControlRef}
-          makeDefault
-          enabled
-          minPolarAngle={0}
-          maxPolarAngle={Math.PI / 2}
-        />
+        <CameraControls ref={cameraControlRef} makeDefault enabled minPolarAngle={0} maxPolarAngle={Math.PI / 2} />
       )}
     </>
   );

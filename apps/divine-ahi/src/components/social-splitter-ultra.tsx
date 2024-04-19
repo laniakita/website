@@ -29,8 +29,9 @@ export default function SocialIconNavSplitterUltra({
             key={boxItems.indexOf(item)}
             href={item.url}
             className={`${hxw} social-button ${animClass} ${textSize}`}
-            style={{ animationDelay: `${0.5 + index / 10  }s` }}
-            target='_blank' rel="noopener"
+            style={{ animationDelay: `${0.5 + index / 10}s` }}
+            target='_blank'
+            rel='noopener'
           >
             <span className={`${item.iconName} ${item.textSize}`} />
           </a>

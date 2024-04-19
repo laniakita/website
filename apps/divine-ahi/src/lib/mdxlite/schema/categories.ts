@@ -9,5 +9,5 @@ export interface Categories {
 export const categories = sqliteTable('categories', {
   id: text('id').primaryKey(),
   title: text('title').unique().notNull(),
-  rawContent: text('raw_content')
+  rawContent: text('raw_content'),
 });

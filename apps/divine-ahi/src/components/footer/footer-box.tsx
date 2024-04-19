@@ -8,21 +8,35 @@ interface FooterBoxProps {
 
 export function FooterBox(Props: FooterBoxProps) {
   const { title = 'Box Name', navItems = ['Home', 'Blog'], extraClass = '' } = Props;
+  function handleRef(pageStr: string) {
+    if (pageStr.toLowerCase() === 'home') {
+      return '/';
+    } else if (pageStr.toLowerCase() === 'rss') {
+      return '/rss.xml';
+    } 
+    return `/${pageStr.toLowerCase()}`;
+  }
   return (
     <div className={`${extraClass} size-min`}>
       <div className='flex break-inside-avoid flex-col'>
         <h3 className='pb-2 font-mono font-extrabold lowercase '>{title}</h3>
         <div className='flex flex-col space-y-2 text-2xl'>
-          {navItems.map((item) => (
-            <LinkPlus
-              key={item.toLowerCase()}
-              //prefetch={item.toLowerCase() === "home" ? false : true}
-              href={item.toLowerCase() === 'home' ? '/' : `/${item.toLowerCase()}`}
-              className='footer-nav-item'
-            >
-              {item === 'RSS' ? item : item.toLowerCase()}
-            </LinkPlus>
-          ))}
+          {navItems.map((item) =>
+            item === 'login' || item === 'subscribe' ? (
+              <p key={navItems.indexOf(item)} className='text-lg capitalize text-ctp-surface0'>
+                {item}
+              </p>
+            ) : (
+              <LinkPlus
+                key={navItems.indexOf(item)}
+                //prefetch={item.toLowerCase() === "home" ? false : true}
+                href={handleRef(item)}
+                className='footer-nav-item'
+              >
+                {item === 'RSS' ? item : item.toLowerCase()}
+              </LinkPlus>
+            ),
+          )}
         </div>
       </div>
     </div>
@@ -53,6 +67,7 @@ export function FooterBoxSpecial(Props: FooterBoxSpecialProps) {
     ],
     extraClass = '',
   } = Props;
+
   return (
     <div className={`${extraClass} size-min`}>
       <div className='flex break-inside-avoid flex-col'>

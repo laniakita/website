@@ -11,5 +11,5 @@ export const authors = sqliteTable('authors', {
   id: text('id').primaryKey(),
   name: text('name').unique(),
   mastodon: text('mastodon'),
-  rawContent: text('raw_content')
+  rawContent: text('raw_content'),
 });

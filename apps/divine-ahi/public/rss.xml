@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Lani Akita's Web Dev Blog</title>
+    <description>Dive into the details of all the latest technologies Lani's learning, using, and forming opinions on, as she builds applications for the modern web.</description>
+    <link>http://localhost:3000/blog</link>
+    <language>en-us</language>
+    <copyright>Copyright 2024, Lani Akita</copyright>
+    <managingEditor>lani@laniakita.com</managingEditor>
+    <webMaster>lani@laniakita.com</webMaster>
+    <pubDate>Sun, 31 Mar 2024 18:55:00 -1000</pubDate>
+    <lastBuildDate>Thu, 18 Apr 2024 20:21:03 -1000</lastBuildDate>
+    <category>Technology</category>
+    <generator>Next.js v14.2.1</generator>
+    <docs>https://www.rssboard.org/rss-specification</docs>
+    <ttl>120</ttl>
+    <item>
+      <title>Test Post Five</title>
+      <link>http://localhost:3000/blog/posts/bf049bd6/Test_Post_Five</link>
+      <description>It was the best of times, it was the blurst of times.</description>
+      <author>Lani Akita</author>
+      <category>Full-Stack</category>
+      <guid>bf049bd6-224c-4799-bbcb-205e7eb2d97f</guid>
+      <pubDate>Sun, 31 Mar 2024 18:55:00 -1000</pubDate>
+    </item>
+    <item>
+      <title>Next Full-Stack Post in Town</title>
+      <link>http://localhost:3000/blog/posts/94813c40/Next_Full-Stack_Post_in_Town</link>
+      <description>It was the best of times, it was the blurst of times.</description>
+      <author>Lani Akita</author>
+      <category>Full-Stack</category>
+      <guid>94813c40-124c-4358-8258-b2a60e092dbb</guid>
+      <pubDate>Thu, 28 Mar 2024 19:59:00 -1000</pubDate>
+    </item>
+    <item>
+      <title>Second Coolest Post in Town</title>
+      <link>http://localhost:3000/blog/posts/fb6875d0/Second_Coolest_Post_in_Town</link>
+      <description>It was the best of times, it was the blurst of times.</description>
+      <author>Lani Akita</author>
+      <category>Blog Meta</category>
+      <guid>fb6875d0-8755-4ed7-8215-978ec80ba3bd</guid>
+      <pubDate>Thu, 28 Mar 2024 18:55:00 -1000</pubDate>
+    </item>
+    <item>
+      <title>Coolest Post in Town</title>
+      <link>http://localhost:3000/blog/posts/01583a92/Coolest_Post_in_Town</link>
+      <description>It was the best of times, it was the blurst of times.</description>
+      <author>Lani Akita</author>
+      <category>Blog Meta</category>
+      <guid>01583a92-ab2d-4b16-a410-bb999321d7c3</guid>
+      <pubDate>Thu, 28 Mar 2024 18:50:00 -1000</pubDate>
+    </item>
+  </channel>
+</rss>

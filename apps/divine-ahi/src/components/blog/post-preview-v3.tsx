@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import dayjs, { extend } from 'dayjs';
-import kebabCase from 'lodash/kebabCase'
+import kebabCase from 'lodash/kebabCase';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import timezone from 'dayjs/plugin/timezone';
@@ -34,7 +34,7 @@ const dateGetter = (dateString: string): DateGetterReturn | undefined => {
       cal: undefined,
       time: undefined,
       fromNow: publishedDate.fromNow(),
-      timezone: dayjs.tz.guess()
+      timezone: dayjs.tz.guess(),
     };
   }
   if (difference > 7) {
@@ -42,23 +42,21 @@ const dateGetter = (dateString: string): DateGetterReturn | undefined => {
       cal: publishedDate.format('L'),
       time: publishedDate.format('LT'),
       fromNow: undefined,
-      timezone: dayjs.tz.guess()
+      timezone: dayjs.tz.guess(),
     };
   }
 };
-
-
 
 export function PostPreviewV3({ dataObj }: { dataObj: PostTeaserObjectProps }) {
   let hasImage = false;
   if (dataObj.heroFile && dataObj.heroAltText) {
     hasImage = true;
   }
-  
-  const catSerializer = dataObj.category?.replaceAll(' ', '_')
-  const postSlugSerializer = dataObj.headline.replaceAll(' ', '_')
-  
-  /* chopping up the ID to only be the first bit is risky, but A E S T H E T I C 
+
+  const catSerializer = dataObj.category?.replaceAll(' ', '_');
+  const postSlugSerializer = dataObj.headline.replaceAll(' ', '_');
+
+  /* chopping up the ID to only be the first bit is risky, but A E S T H E T I C
    * granted in the event we do get a collission, I could just perform a second query for the whole thing
    * */
   const linkTo = `/blog/posts/${dataObj.id.split('-')[0]}/${postSlugSerializer}`;
@@ -67,7 +65,7 @@ export function PostPreviewV3({ dataObj }: { dataObj: PostTeaserObjectProps }) {
   const postedDate = dateGetter(dataObj.date);
 
   return (
-    <div className='motion-safe:simple-color-trans pointer-events-none flex size-full flex-col gap-6 overflow-hidden  border-y border-ctp-surface0 bg-ctp-base px-4  py-6 hover:border-ctp-mauve  has-[:focus]:border-ctp-mauve dark:bg-ctp-crust md:gap-0 md:border md:p-0'>
+    <div className='motion-safe:simple-color-trans pointer-events-none flex size-full flex-col gap-6 overflow-hidden  border-y border-ctp-surface0 bg-ctp-base p-10 hover:border-ctp-mauve  has-[:focus]:border-ctp-mauve dark:bg-ctp-crust md:gap-0 md:border md:p-0'>
       {hasImage ? (
         <Link
           href={linkTo}
@@ -107,13 +105,22 @@ export function PostPreviewV3({ dataObj }: { dataObj: PostTeaserObjectProps }) {
         <div className='flex w-full flex-wrap gap-2 font-mono'>
           {postedDate?.cal ? (
             <p>
-              <span>{postedDate.cal}{` `}</span>
-              <span>{postedDate.time}{` `}</span>
+              <span>
+                {postedDate.cal}
+                {` `}
+              </span>
+              <span>
+                {postedDate.time}
+                {` `}
+              </span>
               <span>{postedDate.timezone}</span>
             </p>
           ) : (
             <p>
-              <span>{postedDate?.fromNow}{` `}</span>
+              <span>
+                {postedDate?.fromNow}
+                {` `}
+              </span>
               <span>{postedDate?.timezone}</span>
             </p>
           )}
@@ -129,15 +136,13 @@ export function FeaturedPostPreviewV3({ dataObj }: { dataObj: PostTeaserObjectPr
     hasImage = true;
   }
 
-  const catSerializer = dataObj.category?.replaceAll(' ', '_')
-  const postSlugSerializer = dataObj.headline.replaceAll(' ', '_')
+  const catSerializer = dataObj.category?.replaceAll(' ', '_');
+  const postSlugSerializer = dataObj.headline.replaceAll(' ', '_');
 
   const linkTo = `/blog/posts/${dataObj.id.split('-')[0]}/${postSlugSerializer}`;
   const linkToCat = `/blog/${catSerializer}`;
 
   const postedDate = dateGetter(dataObj.date);
-
-
 
   return (
     <div
@@ -186,13 +191,22 @@ export function FeaturedPostPreviewV3({ dataObj }: { dataObj: PostTeaserObjectPr
         <div className='flex flex-wrap gap-2 font-mono text-lg'>
           {postedDate?.cal ? (
             <p className='break-keep'>
-              <span>{postedDate.cal}{` `}</span>
-              <span>{postedDate.time}{` `}</span>
+              <span>
+                {postedDate.cal}
+                {` `}
+              </span>
+              <span>
+                {postedDate.time}
+                {` `}
+              </span>
               <span>{postedDate.timezone}</span>
             </p>
           ) : (
             <p>
-              <span>{postedDate?.fromNow}{` `}</span>
+              <span>
+                {postedDate?.fromNow}
+                {` `}
+              </span>
               <span>{postedDate?.timezone}</span>
             </p>
           )}

@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDarkStore } from '@/providers/theme-store-provider';
 import DarkModeSwitch from './dark-mode-switch';
 import LinkPlus from './link-plus';
+import { Url } from 'next/dist/shared/lib/router/router';
 
 interface Clicked {
   stateVal: string;
@@ -34,6 +35,15 @@ export default function NavBar() {
     };
   }, [handleNavOffClick]);
 
+  function handleRef(pageStr: string) {
+    if (pageStr.toLowerCase() === 'home') {
+      return '/';
+    } else if (pageStr.toLowerCase() === 'rss') {
+      return '/rss.xml';
+    } 
+    return `/${pageStr.toLowerCase()}`;
+  }
+
   return (
     <nav className=''>
       <div
@@ -46,8 +56,8 @@ export default function NavBar() {
           <div className='flex size-full flex-col gap-4 p-4'>
             {pagesArr.map((page) => (
               <LinkPlus
+                href={handleRef(page)}
                 key={page}
-                href={page.toLowerCase() === 'home' ? '/' : `/${page.toLowerCase()}`}
                 className='nav-item'
                 onClick={() => {
                   setClicked({ ...clicked, stateVal: 'closed' });
@@ -97,7 +107,7 @@ export default function NavBar() {
           {pagesArr.map((page) => (
             <LinkPlus
               key={page}
-              href={page.toLowerCase() === 'home' ? '/' : `/${page.toLowerCase()}`}
+              href={handleRef(page)}
               className='nav-item'
             >
               {page === 'RSS' ? page : page.toLowerCase()}

@@ -1,4 +1,6 @@
 import { PHASE_DEVELOPMENT_SERVER, PHASE_PRODUCTION_BUILD } from 'next/constants.js';
+import rehypeShiki from '@shikijs/rehype';
+import { rendererRich, transformerTwoslash } from '@shikijs/twoslash';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -7,11 +9,8 @@ const nextConfig = {
     formats: ['image/avif', 'image/webp'],
   },
   experimental: {
-    serverComponentsExternalPackages: [
-      "@shikijs/twoslash",
-    ],
+    serverComponentsExternalPackages: ['@shikijs/twoslash'],
   },
-  transpilePackages: ["@ahiakea/mdxlite"],
   swcMinify: true,
 };
 
@@ -28,7 +27,24 @@ const nextConfigFunction = async (phase, { defaultConfig }) => {
     const withMDX = (await import('@next/mdx')).default({
       options: {
         remarkPlugins: [(await import('remark-gfm')).default],
-        rehypePlugins: [(await import('@shikijs/rehype')).default],
+        rehypePlugins: [
+          [
+            rehypeShiki,
+            {
+              themes: {
+                light: 'catppuccin-latte',
+                dark: 'catppuccin-mocha',
+              },
+
+              transformers: [
+                transformerTwoslash({
+                  explicitTrigger: true,
+                  renderer: rendererRich(),
+                }),
+              ],
+            },
+          ],
+        ],
       },
     });
     plugins.push(withMDX);

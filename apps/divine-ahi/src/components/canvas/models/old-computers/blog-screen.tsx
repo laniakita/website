@@ -6,7 +6,7 @@ export default function BlogScreen() {
   return (
     <ScreenLink
       modelLink='/assets/models/old_computers-transformed.glb'
-      screenName="blog"
+      screenName='blog'
       textIn='READ THE BLOG'
       frame='Object_212'
       panel='Object_216'

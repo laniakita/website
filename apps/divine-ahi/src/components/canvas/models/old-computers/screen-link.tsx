@@ -2,7 +2,7 @@
 'use client';
 import { useRef } from 'react';
 import { extend } from '@react-three/fiber';
-import { Decal, RenderTexture, PerspectiveCamera, Text , useGLTF } from '@react-three/drei';
+import { Decal, RenderTexture, PerspectiveCamera, Text, useGLTF } from '@react-three/drei';
 import { type Mesh } from 'three';
 import { A11y, useA11y } from '@react-three/a11y';
 import { useRouter } from 'next/navigation';

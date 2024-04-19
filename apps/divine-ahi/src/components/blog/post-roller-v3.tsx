@@ -6,7 +6,7 @@ import { FeaturedPostPreviewV3, PostPreviewV3 } from '@/components/blog/post-pre
 import type { PostTeaserObjectProps } from '@/app/blog/page';
 
 interface PreviewRollerV3Props {
-  dataArr: PostTeaserObjectProps[],
+  dataArr: PostTeaserObjectProps[];
   baseUrl?: string;
   isCat?: boolean;
 }
@@ -14,7 +14,7 @@ interface PreviewRollerV3Props {
 export default function PreviewRollerV3({ dataArr, isCat }: PreviewRollerV3Props) {
   const { postNum } = usePostNumStore((state) => state);
   const [canLoad, setCanLoad] = useState(true);
-  
+
   useMemo(() => {
     if (postNum > dataArr.length) {
       setCanLoad(false);

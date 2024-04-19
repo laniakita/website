@@ -3,7 +3,7 @@
 'use client';
 import { useRef, useCallback } from 'react';
 import { type MeshProps, useFrame, extend } from '@react-three/fiber';
-import { Decal, RenderTexture, PerspectiveCamera , useGLTF } from '@react-three/drei';
+import { Decal, RenderTexture, PerspectiveCamera, useGLTF } from '@react-three/drei';
 import { type Mesh } from 'three';
 import { A11y, useA11y, useUserPreferences } from '@react-three/a11y';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
@@ -30,7 +30,7 @@ export function ScreenInteractive({ screenName, children, ...props }: ScreenInne
     [searchParams],
   );
   const handleJump = () => {
-    router.push(`${pathname  }?${  createQueryString('screen', screenName!)}`);
+    router.push(`${pathname}?${createQueryString('screen', screenName!)}`);
   };
 
   return (

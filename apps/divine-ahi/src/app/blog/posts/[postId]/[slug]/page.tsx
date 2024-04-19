@@ -52,7 +52,7 @@ export default async function Page({ params }: { params: { postId: string; slug:
   };
 
   return (
-    <div className='simple-color-trans -mb-0.5 min-h-full max-w-full bg-ctp-base dark:bg-ctp-crust lg:pt-10'>
+    <div className='motion-safe:simple-color-trans -mb-0.5 min-h-full max-w-full bg-ctp-base dark:bg-ctp-crust lg:pt-10'>
       {resBundle ? <Post code={resBundle.code} teaserObj={headerData as PostTeaserObjectProps} /> : ''}
     </div>
   );
@@ -61,9 +61,9 @@ export default async function Page({ params }: { params: { postId: string; slug:
 function Post({ code, teaserObj }: { code: string; teaserObj: PostTeaserObjectProps }) {
   const Component = useMemo(() => getMDXComponent(code), [code]);
   return (
-    <article>
+    <article className=''>
       <PostHeader dataObject={teaserObj} />
-      <div className='flex min-h-full items-center justify-center px-4 py-6 md:p-10'>
+      <div className='flex min-h-full items-center justify-center p-10 md:p-10'>
         <div className='prose-protocol-omega'>
           <Component components={{ p: Paragraph }} />
         </div>

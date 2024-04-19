@@ -48,7 +48,6 @@ export function Shork(props: JSX.IntrinsicElements['group']) {
   const instances = useContext(context);
   return (
     <group {...props} dispose={null}>
-
       {/* @ts-expect-error -- instances */}
       <instances.LowpolyblahajShark position={[0, 0, 0.001]} rotation={[0, 0.71, 0]} scale={0.01} />
       {/* @ts-expect-error -- instances */}
@@ -69,7 +68,7 @@ export function WireShork2({ ...props }) {
         scale={0.01}
         geometry={nodes.Low_poly_blahaj1_teef_0.geometry}
       >
-        <Wireframe stroke="green" fillMix={1.0} fillOpacity={0.0} backfaceStroke="green" />
+        <Wireframe stroke='green' fillMix={1.0} fillOpacity={0.0} backfaceStroke='green' />
       </mesh>
       <mesh
         position={[0, 0, 0.001]}
@@ -77,7 +76,7 @@ export function WireShork2({ ...props }) {
         scale={0.01}
         geometry={nodes.Low_poly_blahaj1_Shark_0.geometry}
       >
-        <Wireframe stroke="green" fillMix={1.0} fillOpacity={0.0} backfaceStroke="green" />
+        <Wireframe stroke='green' fillMix={1.0} fillOpacity={0.0} backfaceStroke='green' />
       </mesh>
     </group>
   );

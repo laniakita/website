@@ -12,7 +12,7 @@ interface SocialNavIcon {
 
 export default function SocialIconNav({ boxItems, hxw }: SocialIconNavProps) {
   return (
-    <div className={`flex flex-wrap items-center gap-2 `}>
+    <div className='flex flex-wrap items-center justify-center gap-2'>
       {boxItems.map((item) => (
         <a key={boxItems.indexOf(item)} href={item.url} className={`${hxw} social-button`}>
           <span className={`${item.iconName} ${item.textSize}`} />
