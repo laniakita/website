@@ -3,7 +3,7 @@ Taking inspiration from the Laniakea Supercluster ([arXiv:1409.0880 [astro-ph.CO
 
 Aside, this repo currently houses a few things:
   - The laniakita.com website, complete with all the articles I've written for it.
-  - an unreleased md/mdx file indexer to SQLite database cli tool that runs on Bun & uses Drizzle ORM. I built it specifically for my website, but I'm in the process of genericizing it so I can publish it to npm, so all you lovely people can use it too!
+  - an unreleased md/mdx file indexer to SQLite database cli tool that runs on Bun & uses Drizzle ORM. I built it specifically for the website above, but I'm in the process of genericizing it so I can publish it to npm, so all you lovely people can use it too!
   -  an eslint config package based on the next.js turbo repo example, with my own modifications to it.
   -  a tsconfig package based on the same example, with my own modifications to it.
   -  and finally a tailwind config package, that was based on the turbo with-tailwind example, but it's been heavily altered to contain a catpuccin theme for tailwind/typography as well as many of the animations I plan to re-use across projects.
