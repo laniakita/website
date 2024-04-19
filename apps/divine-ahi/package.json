@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "push": "bun ./bin/push.ts --content content"
+    "push": "bun ./bin/push.ts --content content",
+    "rss-gen": "bun ./bin/rss-gen.ts"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.0.1",

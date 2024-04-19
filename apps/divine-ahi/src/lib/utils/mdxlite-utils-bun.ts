@@ -1,6 +1,6 @@
 // for use with next's node environement
 import { eq, desc, like, or, and } from 'drizzle-orm';
-import mdxlitedb from '@/lib/mdxlite/drizzle';
+import mdxlitedb from '@/lib/mdxlite/bun-db';
 import { categories } from '@/lib/mdxlite/schema/categories';
 import { posts } from '@/lib/mdxlite/schema/posts';
 

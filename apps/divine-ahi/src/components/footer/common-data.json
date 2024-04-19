@@ -1,5 +1,5 @@
 {
-  "navigationItems": ["Home", "Projects", "Blog", "Contact", "Credits", "Privacy", "Terms"],
+  "navigationItems": ["Home", "Blog", "About", "Projects", "Contact", "Credits", "Privacy", "Terms"],
   "socialItems": [
     {
       "title": "Github",
@@ -20,14 +20,8 @@
       "textSize": "text-4xl"
     },
     {
-      "title": "LinkedIn",
-      "url": "https://linkedin.com",
-      "iconName": "icon-[fa--linkedin]",
-      "textSize": "text-4xl"
-    },
-    {
       "title": "RSS",
-      "url": "/rss",
+      "url": "/rss.xml",
       "iconName": "icon-[ph--rss-bold]",
       "textSize": "text-5xl"
     }

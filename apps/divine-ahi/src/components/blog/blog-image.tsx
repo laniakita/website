@@ -8,7 +8,7 @@ interface ImgProps {
 }
 
 export default function BlogImage(props: ImgProps) {
-  const fileNameGuesser = (props).src.split('/');
+  const fileNameGuesser = props.src.split('/');
   const imageLoader = ({ src, width, quality }: { src?: string; width?: number; quality?: number }) => {
     return `/assets/images/${fileNameGuesser[3]}/${src}?w=${width}&q=${quality ?? 50}`;
   };
@@ -18,11 +18,10 @@ export default function BlogImage(props: ImgProps) {
       priority={false}
       src={fileNameGuesser[4]!}
       placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
-      alt={(props).alt}
+      alt={props.alt}
       width={500}
       height={500}
       className='size-auto'
     />
   );
-};
-
+}

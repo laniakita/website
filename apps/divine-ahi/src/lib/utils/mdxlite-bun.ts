@@ -5,7 +5,6 @@ import { authors } from '@/lib/mdxlite/schema/authors';
 import { categories } from '@/lib/mdxlite/schema/categories';
 import { posts } from '@/lib/mdxlite/schema/posts';
 
-
 export interface HandleAuthorProps {
   meta: { name: string; mastodon?: string };
   rawStr: string;
@@ -77,7 +76,7 @@ export const handleCategory = async (postObj: HandleCategoryProps) => {
       .update(categories)
       .set({
         title: postObj.meta.title,
-        rawContent: postObj.rawStr
+        rawContent: postObj.rawStr,
       })
       .where(and(eq(categories.id, testId as string), eq(categories.title, testName as string)));
   }
@@ -89,7 +88,7 @@ export const handleCategory = async (postObj: HandleCategoryProps) => {
       .values({
         id: crypto.randomUUID(),
         title: postObj.meta.title,
-        rawContent: postObj.rawStr
+        rawContent: postObj.rawStr,
       })
       .onConflictDoNothing();
   }
@@ -112,7 +111,7 @@ export interface HandlePostProps {
 }
 
 export const handlePost = async (postObj: HandlePostProps) => {
-  console.log('found post')
+  console.log('found post');
   const authorQ = await mdxlitedb
     .select({ name: authors.name })
     .from(authors)
@@ -139,9 +138,9 @@ export const handlePost = async (postObj: HandlePostProps) => {
     );
 
   if (typeof authorMatch?.name === 'string' && typeof categoryMatch?.title === 'string') {
-    console.log('author & category exists, inserting post')
+    console.log('author & category exists, inserting post');
     if (checkPostExists.length > 0) {
-      console.log('post exists, updating...')
+      console.log('post exists, updating...');
       // @ts-expect-error -- types exist because how else could checkPostExists have a length > 0?
       const { testId, testHeadline, testDate } = checkPostExists[0];
       await mdxlitedb
@@ -167,8 +166,7 @@ export const handlePost = async (postObj: HandlePostProps) => {
         );
     }
     if (checkPostExists.length === 0) {
-      console.log("post doesn't exist, inserting")
-      
+      console.log("post doesn't exist, inserting");
 
       await mdxlitedb.insert(posts).values({
         id: crypto.randomUUID(),

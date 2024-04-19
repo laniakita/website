@@ -148,9 +148,7 @@ export function CompInstances({ children, ...props }: JSX.IntrinsicElements['gro
   );
   return (
     <Merged meshes={instances} {...props}>
-      { 
-        (instances: ContextType) => <context.Provider value={instances}>{children}</context.Provider> 
-      }
+      {(instances: ContextType) => <context.Provider value={instances}>{children}</context.Provider>}
     </Merged>
   );
 }
@@ -172,10 +170,10 @@ export function CompModel(props: JSX.IntrinsicElements['group']) {
 
       {/* @ts-expect-error -- instances */}
       <instances.Object140 position={[5.531, 2.183, 0.174]} scale={[-1, 1, 1]} />
-      
+
       {/* @ts-expect-error -- instances */}
       <instances.Object142 position={[5.786, 0.943, 0.18]} scale={[-1, 1, 1]} />
-      
+
       {/* @ts-expect-error -- instances */}
       <instances.Object144 position={[5.736, 1.565, 0.053]} scale={[-1, 1, 1]} />
       {/* @ts-expect-error -- instances */}

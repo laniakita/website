@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { shimmer, toBase64 } from '@/lib/utils/shimmer-utils';
 import type { PostTeaserObjectProps } from '@/app/blog/page';
 
-export function HeroBg({dataObject}: {dataObject: PostTeaserObjectProps}) {
+export function HeroBg({ dataObject }: { dataObject: PostTeaserObjectProps }) {
   const imageLoader = ({ src, width, quality }: { src?: string; width?: number; quality?: number }) => {
     return `${src}?w=${width}&q=${quality ?? 75}`;
   };

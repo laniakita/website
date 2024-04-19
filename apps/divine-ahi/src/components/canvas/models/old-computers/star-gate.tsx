@@ -25,7 +25,7 @@ export default function ScreenStarGate({ screenName, ...props }: ScreenStarGateI
     [searchParams],
   );
   const handleJump = () => {
-    router.push(`${pathname  }?${  createQueryString('screen', screenName!)}`);
+    router.push(`${pathname}?${createQueryString('screen', screenName!)}`);
   };
 
   return (

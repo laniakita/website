@@ -6,29 +6,26 @@ import { useDarkStore } from '@/providers/theme-store-provider';
 export default function DarkModeSwitch() {
   const { dark, themeDark, themeLight } = useDarkStore((state) => state);
 
-  const handleThemePref = useCallback(
-    () => {
-      const isDarkLocal = localStorage.getItem('isDark');
-      if (isDarkLocal === 'true') {
-        themeDark();
-        document.documentElement.classList.add('dark');
-        document.documentElement.style.colorScheme = 'dark';
-      } else if (isDarkLocal === 'false') {
-        themeLight();
-        document.documentElement.classList.remove('dark');
-        document.documentElement.style.colorScheme = 'light';
-      } else if (window.matchMedia('(prefers-color-scheme: dark)').matches && !isDarkLocal) {
-        themeDark();
-        document.documentElement.classList.add('dark');
-        document.documentElement.style.colorScheme = 'dark';
-      } else {
-        themeLight();
-        document.documentElement.classList.remove('dark');
-        document.documentElement.style.colorScheme = 'light';
-      }
-    },
-    [themeDark, themeLight],
-  );
+  const handleThemePref = useCallback(() => {
+    const isDarkLocal = localStorage.getItem('isDark');
+    if (isDarkLocal === 'true') {
+      themeDark();
+      document.documentElement.classList.add('dark');
+      document.documentElement.style.colorScheme = 'dark';
+    } else if (isDarkLocal === 'false') {
+      themeLight();
+      document.documentElement.classList.remove('dark');
+      document.documentElement.style.colorScheme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches && !isDarkLocal) {
+      themeDark();
+      document.documentElement.classList.add('dark');
+      document.documentElement.style.colorScheme = 'dark';
+    } else {
+      themeLight();
+      document.documentElement.classList.remove('dark');
+      document.documentElement.style.colorScheme = 'light';
+    }
+  }, [themeDark, themeLight]);
 
   const handleClick = () => {
     const nextDark = !dark;

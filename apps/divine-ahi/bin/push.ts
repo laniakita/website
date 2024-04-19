@@ -7,10 +7,8 @@ import { readdir } from 'node:fs/promises';
 import matter from 'gray-matter';
 import type { HandlePostProps, HandleAuthorProps, HandleCategoryProps } from '@/lib/utils/mdxlite-bun';
 import { handlePost, handleAuthor, handleCategory } from '@/lib/utils/mdxlite-bun';
-import { eq, and, or } from 'drizzle-orm';
-import mdxlitedb from '@/lib/mdxlite/bun-db';
 
-const { values, positionals } = parseArgs({
+const { values } = parseArgs({
   args: Bun.argv,
   options: {
     content: {
@@ -75,27 +73,27 @@ async function batchMdxProcessor(absPathArr: string[]) {
        **/
 
       if (frontmatter.heroFile) {
-        console.log('found hero image')
+        console.log('found hero image');
         const splitStr = mdxFilePath.split('/');
         const parentPath = splitStr.slice(0, splitStr.length - 1).join('/');
         const imgToCopyFilePath = path.resolve(parentPath, frontmatter.heroFile as string);
         const publicCopyPath = `/public/assets/hero-images/${(frontmatter.heroFile as string).split('/').pop()}`;
-        const embedPublicCopyPath =  `/assets/hero-images/${(frontmatter.heroFile as string).split('/').pop()}`;
-        const pathToCheck = path.join(currentDir, publicCopyPath)
+        const embedPublicCopyPath = `/assets/hero-images/${(frontmatter.heroFile as string).split('/').pop()}`;
+        const pathToCheck = path.join(currentDir, publicCopyPath);
         const constPublicImgFile = Bun.file(pathToCheck);
         const imgFile = Bun.file(imgToCopyFilePath);
 
         /* If the file isn't in the public folder, then copy it. If an image already exists in the public folder, but the declared frontmatter image is different (diff in size), then replace it. */
-        const checkImg = await constPublicImgFile.exists()
+        const checkImg = await constPublicImgFile.exists();
 
         if (!checkImg) {
-          console.log('image not in public folder, copying ...')
+          console.log('image not in public folder, copying ...');
           await Bun.write(`${process.cwd()}${publicCopyPath}`, imgFile);
         } else if (constPublicImgFile.size !== imgFile.size) {
-          console.log('found image is different from public folder, copying ...')
+          console.log('found image is different from public folder, copying ...');
           await Bun.write(`${process.cwd()}${publicCopyPath}`, imgFile);
         } else {
-          console.log('image is the same, not copying')
+          console.log('image is the same, not copying');
         }
 
         frontmatter.heroFile = embedPublicCopyPath;

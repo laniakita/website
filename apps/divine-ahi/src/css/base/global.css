@@ -2,7 +2,7 @@
   * {
     box-sizing: border-box;
   }
-  
+
   html.dark .shiki,
   html.dark .shiki span {
     color: var(--shiki-dark) !important;

@@ -12,25 +12,19 @@ export const socialItems = [
   },
   {
     title: 'Mastodon',
-    url: 'https://joinmastodon.org/',
+    url: 'https://hachyderm.io/@lani',
     iconName: 'icon-[fa6-brands--mastodon]',
     textSize: 'text-5xl',
   },
   {
     title: 'Patreon',
-    url: 'https://patreon.com',
+    url: 'https://patreon.com/Lani_Akita',
     iconName: 'icon-[fa6-brands--patreon]',
     textSize: 'text-4xl',
   },
   {
-    title: 'LinkedIn',
-    url: 'https://linkedin.com',
-    iconName: 'icon-[fa--linkedin]',
-    textSize: 'text-4xl',
-  },
-  {
     title: 'RSS',
-    url: '/rss',
+    url: '/rss.xml',
     iconName: 'icon-[ph--rss-bold]',
     textSize: 'text-5xl',
   },
@@ -40,7 +34,7 @@ export default function Footer({ extra }: { extra?: string }) {
   return (
     <footer className='w-full'>
       <div
-        className={`simple-color-trans relative flex w-full flex-col items-center justify-center overflow-hidden bg-ctp-base md:pt-10 dark:bg-ctp-crust  ${extra}`}
+        className={`simple-color-trans relative flex w-full flex-col items-center justify-center overflow-hidden  bg-ctp-base dark:bg-ctp-crust ${extra}`}
       >
         <div className='absolute size-full '>
           <div className=' relative size-full'>
@@ -61,12 +55,14 @@ export default function Footer({ extra }: { extra?: string }) {
         {/* contents container that givs the blurry bg + the pattern */}
         <div className='flex  size-full  flex-col  backdrop-blur-2xl'>
           {/* <FooterSubscribe /> */}
-          <div className='flex flex-col items-start  justify-center gap-4   pb-20 pt-4 lg:pb-4 '>
+          <div className='flex flex-col items-center  justify-center gap-4  pb-16 md:pb-36 md:pt-20 lg:pb-40 lg:pt-20'>
             {/* content container */}
-            <div className=' w-full space-y-8 px-4'>
+            <div className='w-full space-y-8 p-10 md:w-fit md:rounded-2xl md:border md:border-ctp-surface0'>
               {/* logo + search + social_buttons + +copyright + links */}
-              <div className=' flex flex-col items-center justify-center gap-8'>
-                <SocialIconNav boxItems={socialItems} hxw='h-[3.8rem] w-[3.8rem]' />
+              <div className='flex flex-col items-center justify-center gap-8'>
+                <div className='size-full'>
+                  <SocialIconNav boxItems={socialItems} hxw='h-16 min-w-16 w-full basis-1/5' />
+                </div>
                 <FooterNavLinks />
                 <CopyrightTag />
               </div>
@@ -80,9 +76,9 @@ export default function Footer({ extra }: { extra?: string }) {
 
 function FooterNavLinks() {
   return (
-    <div className='columns-1 gap-4 [@media_(min-width:_240px)]:columns-2 [@media_(min-width:_350px)]:columns-3'>
+    <div className='grid grid-cols-1 space-x-4 [@media_(min-width:_240px)]:grid-cols-2 [@media_(min-width:_350px)]:grid-cols-3'>
       <FooterBox title='navigation' navItems={data.navigationItems} />
-      <FooterBoxSpecial title='socials' navItems={data.socialItems} />
+      <FooterBoxSpecial title='socials' navItems={socialItems} />
       <FooterBox title='account' navItems={['login', 'subscribe']} />
     </div>
   );

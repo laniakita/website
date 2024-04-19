@@ -19,7 +19,7 @@ export default function ShorkScreen() {
   return (
     <ScreenInteractive
       modelLink='/assets/models/old_computers-transformed.glb'
-      screenName="shork"
+      screenName='shork'
       frame='Object_212'
       panel='Object_216'
       position={[1.845, 0.377, -1.777]}

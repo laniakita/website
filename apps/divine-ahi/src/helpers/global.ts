@@ -1,4 +1,4 @@
-import tunnel from 'tunnel-rat'
+import tunnel from 'tunnel-rat';
 
-const r3f = tunnel()
-export default r3f
+const r3f = tunnel();
+export default r3f;
