@@ -1,4 +1,4 @@
-# Ahiakea
+# Ahiākea
 Taking inspiration from the Laniakea Supercluster ([arXiv:1409.0880 [astro-ph.CO]](https://arxiv.org/abs/1409.0880)) we all reside in, which roughly translates to Immense Heaven (Lani == 'heaven', ākea == 'immense'), I named this monorepo Ahiākea (ahi == 'tuna fish'), which roughly translates to Immense fish, which brought me much amusement for reasons I won't explain.
 
 Aside, this repo currently houses a few things:
