@@ -2,37 +2,87 @@
 
 Aloha! My name is Lani Akita (she/her) and this is my personal site and Full Stack Web Development blog.
 
-While the Web Industry (& the world) has changed dramatically since I started making websites 10+ years ago. A time When I was just a kid in the late 2000s uploading WordPress Blogs to free C-Panel hosts and routing them to free ".tk" & ".cc" domains. I am yet driven by an endless curiosity to learn, experiment, and to build bigger, better, more ambitious things.
+While the Web Industry (& the world) has changed dramatically since I started making websites 10+ years ago. When I was just a kid in the late 2000s uploading WordPress Blogs to free C-Panel hosts and routing them to free ".tk" & ".cc" domains. I remain driven by an endless curiosity to learn, experiment, and to build bigger, better, more ambitious things.
 
-As well, I remain to be a perpetual student and practicioner of the Arts, and will be until my very last day on Earth. I'm someone that loves to work in the digital medium, as I'm capable of both happily painting the days away in Krita with a graphics tablet and a stylus, as well as losing track of the time as I use WebGL to visualize and create interactive fractals. You can find some of my work on the Gallery page, Patreon, and also for sale on Etsy. ^-^
+I'm also a perpetual student and practicioner of the Arts. I mostly work in the digital medium, either happily painting the days away in Krita with a graphics tablet and a stylus, or losing track of the time writing WebGL to visualize and create interactive fractals. 
 
-# My current process
+You'll soon be able to find some of my artistic work on the Projects page, Patreon, and or for sale on Etsy. ^-^
 
-When I am in a terminal window working with a spread of Neovim buffers, there is a lot of potential things I could be doing, so let me break it down.
+# My Current Development Process
 
-## Front-End + Back-End => Full-Stack
+I use a lot of different tools and technologies (on top of actively learning new ones) because websites have become a teency bit more complicated than they were 10 or 15 years ago when jQuery was all the rage (oh no! Did I just date myself?!). 
 
-1. The "meat and potatoes" of any application I create is written in TypeScript with Typed React or Svelte components, paired with their respective framework like Next.Js, or SvelteKit.
-   - Next and SvelteKit aren't the end all be all though by any means. For sites that aren't quite so JS heavy, and can make good use of the "interactive islands" architecture, Astro (a framework I see as a modern version of Gatsby) is something I'm currently experimenting with, and Deno's Fresh is next on my todo list (11ty is another framework and looks like a great alternative for even lighter sites, plus you can write Lit! how cool is that). For everything else, I've been quite liking Remix ever since it became possible to use it with Vite.
-2. For authentication, I'm quite partial to a lovely little library called Lucia, which integrates perfectly with a Full-Stack framework that's capable of separating data flows between client and server, like those mentioned above. I'm also quite enthusiastic that it can hash passwords with Bun.password (because in the words of Clarkson, the SPEEEEEEED!).
+So, let's start with a high-level overview before we get down to brass tacks. First the inital planning tools I use before writing a single line of code, then the category of dev tools that contribute to a modern web stack (Front-End, Back-End, Full-Stack, DevOps).
+
+**UI/UX + Graphic Design Tools**: These help me visualize what an app is going to look like (UI), and what the user experience (UX) might be like (navigating between pages, menus, things you touch, etc.). I'm partial to Figma when creating the UI/UX designs/mockups. For things like branding, I used to use Adobe Illustrator, but have recently moved to Affinity Designer.
+
+**Planning Tools**: These help me visualize the software arcitecture an app will initially take, and gives me a rough estimate of how much it will cost. I mostly use excalidraw (or a pen and paper) for this, and a cloud providers cost calculator.
+
+**Front-End Tools**: These help me build user interfaces, i.e., everything you can see or touch or interact with on a website.
+
+**Back-End Tools**: These help me pipe data into, and out of, the interfaces users interact with.
+
+**Full-Stack Tools**: These blend the categories above and help me orchestrate the front-end and the back-end into one harmonious symphony.
+
+**DevOps Tools**: These help me deploy and distribute an app onto the "World Wide Web" with some extra goodies to boot. These being: re-deploying an app the moment I push changes to the apps source code repository; growing the number of computers that run the app up or down, to keep up with the number of people using the app in real time; and more!
+
+Okay, that's the gist of it. We can finally move on to the nitty gritty techno babble (i.e. the last four categories)! ^-^
+
+## Front-End
+1. When creating complex-interactive user interfaces, I'll choose either React or Svelte (both being JavaScript libraries with decent TypeScript support), depending on the needs of the project and if there are any specific component libraries that I might want to integrate with.
+   - For lighter, far less complicated projects, I've been quite delighted by HTMX paired with Alpine.js.
+
+2. For styles I'm quite partial to tailwindcss. Granted, writing CSS in classnames can get ugly fast (hence why the tailwind docs encourage you to make use of css files), but it's so gosh darn convenient, and so easy to make it reactive to changes in state, I love it. Not to mention it's library agnostic! I've used it in React projects, Svelte projects, and even HTMX projects!
+
+3. Far beyond the animation abilities of CSS, I'm currently enamoured with Three.Js (a JavaScript library for WebGL) and third-party component libraries: the react-three/fiber ecosystem for React apps, and threlte for Svelte apps. Both abstract some of the more tedious aspects of working with Three.js (which itself abstracts the really tedious parts of working with WebGL/Shaders in general), and both have made great strides to make it quite easy to write optimized (read: performant), reactive, WebGL.
 
 ## Back-End
 
-1. When working with relational databases I like to use a TypeScript ORM like drizzle, so I can sleep better at night. I also quite like its toolkit, drizzle studio, that visualizes the tables (and the data they contain) in quite an aesthetically pleasing way. Oh and the migration tool is cool too, you know, the thing that actually translates the ORM's schema to the SQL database.
+1. For building back-end applications like APIs, I've recently taken a liking to ElysiaJS, a web framework optimized for the Bun runtime, and designed to be run on the Edge (i.e. Cloudflare workers). It's also quite a joy to work with. While it still has some sharp edges, having only hit 1.0 this March, it's already got quite a fluorishing ecosystem of third-party plugins and adapters, and that gives me quite a bit of hope for the future of the project.
+   - ElysiaJS, like Hono, can also integrate into a Full-Stack framework like Next, operating as a routehandler on the dynamically generated segments, which is pretty cool I think. While I've yet to take advantage of that ability, it's nice that the option is there.
 
-## Front-End
+2. Beyond JavaScript world, I've wet my beak, so to speak, into Golang, an extremely performant programming language, that just so happens to include a full blown web server. I'm befuddled, yet amazed at the crazy things Go can do. While I've yet to build anything substantial with it, having only been introduced to it when I explored extending a PocketBase instance, it did put a smile on my face, and that's what's important.
 
-1. For styles I like to use tailwindcss, because writing CSS in classnames, while ugly, is both convenient and quite maleable to state changes.
-   - Though I do occasionally find myself writing inline-styles on the rare occassion where I've run into race-conditions because tailwind's compilation step is a few steps too late.
-     - For example, the react-three/drei `<View />` component, seems to do it's gl.scisor step before Tailwind compiles, and you wind up with some very odd visual glitches as Tailwind desparately tries to style the component (like it's height), but it's just too late as the `<View />` seemingly fails to appear, until one catches a few frames of it on a scroll down/up. Granted such a bug could've been my fault, but for whatever reason JSX-inline styles fixed that right away.
-2. For WebGL, a web technology I'm currently obsessed with (could you tell? :3) as it happy scratches the Artsier parts of my brain. I'm currently enamoured with Three.Js (JavaScript library for WebGL) and respective third-party component libraries like react-three/fiber and threlte, for rapid development of WebGL scenes/applications.
+3. I'm quite partial to relational databases, mostly because the sort of data I work is, well, relational. While it's possible to design a schema and queries and some hacky functions in such a way that you could retrieve data in a somewhat relational manner from a NoSQL database, I've learned the effort just isn't worth it. So, for big projects with heavy write loads, I will champion Postgres (the docs for it are quite well written too). For smaller projects like this website, I chose and will favor SQLite.
+
+1. Because I typically work with such relational databases inside an application that runs on Node or Bun, I've found drizzle (TypeScript ORM) to be quite amazing. Like they advertize, SQL knowledge pretty much directly transfers to drizzle (give or take a few edge cases), and you can even use the "magic" SQL selector to write "raw" SQL (I found this mostly useful for writing common table expressions) when you need to. I also quite like drizzle studio, as a pretty yet lightweight alternative to pgAdmin. Oh and the migration tool is cool too, you know, the thing that actually translates the ORM's schema to the SQL database.
+
+
+## Full-Stack
+1. Because authentication sits between back-end and front-end work, I felt it best to stick it in the Full-Stack tools category. Aside, for authentication I've recently been working with a lovely little library called Lucia. It integrates perfectly with a Full-Stack framework, and makes both SSO and traditional user/password authentication quite a breeze to setup. Oh and such passwords can also be hashed with Bun.password which is way faster than doing it with node:crypto (this matters quite a bit when computing this on a Cloudflare Worker). In the past I was using something much more proprietary (Auth0), but I've found this to be quite an amazing replacement.
+   - I should probably note that I tend to store and query all the information that's needed here in one of the relational databases above with the help of drizzle.
+
+1. Because I need to have data split between server (back-end) and client (front-end) browser in the sort of apps I build, since it's considered a "dick move" to leak someones sensitive data and passwords to any random visitor, it's a hard requirement to work with a Full-Stack framework. For me that means combining the back-end and front-end with either Next.js (react apps) or SvelteKit (svelte apps).
+   - While the back-end capabilities of a Full-Stack framework often means you're really just building the [Back-End for the Front-End](https://samnewman.io/patterns/architectural/bff/), meaning that in some cases you really should not use a full-stack framework to replace a dedicated back-end application framework, hence the biggest reason I use them for is to creating a secure separation between dataflows. Though it's nice a framework provides routing and templating out of the box, splitting data between client and server is something create-react-app simply cannot do. 
+     - I'm fairly certain this is partially why headless CMSes and BaaS and GraphQL became such a huge thing for a hot-minute and why you might've heard the term JAMStack in the pre-pandemic era, since you could escape the security short comings of a pure front-end, with a dedicated back-end application that handles all the sensitive bits for you (on top of being hosted on a dedicated server). Heck you can still use those back-end apps with a full-stack framework, you could even use ... WordPress! There's just less need to, unless you don't feel like it.
+   - I should point out that Next and SvelteKit aren't the end all be all though by any means. Remix is a pretty cool Next.js alternative and uses Vite (the same bundler SvelteKit uses) instead of Webpack. For sites that aren't quite so JS heavy, and can make good use of the "interactive islands" architecture, Astro (a framework I see as a modern full-stack version of Gatsby) is something I've experimented with, and Deno's Fresh (preact based) is next on my todo list (11ty is another framework and looks like a great alternative for even lighter sites, plus you can write Lit! how cool is that).
 
 ## DevOps
-
-1. For deploying these applications, I tend to use serverless functions, in combo with a GitHub action to create a CI/CD pipeline, to build and run such web apps in either a Node.js or Bun runtime environment. For assets (images, videos, SQLite db file(s), etc.) I like to use a S3/S3 compatible bucket(s) from a cloud service provider.
+1. For deploying these applications, I tend to use serverless/edge functions (AWS Lambda with OpenNext/SST, Cloudflare Pages, Vercel, etc.), in combo with a GitHub action to create a CI/CD pipeline, to build and run them in either a Node.js or Bun runtime environment. For assets that that need to or should exist outside the sites "public folder", S3/S3 compatible bucket(s) from a cloud service provider have been a fine option, but I just might use cloudinary one of these days, especially if I ever build something with public facing user-generated assets.
 
 2. For things that can't (or shouldn't) be run serverless (and isn't worth the overhead of a microservice), I'll either spin up a nix-flavored server instance on "the cloud" and deploy things the ol' fashioned way (this used to mean setting up each linux system by hand, but I've found NixOS as a great way to automate this step), or I'll deploy a Kubernetes cluster.
 
 3. Kubernetes is something I dove into relatively recently both because I'm an odd duck that's fascinated by distributed systems, and also because I needed a "production ready" alternative to Docker/Podman compose. Currently I've been experimenting with Argo CD to manage containerized applications on the cluster, and I've been investigating kOps as a way to rapidly deploy and scale such clusters to cloud infra with worker nodes spread about on spot-instances to optimize costs.
 
+Okay! That was quite a lot of information. I'm sure I've missed some tools I use, but otherwise that's pretty much most of what I do! 
+
 If you'd like to learn more about my process or would like to know more about me, I recommend reading the blog and subscribing with your RSS reader of choice. For the latest updates you can follow my social media linked in the footer down below.
+
+# Education
+1. (2016-2020): Biology BSc (focus in Neuroscience). University of California, Santa Barbara. Santa Barbara, California.
+   - I've been fascinated by computers and internet connected technology my entire life, but I really wanted to learn something that I wasn't going to be able to figure out on my own, so I pursued a degree in Biology. A long 4 years where I was formally trained as a Research Scientist, and completed an internship in one of the University's Ecology Laboratories (Mazer) as a research assistant. 
+
+# Professional Experience
+## Freelance
+- (2023-Present): Full Stack Developer. highesoterica.com
+- (2020-Present): Full Stack Developer & Graphic Designer. maitaisatsunset.com
+- (2018-2023): WordPress Developer. studentsagainstsexualassault-ca.org
+- (2015-2016): Squarespace Developer. hawaiizen.com
+- (2012-2015): WordPress Developer. hawaiizen.com 
+## Employee
+- (2018-2020): Publicity Director. Associated Students University of California, Santa Barbara Human Rights Board.
+- (2018-2019): Research Assistant Intern. Mazer Laboratory.
+- (2017-2018): WordPress Developer. ucsbhrb.org
+## Volunteer
+- (2018-2018): Graphic Designer. studentsagainstsexualassault-ca.org.
+

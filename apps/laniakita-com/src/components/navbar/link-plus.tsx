@@ -8,13 +8,14 @@ interface LinkyProps extends LinkProps {
   children: ReactNode;
   href: Url;
   className?: string;
+  target?: string;
 }
 
-export default function LinkPlus({ children, href, ...props }: LinkyProps) {
+export default function LinkPlus({ children, href, target, ...props }: LinkyProps) {
   const path = usePathname();
   const isCurrentPage = href === path;
   return (
-    <Link aria-current={isCurrentPage ? 'page' : undefined} href={href} {...props}>
+    <Link aria-current={isCurrentPage ? 'page' : undefined} href={href} target={target} {...props}>
       {children}
     </Link>
   );

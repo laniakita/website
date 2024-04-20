@@ -2,7 +2,7 @@ import ComingSoon from '@/components/coming-soon';
 
 export default function Page() {
   return (
-    <div className='h-screen'>
+    <div className='py-40'>
       <ComingSoon />
     </div>
   );

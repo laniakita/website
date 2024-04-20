@@ -62,6 +62,7 @@ export default function NavBar() {
                 onClick={() => {
                   setClicked({ ...clicked, stateVal: 'closed' });
                 }}
+                target={page === 'RSS' ? '_blank' : undefined}
               >
                 {page === 'RSS' ? page : page.toLowerCase()}
               </LinkPlus>
@@ -109,6 +110,7 @@ export default function NavBar() {
               key={page}
               href={handleRef(page)}
               className='nav-item'
+              target={page === 'RSS' ? '_blank' : undefined}
             >
               {page === 'RSS' ? page : page.toLowerCase()}
             </LinkPlus>
