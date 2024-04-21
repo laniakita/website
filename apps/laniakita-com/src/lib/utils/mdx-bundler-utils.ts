@@ -6,12 +6,14 @@ import rehypeShiki from '@shikijs/rehype';
 import { rendererRich, transformerTwoslash } from '@shikijs/twoslash';
 import type { Options } from '@mdx-js/loader';
 
+// , frontmatter?: Record<string, any>
+
 export const resMdx = async (mdxStr: string, folderName: string, slug: string) => {
   const folder = path.resolve(process.cwd(), `content/${folderName}`);
   const processed = await bundleMDX({
     source: mdxStr,
     cwd: folder,
-    mdxOptions(options: Options, frontmatter?: Record<string, any>) {
+    mdxOptions(options: Options) {
       options.remarkPlugins = [...(options.remarkPlugins ?? []), remarkGfm];
       options.rehypePlugins = [
         ...(options.rehypePlugins ?? []),
