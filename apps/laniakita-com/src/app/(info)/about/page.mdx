@@ -16,6 +16,7 @@ You'll soon be able to find some of my artistic work on the Projects page, Patre
     - [CSS](#css)
     - [WebGL](#webgl)
     - [Frontend Frameworks](#frontend-frameworks)
+    - [MDX](#mdx)
   - [Back-End](#back-end)
     - [API Frameworks](#api-frameworks)
     - [Databases](#databases)
@@ -78,6 +79,12 @@ Far beyond the animation abilities of CSS, I'm currently enamoured with Three.Js
 ### Frontend Frameworks
 
 While I don't use dedicated frontend frameworks like Gatsby anymore, I used to in the past. Gatsby was the first framework I used after leaping off of create-react-app, and was essentially a static site generator (SSG) for react. I moved on from Gatsby around the time server-side rendering became possible on serverless providers with frameworks like Next.Js, Nuxt, SvelteKit.
+
+### MDX
+
+This site is my first to make heavy use of markdown, which is quite ironic, but oh well. For general styling I'm using tailwind prose, but I've customized it quite a bit with the Catppuccin tailwnd plugin to get all those pretty colors. For syntax highlighting code blocks, I'm using the rehype version of @shikijs with the twoslash-transformer plugin to get those annotations you might find on typescript code blocks in one of my blog posts. I'm also using remark-gfm with rehype-slug, since I'm already used to GitHub markdown, I may as well keep using it.
+
+For pages like this one, I'm using the official Next/mdx plugin, and for the blog posts I'm using MDX bundler (with the rehype-media-import plugin to copy images to be servered from the public folder) so I can generate post pages on demand (because if you haven't noticed, I write a lot of words).
 
 ## Back-End
 
