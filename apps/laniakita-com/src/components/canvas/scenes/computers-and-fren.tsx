@@ -1,12 +1,13 @@
-/* eslint-disable react/no-unknown-property -- jsx-eslint hostilities */
+/* eslint-disable react/no-unknown-property -- jsx-eslint false positive */
 /* eslint-disable @typescript-eslint/no-floating-promises -- three.js be built different */
-
+/*useFrame,*/ 
+/*Mesh,*/ 
 'use client';
 import { useRef, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { extend, useFrame, useLoader, useThree } from '@react-three/fiber';
-import { MeshReflectorMaterial, CameraControls, Stars } from '@react-three/drei';
-import { type Mesh, TextureLoader, Vector3, MathUtils } from 'three';
+import { extend, useLoader, useThree } from '@react-three/fiber';
+import { MeshReflectorMaterial, CameraControls /*, Stars*/ } from '@react-three/drei';
+import { TextureLoader, Vector3, MathUtils } from 'three';
 import { geometry } from 'maath';
 import { A11yUserPreferences, useUserPreferences } from '@react-three/a11y';
 import { CompInstances, CompModel } from '@/components/canvas/models/old-computers/old-computers-test';
@@ -40,6 +41,7 @@ export function MinComputerShork() {
   );
 }
 
+/*
 function StarRotate() {
   const starRef = useRef(null!);
   const { a11yPrefersState } = useUserPreferences();
@@ -55,6 +57,7 @@ function StarRotate() {
 
   return <Stars ref={starRef} />;
 }
+*/
 
 export function LightsCameraActionShork() {
   return (
