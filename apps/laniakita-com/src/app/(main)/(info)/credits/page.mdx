@@ -6,8 +6,6 @@ Despite being the sole dev behind this site, there's a whole bunch of people who
 
 3D sculpting is a skill that remains to elude me. So, like any AAA game studio, I borrowed models from some of the amazing artists on Sketchfab. You should check their work out in the links below to see more!
 
-Note: The "MODEL_NAME" is a link to where I found it on sketch fab, and ARTIST_NAME is a link to their sketchfab profile.
-
 ### "[Old Computers](https://sketchfab.com/3d-models/old-computers-7bb6e720499a467b8e0427451d180063)", By [Rafael Rodrigues](https://sketchfab.com/RafaelBR873D)
 
 License: [CC 4.0](https://creativecommons.org/licenses/by/4.0/)
@@ -28,24 +26,78 @@ The ".glb" file that stores the model was compressed with gltfjsx, which is the 
 
 Beyond that, there's not actually any hard changes to them. Everything else is done entirely with Three.js sending the math to your device to compute the rotating wireframe of the shork on the screen in the center bottom left, as well as both of their locations in time and space and how light and shadow hits them.
 
+## Textures
+
+I'm not experienced with making texture maps at all, so I was really happy to find some free to use ones, by some very cool artists out there on the net! You should check out more of their work at the links below!
+
+### [WaterStains_02](https://www.artstation.com/marketplace/p/3yAy/free-surface-imperfections-pack), by [Emil Skriver](https://emilskriver.artstation.com/)
+
+License: [Extended Commercial License](https://www.artstation.com/marketplace-product-eula)
+
+This texture is one out of more than a dozen in an amazing texture pack by Emil Skriver, and I'm very grateful to have stumbled upon it. So, big thank you! The texture I chose to use was called "Water Stains \#02", which gives the floor on the home screen quite a nice realistic look. 
+
+The only thing I modified was sending it through a compression algorithm to reduce the payload to the client.
+
 ## Libraries
 
-### react-three, gltfjsx, zustand, by pmndrs
+### [Three.js](https://threejs.org/), by [Mr. Doob](https://mrdoob.com/)
 
-I really want to thank the pmndrs collective for their amazing component library + ecosystem of amazing react tools. The home page was built with a combination of react-three/fiber + react-three/drei + react-three/a11y.
+Without three.js, the web would be a very different place, so I'm very grateful this incredible library for WebGL was invented. Really massive thank you to the mythical [@mrdoob](https://twitter.com/mrdoob).
 
-That last component library is quite an amazing thing, mostly because I had no idea accessibility was even possible with this stuff. Granted, I still have some work left to do in figuring out how to better integrate the camera movements with the a11y actionCall function (it's not supposed to be buggy, that's my fault), but the fact that you can navigate a three.js scene by keyboard alone at all is quite a feat, and a noble one at that.
+### react-three/([fiber](https://github.com/pmndrs/react-three-fiber), [drei](https://github.com/pmndrs/drei), [a11y](https://github.com/pmndrs/react-three-a11y)), [gltfjsx](https://github.com/pmndrs/gltfjsx), [zustand](https://github.com/pmndrs/zustand), by [Poimandres](https://pmnd.rs/)
 
-I took a lot of inspiration from their various examples, as I mishmashed my way into creating the home page, and learned quite a bit in the process. I was also quite pleased to discover zustand as an alternative to redux.
+I really want to thank the pmndrs collective for all of their hardwork creating these amazing component libraries for Three.js + the react ecosystem!
 
-This site also re-uses some of the boiler plate from their react-three-next template showcasing Views with Tunnelrat, which also helped give me an idea as to how I needed to structure this site. It also led me to finding serwist (replacement for @ducanH2912/next-pwa, and service worker which speeds up this site and sets up the PWA features)!
+To create the home page I used the gltfsjsx cli to compress the models I mentioned above & instanced them into typescript components. Then, I used a combination of react-three/fiber + react-three/drei + react-three/a11y to make it all come together.
 
-### Three.js, by Ricardo Cabello
+That last component library is quite an amazing project, mostly because I had no idea accessibility was even possible with WebGL. Granted, I still have some work left to do in figuring out how to better integrate the camera movements with the a11y actionCall function (it's not supposed to be buggy, that's my fault), but the fact that you can navigate a three.js scene by keyboard alone at all, is mind blowing to me. As well, I also made sure to implement a11y preferences so everything in the scene stops moving if you happen to be a user who prefers reduced motion!
 
-Without three.js, the web would be a very different place, so I'm very grateful this library for WebGL was invented.
+So very big thanks to the wonderful devs behind the a11y component library, for making the digital world a better place.
 
-## Styles
+I also took a lot of inspiration from various examples on the react-three/fiber docs site, as I mishmashed my way into creating the home page, and learned quite a bit in the process. I was also quite pleased to discover zustand as an alternative to redux.
 
-### Catppuccin
+This site also re-uses some of the boiler plate from their react-three-next template showcasing Views with Tunnelrat, which also helped give me an idea as to how I needed to structure this site. It also led me to finding serwist (replacement for @ducanH2912/next-pwa, and the service worker library which speeds up this site and sets up the PWA features)!
 
-I'm obsessed with this color palette, I use it everywhere I can. So, naturally, it needed to go on my personal site as well. I tried my best to emulate what a Catppuccin Mauve theme would be like for a website, and this is the end result. I used the Catppuccin tailwind plugin which included all the color vars I needed to easily and accurately represent this theme, and also I used the Catppuccin @shikijs theme for the syntax highlighting of code blocks in markdown.
+### [camera-controls](https://github.com/yomotsu/camera-controls), by [Yomotsu](https://yomotsu.net/blog/)
+
+This is the library breathes life into the camera on the home page (by dollying between coordinates). Without it, the home page would be much more boring. So, I'm very thankful to [@yomotsu](https://twitter.com/yomotsu) for creating (and maintaining!) such an amazing camera library.
+
+### [serwist](https://github.com/serwist/serwist), by [serwist](https://serwist.pages.dev/)
+
+The secret to the speed of this site is by offloading a bunch of work from the main thread to service workers! This package also makes setting up a Next.Js project as a PWA quite a breeze. Very big thank you to the serwist team for making this all possible!
+
+### [jstoxml](https://github.com/davidcalhoun/jstoxml), by [David Calhoun](https://www.themaingate.net/)
+
+The RSS feed for this site is generated with help from a neat little library by David Calhoun, that transforms JavaScript objects into XML. Very big thank you to them for creating this amazing tool and helping to keep the dream of the old net alive!
+
+### [MDX Bundler](https://github.com/kentcdodds/mdx-bundler), by [Kent C. Dodds](https://kentcdodds.com/)
+
+Big thank you to Kent C. Dodds for providing a very cool library that both transforms MDX to JSX and bundles all the components with it! I used this library to compile all the mdx that exists on this sites dynamic routes.
+
+### [OpenNext](https://open-next.js.org/), [Ion](https://ion.sst.dev/docs/) by [SST](https://sst.dev/)
+
+Huge thank you to the SST team and all the wonderful devs who created OpenNext, for making it possible to deploy a Next.Js site    with AWS Lambda.
+
+### [rehype-mdx-import-media](https://github.com/remcohaszing/rehype-mdx-import-media), by [Remco Haszing](https://remcohaszing.nl/)
+
+Big thank you to Remco Haszing for creating a very helpful Rehype plugin!
+
+### [remark-gfm](https://github.com/remarkjs/remark-gfm), by Remark
+
+Thank you to the Remark team for letting me used GitHub markdown syntax in my MDX files!
+
+### [rehype-slug](https://github.com/rehypejs/rehype-slug), by Rehype
+
+Thank you to the Rehype team for creating a plugin that puts Ids on each of the headings!
+
+### [Shiki](https://github.com/shikijs/shiki), by [Shiki](https://shiki.style/)
+
+Very big thank you to the Shiki team for creating a syntax highlighter that ALSO features a module for twoslash annotations! It's crazy cool and very pretty, and I'm very glad to have discovered this library.
+
+### [catppuccin/tailwindcss](https://github.com/catppuccin/tailwindcss) by [Catppuccin](https://catppuccin.com/)
+
+I'm obsessed with this color palette, I use it everywhere I can. So, naturally, it needed to go on my personal site as well. I tried my best to emulate what a Catppuccin Mauve theme would be like for a website, and this is the end result.
+
+I used the Catppuccin tailwind plugin which included all the color vars I needed to easily and accurately represent this theme, and also I used the Catppuccin @shikijs theme for the syntax highlighting of code blocks in markdown.
+
+
