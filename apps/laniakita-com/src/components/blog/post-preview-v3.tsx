@@ -2,12 +2,12 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import dayjs, { extend } from 'dayjs';
-import kebabCase from 'lodash/kebabCase';
+//import kebabCase from 'lodash/kebabCase';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import timezone from 'dayjs/plugin/timezone';
 import { shimmer, toBase64 } from '@/lib/utils/shimmer-utils';
-import type { PostTeaserObjectProps } from '@/app/blog/page';
+import type { PostTeaserObjectProps } from '@/app/(main)/blog/page';
 
 extend(relativeTime);
 extend(localizedFormat);

@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import { useSearchParams } from 'next/navigation';
 import { Suspense, useState } from 'react';
 import SocialIconNavSplitterUltra from '@/components/social-splitter-ultra';
+
 const TextSplitterUltra = dynamic(() => import('@/components/text-splitter-v2'), {
   ssr: true,
 });
@@ -50,7 +51,7 @@ export default function SceneOverlay() {
         <div className='absolute  left-4 top-8  z-[1] w-fit text-xl  lg:top-20'>
           <Link
             href='/'
-            className='motion-safe:color-trans-2 rounded border border-ctp-text bg-ctp-crust p-4 font-mono text-ctp-text opacity-0 shadow-xl hover:bg-ctp-base motion-safe:animate-fade-in motion-reduce:opacity-100'
+            className='motion-safe:color-trans-2 rounded border border-ctp-text bg-ctp-crust p-4 font-mono text-ctp-text shadow-xl hover:bg-ctp-base'
             onClick={() => {
               needHint && setNeedHint(false);
             }}
