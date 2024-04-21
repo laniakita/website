@@ -28,6 +28,7 @@ const nextConfigFunction = async (phase, { defaultConfig }) => {
       options: {
         remarkPlugins: [(await import('remark-gfm')).default],
         rehypePlugins: [
+          (await import('rehype-slug')).default,
           [
             rehypeShiki,
             {
