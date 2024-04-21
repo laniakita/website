@@ -48,7 +48,7 @@ export default function SceneOverlay() {
   return (
     <Suspense>
       {searchParams.get('screen') && (
-        <div className='absolute  left-4 top-8  z-[1] w-fit text-xl  lg:top-20'>
+        <div className='ctp-mocha  absolute left-4  top-8 z-[1] w-fit  text-xl lg:top-20'>
           <Link
             href='/'
             className='motion-safe:color-trans-2 rounded border border-ctp-text bg-ctp-crust p-4 font-mono text-ctp-text shadow-xl hover:bg-ctp-base'
