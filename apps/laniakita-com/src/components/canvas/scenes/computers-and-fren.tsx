@@ -158,7 +158,7 @@ function CameraRig({ position = new Vector3(0, 0, 10), focus = new Vector3(0, 0,
 }
 
 function MyFloor({ ...props }) {
-  const [roughnessMap] = useLoader(TextureLoader, ['/assets/textures/rusty_metal_02_rough_1k--WebP.webp']);
+  const [roughnessMap] = useLoader(TextureLoader, ['/assets/textures/WaterStains_02.jpg']);
   const { dark } = useDarkStore((state) => state);
   return (
     <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.48, 10]} receiveShadow {...props}>
