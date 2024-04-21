@@ -14,7 +14,7 @@ export default function CircleMove(Props: CircleMovieProps) {
     colorClass = 'bg-ctp-red',
     animationClass = 'animate-growygrowsleft',
     posXClass = 'right-[10%]',
-    posYClass = 'bottom-[20%]',
+    posYClass = 'bottom-[10%]',
     heightClass = 'h-[8rem] md:h-[10rem]',
     widthClass = 'w-[8rem]  md:w-[10rem]',
   } = Props;

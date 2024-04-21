@@ -4,7 +4,9 @@ Aloha! My name is Lani Akita (she/her) and this is my personal site and Full Sta
 
 While the Web Industry (& the world) has changed dramatically since I started making websites 10+ years ago. When I was just a kid in the late 2000s uploading WordPress Blogs to free C-Panel hosts and routing them to free ".tk" & ".cc" domains. I remain driven by an endless curiosity to learn, experiment, and to build bigger, better, more ambitious things.
 
-I'm also a perpetual student and practicioner of the Arts. I mostly work in the digital medium, either happily painting the days away in Krita with a graphics tablet and a stylus, or losing track of the time writing WebGL to visualize and create interactive fractals.
+Today I mostly write TypeScript, which tends to wind up in either a React or Svelte based frontend (using some sort of full-stack framework). While I'm usually limited to deploying such apps to a Node runtime environment, when it's possible, I prefer to use the Bun runtime. This is so I can take advantage of all the crazy cool things Bun can do (like compute things really fast). 
+
+I'm also a perpetual student and practitioner of the Arts. I mostly work in the digital medium, either happily painting the days away in Krita with a graphics tablet and a stylus, or losing track of the time writing WebGL to visualize and create interactive fractals.
 
 You'll soon be able to find some of my artistic work on the Projects page, Patreon, and or for sale on Etsy. ^-^
 
@@ -38,13 +40,21 @@ You'll soon be able to find some of my artistic work on the Projects page, Patre
 
 ## My Current Development Process
 
-I use a lot of different tools and technologies (on top of actively learning new ones) because websites have become a teency bit more complicated than they were 10 or 15 years ago when jQuery was all the rage (oh no! Did I just date myself?!).
+>**Addendum**: In my mind this wasn't going to be so extensive, it was just supposed to give you a rough idea of what sort of developer I actually am, since Full-Stack could mean anything! 
+>
+>What's worse is that this entire thing is only the highlights! There's a bunch of stuff I didn't even mention like build tools (Vite, Webpack, Esbuild, Rolldown (rollup but rust), etc) and how I use nix-flakes to create isolated dev shells with all the tools I need (node, corepack, bun, etc.)! But, me being me, I can't help but over-explain things, so it turned out this way. 
+>
+>Aside, this pretty quickly became a gigantic list of some of the tools I've used in the past, and what I'm currently working with now (4/20/2024), and what I did/do with them. Since there's so much packed in here, you might find something cool you've never heard of, so maybe you'll get something out of it afterall. 
+>
+>~ Lani
 
-So, let's start with a high-level overview before we get down to brass tacks. First the inital planning tools I use before writing a single line of code, then the category of dev tools that contribute to a modern web stack (Front-End, Back-End, Full-Stack, DevOps).
+I use a lot of different tools and technologies (on top of actively learning new ones) because websites have become a teensy bit more complicated than they were 10 or 15 years ago when jQuery was all the rage (oh no! Did I just date myself?!).
+
+So, let's start with a high-level overview before we get down to brass tacks. First the initial planning tools I use before writing a single line of code, then the category of dev tools that contribute to a modern web stack (Front-End, Back-End, Full-Stack, DevOps).
 
 **UI/UX + Graphic Design Tools**: These help me visualize what an app is going to look like (UI), and what the user experience (UX) might be like (navigating between pages, menus, things you touch, etc.). I'm partial to Figma when creating the UI/UX designs/mockups. For things like branding, I used to use Adobe Illustrator, but have recently moved to Affinity Designer.
 
-**Planning Tools**: These help me visualize the software arcitecture an app will initially take, and gives me a rough estimate of how much it will cost. I mostly use excalidraw (or a pen and paper) for this, and a cloud providers cost calculator.
+**Planning Tools**: These help me visualize the software architecture an app will initially take, and gives me a rough estimate of how much it will cost. I mostly use excalidraw (or a pen and paper) for this, and a cloud providers cost calculator.
 
 **Front-End Tools**: These help me build user interfaces, i.e., everything you can see or touch or interact with on a website.
 
@@ -82,15 +92,15 @@ While I don't use dedicated frontend frameworks like Gatsby anymore, I used to i
 
 ### MDX
 
-This site is my first to make heavy use of markdown, which is quite ironic, but oh well. For general styling I'm using tailwind prose, but I've customized it quite a bit with the Catppuccin tailwnd plugin to get all those pretty colors. For syntax highlighting code blocks, I'm using the rehype version of @shikijs with the twoslash-transformer plugin to get those annotations you might find on typescript code blocks in one of my blog posts. I'm also using remark-gfm with rehype-slug, since I'm already used to GitHub markdown, I may as well keep using it.
+This site is my first to make heavy use of markdown, which is quite ironic, but oh well. For general styling I'm using tailwind prose, but I've customized it quite a bit with the Catppuccin tailwind plugin to get all those pretty colors. For syntax highlighting code blocks, I'm using the rehype version of @shikijs with the twoslash-transformer plugin to get those annotations you might find on typescript code blocks in one of my blog posts. I'm also using remark-gfm with rehype-slug, since I'm already used to GitHub markdown, I may as well keep using it.
 
-For pages like this one, I'm using the official Next/mdx plugin, and for the blog posts I'm using MDX bundler (with the rehype-media-import plugin to copy images to be servered from the public folder) so I can generate post pages on demand (because if you haven't noticed, I write a lot of words).
+For pages like this one, I'm using the official Next/mdx plugin, and for the blog posts I'm using MDX bundler (with the rehype-mdx-import-media plugin to copy images from the content folder to be served from the public folder) so I can generate post pages on demand (because if you haven't noticed, I write a lot of words).
 
 ## Back-End
 
 ### API frameworks
 
-For building back-end applications like APIs, I've recently taken a liking to ElysiaJS, a web framework optimized for the Bun runtime, and designed to be run on the Edge (i.e. Cloudflare workers). It's also quite a joy to work with. While it still has some sharp edges, having only hit 1.0 this March, it's already got quite a fluorishing ecosystem of third-party plugins and adapters, and that gives me quite a bit of hope for the future of the project.
+For building back-end applications like APIs, I've recently taken a liking to ElysiaJS, a web framework optimized for the Bun runtime, and designed to be run on the Edge (i.e. Cloudflare workers). It's also quite a joy to work with. While it still has some sharp edges, having only hit 1.0 this March, it's already got quite a flourishing ecosystem of third-party plugins and adapters, and that gives me quite a bit of hope for the future of the project.
 
 ElysiaJS, like Hono, can also integrate into a Full-Stack framework like Next, operating as a routehandler on the dynamically generated segments, which is pretty cool I think. While I've yet to take advantage of that ability, it's nice that the option is there.
 
@@ -102,7 +112,7 @@ I'm quite partial to relational databases, mostly because the sort of data I wor
 
 Because I typically work with such relational DBs inside an application that runs on Node or Bun, I've found drizzle (TypeScript ORM) to be quite amazing. I really appreciated that SQL knowledge pretty much directly transfers to drizzle (give or take a few edge cases), and you can even use the "magic" SQL selector as an escape hatch to write "raw" SQL when needed.
 
-I'm partial to ORMs like the above, just because I sleep better knowing that the risk of getting pwned by a SQL injection attack (Damn you bobby tables!) is much lower than if I had just wrote raw SQL myself. While yes, there's definitely safeguards and santization measures that you can proactively take to prevent such havok, my irrational brain however, just feels better with ORMs.
+I'm partial to ORMs like the above, just because I sleep better knowing that the risk of getting pwned by a SQL injection attack (Damn you bobby tables!) is much lower than if I had just wrote raw SQL myself. While yes, there's definitely safeguards and sanitization measures that you can proactively take to prevent such havoc, my irrational brain however, just feels better with ORMs.
 
 ### Buckets
 
@@ -112,7 +122,7 @@ For things that really don't belong in a database (>1 mb images), I've used buck
 
 When I'm not building my own back-end, I've been really delighted by PocketBase an amazing backend written in Go. It is hands down, the most joy I've ever had working with an off the shelf backend ever. It's also incredibly light to boot, since it's written in go, and can be deployed to a t3.nano instance without breaking a sweat! (You could shove it into a k8s cluster, but SQLite isn't really designed to be distributed like that.)
 
-I've also used some Backends as a Service (BaaS) like supabase, which is an opensource version of firebase, and like PocketBase comes complete with a database (though Postgres instead of SQLite) and authentication OOTB. Their sdk is easy enough, but it can integrate with Drizzle (though the last time I tried this it was a bit buggy) if you really just want the database part.
+I've also used some Backends as a Service (BaaS) like supabase, which is an open-source version of firebase, and like PocketBase comes complete with a database (though Postgres instead of SQLite) and authentication OOTB. Their sdk is easy enough, but it can integrate with Drizzle (though the last time I tried this it was a bit buggy) if you really just want the database part.
 
 ### Off-the-Shelf Content Management Systems (CMS)
 

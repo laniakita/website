@@ -23,6 +23,7 @@ function ThreeLayout({ children, ...props }: ThreeLayoutProps & CanvasProps) {
         overflow: 'auto',
         touchAction: 'auto',
       }}
+      className='flex flex-col'
     >
       {children}
       <Scene
@@ -30,8 +31,8 @@ function ThreeLayout({ children, ...props }: ThreeLayoutProps & CanvasProps) {
           position: 'fixed',
           top: 0,
           left: 0,
-          width: '100vw',
-          height: '100vh',
+          width: '100%',
+          height: '100%',
           pointerEvents: 'none',
         }}
         eventSource={ref}
