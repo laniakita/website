@@ -116,6 +116,12 @@ const config: Omit<Config, "content"> = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       typography: ({ theme }: { theme: any }) => ({
+        DEFAULT: {
+          css: {
+            'blockquote p:first-of-type::before': false,
+            'blockquote p:first-of-type::after': false,
+          },
+        },
         catppuccin: {
           css: {
             "--tw-prose-body": theme(`colors.ctp-text.DEFAULT`),

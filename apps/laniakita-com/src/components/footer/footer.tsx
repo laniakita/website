@@ -32,7 +32,7 @@ export const socialItems = [
 
 export default function Footer({ extra }: { extra?: string }) {
   return (
-    <footer className='w-full'>
+    <footer className='relative w-full'>
       <div
         className={`simple-color-trans relative flex w-full flex-col items-center justify-center overflow-hidden  bg-ctp-base dark:bg-ctp-crust ${extra}`}
       >
@@ -61,7 +61,7 @@ export default function Footer({ extra }: { extra?: string }) {
               {/* logo + search + social_buttons + +copyright + links */}
               <div className='flex flex-col items-center justify-center gap-8'>
                 <div className='size-full'>
-                  <SocialIconNav boxItems={socialItems} hxw='h-16 min-w-16 w-full basis-1/5' />
+                  <SocialIconNav boxItems={socialItems} hxw='h-16 min-w-16 max-w-16 w-full basis-1/5' />
                 </div>
                 <FooterNavLinks />
                 <CopyrightTag />

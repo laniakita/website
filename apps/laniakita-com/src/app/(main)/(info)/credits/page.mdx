@@ -1,0 +1,51 @@
+# Credits & Thanks
+
+Despite being the sole dev behind this site, there's a whole bunch of people who I don't know at all, who don't know me at all, who helped make this whole thing possible by open-sourcing their work on the internet, and I really, really appreciate them for that.
+
+## Models
+
+3D sculpting is a skill that remains to elude me. So, like any AAA game studio, I borrowed models from some of the amazing artists on Sketchfab. You should check their work out in the links below to see more!
+
+Note: The "MODEL_NAME" is a link to where I found it on sketch fab, and ARTIST_NAME is a link to their sketchfab profile.
+
+### "[Old Computers](https://sketchfab.com/3d-models/old-computers-7bb6e720499a467b8e0427451d180063)", By [Rafael Rodrigues](https://sketchfab.com/RafaelBR873D)
+
+License: [CC 4.0](https://creativecommons.org/licenses/by/4.0/)
+
+These are the various computer models and keyboard models and computer monitor models you see on the home page.
+
+The ".glb" file that stores the model was compressed with gltfjsx, which is the the payload that downloads to your client browser so you can witness them in all their glory. 
+
+Beyond that, there's not actually any hard changes to them. Everything else is done entirely with Three.js sending the math to your device to compute the text and colors on the screens and their locations in time and space and how light and shadow hits them.
+
+### "[Blahaj](https://sketchfab.com/3d-models/blahaj-ce981de49111488c81ea646067abe1ec)", By [Kaine G](https://sketchfab.com/Kaine_G)
+
+License: [CC 4.0](https://creativecommons.org/licenses/by/4.0/)
+
+This model accounts for the two cute [blue sharks](https://en.wikipedia.org/wiki/Blue_shark) you see on the home page. 
+
+The ".glb" file that stores the model was compressed with gltfjsx, which is the the payload that downloads to your client browser so you can witness them in all their shork glory. 
+
+Beyond that, there's not actually any hard changes to them. Everything else is done entirely with Three.js sending the math to your device to compute the rotating wireframe of the shork on the screen in the center bottom left, as well as both of their locations in time and space and how light and shadow hits them.
+
+## Libraries
+
+### react-three, gltfjsx, zustand, by pmndrs
+
+I really want to thank the pmndrs collective for their amazing component library + ecosystem of amazing react tools. The home page was built with a combination of react-three/fiber + react-three/drei + react-three/a11y.
+
+That last component library is quite an amazing thing, mostly because I had no idea accessibility was even possible with this stuff. Granted, I still have some work left to do in figuring out how to better integrate the camera movements with the a11y actionCall function (it's not supposed to be buggy, that's my fault), but the fact that you can navigate a three.js scene by keyboard alone at all is quite a feat, and a noble one at that.
+
+I took a lot of inspiration from their various examples, as I mishmashed my way into creating the home page, and learned quite a bit in the process. I was also quite pleased to discover zustand as an alternative to redux.
+
+This site also re-uses some of the boiler plate from their react-three-next template showcasing Views with Tunnelrat, which also helped give me an idea as to how I needed to structure this site. It also led me to finding serwist (replacement for @ducanH2912/next-pwa, and service worker which speeds up this site and sets up the PWA features)!
+
+### Three.js, by Ricardo Cabello
+
+Without three.js, the web would be a very different place, so I'm very grateful this library for WebGL was invented.
+
+## Styles
+
+### Catppuccin
+
+I'm obsessed with this color palette, I use it everywhere I can. So, naturally, it needed to go on my personal site as well. I tried my best to emulate what a Catppuccin Mauve theme would be like for a website, and this is the end result. I used the Catppuccin tailwind plugin which included all the color vars I needed to easily and accurately represent this theme, and also I used the Catppuccin @shikijs theme for the syntax highlighting of code blocks in markdown.

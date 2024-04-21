@@ -35,7 +35,6 @@ export function MinComputerShork() {
 
       <A11yUserPreferences>
         <color attach='background' args={[dark ? 'black' : 'black']} />
-        <StarRotate />
       </A11yUserPreferences>
     </>
   );

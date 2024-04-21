@@ -6,7 +6,6 @@ import '@/css/app.css';
 import { DarkStoreProvider } from '@/providers/theme-store-provider';
 import ThreeLayout from '@/components/dom/three-layout';
 import NavBar from '@/components/navbar/navbar';
-import Footer from '@/components/footer/footer';
 
 const inter = Inter({ subsets: ['latin'], display: 'swap', variable: '--font-inter' });
 
@@ -72,9 +71,9 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
       <body className={inter.className}>
         <DarkStoreProvider>
           <ThreeLayout camera={{ fov: 45 }}>
+
             <NavBar />
             <main>{children}</main>
-            <Footer />
           </ThreeLayout>
         </DarkStoreProvider>
       </body>
