@@ -1,5 +1,4 @@
 import { Suspense, useMemo } from 'react';
-import Link from 'next/link';
 import { getMDXComponent } from 'mdx-bundler/client';
 import { PostNumStoreProvider } from '@/providers/postnum-store-provider';
 import LoadingSpinner from '@/components/loading-spinner';

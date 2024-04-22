@@ -3,8 +3,8 @@ import { useMemo } from 'react';
 import { getMDXComponent } from 'mdx-bundler/client';
 import { queryPostMetas, querySinglePost } from '@/lib/utils/mdxlite-utils';
 import { resMdx } from '@/lib/utils/mdx-bundler-utils';
-import type { PostTeaserObjectProps } from '@/app/(main)/blog/page';
 import { PostHeader } from '@/components/blog/post-header';
+import type { PostTeaserObjectProps } from '@/app/blog/page';
 
 export async function generateStaticParams() {
   const postMetas = await queryPostMetas();

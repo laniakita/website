@@ -1,4 +1,4 @@
-/* eslint-disable react/no-unknown-property -- jsx-eslint hostilities */
+/* eslint-disable react/no-unknown-property -- jsx-eslint compatibility issues with r3f */
 import { MathUtils } from 'three';
 import { Text } from '@react-three/drei';
 import { ScreenInteractive } from './screen-interactive';

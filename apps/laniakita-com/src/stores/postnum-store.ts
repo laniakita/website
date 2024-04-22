@@ -6,7 +6,7 @@ export interface PostNumState {
 }
 
 export const defaultInitState: PostNumState = {
-  postNum: 3,
+  postNum: 50,
 };
 
 export interface PostNumActions {

@@ -1,4 +1,4 @@
-/* eslint-disable react/no-unknown-property -- jsx-eslint hostilities */
+/* eslint-disable react/no-unknown-property -- jsx-eslint compatibility issues with r3f */
 import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Decal, RenderTexture, PerspectiveCamera, Text } from '@react-three/drei';

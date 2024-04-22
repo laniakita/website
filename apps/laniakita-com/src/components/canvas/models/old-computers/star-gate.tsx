@@ -1,5 +1,6 @@
-/* eslint-disable react/no-unknown-property -- jsx-eslint hostilities */
-import React, { useRef, useCallback } from 'react';
+/* eslint-disable react/no-unknown-property -- jsx-eslint compatibility issues with r3f */
+import type { ReactNode } from 'react';
+import { useRef, useCallback } from 'react';
 import { useGLTF, Text, MeshPortalMaterial } from '@react-three/drei';
 import { useFrame, extend } from '@react-three/fiber';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
@@ -42,7 +43,7 @@ export default function ScreenStarGate({ screenName, ...props }: ScreenStarGateI
 
 interface ScreenStarGateInnerProps extends ScreenProps {
   screenText: string;
-  children: any;
+  children: ReactNode;
 }
 
 function ScreenStarGateInner({
