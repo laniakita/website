@@ -3,7 +3,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDarkStore } from '@/providers/theme-store-provider';
 import DarkModeSwitch from './dark-mode-switch';
 import LinkPlus from './link-plus';
-import { Url } from 'next/dist/shared/lib/router/router';
 
 interface Clicked {
   stateVal: string;

@@ -1,13 +1,14 @@
-/* eslint-disable react/no-unknown-property -- jsx-eslint hostilities */
+/* eslint-disable react/no-unknown-property -- jsx-eslint compatibility issues with r3f */
 import { useGLTF } from '@react-three/drei';
 import { type Mesh } from 'three';
 import { type GroupProps } from '@react-three/fiber';
+import type { ReactNode } from 'react';
 
 export interface ScreenProps extends GroupProps {
   frame: string;
   panel: string;
   screenName?: string;
-  children?: any;
+  children?: ReactNode;
   modelLink: string;
 }
 

@@ -1,4 +1,4 @@
-/* eslint-disable react/no-unknown-property -- jsx-eslint hostilities */
+/* eslint-disable react/no-unknown-property -- jsx-eslint compatibility issues with r3f */
 /* eslint-disable @typescript-eslint/no-shadow -- three.js instances */
 /*
 

@@ -3,7 +3,7 @@ import { useMemo, useState } from 'react';
 import { usePostNumStore } from '@/providers/postnum-store-provider';
 import LoadMoreButton from '@/components/blog/load-more-button';
 import { FeaturedPostPreviewV3, PostPreviewV3 } from '@/components/blog/post-preview-v3';
-import type { PostTeaserObjectProps } from '@/app/(main)/blog/page';
+import type { PostTeaserObjectProps } from '@/app/blog/page';
 
 interface PreviewRollerV3Props {
   dataArr: PostTeaserObjectProps[];
@@ -42,6 +42,7 @@ export default function PreviewRollerV3({ dataArr, isCat }: PreviewRollerV3Props
   );
 }
 
+/*
 function BlogInfoBox() {
   const infoString =
     "Hey! Welcome to my web dev blog. This is where I keep technical notes on some of the tools I'm working with, as well as form some long winded opinions on them. If you like what ya see, consider subscribing to the RSS feed! And if you think I've helped in someway, consider subscribing to the Patreon.";
@@ -51,3 +52,4 @@ function BlogInfoBox() {
     </div>
   );
 }
+*/

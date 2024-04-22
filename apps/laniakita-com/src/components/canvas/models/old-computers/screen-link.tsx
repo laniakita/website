@@ -1,4 +1,4 @@
-/* eslint-disable react/no-unknown-property -- jsx-eslint hostilities */
+/* eslint-disable react/no-unknown-property -- jsx-eslint compatibility issues with r3f */
 'use client';
 import { useRef } from 'react';
 import { extend } from '@react-three/fiber';

@@ -1,4 +1,4 @@
-/* eslint-disable react/no-unknown-property -- jsx-eslint hostilities */
+/* eslint-disable react/no-unknown-property -- jsx-eslint compatibility issues with r3f */
 import { SpinningBox } from './screen-interactive';
 import ScreenLink from './screen-link';
 

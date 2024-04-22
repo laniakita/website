@@ -1,4 +1,4 @@
-/* eslint-disable react/no-unknown-property -- jsx-eslint hostilities */
+/* eslint-disable react/no-unknown-property -- jsx-eslint compatibility issues with r3f */
 import { useFrame } from '@react-three/fiber';
 import { useRef } from 'react';
 import { type Mesh } from 'three';

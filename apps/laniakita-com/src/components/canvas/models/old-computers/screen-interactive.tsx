@@ -1,4 +1,4 @@
-/* eslint-disable react/no-unknown-property -- jsx-eslint hostilities */
+/* eslint-disable react/no-unknown-property -- jsx-eslint compatibility issues with r3f */
 /* eslint-disable no-multi-assign -- three.js built different */
 'use client';
 import { useRef, useCallback } from 'react';

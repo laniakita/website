@@ -1,7 +1,5 @@
-/* eslint-disable react/no-unknown-property -- jsx-eslint false positive */
+/* eslint-disable react/no-unknown-property -- jsx-eslint compatibility issues with r3f */
 /* eslint-disable @typescript-eslint/no-floating-promises -- three.js be built different */
-/*useFrame,*/ 
-/*Mesh,*/ 
 'use client';
 import { useRef, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
