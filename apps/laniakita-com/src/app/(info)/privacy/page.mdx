@@ -1,62 +1,95 @@
-Effective Date: April 1st, 2024
+# Privacy Policy
 
-1. Introduction
+**Effective Date: April 21st, 2024**
 
-This Privacy Policy describes how Lani Akita ("we," "us," or "our") collects, uses, and discloses your personal information when you use our website, laniakita.com (the "Website"). It also explains the choices you have about your information and how you can contact us.
+Since I should probably have a privacy policy in this day and age, here it is. This is a document that describes what information I collect from you, how I use it, what you can do about it.
 
-2. Information We Collect
+## Information I collect
 
-We collect the following information from you:
+### Information You Provide
 
-Information you provide directly: This includes information you provide when you comment on a post, subscribe to our newsletter, or contact us. This information may include your name, email address, and any other information you choose to share.
-Automatically collected information: When you use the Website, we automatically collect certain information about your device and browsing activity. This information may include your IP address, browser type, operating system, referring URL, pages visited, and time spent on the Website.
-Cookies: We use cookies to store information about your preferences and to track your activity on the Website. Cookies are small data files that are stored on your device. You can opt out of non-essential cookies by adjusting your browser settings.
-Authentication Cookie: We use a session cookie to validate your login if you create an account. This cookie is essential for maintaining your logged-in status and expires when you close your browser.
-Local Storage: We use local storage to store your preferred theme selection for the Website. Local storage allows us to remember your preference for future visits and improve your user experience.
-IndexedDB: We use IndexedDB to cache website content offline. This allows you to access certain content even when you are not connected to the internet. No personal information is stored in IndexedDB. 3. Use of Your Information
+In the future I'll likely setup an email newsletter, which will require you to provide me with your email address, which will get saved into a remote database, so that I can email you the newsletter.
 
-We use the information we collect to:
+If one day you are able to register for an account here, I will need to collect the resulting token generated from you registering with a single-sign-on (SSO) provider (such as Patreon), or your email/username and the resulting hash that was automatically generated from your password, and store them both in a remote database. 
 
-Operate and maintain the Website
-Respond to your comments and inquiries
-Send you newsletters or other communications (with your consent)
-Analyze how you use the Website
-Personalize your experience on the Website
-Track the performance of the Website
-Comply with legal and regulatory obligations 4. Google Analytics
+If one day I have integrated a marketplace on this website, likely Shopify, it will collect and provide me with your personal information such as your name, email, and phone number (if you provide one), as well as your shipping address. Your payment information will likely be collected and processed by Stripe. Please note that I don't have access to your payment information. Shopify only informs me of whether or not your payment went through, so I can process your order.
 
-We use Google Analytics to track traffic on the Website. Google Analytics collects information about your device and browsing activity, such as your IP address, browser type, and the pages you visit on the Website. This information is used to generate reports that help us understand how users interact with the Website. Google Analytics may also collect other information, as described in Google's [Privacy Policy](https://policies.google.com/privacy?hl=en-US). You can opt out of Google Analytics tracking by installing a [browser add-on](https://tools.google.com/dlpage/gaoptout).
+### Usage
 
-5. Your Rights
+Tracking wise, I get extremely vague anonymized usage reports provided by Amazon Web Services. You can't opt in, or opt out of these usage reports as far as i'm aware since it's literally the raw bandwidth a general geographic region uses per each page. As such, I have no clue how you in particular interact with my site nor do I care to know. 
 
-Under GDPR:
+### Cookies
 
-You have the right to access, correct, or delete your personal information.
-You have the right to object to the processing of your personal information.
-You have the right to data portability.
-Under CCPA (if applicable):
+I don't actually store or collect any cookies from you or any users currently. In the future I may add a login/registration system that might require storing a valid authentication token as a cookie on your browser. Though, whenever you clear your cookies, you would automatically get logged out.
 
-You have the right to know what personal information we collect, use, and disclose about you.
-You have the right to delete your personal information.
-You have the right to opt out of the sale of your personal information (we do not sell your personal information).
-To exercise your rights under GDPR or CCPA, please contact us at lani@laniakita.com
+### Local Storage
 
-6. Data Retention
+When you flip the theme toggle switch between light or dark mode, your preference get's stored as a key value pair in your browsers localstorage, and this site reads that to display your preferred theme preference. 
 
-We will retain your personal information for as long as it is necessary to fulfill the purposes for which it was collected, or as required by law.
+### IndexedDB
 
-7. Security
+I make use of a package called serwist, which caches page data on your device into a local database known as IndexedDB. This helps the pages/content on this site load much faster than they would otherwise. 
 
-We take reasonable steps to protect your personal information from unauthorized access, disclosure, alteration, or destruction. However, no security measures are perfect, and we cannot guarantee the security of your information.
+## What I do with the Collected Information
 
-8. Children's Privacy
+### Information You Provide
 
-The Website is not directed to children under the age of 13. We do not knowingly collect personal information from children under 13. If you are a parent or guardian and you believe that your child has provided us with personal information, please contact us.
+Currently you can't provide me with any information, but in the future should I add this ability, this is what I will do with it.
 
-9. Changes to this Privacy Policy
+If you registered for the email newsletter, I will check the database of stored emails, and send out the newsletter to those emails. I won't ever sell or offer this information to third parties knowingly.
 
-We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on the Website.
+If you registered for an account here with a SSO provider, I will use the generated token I stored to verify that it matches with the fresh token generated when you login. If you registered for an account with a username/email & password combination, I will verify that the resulting hash of your input password, matches the stored password hash of the registered account's email/username you are attempting to log into.
 
-10. Contact Us
+If you purchased anything from this website via the third-party marketplace integration, such as the one provided by Shopify, I will use the personal information and order information you provided to Shopify, to process and ship your order to you. Your order will be confirmed, and prepped for processing, once Stripe provides Shopify with information that confirms your payment method was valid. 
+
+### Usage
+
+The only thing I may do with the anonymized usage reports, is speculate as to why a certain page got more traffic than another page.
+
+### Cookies
+
+If in the future it is possible to register and login with an account on this website, I use the stored authentication cookie to validate your access to certain pages. This might unlock access to premium content, or this might unlock a user dashboard only your account may access.
+
+### Local Storage
+
+I use the key value pair corresponding to your theme preference, to adjust the theme to your preference. You may remove this key value pair, which resets your theme preference, simply by changing your devices global color scheme preference.
+
+### IndexedDB
+
+The website uses the cached data that was stored in IndexedDB to provide you with a better use experience. This data doesn't leave your device.
+
+## Your Rights
+
+### Under GDPR:
+
+1. You have the right to access, correct, or delete your personal information.
+2. You have the right to object to the processing of your personal information.
+3. You have the right to data portability.
+
+### Under CCPA (if applicable):
+
+1. You have the right to know what personal information I collect, use, and disclose about you.
+2. You have the right to delete your personal information.
+3. You have the right to opt out of the sale of your personal information (I do not sell your personal information).
+
+To exercise your rights under GDPR or CCPA, please contact me at lani@laniakita.com
+
+### Data Retention
+
+I will retain the information you provided to me for as long as it is necessary to fulfill the purposes for which it was collected, or as required by law.
+
+### Security
+
+I take reasonable steps to protect your personal information from unauthorized access, disclosure, alteration, or destruction. However, no security measures are perfect, and I cannot guarantee the security of your information.
+
+### Children's Privacy
+
+This website is not directed to children under the age of 13. I do not knowingly collect personal information from children under the age of 13. If you are a parent or guardian and you believe that your child has provided me with personal information, please contact me at lani@laniakita.com.
+
+### Privacy Policy Changes
+
+I may update this Privacy Policy from time to time. I will notify you of any changes by posting the new Privacy Policy on the Website.
+
+### Contact Me
 
 If you have any questions about this Privacy Policy, please contact me at lani@laniakita.com
