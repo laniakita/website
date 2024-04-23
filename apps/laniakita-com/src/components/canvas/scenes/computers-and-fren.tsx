@@ -102,7 +102,7 @@ function Lights() {
   );
 }
 
-function CameraRig({ position = new Vector3(0, 0, 10), focus = new Vector3(0, 0, 0), searchTarget = 'screen' }) {
+function CameraRig({ position = new Vector3(0, -1, 5), focus = new Vector3(0, -0.5, 1), searchTarget = 'screen' }) {
   const { a11yPrefersState } = useUserPreferences();
   const scene = useThree((state) => state.scene);
   const cameraControlRef = useRef<CameraControls | null>(null);
@@ -120,7 +120,7 @@ function CameraRig({ position = new Vector3(0, 0, 10), focus = new Vector3(0, 0,
             setScene();
           }, 500);
         } else if (targetMesh.name === meshName) {
-          targetMesh.parent?.localToWorld(position.set(0, 0.5, 3.5));
+          targetMesh.parent?.localToWorld(position.set(0, 0.5, 2));
           targetMesh.parent?.localToWorld(focus.set(0, 0.5, 0));
 
           cameraControlRef.current?.setLookAt(...position.toArray(), ...focus.toArray(), true);
@@ -159,7 +159,7 @@ function CameraRig({ position = new Vector3(0, 0, 10), focus = new Vector3(0, 0,
 }
 
 function MyFloor({ ...props }) {
-  const [roughnessMap] = useLoader(TextureLoader, ['/assets/textures/WaterStains_02.jpg']);
+  const [roughnessMap] = useLoader(TextureLoader, ['/assets/textures/WaterStains_02.avif']);
   const { dark } = useDarkStore((state) => state);
   return (
     <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.48, 10]} receiveShadow {...props}>
