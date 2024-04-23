@@ -12,7 +12,7 @@ export default function TextSplitterUltra({ textIn, spanRole, charClass, ...span
       {textIn.split('').map((char, index) => {
         return (
           <span
-            key={textIn.indexOf(char)}
+            key={`${char}-${textIn.indexOf(char)}-${Math.random()*10}`}
             className={`${char === ' ' ? 'mx-[0.2rem]' : ''} ${charClass}`}
             style={{ animationDelay: `${0.5 + index / 10}s` }}
           >
