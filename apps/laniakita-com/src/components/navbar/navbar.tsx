@@ -50,7 +50,7 @@ export default function NavBar() {
       >
         <div
           ref={dropNavRef}
-          className={`${clicked.stateVal === 'open' ? 'opacity-100 [transform:translate3d(0%,0%,0px)]' : 'opacity-0 [transform:translate3d(0%,100%,-1px)]'} max-h-[calc(100vh-3.9rem)] w-full overflow-y-auto rounded-t-2xl border-t border-ctp-mauve bg-ctp-base [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:transform_0.5s,_opacity_0.3s,_background-color_0.8s] dark:bg-ctp-crust lg:hidden`}
+          className={`${clicked.stateVal === 'open' ? 'opacity-100 [transform:translate3d(0%,0%,0px)]' : 'opacity-0 [transform:translate3d(0%,100%,-1px)]'} max-h-[calc(100vh-3.9rem)] w-full overflow-y-auto rounded-t-2xl border-t border-ctp-mauve bg-ctp-base [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:transform_0.5s,_opacity_0.3s,_background-color_0.8s] dark:bg-ctp-midnight lg:hidden`}
         >
           <div className='flex size-full flex-col gap-4 p-4'>
             {pagesArr.map((page) => (
@@ -76,7 +76,7 @@ export default function NavBar() {
       </div>
 
       <div
-        className={`motion-safe:simple-color-trans fixed bottom-0 left-0 z-50 flex h-16 w-full items-center justify-between border-t border-ctp-surface0 px-4 text-xl shadow-lg backdrop-blur-xl [transition:_opacity_0.8s] lg:top-0 lg:h-12 lg:border-b lg:border-t-0 ${clicked.stateVal === 'open' ? 'bg-ctp-base dark:bg-ctp-crust' : ' bg-ctp-base/80 dark:bg-ctp-base/70'}`}
+        className={`motion-safe:simple-color-trans fixed bottom-0 left-0 z-50 flex h-16 w-full items-center justify-between border-t border-ctp-surface0 px-4 text-xl shadow-lg backdrop-blur-xl [transition:_opacity_0.8s] lg:top-0 lg:h-12 lg:border-b lg:border-t-0 ${clicked.stateVal === 'open' ? 'bg-ctp-base dark:bg-ctp-midnight' : ' bg-ctp-base/80 dark:bg-ctp-base/70'}`}
       >
         <LinkPlus href='/' className='nav-logo'>
           Lani Akita
@@ -126,7 +126,7 @@ function TalkToMe() {
   return (
     <button
       type='button'
-      className='rounded-xl border-2 border-ctp-sky bg-ctp-sky/40 px-2.5 py-0.5 font-semibold lowercase text-ctp-text hover:bg-ctp-sky hover:text-ctp-base dark:bg-ctp-crust dark:bg-ctp-crust dark:bg-ctp-sky/0 dark:hover:bg-ctp-sky'
+      className='rounded-xl border-2 border-ctp-sky bg-ctp-sky/40 px-2.5 py-0.5 font-semibold lowercase text-ctp-text hover:bg-ctp-sky hover:text-ctp-base dark:bg-ctp-midnight dark:bg-ctp-crust dark:bg-ctp-sky/0 dark:hover:bg-ctp-sky'
     >
       <p>lets talk</p>
     </button>
