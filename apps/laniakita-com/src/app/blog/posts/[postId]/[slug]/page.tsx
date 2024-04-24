@@ -1,6 +1,8 @@
 import { notFound, redirect } from 'next/navigation';
 import { useMemo } from 'react';
+import matter from 'gray-matter';
 import { getMDXComponent } from 'mdx-bundler/client';
+import type { Metadata, ResolvingMetadata } from 'next'
 import { queryPostMetas, querySinglePost } from '@/lib/utils/mdxlite-utils';
 import { resMdx } from '@/lib/utils/mdx-bundler-utils';
 import { PostHeader } from '@/components/blog/post-header';
@@ -13,6 +15,49 @@ export async function generateStaticParams() {
     slug: postObj.headline.replaceAll(' ', '_'),
   }));
 }
+
+export async function generateMetadata(
+  { params }: { params: { postId: string; slug: string }},
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const slugDeserializer = params.slug.replaceAll('_', ' ');
+  const postQ = await querySinglePost(params.postId, slugDeserializer)
+  const postDescrSource = postQ?.rawContent?.trim();
+  
+  const postDescrMatter = postDescrSource && matter(postDescrSource).content
+  
+  const findDescr = postDescrMatter?.split('\n').map((strPara) => {
+    if (strPara !== '' && strPara.split(' ')[0] !== 'import') {
+      return strPara
+    }
+    return undefined
+  })
+
+  const descr = findDescr?.filter((el) => el);
+
+  const previousImages = (await parent).openGraph?.images ?? []
+  
+  const heroImg = postQ?.heroFile
+
+  return {
+    title: slugDeserializer,
+    description: descr ? descr[0] : '',
+    openGraph: {
+      title: postQ?.headline,
+      description: descr ? descr[0] : '',
+      images: [heroImg ? heroImg : '', ...previousImages]
+    },
+    twitter: {
+      card: 'summary',
+      title: slugDeserializer,
+      description: descr ? descr[0] : '',
+      images: [heroImg ? heroImg : '', ...previousImages]
+  },
+  }
+}
+
+
+
 interface ParagraphProps {
   children?: string;
 }

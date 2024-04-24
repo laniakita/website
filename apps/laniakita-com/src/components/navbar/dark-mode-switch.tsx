@@ -63,10 +63,11 @@ export default function DarkModeSwitch() {
   return (
     <div className='s-slider' id='darkmode-switch'>
       <button
+        id={`darkmode-button-${Math.floor(Math.random()*1000)}`}
         type='button'
         role='switch'
         aria-checked={Boolean(dark)}
-        aria-labelledby='darkmode-switch'
+        aria-label={dark ? 'Toggle Light theme' : 'Toggle Dark theme'}
         onClick={handleClick}
         className='relative h-[1.6rem] w-[2.8rem] rounded-[1em] border border-stone-600/60 bg-stone-400/60 shadow-inner before:bg-stone-100/90 before:shadow-md aria-checked:border-stone-400/60 aria-checked:bg-stone-900/40 aria-checked:shadow-inner aria-checked:before:bg-stone-400/50 aria-checked:before:shadow-sm'
       />

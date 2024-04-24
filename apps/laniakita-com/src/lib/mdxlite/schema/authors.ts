@@ -5,6 +5,7 @@ export interface Authors {
   name: string;
   mastodon?: string;
   rawContent?: string;
+  localKey?: string;
 }
 
 export const authors = sqliteTable('authors', {
@@ -12,4 +13,5 @@ export const authors = sqliteTable('authors', {
   name: text('name').unique(),
   mastodon: text('mastodon'),
   rawContent: text('raw_content'),
+  localKey: text('local_key') 
 });

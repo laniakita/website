@@ -1,11 +1,16 @@
 {
   "extends": ["//"],
+  "globalDotEnv": [".env"],
   "pipeline": {
     "analyze": {
       "env": ["ANALYZE"]
     },
     "build": {
+      "dotEnv": [".env.production.local", ".env.production", ".env.local", ".env"],
       "outputs": [".next/**", "!.next/cache/**"]
+    },
+    "dev": {
+      "dotEnv": [".env.development.local", ".env.development", ".env.local", ".env"]
     },
     "start": {}
   }

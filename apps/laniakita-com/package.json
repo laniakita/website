@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "analyze": "ANALYZE=true next build",
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "dotenv -e .env.development -e .env.local -- next dev",
+    "build": "dotenv -e .env.production -e .env.local -- next build",
     "start": "next start",
     "lint": "next lint",
     "push": "bun ./bin/push.ts --content content",
@@ -24,6 +24,7 @@
     "better-sqlite3": "^9.5.0",
     "dayjs": "^1.11.10",
     "dotenv": "^16.4.5",
+    "dotenv-cli": "^7.4.1",
     "drizzle-orm": "^0.30.8",
     "esbuild": "^0.20.2",
     "gray-matter": "^4.0.3",

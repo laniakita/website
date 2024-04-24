@@ -89,6 +89,7 @@ export default function NavBar() {
               clicked.stateVal === 'closed' && setClicked({ ...clicked, stateVal: 'open' });
             }}
             className='visible rounded-md lg:hidden'
+            aria-label={`${clicked.stateVal === 'open' ? 'close' : 'open'} mobile navigation menu.`}
           >
             <span className='flex h-10 w-12 flex-col items-center justify-center gap-1.5'>
               <span

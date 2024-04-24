@@ -1,6 +1,6 @@
 @layer components {
   .prose-protocol-omega {
-    @apply prose prose-catppuccin relative max-w-xl text-lg prose-p:supports-[text-wrap:pretty]:text-pretty prose-code:before:hidden prose-code:after:hidden prose-pre:max-w-[88vw] prose-pre:rounded-xl prose-pre:border prose-pre:border-ctp-surface0 prose-pre:shadow-lg prose-pre:shadow-ctp-mauve/30 [&:where(:not(pre)>code)]:prose-code:rounded-md [&:where(:not(pre)>code)]:prose-code:border [&:where(:not(pre)>code)]:prose-code:border-ctp-surface0  [&:where(:not(pre)>code)]:prose-code:bg-ctp-base [&:where(:not(pre)>code)]:prose-code:p-1;
+    @apply prose prose-catppuccin relative max-w-xl text-lg prose-a:underline prose-p:supports-[text-wrap:pretty]:text-pretty prose-code:before:hidden prose-code:after:hidden prose-pre:max-w-[88vw] prose-pre:rounded-xl prose-pre:border prose-pre:border-ctp-surface0 prose-pre:shadow-lg prose-pre:shadow-ctp-mauve/30 [&:where(:not(pre)>code)]:prose-code:rounded-md [&:where(:not(pre)>code)]:prose-code:border [&:where(:not(pre)>code)]:prose-code:border-ctp-surface0  [&:where(:not(pre)>code)]:prose-code:bg-ctp-base [&:where(:not(pre)>code)]:prose-code:p-1;
   }
 }
 

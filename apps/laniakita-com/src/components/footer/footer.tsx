@@ -8,24 +8,28 @@ export const socialItems = [
     title: 'Github',
     url: 'https://github.com/laniakita',
     iconName: 'icon-[ant-design--github-filled]',
+    linkName: 'Github!',
     textSize: 'text-5xl',
   },
   {
     title: 'Mastodon',
     url: 'https://hachyderm.io/@lani',
     iconName: 'icon-[fa6-brands--mastodon]',
+    linkName: 'Mastodon!',
     textSize: 'text-5xl',
   },
   {
     title: 'Patreon',
     url: 'https://patreon.com/Lani_Akita',
     iconName: 'icon-[fa6-brands--patreon]',
+    linkName: 'Patreon!',
     textSize: 'text-4xl',
   },
   {
     title: 'RSS',
     url: '/rss.xml',
     iconName: 'icon-[ph--rss-bold]',
+    linkName: 'your RSS reader!',
     textSize: 'text-5xl',
   },
 ];

@@ -24,6 +24,7 @@ export interface Posts {
   heroCreditUrlText?: string;
   heroAltText?: string;
   rawContent?: string;
+  localKey?: string;
 }
 
 export const posts = sqliteTable('posts', {
@@ -41,6 +42,7 @@ export const posts = sqliteTable('posts', {
   heroCreditUrlText: text('hero_credit_url_text'),
   heroAltText: text('hero_alt_text'),
   rawContent: text('raw_content'),
+  localKey: text('local_key')
 });
 
 export const postsRelations = relations(posts, ({ one }) => ({

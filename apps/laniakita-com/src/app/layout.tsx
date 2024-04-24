@@ -1,3 +1,4 @@
+import 'dotenv'
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import localFont from 'next/font/local';
@@ -17,23 +18,18 @@ const zeroxproto = localFont({
 });
 
 const APP_NAME = 'Lani Akita';
-const APP_DEFAULT_TITLE = 'Lani Akita | Full Stack Dev Blog';
+const APP_DEFAULT_TITLE = 'Lani Akita | Full-Stack Developer';
 const APP_TITLE_TEMPLATE = '%s - Lani Akita';
 const APP_DESCRIPTION = 'Official site & dev blog of Lani, a Full Stack Developer who thrives on the bleeding edge.';
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.BASE_URL ?? 'https://laniakita.com'),
   applicationName: APP_NAME,
   title: {
     default: APP_DEFAULT_TITLE,
     template: APP_TITLE_TEMPLATE,
   },
   description: APP_DESCRIPTION,
-  alternates: {
-    canonical: '/',
-    languages: {
-      'en-US': '/',
-    },
-  },
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
@@ -68,11 +64,10 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <html lang='en' dir='ltr' className={`${inter.variable} ${zeroxproto.variable}`}>
+    <html lang='en-US' dir='ltr' className={`${inter.variable} ${zeroxproto.variable}`}>
       <body className={inter.className}>
         <DarkStoreProvider>
           <ThreeLayout camera={{ fov: 45 }}>
-
             <NavBar />
             <main>{children}</main>
             <Footer />

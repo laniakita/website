@@ -29,6 +29,7 @@ const { values } = parseArgs({
 
 const currentDir = process.cwd();
 const searchFolder = path.resolve(currentDir, values.content!);
+const contentFolderName = values.content!;
 
 //const schemas = path.resolve(currentDir, values.schemas!);
 
@@ -60,11 +61,27 @@ async function getMDXPathsFromContentFolder(contentFolder: string) {
 /* phase 2: with file paths, we can send them into a database */
 
 async function batchMdxProcessor(absPathArr: string[]) {
+  const getContentFolder = contentFolderName;
   const fileArr = await Promise.all(
     absPathArr.map(async (mdxFilePath: string) => {
       const blob = Bun.file(mdxFilePath);
       const str = await blob.text();
       const frontmatter = matter(str).data;
+      const splitStr = mdxFilePath.split('/');
+
+      /*
+       * This is a script which lets us find the path starting from the content folder,
+       *  purging the process.cwd() from the mdxFilePath
+       * */
+
+      const getLocalKeyIndex = splitStr.map((str1: string) => {
+        if (str1 === getContentFolder) {
+          return splitStr.indexOf(str1);
+        }
+        return undefined;
+      });
+      const keyIndex = getLocalKeyIndex.filter((el) => el);
+      const freshLocalKey = splitStr.slice(keyIndex[0], splitStr.length).join('/');
 
       /*
        * if we have images in the frontmatter we can copy them over to the public folder,
@@ -74,7 +91,6 @@ async function batchMdxProcessor(absPathArr: string[]) {
 
       if (frontmatter.heroFile) {
         console.log('found hero image');
-        const splitStr = mdxFilePath.split('/');
         const parentPath = splitStr.slice(0, splitStr.length - 1).join('/');
         const imgToCopyFilePath = path.resolve(parentPath, frontmatter.heroFile as string);
         const publicCopyPath = `/public/assets/hero-images/${(frontmatter.heroFile as string).split('/').pop()}`;
@@ -101,6 +117,7 @@ async function batchMdxProcessor(absPathArr: string[]) {
       /* put it all together */
       const fileObj = {
         meta: frontmatter,
+        localKey: freshLocalKey,
         rawStr: str,
       };
 
