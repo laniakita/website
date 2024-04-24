@@ -8,10 +8,10 @@ import { MeshReflectorMaterial, CameraControls /*, Stars*/ } from '@react-three/
 import { TextureLoader, Vector3, MathUtils } from 'three';
 import { geometry } from 'maath';
 import { A11yUserPreferences, useUserPreferences } from '@react-three/a11y';
+import { degToRad } from 'three/src/math/MathUtils.js';
 import { CompInstances, CompModel } from '@/components/canvas/models/old-computers/old-computers-test';
 import { useDarkStore } from '@/providers/theme-store-provider';
 import { ShorkInstances, Shork } from '../models/shork/shork';
-import { degToRad } from 'three/src/math/MathUtils.js';
 
 extend(geometry);
 
@@ -106,7 +106,6 @@ function Lights() {
 function CameraRig({ position = new Vector3(0, 0, 4), focus = new Vector3(0, 0, 0), searchTarget = 'screen' }) {
   const { a11yPrefersState } = useUserPreferences();
   const scene = useThree((state) => state.scene);
-  const camera = useThree((state) => state.camera);
   const cameraControlRef = useRef<CameraControls | null>(null);
   const searchParams = useSearchParams();
   
