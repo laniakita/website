@@ -65,7 +65,6 @@ export default function Page() {
               <div className='flex w-fit flex-col -space-y-1 pb-1 text-4xl font-black text-ctp-text md:space-y-0 md:pb-2'>
                 <h1 className='max-w-max motion-safe:hidden'>I create web app & digital experiences that delight.</h1>
 
-                <Suspense fallback={<LoadingSpinner overrides='h-40' />}>
                   <div className={mobileVis ? 'visible h-40' : 'hidden h-40'}>
                     <h1 className='overflow-hidden'>
                       <TextSplitterUltra
@@ -104,9 +103,7 @@ export default function Page() {
                       />
                     </h1>
                   </div>
-                </Suspense>
 
-                <Suspense fallback={<LoadingSpinner />}>
                   <div className={tabVis ? 'visible' : 'hidden'}>
                     <h1 className='overflow-hidden'>
                       <TextSplitterUltra
@@ -136,7 +133,6 @@ export default function Page() {
                       />
                     </h1>
                   </div>
-                </Suspense>
               </div>
             </div>
           </div>
@@ -193,7 +189,6 @@ export default function Page() {
                 Full-Stack Developer, <br /> with Creative Tendencies
               </h1>
 
-              <Suspense fallback={<LoadingSpinner />}>
                 <div className={mobileVis ? 'visible' : 'hidden'}>
                   <h1 className='overflow-hidden'>
                     <TextSplitterUltra
@@ -235,9 +230,7 @@ export default function Page() {
                     />
                   </h1>
                 </div>
-              </Suspense>
 
-              <Suspense fallback={<LoadingSpinner overrides='h-20' />}>
                 <div className={tabVis ? 'visible h-20' : 'hidden'}>
                   <h1 className='overflow-hidden'>
                     <TextSplitterUltra
@@ -259,7 +252,6 @@ export default function Page() {
                     />
                   </h1>
                 </div>
-              </Suspense>
             </div>
             <div className='flex flex-col gap-4 text-lg supports-[text-wrap:pretty]:text-pretty'>
               <p className=''>

@@ -1,4 +1,4 @@
-import 'dotenv'
+import 'dotenv';
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import localFont from 'next/font/local';
@@ -8,6 +8,7 @@ import { DarkStoreProvider } from '@/providers/theme-store-provider';
 import ThreeLayout from '@/components/dom/three-layout';
 import NavBar from '@/components/navbar/navbar';
 import Footer from '@/components/footer/footer';
+import { Scroller } from '@/components/lenis-scroller';
 
 const inter = Inter({ subsets: ['latin'], display: 'swap', variable: '--font-inter' });
 
@@ -67,11 +68,13 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
     <html lang='en-US' dir='ltr' className={`${inter.variable} ${zeroxproto.variable}`}>
       <body className={inter.className}>
         <DarkStoreProvider>
-          <ThreeLayout camera={{ fov: 45 }}>
-            <NavBar />
-            <main>{children}</main>
-            <Footer />
-          </ThreeLayout>
+          <Scroller>
+            <ThreeLayout camera={{ fov: 45 }}>
+              <NavBar />
+              <main>{children}</main>
+              <Footer />
+            </ThreeLayout>
+          </Scroller>
         </DarkStoreProvider>
       </body>
     </html>
