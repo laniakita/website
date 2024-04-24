@@ -3,12 +3,13 @@ import { type ComponentProps } from 'react';
 interface TextSplitterUltraProps extends ComponentProps<'span'> {
   textIn: string;
   spanRole: string;
+  level: number;
   charClass: string;
 }
 
-export default function TextSplitterUltra({ textIn, spanRole, charClass, ...spanProps }: TextSplitterUltraProps) {
+export default function TextSplitterUltra({ textIn, spanRole, charClass, level, ...spanProps }: TextSplitterUltraProps) {
   return (
-    <span aria-label={textIn} role={spanRole} {...spanProps}>
+    <span aria-label={textIn} role={spanRole} aria-level={level} {...spanProps}>
       {textIn.split('').map((char, index) => {
         return (
           <span

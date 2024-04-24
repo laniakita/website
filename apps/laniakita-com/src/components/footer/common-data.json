@@ -1,5 +1,5 @@
 {
-  "navigationItems": ["Home", "Blog", "About", "Projects", "Contact", "Credits", "Privacy", "Terms", "Guidelines"],
+  "navigationItems": ["Home", "Blog", "About", "Projects", "Contact", "Credits", "Privacy", "Terms"],
   "socialItems": [
     {
       "title": "Github",

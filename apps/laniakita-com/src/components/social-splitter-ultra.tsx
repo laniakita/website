@@ -12,6 +12,7 @@ interface SocialNavIcon {
   url: string;
   iconName: string;
   textSize: string;
+  linkName: string;
 }
 
 export default function SocialIconNavSplitterUltra({
@@ -32,6 +33,7 @@ export default function SocialIconNavSplitterUltra({
             style={{ animationDelay: `${0.5 + index / 10}s` }}
             target='_blank'
             rel='noopener'
+            aria-label={`Follow Lani on ${item.linkName}`}
           >
             <span className={`${item.iconName} ${item.textSize}`} />
           </a>

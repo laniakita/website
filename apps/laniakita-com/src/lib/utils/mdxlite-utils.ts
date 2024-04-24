@@ -4,6 +4,12 @@ import mdxlitedb from '@/lib/mdxlite/drizzle';
 import { categories } from '@/lib/mdxlite/schema/categories';
 import { posts } from '@/lib/mdxlite/schema/posts';
 
+/* === need to add to bun utils later maybe === */
+
+
+
+/* ====================eof===================== */
+
 export const querySinglePost = async (searchId: string, searchSlug: string) => {
   const postRes = await mdxlitedb.query.posts.findFirst({
     where: or(and(like(posts.id, `${searchId}%`), eq(posts.headline, searchSlug)), like(posts.id, `${searchId}%`)),

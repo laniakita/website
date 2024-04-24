@@ -1,3 +1,17 @@
+export const metadata = {
+  title: 'About Lani',
+  description: 'This is the personal site and Full Stack Web Development blog of Lani Akita.',
+  openGraph: {
+    title: 'About Lani',
+    description: 'This is the personal site and Full Stack Web Development blog of Lani Akita.'
+  },
+  twitter: {
+    card: 'summary',
+    title: 'About Lani',
+    description: 'This is the personal site and Full Stack Web Development blog of Lani Akita.'
+  }
+}
+
 # Full Stack Developer, with a lifelong love for the Arts
 
 Aloha! My name is Lani Akita (she/her) and this is my personal site and Full Stack Web Development blog.
@@ -170,17 +184,17 @@ K8s is something I dove into relatively recently both because I'm an odd duck th
 
 ## Other / Workflow
 
-Because someone will eventually demand to know what I "actually" use to work with all the tools above, I will try to answer that here (you can skip this section if you're uninterested). Do note that just because I work this way, doesn't necessarily mean you should too, it's just how I prefer to do things.
+I'm going to embarass myself for a little bit and tell you a bit about my workflow. Do note that just because I work this way, doesn't necessarily mean you should too, it's just how I prefer to do things.
 
-- **OS**: I'm quite partial to NixOS, because a single flake.nix declares all of my machines that either run NixOS or Nix the package manager. I can rapidly provision cloud VPSes/EC2 instances the exact same way.
+- **OS**: I'm quite partial to NixOS (btw), because a single flake.nix declares all of my machines that either run NixOS or Nix the package manager. I can rapidly provision cloud VPSes/EC2 instances the exact same way.
 
-- **DE/WM**: Because I tend to have multiple windows open, I find Sway WM (i3 but for wayland) quite useful.
+- **DE/WM**: Because I tend to have multiple app windows open simultaneously, I find Sway WM (i3 but for wayland) quite useful.
 
-- **Text Editor**: I use Nixvim (a Neovim distro that let's you configure it with Nix + raw lua strings), because I like knowing precisely how my tools work, especially the one I use the most. I also really like customizing such tools to exactly my tastes, without restriction. If you happen to use Neovim and also use Nix/NixOS, consider giving Nixvim a shot! ^-^
+- **Text Editor**: I use Nixvim (a Neovim distro that let's you configure it with Nix + raw lua strings), because I like knowing precisely how my tools work, especially the one I use the most. I also really like customizing such tools to my hearts content, without restriction. If you happen to use Neovim and also use Nix/NixOS, consider giving Nixvim a shot! ^-^
 
-- **Linters**: An eslint config (now flatter) is in pretty much every project I do nowadays, integrated with a tsconfig file. While not everyone finds linters (& their diagnostic errors/warnings)  useful, I like that it keeps my code bases consistent.  
+- **Linters**: An eslint config (now flatter) is in pretty much every project I do nowadays, and integrated with a tsconfig file. While not everyone finds linters (& their diagnostic errors/warnings)  useful, I like that it keeps my codebases consistent.  
 
-- **Formatters**: I love prettier. Prettierd is also pretty cool. I often integrate this with the tailwindcss plugin to sort tailwind classnames. Something satisfying about hitting the format key combo and watching all my little spacing errors and inconsistent use of quotations suddenly become neat and uniform.
+- **Formatters**: I love prettier & prettierd. I often integrete the tailwindcss plugin in my .prettierrc to sort tailwind classnames. There's also something quite satisfying about triggering my formatting key map, and watching all my little spacing errors and inconsistent use of quotations suddenly become neat and uniform.
 
 ## Education
 

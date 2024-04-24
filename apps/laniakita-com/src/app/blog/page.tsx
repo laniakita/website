@@ -2,6 +2,20 @@ import { queryPostMetas } from '@/lib/utils/mdxlite-utils';
 import { PostNumStoreProvider } from '@/providers/postnum-store-provider';
 import PreviewRollerV3 from '@/components/blog/post-roller-v3';
 
+export const metadata = {
+  title: "Lani's Web Dev Blog",
+  description: "A Full-Stack web developer's blog, written by Lani Akita.",
+  openGraph: {
+    title: "Lani's Web Dev Blog",
+    description: "A Full-Stack web developer's blog, written by Lani Akita.",
+  },
+  twitter: {
+    card: 'summary',
+    title: "Lani's Web Dev Blog",
+    description: "A Full-Stack web developer's blog, written by Lani Akita.",
+  },
+};
+
 export interface PostTeaserObjectProps {
   id: string;
   authorName: string;

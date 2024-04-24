@@ -8,6 +8,13 @@
       "when": 1713405272777,
       "tag": "0000_thankful_karma",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1713914277632,
+      "tag": "0001_striped_gabe_jones",
+      "breakpoints": true
     }
   ]
 }
