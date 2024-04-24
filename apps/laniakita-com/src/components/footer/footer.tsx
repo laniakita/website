@@ -38,7 +38,7 @@ export default function Footer({ extra }: { extra?: string }) {
   return (
     <footer className='relative w-full'>
       <div
-        className={`simple-color-trans relative flex w-full flex-col items-center justify-center overflow-hidden  bg-ctp-base dark:bg-ctp-crust ${extra}`}
+        className={`simple-color-trans relative flex w-full flex-col items-center justify-center overflow-hidden  bg-ctp-base dark:bg-ctp-midnight ${extra}`}
       >
         <div className='absolute size-full '>
           <div className=' relative size-full'>

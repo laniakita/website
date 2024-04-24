@@ -97,7 +97,7 @@ export default async function Page({ params }: { params: { postId: string; slug:
   };
 
   return (
-    <div className='motion-safe:simple-color-trans -mb-0.5 min-h-full max-w-full bg-ctp-base dark:bg-ctp-crust lg:pt-10'>
+    <div className='motion-safe:simple-color-trans -mb-0.5 min-h-full max-w-full bg-ctp-base dark:bg-ctp-midnight lg:pt-10'>
       {resBundle ? <Post code={resBundle.code} teaserObj={headerData as PostTeaserObjectProps} /> : ''}
     </div>
   );

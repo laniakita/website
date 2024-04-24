@@ -65,7 +65,7 @@ export function PostPreviewV3({ dataObj }: { dataObj: PostTeaserObjectProps }) {
   const postedDate = dateGetter(dataObj.date);
 
   return (
-    <div className='motion-safe:simple-color-trans pointer-events-none flex size-full flex-col gap-6 overflow-hidden  border-y border-ctp-surface0 bg-ctp-base p-10 hover:border-ctp-mauve  has-[:focus]:border-ctp-mauve dark:bg-ctp-crust md:gap-0 md:border md:p-0'>
+    <div className='motion-safe:simple-color-trans pointer-events-none flex size-full flex-col gap-6 overflow-hidden  border-y border-ctp-surface0 bg-ctp-base p-10 hover:border-ctp-mauve  has-[:focus]:border-ctp-mauve dark:bg-ctp-midnight md:gap-0 md:border md:p-0'>
       {hasImage ? (
         <Link
           href={linkTo}
@@ -146,7 +146,7 @@ export function FeaturedPostPreviewV3({ dataObj }: { dataObj: PostTeaserObjectPr
 
   return (
     <div
-      className={`${hasImage ? 'pb-6 md:p-0 lg:pb-0' : 'py-6 md:p-0 lg:p-0'} motion-safe:simple-color-trans pointer-events-none flex size-full flex-col gap-6 border-y border-ctp-surface0 bg-ctp-base   hover:border-ctp-mauve has-[:focus]:border-ctp-mauve dark:bg-ctp-crust md:gap-0 md:border lg:flex-row-reverse lg:items-center lg:justify-between`}
+      className={`${hasImage ? 'pb-6 md:p-0 lg:pb-0' : 'py-6 md:p-0 lg:p-0'} motion-safe:simple-color-trans pointer-events-none flex size-full flex-col gap-6 border-y border-ctp-surface0 bg-ctp-base   hover:border-ctp-mauve has-[:focus]:border-ctp-mauve dark:bg-ctp-midnight md:gap-0 md:border lg:flex-row-reverse lg:items-center lg:justify-between`}
     >
       {dataObj.heroFile && dataObj.heroAltText ? (
         <Link

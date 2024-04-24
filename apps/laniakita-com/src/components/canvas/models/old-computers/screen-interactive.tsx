@@ -30,7 +30,10 @@ export function ScreenInteractive({ screenName, children, ...props }: ScreenInne
     [searchParams],
   );
   const handleJump = () => {
-    router.push(`${pathname}?${createQueryString('screen', screenName!)}`, {scroll: false});
+    //router.push(`${pathname}?${createQueryString('screen', screenName!)}`, {scroll: false});
+    const params = new URLSearchParams(searchParams.toString())
+    params.set('screen', screenName ?? '')
+    window.history.pushState(null, '', `?${params.toString()}`)
   };
 
   return (

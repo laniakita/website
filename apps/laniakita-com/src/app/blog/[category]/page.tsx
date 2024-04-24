@@ -47,7 +47,7 @@ export default async function Page({ params }: { params: { category: string } })
 
   return (
     <Suspense fallback={<LoadingSpinner overrides='h-screen bg-black' />}>
-      <div className='simple-color-trans relative z-[5] -mb-1  bg-ctp-base dark:bg-ctp-crust'>
+      <div className='simple-color-trans relative z-[5] -mb-1  bg-ctp-base dark:bg-ctp-midnight'>
         <div className='flex flex-col gap-6 p-10 md:gap-10 lg:pt-[5.5rem] 2xl:px-20'>
           <div className='space-y-2'>
             <h3 className='font-mono text-xl font-semibold'>Posts tagged:</h3>
