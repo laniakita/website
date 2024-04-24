@@ -4,8 +4,6 @@ import Link from 'next/link';
 import { Suspense, useEffect, useRef, useState } from 'react';
 import LoadingSpinner from '@/components/loading-spinner';
 import TextSplitterUltra from '@/components/text-splitter-v2';
-import SocialIconNavSplitterUltra from '@/components/social-splitter-ultra';
-import { socialItems } from '@/components/footer/footer';
 import ThreeLayout from '@/components/dom/three-layout';
 import { Scroller } from '@/components/lenis-scroller';
 

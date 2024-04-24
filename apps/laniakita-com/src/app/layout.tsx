@@ -5,10 +5,8 @@ import localFont from 'next/font/local';
 import { type ReactNode } from 'react';
 import '@/css/app.css';
 import { DarkStoreProvider } from '@/providers/theme-store-provider';
-import ThreeLayout from '@/components/dom/three-layout';
 import NavBar from '@/components/navbar/navbar';
 import Footer from '@/components/footer/footer';
-import { Scroller } from '@/components/lenis-scroller';
 
 const inter = Inter({ subsets: ['latin'], display: 'swap', variable: '--font-inter' });
 

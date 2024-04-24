@@ -1,12 +1,12 @@
 /* eslint-disable react/no-unknown-property -- jsx-eslint compatibility issues with r3f */
 /* eslint-disable no-multi-assign -- three.js built different */
 'use client';
-import { useRef, useCallback } from 'react';
+import { useRef } from 'react';
 import { type MeshProps, useFrame, extend } from '@react-three/fiber';
 import { Decal, RenderTexture, PerspectiveCamera, useGLTF } from '@react-three/drei';
 import { type Mesh } from 'three';
 import { A11y, useA11y, useUserPreferences } from '@react-three/a11y';
-import { useRouter, useSearchParams, usePathname } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { easing, geometry } from 'maath';
 import { type ScreenProps } from './screen';
 
@@ -17,18 +17,7 @@ interface ScreenInnerProps extends ScreenProps {
 }
 
 export function ScreenInteractive({ screenName, children, ...props }: ScreenInnerProps) {
-  const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
-  const createQueryString = useCallback(
-    (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams.toString());
-      params.set(name, value);
-
-      return params.toString();
-    },
-    [searchParams],
-  );
   const handleJump = () => {
     //router.push(`${pathname}?${createQueryString('screen', screenName!)}`, {scroll: false});
     const params = new URLSearchParams(searchParams.toString())
