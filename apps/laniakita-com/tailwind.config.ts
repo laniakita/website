@@ -11,6 +11,9 @@ const config: Config = {
   presets: [sharedConfig],
   theme: {
     extend: {
+      colors: {
+        "ctp-midnight": '#07070D'
+      },
       fontFamily: {
         sans: ['var(--font-inter)'],
         mono: ['var(--font-zeroxproto)'],

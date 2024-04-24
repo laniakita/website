@@ -68,13 +68,9 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
     <html lang='en-US' dir='ltr' className={`${inter.variable} ${zeroxproto.variable}`}>
       <body className={inter.className}>
         <DarkStoreProvider>
-          <Scroller>
-            <ThreeLayout camera={{ fov: 45 }}>
-              <NavBar />
-              <main>{children}</main>
-              <Footer />
-            </ThreeLayout>
-          </Scroller>
+          <NavBar />
+          <main>{children}</main>
+          <Footer />
         </DarkStoreProvider>
       </body>
     </html>

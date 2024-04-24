@@ -11,6 +11,7 @@ import { A11yUserPreferences, useUserPreferences } from '@react-three/a11y';
 import { CompInstances, CompModel } from '@/components/canvas/models/old-computers/old-computers-test';
 import { useDarkStore } from '@/providers/theme-store-provider';
 import { ShorkInstances, Shork } from '../models/shork/shork';
+import { degToRad } from 'three/src/math/MathUtils.js';
 
 extend(geometry);
 
@@ -102,25 +103,25 @@ function Lights() {
   );
 }
 
-function CameraRig({ position = new Vector3(0, -1, 5), focus = new Vector3(0, -0.5, 1), searchTarget = 'screen' }) {
+function CameraRig({ position = new Vector3(0, 0, 4), focus = new Vector3(0, 0, 0), searchTarget = 'screen' }) {
   const { a11yPrefersState } = useUserPreferences();
   const scene = useThree((state) => state.scene);
+  const camera = useThree((state) => state.camera);
   const cameraControlRef = useRef<CameraControls | null>(null);
   const searchParams = useSearchParams();
-
+  
   useEffect(() => {
     let active = true;
     const meshName = searchParams.get(searchTarget);
-
     const setScene = () => {
-      if (active && meshName) {
+      if (active && meshName && meshName !== 'home') {
         const targetMesh = scene.getObjectByName(meshName);
         if (targetMesh?.name !== meshName) {
           setTimeout(() => {
             setScene();
           }, 500);
         } else if (targetMesh.name === meshName) {
-          targetMesh.parent?.localToWorld(position.set(0, 0.5, 2));
+          targetMesh.parent?.localToWorld(position.set(0, 0.5, 1.5));
           targetMesh.parent?.localToWorld(focus.set(0, 0.5, 0));
 
           cameraControlRef.current?.setLookAt(...position.toArray(), ...focus.toArray(), true);
@@ -131,6 +132,7 @@ function CameraRig({ position = new Vector3(0, -1, 5), focus = new Vector3(0, -0
       cameraControlRef.current!.smoothTime = 0;
     }
     cameraControlRef.current?.setLookAt(...position.toArray(), ...focus.toArray(), true);
+    cameraControlRef.current!.smoothTime = 0.4
     setScene();
 
     return () => {
@@ -150,9 +152,23 @@ function CameraRig({ position = new Vector3(0, -1, 5), focus = new Vector3(0, -0
           mouseButtons-wheel='NONE'
           mouseButtons-right='NONE'
           mouseButtons-middle='NONE'
+          touches-one='NONE'
+          touches-two='NONE'
         />
       ) : (
-        <CameraControls ref={cameraControlRef} makeDefault enabled minPolarAngle={0} maxPolarAngle={Math.PI / 2} />
+        <CameraControls
+          ref={cameraControlRef}
+          makeDefault
+          enabled
+          minPolarAngle={degToRad(40)}
+          maxPolarAngle={degToRad(95)}
+          mouseButtons-left='NONE'
+          mouseButtons-wheel='NONE'
+          mouseButtons-right='NONE'
+          mouseButtons-middle='NONE'
+          touches-one='NONE'
+          touches-two='NONE'
+        />
       )}
     </>
   );
