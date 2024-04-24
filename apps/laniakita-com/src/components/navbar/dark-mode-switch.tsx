@@ -37,6 +37,8 @@ export default function DarkModeSwitch() {
     localStorage.setItem('isDark', JSON.stringify(nextDark));
     handleThemePref();
   };
+  
+  const switchId = Math.floor(Math.random()*1000)
 
   useEffect(() => {
     handleThemePref();
@@ -63,7 +65,7 @@ export default function DarkModeSwitch() {
   return (
     <div className='s-slider' id='darkmode-switch'>
       <button
-        id={`darkmode-button-${Math.floor(Math.random()*1000)}`}
+        id={`darkmode-button-${switchId}`}
         type='button'
         role='switch'
         aria-checked={Boolean(dark)}
