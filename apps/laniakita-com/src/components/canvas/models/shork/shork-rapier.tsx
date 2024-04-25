@@ -36,6 +36,8 @@ export function ShorkMesh(props: JSX.IntrinsicElements['group']) {
   );
 }
 
+/* Work in Progress */
+
 const COUNT = 80;
 
 export function InstancedShorks() {
@@ -70,4 +72,5 @@ export function InstancedShorks() {
   );
 }
 
+// used for both
 useGLTF.preload('/assets/models/blahaj-transformed.glb');
