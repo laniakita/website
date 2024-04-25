@@ -9,7 +9,7 @@ import SceneOverlayV3 from '@/components/scene-overlay-alt';
 export default function Page() {
   const ref = useRef(null!);
   return (
-    <main ref={ref} className='relative size-full min-h-screen'>
+    <main ref={ref} className='relative size-full max-h-[calc(100vh-4rem)]'>
       <SceneOverlayV3 />
       <View index={1} style={{ position: 'absolute', height: '100%', width: '100%' }}>
         <Suspense>
