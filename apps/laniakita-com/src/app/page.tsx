@@ -4,11 +4,13 @@ import { Suspense, useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { View, PerspectiveCamera, Stars } from '@react-three/drei';
 import HajInfinite from '@/components/canvas/scenes/haj2';
+import SceneOverlayV3 from '@/components/scene-overlay-alt';
 
 export default function Page() {
   const ref = useRef(null!);
   return (
     <main ref={ref} className='relative size-full min-h-screen'>
+      <SceneOverlayV3 />
       <View index={1} style={{ position: 'absolute', height: '100%', width: '100%' }}>
         <Suspense>
           <PerspectiveCamera makeDefault position={[0, 0, 10]} />
