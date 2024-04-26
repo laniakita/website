@@ -33,8 +33,8 @@ export default function SceneOverlayV3() {
   });
   return (
     <>
-      <div className='absolute left-10 top-10 z-[2] w-fit lg:top-24'>
-        <div className='ctp-mocha flex w-fit flex-col -space-y-1 pb-1 text-4xl font-black drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] md:space-y-0 md:pb-2'>
+      <div className='ctp-mocha absolute left-6 top-6 z-[2] w-fit text-ctp-text md:left-10 md:top-10 lg:top-24'>
+        <div className='flex w-fit flex-col -space-y-1 pb-1 text-4xl font-black drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] md:space-y-0 md:pb-2'>
           <h1 className='max-w-max motion-safe:hidden'>I create web app & digital experiences that delight.</h1>
           <div className={mobileVis ? 'visible h-40' : 'hidden h-40'}>
             <h1 className='overflow-hidden'>
@@ -107,7 +107,7 @@ export default function SceneOverlayV3() {
         </div>
       </div>
 
-      <div className='ctp-mocha absolute bottom-16 right-4 z-[2] flex flex-row overflow-hidden pb-4 text-ctp-text opacity-0 motion-safe:animate-fade-in motion-reduce:opacity-100 lg:bottom-4'>
+      <div className='ctp-mocha absolute bottom-6 right-6 z-[2] flex flex-row overflow-hidden pb-4 text-ctp-text opacity-0 motion-safe:animate-fade-in motion-reduce:opacity-100 md:bottom-10 md:right-10'>
         <SocialIconNavSplitterUltra
           boxItems={socialItems}
           hxw='basis-1/5 min-h-14 min-w-14'
