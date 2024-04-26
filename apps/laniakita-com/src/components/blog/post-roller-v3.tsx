@@ -3,7 +3,7 @@ import { useMemo, useState } from 'react';
 import { usePostNumStore } from '@/providers/postnum-store-provider';
 import LoadMoreButton from '@/components/blog/load-more-button';
 import { FeaturedPostPreviewV3, PostPreviewV3 } from '@/components/blog/post-preview-v3';
-import type { PostTeaserObjectProps } from '@/app/blog/page';
+import type { PostTeaserObjectProps } from '@/app/(main)/blog/page';
 
 interface PreviewRollerV3Props {
   dataArr: PostTeaserObjectProps[];
