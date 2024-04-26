@@ -1,25 +1,34 @@
-'use client'
-import { useRef, useState } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
-import type { Mesh } from 'three';
-import { MathUtils } from 'three';
-import { ShorkMesh } from '@/components/canvas/models/shork/shork-rapier';
+import { useRef, useState } from 'react';
+import type { Group, MeshStandardMaterial } from 'three'
+import { MathUtils, Color } from 'three';
+import { Shork, ShorkInstances } from '@/components/canvas/models/shork/shork';
 
-export default function HajInfinite({ speed = 1, count = 80, depth = 80 }: { speed?: number; count?: number; depth?: number }) {
+export default function Hajs({
+  speed = 1,
+  count = 80,
+  depth = 80,
+}: {
+  speed?: number;
+  count?: number;
+  depth?: number;
+}) {
   const easing = (x: number) => Math.sqrt(1 - Math.pow(x - 1, 2));
   return (
     <>
       {Array.from({ length: count }, (_, i) => (
-        <HajCubed key={i} index={i} z={Math.round(easing(i / count) * depth)} speed={speed} />
+        <HajSetup key={i} index={i} z={Math.round(easing(i / count) * depth)} speed={speed} />
       ))}
     </>
   );
 }
 
-function HajCubed({ z, speed, index }: { z: number; speed: number; index: number }) {
-  const ref2 = useRef<Mesh>(null);
+function HajSetup({ z, speed, index }: { z: number; speed: number; index: number }) {
+  const ref = useRef<Group>(null);
+  const [hovered, setHovered] = useState(false);
   const { viewport, camera } = useThree((state) => state);
   const { width, height } = viewport.getCurrentViewport(camera, [0, 0, -z]);
+  const hajColor = new Color();
   // eslint-disable-next-line -- don't need setData
   const [data] = useState({
     y: MathUtils.randFloatSpread(height * 2),
@@ -32,10 +41,10 @@ function HajCubed({ z, speed, index }: { z: number; speed: number; index: number
   useFrame((state, delta) => {
     // stops if not current tab
     if (delta < 0.1) {
-      ref2.current?.position.set(index === 0 ? 0 : data.x * width, (data.y += delta * speed), -z);
+      ref.current?.position.set(index === 0 ? 0 : data.x * width, (data.y += delta * speed), -z);
     }
     // rotate shork
-    ref2.current?.rotation.set(
+    ref.current?.rotation.set(
       (data.rX += delta / data.spin),
       Math.sin(index * 1000 + state.clock.elapsedTime / 10) * Math.PI,
       (data.rZ += delta / data.spin),
@@ -44,24 +53,42 @@ function HajCubed({ z, speed, index }: { z: number; speed: number; index: number
     if (data.y > height * (index === 0 ? 4 : 1)) {
       data.y = -(height * (index === 0 ? 4 : 1));
     }
+    // reset shork to left of viewport
+    if (data.x > width * (index === 0 ? 4 : 1)) {
+      data.x = -(width * (index === 0 ? 4 : 1));
+    }
+    
+    if (ref.current) {
+      // eslint-disable-next-line -- no multi assign
+      ref.current.scale.x = ref.current.scale.y = ref.current.scale.z = MathUtils.lerp(ref.current.scale.z, hovered ? 500 : 400, 0.1);
+    }
+    (ref.current?.children[0]?.children[0]?.children[0]?.children[0]?.children[0] as unknown as MeshStandardMaterial).color.lerp(
+      hajColor.set(hovered ? '#ea76cb' : 'white'),
+      hovered ? 1 : 0.1,
+    );
+
+    /*
+    .color.lerp(
+      hajColor.set(hovered ? 'red' : 'white'),
+      hovered ? 1 : 0.1,
+    ); */
   });
 
   return (
-    <mesh ref={ref2} scale={4}>
-      <ShorkMesh />
-    </mesh>
+    <group
+      ref={ref}
+      onPointerOver={() => {
+        setHovered(true);
+      }}
+      onPointerOut={() => {
+        setHovered(false);
+      }}
+    >
+      <ShorkInstances>
+        <Shork />
+      </ShorkInstances>
+    </group>
   );
 }
 
-
-//import { Physics, RigidBody } from '@react-three/rapier';
-//import { Shork, ShorkInstances } from '@/components/canvas/models/shork/shork';
-/*
-        <OrbitControls />
- *        <PerspectiveCamera makeDefault position={[0, 0, 10]} />
-        <mesh scale={1}>
-          <boxGeometry />
-          <meshBasicMaterial color='white' />
-        </mesh>
- *
- * */
+// e.object.instanceKey.current.color.lerp(hajColor.set(new Color('white')), 0.5)}

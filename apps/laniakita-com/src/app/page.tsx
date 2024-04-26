@@ -3,19 +3,20 @@
 import { Suspense, useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { View, PerspectiveCamera, Stars } from '@react-three/drei';
-import HajInfinite from '@/components/canvas/scenes/haj2';
+//import HajInfinite from '@/components/canvas/scenes/haj2';
 import SceneOverlayV3 from '@/components/scene-overlay-alt';
+import Hajs from '@/components/canvas/scenes/haj2';
 
 export default function Page() {
   const ref = useRef(null!);
   return (
-    <main ref={ref} className='relative size-full h-[calc(100vh-4rem)]'>
+    <main ref={ref} className='relative size-full h-screen max-h-[calc(100vh-4rem)] lg:max-h-screen'>
       <SceneOverlayV3 />
       <View index={1} style={{ position: 'absolute', height: '100%', width: '100%' }}>
         <Suspense>
-          <PerspectiveCamera makeDefault position={[0, 0, 10]} />
+          <PerspectiveCamera makeDefault position={[0, 0, 20]} fov={45} />
           <Stars />
-          <HajInfinite />
+          <Hajs />
           <spotLight position={[0, 40, 0]} intensity={10000} />
           <hemisphereLight intensity={1.5} />
         </Suspense>
