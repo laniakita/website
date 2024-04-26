@@ -6,7 +6,6 @@ import { type ReactNode } from 'react';
 import '@/css/app.css';
 import { DarkStoreProvider } from '@/providers/theme-store-provider';
 import NavBar from '@/components/navbar/navbar';
-import Footer from '@/components/footer/footer';
 
 const inter = Inter({ subsets: ['latin'], display: 'swap', variable: '--font-inter' });
 
@@ -68,7 +67,6 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
         <DarkStoreProvider>
           <NavBar />
           <main>{children}</main>
-          <Footer />
         </DarkStoreProvider>
       </body>
     </html>

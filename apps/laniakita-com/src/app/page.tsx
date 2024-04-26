@@ -2,17 +2,16 @@
 /* eslint-disable react/no-unknown-property -- r3f */
 import { Suspense, useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { View, PerspectiveCamera, Stars } from '@react-three/drei';
-//import HajInfinite from '@/components/canvas/scenes/haj2';
+import { View, PerspectiveCamera, Stars, Preload } from '@react-three/drei';
 import SceneOverlayV3 from '@/components/scene-overlay-alt';
 import Hajs from '@/components/canvas/scenes/haj2';
 
 export default function Page() {
   const ref = useRef(null!);
   return (
-    <main ref={ref} className='relative size-full h-screen max-h-[calc(100vh-4rem)] lg:max-h-screen'>
+    <main ref={ref} className='relative max-h-[calc(100dvh-4rem)] overflow-hidden  [height:_100dvh] lg:max-h-screen'>
       <SceneOverlayV3 />
-      <View index={1} style={{ position: 'absolute', height: '100%', width: '100%' }}>
+      <View index={1} className='absolute size-full'>
         <Suspense>
           <PerspectiveCamera makeDefault position={[0, 0, 20]} fov={45} />
           <Stars />
@@ -36,8 +35,8 @@ export default function Page() {
         }}
       >
         <View.Port />
+        <Preload all />
       </Canvas>
     </main>
   );
 }
-
