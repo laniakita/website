@@ -5,6 +5,7 @@ import { useRef, useState } from 'react';
 import type { Group, MeshStandardMaterial } from 'three';
 import { MathUtils, Color, AudioLoader, Audio, AudioListener } from 'three';
 import { Shork, ShorkInstances } from '@/components/canvas/models/shork/shork';
+import { useHajClickerStore } from '@/providers/hajclicker-store-provider';
 
 export default function Hajs({
   speed = 1,
@@ -31,6 +32,7 @@ const listener = new AudioListener();
 const audioLoader = new AudioLoader();
 
 function HajSetup({ z, speed, index }: { z: number; speed: number; index: number }) {
+  const { addClickToCount } = useHajClickerStore((state) => state);
   const ref = useRef<Group>(null);
   const [hovered, setHovered] = useState(false);
   const { viewport, camera } = useThree((state) => state);
@@ -59,6 +61,9 @@ function HajSetup({ z, speed, index }: { z: number; speed: number; index: number
       ImJustAToy = '/assets/audio/baby-squeak-toy-1.mp3',
     }
 
+    if (!hovered) {
+      addClickToCount();
+    }
     const randSound = (): string => {
       if (randInt > 8) {
         return ShorkSounds.Friendly;
@@ -76,7 +81,9 @@ function HajSetup({ z, speed, index }: { z: number; speed: number; index: number
       sound.setVolume(1);
       sound.play();
     });
-    setTimeout(() => {setHovered(false)}, 1500)
+    setTimeout(() => {
+      setHovered(false);
+    }, 1500);
   };
 
   useFrame((state, delta) => {
@@ -121,10 +128,7 @@ function HajSetup({ z, speed, index }: { z: number; speed: number; index: number
     <>
       {/* eslint-disable-next-line -- react-three a11y only gives a few roles */}
       <A11y role='image' description='Astronaut Blahaj in Deep Space'>
-        <group
-          ref={ref}
-          onClick={handleShorkClick}
-        >
+        <group ref={ref} onClick={handleShorkClick}>
           <ShorkInstances>
             <Shork />
           </ShorkInstances>
