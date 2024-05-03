@@ -3,7 +3,7 @@ import { A11y, useUserPreferences } from '@react-three/a11y';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useRef, useState } from 'react';
 import type { Group, MeshStandardMaterial } from 'three';
-import { MathUtils, Color } from 'three';
+import { MathUtils, Color, AudioLoader, Audio, AudioListener } from 'three';
 import { Shork, ShorkInstances } from '@/components/canvas/models/shork/shork';
 
 export default function Hajs({
@@ -25,6 +25,11 @@ export default function Hajs({
   );
 }
 
+let canSound = false;
+
+const listener = new AudioListener();
+const audioLoader = new AudioLoader();
+
 function HajSetup({ z, speed, index }: { z: number; speed: number; index: number }) {
   const ref = useRef<Group>(null);
   const [hovered, setHovered] = useState(false);
@@ -40,6 +45,38 @@ function HajSetup({ z, speed, index }: { z: number; speed: number; index: number
     rZ: Math.random() * Math.PI,
   });
   const { a11yPrefersState } = useUserPreferences();
+  if (canSound) camera.add(listener);
+
+  const handleShorkClick = (): void => {
+    canSound = true;
+    // setup audio
+    const sound = new Audio(listener);
+    const randInt = Math.floor(Math.random() * 10);
+    enum ShorkSounds {
+      Friendly = '/assets/audio/Pixel_54.wav',
+      FriendlyCool = '/assets/audio/Pixel_57.wav',
+      FriendlyLong = '/assets/audio/Pixel_64.wav',
+      ImJustAToy = '/assets/audio/baby-squeak-toy-1.mp3',
+    }
+
+    const randSound = (): string => {
+      if (randInt > 8) {
+        return ShorkSounds.Friendly;
+      } else if (randInt > 6) {
+        return ShorkSounds.FriendlyCool;
+      } else if (randInt > 4) {
+        return ShorkSounds.FriendlyLong;
+      }
+      return ShorkSounds.ImJustAToy;
+    };
+
+    audioLoader.load(randSound(), (buffer) => {
+      sound.setBuffer(buffer);
+      sound.setLoop(false);
+      sound.setVolume(1);
+      sound.play();
+    });
+  };
 
   useFrame((state, delta) => {
     // stops if not current tab
@@ -47,7 +84,7 @@ function HajSetup({ z, speed, index }: { z: number; speed: number; index: number
       // shork go up
       ref.current?.position.set(
         index === 0 ? 0 : data.x * width,
-        (data.y += a11yPrefersState.prefersReducedMotion ? 0 : delta * speed),
+        (data.y += a11yPrefersState.prefersReducedMotion ? 0 : delta * speed * 10),
         -z,
       );
     }
@@ -65,10 +102,6 @@ function HajSetup({ z, speed, index }: { z: number; speed: number; index: number
     if (data.y > height * (index === 0 ? 4 : 1)) {
       data.y = -(height * (index === 0 ? 4 : 1));
     }
-    // reset shork to left of viewport
-    if (data.x > width * (index === 0 ? 4 : 1)) {
-      data.x = -(width * (index === 0 ? 4 : 1));
-    }
 
     if (ref.current && !a11yPrefersState.prefersReducedMotion) {
       ref.current.scale.x =
@@ -76,10 +109,7 @@ function HajSetup({ z, speed, index }: { z: number; speed: number; index: number
         ref.current.scale.z =
           MathUtils.lerp(ref.current.scale.z, hovered ? 420 : 400, 0.1);
     } else if (ref.current) {
-      ref.current.scale.x =
-        ref.current.scale.y =
-        ref.current.scale.z =
-         hovered ? 500 : 400;
+      ref.current.scale.x = ref.current.scale.y = ref.current.scale.z = hovered ? 500 : 400;
     }
     (
       ref.current?.children[0]?.children[0]?.children[0]?.children[0]?.children[0] as unknown as MeshStandardMaterial
@@ -98,6 +128,7 @@ function HajSetup({ z, speed, index }: { z: number; speed: number; index: number
           onPointerOut={() => {
             setHovered(false);
           }}
+          onClick={handleShorkClick}
         >
           <ShorkInstances>
             <Shork />
