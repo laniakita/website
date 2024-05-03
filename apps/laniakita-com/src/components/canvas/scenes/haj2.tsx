@@ -69,13 +69,14 @@ function HajSetup({ z, speed, index }: { z: number; speed: number; index: number
       }
       return ShorkSounds.ImJustAToy;
     };
-
+    setHovered(true);
     audioLoader.load(randSound(), (buffer) => {
       sound.setBuffer(buffer);
       sound.setLoop(false);
       sound.setVolume(1);
       sound.play();
     });
+    setTimeout(() => {setHovered(false)}, 1500)
   };
 
   useFrame((state, delta) => {
@@ -122,12 +123,6 @@ function HajSetup({ z, speed, index }: { z: number; speed: number; index: number
       <A11y role='image' description='Astronaut Blahaj in Deep Space'>
         <group
           ref={ref}
-          onPointerOver={() => {
-            setHovered(true);
-          }}
-          onPointerOut={() => {
-            setHovered(false);
-          }}
           onClick={handleShorkClick}
         >
           <ShorkInstances>
