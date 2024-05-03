@@ -1,5 +1,5 @@
 'use client';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { useDarkStore } from '@/providers/theme-store-provider';
 import DarkModeSwitch from './dark-mode-switch';
 import LinkPlus from './link-plus';
@@ -22,6 +22,7 @@ export default function NavBar() {
         // do nothing
       } else {
         setClicked({ ...clicked, stateVal: 'closed' });
+        console.log(e);
       }
     },
     [clicked],
@@ -45,35 +46,39 @@ export default function NavBar() {
 
   return (
     <nav className=''>
-      <div
-        className={`${clicked.stateVal === 'open' ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'} fixed bottom-[3.9rem] left-0 z-40 flex h-[calc(100vh-3.9rem)] w-full flex-col justify-end bg-black/40 [perspective:_5px] [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:_opacity_0.3s,] lg:bottom-0`}
-      >
+      <Suspense>
+        {/* mobile menu container */}
         <div
-          ref={dropNavRef}
-          className={`${clicked.stateVal === 'open' ? 'opacity-100 [transform:translate3d(0%,0%,0px)]' : 'opacity-0 [transform:translate3d(0%,100%,-1px)]'} max-h-[calc(100vh-3.9rem)] w-full overflow-y-auto rounded-t-2xl border-t border-ctp-mauve bg-ctp-base [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:transform_0.5s,_opacity_0.3s,_background-color_0.8s] dark:bg-ctp-midnight lg:hidden`}
+          className={`${clicked.stateVal === 'open' ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'} fixed bottom-[3.9rem] left-0 z-40 flex h-[calc(100dvh-3.9rem)] max-h-[calc(100dvh-3.9rem)] w-full flex-col justify-end bg-black/40 [perspective:_5px] [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:_opacity_0.3s,] lg:bottom-0`}
         >
-          <div className='flex size-full flex-col gap-4 p-4'>
-            {pagesArr.map((page) => (
-              <LinkPlus
-                href={handleRef(page)}
-                key={page}
-                className='nav-item'
-                onClick={() => {
-                  setClicked({ ...clicked, stateVal: 'closed' });
-                }}
-                target={page === 'RSS' ? '_blank' : undefined}
-              >
-                {page === 'RSS' ? page : page.toLowerCase()}
-              </LinkPlus>
-            ))}
-            <div className='h-px w-full bg-ctp-surface0' />
-            <div className='flex flex-row justify-between'>
-              <p>Theme Setting: catppuccin{dark ? ' mocha' : ' frappe'}</p>
-              <DarkModeSwitch />
+          {/* menu box */}
+          <div
+            ref={dropNavRef}
+            className={`${clicked.stateVal === 'open' ? 'opacity-100 [transform:translate3d(0%,0%,0px)]' : 'opacity-0 [transform:translate3d(0%,100%,-1px)]'} max-h-[calc(100dvh-3.9rem)] w-full overflow-y-auto rounded-t-2xl border-t border-ctp-mauve bg-ctp-base [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:transform_0.5s,_opacity_0.3s,_background-color_0.8s] dark:bg-ctp-midnight lg:hidden`}
+          >
+            <div className='flex size-full flex-col gap-4 p-4'>
+              {pagesArr.map((page) => (
+                <LinkPlus
+                  href={handleRef(page)}
+                  key={page}
+                  className='nav-item'
+                  onClick={() => {
+                    page !== 'RSS' && setClicked({ ...clicked, stateVal: 'closed' });
+                  }}
+                  target={page === 'RSS' ? '_blank' : undefined}
+                >
+                  {page === 'RSS' ? page : page.toLowerCase()}
+                </LinkPlus>
+              ))}
+              <div className='h-px w-full bg-ctp-surface0' />
+              <div className='flex flex-row justify-between'>
+                <p>Theme Setting: catppuccin{dark ? ' mocha' : ' frappe'}</p>
+                <DarkModeSwitch />
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </Suspense>
 
       <div
         className={`motion-safe:simple-color-trans fixed bottom-0 left-0 z-50 flex h-16 w-full items-center justify-between border-t border-ctp-surface0 px-4 text-xl shadow-lg backdrop-blur-xl [transition:_opacity_0.8s] lg:top-0 lg:h-12 lg:border-b lg:border-t-0 ${clicked.stateVal === 'open' ? 'bg-ctp-base dark:bg-ctp-midnight' : ' bg-ctp-base/80 dark:bg-ctp-midnight/70'}`}

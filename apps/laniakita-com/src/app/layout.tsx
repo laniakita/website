@@ -66,7 +66,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
       <body className={inter.className}>
         <DarkStoreProvider>
           <NavBar />
-          <main>{children}</main>
+          {children}
         </DarkStoreProvider>
       </body>
     </html>
