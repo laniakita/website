@@ -2,11 +2,11 @@
 import { createStore } from 'zustand';
 
 export interface HajClickerState {
-  postNum: number;
+  clickNum: number;
 }
 
 export const defaultInitState: HajClickerState = {
-  postNum: 0,
+  clickNum: 0,
 };
 
 export interface HajClickerActions {
@@ -19,7 +19,7 @@ export const createHajClickerStore = (initState: HajClickerState = defaultInitSt
   return createStore<HajClickerStore>()((set) => ({
     ...initState,
     addClickToCount: () => {
-      set((state) => ({ postNum: state.postNum + 1 }));
+      set((state) => ({ clickNum: state.clickNum + 1 }));
     },
   }));
 };
