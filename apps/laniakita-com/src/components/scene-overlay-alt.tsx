@@ -139,12 +139,14 @@ export default function SceneOverlayV3() {
         </p>
       </div>
 
-      <div className='ctp-mocha absolute bottom-20 right-6 z-[2] flex flex-row overflow-hidden pb-4 text-ctp-text opacity-0 motion-safe:animate-fade-in motion-reduce:opacity-100 md:right-10 lg:bottom-10'>
-        <SocialIconNavSplitterUltra
-          boxItems={socialItems}
-          hxw='basis-1/5 min-h-14 min-w-14 bg-black/80 backdrop-blur-md'
-          animClass=' motion-safe:animate-upDog motion-safe:[transform:_translateY(140%)]'
-        />
+      <div className='ctp-mocha absolute bottom-20 right-6 z-[2] text-ctp-text opacity-0 motion-safe:animate-fade-in motion-reduce:opacity-100 md:right-10 lg:bottom-10'>
+        <div className='flex flex-row overflow-hidden pb-4' >
+          <SocialIconNavSplitterUltra
+            boxItems={socialItems}
+            hxw='basis-1/5 min-h-14 min-w-14 bg-black/80 backdrop-blur-md'
+            animClass=' motion-safe:animate-upDog motion-safe:[transform:_translateY(140%)]'
+          />
+        </div>
       </div>
     </>
   );
