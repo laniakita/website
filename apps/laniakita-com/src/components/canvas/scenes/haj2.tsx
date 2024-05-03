@@ -8,7 +8,7 @@ import { Shork, ShorkInstances } from '@/components/canvas/models/shork/shork';
 import { useHajClickerStore } from '@/providers/hajclicker-store-provider';
 
 export default function Hajs({
-  speed = 1,
+  speed = 7,
   count = 80,
   depth = 80,
 }: {
@@ -65,17 +65,45 @@ function HajSetup({ z, speed, index }: { z: number; speed: number; index: number
       addClickToCount();
     }
     const randSound = (): string => {
-      if (randInt > 8) {
+      if (randInt >= 8) {
         return ShorkSounds.Friendly;
-      } else if (randInt > 6) {
+      } else if (randInt >= 6) {
         return ShorkSounds.FriendlyCool;
-      } else if (randInt > 4) {
+      } else if (randInt >= 4) {
         return ShorkSounds.FriendlyLong;
       }
       return ShorkSounds.ImJustAToy;
     };
+    
+    enum FilmCowSounds {
+      BlehBlehBleh = '/assets/audio/voice_-_bleh_bleh_bleh_blah.wav',
+      Hmm = '/assets/audio/voice_-_hmm_3.wav',
+      OhNo = '/assets/audio/voice_-_oh_no_4.wav',
+      ThankYou = '/assets/audio/voice_-_thank_you_2.wav',
+      Wow = '/assets/audio/voice_-_wow_4.wav'
+    }
+    const randFilmCowSound = (): string => {
+      if (randInt >= 8) {
+        return FilmCowSounds.Hmm
+      } else if (randInt >=6 ) {
+        return FilmCowSounds.OhNo
+      } else if (randInt >= 4) {
+        return FilmCowSounds.BlehBlehBleh
+      } else if (randInt >= 2) {
+        return FilmCowSounds.Wow
+      }
+      return FilmCowSounds.ThankYou
+    }
+    
+    const audioDecider = () => {
+      if (Math.floor(Math.random() * 10) > 5) {
+        return randFilmCowSound()
+      } 
+      return randSound();
+    }
+
     setHovered(true);
-    audioLoader.load(randSound(), (buffer) => {
+    audioLoader.load(audioDecider(), (buffer) => {
       sound.setBuffer(buffer);
       sound.setLoop(false);
       sound.setVolume(1);
@@ -92,7 +120,7 @@ function HajSetup({ z, speed, index }: { z: number; speed: number; index: number
       // shork go up
       ref.current?.position.set(
         index === 0 ? 0 : data.x * width,
-        (data.y += a11yPrefersState.prefersReducedMotion ? 0 : delta * speed * 10),
+        (data.y += a11yPrefersState.prefersReducedMotion ? 0 : delta * speed),
         -z,
       );
     }
