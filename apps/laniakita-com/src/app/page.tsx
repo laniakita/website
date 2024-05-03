@@ -1,21 +1,26 @@
 'use client';
 /* eslint-disable react/no-unknown-property -- r3f */
 import { Suspense, useRef } from 'react';
+import dynamic from 'next/dynamic';
 import { Canvas } from '@react-three/fiber';
 import { DepthOfField, EffectComposer } from '@react-three/postprocessing';
 import { Stars } from '@react-three/drei';
 import { A11yAnnouncer, A11yUserPreferences } from '@react-three/a11y';
-import SceneOverlayV3 from '@/components/scene-overlay-alt';
-import Hajs from '@/components/canvas/scenes/haj2';
 import LoadingSpinner from '@/components/loading-spinner';
-import { HajClickerStoreProvider } from '@/providers/hajclicker-store-provider';
-import SocialCounterOverlay from '@/components/scene-social-counter-overlay';
+
+const SceneOverlayV3 = dynamic(()=>import('@/components/scene-overlay-alt'), {ssr: false})
+
+const Hajs = dynamic(()=>import( '@/components/canvas/scenes/haj2'), {ssr: false})
+
+const  HajClickerStoreProvider = dynamic(() => import('@/providers/hajclicker-store-provider').then(mod => mod.HajClickerStoreProvider), {ssr: false});
+
+const SocialCounterOverlay = dynamic(() => import('@/components/scene-social-counter-overlay'), {ssr: false})
 
 export default function Page() {
   const ref = useRef(null!);
   return (
-    <HajClickerStoreProvider>
-      <main ref={ref} className='relative overflow-hidden  [height:_100dvh] lg:max-h-screen'>
+    <main ref={ref} className='relative overflow-hidden  [height:_100dvh] lg:max-h-screen'>
+      <HajClickerStoreProvider>
         <SceneOverlayV3 />
         <SocialCounterOverlay />
         <Suspense fallback={<LoadingSpinner />}>
@@ -49,7 +54,7 @@ export default function Page() {
           </Canvas>
           <A11yAnnouncer />
         </Suspense>
-      </main>
-    </HajClickerStoreProvider>
+      </HajClickerStoreProvider>
+    </main>
   );
 }

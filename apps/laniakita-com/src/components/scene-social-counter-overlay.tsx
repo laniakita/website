@@ -1,3 +1,4 @@
+'use client'
 import SocialIconNavSplitterUltra from '@/components/social-splitter-ultra';
 import { useHajClickerStore } from '@/providers/hajclicker-store-provider';
 import { socialItems } from './footer/footer';
