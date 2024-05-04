@@ -1,5 +1,4 @@
 'use client';
-import Link from 'next/link';
 import SocialIconNavSplitterUltra from '@/components/social-splitter-ultra';
 import { useHajClickerStore } from '@/providers/hajclicker-store-provider';
 import { socialItems } from './footer/footer';
@@ -10,17 +9,10 @@ export default function SocialCounterOverlay() {
   return (
     <>
       {clickNum >= 1 && (
-        <>
-          <div className='absolute bottom-24 left-6 z-[2] md:left-10 lg:bottom-10'>
-            <Link href='/credits#models' className='underline'>
-              Credits
-            </Link>
-          </div>
-          <div className='ctp-mocha pointer-events-none absolute bottom-24 right-6 z-[2] flex w-fit touch-none flex-col items-end gap-2 -space-y-2 rounded-3xl border border-ctp-mauve bg-ctp-midnight/80 p-4 text-ctp-text md:right-10 lg:bottom-10  '>
-            <p className='text-xl font-black uppercase'>Haj Click Counter</p>
-            <p className='h-[2.8rem] text-[2.3rem] font-black'>{String(clickNum).padStart(8, '0')}</p>
-          </div>
-        </>
+        <div className='ctp-mocha pointer-events-none absolute bottom-24 right-6 z-[2] flex w-fit touch-none flex-col items-end gap-2 -space-y-4 text-ctp-text  md:right-10 lg:bottom-10  '>
+          <p className='text-xl font-black uppercase'>Haj Click Counter</p>
+          <p className='h-[2.8rem] text-[2.3rem] font-black text-ctp-mauve'>{String(clickNum).padStart(8, '0')}</p>
+        </div>
       )}
       {clickNum < 1 && (
         <div className='ctp-mocha absolute bottom-20 right-6 z-[2] flex flex-col items-end gap-4 pb-4 text-ctp-text md:right-10 lg:bottom-10 lg:pb-0'>

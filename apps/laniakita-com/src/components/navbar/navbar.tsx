@@ -22,7 +22,6 @@ export default function NavBar() {
         // do nothing
       } else {
         setClicked({ ...clicked, stateVal: 'closed' });
-        console.log(e);
       }
     },
     [clicked],
