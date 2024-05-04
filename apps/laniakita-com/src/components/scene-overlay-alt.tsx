@@ -134,14 +134,12 @@ export default function SceneOverlayV3() {
           </div>
 
           <div className='ctp-mocha absolute bottom-24 left-6 z-[2] lg:bottom-10'>
-            <p>
               <Link
                 href='/credits#models'
                 className='underline opacity-0 motion-safe:animate-fade-in motion-reduce:opacity-100'
               >
                 Credits
               </Link>
-            </p>
           </div>
         </>
       )}
