@@ -1,8 +1,8 @@
 'use client';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import { useState, useRef, useEffect } from 'react';
 import { useHajClickerStore } from '@/providers/hajclicker-store-provider';
+import { useDeviceWidthStore } from '@/providers/device-width-store-provider';
 
 const TextSplitterUltra = dynamic(() => import('@/components/text-splitter-v2'), {
   ssr: true,
@@ -10,28 +10,8 @@ const TextSplitterUltra = dynamic(() => import('@/components/text-splitter-v2'),
 
 export default function SceneOverlayV3() {
   const { clickNum } = useHajClickerStore((state) => state);
-  const windowRef = useRef<number>();
-  const [mobileVis, setMobileVis] = useState(false);
-  const [tabVis, setTabVis] = useState(false);
-  useEffect(() => {
-    const updateRef = () => {
-      windowRef.current = window.innerWidth;
-      if (windowRef.current < 768) {
-        setMobileVis(true);
-        setTabVis(false);
-      } else if (windowRef.current >= 768) {
-        setMobileVis(false);
-        setTabVis(true);
-      }
-    };
+  const { isMobile, isTablet } = useDeviceWidthStore((state) => state);
 
-    updateRef();
-
-    window.addEventListener('resize', updateRef);
-    return () => {
-      window.removeEventListener('resize', updateRef);
-    };
-  });
   return (
     <>
       {clickNum < 1 && (
@@ -40,7 +20,7 @@ export default function SceneOverlayV3() {
             <div className='flex w-fit flex-col justify-start gap-4 '>
               <div className='flex w-fit flex-col  -space-y-1 text-4xl font-black text-ctp-text md:space-y-0'>
                 <h1 className='max-w-sm motion-safe:hidden'>I create web app & digital experiences that delight.</h1>
-                <div className={`${mobileVis ? 'visible h-40' : 'hidden h-40'} motion-reduce:hidden`}>
+                <div className={`${isMobile ? 'visible h-40' : 'hidden h-40'} motion-reduce:hidden`}>
                   <h1 className='overflow-hidden'>
                     <TextSplitterUltra
                       className='inline-flex'
@@ -79,7 +59,7 @@ export default function SceneOverlayV3() {
                   </h1>
                 </div>
 
-                <div className={`${tabVis ? 'visible' : 'hidden'} motion-reduce:hidden`}>
+                <div className={`${isTablet ? 'visible' : 'hidden'} motion-reduce:hidden`}>
                   <h1 className='overflow-hidden'>
                     <TextSplitterUltra
                       className='inline-flex'
