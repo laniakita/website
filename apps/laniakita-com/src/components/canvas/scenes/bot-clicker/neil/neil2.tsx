@@ -48,6 +48,7 @@ function ZunSetup({ z, speed, index }: { z: number; speed: number; index: number
   const { addClickToCount } = useHajClickerStore((state) => state);
   const { isMobile } = useDeviceWidthStore((state) => state);
   const ref = useRef<LOD>(null);
+  const { a11yPrefersState } = useUserPreferences();
   const [hovered, setHovered] = useState(false);
   const { viewport, camera } = useThree((state) => state);
   const { width, height } = viewport.getCurrentViewport(camera, [0, 0, -z]);
@@ -60,10 +61,12 @@ function ZunSetup({ z, speed, index }: { z: number; speed: number; index: number
     rX: Math.random() * Math.PI,
     rZ: Math.random() * Math.PI,
   });
-  const { a11yPrefersState } = useUserPreferences();
   if (canSound) camera.add(listener);
-
+  const {clickNum} = useHajClickerStore((state) => state)
   const handleBotClick = (/*e: ThreeEvent<MouseEvent>*/): void => {
+    if (clickNum < 1) {
+      return
+    } 
     if (!hovered) {
       addClickToCount();
     }
@@ -155,9 +158,9 @@ function ZunSetup({ z, speed, index }: { z: number; speed: number; index: number
       ref.current.scale.x =
         ref.current.scale.y =
         ref.current.scale.z =
-          MathUtils.lerp(ref.current.scale.z, hovered ? 0.08 : 0.06, 0.1);
+          MathUtils.lerp(ref.current.scale.z, hovered ? 0.07 : 0.05, 0.1);
     } else if (ref.current) {
-      ref.current.scale.x = ref.current.scale.y = ref.current.scale.z = hovered ? 1.5 : 1;
+      ref.current.scale.x = ref.current.scale.y = ref.current.scale.z = hovered ? 0.07 : 0.05;
     }
   });
 
