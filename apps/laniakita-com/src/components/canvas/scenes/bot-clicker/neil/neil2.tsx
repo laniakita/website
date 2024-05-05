@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import { A11y, useUserPreferences } from '@react-three/a11y';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useRef, useState } from 'react';
-import type { LOD, Group } from 'three';
+import type { LOD } from 'three';
 import { MathUtils, AudioLoader, Audio, AudioListener } from 'three';
 import { Detailed } from '@react-three/drei';
 import { useHajClickerStore } from '@/providers/hajclicker-store-provider';
@@ -48,7 +48,6 @@ function ZunSetup({ z, speed, index }: { z: number; speed: number; index: number
   const { addClickToCount } = useHajClickerStore((state) => state);
   const { isMobile } = useDeviceWidthStore((state) => state);
   const ref = useRef<LOD>(null);
-  const altRef = useRef<Group>(null);
   const [hovered, setHovered] = useState(false);
   const { viewport, camera } = useThree((state) => state);
   const { width, height } = viewport.getCurrentViewport(camera, [0, 0, -z]);
@@ -130,7 +129,7 @@ function ZunSetup({ z, speed, index }: { z: number; speed: number; index: number
   useFrame((state, delta) => {
     // stops if not current tab
     if (delta < 0.1) {
-      // zun go up
+      // neil go up
       ref.current?.position.set(
         index === 0 ? 0 : data.x * width,
         (data.y += a11yPrefersState.prefersReducedMotion ? 0 : delta * speed),
@@ -138,7 +137,7 @@ function ZunSetup({ z, speed, index }: { z: number; speed: number; index: number
       );
     }
 
-    // rotate zun
+    // rotate neil
     if (!a11yPrefersState.prefersReducedMotion) {
       ref.current?.rotation.set(
         (data.rX += delta / data.spin),
@@ -147,7 +146,7 @@ function ZunSetup({ z, speed, index }: { z: number; speed: number; index: number
       );
     }
 
-    // reset zun to bottom of viewport
+    // reset neil to bottom of viewport
     if (data.y > height * (index === 0 ? 4 : 1)) {
       data.y = -(height * (index === 0 ? 4 : 1));
     }
