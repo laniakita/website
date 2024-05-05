@@ -23,7 +23,7 @@ export default function SocialCounterOverlay({ model }: { model: string }) {
 
           {(isPlayWarn as unknown) === true && (
             <div className='fixed inset-0 z-10 flex h-dvh items-center justify-center bg-black/30 backdrop-blur-xl'>
-              <div className='flex max-w-md flex-col items-center justify-center gap-10'>
+              <div className='flex max-w-xs flex-col items-center justify-center gap-10 md:max-w-md'>
                 <div className='text-3xl font-black uppercase'>
                   {`EPILEPSY WARNING: Bot Clicker may containing flashing lights and sounds that may cause an epileptic seizure! Do not
                 play Bot Clicker if you've ever been diagnosed with and or believe you may have EPILEPSY.`}
