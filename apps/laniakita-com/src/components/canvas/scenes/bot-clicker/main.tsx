@@ -88,7 +88,7 @@ function BotClickerMain() {
   });
   return (
     <>
-      <Zuns speed={8} count={isMobile ? 30 : 80} />
+      <Zuns speed={8} count={isMobile ? 40 : 80} />
       <Stars ref={starRef} />
       <hemisphereLight intensity={1.5} />
       {clickNum < 1 && <EffectComposer enableNormalPass={false} multisampling={0}>
