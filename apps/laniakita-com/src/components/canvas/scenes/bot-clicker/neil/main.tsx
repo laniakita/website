@@ -50,7 +50,7 @@ export default function BotClickerScene() {
           flat
           gl={{ antialias: false }}
           dpr={[1, 1.5]}
-          camera={{ position: [0, 0, 20], fov: 40, near: 0.01  }}
+          camera={{ position: [0, 0, 20], fov: 20, near: 0.01  }}
           style={{
             height: '100%',
             width: '100%',
@@ -88,11 +88,11 @@ function BotClickerMain() {
   });
   return (
     <>
-      <Neils speed={8} count={isMobile ? 40 : 80} />
+      <Neils speed={8} count={isMobile ? 30 : 60} />
       <Stars ref={starRef} />
       <hemisphereLight intensity={1.5} />
       {clickNum < 1 && <EffectComposer enableNormalPass={false} multisampling={0}>
-        <DepthOfField worldFocusDistance={30} bokehScale={5} height={680} />
+        <DepthOfField worldFocusDistance={30} bokehScale={10} height={680} />
       </EffectComposer>}
     </>
   );

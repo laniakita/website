@@ -156,7 +156,7 @@ function ZunSetup({ z, speed, index }: { z: number; speed: number; index: number
       ref.current.scale.x =
         ref.current.scale.y =
         ref.current.scale.z =
-          MathUtils.lerp(ref.current.scale.z, hovered ? 1.2 : 1, 0.05);
+          MathUtils.lerp(ref.current.scale.z, hovered ? 0.08 : 0.06, 0.1);
     } else if (ref.current) {
       ref.current.scale.x = ref.current.scale.y = ref.current.scale.z = hovered ? 1.5 : 1;
     }
@@ -165,17 +165,18 @@ function ZunSetup({ z, speed, index }: { z: number; speed: number; index: number
   return (
     <>
       {/* eslint-disable-next-line -- react-three a11y only gives a few roles */}
-      <A11y role='image' description="Oscar Creativo's Bot Zun enjoying space">
+      <A11y role='image' description="Oscar Creativo's Bot Neil on a spacewalk">
         {!isMobile ? (
-          <Detailed ref={ref} distances={[0, 65, 80]} onClick={handleBotClick}>
-            <Neilx128 />
-            <Neilx256 />
+          <Detailed ref={ref} distances={[0, 65, 80]} onClick={handleBotClick} scale={0.001}>
             <Neilx512 />
+            <Neilx256 />
+            <Neilx128 />
           </Detailed>
         ) : (
-          <group ref={altRef} onClick={handleBotClick}>
+          <Detailed ref={ref} distances={[0, 65]} onClick={handleBotClick} scale={0.001}>
+            <Neilx256 />
             <Neilx128 />
-          </group>
+          </Detailed>
         )}
       </A11y>
     </>
