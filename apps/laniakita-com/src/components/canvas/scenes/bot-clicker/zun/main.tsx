@@ -13,7 +13,7 @@ import { useHajClickerStore } from '@/providers/hajclicker-store-provider';
 
 const SceneOverlayV3 = dynamic(() => import('@/components/scene-overlay-alt'), { ssr: false });
 
-const Zuns = dynamic(() => import('@/components/canvas/scenes/bot-clicker/zun2'), { ssr: false });
+const Zuns = dynamic(() => import('@/components/canvas/scenes/bot-clicker/zun/zun2'), { ssr: false });
 
 const SocialCounterOverlay = dynamic(() => import('@/components/scene-social-counter-overlay'), { ssr: false });
 
