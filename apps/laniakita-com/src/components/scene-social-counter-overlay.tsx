@@ -25,8 +25,8 @@ export default function SocialCounterOverlay({ model }: { model: string }) {
             <div className='fixed inset-0 z-10 flex h-dvh items-center justify-center bg-black/30 backdrop-blur-xl'>
               <div className='flex max-w-xs flex-col items-center justify-center gap-10 md:max-w-md'>
                 <div className='text-3xl font-black uppercase'>
-                  {`EPILEPSY WARNING: Bot Clicker may containing flashing lights and sounds that may cause an epileptic seizure! Do not
-                play Bot Clicker if you've ever been diagnosed with and or believe you may have EPILEPSY.`}
+                  {`EPILEPSY WARNING: Bot Clicker features flashing lights and sounds that may cause an epileptic seizure! Do not
+                play Bot Clicker if you've ever been diagnosed with and or believe you have EPILEPSY.`}
                 </div>
                 <div className='flex w-full flex-row items-center justify-between gap-4 text-ctp-base'>
                   <button
