@@ -1,9 +1,9 @@
 /* eslint-disable no-multi-assign -- it's easier this way  */
 import { A11y, useUserPreferences } from '@react-three/a11y';
-import { useFrame, useThree } from '@react-three/fiber';
-import { useRef, useState } from 'react';
-import type { Group } from 'three';
-import { MathUtils, AudioLoader, Audio, AudioListener } from 'three';
+import { ThreeEvent, useFrame, useThree } from '@react-three/fiber';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import type { Group, Mesh, MeshStandardMaterial } from 'three';
+import { MathUtils, AudioLoader, Audio, AudioListener, Color } from 'three';
 import { BotZun } from '@/components/canvas/models/bot-zun';
 import { useHajClickerStore } from '@/providers/hajclicker-store-provider';
 
@@ -34,10 +34,11 @@ const audioLoader = new AudioLoader();
 function ZunSetup({ z, speed, index }: { z: number; speed: number; index: number }) {
   const { addClickToCount } = useHajClickerStore((state) => state);
   const ref = useRef<Group>(null);
+  const eyeColorOneRef = useRef<MeshStandardMaterial>(null);
   const [hovered, setHovered] = useState(false);
   const { viewport, camera } = useThree((state) => state);
   const { width, height } = viewport.getCurrentViewport(camera, [0, 0, -z]);
-  //const botColor = new Color();
+  const botColor = new Color();
   // eslint-disable-next-line -- don't need setData
   const [data] = useState({
     y: MathUtils.randFloatSpread(height * 2),
@@ -49,9 +50,23 @@ function ZunSetup({ z, speed, index }: { z: number; speed: number; index: number
   const { a11yPrefersState } = useUserPreferences();
   if (canSound) camera.add(listener);
 
-  const handleBotClick = (): void => {
+
+  const handleBotClick = (e: ThreeEvent<MouseEvent>): void => {
+    if (!hovered) {
+      addClickToCount();
+    }
+    setHovered(true);
+   
+    const newEyeOneMaterial = ((e.eventObject.children[0]?.children[0]?.children[0]?.children[0]?.children[5]?.children[0] as Mesh).material as MeshStandardMaterial).clone();
+    
+    const newEyeTwoMaterial = ((e.eventObject.children[0]?.children[0]?.children[0]?.children[0]?.children[6]?.children[0] as Mesh).material as MeshStandardMaterial).clone();   
+    
+    newEyeOneMaterial.color.set('black');
+    newEyeTwoMaterial.color.set('black');
+    
+    ((ref.current?.children[0]?.children[0]?.children[0]?.children[0]?.children[5]?.children[0] as Mesh).material as MeshStandardMaterial) = newEyeOneMaterial;
+     ((ref.current?.children[0]?.children[0]?.children[0]?.children[0]?.children[6]?.children[0] as Mesh).material as MeshStandardMaterial) = newEyeTwoMaterial;   
     canSound = true;
-    // setup audio
     const sound = new Audio(listener);
     const randInt = Math.floor(Math.random() * 10);
     enum BotSounds {
@@ -60,9 +75,7 @@ function ZunSetup({ z, speed, index }: { z: number; speed: number; index: number
       FriendlyLong = '/assets/audio/Pixel_64.wav',
     }
 
-    if (!hovered) {
-      addClickToCount();
-    }
+
     const randSound = (): string => {
       if (randInt >= 8) {
         return BotSounds.Friendly;
@@ -99,7 +112,6 @@ function ZunSetup({ z, speed, index }: { z: number; speed: number; index: number
       return randSound();
     };
 
-    setHovered(true);
     audioLoader.load(audioDecider(), (buffer) => {
       sound.setBuffer(buffer);
       sound.setLoop(false);
@@ -108,7 +120,10 @@ function ZunSetup({ z, speed, index }: { z: number; speed: number; index: number
     });
     setTimeout(() => {
       setHovered(false);
+      newEyeOneMaterial.color.set('white');
+      newEyeTwoMaterial.color.set('white');
     }, 1500);
+
   };
 
   useFrame((state, delta) => {
@@ -140,11 +155,11 @@ function ZunSetup({ z, speed, index }: { z: number; speed: number; index: number
       ref.current.scale.x =
         ref.current.scale.y =
         ref.current.scale.z =
-          MathUtils.lerp(ref.current.scale.z, hovered ? 1 : 1, 0.1);
+          MathUtils.lerp(ref.current.scale.z, hovered ? 1.2 : 1, 0.05);
     } else if (ref.current) {
-      ref.current.scale.x = ref.current.scale.y = ref.current.scale.z = hovered ? 1 : 1;
+      ref.current.scale.x = ref.current.scale.y = ref.current.scale.z = hovered ? 1.5 : 1;
     }
-
+    
     /*
     (
       ref.current?.children[0]?.children[0]?.children[0]?.children[0]?.children[0] as unknown as MeshStandardMaterial
@@ -156,7 +171,7 @@ function ZunSetup({ z, speed, index }: { z: number; speed: number; index: number
     <>
       {/* eslint-disable-next-line -- react-three a11y only gives a few roles */}
       <A11y role='image' description="Oscar Creativo's Bot Zun enjoying space">
-        <group ref={ref} onClick={handleBotClick}>
+        <group ref={ref} onClick={(e: ThreeEvent<MouseEvent>) => { handleBotClick(e) }}>
           <BotZun />
         </group>
       </A11y>
