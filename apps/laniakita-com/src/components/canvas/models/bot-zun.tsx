@@ -13,8 +13,7 @@ import React, { useEffect, useRef } from 'react';
 import type { Mesh, MeshStandardMaterial, AnimationClip, Group } from 'three';
 import type { GLTF } from 'three-stdlib';
 import { useGLTF, useAnimations } from '@react-three/drei';
-import { GroupProps } from '@react-three/fiber';
-import { useDeviceWidthStore } from '@/providers/device-width-store-provider';
+import type { GroupProps } from '@react-three/fiber';
 
 type GLTFResult = GLTF & {
   nodes: {

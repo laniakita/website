@@ -1,13 +1,12 @@
 /* eslint-disable no-multi-assign -- it's easier this way  */
 import { A11y, useUserPreferences } from '@react-three/a11y';
-import { ThreeEvent, useFrame, useThree } from '@react-three/fiber';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import type { Group, LOD, Mesh, MeshStandardMaterial } from 'three';
-import { MathUtils, AudioLoader, Audio, AudioListener, Color } from 'three';
+import { useFrame, useThree } from '@react-three/fiber';
+import { useRef, useState } from 'react';
+import type { LOD } from 'three';
+import { MathUtils, AudioLoader, Audio, AudioListener } from 'three';
 import { Detailed } from '@react-three/drei';
 import { BotZun } from '@/components/canvas/models/bot-zun';
 import { useHajClickerStore } from '@/providers/hajclicker-store-provider';
-import { useDeviceWidthStore } from '@/providers/device-width-store-provider';
 
 export default function Zuns({
   speed = 7,
@@ -36,12 +35,9 @@ const audioLoader = new AudioLoader();
 function ZunSetup({ z, speed, index }: { z: number; speed: number; index: number }) {
   const { addClickToCount } = useHajClickerStore((state) => state);
   const ref = useRef<LOD>(null);
-  const { isMobile } = useDeviceWidthStore((state) => state);
-  const eyeColorOneRef = useRef<MeshStandardMaterial>(null);
   const [hovered, setHovered] = useState(false);
   const { viewport, camera } = useThree((state) => state);
   const { width, height } = viewport.getCurrentViewport(camera, [0, 0, -z]);
-  const botColor = new Color();
   // eslint-disable-next-line -- don't need setData
   const [data] = useState({
     y: MathUtils.randFloatSpread(height * 2),
@@ -59,17 +55,6 @@ function ZunSetup({ z, speed, index }: { z: number; speed: number; index: number
     }
     setHovered(true);
 
-    /*
-    const newEyeOneMaterial = ((e.eventObject.children[0]?.children[0]?.children[0]?.children[0]?.children[5]?.children[0] as Mesh).material as MeshStandardMaterial).clone();
-    
-    const newEyeTwoMaterial = ((e.eventObject.children[0]?.children[0]?.children[0]?.children[0]?.children[6]?.children[0] as Mesh).material as MeshStandardMaterial).clone();   
-    
-    newEyeOneMaterial.color.set('black');
-    newEyeTwoMaterial.color.set('black');
-    
-    ((ref.current?.children[0]?.children[0]?.children[0]?.children[0]?.children[5]?.children[0] as Mesh).material as MeshStandardMaterial) = newEyeOneMaterial;
-     ((ref.current?.children[0]?.children[0]?.children[0]?.children[0]?.children[6]?.children[0] as Mesh).material as MeshStandardMaterial) = newEyeTwoMaterial;   
-    */
     canSound = true;
     const sound = new Audio(listener);
     const randInt = Math.floor(Math.random() * 10);
@@ -124,10 +109,6 @@ function ZunSetup({ z, speed, index }: { z: number; speed: number; index: number
     });
     setTimeout(() => {
       setHovered(false);
-      /* doesn't work with LOD (models must've been mapped differently)
-      newEyeOneMaterial.color.set('white');
-      newEyeTwoMaterial.color.set('white');
-      */
     }, 1500);
   };
 
@@ -165,11 +146,6 @@ function ZunSetup({ z, speed, index }: { z: number; speed: number; index: number
       ref.current.scale.x = ref.current.scale.y = ref.current.scale.z = hovered ? 1.5 : 1;
     }
 
-    /*
-    (
-      ref.current?.children[0]?.children[0]?.children[0]?.children[0]?.children[0] as unknown as MeshStandardMaterial
-    ).color.lerp(botColor.set(hovered ? '#ea76cb' : 'white'), hovered ? 1 : 0.1);
-    */
   });
 
   return (
@@ -177,24 +153,8 @@ function ZunSetup({ z, speed, index }: { z: number; speed: number; index: number
       {/* eslint-disable-next-line -- react-three a11y only gives a few roles */}
       <A11y role='image' description="Oscar Creativo's Bot Zun enjoying space">
         <Detailed ref={ref} distances={[0, 65, 80]} onClick={handleBotClick}>
-          <>
-          {isMobile !== !isMobile && (
-            <>
-              <BotZun res={256} />
-              <BotZun res={256} />
-            </>
-          )}
-          </>
-          <>
-          {!isMobile && (
-            <>
-              <BotZun res={256} />
-              <BotZun res={512} />
-              <BotZun res={1024} />
-            </>
-          )}
-          </>
-          
+          <BotZun res={256} />
+          <BotZun res={512} />
         </Detailed>
       </A11y>
     </>
