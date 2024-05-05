@@ -4,13 +4,13 @@ import { useHajClickerStore } from '@/providers/hajclicker-store-provider';
 import { socialItems } from './footer/footer';
 import TextSplitterUltra from './text-splitter-v2';
 
-export default function SocialCounterOverlay() {
+export default function SocialCounterOverlay({model}:{model: string}) {
   const { clickNum } = useHajClickerStore((state) => state);
   return (
     <>
       {clickNum >= 1 && (
         <div className='ctp-mocha pointer-events-none absolute bottom-24 right-6 z-[2] flex w-fit touch-none flex-col items-end gap-2 -space-y-4 text-ctp-text  md:right-10 lg:bottom-10  '>
-          <p className='text-xl font-black uppercase'>Haj Click Counter</p>
+          <p className='text-xl font-black uppercase'>{`${model} Click Counter`}</p>
           <p className='h-[2.8rem] text-[2.3rem] font-black text-ctp-mauve'>{String(clickNum).padStart(8, '0')}</p>
         </div>
       )}
@@ -20,7 +20,7 @@ export default function SocialCounterOverlay() {
             <h3 className='overflow-hidden text-xl font-black uppercase'>
               <TextSplitterUltra
                 className='inline-flex'
-                textIn='Haj Click Counter'
+                textIn={`${model} Click Counter`}
                 spanRole='heading'
                 level={3}
                 charClass='motion-safe:animate-upDog [transform:_translateY(100%)] inline-block'

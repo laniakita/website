@@ -43,7 +43,7 @@ export default function BotClickerScene() {
   return (
     <main ref={ref} className='relative overflow-hidden  [height:_100dvh] lg:max-h-screen'>
       <SceneOverlayV3 />
-      <SocialCounterOverlay />
+      <SocialCounterOverlay model='Bot' />
       <Suspense fallback={<LoadingSpinner />}>
         <Canvas
           eventSource={ref}
@@ -86,7 +86,7 @@ function BotClickerMain() {
   });
   return (
     <>
-      <Zuns speed={8} count={isMobile ? 40 : 80} />
+      <Zuns speed={8} count={isMobile ? 1 : 80} />
       <Stars ref={starRef} />
       <spotLight position={[0, 40, 0]} intensity={10000} />
       <hemisphereLight intensity={1.5} />

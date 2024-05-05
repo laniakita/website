@@ -51,7 +51,7 @@ export function BotZun(props: JSX.IntrinsicElements['group']) {
   const { nodes, materials, animations } = useGLTF('/assets/models/bot-zun/bz-x512.glb') as GLTFResult
   const { actions } = useAnimations(animations, group)
   return (
-    <group ref={group} {...props} dispose={null}>
+    <group ref={group} {...props} scale={0.09} dispose={null}>
       <group name="Sketchfab_Scene">
         <group name="RootNode">
           <group name="Nulo_" position={[0, -7.755, 3.109]}>
