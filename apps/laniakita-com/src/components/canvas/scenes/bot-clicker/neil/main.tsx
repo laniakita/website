@@ -3,10 +3,10 @@
 import { Suspense, useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Bloom, DepthOfField, EffectComposer, ToneMapping } from '@react-three/postprocessing';
-import { BakeShadows, Environment, Preload, SpotLight, Stars } from '@react-three/drei';
+import { Bloom, EffectComposer,  } from '@react-three/postprocessing';
+import { BakeShadows, Preload, Stars } from '@react-three/drei';
 import { A11yAnnouncer, A11yUserPreferences, useUserPreferences } from '@react-three/a11y';
-import { HemisphereLight, type Points } from 'three';
+import type { Points } from 'three';
 import LoadingSpinner from '@/components/loading-spinner';
 import { useDeviceWidthStore } from '@/providers/device-width-store-provider';
 import { useHajClickerStore } from '@/providers/hajclicker-store-provider';
