@@ -4,7 +4,7 @@ import { Suspense, useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { DepthOfField, EffectComposer } from '@react-three/postprocessing';
-import { Stars } from '@react-three/drei';
+import { Environment, Preload, Stars } from '@react-three/drei';
 import { A11yAnnouncer, A11yUserPreferences, useUserPreferences } from '@react-three/a11y';
 import type { Points } from 'three';
 import LoadingSpinner from '@/components/loading-spinner';
@@ -50,7 +50,7 @@ export default function BotClickerScene() {
           flat
           gl={{ antialias: false }}
           dpr={[1, 1.5]}
-          camera={{ position: [0, 0, 20], fov: 40 }}
+          camera={{ position: [0, 0, 20], fov: 40, near: 0.01  }}
           style={{
             height: '100%',
             width: '100%',
@@ -66,6 +66,8 @@ export default function BotClickerScene() {
           <A11yUserPreferences>
             <BotClickerMain />
           </A11yUserPreferences>
+          <Environment preset="sunset"/>
+          <Preload all />
         </Canvas>
         <A11yAnnouncer />
       </Suspense>
@@ -86,11 +88,10 @@ function BotClickerMain() {
   });
   return (
     <>
-      <Zuns speed={8} count={isMobile ? 1 : 80} />
+      <Zuns speed={8} count={isMobile ? 30 : 80} />
       <Stars ref={starRef} />
-      <spotLight position={[0, 40, 0]} intensity={10000} />
       <hemisphereLight intensity={1.5} />
-      {!isMobile && clickNum < 1 && <EffectComposer enableNormalPass={false} multisampling={0}>
+      {clickNum < 1 && <EffectComposer enableNormalPass={false} multisampling={0}>
         <DepthOfField worldFocusDistance={30} bokehScale={5} height={680} />
       </EffectComposer>}
     </>
