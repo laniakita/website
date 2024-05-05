@@ -3,10 +3,10 @@
 import { Suspense, useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { DepthOfField, EffectComposer } from '@react-three/postprocessing';
-import { Environment, Preload, Stars } from '@react-three/drei';
+import { Bloom, DepthOfField, EffectComposer, ToneMapping } from '@react-three/postprocessing';
+import { BakeShadows, Environment, Preload, SpotLight, Stars } from '@react-three/drei';
 import { A11yAnnouncer, A11yUserPreferences, useUserPreferences } from '@react-three/a11y';
-import type { Points } from 'three';
+import { HemisphereLight, type Points } from 'three';
 import LoadingSpinner from '@/components/loading-spinner';
 import { useDeviceWidthStore } from '@/providers/device-width-store-provider';
 import { useHajClickerStore } from '@/providers/hajclicker-store-provider';
@@ -16,7 +16,6 @@ const SceneOverlayV3 = dynamic(() => import('@/components/scene-overlay-alt'), {
 const Neils = dynamic(() => import('@/components/canvas/scenes/bot-clicker/neil/neil2'), { ssr: false });
 
 const SocialCounterOverlay = dynamic(() => import('@/components/scene-social-counter-overlay'), { ssr: false });
-
 
 export default function BotClickerScene() {
   const ref = useRef(null!);
@@ -41,7 +40,7 @@ export default function BotClickerScene() {
   }, [setMobile, setNotMobile, setTablet, setNotTablet]);
 
   return (
-    <main ref={ref} className='relative overflow-hidden  [height:_100dvh] lg:max-h-screen'>
+    <main ref={ref} className='relative overflow-hidden  [height:_100dvh] lg:max-h-screen bg-black'>
       <SceneOverlayV3 />
       <SocialCounterOverlay model='Bot' />
       <Suspense fallback={<LoadingSpinner />}>
@@ -50,7 +49,7 @@ export default function BotClickerScene() {
           flat
           gl={{ antialias: false }}
           dpr={[1, 1.5]}
-          camera={{ position: [0, 0, 20], fov: 20, near: 0.01  }}
+          camera={{ position: [0, 0, 10], fov: 20, near: 0.01 }}
           style={{
             height: '100%',
             width: '100%',
@@ -66,7 +65,6 @@ export default function BotClickerScene() {
           <A11yUserPreferences>
             <BotClickerMain />
           </A11yUserPreferences>
-          <Environment preset="sunset"/>
           <Preload all />
         </Canvas>
         <A11yAnnouncer />
@@ -79,21 +77,27 @@ function BotClickerMain() {
   const starRef = useRef<Points>(null!);
   const { a11yPrefersState } = useUserPreferences();
   const { isMobile } = useDeviceWidthStore((state) => state);
-  const { clickNum } = useHajClickerStore((state) => state)
+  const { clickNum } = useHajClickerStore((state) => state);
   useFrame((state, delta) => {
-    if (delta < 0.1 && !a11yPrefersState.prefersReducedMotion) {
-      starRef.current.rotation.x += delta * 0.04;
-      starRef.current.rotation.y += delta * 0.03;
+    if (clickNum >=1 && delta < 0.1 && !a11yPrefersState.prefersReducedMotion) {
+      starRef.current.rotation.x += delta * 0.02;
+      starRef.current.rotation.y -= delta * 0.005;
     }
   });
   return (
     <>
-      <Neils speed={8} count={isMobile ? 30 : 60} />
-      <Stars ref={starRef} />
-      <hemisphereLight intensity={1.5} />
-      {clickNum < 1 && !isMobile && <EffectComposer enableNormalPass={false} multisampling={0}>
-        <DepthOfField worldFocusDistance={30} bokehScale={10} height={680} />
-      </EffectComposer>}
+      <Neils speed={clickNum >= 1 ? 7 : 1} count={isMobile ? 30 : 60} />
+      {clickNum >= 1 && (
+        <>
+          <Stars ref={starRef} />
+          <spotLight decay={1.3} power={10} position={[0, 0, 10]} />
+          <BakeShadows />
+          <EffectComposer enableNormalPass={false} multisampling={0}>
+            <Bloom luminanceThreshold={0.2} luminanceSmoothing={0.25} mipmapBlur intensity={14} />
+          </EffectComposer>
+        </>
+      )}
+      <hemisphereLight intensity={0.1} />
     </>
   );
 }

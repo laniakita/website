@@ -12,6 +12,8 @@ import React, { useEffect, useRef } from 'react';
 import type { Mesh, MeshStandardMaterial, AnimationClip, Group } from 'three';
 import type { GLTF } from 'three-stdlib';
 import { useGLTF, useAnimations } from '@react-three/drei';
+import { useUserPreferences } from '@react-three/a11y';
+import { useHajClickerStore } from '@/providers/hajclicker-store-provider';
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -43,9 +45,11 @@ export function Neilx256(props: JSX.IntrinsicElements['group']) {
   const group = useRef<Group>(null!);
   const { nodes, materials, animations } = useGLTF('/assets/models/bot-neil/bn-x256.glb') as GLTFResult;
   const { actions } = useAnimations(animations, group);
+  const { a11yPrefersState } = useUserPreferences();
+  const {clickNum} = useHajClickerStore((state) => state)
   useEffect(() => {
-    actions['NEIL ANIMATION']?.play();
-  }, [actions]);
+    !a11yPrefersState.prefersReducedMotion && clickNum >= 1 && actions['NEIL ANIMATION']?.play();
+  }, [actions, a11yPrefersState, clickNum]);
   return (
     <group ref={group} {...props} dispose={null}>
       <group name='Sketchfab_Scene'>
