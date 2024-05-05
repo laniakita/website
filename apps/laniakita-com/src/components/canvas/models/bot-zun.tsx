@@ -59,17 +59,13 @@ const resFinder = (resolution?: number): string => {
   return '/assets/models/bot-zun/bz-x512.glb';
 };
 
+export function BotZun({ res, ...props }: { res?: number; props?: GroupProps }) {
+  useGLTF.preload(resFinder(res));
 
-
-export function BotZun({res, ...props}:{res?:number, props?: GroupProps}) {
-  useGLTF.preload(resFinder(res)) 
-  
   const group = useRef<Group>(null!);
   const { nodes, materials, animations } = useGLTF(resFinder(res)) as GLTFResult;
 
   const { actions } = useAnimations(animations, group);
-    
-  
 
   useEffect(() => {
     actions.CINEMA_4D_Principal?.play();
@@ -167,4 +163,3 @@ export function BotZun({res, ...props}:{res?:number, props?: GroupProps}) {
     </group>
   );
 }
-
