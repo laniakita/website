@@ -40,7 +40,7 @@ export default function BotClickerScene() {
   }, [setMobile, setNotMobile, setTablet, setNotTablet]);
 
   return (
-    <main ref={ref} className='relative overflow-hidden  [height:_100dvh] lg:max-h-screen bg-black'>
+    <main ref={ref} className='relative overflow-hidden  bg-black [height:_100dvh] lg:max-h-screen'>
       <SceneOverlayV3 />
       <SocialCounterOverlay model='Bot' />
       <Suspense fallback={<LoadingSpinner />}>
@@ -79,7 +79,7 @@ function BotClickerMain() {
   const { isMobile } = useDeviceWidthStore((state) => state);
   const { clickNum } = useHajClickerStore((state) => state);
   useFrame((state, delta) => {
-    if (clickNum >=1 && delta < 0.1 && !a11yPrefersState.prefersReducedMotion) {
+    if (clickNum >= 1 && delta < 0.1 && !a11yPrefersState.prefersReducedMotion) {
       starRef.current.rotation.x += delta * 0.02;
       starRef.current.rotation.y -= delta * 0.005;
     }
