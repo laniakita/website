@@ -91,7 +91,7 @@ function BotClickerMain() {
       <Neils speed={8} count={isMobile ? 30 : 60} />
       <Stars ref={starRef} />
       <hemisphereLight intensity={1.5} />
-      {clickNum < 1 && <EffectComposer enableNormalPass={false} multisampling={0}>
+      {clickNum < 1 && !isMobile && <EffectComposer enableNormalPass={false} multisampling={0}>
         <DepthOfField worldFocusDistance={30} bokehScale={10} height={680} />
       </EffectComposer>}
     </>
