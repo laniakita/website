@@ -140,9 +140,9 @@ function ZunSetup({ z, speed, index }: { z: number; speed: number; index: number
       ref.current.scale.x =
         ref.current.scale.y =
         ref.current.scale.z =
-          MathUtils.lerp(ref.current.scale.z, hovered ? 420 : 400, 0.1);
+          MathUtils.lerp(ref.current.scale.z, hovered ? 1 : 1, 0.1);
     } else if (ref.current) {
-      ref.current.scale.x = ref.current.scale.y = ref.current.scale.z = hovered ? 500 : 400;
+      ref.current.scale.x = ref.current.scale.y = ref.current.scale.z = hovered ? 1 : 1;
     }
 
     /*
