@@ -9,7 +9,6 @@ import type { LOD } from 'three';
 import { MathUtils, AudioLoader, Audio, AudioListener } from 'three';
 import { Detailed } from '@react-three/drei';
 import { useHajClickerStore } from '@/providers/hajclicker-store-provider';
-import { useDeviceWidthStore } from '@/providers/device-width-store-provider';
 
 const Neilx128 = dynamic(() => import('@/components/canvas/models/bot-neil/x128').then((mod) => mod.Neilx128), {
   ssr: false,
@@ -25,16 +24,18 @@ export default function Zuns({
   speed = 7,
   count = 80,
   depth = 80,
+  viewMobile
 }: {
   speed?: number;
   count?: number;
   depth?: number;
+  viewMobile: boolean;
 }) {
   const easing = (x: number) => Math.sqrt(1 - Math.pow(x - 1, 2));
   return (
     <>
       {Array.from({ length: count }, (_, i) => (
-        <ZunSetup key={i} index={i} z={Math.round(easing(i / count) * depth)} speed={speed} />
+        <ZunSetup key={i} index={i} z={Math.round(easing(i / count) * depth)} speed={speed} viewMobile={viewMobile} />
       ))}
     </>
   );
@@ -45,10 +46,9 @@ let canSound = false;
 const listener = new AudioListener();
 const audioLoader = new AudioLoader();
 
-function ZunSetup({ z, speed, index }: { z: number; speed: number; index: number }) {
+function ZunSetup({ z, speed, index, viewMobile }: { z: number; speed: number; index: number, viewMobile: boolean }) {
   const searchParams = useSearchParams();
   const { addClickToCount } = useHajClickerStore((state) => state);
-  const { isMobile } = useDeviceWidthStore((state) => state);
   const ref = useRef<LOD>(null);
   const { a11yPrefersState } = useUserPreferences();
   const [hovered, setHovered] = useState(false);
@@ -178,7 +178,7 @@ function ZunSetup({ z, speed, index }: { z: number; speed: number; index: number
     <>
       {/* eslint-disable-next-line -- react-three a11y only gives a few roles */}
       <A11y role='image' description="Oscar Creativo's Bot Neil on a spacewalk">
-        {!isMobile ? (
+        {!viewMobile ? (
           <Detailed ref={ref} distances={[0, 65, 80]} onClick={handleBotClick} scale={0.001}>
             <Neilx512 isPlay={isAnimate} />
             <Neilx256 isPlay={isAnimate} />
