@@ -1,6 +1,6 @@
 'use client';
 /* eslint-disable no-multi-assign -- it's easier this way  */
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useSearchParams } from 'next/navigation';
 import { A11y, useUserPreferences } from '@react-three/a11y';
