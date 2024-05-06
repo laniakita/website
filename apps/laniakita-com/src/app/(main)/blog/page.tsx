@@ -3,16 +3,16 @@ import { PostNumStoreProvider } from '@/providers/postnum-store-provider';
 import PreviewRollerV3 from '@/components/blog/post-roller-v3';
 
 export const metadata = {
-  title: "Lani's Web Dev Blog",
-  description: "A Full-Stack web developer's blog, written by Lani Akita.",
+  title: "Yet Another Dev Blog",
+  description: "A blog that's mostly about the process of developing (web-based) software.",
   openGraph: {
-    title: "Lani's Web Dev Blog",
-    description: "A Full-Stack web developer's blog, written by Lani Akita.",
+    title: "Yet Another Dev Blog",
+    description: "A blog that's mostly about the process of developing (web-based) software.",
   },
   twitter: {
     card: 'summary',
-    title: "Lani's Web Dev Blog",
-    description: "A Full-Stack web developer's blog, written by Lani Akita.",
+    title: "Yet Another Dev Blog",
+    description: "A blog that's mostly about the process of developing (web-based) software.",
   },
 };
 

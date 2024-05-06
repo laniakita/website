@@ -11,6 +11,7 @@ interface Clicked {
 export default function NavBar() {
   const { dark } = useDarkStore((state) => state);
   const pagesArr = ['Blog', 'About', 'Projects', 'RSS', 'Contact'];
+  const pagesArrMobile = ['Blog', 'About', 'Projects', 'RSS', 'Contact', 'Credits', 'Terms', 'Privacy'];
   const [clicked, setClicked] = useState<Clicked>({
     stateVal: 'closed',
   });
@@ -55,12 +56,12 @@ export default function NavBar() {
             ref={dropNavRef}
             className={`${clicked.stateVal === 'open' ? 'opacity-100 [transform:translate3d(0%,0%,0px)]' : 'opacity-0 [transform:translate3d(0%,100%,-1px)]'} max-h-[calc(100dvh-3.9rem)] w-full overflow-y-auto rounded-t-2xl border-t border-ctp-mauve bg-ctp-base [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:transform_0.5s,_opacity_0.3s,_background-color_0.8s] dark:bg-ctp-midnight lg:hidden`}
           >
-            <div className='flex size-full flex-col gap-4 p-4'>
-              {pagesArr.map((page) => (
+            <div className='flex size-full flex-col gap-3 p-10'>
+              {pagesArrMobile.map((page) => (
                 <LinkPlus
                   href={handleRef(page)}
                   key={page}
-                  className='nav-item'
+                  className='nav-item text-3xl font-black'
                   onClick={() => {
                     page !== 'RSS' && setClicked({ ...clicked, stateVal: 'closed' });
                   }}
@@ -125,14 +126,4 @@ export default function NavBar() {
     </nav>
   );
 }
-/*
-function TalkToMe() {
-  return (
-    <button
-      type='button'
-      className='rounded-xl border-2 border-ctp-sky bg-ctp-sky/40 px-2.5 py-0.5 font-semibold lowercase text-ctp-text hover:bg-ctp-sky hover:text-ctp-base dark:bg-ctp-midnight dark:bg-ctp-crust dark:bg-ctp-sky/0 dark:hover:bg-ctp-sky'
-    >
-      <p>lets talk</p>
-    </button>
-  );
-} */
+

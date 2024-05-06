@@ -146,7 +146,7 @@ export function FeaturedPostPreviewV3({ dataObj }: { dataObj: PostTeaserObjectPr
 
   return (
     <div
-      className={`${hasImage ? 'pb-6 md:p-0 lg:pb-0' : 'py-6 md:p-0 lg:p-0'} motion-safe:simple-color-trans pointer-events-none flex size-full flex-col gap-6 border-y border-ctp-surface0 bg-ctp-base   hover:border-ctp-mauve has-[:focus]:border-ctp-mauve dark:bg-ctp-midnight md:gap-0 md:border lg:flex-row-reverse lg:items-center lg:justify-between`}
+      className={`${hasImage ? 'pb-10 md:p-0 lg:pb-0' : 'py-10 md:p-0 lg:p-0'} motion-safe:simple-color-trans pointer-events-none flex size-full flex-col gap-10 border-y border-ctp-surface0 bg-ctp-base   hover:border-ctp-mauve has-[:focus]:border-ctp-mauve dark:bg-ctp-midnight md:gap-0 md:border lg:flex-row-reverse lg:items-center lg:justify-between`}
     >
       {dataObj.heroFile && dataObj.heroAltText ? (
         <Link
@@ -167,7 +167,7 @@ export function FeaturedPostPreviewV3({ dataObj }: { dataObj: PostTeaserObjectPr
         ''
       )}
       <div
-        className={`${hasImage ? 'md:p-10 lg:min-w-[50%]  lg:max-w-[50%] 2xl:min-w-[33.33%]  2xl:max-w-[33.33%]  2xl:p-20' : 'md:p-10 lg:pt-20'} flex size-full flex-col justify-center gap-6 px-4`}
+        className={`${hasImage ? 'md:p-10 lg:min-w-[50%]  lg:max-w-[50%] 2xl:min-w-[33.33%]  2xl:max-w-[33.33%]  2xl:p-20' : 'md:p-10 lg:pt-20'} flex size-full flex-col justify-center gap-6 px-10`}
       >
         <div className='space-y-2'>
           <p>
