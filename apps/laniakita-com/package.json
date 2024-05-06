@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "rss-gen": "bun ./bin/rss-gen.ts",
+    "db-push": "bun ./bin/push.ts --content content",
     "analyze": "ANALYZE=true next build",
     "dev": "dotenv -e .env.development -e .env.local -- next dev",
-    "build": "dotenv -e .env.production -e .env.local -- next build",
+    "build": "bun ./bin/push.ts --content content && bun ./bin/rss-gen.ts -p && dotenv -e .env.production -e .env.local -- next build",
     "start": "next start",
-    "lint": "next lint",
-    "push": "bun ./bin/push.ts --content content",
-    "rss-gen": "bun ./bin/rss-gen.ts"
+    "lint": "next lint"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.0.1",

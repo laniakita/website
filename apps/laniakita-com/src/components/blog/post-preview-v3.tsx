@@ -2,7 +2,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import dayjs, { extend } from 'dayjs';
-//import kebabCase from 'lodash/kebabCase';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import timezone from 'dayjs/plugin/timezone';
@@ -104,23 +103,14 @@ export function PostPreviewV3({ dataObj }: { dataObj: PostTeaserObjectProps }) {
         </div>
         <div className='flex w-full flex-wrap gap-2 font-mono'>
           {postedDate?.cal ? (
-            <p>
-              <span>
-                {postedDate.cal}
-                {` `}
-              </span>
-              <span>
-                {postedDate.time}
-                {` `}
-              </span>
+            <p className='space-x-2'>
+              <span>{postedDate.cal}</span>
+              <span>{postedDate.time}</span>
               <span>{postedDate.timezone}</span>
             </p>
           ) : (
-            <p>
-              <span>
-                {postedDate?.fromNow}
-                {` `}
-              </span>
+            <p className='space-x-2'>
+              <span>{postedDate?.fromNow}</span>
               <span>{postedDate?.timezone}</span>
             </p>
           )}
@@ -190,23 +180,14 @@ export function FeaturedPostPreviewV3({ dataObj }: { dataObj: PostTeaserObjectPr
         </div>
         <div className='flex flex-wrap gap-2 font-mono text-lg'>
           {postedDate?.cal ? (
-            <p className='break-keep'>
-              <span>
-                {postedDate.cal}
-                {` `}
-              </span>
-              <span>
-                {postedDate.time}
-                {` `}
-              </span>
+            <p className='space-x-2 break-keep'>
+              <span>{postedDate.cal}</span>
+              <span>{postedDate.time}</span>
               <span>{postedDate.timezone}</span>
             </p>
           ) : (
-            <p>
-              <span>
-                {postedDate?.fromNow}
-                {` `}
-              </span>
+            <p className='space-x-2 break-keep'>
+              <span>{postedDate?.fromNow}</span>
               <span>{postedDate?.timezone}</span>
             </p>
           )}

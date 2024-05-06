@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
   <channel>
-    <title>Lani Akita's Web Dev Blog</title>
-    <description>Dive into the details of all the latest technologies Lani's learning, using, and forming opinions on, as she builds applications for the modern web.</description>
+    <title>Yet Another Dev Blog, by Lani Akita</title>
+    <description>A blog (mostly) about the process of developing (web-based) software.</description>
     <link>https://laniakita.com/blog</link>
     <language>en-us</language>
     <copyright>Copyright 2024, Lani Akita</copyright>
     <managingEditor>lani@laniakita.com</managingEditor>
     <webMaster>lani@laniakita.com</webMaster>
     <pubDate>Sun, 31 Mar 2024 18:55:00 -1000</pubDate>
-    <lastBuildDate>Mon, 29 Apr 2024 13:14:01 -1000</lastBuildDate>
+    <lastBuildDate>Mon, 06 May 2024 00:04:12 -1000</lastBuildDate>
     <category>Technology</category>
     <generator>Next.js v14.2.1</generator>
     <docs>https://www.rssboard.org/rss-specification</docs>

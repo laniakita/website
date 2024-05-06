@@ -103,7 +103,7 @@ const rssFeed = {
       },
       {
         description:
-          "A blog that's mostly about the process of developing (web-based) software.",
+          "A blog (mostly) about the process of developing (web-based) software.",
       },
       {
         link: `${buildUrl}/blog`,
