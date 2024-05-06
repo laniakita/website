@@ -17,9 +17,9 @@ const zeroxproto = localFont({
 });
 
 const APP_NAME = 'Lani Akita';
-const APP_DEFAULT_TITLE = 'Lani Akita | Full-Stack Developer';
+const APP_DEFAULT_TITLE = 'Lani Akita';
 const APP_TITLE_TEMPLATE = '%s - Lani Akita';
-const APP_DESCRIPTION = 'Official site & dev blog of Lani, a Full Stack Developer who thrives on the bleeding edge.';
+const APP_DESCRIPTION = "Lani Akita's personal site and dev blog.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.BASE_URL ?? 'https://laniakita.com'),

@@ -1,0 +1,193 @@
+
+## Experience
+- (2023-Present): Full Stack Developer. highesoterica.com
+- (2020-Present):  & Graphic Designer. maitaisatsunset.com
+- (2018-2023): WordPress Developer. studentsagainstsexualassault-ca.org
+- (2018-2020):  Associated Students University of California, Santa Barbara Human Rights Board.
+- (2017-2018): WordPress Developer. ucsbhrb.org
+
+While the Web continues to ebb and flow into exciting new directions, my endless curiosity to learn and experiment with all the latest tools and technolgies keeps me flowing with it.
+
+I've been making websites since I was a kid, and in my time I've seen "webmaster" became an archaic term and jQuery became a legacy library. 
+
+
+
+- I've been fascinated by computers and internet connected technology my entire life, but I really wanted to learn something that I wasn't going to be able to figure out on my own, so I pursued a degree in Biology. A long 4 years where I was formally trained as a Research Scientist, and completed an internship in one of the University's Ecology Laboratories (Mazer) as a research assistant.
+
+When I was just a kid in the late 2000s uploading WordPress Blogs to free C-Panel hosts and routing them to free ".tk" & ".cc" domains. 
+
+## Contents
+
+- [My Current Development Process](#my-current-development-process)
+  - [Front-End](#front-end)
+    - [UI Libraries](#ui-libraries)
+    - [CSS](#css)
+    - [WebGL](#webgl)
+    - [Frontend Frameworks](#frontend-frameworks)
+    - [MDX](#mdx)
+  - [Back-End](#back-end)
+    - [API Frameworks](#api-frameworks)
+    - [Databases](#databases)
+    - [ORMs](#object-relational-mappers-orms)
+    - [Buckets](#buckets)
+    - [Backends](#off-the-shelf-backends)
+    - [CMSes](#off-the-shelf-content-management-systems-cms)
+    - [eCommerce](#off-the-shelf-ecommerce)
+  - [Full-Stack](#full-stack)
+    - [Full-Stack Frameworks](#full-stack-frameworks)
+    - [Authentication](#authentication)
+  - [DevOps](#devops)
+    - [Serverless/Edge Functions](#serverlessedge-functions-github-actions)
+    - [VPSes](#virtual-private-servers)
+    - [Kubernetes](#kubernetes-k8s)
+- [Other/Workflow](#other--workflow)
+- [Education](#education)
+- [Professional Experience](#professional-experience)
+
+
+
+## My Current Development Process
+
+>**Addendum**: In my mind this section wasn't going to be so extensive. It was just supposed to give you a rough idea of what sort of developer I actually am, since Full-Stack could mean anything! 
+>
+>Also, this entire thing is only the highlights! There's a bunch of stuff I didn't even mention like build tools (Vite, Webpack, Esbuild, etc.) and package managers (npm, pnpm, bun), and editor tools like linters, formatters, debuggers, etc. I also neglected to talk about the nix-flakes I use to create isolated dev environments. I even forgot to talk about using Podman/Docker and Compose when I don't feel the need to deploy a minikube cluster on my Homelab.
+>
+>Aside, this pretty quickly became a gigantic list of some of the tools I've used in the past, and what I'm currently working with now (4/23/2024), and what I did/do with them. Since there's so much packed in here, you might find something cool you've never heard of, so maybe you'll get something out of it afterall. 
+>
+>~ Lani
+
+I use a lot of different tools and technologies (on top of actively learning new ones) because websites have become a teensy bit more complicated than they were 10 or 15 years ago when jQuery was all the rage (oh no! Did I just date myself?!).
+
+So, let's start with a high-level overview before we get down to brass tacks. First the initial planning tools I use before writing a single line of code, then the category of dev tools that contribute to a modern web stack (Front-End, Back-End, Full-Stack, DevOps).
+
+**UI/UX + Graphic Design Tools**: These help me visualize what an app is going to look like (UI), and what the user experience (UX) might be like (navigating between pages, menus, things you touch, etc.). I'm partial to Figma when creating the UI/UX designs/mockups. For things like branding, I used to use Adobe Illustrator, but have recently moved to Affinity Designer.
+
+**Planning Tools**: These help me visualize the software architecture an app will initially take, and gives me a rough estimate of how much it will cost. I mostly use excalidraw (or a pen and paper) for this, and a cloud providers cost calculator.
+
+**Front-End Tools**: These help me build user interfaces, i.e., everything you can see or touch or interact with on a website.
+
+**Back-End Tools**: These help me pipe data into, and out of, the interfaces users interact with.
+
+**Full-Stack Tools**: These blend the categories above and help me orchestrate the front-end and the back-end into one harmonious symphony.
+
+**DevOps Tools**: These help me deploy and distribute an app onto the "World Wide Web" with some extra goodies to boot. These being: re-deploying an app the moment I push changes to the apps source code repository; growing the number of computers that run the app up or down, to keep up with the number of people using the app in real time; and more!
+
+Okay, that's the gist of it. We can finally move on to the nitty gritty techno babble (i.e. the last four categories)! ^-^
+
+## Front-End
+
+### UI Libraries
+
+When creating complex-interactive user interfaces, I'll choose either React or Svelte (both being JavaScript libraries with decent TypeScript support), depending on the needs of the project and if there are any specific component libraries that I might want to integrate with.
+
+For lighter, far less complicated projects, I've been quite delighted by HTMX paired with Alpine.js, specifically in the context of using @kitajs/html repacked into the @elysiajs/html plugin.
+
+I should probably note that Vue is wonderful too. Before I really settled into the react ecosystem (& later svelte too), I was enamoured with how easy Vue was to pick up after feeling overwhelmed with the complexity of react when I was first trying to learn it back in 2017 or so.
+
+### CSS
+
+For styles I'm quite partial to tailwindcss. Granted, writing CSS in classnames can get ugly fast (hence why the tailwind docs encourage you to make use of css files), but it's so gosh darn convenient, and so easy to make it reactive to changes in state, I love it. Not to mention it's library agnostic! I've used it in React projects, Svelte projects, and even ElysiaJS projects!
+
+Before embracing tailwindcss, I used Bootstrap for a while, then Bulma up until around 2020, but for reasons I can't remember, I decided to use tailwind and just never looked back. I think it's because I was often fighting the defaults of these UI component libraries that I just gave up and embraced writing my own styles.
+
+### WebGL
+
+Far beyond the animation abilities of CSS, I'm currently enamoured with Three.Js (a JavaScript library for WebGL) and third-party component libraries: the react-three/fiber ecosystem for React apps, and threlte for Svelte apps. Both abstract some of the more tedious aspects of working with Three.js (which itself abstracts the really tedious parts of working with WebGL/Shaders in general), and both have made great strides to make it quite easy to write optimized (read: performant), reactive, WebGL.
+
+### Frontend Frameworks
+
+While I don't use dedicated frontend frameworks like Gatsby anymore, I used to in the past. Gatsby was the first framework I used after leaping off of create-react-app, and was essentially a static site generator (SSG) for react. I moved on from Gatsby around the time server-side rendering became possible on serverless providers with frameworks like Next.Js, Nuxt, SvelteKit.
+
+### MDX
+
+This site is my first to make heavy use of markdown, which is quite ironic, but oh well. For general styling I'm using tailwind prose, but I've customized it quite a bit with the Catppuccin tailwind plugin to get all those pretty colors. For syntax highlighting code blocks, I'm using the rehype version of @shikijs with the twoslash-transformer plugin to get those annotations you might find on typescript code blocks in one of my blog posts. I'm also using remark-gfm with rehype-slug, since I'm already used to GitHub markdown, I may as well keep using it.
+
+For pages like this one, I'm using the official Next/mdx plugin, and for the blog posts I'm using MDX bundler (with the rehype-mdx-import-media plugin to copy images from the content folder to be served from the public folder) so I can generate post pages on demand (because if you haven't noticed, I write a lot of words).
+
+## Back-End
+
+### API frameworks
+
+For building back-end applications like APIs, I've recently taken a liking to ElysiaJS, a web framework optimized for the Bun runtime, and designed to be run on the Edge (i.e. Cloudflare workers). It's also quite a joy to work with. While it still has some sharp edges, having only hit 1.0 this March, it's already got quite a flourishing ecosystem of third-party plugins and adapters, and that gives me quite a bit of hope for the future of the project.
+
+ElysiaJS, like Hono, can also integrate into a Full-Stack framework like Next, operating as a routehandler on the dynamically generated segments, which is pretty cool I think. While I've yet to take advantage of that ability, it's nice that the option is there.
+
+### Databases
+
+I'm quite partial to relational databases, mostly because the sort of data I work with is, well, relational. While it's possible to design a schema and queries and some hacky functions in such a way that you could retrieve data in a somewhat relational manner from a NoSQL database, I've learned the effort just isn't worth it. So, for big projects with heavy write loads, I will champion Postgres (the docs for it are quite well written too). For smaller projects like this website, I chose and will favor SQLite.
+
+### Object-Relational-Mappers (ORMs)
+
+Because I typically work with such relational DBs inside an application that runs on Node or Bun, I've found drizzle (TypeScript ORM) to be quite amazing. I really appreciated that SQL knowledge pretty much directly transfers to drizzle (give or take a few edge cases), and you can even use the "magic" SQL selector as an escape hatch to write "raw" SQL when needed.
+
+I'm partial to ORMs like the above, just because I sleep better knowing that the risk of getting pwned by a SQL injection attack (Damn you bobby tables!) is much lower than if I had just wrote raw SQL myself. While yes, there's definitely safeguards and sanitization measures that you can proactively take to prevent such havoc, my irrational brain however, just feels better with ORMs.
+
+### Buckets
+
+For things that really don't belong in a database (>1 mb images), I've used buckets from both AWS (s3) and GCP (Cloud Storage Bucket) and also BackBlaze to store assets (mostly from a CMS). I've also used the latest version of the AWS SDK (v3) when communicating with a s3 compatible bucket directly using the @aws-sdk/client-s3 npm module when I experimented with storing markdown files in it, as I tried to use a s3 bucket a bit like a NoSQL db with some clever "folder" structures (read: "schema designs").
+
+### Off-the-Shelf Backends
+
+When I'm not building my own back-end, I've been really delighted by PocketBase an amazing backend written in Go. It is hands down, the most joy I've ever had working with an off the shelf backend ever. It's also incredibly light to boot, since it's written in go, and can be deployed to a t3.nano instance without breaking a sweat! (You could shove it into a k8s cluster, but SQLite isn't really designed to be distributed like that.)
+
+I've also used some Backends as a Service (BaaS) like supabase, which is an open-source version of firebase, and like PocketBase comes complete with a database (though Postgres instead of SQLite) and authentication OOTB. Their sdk is easy enough, but it can integrate with Drizzle (though the last time I tried this it was a bit buggy) if you really just want the database part.
+
+### Off-the-Shelf Content Management Systems (CMS)
+
+I got my start in web using WordPress, a php based CMS+Front-End combo, and have gotten it to do all sorts of wacky things (WooCommerce, sso authentication, etc.) over the years, though I haven't launched a new WordPress site since 2018.
+
+Today, however, I tend to prefer modern JavaScript based self-hosted headless CMSes (i.e. a CMS that's just a backend, you build the frontend), that let you design a schema and give you an API in return (I'm calling these schema-builders). I've used strapi, directus (favorite), and payload in this department.
+
+For non-self-hosted options, the CMS as a Service (CMSaaS) I'm most familar with is Contentful, but I've also used Sanity, and datoCMS, and GraphCMS too (which is now hygraphCMS I believe) in the past. These are all schema-builders as well.
+
+I should also mention Ghost, since I quite like it. The only downside is that it's not a schema builder like the typical headless CMS, because it's not designed to be a headless CMS, it's designed to be a blogging platform like WordPress. It just so happens that like WordPress, you can also run it headless, which I've experimented with in the past before stumbling onto the other schema-builder type CMSes I mentioned above.
+
+### Off-the-Shelf eCommerce
+
+E-commerce tools are something I'm also quite familar with. When I was in WordPress world that meant WooCommerce (I also briefly trialed Squarespace Business), but since leaving it I've been quite partial to the Shopify Storefront API.
+
+Because the storefront API is a GraphQL endpoint for your entire Shopify store (orders/products/customers/etc), you can relegate shopify to acting as just a backend, to create a nice custom front-end for a shopify store, rather than be forced into using a generic template. This also means that you can integrate a store into an existing website, rather than redirecting them offsite.
+
+Aside, I've also experimented with snipcart at one point, and stripe elements, and will look into Medusa eventually, but I'm comfortable with Shopify for now.
+
+## Full-Stack
+
+### Full-Stack Frameworks
+
+Because I need to have data split between server and the client's browser in the sort of apps I build (because leaking secrets is bad), I have a strong preference for Full-Stack frameworks that can do just that. I typically work with either Next.js (react apps) or SvelteKit (svelte apps).
+
+### Authentication
+
+For authentication on the app itself (no remote backend), I've recently been working with a lovely little library called Lucia. It integrates perfectly with a Full-Stack framework, and makes both SSO and traditional user/password authentication quite a breeze to setup. Bun.password (faster node:crypto) compatibility is also quite a big plus! In the past I was using something much more proprietary (Auth0), but I've found this to be quite an amazing replacement.
+
+- Note: I typically use a relational database to store and query all the information that's needed for authentication.
+
+## DevOps
+
+### Serverless/Edge Functions + GitHub Actions
+
+For deploying react/svelte based applications, I usually use a serverless/edge function from a provider that automates the process like Cloudflare Pages or Vercel, and sets up a GitHub action to create a CI/CD pipeline. For Next.js sites in particular that I want to deploy to AWS, I've used a handy cli tool called SST (Ion is the latest version) which uses OpenNext for compatibility. I've also used @cloudflare/next-on-pages to deploy Next.js on Cloudflare pages, using the edge runtime on dynamic routes for compatibility with Cloudflare Workers.
+
+### Virtual Private Servers
+
+For things that can't (or shouldn't) be run serverless (and isn't worth the overhead of a microservice), I'll either spin up a nix-flavored server instance on "the cloud" (AWS/GCP/Hezner/Digital Ocean/etc.) and deploy things the ol' fashioned way (this used to mean setting up each linux system by hand, but I've found NixOS as a great way to automate this step), or I'll deploy a Kubernetes cluster.
+
+### Kubernetes (k8s)
+
+K8s is something I dove into relatively recently both because I'm an odd duck that's fascinated by distributed systems, and also because I needed a "production ready" alternative to Docker/Podman compose. Currently I've been experimenting with Argo CD to manage containerized applications on the cluster, and I've been investigating kOps as a way to rapidly deploy and scale such clusters to cloud infra with worker nodes spread about on spot-instances to optimize costs.
+
+## Other / Workflow
+
+I'm going to embarass myself for a little bit and tell you a bit about my workflow. Do note that just because I work this way, doesn't necessarily mean you should too, it's just how I prefer to do things.
+
+- **OS**: I'm quite partial to NixOS (btw), because a single flake.nix declares all of my machines that either run NixOS or Nix the package manager. I can rapidly provision cloud VPSes/EC2 instances the exact same way.
+
+- **DE/WM**: Because I tend to have multiple app windows open simultaneously, I find Sway WM (i3 but for wayland) quite useful.
+
+- **Text Editor**: I use Nixvim (a Neovim distro that let's you configure it with Nix + raw lua strings), because I like knowing precisely how my tools work, especially the one I use the most. I also really like customizing such tools to my hearts content, without restriction. If you happen to use Neovim and also use Nix/NixOS, consider giving Nixvim a shot! ^-^
+
+- **Linters**: An eslint config (now flatter) is in pretty much every project I do nowadays, and integrated with a tsconfig file. While not everyone finds linters (& their diagnostic errors/warnings)  useful, I like that it keeps my codebases consistent.  
+
+- **Formatters**: I love prettier & prettierd. I often integrete the tailwindcss plugin in my .prettierrc to sort tailwind classnames. There's also something quite satisfying about triggering my formatting key map, and watching all my little spacing errors and inconsistent use of quotations suddenly become neat and uniform.
+
+

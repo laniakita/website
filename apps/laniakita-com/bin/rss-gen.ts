@@ -99,11 +99,11 @@ const rssFeed = {
   _content: {
     channel: [
       {
-        title: `Lani Akita's Web Dev Blog`,
+        title: `Yet Another Dev Blog, by Lani Akita`,
       },
       {
         description:
-          "Dive into the details of all the latest technologies Lani's learning, using, and forming opinions on, as she builds applications for the modern web.",
+          "A blog that's mostly about the process of developing (web-based) software.",
       },
       {
         link: `${buildUrl}/blog`,
