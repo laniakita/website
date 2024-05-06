@@ -1,10 +1,11 @@
 'use client';
 
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useId} from 'react';
 import { useDarkStore } from '@/providers/theme-store-provider';
 
 export default function DarkModeSwitch() {
   const { dark, themeDark, themeLight } = useDarkStore((state) => state);
+  const switchId = useId()
 
   const handleThemePref = useCallback(() => {
     const isDarkLocal = localStorage.getItem('isDark');
@@ -38,8 +39,6 @@ export default function DarkModeSwitch() {
     handleThemePref();
   };
   
-  const switchId = Math.floor(Math.random()*1000)
-
   useEffect(() => {
     handleThemePref();
     // listen for changes
@@ -61,7 +60,7 @@ export default function DarkModeSwitch() {
       window.removeEventListener('storage', handleThemePref);
       window.removeEventListener('change', handleOSPref);
     };
-  }, [handleThemePref, themeDark, themeLight]);
+  }, [handleThemePref, themeDark, themeLight, switchId]);
   return (
     <div className='s-slider' id='darkmode-switch'>
       <button
