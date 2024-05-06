@@ -9,7 +9,6 @@ import { BakeShadows, Preload, Stars } from '@react-three/drei';
 import { A11yAnnouncer, A11yUserPreferences, useUserPreferences } from '@react-three/a11y';
 import type { Points } from 'three';
 import LoadingSpinner from '@/components/loading-spinner';
-import { useDeviceWidthStore } from '@/providers/device-width-store-provider';
 import { useHajClickerStore } from '@/providers/hajclicker-store-provider';
 
 const SceneOverlayV3 = dynamic(() => import('@/components/scene-overlay-alt'), { ssr: false });
@@ -20,29 +19,26 @@ const SocialCounterOverlay = dynamic(() => import('@/components/scene-social-cou
 
 export default function BotClickerScene() {
   const ref = useRef(null!);
-  const windowRef = useRef<number>();
-  const { setMobile, setNotMobile, setTablet, setNotTablet } = useDeviceWidthStore((state) => state);
+  const [windowWidth, setWindowWidth] = useState(0);
+  const [viewMobile, setViewMobile] = useState(false);
+  const [viewTablet, setViewTablet] = useState(false);
+
   useEffect(() => {
-    const updateRef = () => {
-      windowRef.current = window.innerWidth;
-      if (windowRef.current < 768) {
-        setMobile();
-        setNotTablet();
-      } else if (windowRef.current >= 768) {
-        setTablet();
-        setNotMobile();
-      }
-    };
-    updateRef();
-    window.addEventListener('resize', updateRef);
-    return () => {
-      window.removeEventListener('resize', updateRef);
-    };
-  }, [setMobile, setNotMobile, setTablet, setNotTablet]);
+    if (windowWidth !== window.innerWidth) {
+      setWindowWidth(window.innerWidth);
+    }
+    if (windowWidth < 768) {
+      setViewMobile(true);
+      setViewTablet(false);
+    } else if (windowWidth >= 768) {
+      setViewMobile(false);
+      setViewTablet(true);
+    }
+  }, [windowWidth]);
 
   return (
-    <main ref={ref} className='relative overflow-hidden  bg-black [height:_100dvh] lg:max-h-screen'>
-      <SceneOverlayV3 />
+    <main ref={ref} className='relative min-h-[34rem]  overflow-hidden bg-black [height:_100dvh] lg:max-h-screen'>
+      <SceneOverlayV3 viewMobile={viewMobile} viewTablet={viewTablet} />
       <SocialCounterOverlay model='Bot' />
       <Suspense fallback={<LoadingSpinner />}>
         <Canvas
@@ -64,7 +60,7 @@ export default function BotClickerScene() {
           }}
         >
           <A11yUserPreferences>
-            <BotClickerMain />
+            <BotClickerMain viewMobile={viewMobile} />
           </A11yUserPreferences>
           <Preload all />
         </Canvas>
@@ -74,10 +70,9 @@ export default function BotClickerScene() {
   );
 }
 
-function BotClickerMain() {
+function BotClickerMain({viewMobile}: {viewMobile: boolean}) {
   const starRef = useRef<Points>(null!);
   const { a11yPrefersState } = useUserPreferences();
-  const { isMobile } = useDeviceWidthStore((state) => state);
   const searchParams = useSearchParams();
   const { clickNum } = useHajClickerStore((state) => state);
   const [playing, setPlaying] = useState(false);
@@ -85,7 +80,7 @@ function BotClickerMain() {
   const gameSpeedCalc = () => {
     let gameSpeed = 0.1;
     if (playing) {
-      gameSpeed += (7 + Math.log(clickNum >=1 ? clickNum : 1));
+      gameSpeed += 7 + Math.log(clickNum >= 1 ? clickNum : 1);
       return gameSpeed;
     }
     return gameSpeed;
@@ -112,17 +107,17 @@ function BotClickerMain() {
   return (
     <>
       <Suspense>
-      <Neils speed={gameSpeedCalc()} count={isMobile ? 30 : 60} />
-      {searchParams.get('play') === 'true' && (
-        <>
-          <Stars ref={starRef} />
-          <spotLight decay={1.05} power={40} position={[0, 0, 10]} />
-          <BakeShadows />
-          <EffectComposer enableNormalPass={false} multisampling={0}>
-            <Bloom luminanceThreshold={0.2} luminanceSmoothing={0.25} mipmapBlur intensity={14} />
-          </EffectComposer>
-        </>
-      )}
+        <Neils viewMobile={viewMobile} speed={gameSpeedCalc()} count={viewMobile ? 30 : 60} />
+        {searchParams.get('play') === 'true' && (
+          <>
+            <Stars ref={starRef} />
+            <spotLight decay={1.05} power={40} position={[0, 0, 10]} />
+            <BakeShadows />
+            <EffectComposer enableNormalPass={false} multisampling={0}>
+              <Bloom luminanceThreshold={0.2} luminanceSmoothing={0.25} mipmapBlur intensity={14} />
+            </EffectComposer>
+          </>
+        )}
       </Suspense>
       {!searchParams.get('play') && <hemisphereLight intensity={1.4} />}
     </>

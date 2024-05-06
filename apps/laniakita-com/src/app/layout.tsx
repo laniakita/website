@@ -6,6 +6,7 @@ import { type ReactNode } from 'react';
 import '@/css/app.css';
 import { DarkStoreProvider } from '@/providers/theme-store-provider';
 import NavBar from '@/components/navbar/navbar';
+import { themeGetter } from '@/lib/theme-getter';
 
 const inter = Inter({ subsets: ['latin'], display: 'swap', variable: '--font-inter' });
 
@@ -61,8 +62,12 @@ export const viewport: Viewport = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
+  
   return (
-    <html lang='en-US' dir='ltr' className={`${inter.variable} ${zeroxproto.variable}`}>
+    <html lang='en-US' dir='ltr' className={`${inter.variable} ${zeroxproto.variable}`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeGetter }} />
+      </head>
       <body className={inter.className}>
         <DarkStoreProvider>
           <NavBar />
