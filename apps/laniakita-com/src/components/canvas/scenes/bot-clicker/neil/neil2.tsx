@@ -1,9 +1,10 @@
 'use client';
 /* eslint-disable no-multi-assign -- it's easier this way  */
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
+import { useSearchParams } from 'next/navigation';
 import { A11y, useUserPreferences } from '@react-three/a11y';
 import { useFrame, useThree } from '@react-three/fiber';
-import { useRef, useState } from 'react';
 import type { LOD } from 'three';
 import { MathUtils, AudioLoader, Audio, AudioListener } from 'three';
 import { Detailed } from '@react-three/drei';
@@ -45,11 +46,13 @@ const listener = new AudioListener();
 const audioLoader = new AudioLoader();
 
 function ZunSetup({ z, speed, index }: { z: number; speed: number; index: number }) {
+  const searchParams = useSearchParams();
   const { addClickToCount } = useHajClickerStore((state) => state);
   const { isMobile } = useDeviceWidthStore((state) => state);
   const ref = useRef<LOD>(null);
   const { a11yPrefersState } = useUserPreferences();
   const [hovered, setHovered] = useState(false);
+  const [isAnimate, setIsAnimate] = useState(false);
   const { viewport, camera } = useThree((state) => state);
   const { width, height } = viewport.getCurrentViewport(camera, [0, 0, -z]);
 
@@ -62,11 +65,10 @@ function ZunSetup({ z, speed, index }: { z: number; speed: number; index: number
     rZ: Math.random() * Math.PI,
   });
   if (canSound) camera.add(listener);
-  const {clickNum} = useHajClickerStore((state) => state)
   const handleBotClick = (/*e: ThreeEvent<MouseEvent>*/): void => {
-    if (clickNum < 1) {
+    if (!searchParams.get('play')) {
       return
-    } 
+    }
     if (!hovered) {
       addClickToCount();
     }
@@ -164,20 +166,28 @@ function ZunSetup({ z, speed, index }: { z: number; speed: number; index: number
     }
   });
 
+  useEffect(() => {
+    if (searchParams.get('play') === 'true') {
+      setIsAnimate(true)
+    } else {
+      setIsAnimate(false)
+    }
+  },[searchParams]) 
+
   return (
     <>
       {/* eslint-disable-next-line -- react-three a11y only gives a few roles */}
       <A11y role='image' description="Oscar Creativo's Bot Neil on a spacewalk">
         {!isMobile ? (
           <Detailed ref={ref} distances={[0, 65, 80]} onClick={handleBotClick} scale={0.001}>
-            <Neilx512 />
-            <Neilx256 />
-            <Neilx128 />
+            <Neilx512 isPlay={isAnimate} />
+            <Neilx256 isPlay={isAnimate} />
+            <Neilx128 isPlay={isAnimate} />
           </Detailed>
         ) : (
           <Detailed ref={ref} distances={[0, 65]} onClick={handleBotClick} scale={0.001}>
-            <Neilx256 />
-            <Neilx128 />
+            <Neilx256 isPlay={isAnimate} />
+            <Neilx128 isPlay={isAnimate} />
           </Detailed>
         )}
       </A11y>

@@ -1,9 +1,10 @@
 'use client';
 /* eslint-disable react/no-unknown-property -- r3f */
-import { Suspense, useEffect, useRef } from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
+import { useSearchParams } from 'next/navigation';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Bloom, EffectComposer,  } from '@react-three/postprocessing';
+import { Bloom, EffectComposer } from '@react-three/postprocessing';
 import { BakeShadows, Preload, Stars } from '@react-three/drei';
 import { A11yAnnouncer, A11yUserPreferences, useUserPreferences } from '@react-three/a11y';
 import type { Points } from 'three';
@@ -77,27 +78,53 @@ function BotClickerMain() {
   const starRef = useRef<Points>(null!);
   const { a11yPrefersState } = useUserPreferences();
   const { isMobile } = useDeviceWidthStore((state) => state);
+  const searchParams = useSearchParams();
   const { clickNum } = useHajClickerStore((state) => state);
+  const [playing, setPlaying] = useState(false);
+
+  const gameSpeedCalc = () => {
+    let gameSpeed = 0.1;
+    if (playing) {
+      gameSpeed += (7 + Math.log(clickNum >=1 ? clickNum : 1));
+      return gameSpeed;
+    }
+    return gameSpeed;
+  };
+
   useFrame((state, delta) => {
-    if (clickNum >= 1 && delta < 0.1 && !a11yPrefersState.prefersReducedMotion) {
+    if (!playing) {
+      return;
+    }
+    if ((starRef.current as unknown) !== null && delta < 0.1 && !a11yPrefersState.prefersReducedMotion) {
       starRef.current.rotation.x += delta * 0.02;
       starRef.current.rotation.y -= delta * 0.005;
     }
   });
+
+  useEffect(() => {
+    if (searchParams.get('play') === 'true') {
+      setPlaying(true);
+    } else {
+      setPlaying(false);
+    }
+  }, [searchParams]);
+
   return (
     <>
-      <Neils speed={clickNum >= 1 ? 7 : 1} count={isMobile ? 30 : 60} />
-      {clickNum >= 1 && (
+      <Suspense>
+      <Neils speed={gameSpeedCalc()} count={isMobile ? 30 : 60} />
+      {searchParams.get('play') === 'true' && (
         <>
           <Stars ref={starRef} />
-          <spotLight decay={1.3} power={10} position={[0, 0, 10]} />
+          <spotLight decay={1.05} power={40} position={[0, 0, 10]} />
           <BakeShadows />
           <EffectComposer enableNormalPass={false} multisampling={0}>
             <Bloom luminanceThreshold={0.2} luminanceSmoothing={0.25} mipmapBlur intensity={14} />
           </EffectComposer>
         </>
       )}
-      <hemisphereLight intensity={0.1} />
+      </Suspense>
+      {!searchParams.get('play') && <hemisphereLight intensity={1.4} />}
     </>
   );
 }

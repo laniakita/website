@@ -1,7 +1,8 @@
 'use client';
+import { Suspense } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import { useHajClickerStore } from '@/providers/hajclicker-store-provider';
+import { useSearchParams } from 'next/navigation';
 import { useDeviceWidthStore } from '@/providers/device-width-store-provider';
 
 const TextSplitterUltra = dynamic(() => import('@/components/text-splitter-v2'), {
@@ -9,12 +10,12 @@ const TextSplitterUltra = dynamic(() => import('@/components/text-splitter-v2'),
 });
 
 export default function SceneOverlayV3() {
-  const { clickNum } = useHajClickerStore((state) => state);
+  const searchParams = useSearchParams();
   const { isMobile, isTablet } = useDeviceWidthStore((state) => state);
-
+  
   return (
-    <>
-      {clickNum < 1 && (
+    <Suspense>
+      {!searchParams.get('play')  && (
         <>
           <div className='ctp-mocha absolute left-6 top-6 z-[2] w-fit md:left-10 md:top-10 lg:top-24'>
             <div className='flex w-fit flex-col justify-start gap-4 '>
@@ -123,6 +124,6 @@ export default function SceneOverlayV3() {
           </div>
         </>
       )}
-    </>
+    </Suspense>
   );
 }
