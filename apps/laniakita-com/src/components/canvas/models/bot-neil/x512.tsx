@@ -47,7 +47,7 @@ export interface BotProps {
   isPlay?: boolean;
 }
 
-export function Neilx512({props, isPlay}: BotProps) {
+export function Neilx512({ props, isPlay }: BotProps) {
   const group = useRef<Group>(null!);
   const { nodes, materials, animations } = useGLTF('/assets/models/bot-neil/bn-x512.glb') as GLTFResult;
   const { actions } = useAnimations(animations, group);

@@ -1,11 +1,11 @@
 'use client';
 
-import { useCallback, useEffect, useId} from 'react';
+import { useCallback, useEffect, useId } from 'react';
 import { useDarkStore } from '@/providers/theme-store-provider';
 
 export default function DarkModeSwitch() {
   const { dark, themeDark, themeLight } = useDarkStore((state) => state);
-  const switchId = useId()
+  const switchId = useId();
 
   const handleThemePref = useCallback(() => {
     const isDarkLocal = localStorage.getItem('isDark');
@@ -38,7 +38,7 @@ export default function DarkModeSwitch() {
     localStorage.setItem('isDark', JSON.stringify(nextDark));
     handleThemePref();
   };
-  
+
   useEffect(() => {
     handleThemePref();
     // listen for changes

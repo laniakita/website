@@ -42,7 +42,7 @@ export const posts = sqliteTable('posts', {
   heroCreditUrlText: text('hero_credit_url_text'),
   heroAltText: text('hero_alt_text'),
   rawContent: text('raw_content'),
-  localKey: text('local_key')
+  localKey: text('local_key'),
 });
 
 export const postsRelations = relations(posts, ({ one }) => ({

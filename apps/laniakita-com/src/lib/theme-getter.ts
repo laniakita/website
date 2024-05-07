@@ -1,6 +1,6 @@
 const themeGetterFunc = (): void => {
-  if (typeof(localStorage) as unknown === undefined) {
-    return
+  if ((typeof localStorage as unknown) === undefined) {
+    return;
   }
   const isDarkLocal = localStorage.getItem('isDark');
   if (isDarkLocal === 'true') {
@@ -18,5 +18,5 @@ const themeGetterFunc = (): void => {
   }
 };
 
-// eslint-disable-next-line -- cleanest way to convert the function to a string to inject into layout. 
-export const themeGetter = `(${themeGetterFunc})()`
+// eslint-disable-next-line -- cleanest way to convert the function to a string to inject into layout.
+export const themeGetter = `(${themeGetterFunc})()`;

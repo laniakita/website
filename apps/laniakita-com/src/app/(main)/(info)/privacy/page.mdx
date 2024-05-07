@@ -1,16 +1,19 @@
 export const metadata = {
   title: 'Privacy',
-  description: 'This is a document that describes what information I collect from you, how i use it, and what you can do about it.',
+  description:
+    'This is a document that describes what information I collect from you, how i use it, and what you can do about it.',
   openGraph: {
     title: 'Privacy',
-    description: 'This is a document that describes what information I collect from you, how i use it, and what you can do about it.'
+    description:
+      'This is a document that describes what information I collect from you, how i use it, and what you can do about it.',
   },
   twitter: {
     card: 'summary',
     title: 'Privacy',
-    description: 'This is a document that describes what information I collect from you, how i use it, and what you can do about it.'
-  }
-}
+    description:
+      'This is a document that describes what information I collect from you, how i use it, and what you can do about it.',
+  },
+};
 
 # Privacy Policy
 
@@ -24,13 +27,13 @@ Since I should probably have a privacy policy in this day and age, here it is. T
 
 In the future I'll likely setup an email newsletter, which will require you to provide me with your email address, which will get saved into a remote database, so that I can email you the newsletter.
 
-If one day you are able to register for an account here, I will need to collect the resulting token generated from you registering with a single-sign-on (SSO) provider (such as Patreon), or your email/username and the resulting hash that was automatically generated from your password, and store them both in a remote database. 
+If one day you are able to register for an account here, I will need to collect the resulting token generated from you registering with a single-sign-on (SSO) provider (such as Patreon), or your email/username and the resulting hash that was automatically generated from your password, and store them both in a remote database.
 
 If one day I have integrated a marketplace on this website, likely Shopify, it will collect and provide me with your personal information such as your name, email, and phone number (if you provide one), as well as your shipping address. Your payment information will likely be collected and processed by Stripe. Please note that I don't have access to your payment information. Shopify only informs me of whether or not your payment went through, so I can process your order.
 
 ### Usage
 
-Tracking wise, I get extremely vague anonymized usage reports provided by Amazon Web Services. You can't opt in, or opt out of these usage reports as far as i'm aware since it's literally the raw bandwidth a general geographic region uses per each page. As such, I have no clue how you in particular interact with my site nor do I care to know. 
+Tracking wise, I get extremely vague anonymized usage reports provided by Amazon Web Services. You can't opt in, or opt out of these usage reports as far as i'm aware since it's literally the raw bandwidth a general geographic region uses per each page. As such, I have no clue how you in particular interact with my site nor do I care to know.
 
 ### Cookies
 
@@ -38,11 +41,11 @@ I don't actually store or collect any cookies from you or any users currently. I
 
 ### Local Storage
 
-When you flip the theme toggle switch between light or dark mode, your preference get's stored as a key value pair in your browsers localstorage, and this site reads that to display your preferred theme preference. 
+When you flip the theme toggle switch between light or dark mode, your preference get's stored as a key value pair in your browsers localstorage, and this site reads that to display your preferred theme preference.
 
 ### IndexedDB
 
-I make use of a package called serwist, which caches page data on your device into a local database known as IndexedDB. This helps the pages/content on this site load much faster than they would otherwise. 
+I make use of a package called serwist, which caches page data on your device into a local database known as IndexedDB. This helps the pages/content on this site load much faster than they would otherwise.
 
 ## What I do with the Collected Information
 
@@ -54,7 +57,7 @@ If you registered for the email newsletter, I will check the database of stored 
 
 If you registered for an account here with a SSO provider, I will use the generated token I stored to verify that it matches with the fresh token generated when you login. If you registered for an account with a username/email & password combination, I will verify that the resulting hash of your input password, matches the stored password hash of the registered account's email/username you are attempting to log into.
 
-If you purchased anything from this website via the third-party marketplace integration, such as the one provided by Shopify, I will use the personal information and order information you provided to Shopify, to process and ship your order to you. Your order will be confirmed, and prepped for processing, once Stripe provides Shopify with information that confirms your payment method was valid. 
+If you purchased anything from this website via the third-party marketplace integration, such as the one provided by Shopify, I will use the personal information and order information you provided to Shopify, to process and ship your order to you. Your order will be confirmed, and prepped for processing, once Stripe provides Shopify with information that confirms your payment method was valid.
 
 ### Usage
 
