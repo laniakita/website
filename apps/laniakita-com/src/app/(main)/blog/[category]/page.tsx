@@ -5,8 +5,8 @@ import matter from 'gray-matter';
 import { PostNumStoreProvider } from '@/providers/postnum-store-provider';
 import LoadingSpinner from '@/components/loading-spinner';
 import PreviewRollerV3 from '@/components/blog/post-roller-v3';
-import { queryCategoryDescr, queryPostsByCategory, queryCategoryMetas } from '@/lib/utils/mdxlite-utils';
-import { resMdx } from '@/lib/utils/mdx-bundler-utils';
+import { queryCategoryDescr, queryPostsByCategory, queryCategoryMetas } from '@/utils/mdxlite-utils';
+import { resMdx } from '@/utils/mdx-bundler-utils';
 import type { PostTeaserObjectProps } from '../page';
 
 export async function generateStaticParams() {
