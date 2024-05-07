@@ -4,7 +4,7 @@
 import { parseArgs } from 'node:util';
 import { toXML } from 'jstoxml';
 import dayjs from 'dayjs';
-import { queryPostMetas } from '@/lib/utils/mdxlite-utils-bun';
+import { queryPostMetas } from '@/utils/mdxlite-utils-bun';
 
 const packageDataRaw = Bun.file(`${process.cwd()}/package.json`)
 const packageDataStr: unknown = await packageDataRaw.text()

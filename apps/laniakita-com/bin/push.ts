@@ -5,8 +5,8 @@ import { parseArgs } from 'node:util';
 import path from 'node:path';
 import { readdir } from 'node:fs/promises';
 import matter from 'gray-matter';
-import type { HandlePostProps, HandleAuthorProps, HandleCategoryProps } from '@/lib/utils/mdxlite-bun';
-import { handlePost, handleAuthor, handleCategory } from '@/lib/utils/mdxlite-bun';
+import type { HandlePostProps, HandleAuthorProps, HandleCategoryProps } from '@/utils/mdxlite-bun';
+import { handlePost, handleAuthor, handleCategory } from '@/utils/mdxlite-bun';
 
 const { values } = parseArgs({
   args: Bun.argv,
