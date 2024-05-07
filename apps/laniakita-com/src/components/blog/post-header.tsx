@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { HeroBg } from '@/components/blog/hero-bg';
-import type { PostTeaserObjectProps } from '@/app/(main)/blog/page';
+import type { PostTeaserObjectProps } from '@/app/blog/page';
 import PostDate from '@/components/blog/post-date';
 
 export function PostHeader({ dataObject }: { dataObject: PostTeaserObjectProps }) {

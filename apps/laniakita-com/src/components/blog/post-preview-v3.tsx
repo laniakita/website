@@ -6,7 +6,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import timezone from 'dayjs/plugin/timezone';
 import { shimmer, toBase64 } from '@/utils/shimmer-utils';
-import type { PostTeaserObjectProps } from '@/app/(main)/blog/page';
+import type { PostTeaserObjectProps } from '@/app/blog/page';
 
 extend(relativeTime);
 extend(localizedFormat);
