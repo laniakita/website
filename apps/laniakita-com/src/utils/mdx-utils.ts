@@ -38,7 +38,8 @@ export const batchMatterFetch = async (inputFolder: string) => {
         return metaObj;
       }),
     );
-    return matterMeta;
+    const sortedMetas = matterMeta.sort((a, b) => { return b?.date - a?.date });
+    return sortedMetas;
   } catch (err) {
     console.error(err);
   }
