@@ -10,32 +10,36 @@ export const fetchMDXfiles = async (inputFolder: string) => {
     const dir = await opendir(contentFolder);
     for await (const dirent of dir) {
       if (dirent.name.split('.').pop() === 'mdx' || dirent.name.split('.').pop() === 'md') {
-        fileArr.push(path.resolve(dirent.path, dirent.name))   
+        fileArr.push(path.resolve(dirent.path, dirent.name));
       }
     }
   } catch (err) {
     console.error(err);
   }
-  return fileArr
+  return fileArr;
 };
 
 export const fetchFrontmatter = async (pathStr: string) => {
   try {
-    const content = await readFile(pathStr, {encoding: 'utf8'});
-    const matterData = matter(content).data
-    return matterData
+    const content = await readFile(pathStr, { encoding: 'utf8' });
+    const matterData = matter(content).data;
+    return matterData;
   } catch (err) {
-    console.error(err)
+    console.error(err);
   }
-}
+};
 
 export const batchMatterFetch = async (inputFolder: string) => {
   try {
-    const fetchPaths = await fetchMDXfiles(inputFolder)
-    const matterMeta = await Promise.all(fetchPaths.map(async (mdxPath: string) => {
-      const metaObj = await fetchFrontmatter(mdxPath)
-      return metaObj
-    }))
-    return matterMeta
-  } catch (err) {console.error(err)}
-}
+    const fetchPaths = await fetchMDXfiles(inputFolder);
+    const matterMeta = await Promise.all(
+      fetchPaths.map(async (mdxPath: string) => {
+        const metaObj = await fetchFrontmatter(mdxPath);
+        return metaObj;
+      }),
+    );
+    return matterMeta;
+  } catch (err) {
+    console.error(err);
+  }
+};

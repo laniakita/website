@@ -1,4 +1,4 @@
-import { batchMatterFetch } from "@/utils/mdx-utils";
+import { batchMatterFetch } from '@/utils/mdx-utils';
 
 export const metadata = {
   title: 'Projects',
@@ -15,13 +15,11 @@ export const metadata = {
 };
 
 export default async function Projects() {
-  const data = await batchMatterFetch('./src/app/projects/works')
-  console.log(data)
+  const data = await batchMatterFetch('./src/app/projects/works');
+  console.log(data);
   return (
     <div className='flex h-screen w-full items-center justify-center'>
       <h1 className='text-6xl'>Coming Soon</h1>
     </div>
   );
 }
-
-
