@@ -6,7 +6,7 @@ import type { Metadata, ResolvingMetadata } from 'next';
 import { queryPostMetas, querySinglePost } from '@/utils/mdxlite-utils';
 import { resMdx } from '@/utils/mdx-bundler-utils';
 import { PostHeader } from '@/components/blog/post-header';
-import type { PostTeaserObjectProps } from '@/app/(main)/blog/page';
+import type { PostTeaserObjectProps } from '@/app/blog/page';
 
 export async function generateStaticParams() {
   const postMetas = await queryPostMetas();
