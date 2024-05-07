@@ -8,7 +8,6 @@ import { Bloom, EffectComposer } from '@react-three/postprocessing';
 import { BakeShadows, Preload, Stars } from '@react-three/drei';
 import { A11yAnnouncer, A11yUserPreferences, useUserPreferences } from '@react-three/a11y';
 import type { Points } from 'three';
-import LoadingSpinner from '@/components/loading-spinner';
 import { useHajClickerStore } from '@/providers/hajclicker-store-provider';
 
 const SceneOverlayV3 = dynamic(() => import('@/components/scene-overlay-alt'), { ssr: false });
@@ -37,10 +36,13 @@ export default function BotClickerScene() {
   }, [windowWidth]);
 
   return (
-    <main ref={ref} className='relative min-h-[34rem]  overflow-hidden bg-black [height:_100dvh] lg:max-h-screen'>
+    <div
+      ref={ref}
+      className='relative flex min-h-[34rem] items-center justify-center  overflow-hidden [height:_100dvh] lg:max-h-screen'
+    >
       <SceneOverlayV3 viewMobile={viewMobile} viewTablet={viewTablet} />
       <SocialCounterOverlay model='Bot' />
-      <Suspense fallback={<LoadingSpinner />}>
+      <Suspense>
         <Canvas
           eventSource={ref}
           flat
@@ -64,13 +66,13 @@ export default function BotClickerScene() {
           </A11yUserPreferences>
           <Preload all />
         </Canvas>
-        <A11yAnnouncer />
       </Suspense>
-    </main>
+      <A11yAnnouncer />
+    </div>
   );
 }
 
-function BotClickerMain({viewMobile}: {viewMobile: boolean}) {
+function BotClickerMain({ viewMobile }: { viewMobile: boolean }) {
   const starRef = useRef<Points>(null!);
   const { a11yPrefersState } = useUserPreferences();
   const searchParams = useSearchParams();
@@ -106,19 +108,17 @@ function BotClickerMain({viewMobile}: {viewMobile: boolean}) {
 
   return (
     <>
-      <Suspense>
-        <Neils viewMobile={viewMobile} speed={gameSpeedCalc()} count={viewMobile ? 30 : 60} />
-        {searchParams.get('play') === 'true' && (
-          <>
-            <Stars ref={starRef} />
-            <spotLight decay={1.05} power={40} position={[0, 0, 10]} />
-            <BakeShadows />
-            <EffectComposer enableNormalPass={false} multisampling={0}>
-              <Bloom luminanceThreshold={0.2} luminanceSmoothing={0.25} mipmapBlur intensity={14} />
-            </EffectComposer>
-          </>
-        )}
-      </Suspense>
+      <Neils viewMobile={viewMobile} speed={gameSpeedCalc()} count={viewMobile ? 30 : 60} />
+      {searchParams.get('play') === 'true' && (
+        <>
+          <Stars ref={starRef} />
+          <spotLight decay={1.05} power={40} position={[0, 0, 10]} />
+          <BakeShadows />
+          <EffectComposer enableNormalPass={false} multisampling={0}>
+            <Bloom luminanceThreshold={0.2} luminanceSmoothing={0.25} mipmapBlur intensity={14} />
+          </EffectComposer>
+        </>
+      )}
       {!searchParams.get('play') && <hemisphereLight intensity={1.4} />}
     </>
   );

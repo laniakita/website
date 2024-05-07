@@ -38,12 +38,9 @@
   html,
   body,
   #root {
-    @apply lg:scroll-pt-24 ctp-latte m-0 bg-ctp-midnight p-0 text-ctp-text dark:ctp-mocha;
+    @apply m-0 p-0 min-h-dvh ctp-latte text-ctp-text bg-ctp-base lg:scroll-pt-24 dark:ctp-mocha  dark:bg-ctp-midnight;
   }
 
-  main {
-    @apply bg-ctp-midnight;
-  }
 
   a {
     @apply text-ctp-mauve hover:text-ctp-mauve hover:underline;

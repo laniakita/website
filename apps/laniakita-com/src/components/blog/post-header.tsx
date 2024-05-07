@@ -1,18 +1,7 @@
 import Link from 'next/link';
-import dayjs, { extend } from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
-import localizedFormat from 'dayjs/plugin/localizedFormat';
-import timezone from 'dayjs/plugin/timezone';
 import { HeroBg } from '@/components/blog/hero-bg';
 import type { PostTeaserObjectProps } from '@/app/(main)/blog/page';
-
-extend(relativeTime);
-extend(localizedFormat);
-extend(timezone);
-
-/* export interface HeaderProps extends HeroProps {
-  baseUrl: string;
-} */
+import PostDate from '@/components/blog/post-date';
 
 export function PostHeader({ dataObject }: { dataObject: PostTeaserObjectProps }) {
   //const linkTo = baseUrl + "/blog/" + dataObject.category + "/" + dataObject.slug;
@@ -41,7 +30,6 @@ export function PostHeader({ dataObject }: { dataObject: PostTeaserObjectProps }
  * motion-safe:simple-color-trans bg-gradient-to-b from-ctp-crust/50 via-ctp-crust/80 to-ctp-crust backdrop-blur-md
  */
 export function PostHeaderTitleBlock({ dataObject }: { dataObject: PostTeaserObjectProps }) {
-  const postedDate = dayjs(dataObject.date).format('L LT');
   return (
     <div className='flex w-full items-center justify-center p-10 lg:py-20'>
       <div className='flex max-w-xl flex-col gap-6'>
@@ -68,10 +56,7 @@ export function PostHeaderTitleBlock({ dataObject }: { dataObject: PostTeaserObj
               </Link>
             </span>
           </p>
-          <p className='flex flex-row gap-2'>
-            <span>|</span>
-            {postedDate}
-          </p>
+          <PostDate dateStr={dataObject.date} />
         </div>
       </div>
     </div>

@@ -50,7 +50,7 @@ export default function SocialCounterOverlay({ model }: { model: string }) {
             {/* safety blur + play button + warn menu */}
             <div className='fixed inset-0 z-[1] h-dvh bg-black/30 backdrop-blur-xl' />
             {(isPlayWarn as unknown) === true && (
-              <div className='fixed inset-0 z-10 flex h-dvh items-center justify-center bg-black/30 backdrop-blur-xl'>
+              <div className='fixed inset-0 z-10 flex h-dvh items-center justify-center bg-ctp-midnight/30 backdrop-blur-xl'>
                 <div className='flex max-w-xs flex-col items-center justify-center gap-10 md:max-w-md'>
                   <div className='text-3xl font-black uppercase'>
                     {`EPILEPSY WARNING: Bot Clicker features flashing lights and sounds that may cause an epileptic seizure! Do not
