@@ -1,4 +1,4 @@
-import { queryPostMetas } from '@/lib/utils/mdxlite-utils';
+import { queryPostMetas } from '@/utils/mdxlite-utils';
 import { PostNumStoreProvider } from '@/providers/postnum-store-provider';
 import PreviewRollerV3 from '@/components/blog/post-roller-v3';
 

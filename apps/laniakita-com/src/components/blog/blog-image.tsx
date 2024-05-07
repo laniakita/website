@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import { shimmer, toBase64 } from '@/lib/utils/shimmer-utils';
+import { shimmer, toBase64 } from '@/utils/shimmer-utils';
 
 interface ImgProps {
   src: string;
