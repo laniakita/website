@@ -8,7 +8,7 @@ extend(relativeTime);
 extend(localizedFormat);
 extend(timezone);
 
-export default function PostDate({dateStr}:{dateStr: string}) {
+export default function PostDate({ dateStr }: { dateStr: string }) {
   const postedDate = dayjs(dateStr).format('L LT');
   return (
     <p className='flex flex-row gap-2'>

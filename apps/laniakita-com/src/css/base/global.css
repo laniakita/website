@@ -2,7 +2,7 @@
   * {
     box-sizing: border-box;
   }
- 
+
   /*
   html.lenis, html.lenis body {
     height: auto;
@@ -38,9 +38,8 @@
   html,
   body,
   #root {
-    @apply m-0 p-0 min-h-dvh ctp-latte text-ctp-text bg-ctp-base lg:scroll-pt-24 dark:ctp-mocha  dark:bg-ctp-midnight;
+    @apply ctp-latte m-0 min-h-dvh bg-ctp-base p-0 text-ctp-text dark:ctp-mocha dark:bg-ctp-midnight  lg:scroll-pt-24;
   }
-
 
   a {
     @apply text-ctp-mauve hover:text-ctp-mauve hover:underline;

@@ -1,6 +1,5 @@
-import Link from 'next/link'
+import Link from 'next/link';
 import LinkPlus from '@/components/navbar/link-plus';
-
 
 interface FooterBoxProps {
   title?: string;
@@ -15,7 +14,7 @@ export function FooterBox(Props: FooterBoxProps) {
       return '/';
     } else if (pageStr.toLowerCase() === 'rss') {
       return '/rss.xml';
-    } 
+    }
     return `/${pageStr.toLowerCase()}`;
   }
   return (
@@ -77,12 +76,7 @@ export function FooterBoxSpecial(Props: FooterBoxSpecialProps) {
         <h3 className='pb-2 font-mono font-extrabold lowercase '>{title}</h3>
         <div className='flex flex-col space-y-2'>
           {navItems.map((item) => (
-            <Link
-              href={item.url}
-              key={item.title.toLowerCase()}
-              target='_blank'
-              className='footer-nav-item'
-            >
+            <Link href={item.url} key={item.title.toLowerCase()} target='_blank' className='footer-nav-item'>
               {item.title}
             </Link>
           ))}

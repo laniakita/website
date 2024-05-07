@@ -6,14 +6,14 @@ import { toXML } from 'jstoxml';
 import dayjs from 'dayjs';
 import { queryPostMetas } from '@/utils/mdxlite-utils-bun';
 
-const packageDataRaw = Bun.file(`${process.cwd()}/package.json`)
-const packageDataStr: unknown = await packageDataRaw.text()
-const packageData: unknown = JSON.parse(packageDataStr as string)
+const packageDataRaw = Bun.file(`${process.cwd()}/package.json`);
+const packageDataStr: unknown = await packageDataRaw.text();
+const packageData: unknown = JSON.parse(packageDataStr as string);
 
 interface Package {
   dependencies: {
-    next: string 
-  }
+    next: string;
+  };
 }
 
 const blogPostRes = await queryPostMetas();
@@ -21,20 +21,20 @@ const lastPostDateRFC822 = dayjs(blogPostRes[0]?.date).format('ddd, DD MMM YYYY 
 const buildDateRFC822 = dayjs().format('ddd, DD MMM YYYY HH:mm:ss ZZ');
 const nextjsVersion = (packageData as Package).dependencies.next.split('^')[1];
 
-const localUrl = 'http://localhost:3000'
-const prodUrl = 'https://laniakita.com'
+const localUrl = 'http://localhost:3000';
+const prodUrl = 'https://laniakita.com';
 
 const { values } = parseArgs({
   args: Bun.argv,
   options: {
     production: {
       type: 'boolean',
-      short: 'p'
+      short: 'p',
     },
     development: {
       type: 'boolean',
-      short: 'd'
-    }
+      short: 'd',
+    },
     //schemas: {
     //  type: "string",
     //},
@@ -47,14 +47,14 @@ let buildUrl: string;
 let urlMsg: string;
 
 if (values.production) {
-  buildUrl = prodUrl
-  urlMsg = 'for production' 
+  buildUrl = prodUrl;
+  urlMsg = 'for production';
 } else if (values.development) {
-  buildUrl = localUrl
-  urlMsg = 'for development'
+  buildUrl = localUrl;
+  urlMsg = 'for development';
 } else {
-  buildUrl = localUrl
-  urlMsg = 'for development'
+  buildUrl = localUrl;
+  urlMsg = 'for development';
 }
 
 const xmlOpts = {
@@ -67,29 +67,27 @@ const itemRes = blogPostRes.map((post) => {
     {
       title: post.headline,
     },
-    { 
-      link: `${buildUrl}/blog/posts/${post.id.split('-')[0]}/${post.headline.replaceAll(' ', '_')}` 
-    },
-    { 
-      description: post.subheadline 
+    {
+      link: `${buildUrl}/blog/posts/${post.id.split('-')[0]}/${post.headline.replaceAll(' ', '_')}`,
     },
     {
-      author: post.authorName 
+      description: post.subheadline,
     },
     {
-      category: post.category 
+      author: post.authorName,
     },
     {
-      guid: post.id 
+      category: post.category,
     },
     {
-      pubDate: dayjs(post.date).format('ddd, DD MMM YYYY HH:mm:ss ZZ') 
+      guid: post.id,
+    },
+    {
+      pubDate: dayjs(post.date).format('ddd, DD MMM YYYY HH:mm:ss ZZ'),
     },
   ];
   return { item: res };
 });
-
-
 
 const rssFeed = {
   _name: 'rss',
@@ -102,8 +100,7 @@ const rssFeed = {
         title: `Yet Another Dev Blog, by Lani Akita`,
       },
       {
-        description:
-          "A blog (mostly) about the process of developing (web-based) software.",
+        description: 'A blog (mostly) about the process of developing (web-based) software.',
       },
       {
         link: `${buildUrl}/blog`,
@@ -142,11 +139,10 @@ const rssFeed = {
   },
 };
 
-const feedXml = toXML(rssFeed, xmlOpts)
+const feedXml = toXML(rssFeed, xmlOpts);
 
-const xmlWritePath = `${process.cwd()}/public/rss.xml`
+const xmlWritePath = `${process.cwd()}/public/rss.xml`;
 //console.log(xmlWritePath)
 
-await Bun.write(xmlWritePath, feedXml)
-console.log('wrote rss.xml to ', xmlWritePath, ' ', urlMsg)
-
+await Bun.write(xmlWritePath, feedXml);
+console.log('wrote rss.xml to ', xmlWritePath, ' ', urlMsg);

@@ -24,7 +24,7 @@ export default function Zuns({
   speed = 7,
   count = 80,
   depth = 80,
-  viewMobile
+  viewMobile,
 }: {
   speed?: number;
   count?: number;
@@ -46,7 +46,7 @@ let canSound = false;
 const listener = new AudioListener();
 const audioLoader = new AudioLoader();
 
-function ZunSetup({ z, speed, index, viewMobile }: { z: number; speed: number; index: number, viewMobile: boolean }) {
+function ZunSetup({ z, speed, index, viewMobile }: { z: number; speed: number; index: number; viewMobile: boolean }) {
   const searchParams = useSearchParams();
   const { addClickToCount } = useHajClickerStore((state) => state);
   const ref = useRef<LOD>(null);
@@ -67,7 +67,7 @@ function ZunSetup({ z, speed, index, viewMobile }: { z: number; speed: number; i
   if (canSound) camera.add(listener);
   const handleBotClick = (/*e: ThreeEvent<MouseEvent>*/): void => {
     if (!searchParams.get('play')) {
-      return
+      return;
     }
     if (!hovered) {
       addClickToCount();
@@ -168,11 +168,11 @@ function ZunSetup({ z, speed, index, viewMobile }: { z: number; speed: number; i
 
   useEffect(() => {
     if (searchParams.get('play') === 'true') {
-      setIsAnimate(true)
+      setIsAnimate(true);
     } else {
-      setIsAnimate(false)
+      setIsAnimate(false);
     }
-  },[searchParams]) 
+  }, [searchParams]);
 
   return (
     <>

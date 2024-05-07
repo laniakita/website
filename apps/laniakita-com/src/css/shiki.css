@@ -102,7 +102,7 @@
 .twoslash .twoslash-popup-code {
   font-family: var(--twoslash-code-font);
   font-size: var(--twoslash-code-font-size);
-  @apply whitespace-pre-wrap break-normal
+  @apply whitespace-pre-wrap break-normal;
 }
 
 .twoslash .twoslash-popup-docs {

@@ -1,6 +1,6 @@
 import { Suspense, useMemo } from 'react';
 import { getMDXComponent } from 'mdx-bundler/client';
-import type { Metadata, ResolvingMetadata } from 'next'
+import type { Metadata, ResolvingMetadata } from 'next';
 import matter from 'gray-matter';
 import { PostNumStoreProvider } from '@/providers/postnum-store-provider';
 import LoadingSpinner from '@/components/loading-spinner';
@@ -16,16 +16,15 @@ export async function generateStaticParams() {
   }));
 }
 
-
 export async function generateMetadata(
-  { params }: { params: { category: string }},
-  parent: ResolvingMetadata
+  { params }: { params: { category: string } },
+  parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const catDeserializer = params.category.replaceAll('_', ' ');
   const descrQ = await queryCategoryDescr(catDeserializer);
   const descrSource = descrQ?.rawContent?.trim();
-  const descrMatter = descrSource && matter(descrSource).content
-  const previousImages = (await parent).openGraph?.images ?? []
+  const descrMatter = descrSource && matter(descrSource).content;
+  const previousImages = (await parent).openGraph?.images ?? [];
 
   return {
     title: catDeserializer,
@@ -33,9 +32,9 @@ export async function generateMetadata(
     openGraph: {
       title: descrQ?.title,
       description: descrMatter ? descrMatter.split('\n')[0] : '',
-      images: [...previousImages]
-    }
-  }
+      images: [...previousImages],
+    },
+  };
 }
 
 export default async function Page({ params }: { params: { category: string } }) {

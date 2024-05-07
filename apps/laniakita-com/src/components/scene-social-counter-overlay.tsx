@@ -27,20 +27,17 @@ export default function SocialCounterOverlay({ model }: { model: string }) {
     <>
       <Suspense>
         {searchParams.get('play') === 'true' && (
-        <>
-          <div className='ctp-mocha pointer-events-none absolute bottom-24 right-6 z-[2] flex w-fit touch-none flex-col items-end gap-2 -space-y-4 text-right  text-ctp-text md:right-10  lg:bottom-10'>
-            <p className='text-xl font-black uppercase'>{`${model} Clicker Counter`}</p>
-            <p className='text-3xl font-black text-ctp-mauve'>{String(clickNum).padStart(11, '0')}</p>
-          </div>
+          <>
+            <div className='ctp-mocha pointer-events-none absolute bottom-24 right-6 z-[2] flex w-fit touch-none flex-col items-end gap-2 -space-y-4 text-right  text-ctp-text md:right-10  lg:bottom-10'>
+              <p className='text-xl font-black uppercase'>{`${model} Clicker Counter`}</p>
+              <p className='text-3xl font-black text-ctp-mauve'>{String(clickNum).padStart(11, '0')}</p>
+            </div>
 
-          <div className='ctp-mocha absolute bottom-24 left-6 z-[2] lg:bottom-10'>
-              <Link
-                href='/credits'
-                className='underline'
-              >
+            <div className='ctp-mocha absolute bottom-24 left-6 z-[2] lg:bottom-10'>
+              <Link href='/credits' className='underline'>
                 Credits
               </Link>
-          </div>
+            </div>
           </>
         )}
       </Suspense>

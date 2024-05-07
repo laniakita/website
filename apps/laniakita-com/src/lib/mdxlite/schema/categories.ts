@@ -11,5 +11,5 @@ export const categories = sqliteTable('categories', {
   id: text('id').primaryKey(),
   title: text('title').unique().notNull(),
   rawContent: text('raw_content'),
-  localKey: text('local_key')
+  localKey: text('local_key'),
 });

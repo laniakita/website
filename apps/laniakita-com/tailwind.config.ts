@@ -12,7 +12,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        "ctp-midnight": '#07070D'
+        'ctp-midnight': '#07070D',
       },
       fontFamily: {
         sans: ['var(--font-inter)'],

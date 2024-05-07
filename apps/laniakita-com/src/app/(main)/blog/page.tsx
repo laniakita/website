@@ -3,15 +3,15 @@ import { PostNumStoreProvider } from '@/providers/postnum-store-provider';
 import PreviewRollerV3 from '@/components/blog/post-roller-v3';
 
 export const metadata = {
-  title: "Yet Another Dev Blog",
+  title: 'Yet Another Dev Blog',
   description: "A blog that's mostly about the process of developing (web-based) software.",
   openGraph: {
-    title: "Yet Another Dev Blog",
+    title: 'Yet Another Dev Blog',
     description: "A blog that's mostly about the process of developing (web-based) software.",
   },
   twitter: {
     card: 'summary',
-    title: "Yet Another Dev Blog",
+    title: 'Yet Another Dev Blog',
     description: "A blog that's mostly about the process of developing (web-based) software.",
   },
 };

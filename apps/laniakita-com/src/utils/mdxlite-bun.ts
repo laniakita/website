@@ -33,7 +33,7 @@ export const handleAuthor = async (postObj: HandleAuthorProps) => {
         name: postObj.meta.name,
         mastodon: postObj.meta.mastodon,
         rawContent: postObj.rawStr,
-        localKey: postObj.localKey
+        localKey: postObj.localKey,
       })
       .where(and(eq(authors.id, testId as string), eq(authors.name, testName as string)));
   }
@@ -47,7 +47,7 @@ export const handleAuthor = async (postObj: HandleAuthorProps) => {
         name: postObj.meta.name,
         mastodon: postObj.meta.mastodon,
         rawContent: postObj.rawStr,
-        localKey: postObj.localKey
+        localKey: postObj.localKey,
       })
       .onConflictDoNothing();
   }
@@ -81,7 +81,7 @@ export const handleCategory = async (postObj: HandleCategoryProps) => {
       .set({
         title: postObj.meta.title,
         rawContent: postObj.rawStr,
-        localKey: postObj.localKey
+        localKey: postObj.localKey,
       })
       .where(and(eq(categories.id, testId as string), eq(categories.title, testName as string)));
   }
@@ -94,7 +94,7 @@ export const handleCategory = async (postObj: HandleCategoryProps) => {
         id: crypto.randomUUID(),
         title: postObj.meta.title,
         rawContent: postObj.rawStr,
-        localKey: postObj.localKey
+        localKey: postObj.localKey,
       })
       .onConflictDoNothing();
   }
@@ -164,7 +164,7 @@ export const handlePost = async (postObj: HandlePostProps) => {
           heroCreditUrl: postObj.meta.heroCreditUrl,
           heroAltText: postObj.meta.heroAltText,
           rawContent: postObj.rawStr,
-          localKey: postObj.localKey
+          localKey: postObj.localKey,
         })
         .where(
           or(
@@ -189,7 +189,7 @@ export const handlePost = async (postObj: HandlePostProps) => {
         heroCreditUrl: postObj.meta.heroCreditUrl,
         heroAltText: postObj.meta.heroAltText,
         rawContent: postObj.rawStr,
-        localKey: postObj.localKey
+        localKey: postObj.localKey,
       });
     }
   }

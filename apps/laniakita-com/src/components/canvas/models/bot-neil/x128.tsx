@@ -43,7 +43,7 @@ interface GLTFAction extends AnimationClip {
 }
 //type ContextType = Record<string, React.ForwardRefExoticComponent<JSX.IntrinsicElements['mesh']>>
 
-export function Neilx128({props, isPlay}: BotProps) {
+export function Neilx128({ props, isPlay }: BotProps) {
   const group = useRef<Group>(null!);
   const { nodes, materials, animations } = useGLTF('/assets/models/bot-neil/bn-x128.glb') as GLTFResult;
   const { actions } = useAnimations(animations, group);

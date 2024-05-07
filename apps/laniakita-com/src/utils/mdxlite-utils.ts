@@ -6,8 +6,6 @@ import { posts } from '@/lib/mdxlite/schema/posts';
 
 /* === need to add to bun utils later maybe === */
 
-
-
 /* ====================eof===================== */
 
 export const querySinglePost = async (searchId: string, searchSlug: string) => {
