@@ -50,7 +50,7 @@ export default async function Page({ params }: { params: { category: string } })
         <div className='flex flex-col gap-6 p-10 md:gap-10 md:py-20 lg:pb-[6.5rem] lg:pt-36 2xl:px-20'>
           <div className='space-y-2'>
             <h3 className='font-mono text-xl font-semibold'>Posts tagged:</h3>
-            <h1 className=' text-5xl font-black uppercase'>#{catDeserializer}</h1>
+            <h1 className='text-4xl font-black md:text-5xl'>#{catDeserializer}</h1>
           </div>
           {resBundle ? (
             <Description code={resBundle.code} />

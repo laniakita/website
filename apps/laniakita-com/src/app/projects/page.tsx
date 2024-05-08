@@ -17,6 +17,7 @@ export const metadata = {
 
 export interface WorkMetaProps {
   title: string;
+  slug: string;
   date: Date;
   descr: string;
   tech: string[];
@@ -24,23 +25,17 @@ export interface WorkMetaProps {
 
 export default async function Projects() {
   const data = await batchMatterFetch('./src/app/projects/works');
-  const copyArr = data;
-  const oldestYear = (copyArr?.slice(-1)[0] as unknown as WorkMetaProps).date.getFullYear();
-  const latestYear = (copyArr?.slice(0)[0] as unknown as WorkMetaProps).date.getFullYear();
-  const projectYears = `${latestYear} - ${oldestYear}`;
-
   return (
-    <main className='flex size-full flex-col items-center justify-center px-6'>
+    <main className='flex size-full flex-col items-center justify-center md:px-2'>
       <div className='px-4'>
-        <header className='w-full max-w-xl py-10 md:py-20 lg:pb-[6.5rem] lg:pt-36'>
-          <p className='text-xl font-semibold'>{projectYears}</p>
-          <h1 className='text-5xl font-black uppercase leading-tight'>Projects / Works</h1>
+        <header className='flex w-full max-w-xl flex-col gap-10 py-10 md:py-20 lg:pb-[6.5rem] lg:pt-36'>
+          <h1 className='text-4xl font-black leading-tight md:text-5xl'>Projects / Works</h1>
           <div className='prose-protocol-omega prose prose-catppuccin'>
             <p>{`This is a collection of some of the things I've made, sorted by latest.`}</p>
           </div>
         </header>
       </div>
-      <div className='flex w-full max-w-5xl flex-wrap'>
+      <div className='flex w-full max-w-7xl flex-wrap'>
         {data?.map((metaObj) => <WorkPreview key={data.indexOf(metaObj)} workMetaObj={metaObj as WorkMetaProps} />)}
       </div>
     </main>

@@ -12,9 +12,11 @@ export function PostHeader({ dataObject }: { dataObject: PostTeaserObjectProps }
       {/* bg image + title */}
       {dataObject.heroFile !== undefined && (
         <div className='flex size-full items-center justify-center'>
-          <figure className='flex size-full flex-col items-center justify-center gap-10 md:max-w-3xl lg:max-w-4xl xl:max-w-7xl'>
+          <figure className='relative flex size-full flex-col items-center justify-center gap-10 md:max-w-3xl lg:max-w-4xl xl:max-w-7xl'>
             <HeroBg dataObject={dataObject} />
-            <figcaption className='max-w-xl text-2xl font-bold italic leading-tight'>{dataObject.heroCaption}</figcaption>
+            <figcaption className='max-w-xl px-10 text-2xl font-bold italic leading-tight'>
+              {dataObject.heroCaption}
+            </figcaption>
           </figure>
         </div>
       )}
@@ -33,7 +35,7 @@ export function PostHeaderTitleBlock({ dataObject }: { dataObject: PostTeaserObj
   return (
     <div className='flex w-full items-center justify-center px-10 pb-8 md:pb-10'>
       <div className='flex max-w-xl flex-col gap-4 md:gap-6'>
-        <h1 className='text-5xl font-black uppercase leading-tight supports-[text-wrap:balance]:text-balance'>
+        <h1 className='text-4xl font-black leading-tight supports-[text-wrap:balance]:text-balance md:text-5xl'>
           {dataObject.headline}
         </h1>
         <h2 className='text-2xl font-semibold leading-tight supports-[text-wrap:balance]:text-balance md:text-3xl'>

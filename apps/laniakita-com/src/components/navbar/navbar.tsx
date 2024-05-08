@@ -61,7 +61,7 @@ export default function NavBar() {
                 <LinkPlus
                   href={handleRef(page)}
                   key={page}
-                  className='nav-item text-3xl font-black'
+                  className='nav-item text-3xl'
                   onClick={() => {
                     page !== 'RSS' && setClicked({ ...clicked, stateVal: 'closed' });
                   }}
