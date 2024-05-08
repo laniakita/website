@@ -1,8 +1,16 @@
 import { useMemo } from 'react';
 import { getMDXComponent } from 'mdx-bundler/client';
-import { fetchMdx } from '@/utils/mdx-utils';
+import { batchMatterFetch, fetchMdx } from '@/utils/mdx-utils';
 import { resMdxV3 } from '@/utils/mdx-bundler-utils';
 import type { WorkMetaProps } from '../page';
+
+export async function generateStaticParams() {
+  const projMetas = await batchMatterFetch('./src/app/projects/works');
+  if (!projMetas) return
+  return projMetas.map((meta) => ({
+    slug: (meta as WorkMetaProps).slug,
+  }));
+}
 
 export default async function ProjectDetailPage({ params }: { params: { slug: string } }) {
   const folder = './src/app/projects/works';
