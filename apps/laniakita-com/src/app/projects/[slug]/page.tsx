@@ -6,8 +6,7 @@ import type { WorkMetaProps } from '../page';
 
 export async function generateStaticParams() {
   const projMetas = await batchMatterFetch('./src/app/projects/works');
-  if (!projMetas) return
-  return projMetas.map((meta) => ({
+  return projMetas!.map((meta) => ({
     slug: (meta as WorkMetaProps).slug,
   }));
 }
