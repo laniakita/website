@@ -1,10 +1,5 @@
 @layer components {
   .prose-protocol-omega {
-    @apply prose prose-catppuccin relative max-w-xl text-lg prose-a:underline prose-code:before:hidden prose-code:after:hidden prose-pre:max-w-[88vw] prose-pre:rounded-xl prose-pre:border prose-pre:border-ctp-surface0 prose-pre:shadow-lg prose-pre:shadow-ctp-mauve/30 prose-p:supports-[text-wrap:pretty]:text-pretty [&:where(:not(pre)>code)]:prose-code:rounded-md [&:where(:not(pre)>code)]:prose-code:border [&:where(:not(pre)>code)]:prose-code:border-ctp-surface0  [&:where(:not(pre)>code)]:prose-code:bg-ctp-base [&:where(:not(pre)>code)]:prose-code:p-1;
+    @apply prose prose-catppuccin relative max-w-xl text-lg prose-h1:text-5xl prose-h1:uppercase prose-h1:font-black prose-h1:leading-tight prose-a:underline prose-code:before:hidden prose-code:after:hidden prose-pre:max-w-[85vw] prose-pre:rounded-xl prose-pre:border prose-pre:border-ctp-surface0 prose-pre:shadow-lg prose-pre:shadow-ctp-mauve/30 prose-p:supports-[text-wrap:pretty]:text-pretty [&:where(:not(pre)>code)]:prose-code:rounded-md [&:where(:not(pre)>code)]:prose-code:border [&:where(:not(pre)>code)]:prose-code:border-ctp-surface0  [&:where(:not(pre)>code)]:prose-code:bg-ctp-base [&:where(:not(pre)>code)]:prose-code:p-1;
   }
 }
-
-/* 
-
-prose-headings:max-w-md prose-lead:max-w-md prose-a:max-w-md prose-blockquote:max-w-md prose-figure:max-w-5xl prose-figcaption:max-w-5xl prose-strong:max-w-md prose-em:max-w-md prose-kbd:max-w-md prose-code:max-w-md prose-pre:max-w-md prose-ol:max-w-md prose-li:max-w-md prose-table:max-w-5xl prose-p:max-w-md 
-*/

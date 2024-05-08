@@ -11,7 +11,7 @@ export function HeroBg({ dataObject }: { dataObject: PostTeaserObjectProps }) {
   return (
     <>
       {dataObject.heroFile && dataObject.heroAltText ? (
-        <div className='relative h-[60vh] min-h-[40rem]'>
+        <div className='relative flex min-h-96 w-screen md:h-[50rem] md:max-w-7xl'>
           <Image
             loader={imageLoader}
             src={dataObject.heroFile}
@@ -20,7 +20,7 @@ export function HeroBg({ dataObject }: { dataObject: PostTeaserObjectProps }) {
             fill
             sizes='(max-width: 1200px) 100vw'
             //placeholder="blur"
-            className='object-cover object-center'
+            className='object-cover'
             //blurDataURL={blurUrl}
           />
         </div>
