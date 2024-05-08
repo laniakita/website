@@ -108,6 +108,7 @@ export interface HandlePostProps {
     subheadline: string;
     category: string;
     heroFile: string;
+    heroCaption: string;
     heroCredit: string;
     heroCreditUrlText: string;
     heroCreditUrl: string;
@@ -159,6 +160,7 @@ export const handlePost = async (postObj: HandlePostProps) => {
           subheadline: postObj.meta.subheadline,
           category: postObj.meta.category,
           heroFile: postObj.meta.heroFile,
+          heroCaption: postObj.meta.heroCaption,
           heroCredit: postObj.meta.heroCredit,
           heroCreditUrlText: postObj.meta.heroCreditUrlText,
           heroCreditUrl: postObj.meta.heroCreditUrl,

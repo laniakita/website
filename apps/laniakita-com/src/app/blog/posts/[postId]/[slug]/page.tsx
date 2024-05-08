@@ -88,6 +88,7 @@ export default async function Page({ params }: { params: { postId: string; slug:
     subheadline: postQ.subheadline,
     category: postQ.category,
     heroFile: postQ.heroFile,
+    heroCaption: postQ.heroCaption,
     heroCredit: postQ.heroCredit,
     heroCreditUrl: postQ.heroCreditUrl,
     heroCreditUrlText: postQ.heroCreditUrlText,

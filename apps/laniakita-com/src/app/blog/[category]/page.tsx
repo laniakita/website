@@ -47,15 +47,15 @@ export default async function Page({ params }: { params: { category: string } })
   return (
     <Suspense fallback={<LoadingSpinner overrides='h-screen bg-black' />}>
       <div className='simple-color-trans relative z-[5] -mb-1  bg-ctp-base dark:bg-ctp-midnight'>
-        <div className='flex flex-col gap-6 p-10 md:gap-10 lg:pt-[5.5rem] 2xl:px-20'>
+        <div className='flex flex-col gap-6 p-10 md:gap-10 md:py-20 lg:pb-[6.5rem] lg:pt-36 2xl:px-20'>
           <div className='space-y-2'>
             <h3 className='font-mono text-xl font-semibold'>Posts tagged:</h3>
-            <h1 className=' text-5xl font-black uppercase md:text-6xl'>#{catDeserializer}</h1>
+            <h1 className=' text-5xl font-black uppercase'>#{catDeserializer}</h1>
           </div>
           {resBundle ? (
             <Description code={resBundle.code} />
           ) : (
-            <div className='prose prose-catppuccin w-full max-w-2xl'>
+            <div className='prose-protocol-omega prose prose-catppuccin w-full max-w-2xl'>
               <p>whoops, no posts found!</p>
             </div>
           )}
@@ -71,7 +71,7 @@ export default async function Page({ params }: { params: { category: string } })
 function Description({ code }: { code: string }) {
   const Component = useMemo(() => getMDXComponent(code), [code]);
   return (
-    <div className='prose prose-catppuccin w-full max-w-2xl'>
+    <div className='prose-protocol-omega prose prose-catppuccin w-full max-w-2xl'>
       <Component />
     </div>
   );

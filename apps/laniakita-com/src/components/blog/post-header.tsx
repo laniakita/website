@@ -10,33 +10,33 @@ export function PostHeader({ dataObject }: { dataObject: PostTeaserObjectProps }
     <header className='pt-10 md:pt-20 lg:pt-36'>
       <PostHeaderTitleBlock dataObject={dataObject} />
       {/* bg image + title */}
-      <div className='flex size-full flex-col items-center justify-center pt-8 md:pt-10'>
-        <HeroBg dataObject={dataObject} />
-        <div className='flex w-full flex-col items-center justify-center px-4 pt-10 md:max-w-7xl md:px-10'>
-          <div className=''>
-            <p className=''>
-              credit: {dataObject.heroCredit} via <a href={dataObject.heroCreditUrl}>{dataObject.heroCreditUrlText}</a>
-            </p>
-          </div>
+      {dataObject.heroFile !== undefined && (
+        <div className='flex size-full items-center justify-center'>
+          <figure className='flex size-full flex-col items-center justify-center gap-10 md:max-w-3xl lg:max-w-4xl xl:max-w-7xl'>
+            <HeroBg dataObject={dataObject} />
+            <figcaption className='max-w-xl text-2xl font-bold italic leading-tight'>{dataObject.heroCaption}</figcaption>
+          </figure>
         </div>
-      </div>
+      )}
     </header>
   );
 }
 
 /*
+ *
+ *
  * in case I want to try to make the title cover
  * the image again:
  * motion-safe:simple-color-trans bg-gradient-to-b from-ctp-crust/50 via-ctp-crust/80 to-ctp-crust backdrop-blur-md
  */
 export function PostHeaderTitleBlock({ dataObject }: { dataObject: PostTeaserObjectProps }) {
   return (
-    <div className='flex w-full items-center justify-center px-10'>
+    <div className='flex w-full items-center justify-center px-10 pb-8 md:pb-10'>
       <div className='flex max-w-xl flex-col gap-4 md:gap-6'>
         <h1 className='text-5xl font-black uppercase leading-tight supports-[text-wrap:balance]:text-balance'>
           {dataObject.headline}
         </h1>
-        <h2 className='text-2xl font-semibold supports-[text-wrap:balance]:text-balance md:text-3xl'>
+        <h2 className='text-2xl font-semibold leading-tight supports-[text-wrap:balance]:text-balance md:text-3xl'>
           {dataObject.subheadline}
         </h2>
         <div className='flex w-full flex-wrap gap-2 font-mono text-lg'>
