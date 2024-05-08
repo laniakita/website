@@ -30,14 +30,16 @@ export default async function Projects() {
   const projectYears = `${latestYear} - ${oldestYear}`;
 
   return (
-    <main className='flex size-full flex-col items-center justify-center px-3 md:px-7'>
-      {/* since we're padding the WorkPreview component with 3, we'll need to account for that. */}
-      <header className='w-full max-w-5xl px-3 pb-10 pt-16 lg:pt-24'>
-        <h1 className='flex flex-col gap-x-10 gap-y-2 text-5xl font-black uppercase '>
-          <span>Projects / Works</span>
-          <span>({projectYears})</span>
-        </h1>
-      </header>
+    <main className='flex size-full flex-col items-center justify-center px-6'>
+      <div className='px-4'>
+        <header className='w-full max-w-xl py-10 md:py-20 lg:pb-[6.5rem] lg:pt-36'>
+          <p className='text-xl font-semibold'>{projectYears}</p>
+          <h1 className='text-5xl font-black uppercase leading-tight'>Projects / Works</h1>
+          <div className='prose-protocol-omega prose prose-catppuccin'>
+            <p>{`This is a collection of some of the things I've made, sorted by latest.`}</p>
+          </div>
+        </header>
+      </div>
       <div className='flex w-full max-w-5xl flex-wrap'>
         {data?.map((metaObj) => <WorkPreview key={data.indexOf(metaObj)} workMetaObj={metaObj as WorkMetaProps} />)}
       </div>

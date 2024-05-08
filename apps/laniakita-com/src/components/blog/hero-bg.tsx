@@ -9,25 +9,26 @@ export function HeroBg({ dataObject }: { dataObject: PostTeaserObjectProps }) {
     return `${src}?w=${width}&q=${quality ?? 75}`;
   };
   return (
-    <>
-      {dataObject.heroFile && dataObject.heroAltText ? (
-        <div className='relative flex min-h-96 w-screen md:h-[50rem] md:max-w-7xl'>
-          <Image
-            loader={imageLoader}
-            src={dataObject.heroFile}
-            placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
-            alt={dataObject.heroAltText}
-            fill
-            sizes='(max-width: 1200px) 100vw'
-            //placeholder="blur"
-            className='object-cover'
-            //blurDataURL={blurUrl}
-          />
-        </div>
-      ) : (
-        ''
+    <picture className='relative flex min-h-80 w-full md:h-[30rem] md:max-w-3xl lg:h-[38rem] lg:max-w-4xl xl:h-[50rem] xl:max-w-7xl'>
+      <Image
+        loader={imageLoader}
+        src={dataObject.heroFile!}
+        placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
+        alt={dataObject.heroAltText!}
+        fill
+        sizes='(max-width: 1200px) 100vw'
+        //placeholder="blur"
+        className='object-cover'
+        //blurDataURL={blurUrl}
+      />
+      {dataObject.heroCredit !== undefined && (
+        <p className='absolute bottom-6 left-6 w-full'>
+          <span className='simple-color-trans w-fit rounded-full bg-ctp-base/80 px-4 py-1 backdrop-blur-md'>
+            {dataObject.heroCredit} via <a href={dataObject.heroCreditUrl}>{dataObject.heroCreditUrlText}</a>
+          </span>
+        </p>
       )}
-    </>
+    </picture>
   );
 }
 

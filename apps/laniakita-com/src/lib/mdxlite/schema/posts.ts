@@ -19,6 +19,7 @@ export interface Posts {
   subheadline?: string;
   category?: string;
   heroFile?: string;
+  heroCaption?: string;
   heroCredit?: string;
   heroCreditUrl?: string;
   heroCreditUrlText?: string;
@@ -37,6 +38,7 @@ export const posts = sqliteTable('posts', {
   subheadline: text('subheadline'),
   category: text('category').references(() => categories.title, { onUpdate: 'cascade', onDelete: 'cascade' }),
   heroFile: text('hero_file'),
+  heroCaption: text('hero_caption'),
   heroCredit: text('hero_credit'),
   heroCreditUrl: text('hero_credit_url'),
   heroCreditUrlText: text('hero_credit_url_text'),

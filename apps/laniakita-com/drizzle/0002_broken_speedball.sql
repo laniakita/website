@@ -1,0 +1,1 @@
+ALTER TABLE posts ADD `hero_caption` text;

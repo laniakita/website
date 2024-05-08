@@ -24,6 +24,7 @@ export interface PostTeaserObjectProps {
   subheadline?: string;
   category?: string;
   heroFile?: string;
+  heroCaption?: string;
   heroCredit?: string;
   heroCreditUrl?: string;
   heroCreditUrlText?: string;
