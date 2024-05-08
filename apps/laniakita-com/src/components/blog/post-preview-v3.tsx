@@ -89,7 +89,7 @@ export function PostPreviewV3({ dataObj }: { dataObj: PostTeaserObjectProps }) {
             <Link
               id='post-title'
               href={linkTo}
-              className='pointer-events-auto max-w-max flex-none text-wrap text-3xl font-black uppercase leading-tight text-ctp-text supports-[text-wrap:balance]:text-balance md:text-4xl'
+              className='pointer-events-auto max-w-max flex-none text-wrap text-3xl font-black leading-tight text-ctp-text supports-[text-wrap:balance]:text-balance md:text-4xl'
             >
               {dataObj.headline}
             </Link>
@@ -152,7 +152,7 @@ export function FeaturedPostPreviewV3({ dataObj }: { dataObj: PostTeaserObjectPr
             <Link
               id='post-title'
               href={linkTo}
-              className='pointer-events-auto max-w-max flex-none text-wrap text-5xl font-black uppercase leading-tight text-ctp-text supports-[text-wrap:balance]:text-balance md:text-6xl'
+              className='pointer-events-auto max-w-max flex-none text-wrap text-4xl font-black leading-tight text-ctp-text supports-[text-wrap:balance]:text-balance md:text-5xl'
             >
               {dataObj.headline}
             </Link>

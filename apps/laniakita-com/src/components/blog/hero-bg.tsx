@@ -22,7 +22,7 @@ export function HeroBg({ dataObject }: { dataObject: PostTeaserObjectProps }) {
         //blurDataURL={blurUrl}
       />
       {dataObject.heroCredit !== undefined && (
-        <p className='absolute bottom-6 left-6 w-full'>
+        <p className='absolute bottom-6 left-6 w-fit'>
           <span className='simple-color-trans w-fit rounded-full bg-ctp-base/80 px-4 py-1 backdrop-blur-md'>
             {dataObject.heroCredit} via <a href={dataObject.heroCreditUrl}>{dataObject.heroCreditUrlText}</a>
           </span>

@@ -44,3 +44,15 @@ export const batchMatterFetch = async (inputFolder: string) => {
     console.error(err);
   }
 };
+
+export const fetchMdx = async (inputFolder:string, slug:string) => {
+  const pathStr = path.resolve(process.cwd(), inputFolder, `${slug}.mdx`);
+  try {
+    const content = await readFile(pathStr, { encoding: 'utf8' });
+    return content;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+
