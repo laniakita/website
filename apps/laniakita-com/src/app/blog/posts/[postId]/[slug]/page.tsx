@@ -95,7 +95,7 @@ export default async function Page({ params }: { params: { postId: string; slug:
   };
 
   return (
-    <div className='motion-safe:simple-color-trans -mb-0.5 min-h-full max-w-full bg-ctp-base dark:bg-ctp-midnight lg:pt-10'>
+    <div className='motion-safe:simple-color-trans -mb-0.5 min-h-full max-w-full bg-ctp-base dark:bg-ctp-midnight'>
       {resBundle ? <Post code={resBundle.code} teaserObj={headerData as PostTeaserObjectProps} /> : ''}
     </div>
   );
@@ -106,7 +106,7 @@ function Post({ code, teaserObj }: { code: string; teaserObj: PostTeaserObjectPr
   return (
     <article className=''>
       <PostHeader dataObject={teaserObj} />
-      <div className='flex min-h-full items-center justify-center p-10 md:p-10'>
+      <div className='flex min-h-full items-center justify-center px-10 py-6'>
         <div className='prose-protocol-omega'>
           <Component components={{ p: Paragraph }} />
         </div>

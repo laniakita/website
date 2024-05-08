@@ -85,11 +85,6 @@ export function PostPreviewV3({ dataObj }: { dataObj: PostTeaserObjectProps }) {
       )}
       <div className={`flex flex-col gap-6 md:p-10 ${hasImage ? '' : 'size-full items-center justify-center'}`}>
         <div className='w-full space-y-2'>
-          <p>
-            <Link href={linkToCat} className={`font-mono font-semibold ${accentTextColor} pointer-events-auto`}>
-              {dataObj.category}
-            </Link>
-          </p>
           <h2>
             <Link
               id='post-title'
@@ -102,18 +97,11 @@ export function PostPreviewV3({ dataObj }: { dataObj: PostTeaserObjectProps }) {
           <h3 className='text-xl'>{dataObj.subheadline}</h3>
         </div>
         <div className='flex w-full flex-wrap gap-2 font-mono'>
-          {postedDate?.cal ? (
-            <p className='space-x-2'>
-              <span>{postedDate.cal}</span>
-              <span>{postedDate.time}</span>
-              <span>{postedDate.timezone}</span>
-            </p>
-          ) : (
-            <p className='space-x-2'>
-              <span>{postedDate?.fromNow}</span>
-              <span>{postedDate?.timezone}</span>
-            </p>
-          )}
+          <p>{postedDate?.cal}</p>
+          <span>|</span>
+          <Link href={linkToCat} className={`font-mono font-semibold ${accentTextColor} pointer-events-auto`}>
+            #{dataObj.category}
+          </Link>
         </div>
       </div>
     </div>
@@ -160,11 +148,6 @@ export function FeaturedPostPreviewV3({ dataObj }: { dataObj: PostTeaserObjectPr
         className={`${hasImage ? 'md:p-10 lg:min-w-[50%]  lg:max-w-[50%] 2xl:min-w-[33.33%]  2xl:max-w-[33.33%]  2xl:p-20' : 'md:p-10 lg:pt-20'} flex size-full flex-col justify-center gap-6 px-10`}
       >
         <div className='space-y-2'>
-          <p>
-            <Link href={linkToCat} className={`font-mono text-xl font-semibold ${accentTextColor} pointer-events-auto`}>
-              {dataObj.category}
-            </Link>
-          </p>
           <h2>
             <Link
               id='post-title'
@@ -179,18 +162,11 @@ export function FeaturedPostPreviewV3({ dataObj }: { dataObj: PostTeaserObjectPr
           </h3>
         </div>
         <div className='flex flex-wrap gap-2 font-mono text-lg'>
-          {postedDate?.cal ? (
-            <p className='space-x-2 break-keep'>
-              <span>{postedDate.cal}</span>
-              <span>{postedDate.time}</span>
-              <span>{postedDate.timezone}</span>
-            </p>
-          ) : (
-            <p className='space-x-2 break-keep'>
-              <span>{postedDate?.fromNow}</span>
-              <span>{postedDate?.timezone}</span>
-            </p>
-          )}
+          <p>{postedDate?.cal}</p>
+          <span>|</span>
+          <Link href={linkToCat} className={`font-mono text-xl font-semibold ${accentTextColor} pointer-events-auto`}>
+            #{dataObj.category}
+          </Link>
         </div>
       </div>
     </div>

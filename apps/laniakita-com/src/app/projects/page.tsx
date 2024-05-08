@@ -32,8 +32,8 @@ export default async function Projects() {
   return (
     <main className='flex size-full flex-col items-center justify-center px-3 md:px-7'>
       {/* since we're padding the WorkPreview component with 3, we'll need to account for that. */}
-      <header className='w-full max-w-5xl px-3 pb-6 pt-10 lg:pt-24'>
-        <h1 className='flex flex-col gap-x-4 gap-y-2 text-4xl font-black uppercase md:flex-row md:gap-y-0'>
+      <header className='w-full max-w-5xl px-3 pb-10 pt-16 lg:pt-24'>
+        <h1 className='flex flex-col gap-x-10 gap-y-2 text-5xl font-black uppercase '>
           <span>Projects / Works</span>
           <span>({projectYears})</span>
         </h1>
