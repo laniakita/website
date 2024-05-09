@@ -19,6 +19,9 @@ export interface WorkMetaProps {
   title: string;
   slug: string;
   date: Date;
+  type?: string;
+  teaserImg?: string;
+  teaserAlt?: string;
   descr: string;
   tech: string[];
 }
