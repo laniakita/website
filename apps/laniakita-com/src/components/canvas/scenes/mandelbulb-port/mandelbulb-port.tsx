@@ -9,7 +9,7 @@ import CommonEmbedCanvas from '../../dom/common-embed-canvas';
 const updateVerts = (numVar: number) => {
   // faking buffer sizes https://threejs.org/docs/#manual/en/introduction/How-to-update-things
   const rawData = bulbSetup(numVar);
-  const bulb = { points: new Float32Array(rawData), needsUpdate: true }
+  const bulb = { points: new Float32Array(rawData), needsUpdate: true };
   return bulb;
 };
 
@@ -21,7 +21,7 @@ export default function BulbPortMain() {
 
   return (
     <>
-      <div className='absolute right-4 top-4 z-[2] lg:right-10 lg:top-10'>
+      <div className='absolute right-4 top-4 z-[2] hidden lg:right-10 lg:top-10'>
         <button
           onClick={() => {
             count < 20 && setCount(count + 1);
@@ -116,7 +116,7 @@ function bulbSetup(nVar: number) {
   return mandelbulb;
 }
 
-function MandelbulbPort({bulb}: {bulb: { points: Float32Array, needsUpdate: boolean } }) {
+function MandelbulbPort({ bulb }: { bulb: { points: Float32Array; needsUpdate: boolean } }) {
   const bulbRef = useRef<Points>(null!);
 
   useFrame((state) => {
@@ -128,19 +128,14 @@ function MandelbulbPort({bulb}: {bulb: { points: Float32Array, needsUpdate: bool
       }
       bulbRef.current.geometry.setAttribute('position', pos);
       bulbRef.current.geometry.attributes.position!.needsUpdate = true;
-      bulb.needsUpdate = false
+      bulb.needsUpdate = false;
     }
   });
 
   return (
     <points ref={bulbRef}>
       <bufferGeometry>
-        <bufferAttribute
-          attach='attributes-position'
-          count={bulb.points.length / 3}
-          array={bulb.points}
-          itemSize={3}
-        />
+        <bufferAttribute attach='attributes-position' count={bulb.points.length / 3} array={bulb.points} itemSize={3} />
       </bufferGeometry>
       <pointsMaterial sizeAttenuation attach='material' depthWrite={false} size={1} color='white' />
     </points>
