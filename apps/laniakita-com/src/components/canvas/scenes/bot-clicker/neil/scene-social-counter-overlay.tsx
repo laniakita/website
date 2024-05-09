@@ -4,8 +4,8 @@ import Link from 'next/link';
 import { usePathname, useSearchParams, useRouter } from 'next/navigation';
 import SocialIconNavSplitterUltra from '@/components/social-splitter-ultra';
 import { useHajClickerStore } from '@/providers/hajclicker-store-provider';
-import { socialItems } from './footer/footer';
-import TextSplitterUltra from './text-splitter-v2';
+import { socialItems } from '@/components/footer/footer';
+import TextSplitterUltra from '@/components/text-splitter-v2';
 
 export default function SocialCounterOverlay({ model }: { model: string }) {
   const [isPlayWarn, setIsPlayWarn] = useState(false);
