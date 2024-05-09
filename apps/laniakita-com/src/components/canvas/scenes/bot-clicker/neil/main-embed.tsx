@@ -14,11 +14,10 @@ const Neils = dynamic(() => import('@/components/canvas/scenes/bot-clicker/neil/
 
 const CounterOverlayMin = dynamic(() => import('@/components/canvas/scenes/bot-clicker/neil/counter-overlay-min'), { ssr: false });
 
-export default function BotClickerScene({ isEmbed }: { isEmbed?: boolean }) {
+export default function BotClickerScene() {
   const ref = useRef(null!);
   const [windowWidth, setWindowWidth] = useState(0);
   const [viewMobile, setViewMobile] = useState(false);
-  const [viewTablet, setViewTablet] = useState(false);
 
   useEffect(() => {
     if (windowWidth !== window.innerWidth) {
@@ -26,10 +25,8 @@ export default function BotClickerScene({ isEmbed }: { isEmbed?: boolean }) {
 }
     if (windowWidth < 768) {
       setViewMobile(true);
-      setViewTablet(false);
     } else if (windowWidth >= 768) {
       setViewMobile(false);
-      setViewTablet(true);
     }
   }, [windowWidth]);
 
