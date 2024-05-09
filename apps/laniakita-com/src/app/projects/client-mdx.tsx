@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic';
 import { useMemo, useState } from 'react';
 import { getMDXComponent } from 'mdx-bundler/client';
 import type { WorkMetaProps } from '@/app/projects/page';
+import BulbPortMain from '@/components/canvas/scenes/mandelbulb-port/mandelbulb-port';
 
 const EmbedBotClicker = dynamic(() => import('@/components/canvas/scenes/bot-clicker/neil/embed'), { ssr: false });
 
@@ -16,12 +17,15 @@ function FourOhFour() {
 
 enum Projects {
   BotClicker = 'bot-clicker',
+  MandelbulbPort = 'mandelbulb-ported-into-three'
 }
 
 function FindProj({ projSlug }: { projSlug: string }) {
   if (Object.values(Projects).includes(projSlug as Projects)) {
     if (projSlug === 'bot-clicker') {
       return <EmbedBotClicker />;
+    } else if (projSlug === 'mandelbulb-ported-into-three') {
+      return <BulbPortMain />;
     }
   }
   return <FourOhFour />;
@@ -44,9 +48,7 @@ export default function ClientProjPost({ code, frontmatter }: { code: string; fr
         </div>
 
         <div
-          className={
-            fullScreen ? 'relative inset-0 z-[99] size-full' : 'relative flex size-full items-center justify-center'
-          }
+          className={`relative size-full ${fullScreen ? ' inset-0 z-[99]' : ' flex items-center justify-center'} bg-ctp-base dark:bg-ctp-midnight`}
         >
           <div
             className={
