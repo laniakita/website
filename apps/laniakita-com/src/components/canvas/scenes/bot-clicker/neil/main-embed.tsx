@@ -10,11 +10,9 @@ import { A11yAnnouncer, A11yUserPreferences, useUserPreferences } from '@react-t
 import type { Points } from 'three';
 import { useHajClickerStore } from '@/providers/hajclicker-store-provider';
 
-const SceneOverlayV3 = dynamic(() => import('@/components/canvas/scenes/bot-clicker/neil/scene-overlay-alt'), { ssr: false });
-
 const Neils = dynamic(() => import('@/components/canvas/scenes/bot-clicker/neil/neil2'), { ssr: false });
 
-const SocialCounterOverlay = dynamic(() => import('@/components/canvas/scenes/bot-clicker/neil/scene-social-counter-overlay'), { ssr: false });
+const CounterOverlayMin = dynamic(() => import('@/components/canvas/scenes/bot-clicker/neil/counter-overlay-min'), { ssr: false });
 
 export default function BotClickerScene({ isEmbed }: { isEmbed?: boolean }) {
   const ref = useRef(null!);
@@ -25,7 +23,7 @@ export default function BotClickerScene({ isEmbed }: { isEmbed?: boolean }) {
   useEffect(() => {
     if (windowWidth !== window.innerWidth) {
       setWindowWidth(window.innerWidth);
-    }
+}
     if (windowWidth < 768) {
       setViewMobile(true);
       setViewTablet(false);
@@ -38,10 +36,9 @@ export default function BotClickerScene({ isEmbed }: { isEmbed?: boolean }) {
   return (
     <div
       ref={ref}
-      className={` relative flex size-full min-h-[34rem] items-center justify-center  overflow-hidden ${isEmbed ? 'max-h-96 max-w-7xl' : '[height:_100dvh] lg:max-h-screen '}`}
+      className='relative size-full'
     >
-      <SceneOverlayV3 viewMobile={viewMobile} viewTablet={viewTablet} />
-      <SocialCounterOverlay model='Bot' />{' '}
+      <CounterOverlayMin model='Bot' />
       <Suspense>
         <Canvas
           eventSource={ref}
@@ -52,7 +49,7 @@ export default function BotClickerScene({ isEmbed }: { isEmbed?: boolean }) {
           style={{
             height: '100%',
             width: '100%',
-            position: 'fixed',
+            position: 'absolute',
             top: 0,
             left: 0,
             right: 0,
@@ -119,6 +116,7 @@ function BotClickerMain({ viewMobile }: { viewMobile: boolean }) {
           </EffectComposer>
         </>
       )}
+      <color attach='background' args={['black']} />
       {!searchParams.get('play') && <hemisphereLight intensity={1.4} />}
     </>
   );
