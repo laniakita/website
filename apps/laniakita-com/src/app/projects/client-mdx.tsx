@@ -3,9 +3,10 @@ import dynamic from 'next/dynamic';
 import { useMemo, useState } from 'react';
 import { getMDXComponent } from 'mdx-bundler/client';
 import type { WorkMetaProps } from '@/app/projects/page';
-import BulbPortMain from '@/components/canvas/scenes/mandelbulb-port/mandelbulb-port';
 
 const EmbedBotClicker = dynamic(() => import('@/components/canvas/scenes/bot-clicker/neil/embed'), { ssr: false });
+const BulbPortMain = dynamic(() => import('@/components/canvas/scenes/mandelbulb-port/mandelbulb-port'), {ssr: false});
+const FlowFields0001Main = dynamic(() => import('@/components/canvas/scenes/flow-fields/0001/main'), {ssr: false});
 
 function FourOhFour() {
   return (
@@ -17,7 +18,8 @@ function FourOhFour() {
 
 enum Projects {
   BotClicker = 'bot-clicker',
-  MandelbulbPort = 'mandelbulb-ported-into-three'
+  MandelbulbPort = 'mandelbulb-ported-into-three',
+  FlowFields = 'flow-fields-0001'
 }
 
 function FindProj({ projSlug }: { projSlug: string }) {
@@ -26,6 +28,8 @@ function FindProj({ projSlug }: { projSlug: string }) {
       return <EmbedBotClicker />;
     } else if (projSlug === 'mandelbulb-ported-into-three') {
       return <BulbPortMain />;
+    } else if (projSlug === 'flow-fields-0001') {
+      return <FlowFields0001Main />;
     }
   }
   return <FourOhFour />;
