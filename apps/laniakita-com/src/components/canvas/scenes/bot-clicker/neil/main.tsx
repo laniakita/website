@@ -119,6 +119,7 @@ function BotClickerMain({ viewMobile }: { viewMobile: boolean }) {
           </EffectComposer>
         </>
       )}
+      <color attach='background' args={['black']} />
       {!searchParams.get('play') && <hemisphereLight intensity={1.4} />}
     </>
   );
