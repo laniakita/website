@@ -1,9 +1,6 @@
 'use client';
 /* eslint-disable react/no-unknown-property -- r3f types issues */
-/* eslint-disable @typescript-eslint/no-shadow -- r3f types issues */
-/* eslint-disable no-multi-assign -- r3f types issues */
-import { useFrame, useThree } from '@react-three/fiber';
-import { useEffect, useRef } from 'react';
+import { useFrame,  } from '@react-three/fiber';
 import { BufferAttribute, BufferGeometry, LineBasicMaterial, Material, Line } from 'three';
 import CommonEmbedCanvas from '@/components/canvas/dom/common-embed-canvas';
 
@@ -16,7 +13,6 @@ export default function FlowFields001Main() {
 }
 
 function SetupMesh() {
-  const lineRef = useRef<Line>(null!);
   const MAX_POINTS = 50;
   let drawCount: number;
   const geometry = new BufferGeometry();
