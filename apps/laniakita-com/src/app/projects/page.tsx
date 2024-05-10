@@ -24,6 +24,7 @@ export interface WorkMetaProps {
   teaserAlt?: string;
   descr: string;
   tech: string[];
+  status: string;
 }
 
 export default async function Projects() {
@@ -39,7 +40,12 @@ export default async function Projects() {
         </header>
       </div>
       <div className='flex w-full max-w-7xl flex-wrap'>
-        {data?.map((metaObj) => <WorkPreview key={data.indexOf(metaObj)} workMetaObj={metaObj as WorkMetaProps} />)}
+        {data?.map(
+          (metaObj) =>
+            (metaObj as WorkMetaProps).status === 'published' && (
+              <WorkPreview key={data.indexOf(metaObj)} workMetaObj={metaObj as WorkMetaProps} />
+            ),
+        )}
       </div>
     </main>
   );
