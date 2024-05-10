@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { notFound } from 'next/navigation';
 import { getMDXComponent } from 'mdx-bundler/client';
 import { batchMatterFetch, fetchMdx } from '@/utils/mdx-utils';
 import { resMdxV3 } from '@/utils/mdx-bundler-utils';
@@ -18,6 +19,7 @@ export default async function ProjectDetailPage({ params }: { params: { slug: st
   if (!data) return;
   // eslint-disable-next-line -- any is needed here to make mdx-bundler types happy
   const resData: { code: string; frontmatter: Record<string, any> } = await resMdxV3(data, folder, params.slug);
+  if (resData.frontmatter.status !== 'published') return notFound()
   return (
     <>
       {(resData.frontmatter as WorkMetaProps).type === 'computer-graphics' ? (
