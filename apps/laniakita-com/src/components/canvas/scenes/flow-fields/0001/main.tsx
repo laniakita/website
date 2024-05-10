@@ -1,91 +1,60 @@
 'use client';
-import { useRef } from 'react';
-import { createNoise3D, createNoise2D } from 'simplex-noise';
+/* eslint-disable react/no-unknown-property -- r3f types issues */
+/* eslint-disable @typescript-eslint/no-shadow -- r3f types issues */
+/* eslint-disable no-multi-assign -- r3f types issues */
 import { useFrame, useThree } from '@react-three/fiber';
-import { Segment, type SegmentObject, Segments } from '@react-three/drei';
-import { OrbitControls } from '@react-three/drei';
+import { useEffect, useRef } from 'react';
+import { BufferAttribute, BufferGeometry, LineBasicMaterial, Material, Line } from 'three';
 import CommonEmbedCanvas from '@/components/canvas/dom/common-embed-canvas';
 
-// based on Keith Peter's Flow Fields https://www.bit-101.com/2017/2017/10/flow-fields-part-i/
-// with the clifford attractor from Paul Bourke https://paulbourke.net/fractals/clifford/
-
-export default function FlowFields0001Main() {
+export default function FlowFields001Main() {
   return (
-    <CommonEmbedCanvas camera={{ position: [0, 0, 340], fov: 45 }}>
-      <FlowFieldsMesh />
-      <OrbitControls />
+    <CommonEmbedCanvas camera={{position: [0,0,100]}}>
+      <SetupMesh />
     </CommonEmbedCanvas>
   );
 }
 
-const pointsSetup = (height: number) => {
-  const points = [];
-  for (let y = 0; y < height; y += 5) {
-    points.push({
-      x: 0,
-      y,
-      vx: 0,
-      vy: 0,
-    });
+function SetupMesh() {
+  const lineRef = useRef<Line>(null!);
+  const MAX_POINTS = 50;
+  let drawCount: number;
+  const geometry = new BufferGeometry();
+  const positions = new Float32Array(MAX_POINTS * 3);
+  geometry.setAttribute('position', new BufferAttribute(positions, 3));
+  drawCount = 2;
+  geometry.setDrawRange(0, drawCount);
+  const material = new LineBasicMaterial({ color: 0xff0000 });
+  const line = new Line(geometry, material);
+  const positionAttribute = line.geometry.getAttribute('position');
+
+  updatePositions();
+
+  function updatePositions() {
+    let x = 0,
+      y = 0,
+      z = 0;
+    for (let i = 0; i < positionAttribute.count; i++) {
+      positionAttribute.setXYZ(i, x, y, z);
+
+      x += (Math.random() - 0.5) * 30;
+      y += (Math.random() - 0.5) * 30;
+      z += (Math.random() - 0.5) * 30;
+    }
   }
-  return points;
-};
-
-/*
-const cliffordAttractor = (x: number, y: number, height: number, width: number) => {
-  const a = Math.random() * 4 - 2;
-  const b = Math.random() * 4 - 2;
-  const c = Math.random() * 4 - 2;
-  const d = Math.random() * 4 - 2;
-
-  // scale down x and y
-  const scale = 0.005;
-  const x0 = (x - width / 2) * scale;
-  const y0 = (y - height / 2) * scale;
-
-  // attactor gives new x, y for old one.
-  const x1 = Math.sin(a * y0) + c * Math.cos(a * x0);
-  const y1 = Math.sin(b * x0) + d * Math.cos(b * y0);
-
-  // find angle from old to new. that's the value.
-  return Math.atan2(y1 - y, x1 - x);
-};
-    });
-
-*/
-const noise3D = createNoise3D();
-
-const getVal3D = (x: number, y: number, z = 1) => {
-  const scale = 0.01;
-  return noise3D(x * scale, y * scale, z) * Math.PI * 2;
-};
-
-function FlowFieldsMesh() {
-  const myLine = useRef<SegmentObject[]>([]);
-  const { size } = useThree();
-  useFrame(({clock}) => {
-    myLine.current.forEach((r, i) => {
-      const time = clock.elapsedTime;
-      const x = Math.sin((i / 5000) * Math.PI) * 10;
-      const y = Math.cos((i / 5000) * Math.PI) * 10;
-      const z = Math.cos((i * time) / 1000);
-      r.start.set(x, y, z);
-      r.end.set(x + Math.sin(time + i), y + Math.cos(time + i), z);
-      r.color.setRGB(x / 10, y / 10, z);
-    });
+  
+  useFrame((state) => {
+    drawCount = (drawCount + 1) % MAX_POINTS;
+    line.geometry.setDrawRange(0, drawCount);
+    if (drawCount === 0) {
+      line.geometry.dispose();
+      material.dispose();
+      updatePositions();
+      positionAttribute.needsUpdate = true;
+      line.geometry.computeBoundingBox();
+      line.geometry.computeBoundingSphere();
+      line.material.color.setHSL(Math.random(), 1, 0.5);
+    }
   });
-  return (
-    <Segments limit={10000} linewidth={1.0}>
-      {Array.from({ length: 10000 }).map((_, i) => (
-        <Segment
-          key={Math.random()}
-          /* @ts-expect-error -- myLine shouldn't be null */
-          ref={(r) => (myLine.current[i] = r)}
-          color='orange'
-          start={[0, 0, 0]}
-          end={[0, 0, 0]}
-        />
-      ))}
-    </Segments>
-  );
+  return <primitive object={line} />;
 }
