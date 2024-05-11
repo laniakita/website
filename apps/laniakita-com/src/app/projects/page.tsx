@@ -18,7 +18,8 @@ export const metadata = {
 export interface WorkMetaProps {
   title: string;
   slug: string;
-  date: Date;
+  published?: Date;
+  updated?: Date;
   type?: string;
   teaserImg?: string;
   teaserAlt?: string;
