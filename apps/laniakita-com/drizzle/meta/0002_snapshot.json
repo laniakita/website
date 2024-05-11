@@ -46,9 +46,7 @@
       "indexes": {
         "authors_name_unique": {
           "name": "authors_name_unique",
-          "columns": [
-            "name"
-          ],
+          "columns": ["name"],
           "isUnique": true
         }
       },
@@ -91,9 +89,7 @@
       "indexes": {
         "categories_title_unique": {
           "name": "categories_title_unique",
-          "columns": [
-            "title"
-          ],
+          "columns": ["title"],
           "isUnique": true
         }
       },
@@ -206,9 +202,7 @@
       "indexes": {
         "posts_headline_unique": {
           "name": "posts_headline_unique",
-          "columns": [
-            "headline"
-          ],
+          "columns": ["headline"],
           "isUnique": true
         }
       },
@@ -217,12 +211,8 @@
           "name": "posts_author_name_authors_name_fk",
           "tableFrom": "posts",
           "tableTo": "authors",
-          "columnsFrom": [
-            "author_name"
-          ],
-          "columnsTo": [
-            "name"
-          ],
+          "columnsFrom": ["author_name"],
+          "columnsTo": ["name"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
@@ -230,12 +220,8 @@
           "name": "posts_category_categories_title_fk",
           "tableFrom": "posts",
           "tableTo": "categories",
-          "columnsFrom": [
-            "category"
-          ],
-          "columnsTo": [
-            "title"
-          ],
+          "columnsFrom": ["category"],
+          "columnsTo": ["title"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         }

@@ -21,7 +21,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const folder = './src/app/projects/works';
   const data = await fetchMdx(folder, params.slug);
-  const matterData = matter(data!).data
+  const matterData = matter(data!).data;
   const projDescrMatter = matter(data!).content;
 
   const findDescr = projDescrMatter.split('\n').map((strPara) => {
@@ -60,7 +60,7 @@ export default async function ProjectDetailPage({ params }: { params: { slug: st
   if (!data) return;
   // eslint-disable-next-line -- any is needed here to make mdx-bundler types happy
   const resData: { code: string; frontmatter: Record<string, any> } = await resMdxV3(data, folder, params.slug);
-  if (resData.frontmatter.status !== 'published') return notFound()
+  if (resData.frontmatter.status !== 'published') return notFound();
   return (
     <>
       {(resData.frontmatter as WorkMetaProps).type === 'computer-graphics' ? (

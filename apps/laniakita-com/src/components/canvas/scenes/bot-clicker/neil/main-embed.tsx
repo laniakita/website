@@ -12,7 +12,9 @@ import { useHajClickerStore } from '@/providers/hajclicker-store-provider';
 
 const Neils = dynamic(() => import('@/components/canvas/scenes/bot-clicker/neil/neil2'), { ssr: false });
 
-const CounterOverlayMin = dynamic(() => import('@/components/canvas/scenes/bot-clicker/neil/counter-overlay-min'), { ssr: false });
+const CounterOverlayMin = dynamic(() => import('@/components/canvas/scenes/bot-clicker/neil/counter-overlay-min'), {
+  ssr: false,
+});
 
 export default function BotClickerScene() {
   const ref = useRef(null!);
@@ -22,7 +24,7 @@ export default function BotClickerScene() {
   useEffect(() => {
     if (windowWidth !== window.innerWidth) {
       setWindowWidth(window.innerWidth);
-}
+    }
     if (windowWidth < 768) {
       setViewMobile(true);
     } else if (windowWidth >= 768) {
@@ -31,10 +33,7 @@ export default function BotClickerScene() {
   }, [windowWidth]);
 
   return (
-    <div
-      ref={ref}
-      className='relative size-full'
-    >
+    <div ref={ref} className='relative size-full'>
       <CounterOverlayMin model='Bot' />
       <Suspense>
         <Canvas
