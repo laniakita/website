@@ -39,7 +39,7 @@ export default async function Projects() {
           </div>
         </header>
       </div>
-      <div className='flex w-full max-w-7xl flex-wrap'>
+      <div className='flex w-full max-w-7xl flex-wrap items-center justify-center'>
         {data?.map(
           (metaObj) =>
             (metaObj as WorkMetaProps).status === 'published' && (
