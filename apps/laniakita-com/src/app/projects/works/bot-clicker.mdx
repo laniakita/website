@@ -2,7 +2,7 @@
 title: Bot Clicker
 slug: bot-clicker
 date: 2024-05-06T21:41:14Z
-descr: Bot Clicker is a toy and tiny satirical "game" where you click on robots.
+descr: Bot Clicker is a toy satirical "game" I made for the landing page where you click on robots.
 type: computer-graphics
 teaserImg: '/assets/project-teaser-images/bot-clicker-pre-release-v05082024.png'
 teaserAlt: 'screenshot of a development build of Bot Clicker, before being officially released to the public.'
@@ -12,7 +12,7 @@ status: published
 
 ## TLDR
 
-Bot Clicker is a toy satirical "game" I made for the landing page, where you click on robots to make the clicker counter go up, and in return they puff up and make enlightening sounds and social commentary.
+Bot Clicker is a toy satirical "game" I made for the landing page where you click on robots to make the clicker counter go up, and in return, they puff up and make enlightening sounds and social commentary.
 
 To briefly summarize Bot Clickers internals, it uses a combination of Three.js + Three.js component libraries and zustand from the Poimandres developer collective. Zustand is used to both add and store the total clicker points, as well as send that data to the overlayed clicker counter. The counter total is also an input parameter in function that calculates game/bot movement speed for added "eXtReMe EnTeRtAiNmEnT vAlUe!".
 
@@ -30,9 +30,9 @@ As far as technicals go, once I had actually stumbled onto the ideas that led to
 
 1. Bot clicker needed to load quickly (no long loading screens).
 2. Bot Clicker needed somewhat high fidelity graphics (i.e. post-processing shaders) with a decent framerate to boot.
-   Admitedly the second goal wasn't that challenging to achieve since many optimization implementations (instancing, LOD, etc.) come OOTB from Three.js. Regardless, WebGL isn't quite as performant as WebGPU, so there were still some compromises that had to be made to get things running as well as they do. While I'd like to have experimented with Three's WebGPU support, the actual WebGPU API is only at [57.29%](https://web3dsurvey.com/webgpu) platform support as of May 6th, 2024. So, WebGL was my only real option.
+   Admitedly the second goal wasn't that challenging to achieve since many optimization implementations (instancing, LOD, etc.) do come OOTB with Three.js (it also didn't hurt that the example I was using as inspiration had solved a very similar set of problems). Still, there were some tiny hills left for me to meander over to get things running as well as they do.
 
-Beyond that, everything else was relatively straight forward. Especially since I could recycle some of the logic for spawning/placing/moving/rotating/teleporting the robots from the [Flying Bananas example](https://codesandbox.io/s/2ycs3) I mentioned above. Which also helped to point me in the right direction for some of the optimization steps I decided to implement. Once I had things moving and in place, the last part was to just build the rest of "Bot Clicker". This is detailed in the [Rest of the Bot Clicker](/projects/bot-clicker/rest-of-the-bot-clicker) section.
+Beyond that, everything else was relatively straight forward. Especially since I could recycle some of the logic for the moving, rotating, teleporting from the example to use for the robots. Which also helped to point me in the right direction for some of the optimization steps I decided to implement. Once I had things moving and in place, the last part was to just build the rest of "Bot Clicker". This is detailed in the [Rest of the Bot Clicker](/projects/bot-clicker/rest-of-the-bot-clicker) section.
 
 ## Loading Fast
 
@@ -44,7 +44,7 @@ As I didn't want to make things too data intensive on slower mobile connections,
 
 ## Optimizations
 
-Since it was important to make use of post-processing shaders (specificallly pmndrs' bloom, which is an implementation of [Léna Piquet's custom bloom for UEv4](https://www.froyok.fr/blog/2021-12-ue4-custom-bloom)), whilst maintaining a decent framerate with WebGL, it was critical to optimize things as best I could. The most significant of those optimizations was making use of Three's LOD implementation (which react-three/drei conveniently provides a light wrapper for as the "Detailed" component) with heavily reduced texture resolutions. The rest of the optimizations were mostly tweaks to the canvas setting (turning off anti-aliasing, flat tone mapping, etc.)
+Since it was important to make use of post-processing shaders (specificallly pmndrs' bloom, which is an implementation of [Léna Piquet's custom bloom for UEv4](https://www.froyok.fr/blog/2021-12-ue4-custom-bloom)), whilst maintaining a decent framerate with WebGL, optimizations were somewhat necessary. The most significant of those optimizations was making use of Three's LOD implementation (which react-three/drei conveniently provides a light wrapper for as the "Detailed" component) with heavily reduced texture resolutions. The rest of the optimizations were mostly tweaks to the canvas setting (turning off anti-aliasing, flat tone mapping, etc.)
 
 ### Level of Detail (LOD)
 
@@ -58,7 +58,7 @@ My reasoning for separating the LOD into separate components is two fold. Firstl
 
 ## Rest of the Bot Clicker (ROTFBC)
 
-Like I said, I could recycle the spawning/moving/rotating/teleporting logic from the earlier example to create most of the bones for what would become Bot Clicker. The rest of it was just a small matter of swapping out the model, adding some sounds, adding a few functions, and writing some extra logic. So in no particular order, this is what I did:
+Like I said, I could recycle some of the logic from the earlier example to create most of the bones for what would become Bot Clicker. The rest of it was just a small matter of swapping out the model, adding some sounds, adding a few functions, and writing some extra logic. So in no particular order, this is what I did:
 
 1. Used robots instead of bananas
 2. Used Next.js instead of a SPA React app
@@ -70,7 +70,7 @@ Like I said, I could recycle the spawning/moving/rotating/teleporting logic from
 8. Added (drei's) stars and the logic that make them move.
 9. Used a bloom post-processing shader instead of the depth of field shader.
 10. Implemented React Three A11y to prevent the bots from moving for those who have reduced motion on.
-11. Added a menu with buttons that showcase a warning before you play/enter bot clicker. Also features the actual button that "soft" navigates you to the url that enables you to play bot clicker.
+11. Added a menu with buttons that showcase a warning before you play/enter bot clicker. Also features the actual button that "soft" navigates you to the url (this uses Next's useRouter hook) that enables you to play bot clicker.
 12. Wrote logic for a bright hemisphere light when out of the game, and logic that adds a postional light and removes/greatly decreases the hemisphere light in the game.
 13. Wrote logic that keeps bot movement very limited on the actual landing page, but brings them to life when the game is actually entered.
 14. Wrote logic that ensures the stars, post-processing, and bot animations only get loaded when the game is actually enterered.
@@ -80,7 +80,7 @@ Like I said, I could recycle the spawning/moving/rotating/teleporting logic from
 
 ### Borrowed Logic
 
-Everything else beyond that was relatively straight forward. A simple function inside react-three/fibers useFrame hook spreads out the bots to their positions, moves them upwards, and also spins them around. Another function triggers once a bot goes beyond the top of a players screen and teleports them a little below the bottom edge of the players screen.
+Borred from the example, there's a few neat functions inside the useFrame hook: one that spreads out the bots to their positions, a second one that moves them upwards, a third one that spins them around, and a final fourth function that triggers once a bot goes beyond the top of a players screen so it can teleport them a little below the bottom edge of the players screen.
 
 ### Keeping Track of the Number of Clicked Bots, with Zustand
 
@@ -108,6 +108,6 @@ The other thing I did was make use of react-three/a11y to stop the bots from mov
 
 ## Conclusion
 
-Bot Clicker is really just a toy for visitors to my site to play with, that also happens to live on the landing page. While the technical details of Bot Clicker aren't too exciting (it's literally just a background image, but more interesting and interactive), it does however inadvertantly posit some philosophical questions regarding definitions of a game down to an individual level. However you may feel about Bot Clicker, I hope it gives you something to think about, even if that thought is only four letters long.
+Bot Clicker is really just a toy for visitors to my site to play with, that also happens to live on the landing page. While the technical details of Bot Clicker aren't too exciting (it's literally just a background image, but more interesting and interactive), it does however inadvertantly posit some philosophical questions and I hope it gives you at least something to think about.
 
 While a part of me does wish I could've made Bot Clicker into something with even a teency bit of substance, I felt it was already pushing the limits on acceptable bandwidth useage for a landing page. So, levels and backgrounds and different models/textures (even physics), likely wouldn't be appreciated by most of the people who come here. I imagine most people just want to read some got dang' ~~Hotdogs~~ articles on how to build stuff.

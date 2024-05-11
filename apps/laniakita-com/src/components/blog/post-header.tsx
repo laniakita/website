@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { HeroBg } from '@/components/blog/hero-bg';
 import type { PostTeaserObjectProps } from '@/app/blog/page';
 import PostDate from '@/components/blog/post-date';
+import ShareButton from './share-btn';
 
 export function PostHeader({ dataObject }: { dataObject: PostTeaserObjectProps }) {
   //const linkTo = baseUrl + "/blog/" + dataObject.category + "/" + dataObject.slug;
@@ -11,13 +12,16 @@ export function PostHeader({ dataObject }: { dataObject: PostTeaserObjectProps }
       <PostHeaderTitleBlock dataObject={dataObject} />
       {/* bg image + title */}
       {dataObject.heroFile !== undefined && (
-        <div className='flex size-full items-center justify-center'>
+        <div className='flex size-full flex-col items-center justify-center'>
           <figure className='relative flex size-full flex-col items-center justify-center gap-10 md:max-w-3xl lg:max-w-4xl xl:max-w-7xl'>
             <HeroBg dataObject={dataObject} />
-            <figcaption className='max-w-xl px-10 text-2xl font-bold italic leading-tight'>
-              {dataObject.heroCaption}
+            <figcaption className='flex w-full items-center justify-center px-10 text-2xl font-bold italic leading-tight'>
+              <h2 className='max-w-xl'>{dataObject.heroCaption}</h2>
             </figcaption>
           </figure>
+          <div className='mt-10 flex w-full items-center justify-center px-10'>
+            <div className='w-full max-w-xl rounded bg-ctp-text py-px' />
+          </div>
         </div>
       )}
     </header>
@@ -58,13 +62,7 @@ export function PostHeaderTitleBlock({ dataObject }: { dataObject: PostTeaserObj
           </p>
         </div>
         <div className='flex flex-wrap gap-4 pt-2 md:pt-4'>
-          <button
-            type='button'
-            className='flex flex-row items-center justify-center gap-2 rounded-full border border-ctp-mauve bg-ctp-mauve/10 px-8 py-2 font-mono font-black hover:bg-ctp-mauve hover:text-ctp-base'
-          >
-            <span className='icon-[ph--upload-bold] text-2xl' />
-            <span>share</span>
-          </button>
+          <ShareButton />
         </div>
       </div>
     </div>
