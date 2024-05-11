@@ -1,12 +1,23 @@
 'use client';
 import dynamic from 'next/dynamic';
 import { useMemo, useState } from 'react';
+import dayjs, { extend } from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
+import timezone from 'dayjs/plugin/timezone';
 import { getMDXComponent } from 'mdx-bundler/client';
 import type { WorkMetaProps } from '@/app/projects/page';
+import ShareButton from '@/components/blog/share-btn';
+
+extend(relativeTime);
+extend(localizedFormat);
+extend(timezone);
 
 const EmbedBotClicker = dynamic(() => import('@/components/canvas/scenes/bot-clicker/neil/embed'), { ssr: false });
-const BulbPortMain = dynamic(() => import('@/components/canvas/scenes/mandelbulb-port/mandelbulb-port'), {ssr: false});
-const FlowFields0001Main = dynamic(() => import('@/components/canvas/scenes/flow-fields/0001/main'), {ssr: false});
+const BulbPortMain = dynamic(() => import('@/components/canvas/scenes/mandelbulb-port/mandelbulb-port'), {
+  ssr: false,
+});
+const FlowFields0001Main = dynamic(() => import('@/components/canvas/scenes/flow-fields/0001/main'), { ssr: false });
 
 function FourOhFour() {
   return (
@@ -19,7 +30,7 @@ function FourOhFour() {
 enum Projects {
   BotClicker = 'bot-clicker',
   MandelbulbPort = 'mandelbulb-ported-into-three',
-  FlowFields = 'flow-fields-0001'
+  FlowFields = 'flow-fields-0001',
 }
 
 function FindProj({ projSlug }: { projSlug: string }) {
@@ -41,13 +52,31 @@ export default function ClientProjPost({ code, frontmatter }: { code: string; fr
 
   const [fullScreen, setFullScreen] = useState(false);
 
+  const published = dayjs((frontmatter as WorkMetaProps).published).format('L');
+  const updated = dayjs((frontmatter as WorkMetaProps).updated).format('L');
+
   return (
     <article className=''>
       <header className={`flex size-full ${fullScreen ? 'flex-col-reverse' : 'flex-col'} items-center justify-center`}>
-        <div className='flex w-full items-center justify-center p-10 md:py-20 lg:pb-[6.5rem] lg:pt-36'>
-          <div className='flex w-full max-w-xl flex-col gap-10'>
-            <h1 className='text-4xl font-black md:text-5xl'>{(frontmatter as WorkMetaProps).title}</h1>
-            <p className='prose-protocol-omega'>{(frontmatter as WorkMetaProps).descr}</p>
+        <div className='flex w-full items-center justify-center px-10 pb-8 pt-10 md:pt-20 lg:pb-10 lg:pt-36'>
+          <div className='flex w-full max-w-xl flex-col items-start justify-start gap-8 lg:gap-10'>
+            <div className='flex w-full flex-col items-start justify-start gap-4 md:gap-6'>
+              <h1 className='text-4xl font-black md:text-5xl'>{(frontmatter as WorkMetaProps).title}</h1>
+              <h2 className='text-2xl font-semibold leading-tight supports-[text-wrap:balance]:text-balance md:text-3xl'>
+                {(frontmatter as WorkMetaProps).descr}
+              </h2>
+              <div className='font-mono text-lg'>
+                <p className=''>
+                  Published: <span className='font-semibold'>{published}</span>
+                </p>
+                {(updated as unknown) !== undefined && published !== updated && (
+                  <p className=''>
+                    Updated: <span className='font-semibold'>{updated}</span>
+                  </p>
+                )}
+              </div>
+            </div>
+            <ShareButton />
           </div>
         </div>
 
@@ -87,7 +116,7 @@ export default function ClientProjPost({ code, frontmatter }: { code: string; fr
           </div>
         </div>
       </header>
-      <div className='flex min-h-full items-center justify-center px-10 py-6'>
+      <div className='flex min-h-full items-center justify-center px-10'>
         <div className='prose-protocol-omega w-full'>
           <Component />
         </div>

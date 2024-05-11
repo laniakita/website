@@ -14,7 +14,7 @@ extend(localizedFormat);
 extend(timezone);
 
 export default function WorkPreview({ workMetaObj }: { workMetaObj: WorkMetaProps }) {
-  const releaseDate = dayjs(workMetaObj.date).format('L');
+  const published = dayjs(workMetaObj.published).format('L');
   return (
     <>
       {/* neat css tip: use padding instead of margin when working with flex basis / flex grids */}
@@ -46,7 +46,7 @@ export default function WorkPreview({ workMetaObj }: { workMetaObj: WorkMetaProp
               <p className='prose-protocol-omega prose prose-catppuccin supports-[text-wrap:balance]:text-pretty'>
                 {workMetaObj.descr}
               </p>
-              <p className='font-mono font-semibold'>{releaseDate}</p>
+              <p className='font-mono font-semibold'>{published}</p>
             </div>
           </div>
         </div>
