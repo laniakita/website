@@ -58,7 +58,7 @@ export default function CounterOverlayMin({ model }: { model: string }) {
                     <button
                       onClick={(): void => {
                         setIsPlayWarn(false);
-                        router.push(`${pathname}?${createQueryString('play', 'true')}`, {scroll: false});
+                        router.push(`${pathname}?${createQueryString('play', 'true')}`, { scroll: false });
                       }}
                       type='button'
                       className='w-full rounded-full border border-ctp-surface0 bg-ctp-green/80 py-2 hover:bg-ctp-green'

@@ -4,7 +4,7 @@ import { Preload } from '@react-three/drei';
 import { Canvas, type CanvasProps } from '@react-three/fiber';
 import { type ReactNode, Suspense, useRef } from 'react';
 
-export default function CommonEmbedCanvas({children, ...props}:{children: Readonly<ReactNode>} & CanvasProps) {
+export default function CommonEmbedCanvas({ children, ...props }: { children: Readonly<ReactNode> } & CanvasProps) {
   const ref = useRef(null!);
   return (
     <div ref={ref} className='relative size-full'>

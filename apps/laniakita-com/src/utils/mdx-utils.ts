@@ -38,14 +38,16 @@ export const batchMatterFetch = async (inputFolder: string) => {
         return metaObj;
       }),
     );
-    const sortedMetas = matterMeta.sort((a, b) => { return b?.date - a?.date });
+    const sortedMetas = matterMeta.sort((a, b) => {
+      return b?.date - a?.date;
+    });
     return sortedMetas;
   } catch (err) {
     console.error(err);
   }
 };
 
-export const fetchMdx = async (inputFolder:string, slug:string) => {
+export const fetchMdx = async (inputFolder: string, slug: string) => {
   const pathStr = path.resolve(process.cwd(), inputFolder, `${slug}.mdx`);
   try {
     const content = await readFile(pathStr, { encoding: 'utf8' });
@@ -54,5 +56,3 @@ export const fetchMdx = async (inputFolder:string, slug:string) => {
     console.error(err);
   }
 };
-
-

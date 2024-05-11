@@ -1,12 +1,12 @@
 'use client';
 /* eslint-disable react/no-unknown-property -- r3f types issues */
-import { useFrame,  } from '@react-three/fiber';
-import { BufferAttribute, BufferGeometry, LineBasicMaterial, Material, Line } from 'three';
+import { useFrame } from '@react-three/fiber';
+import { BufferAttribute, BufferGeometry, LineBasicMaterial, Line } from 'three';
 import CommonEmbedCanvas from '@/components/canvas/dom/common-embed-canvas';
 
 export default function FlowFields001Main() {
   return (
-    <CommonEmbedCanvas camera={{position: [0,0,100]}}>
+    <CommonEmbedCanvas camera={{ position: [0, 0, 100] }}>
       <SetupMesh />
     </CommonEmbedCanvas>
   );
@@ -38,7 +38,7 @@ function SetupMesh() {
       z += (Math.random() - 0.5) * 30;
     }
   }
-  
+
   useFrame((state) => {
     drawCount = (drawCount + 1) % MAX_POINTS;
     line.geometry.setDrawRange(0, drawCount);

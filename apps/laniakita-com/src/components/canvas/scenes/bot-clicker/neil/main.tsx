@@ -10,11 +10,16 @@ import { A11yAnnouncer, A11yUserPreferences, useUserPreferences } from '@react-t
 import type { Points } from 'three';
 import { useHajClickerStore } from '@/providers/hajclicker-store-provider';
 
-const SceneOverlayV3 = dynamic(() => import('@/components/canvas/scenes/bot-clicker/neil/scene-overlay-alt'), { ssr: false });
+const SceneOverlayV3 = dynamic(() => import('@/components/canvas/scenes/bot-clicker/neil/scene-overlay-alt'), {
+  ssr: false,
+});
 
 const Neils = dynamic(() => import('@/components/canvas/scenes/bot-clicker/neil/neil2'), { ssr: false });
 
-const SocialCounterOverlay = dynamic(() => import('@/components/canvas/scenes/bot-clicker/neil/scene-social-counter-overlay'), { ssr: false });
+const SocialCounterOverlay = dynamic(
+  () => import('@/components/canvas/scenes/bot-clicker/neil/scene-social-counter-overlay'),
+  { ssr: false },
+);
 
 export default function BotClickerScene({ isEmbed }: { isEmbed?: boolean }) {
   const ref = useRef(null!);
