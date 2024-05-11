@@ -1,6 +1,8 @@
 import { useMemo } from 'react';
+import type { Metadata, ResolvingMetadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getMDXComponent } from 'mdx-bundler/client';
+import matter from 'gray-matter';
 import { batchMatterFetch, fetchMdx } from '@/utils/mdx-utils';
 import { resMdxV3 } from '@/utils/mdx-bundler-utils';
 import type { WorkMetaProps } from '../page';
@@ -11,6 +13,45 @@ export async function generateStaticParams() {
   return projMetas!.map((meta) => ({
     slug: (meta as WorkMetaProps).slug,
   }));
+}
+
+export async function generateMetadata(
+  { params }: { params: { slug: string } },
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  const folder = './src/app/projects/works';
+  const data = await fetchMdx(folder, params.slug);
+  const matterData = matter(data!).data
+  const projDescrMatter = matter(data!).content;
+
+  const findDescr = projDescrMatter.split('\n').map((strPara) => {
+    if (strPara !== '' && strPara.split(' ')[0] !== 'import' && strPara.split(' ')[0] !== '##') {
+      return strPara;
+    }
+    return undefined;
+  });
+
+  const descr = findDescr.filter((el) => el);
+
+  const previousImages = (await parent).openGraph?.images ?? [];
+
+  const teaserImg = (matterData as WorkMetaProps).teaserImg;
+
+  return {
+    title: (matterData as WorkMetaProps).title,
+    description: descr[0],
+    openGraph: {
+      title: (matterData as WorkMetaProps).title,
+      description: descr[0],
+      images: [teaserImg ? teaserImg : '', ...previousImages],
+    },
+    twitter: {
+      card: 'summary',
+      title: (matterData as WorkMetaProps).title,
+      description: descr[0],
+      images: [teaserImg ? teaserImg : '', ...previousImages],
+    },
+  };
 }
 
 export default async function ProjectDetailPage({ params }: { params: { slug: string } }) {

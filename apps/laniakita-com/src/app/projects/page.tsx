@@ -3,15 +3,15 @@ import WorkPreview from './work-preview';
 
 export const metadata = {
   title: 'Projects',
-  description: "This is a catalogue of all the (officially released) cool stuff I'm working on.",
+  description: "This is a collection of some of the things I've made, sorted by latest.",
   openGraph: {
     title: 'Projects',
-    description: "This is a catalogue of all the (officially released) cool stuff I'm working on.",
+    description: "This is a collection of some of the things I've made, sorted by latest.",
   },
   twitter: {
     card: 'summary',
     title: 'Projects',
-    description: "This is a catalogue of all the (officially released) cool stuff I'm working on.",
+    description: "This is a collection of some of the things I've made, sorted by latest.",
   },
 };
 
