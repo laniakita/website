@@ -3,9 +3,11 @@ import { useRef } from 'react';
 import { shaderMaterial } from '@react-three/drei';
 import { extend, useFrame } from '@react-three/fiber';
 import type { ShaderMaterial } from 'three';
-import Common2DCanvas from '../../dom/common-2d-canvas';
-import vertex from './random/shader.vert'
-import fragment from './random/shader.frag'
+import Common2DCanvas from '@/components/canvas/dom/common-2d-canvas';
+// @ts-expect-error -- using glsl loader for this
+import vertex from './shader.vert';
+// @ts-expect-error -- using glsl loader for this
+import fragment from './shader.frag';
 
 interface RandomShaderMaterialProps extends ShaderMaterial {
   u_time?: number;
