@@ -1,10 +1,6 @@
 import Link from 'next/link';
 import NoiseShader01 from '@/components/canvas/scenes/shaders/noise/noise';
 
-/*
-rounded-2xl border border-ctp-surface0 bg-ctp-midnight/80 p-4 shadow-2xl backdrop-blur-md  md:p-6
- */
-
 export default function Home() {
   return (
     <main className='flex h-dvh w-full items-center justify-center'>
