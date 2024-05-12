@@ -1,5 +1,10 @@
 {
   "name": "ahiakea",
+  "devDependencies": {
+    "eslint": "9.0.0",
+    "prettier": "^3.2.5",
+    "turbo": "^1.13.2"
+  },
   "engines": {
     "node": ">=18"
   },
@@ -11,13 +16,5 @@
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
-  "workspaces": ["packages/*", "apps/*"],
-  "devDependencies": {
-    "eslint": "9.0.0",
-    "prettier": "^3.2.5",
-    "turbo": "^1.13.2"
-  },
-  "dependencies": {
-    "remark-frontmatter": "^5.0.0"
-  }
+  "workspaces": ["packages/*", "apps/*"]
 }
