@@ -29,7 +29,7 @@ export interface WorkMetaProps {
 }
 
 export default async function Projects() {
-  const data = await batchMatterFetch('./src/app/projects/works');
+  const data = await batchMatterFetch('./src/app/projects/posts/published');
   return (
     <main className='flex size-full flex-col items-center justify-center md:px-2'>
       <div className='px-4'>
