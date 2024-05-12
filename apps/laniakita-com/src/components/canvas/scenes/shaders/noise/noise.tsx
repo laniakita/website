@@ -1,7 +1,7 @@
 'use client';
 import { useRef } from 'react';
 import { shaderMaterial } from '@react-three/drei';
-import { extend, useFrame, useThree } from '@react-three/fiber';
+import { extend, useFrame } from '@react-three/fiber';
 import type { ShaderMaterial } from 'three';
 import Common2DCanvas from '@/components/canvas/dom/common-2d-canvas';
 // @ts-expect-error -- using glsl loader for this

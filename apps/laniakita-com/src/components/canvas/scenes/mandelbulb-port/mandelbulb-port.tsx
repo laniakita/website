@@ -119,7 +119,7 @@ function bulbSetup(nVar: number) {
 function MandelbulbPort({ bulb }: { bulb: { points: Float32Array; needsUpdate: boolean } }) {
   const bulbRef = useRef<Points>(null!);
 
-  useFrame((state) => {
+  useFrame(() => {
     if (bulb.needsUpdate) {
       const pos = bulbRef.current.geometry.getAttribute('position');
       for (const i of bulb.points) {

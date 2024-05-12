@@ -14,14 +14,14 @@ export default function Home() {
           <div className='flex w-full flex-col gap-2 md:gap-4'>
             <Link
               href='/about'
-              className='rounded-xl border border-ctp-base dark:border-ctp-surface0 bg-ctp-base/80 dark:bg-ctp-midnight/70 p-2 text-center font-mono text-lg  backdrop-blur-md hover:border-ctp-mauve hover:bg-ctp-base dark:hover:bg-ctp-midnight  text-ctp-text hover:text-ctp-mauve'
+              className='rounded-xl border border-ctp-base bg-ctp-base/80 p-2 text-center font-mono text-lg text-ctp-text backdrop-blur-md  hover:border-ctp-mauve hover:bg-ctp-base hover:text-ctp-mauve dark:border-ctp-surface0  dark:bg-ctp-midnight/70 dark:hover:bg-ctp-midnight'
             >
               Learn More
             </Link>
 
             <Link
               href='/blog'
-              className='rounded-xl border border-ctp-base dark:border-ctp-surface0 bg-ctp-base/80 dark:bg-ctp-midnight/70 p-2 text-center font-mono text-lg  backdrop-blur-md hover:border-ctp-mauve hover:bg-ctp-base dark:hover:bg-ctp-midnight text-ctp-text hover:text-ctp-mauve'
+              className='rounded-xl border border-ctp-base bg-ctp-base/80 p-2 text-center font-mono text-lg text-ctp-text backdrop-blur-md  hover:border-ctp-mauve hover:bg-ctp-base hover:text-ctp-mauve dark:border-ctp-surface0 dark:bg-ctp-midnight/70 dark:hover:bg-ctp-midnight'
             >
               Read the Blog
             </Link>

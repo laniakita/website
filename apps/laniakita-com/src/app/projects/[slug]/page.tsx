@@ -5,9 +5,8 @@ import matter from 'gray-matter';
 import { batchMatterFetch, fetchFrontmatter, fetchMdx } from '@/utils/mdx-utils';
 import type { WorkMetaProps } from '../page';
 
-const ServerOnlyProjPost = dynamic(()=>import('../server-mdx'),{ssr:true});
-const ClientProjPost = dynamic(()=>import('../client-mdx'), {ssr: false});
-
+const ServerOnlyProjPost = dynamic(() => import('../server-mdx'), { ssr: true });
+const ClientProjPost = dynamic(() => import('../client-mdx'), { ssr: false });
 
 export async function generateStaticParams() {
   const projMetas = await batchMatterFetch('./src/app/projects/posts/published');
@@ -55,38 +54,23 @@ export async function generateMetadata(
   };
 }
 
-
 export default async function ProjectDetailPage({ params }: { params: { slug: string } }) {
-  const filePath = path.resolve(process.cwd(), './src/app/projects/posts/published/', `${params.slug}.mdx`)
-  const matterData = await fetchFrontmatter(filePath)
+  const filePath = path.resolve(process.cwd(), './src/app/projects/posts/published/', `${params.slug}.mdx`);
+  const matterData = await fetchFrontmatter(filePath);
   //eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- I'm not sure if you can type an MDX value
-  const { default: MDXContent } = await import(`@/app/projects/posts/published/${params.slug}.mdx`)
-
+  const { default: MDXContent } = await import(`@/app/projects/posts/published/${params.slug}.mdx`);
 
   return (
-    <main className='min-h-screen size-full'>
+    <main className='size-full min-h-screen'>
       {(matterData as WorkMetaProps).type === 'computer-graphics' ? (
-      <ClientProjPost frontmatter={matterData!}>
-        <MDXContent />
-      </ClientProjPost>
-      ): (
+        <ClientProjPost frontmatter={matterData!}>
+          <MDXContent />
+        </ClientProjPost>
+      ) : (
         <ServerOnlyProjPost frontmatter={matterData!}>
           <MDXContent />
         </ServerOnlyProjPost>
-      )
-    }
+      )}
     </main>
   );
 }
-
-/*
-  const resData: { code: string; frontmatter: Record<string, any> } = await resMdxV3(data, folder, params.slug);
-
-
-      {(resData.frontmatter as WorkMetaProps).type === 'computer-graphics' ? (
-        <ClientProjPost code={resData.code} frontmatter={resData.frontmatter} />
-      ) : (
-        <DefaultProjPost code={resData.code} frontmatter={resData.frontmatter} />
-      )}
-
-*/

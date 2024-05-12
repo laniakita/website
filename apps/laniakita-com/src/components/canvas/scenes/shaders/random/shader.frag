@@ -4,7 +4,7 @@ precision mediump float;
 
 uniform float u_time;
 uniform vec3 color;
-in vec2 vUv;
+varying vec2 vUv;
 
 float random(vec2 _st) {
   return fract(sin(dot(_st.xy, vec2(100.9898, 100.233)))*42456.140123);

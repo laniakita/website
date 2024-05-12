@@ -1,6 +1,6 @@
 'use client';
 import dynamic from 'next/dynamic';
-import { ReactNode, useState } from 'react';
+import { type ReactNode, useState } from 'react';
 import type { WorkMetaProps } from '@/app/projects/page';
 import ShareButton from '@/components/blog/share-btn';
 import DateOnClient from './date-on-client';
@@ -38,9 +38,14 @@ function FindProj({ projSlug }: { projSlug: string }) {
   return <FourOhFour />;
 }
 
-// eslint-disable-next-line -- any is needed here to make mdx-bundler types happy
-export default function ClientProjPost({ frontmatter, children }: { frontmatter: Record<string, any>; children: ReactNode; }) {
-
+export default function ClientProjPost({
+  frontmatter,
+  children,
+}: {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- any is needed here to make mdx-bundler types happy
+  frontmatter: Record<string, any>;
+  children: ReactNode;
+}) {
   const [fullScreen, setFullScreen] = useState(false);
 
   return (
@@ -96,9 +101,7 @@ export default function ClientProjPost({ frontmatter, children }: { frontmatter:
         </div>
       </header>
       <div className='flex min-h-full items-center justify-center px-10'>
-        <div className='prose-protocol-omega w-full'>
-          {children}
-        </div>
+        <div className='prose-protocol-omega w-full'>{children}</div>
       </div>
     </article>
   );
