@@ -1,5 +1,3 @@
-'use client';
-import { usePathname } from 'next/navigation';
 import CircleMovie from './circle-movie';
 import { FooterBox, FooterBoxSpecial } from './footer-box';
 import SocialIconNav from './social-icon';
@@ -37,51 +35,47 @@ export const socialItems = [
 ];
 
 export default function Footer({ extra }: { extra?: string }) {
-  const pathname = usePathname();
+  //const pathname = usePathname();
   return (
-    <>
-      {pathname !== '/' && (
-        <footer className='relative w-full'>
-          <div
-            className={`simple-color-trans relative flex w-full flex-col items-center justify-center overflow-hidden  bg-ctp-base dark:bg-ctp-midnight ${extra}`}
-          >
-            <div className='absolute size-full '>
-              <div className=' relative size-full'>
-                <CircleMovie animationDelayJit='[animation-delay:_1s]' colorClass='bg-ctp-red' />
-                <CircleMovie
-                  animationDelayJit='[animation-delay:_2s]'
-                  animationClass='animate-growygrowsup'
-                  colorClass='bg-ctp-blue'
-                />
-                <CircleMovie
-                  animationDelayJit='[animation-delay:_0s]'
-                  animationClass='animate-growyshrinky'
-                  colorClass='bg-ctp-mauve'
-                />
-              </div>
-            </div>
+    <footer className='relative w-full'>
+      <div
+        className={`simple-color-trans relative flex w-full flex-col items-center justify-center overflow-hidden  bg-ctp-base dark:bg-ctp-midnight ${extra}`}
+      >
+        <div className='absolute size-full '>
+          <div className=' relative size-full'>
+            <CircleMovie animationDelayJit='[animation-delay:_1s]' colorClass='bg-ctp-red' />
+            <CircleMovie
+              animationDelayJit='[animation-delay:_2s]'
+              animationClass='animate-growygrowsup'
+              colorClass='bg-ctp-blue'
+            />
+            <CircleMovie
+              animationDelayJit='[animation-delay:_0s]'
+              animationClass='animate-growyshrinky'
+              colorClass='bg-ctp-mauve'
+            />
+          </div>
+        </div>
 
-            {/* contents container that givs the blurry bg + the pattern */}
-            <div className='flex  size-full  flex-col  backdrop-blur-2xl'>
-              {/* <FooterSubscribe /> */}
-              <div className='flex flex-col items-center  justify-center gap-4  pb-16 md:pb-36 md:pt-20 lg:pb-40 lg:pt-20'>
-                {/* content container */}
-                <div className='w-full space-y-8 p-10 md:w-fit md:rounded-2xl md:border md:border-ctp-surface0'>
-                  {/* logo + search + social_buttons + +copyright + links */}
-                  <div className='flex flex-col items-center justify-center gap-8'>
-                    <div className='size-full'>
-                      <SocialIconNav boxItems={socialItems} hxw='h-16 min-w-16 max-w-16 w-full basis-1/5' />
-                    </div>
-                    <FooterNavLinks />
-                    <CopyrightTag />
-                  </div>
+        {/* contents container that givs the blurry bg + the pattern */}
+        <div className='flex  size-full  flex-col  backdrop-blur-2xl'>
+          {/* <FooterSubscribe /> */}
+          <div className='flex flex-col items-center  justify-center gap-4  pb-16 md:pb-36 md:pt-20 lg:pb-40 lg:pt-20'>
+            {/* content container */}
+            <div className='w-full space-y-8 p-10 md:w-fit md:rounded-2xl md:border md:border-ctp-surface0'>
+              {/* logo + search + social_buttons + +copyright + links */}
+              <div className='flex flex-col items-center justify-center gap-8'>
+                <div className='size-full'>
+                  <SocialIconNav boxItems={socialItems} hxw='h-16 min-w-16 max-w-16 w-full basis-1/5' />
                 </div>
+                <FooterNavLinks />
+                <CopyrightTag />
               </div>
             </div>
           </div>
-        </footer>
-      )}
-    </>
+        </div>
+      </div>
+    </footer>
   );
 }
 
