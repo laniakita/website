@@ -36,7 +36,7 @@ const nextConfigFunction = async (phase, { defaultConfig }) => {
 
     const withMDX = (await import('@next/mdx')).default({
       options: {
-        remarkPlugins: [(await import('remark-gfm')).default],
+        remarkPlugins: [(await import('remark-gfm')).default, (await import('remark-frontmatter')).default],
         rehypePlugins: [
           (await import('rehype-slug')).default,
           [
