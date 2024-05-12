@@ -1,20 +1,16 @@
-import { Suspense, useMemo } from 'react';
+import path from 'node:path';
 import type { Metadata, ResolvingMetadata } from 'next';
-import { notFound } from 'next/navigation';
-import { getMDXComponent } from 'mdx-bundler/client';
+import dynamic from 'next/dynamic';
 import matter from 'gray-matter';
 import { batchMatterFetch, fetchFrontmatter, fetchMdx } from '@/utils/mdx-utils';
-import { resMdxV3 } from '@/utils/mdx-bundler-utils';
 import type { WorkMetaProps } from '../page';
-import path from 'node:path';
-import dynamic from 'next/dynamic';
 
 const ServerOnlyProjPost = dynamic(()=>import('../server-mdx'),{ssr:true});
 const ClientProjPost = dynamic(()=>import('../client-mdx'), {ssr: false});
 
 
 export async function generateStaticParams() {
-  const projMetas = await batchMatterFetch('./src/app/projects/published');
+  const projMetas = await batchMatterFetch('./src/app/projects/posts/published');
   return projMetas!.map((meta) => ({
     slug: (meta as WorkMetaProps).slug,
   }));
@@ -63,8 +59,7 @@ export async function generateMetadata(
 export default async function ProjectDetailPage({ params }: { params: { slug: string } }) {
   const filePath = path.resolve(process.cwd(), './src/app/projects/posts/published/', `${params.slug}.mdx`)
   const matterData = await fetchFrontmatter(filePath)
-  console.log(matterData)
-
+  //eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- I'm not sure if you can type an MDX value
   const { default: MDXContent } = await import(`@/app/projects/posts/published/${params.slug}.mdx`)
 
 

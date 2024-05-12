@@ -1,18 +1,9 @@
 'use client';
 import dynamic from 'next/dynamic';
-import { ReactNode, useMemo, useState } from 'react';
-import dayjs, { extend } from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
-import localizedFormat from 'dayjs/plugin/localizedFormat';
-import timezone from 'dayjs/plugin/timezone';
-import { getMDXComponent } from 'mdx-bundler/client';
+import { ReactNode, useState } from 'react';
 import type { WorkMetaProps } from '@/app/projects/page';
 import ShareButton from '@/components/blog/share-btn';
 import DateOnClient from './date-on-client';
-
-extend(relativeTime);
-extend(localizedFormat);
-extend(timezone);
 
 const EmbedBotClicker = dynamic(() => import('@/components/canvas/scenes/bot-clicker/neil/embed'), { ssr: false });
 const BulbPortMain = dynamic(() => import('@/components/canvas/scenes/mandelbulb-port/mandelbulb-port'), {
