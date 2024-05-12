@@ -54,18 +54,3 @@ export default function WorkPreview({ workMetaObj }: { workMetaObj: WorkMetaProp
     </>
   );
 }
-
-/*   <div className='flex w-full flex-col gap-6'>
-              <div className='flex flex-wrap gap-4'>
-                {workMetaObj.tech.map((item) => (
-                  <p
-                    key={workMetaObj.tech.indexOf(item)}
-                    className='rounded-3xl bg-ctp-mauve px-4 py-1 font-mono text-xs font-semibold lowercase text-ctp-base'
-                  >
-                    {item}
-                  </p>
-                ))}
-              </div>
-            </div>
-          </div>
-  */

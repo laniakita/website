@@ -5,3 +5,6 @@ public/*
 node_modules/*
 package.json
 *.log
+*.vert
+*.frag
+drizzle/meta/*

@@ -39,7 +39,7 @@ function SetupMesh() {
     }
   }
 
-  useFrame((state) => {
+  useFrame(() => {
     drawCount = (drawCount + 1) % MAX_POINTS;
     line.geometry.setDrawRange(0, drawCount);
     if (drawCount === 0) {

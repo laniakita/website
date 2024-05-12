@@ -1,4 +1,5 @@
 import { PHASE_DEVELOPMENT_SERVER, PHASE_PRODUCTION_BUILD } from 'next/constants.js';
+import remarkFrontmatter from 'remark-frontmatter';
 import rehypeShiki from '@shikijs/rehype';
 import { rendererRich, transformerTwoslash } from '@shikijs/twoslash';
 
@@ -17,9 +18,9 @@ const nextConfig = {
       test: /\.(glsl|vs|fs|vert|frag)$/,
       exclude: /node_modules/,
       use: ['raw-loader', 'glslify-loader'],
-    })
+    });
 
-    return config
+    return config;
   },
   swcMinify: true,
 };
@@ -36,7 +37,7 @@ const nextConfigFunction = async (phase, { defaultConfig }) => {
 
     const withMDX = (await import('@next/mdx')).default({
       options: {
-        remarkPlugins: [(await import('remark-gfm')).default, (await import('remark-frontmatter')).default],
+        remarkPlugins: [remarkFrontmatter, (await import('remark-gfm')).default],
         rehypePlugins: [
           (await import('rehype-slug')).default,
           [
