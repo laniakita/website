@@ -13,7 +13,7 @@ interface NoiseShaderMaterialProps extends ShaderMaterial {
   u_time?: number;
 }
 
-const NoiseShaderMaterial = shaderMaterial({ u_time: 0 }, vertex, fragment);
+const NoiseShaderMaterial = shaderMaterial({ u_time: 0 }, `${vertex}`, `${fragment}`);
 extend({ NoiseShaderMaterial });
 
 export default function NoiseShader01() {
@@ -26,14 +26,13 @@ export default function NoiseShader01() {
 function Setup() {
   const shaderRef = useRef<NoiseShaderMaterialProps>();
   useFrame((state, delta) => {
-    
     shaderRef.current!.u_time! += delta;
   });
 
   return (
     <mesh>
       {/* eslint-disable-next-line react/no-unknown-property -- r3f eslint issues */}
-      <planeGeometry args={[2,2]} />
+      <planeGeometry args={[2, 2]} />
       {/* @ts-expect-error -- r3f uses non-standard jsx syntax */}
       <noiseShaderMaterial ref={shaderRef} key={NoiseShaderMaterial.key} />
     </mesh>

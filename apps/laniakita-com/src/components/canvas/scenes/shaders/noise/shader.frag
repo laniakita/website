@@ -7,25 +7,14 @@ uniform vec3 color;
 varying vec2 vUv;
 
 
-
-// simplex noise function by Ian McEwan copied from
-// https://thebookofshaders.com/edit.php#11/2d-snoise-clear.frag
+// simplex noise in glsl: from Ian McEwan, Ashima Arts simplex noise function in GLSL:
+// https://github.com/ashima/webgl-noise 
 //
 // Some useful functions
 vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
 vec2 mod289(vec2 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
 vec3 permute(vec3 x) { return mod289(((x*34.0)+1.0)*x); }
-//
-//
-// Description : GLSL 2D simplex noise function
-//      Author : Ian McEwan, Ashima Arts
-//  Maintainer : ijm
-//     Lastmod : 20110822 (ijm)
-//     License :
-//  Copyright (C) 2011 Ashima Arts. All rights reserved.
-//  Distributed under the MIT License. See LICENSE file.
-//  https://github.com/ashima/webgl-noise
-//
+// simplex noise
 float snoise(vec2 v) {
 
     // Precompute values for skewed triangular grid
@@ -52,7 +41,7 @@ float snoise(vec2 v) {
     // truncation effects in permutation
     i = mod289(i);
     vec3 p = permute(
-            permute( i.y + vec3(0.0, i1.y, 1.0))
+            permute(i.y + vec3(0.0, i1.y, 1.0))
                 + i.x + vec3(0.0, i1.x, 1.0 ));
 
     vec3 m = max(0.5 - vec3(
@@ -61,22 +50,21 @@ float snoise(vec2 v) {
                         dot(x2,x2)
                         ), 0.0);
 
-    m = m*m ;
-    m = m*m ;
-
+    m = m*m*m*m ;
+ 
     // Gradients:
     //  41 pts uniformly over a line, mapped onto a diamond
     //  The ring size 17*17 = 289 is close to a multiple
     //      of 41 (41*7 = 287)
 
-    vec3 x = 2.0 * fract(p * C.www) - 1.0;
+    vec3 x = 2.0 * fract(p * C.www ) - 1.0;
     vec3 h = abs(x) - 0.5;
     vec3 ox = floor(x + 0.5);
     vec3 a0 = x - ox;
 
     // Normalise gradients implicitly by scaling m
     // Approximation of: m *= inversesqrt(a0*a0 + h*h);
-    m *= 1.79284291400159 - 0.85373472095314 * (a0*a0+h*h);
+    m *=  1.79284291400159 - 0.85373472095314 * (a0*a0+h*h);
 
     // Compute final noise value at P
     vec3 g = vec3(0.0);
@@ -88,14 +76,29 @@ float snoise(vec2 v) {
 
 
 void main() {
-  //pixels
-  
   vec2 st = vUv;
-  st *= 10.0;
-  vec3 color = vec3(snoise(st)*.5+.5);
-  gl_FragColor = vec4(color, 1.0);
+  vec2 grid = vec2(st * 9.0);
+  
+  float point = 0.0;
+  
+  float mod1 = cos(distance(vec2(u_time),grid));
+  float mod2 = distance(grid,vec2((u_time)));
+  float mod3 = distance(grid,vec2(3.14));
+  float mod4 = distance(vec2(mod3), st);
 
-  // tv static
-  //float rnd = random(vUv);
-  //gl_FragColor = vec4(vec3(rnd),1.0);
+  vec2 speed = vec2(mod2)*0.13;
+
+  point += snoise(grid+speed)*0.214+0.31;
+  
+
+  float rand = snoise(grid*vec2(cos(u_time*0.15),sin(u_time*0.1))*0.1)*3.14-0.25;
+  speed = vec2(cos(rand), sin(rand));
+  point += snoise(grid+speed)*.14+.3;
+  
+  float finalMod1 = distance(vec2(fract(point)),st*0.8);
+  float finalMod2 = fract(point);
+
+  vec3 color = vec3(smoothstep(0.6,0.8,finalMod1));
+
+  gl_FragColor = vec4(color, 1.0);
 }

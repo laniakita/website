@@ -13,11 +13,7 @@ interface RandomShaderMaterialProps extends ShaderMaterial {
   u_time?: number;
 }
 
-const RandomShaderMaterial = shaderMaterial(
-  { u_time: 0 },
-  vertex,
-  fragment
-);
+const RandomShaderMaterial = shaderMaterial({ u_time: 0 }, `${vertex}`, `${fragment}`);
 extend({ RandomShaderMaterial });
 
 export default function RandomShader01() {
@@ -29,9 +25,9 @@ export default function RandomShader01() {
 }
 
 function Setup() {
-  const shaderRef = useRef<RandomShaderMaterialProps>()
+  const shaderRef = useRef<RandomShaderMaterialProps>();
   useFrame((state, delta) => {
-    shaderRef.current!.u_time! += delta
+    shaderRef.current!.u_time! += delta;
   });
   return (
     <mesh>
