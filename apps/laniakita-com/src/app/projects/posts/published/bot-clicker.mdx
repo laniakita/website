@@ -94,7 +94,7 @@ As for the counter itself, it's really just a string (styled with tailwindcss) w
 
 ### Sounds
 
-The actual audio is loaded on demand with Three's AudioLoader. As well, since there's two sets of sounds (one enum stores locations of the noises from FilmCow, the other enum stores the locations of noises from Atelier Magicae) I wrote a function so there's a 50% chance of getting a sound from either library, and then various probabilities of the specific sound you hear from the randomly selected library.
+The actual audio is loaded on demand with Three's AudioLoader. As well, since there's two sets of sounds (one enum stores locations of the noises from FilmCow, the other enum stores the locations of noises from Atelier Magicae) I wrote a function so there's roughly a 50% chance (Math.random is pseudo-random afterall) of getting a sound from either library, and then various probabilities of the specific sound you hear from the randomly selected library.
 
 ### Stars
 
