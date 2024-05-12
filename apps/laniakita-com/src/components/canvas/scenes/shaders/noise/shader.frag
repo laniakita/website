@@ -95,10 +95,10 @@ void main() {
   speed = vec2(cos(rand), sin(rand));
   point += snoise(grid+speed)*.14+.3;
   
-  float finalMod1 = distance(vec2(fract(point)),st*0.8);
+  float finalMod1 = distance(vec2(fract(point)),(st*0.55));
   float finalMod2 = fract(point);
 
-  vec3 color = vec3(smoothstep(0.6,0.8,finalMod1));
+  vec3 color = vec3(smoothstep(0.5,0.9,finalMod1));
 
   gl_FragColor = vec4(color, 1.0);
 }
