@@ -16,5 +16,8 @@
     "eslint": "9.0.0",
     "prettier": "^3.2.5",
     "turbo": "^1.13.2"
+  },
+  "dependencies": {
+    "remark-frontmatter": "^5.0.0"
   }
 }

@@ -8,6 +8,7 @@ import timezone from 'dayjs/plugin/timezone';
 import { getMDXComponent } from 'mdx-bundler/client';
 import type { WorkMetaProps } from '@/app/projects/page';
 import ShareButton from '@/components/blog/share-btn';
+import DateOnClient from './date-on-client';
 
 extend(relativeTime);
 extend(localizedFormat);
@@ -51,9 +52,6 @@ export default function ClientProjPost({ frontmatter, children }: { frontmatter:
 
   const [fullScreen, setFullScreen] = useState(false);
 
-  const published = dayjs((frontmatter as WorkMetaProps).published).format('L');
-  const updated = dayjs((frontmatter as WorkMetaProps).updated).format('L');
-
   return (
     <article className=''>
       <header className={`flex size-full ${fullScreen ? 'flex-col-reverse' : 'flex-col'} items-center justify-center`}>
@@ -64,16 +62,7 @@ export default function ClientProjPost({ frontmatter, children }: { frontmatter:
               <h2 className='text-2xl font-semibold leading-tight supports-[text-wrap:balance]:text-balance md:text-3xl'>
                 {(frontmatter as WorkMetaProps).descr}
               </h2>
-              <div className='font-mono text-lg'>
-                <p className=''>
-                  Published: <span className='font-semibold'>{published}</span>
-                </p>
-                {(updated as unknown) !== undefined && published !== updated && (
-                  <p className=''>
-                    Updated: <span className='font-semibold'>{updated}</span>
-                  </p>
-                )}
-              </div>
+              <DateOnClient frontmatter={frontmatter} />
             </div>
             <ShareButton />
           </div>
