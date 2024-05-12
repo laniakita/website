@@ -1,5 +1,5 @@
-import NoiseShader01 from '@/components/canvas/scenes/shaders/noise/noise';
 import Link from 'next/link';
+import NoiseShader01 from '@/components/canvas/scenes/shaders/noise/noise';
 
 /*
 rounded-2xl border border-ctp-surface0 bg-ctp-midnight/80 p-4 shadow-2xl backdrop-blur-md  md:p-6
@@ -21,7 +21,7 @@ export default function Home() {
 
             <Link
               href='/blog'
-              className='rounded-xl border border-ctp-base dark:border-ctp-surface0 bg-ctp-base/80 dark:bg-ctp-midnight/70 p-2 text-center font-mono text-lg  backdrop-blur-md hover:border-ctp-mauve hover:bg-ctp-base dark:hover:bg-ctp-midnight e text-ctp-text hover:text-ctp-mauve'
+              className='rounded-xl border border-ctp-base dark:border-ctp-surface0 bg-ctp-base/80 dark:bg-ctp-midnight/70 p-2 text-center font-mono text-lg  backdrop-blur-md hover:border-ctp-mauve hover:bg-ctp-base dark:hover:bg-ctp-midnight text-ctp-text hover:text-ctp-mauve'
             >
               Read the Blog
             </Link>
