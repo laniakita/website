@@ -1,6 +1,6 @@
 'use client';
 import dynamic from 'next/dynamic';
-import { ReactNode, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import dayjs, { extend } from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
@@ -47,7 +47,8 @@ function FindProj({ projSlug }: { projSlug: string }) {
 }
 
 // eslint-disable-next-line -- any is needed here to make mdx-bundler types happy
-export default function ClientProjPost({ frontmatter, children }: { frontmatter: Record<string, any>; children: ReactNode; }) {
+export default function ClientProjPost({ code, frontmatter }: { code: string; frontmatter: Record<string, any> }) {
+  const Component = useMemo(() => getMDXComponent(code), [code]);
 
   const [fullScreen, setFullScreen] = useState(false);
 
@@ -117,7 +118,7 @@ export default function ClientProjPost({ frontmatter, children }: { frontmatter:
       </header>
       <div className='flex min-h-full items-center justify-center px-10'>
         <div className='prose-protocol-omega w-full'>
-          {children}
+          <Component />
         </div>
       </div>
     </article>

@@ -1,15 +1,13 @@
-import { Suspense, useMemo } from 'react';
+import { useMemo } from 'react';
 import type { Metadata, ResolvingMetadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getMDXComponent } from 'mdx-bundler/client';
 import matter from 'gray-matter';
-import { batchMatterFetch, fetchFrontmatter, fetchMdx } from '@/utils/mdx-utils';
+import { batchMatterFetch, fetchMdx } from '@/utils/mdx-utils';
 import { resMdxV3 } from '@/utils/mdx-bundler-utils';
 import type { WorkMetaProps } from '../page';
 import ClientProjPost from '../client-mdx';
-import path from 'node:path';
 
-/*
 export async function generateStaticParams() {
   const projMetas = await batchMatterFetch('./src/app/projects/works');
   return projMetas!.map((meta) => ({
@@ -55,34 +53,25 @@ export async function generateMetadata(
     },
   };
 }
-*/
 
 export default async function ProjectDetailPage({ params }: { params: { slug: string } }) {
-  const filePath = path.resolve(process.cwd(), './src/app/projects/posts/published/', `${params.slug}.mdx`)
-  const matterData = await fetchFrontmatter(filePath)
-  console.log(matterData)
-
-  const { default: MDXContent } = await import(`@/app/projects/posts/published/${params.slug}.mdx`)
-
-
-  return (
-    <Suspense>
-      <ClientProjPost frontmatter={matterData!}>
-        <MDXContent />
-      </ClientProjPost>
-    </Suspense>
-  );
-}
-
-/*
+  const folder = './src/app/projects/works';
+  const data = await fetchMdx(folder, params.slug);
+  if (!data) return;
+  // eslint-disable-next-line -- any is needed here to make mdx-bundler types happy
   const resData: { code: string; frontmatter: Record<string, any> } = await resMdxV3(data, folder, params.slug);
-
-
+  if (resData.frontmatter.status !== 'published') return notFound();
+  return (
+    <>
       {(resData.frontmatter as WorkMetaProps).type === 'computer-graphics' ? (
         <ClientProjPost code={resData.code} frontmatter={resData.frontmatter} />
       ) : (
         <DefaultProjPost code={resData.code} frontmatter={resData.frontmatter} />
       )}
+      ;
+    </>
+  );
+}
 
 // eslint-disable-next-line -- any is needed here to make mdx-bundler types happy
 function DefaultProjPost({ code, frontmatter }: { code: string; frontmatter: Record<string, any> }) {
@@ -105,4 +94,3 @@ function DefaultProjPost({ code, frontmatter }: { code: string; frontmatter: Rec
     </article>
   );
 }
-*/
