@@ -2,7 +2,7 @@
 import dynamic from 'next/dynamic';
 import { type ReactNode, useState } from 'react';
 import type { WorkMetaProps } from '@/app/projects/page';
-import ShareButton from '@/components/blog/share-btn';
+import ShareButton from '@/components/share-btn';
 import DateOnClient from './date-on-client';
 
 const EmbedBotClicker = dynamic(() => import('@/components/canvas/scenes/bot-clicker/neil/embed'), { ssr: false });
@@ -38,14 +38,7 @@ function FindProj({ projSlug }: { projSlug: string }) {
   return <FourOhFour />;
 }
 
-export default function ClientProjPost({
-  frontmatter,
-  children,
-}: {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- any is needed here to make mdx-bundler types happy
-  frontmatter: Record<string, any>;
-  children: ReactNode;
-}) {
+export default function ClientProjPost({ frontmatter, children }: { frontmatter: WorkMetaProps; children: ReactNode }) {
   const [fullScreen, setFullScreen] = useState(false);
 
   return (
@@ -54,11 +47,11 @@ export default function ClientProjPost({
         <div className='flex w-full items-center justify-center px-10 pb-8 pt-10 md:pt-20 lg:pb-10 lg:pt-36'>
           <div className='flex w-full max-w-xl flex-col items-start justify-start gap-8 lg:gap-10'>
             <div className='flex w-full flex-col items-start justify-start gap-4 md:gap-6'>
-              <h1 className='text-4xl font-black md:text-5xl'>{(frontmatter as WorkMetaProps).title}</h1>
+              <h1 className='text-4xl font-black md:text-5xl'>{frontmatter.title}</h1>
               <h2 className='text-2xl font-semibold leading-tight supports-[text-wrap:balance]:text-balance md:text-3xl'>
-                {(frontmatter as WorkMetaProps).descr}
+                {frontmatter.descr}
               </h2>
-              <DateOnClient frontmatter={frontmatter} />
+              <DateOnClient date={frontmatter.date} />
             </div>
             <ShareButton />
           </div>
@@ -71,7 +64,7 @@ export default function ClientProjPost({
             className={
               fullScreen
                 ? 'relative flex h-dvh w-full items-center justify-center'
-                : 'relative flex h-96 w-full items-center justify-center md:h-[30rem] md:max-w-3xl lg:h-[38rem]  lg:max-w-4xl xl:h-[50rem] xl:max-w-7xl'
+                : 'relative flex h-96 w-full items-center justify-center md:h-[30rem] md:max-w-3xl lg:h-[38rem]  lg:max-w-5xl'
             }
           >
             {!fullScreen && (

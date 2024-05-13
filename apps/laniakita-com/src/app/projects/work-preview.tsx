@@ -14,7 +14,7 @@ extend(localizedFormat);
 extend(timezone);
 
 export default function WorkPreview({ workMetaObj }: { workMetaObj: WorkMetaProps }) {
-  const published = dayjs(workMetaObj.published).format('L');
+  const published = dayjs(workMetaObj.date).format('L');
   return (
     <>
       {/* neat css tip: use padding instead of margin when working with flex basis / flex grids */}

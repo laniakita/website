@@ -63,11 +63,11 @@ export default async function ProjectDetailPage({ params }: { params: { slug: st
   return (
     <main className='size-full min-h-screen'>
       {(matterData as WorkMetaProps).type === 'computer-graphics' ? (
-        <ClientProjPost frontmatter={matterData!}>
+        <ClientProjPost frontmatter={matterData as WorkMetaProps}>
           <MDXContent />
         </ClientProjPost>
       ) : (
-        <ServerOnlyProjPost frontmatter={matterData!}>
+        <ServerOnlyProjPost frontmatter={matterData as WorkMetaProps}>
           <MDXContent />
         </ServerOnlyProjPost>
       )}
