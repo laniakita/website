@@ -13,17 +13,17 @@ interface CategoryProps {
 }
 
 export async function generateStaticParams() {
-  const catMetas = await batchMatterFetch('./src/app/categories/posts/published');
+  const catMetas = await batchMatterFetch('./src/app/blog/categories/posts/published');
   return catMetas!.map((meta) => ({
     slug: (meta as CategoryProps).slug,
-  }));;
+  }));
 }
 
 export async function generateMetadata(
   { params }: { params: { slug: string } },
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  const folder = './src/app/blog/posts/published';
+  const folder = './src/app/blog/categories/posts/published';
   const data = await fetchMdx(folder, params.slug);
   const matterData = matter(data!).data;
   const projDescrMatter = matter(data!).content;
@@ -66,16 +66,17 @@ export default async function CategoryPage({ params }: { params: { slug: string 
   const catDataArr = await batchMatterFetchByType('./src/app/blog/posts/published', 'category-slug', params.slug);
   return (
     <div className='simple-color-trans relative z-[5] -mb-1  bg-ctp-base dark:bg-ctp-midnight'>
-      <div className='flex flex-col gap-6 p-10 md:gap-10 md:py-20 lg:pb-[6.5rem] lg:pt-36 2xl:px-20'>
-        <div className='space-y-2'>
-          <h3 className='font-mono text-xl font-semibold'>Posts tagged:</h3>
-          <h1 className='text-4xl font-black md:text-5xl'>#{(matterData as CategoryProps).title}</h1>
-        </div>
-        <div className='prose-protocol-omega prose prose-catppuccin w-full max-w-2xl'>
-          <MDXContent />
+      <div className='flex items-center justify-center'>
+        <div className='flex w-full max-w-7xl flex-col gap-6 p-10 md:gap-10 md:py-20 lg:pb-[6.5rem] lg:pt-36 2xl:px-20'>
+          <div className='space-y-2'>
+            <h3 className='font-mono text-xl font-semibold'>Posts tagged:</h3>
+            <h1 className='text-4xl font-black md:text-5xl'>#{(matterData as CategoryProps).title}</h1>
+          </div>
+          <div className='prose-protocol-omega prose prose-catppuccin w-full max-w-2xl'>
+            <MDXContent />
+          </div>
         </div>
       </div>
-
       <PostNumStoreProvider>
         {catDataArr !== undefined && (catDataArr as unknown as PostTeaserObjectProps[]).length >= 1 && (
           <PreviewRollerV3 isCat dataArr={catDataArr as PostTeaserObjectProps[]} />

@@ -25,7 +25,6 @@ export function HeroBg({ dataObject }: { dataObject: PostTeaserObjectProps }) {
             priority={false}
             src={dataObject.heroFile!}
             alt={dataObject.heroAltText!}
-            placeholder='blur'
             width={0}
             height={0}
             sizes='100vw'

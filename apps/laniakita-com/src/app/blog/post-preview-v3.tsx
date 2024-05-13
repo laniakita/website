@@ -58,7 +58,7 @@ export function PostPreviewV3({ dataObj }: { dataObj: PostTeaserObjectProps }) {
   const postedDate = dateGetter(dataObj.date);
 
   return (
-    <div className='md:p-2'>
+    <div className='size-full md:p-2'>
       <div className='motion-safe:simple-color-trans  flex size-full flex-col gap-6 overflow-hidden border-y border-ctp-surface0 bg-ctp-base p-10 dark:bg-ctp-midnight  md:gap-0 md:rounded-2xl md:border md:p-0'>
         {hasImage ? (
           <Link
