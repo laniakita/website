@@ -32,10 +32,10 @@ export function HeroBg({ dataObject }: { dataObject: PostTeaserObjectProps }) {
           />
         </button>
       )}
-      <picture className='relative flex w-full md:max-w-3xl  lg:max-w-5xl'>
+      <picture className='relative m-0 flex w-full items-center justify-center p-0'>
         <button
           type='button'
-          className='cursor-zoom-in'
+          className='relative m-0 size-full min-h-96 cursor-zoom-in p-0 sm:h-[30rem] md:h-[35rem] md:max-w-3xl lg:h-[45rem]  lg:max-w-5xl'
           onClick={() => {
             setBeeg(true);
           }}
@@ -45,18 +45,10 @@ export function HeroBg({ dataObject }: { dataObject: PostTeaserObjectProps }) {
             src={dataObject.heroFile!}
             placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
             alt={dataObject.heroAltText!}
-            width={0}
-            height={0}
             sizes='100vw'
-            style={{ width: '100%', height: 'auto' }}
+            fill
+            className='m-0 object-cover p-0'
           />
-          {dataObject.heroCredit !== undefined && (
-            <p className='absolute bottom-6 left-6 w-fit'>
-              <span className='simple-color-trans w-fit rounded-full bg-ctp-base/80 px-4 py-1 backdrop-blur-md'>
-                {dataObject.heroCredit} via <a href={dataObject.heroCreditUrl}>{dataObject.heroCreditUrlText}</a>
-              </span>
-            </p>
-          )}
         </button>
       </picture>
     </>

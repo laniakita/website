@@ -1,7 +1,50 @@
 import path from 'node:path';
-import { fetchFrontmatter } from '@/utils/mdx-utils';
+import type { Metadata, ResolvingMetadata } from 'next';
+import matter from 'gray-matter';
+import { fetchFrontmatter, fetchMdx } from '@/utils/mdx-utils';
 import { PostHeader } from '@/app/blog/post-header';
 import type { PostTeaserObjectProps } from '../page';
+
+export async function generateMetadata(
+  { params }: { params: { slug: string } },
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  const folder = './src/app/blog/posts/published';
+  const data = await fetchMdx(folder, params.slug);
+  const matterData = matter(data!).data;
+  const projDescrMatter = matter(data!).content;
+
+  const findDescr = projDescrMatter.split('\n').map((strPara) => {
+    if (strPara !== '' && strPara.split(' ')[0] !== 'import' && strPara.split(' ')[0] !== '##') {
+      return strPara;
+    }
+    return undefined;
+  });
+
+  const descr = findDescr.filter((el) => el);
+
+  const previousImages = (await parent).openGraph?.images ?? [];
+
+  const heroImg = (matterData as PostTeaserObjectProps).heroFile;
+
+  return {
+    title: (matterData as PostTeaserObjectProps).headline,
+    description: descr[0],
+    openGraph: {
+      title: (matterData as PostTeaserObjectProps).headline,
+      description: descr[0],
+      images: [heroImg ? heroImg : '', ...previousImages],
+    },
+    twitter: {
+      card: 'summary',
+      title: (matterData as PostTeaserObjectProps).headline,
+      description: descr[0],
+      images: [heroImg ? heroImg : '', ...previousImages],
+    },
+  };
+}
+
+
 
 export default async function BlogPostPage({ params }: { params: { slug: string } }) {
   const filePath = path.resolve(process.cwd(), './src/app/blog/posts/published/', `${params.slug}.mdx`);
