@@ -118,12 +118,12 @@ export function FeaturedPostPreviewV3({ dataObj, descr }: { dataObj: PostTeaserO
   return (
     <div className='flex size-full items-center justify-center'>
       <div
-        className={`${hasImage ? 'pb-10 md:p-0 lg:px-20 lg:py-24' : 'py-10 md:p-0 lg:p-0'} motion-safe:simple-color-trans flex size-full max-w-7xl flex-col gap-10  bg-ctp-base  dark:bg-ctp-midnight md:gap-0 lg:flex-row-reverse lg:items-center lg:justify-between`}
+        className={`${hasImage ? 'pb-10 md:p-0 lg:px-10 lg:py-24' : 'py-10 md:p-0 lg:p-0'} motion-safe:simple-color-trans flex size-full max-w-7xl flex-col gap-10  bg-ctp-base  dark:bg-ctp-midnight md:gap-0 lg:flex-row-reverse lg:items-center lg:justify-between`}
       >
         {dataObj.heroFile && dataObj.heroAltText ? (
           <Link
             href={linkTo}
-            className='relative m-0 size-full min-h-96 border-ctp-surface0 p-0 motion-safe:[transition:_border_0.3s] md:rounded-none md:border-b'
+            className='relative m-0 size-full min-h-96 overflow-hidden rounded-none border-ctp-surface0 p-0 motion-safe:[transition:_border_0.3s] md:h-[30rem] md:border-b lg:rounded-2xl'
           >
             <Image
               loader={imageLoader}

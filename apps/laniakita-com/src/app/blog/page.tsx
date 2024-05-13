@@ -37,7 +37,6 @@ export default async function BlogPage() {
   const data = await batchMatterFetch('./src/app/blog/posts/published');
   const folder = './src/app/blog/posts/published';
   const descRes = await fetchMdx(folder, (data as unknown as PostTeaserObjectProps[])[0]!.slug);
-  const matterData = matter(descRes!).data;
   const projDescrMatter = matter(descRes!).content;
 
   const findDescr = projDescrMatter.split('\n').map((strPara) => {
@@ -48,7 +47,6 @@ export default async function BlogPage() {
   });
 
   const descr = findDescr.filter((el) => el);
-  
 
   return (
     <PostNumStoreProvider>

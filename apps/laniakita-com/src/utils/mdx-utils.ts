@@ -1,4 +1,4 @@
-import { opendir, readFile } from 'node:fs/promises';
+import { opendir, readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import matter from 'gray-matter';
 
@@ -7,7 +7,9 @@ export const fetchMDXfiles = async (inputFolder: string) => {
   const fileArr: string[] = [];
   try {
     const contentFolder = path.resolve(process.cwd(), inputFolder);
+    console.log(contentFolder);
     const dir = await opendir(contentFolder);
+    console.log(dir);
     for await (const dirent of dir) {
       if (dirent.name.split('.').pop() === 'mdx' || dirent.name.split('.').pop() === 'md') {
         fileArr.push(path.resolve(dirent.path, dirent.name));
@@ -17,6 +19,48 @@ export const fetchMDXfiles = async (inputFolder: string) => {
     console.error(err);
   }
   return fileArr;
+};
+
+export const fetchMDXfilesBun = async (inputFolder: string): Promise<(string | undefined)[]> => {
+  try {
+    const contentFolder = path.resolve(process.cwd(), inputFolder);
+    console.log(contentFolder);
+    const dir = await readdir(contentFolder);
+    console.log(dir);
+    const fileArr = dir.map((item) => {
+      const itemSplit = item.split('/');
+      const lastItem = itemSplit.pop();
+      const fileExt = lastItem?.split('.')[1];
+      if (fileExt === 'mdx' || fileExt === 'md') {
+        return `${contentFolder}/${item}`;
+      }
+      return undefined;
+    });
+    const finalArr = fileArr.filter((el) => el);
+    return finalArr;
+  } catch (err) {
+    console.error(err);
+    return [''];
+  }
+};
+
+export const batchMatterFetchBun = async (inputFolder: string) => {
+  try {
+    const fetchPathRaw = await fetchMDXfilesBun(inputFolder);
+    const fetchPaths = fetchPathRaw as string[];
+    const matterMeta = await Promise.all(
+      fetchPaths.map(async(mdxPath: string) => {
+        const metaObj = await fetchFrontmatter(mdxPath);
+        return metaObj;
+      }),
+    );
+    const sortedMetas = matterMeta.sort((a, b) => {
+      return b?.date - a?.date;
+    });
+    return sortedMetas;
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 export const fetchFrontmatter = async (pathStr: string) => {
@@ -47,7 +91,7 @@ export const batchMatterFetch = async (inputFolder: string) => {
   }
 };
 
-export const batchMatterFetchByType = async(inputFolder:string, matterType: string, resToMatch: string) => {
+export const batchMatterFetchByType = async (inputFolder: string, matterType: string, resToMatch: string) => {
   const resFetchAll = await batchMatterFetch(inputFolder);
   if (!resFetchAll) return;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- generic function
@@ -55,15 +99,15 @@ export const batchMatterFetchByType = async(inputFolder:string, matterType: stri
     //eslint-disable-next-line @typescript-eslint/no-unsafe-member-access -- generic function
     if (post[matterType] === resToMatch) {
       //eslint-disable-next-line @typescript-eslint/no-unsafe-return -- generic function
-      return post
+      return post;
     }
-    return undefined
+    return undefined;
   });
   const finalArr = matchArr.filter((el) => el);
 
   //eslint-disable-next-line @typescript-eslint/no-unsafe-return -- generic function
-  return finalArr
-}
+  return finalArr;
+};
 
 export const fetchMdx = async (inputFolder: string, slug: string) => {
   const pathStr = path.resolve(process.cwd(), inputFolder, `${slug}.mdx`);

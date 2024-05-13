@@ -25,8 +25,8 @@ export default function PreviewRollerV3({ dataArr, isCat, featuredDescr }: Previ
   return (
     <>
       {!isCat && <FeaturedPostPreviewV3 dataObj={dataArr[0]!} descr={featuredDescr} />}
-      <div className='flex size-full items-center justify-center md:px-10'>
-        <div className='flex max-w-7xl flex-col-reverse items-center justify-center md:flex-row md:items-start'>
+      <div className='flex size-full items-center justify-center'>
+        <div className='flex max-w-7xl flex-col-reverse items-center justify-center md:flex-row md:items-start md:px-2 lg:px-8'>
           <div className='size-full'>
             <div className='flex flex-wrap'>
               {dataArr.slice(isCat ? 0 : 1, postNum).map((post: PostTeaserObjectProps) => (
