@@ -7,9 +7,7 @@ export const fetchMDXfiles = async (inputFolder: string) => {
   const fileArr: string[] = [];
   try {
     const contentFolder = path.resolve(process.cwd(), inputFolder);
-    console.log(contentFolder);
     const dir = await opendir(contentFolder);
-    console.log(dir);
     for await (const dirent of dir) {
       if (dirent.name.split('.').pop() === 'mdx' || dirent.name.split('.').pop() === 'md') {
         fileArr.push(path.resolve(dirent.path, dirent.name));
@@ -24,9 +22,7 @@ export const fetchMDXfiles = async (inputFolder: string) => {
 export const fetchMDXfilesBun = async (inputFolder: string): Promise<(string | undefined)[]> => {
   try {
     const contentFolder = path.resolve(process.cwd(), inputFolder);
-    console.log(contentFolder);
     const dir = await readdir(contentFolder);
-    console.log(dir);
     const fileArr = dir.map((item) => {
       const itemSplit = item.split('/');
       const lastItem = itemSplit.pop();

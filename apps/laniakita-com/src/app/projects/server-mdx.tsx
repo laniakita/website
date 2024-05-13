@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
+import ShareButton from '@/components/share-btn';
 import type { WorkMetaProps } from './page';
 import DateOnClient from './date-on-client';
-import ShareButton from '@/components/share-btn';
 
 export default function ServerOnlyProjPost({
   frontmatter,

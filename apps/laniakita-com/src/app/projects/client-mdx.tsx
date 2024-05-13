@@ -89,7 +89,7 @@ export default function ClientProjPost({ frontmatter, children }: { frontmatter:
                 <span className='icon-[ph--arrows-in]' />
               </button>
             )}
-            <FindProj projSlug={(frontmatter as WorkMetaProps).slug} />
+            <FindProj projSlug={frontmatter.slug} />
           </div>
         </div>
       </header>
