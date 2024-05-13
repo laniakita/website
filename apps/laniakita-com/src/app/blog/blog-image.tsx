@@ -36,18 +36,16 @@ export default function BlogImage(props: ImgProps) {
           />
         </button>
       )}
-      <button type='button' className='m-0 cursor-zoom-in p-0'>
+      <button type='button' className='relative m-0 size-full min-h-72 cursor-zoom-in p-0 md:min-h-96'>
         <Image
           loader={imageLoader}
           priority={false}
           src={props.src}
           placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
           alt={props.alt}
-          width={0}
-          height={0}
           sizes='100vw'
-          style={{ width: '100%', height: 'auto' }}
-          className='m-0 p-0'
+          fill
+          className='m-0 object-contain p-0'
           onClick={() => {
             setBeeg(true);
           }}

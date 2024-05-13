@@ -7,11 +7,12 @@ import { FeaturedPostPreviewV3, PostPreviewV3 } from './post-preview-v3';
 
 interface PreviewRollerV3Props {
   dataArr: PostTeaserObjectProps[];
+  featuredDescr?: string;
   baseUrl?: string;
   isCat?: boolean;
 }
 
-export default function PreviewRollerV3({ dataArr, isCat }: PreviewRollerV3Props) {
+export default function PreviewRollerV3({ dataArr, isCat, featuredDescr }: PreviewRollerV3Props) {
   const { postNum } = usePostNumStore((state) => state);
   const [canLoad, setCanLoad] = useState(true);
 
@@ -23,17 +24,19 @@ export default function PreviewRollerV3({ dataArr, isCat }: PreviewRollerV3Props
 
   return (
     <>
-      {!isCat && <FeaturedPostPreviewV3 dataObj={dataArr[0]!} />}
-      <div className='flex flex-col-reverse items-center justify-center md:flex-row md:items-start '>
-        <div className='size-full'>
-          <div className='flex flex-wrap'>
-            {dataArr.slice(isCat ? 0 : 1, postNum).map((post: PostTeaserObjectProps) => (
-              <div key={dataArr.indexOf(post)} className='basis-full md:basis-1/2 2xl:basis-1/3'>
-                <PostPreviewV3 dataObj={post} />
+      {!isCat && <FeaturedPostPreviewV3 dataObj={dataArr[0]!} descr={featuredDescr} />}
+      <div className='flex size-full items-center justify-center md:px-10'>
+        <div className='flex max-w-7xl flex-col-reverse items-center justify-center md:flex-row md:items-start'>
+          <div className='size-full'>
+            <div className='flex flex-wrap'>
+              {dataArr.slice(isCat ? 0 : 1, postNum).map((post: PostTeaserObjectProps) => (
+                <div key={dataArr.indexOf(post)} className='basis-full md:basis-1/2 2xl:basis-1/3'>
+                  <PostPreviewV3 dataObj={post} />
+                </div>
+              ))}
+              <div className='grow'>
+                <LoadMoreButton shouldLoad={canLoad} />
               </div>
-            ))}
-            <div className='grow'>
-              <LoadMoreButton shouldLoad={canLoad} />
             </div>
           </div>
         </div>

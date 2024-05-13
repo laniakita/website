@@ -13,14 +13,20 @@ export function PostHeader({ dataObject }: { dataObject: PostTeaserObjectProps }
       {/* bg image + title */}
       {dataObject.heroFile !== undefined && (
         <div className='flex size-full flex-col items-center justify-center'>
-          <figure className='relative flex size-full flex-col items-center justify-center gap-10 md:max-w-3xl lg:max-w-4xl xl:max-w-7xl'>
+          <figure className='relative flex size-full flex-col items-center justify-center gap-10'>
             <HeroBg dataObject={dataObject} />
             <figcaption className='flex w-full items-center justify-center px-10 text-2xl font-bold italic leading-tight'>
               <h2 className='max-w-xl'>{dataObject.heroCaption}</h2>
             </figcaption>
           </figure>
-          <div className='mt-10 flex w-full items-center justify-center px-10'>
+          <div className='mt-10 flex w-full flex-col items-center justify-center gap-10 px-10'>
             <div className='w-full max-w-xl rounded bg-ctp-text py-px' />
+            {dataObject.heroCredit !== undefined && (
+              <p className='w-full max-w-xl'>
+                image credit: {dataObject.heroCredit} via{' '}
+                <a href={dataObject.heroCreditUrl}>{dataObject.heroCreditUrlText}</a>
+              </p>
+            )}
           </div>
         </div>
       )}
