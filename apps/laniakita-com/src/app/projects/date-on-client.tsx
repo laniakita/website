@@ -8,25 +8,8 @@ extend(relativeTime);
 extend(localizedFormat);
 extend(timezone);
 
-export default function DateOnClient({
-  frontmatter,
-}: {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- any is needed here to make mdx-bundler types happy
-  frontmatter: Record<string, any>;
-}) {
-  const published = dayjs((frontmatter as WorkMetaProps).published).format('L');
-  const updated = dayjs((frontmatter as WorkMetaProps).updated).format('L');
+export default function DateOnClient({ date }: { date: Date }) {
+  const published = dayjs(date).format('L');
 
-  return (
-    <div className='font-mono text-lg'>
-      <p className=''>
-        Published: <span className='font-semibold'>{published}</span>
-      </p>
-      {(updated as unknown) !== undefined && published !== updated && (
-        <p className=''>
-          Updated: <span className='font-semibold'>{updated}</span>
-        </p>
-      )}
-    </div>
-  );
+  return <p className='font-mono text-lg font-semibold'>{published}</p>;
 }

@@ -4,10 +4,9 @@
   "private": true,
   "scripts": {
     "rss-gen": "bun ./bin/rss-gen.ts",
-    "db-push": "bun ./bin/push.ts --content content",
     "analyze": "ANALYZE=true next build",
     "dev": "dotenv -e .env.development -e .env.local -- next dev",
-    "build": "bun ./bin/rss-gen.ts -p && bun ./bin/push.ts --content content && dotenv -e .env.production -e .env.local -- next build",
+    "build": "bun ./bin/rss-gen.ts -p && dotenv -e .env.production -e .env.local -- next build",
     "start": "next start",
     "lint": "next lint"
   },

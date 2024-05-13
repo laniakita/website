@@ -1,6 +1,6 @@
-import { queryPostMetas } from '@/utils/mdxlite-utils';
 import { PostNumStoreProvider } from '@/providers/postnum-store-provider';
-import PreviewRollerV3 from '@/components/blog/post-roller-v3';
+import { batchMatterFetch } from '@/utils/mdx-utils';
+import PreviewRollerV3 from './post-roller-v3';
 
 export const metadata = {
   title: 'Yet Another Dev Blog',
@@ -18,11 +18,12 @@ export const metadata = {
 
 export interface PostTeaserObjectProps {
   id: string;
+  slug: string;
   authorName: string;
   date: string;
   headline: string;
   subheadline?: string;
-  category?: string;
+  'category-slug'?: string;
   heroFile?: string;
   heroCaption?: string;
   heroCredit?: string;
@@ -32,12 +33,13 @@ export interface PostTeaserObjectProps {
 }
 
 export default async function BlogPage() {
-  const res = await queryPostMetas();
+  const data = await batchMatterFetch('./src/app/blog/posts/published');
+
   return (
     <PostNumStoreProvider>
       <div className='flex flex-col'>
-        {res.length >= 1 ? (
-          <PreviewRollerV3 dataArr={res as PostTeaserObjectProps[]} />
+        {data !== undefined && data.length >= 1 ? (
+          <PreviewRollerV3 dataArr={data as PostTeaserObjectProps[]} />
         ) : (
           <div className='flex h-screen items-center justify-center'>
             <p>{`no posts found. hmm something's not right here.`}</p>
