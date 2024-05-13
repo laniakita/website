@@ -4,8 +4,7 @@
 import { parseArgs } from 'node:util';
 import { toXML } from 'jstoxml';
 import dayjs from 'dayjs';
-import {  batchMatterFetchBun } from '@/utils/mdx-utils';
-import type { PostTeaserObjectProps } from '@/app/blog/page';
+import { queryPostMetas } from '@/utils/mdxlite-utils-bun';
 
 const packageDataRaw = Bun.file(`${process.cwd()}/package.json`);
 const packageDataStr: unknown = await packageDataRaw.text();
@@ -17,9 +16,7 @@ interface Package {
   };
 }
 
-
-const blogPostRaw = await batchMatterFetchBun('./src/app/blog/posts/published');
-const blogPostRes = blogPostRaw as PostTeaserObjectProps[]
+const blogPostRes = await queryPostMetas();
 const lastPostDateRFC822 = dayjs(blogPostRes[0]?.date).format('ddd, DD MMM YYYY HH:mm:ss ZZ');
 const buildDateRFC822 = dayjs().format('ddd, DD MMM YYYY HH:mm:ss ZZ');
 const nextjsVersion = (packageData as Package).dependencies.next.split('^')[1];
@@ -71,7 +68,7 @@ const itemRes = blogPostRes.map((post) => {
       title: post.headline,
     },
     {
-      link: `${buildUrl}/blog/${post.slug}`,
+      link: `${buildUrl}/blog/posts/${post.id.split('-')[0]}/${post.headline.replaceAll(' ', '_')}`,
     },
     {
       description: post.subheadline,
@@ -80,14 +77,10 @@ const itemRes = blogPostRes.map((post) => {
       author: post.authorName,
     },
     {
-      category: post['category-slug'],
+      category: post.category,
     },
     {
-      _name: "guid",
-      _attrs: {
-          isPermaLink: 'false',
-      },
-      _content: `${buildUrl}/blog/${post.slug}`
+      guid: post.id,
     },
     {
       pubDate: dayjs(post.date).format('ddd, DD MMM YYYY HH:mm:ss ZZ'),

@@ -7,7 +7,6 @@ export default function ServerOnlyProjPost({
   frontmatter,
   children,
 }: {
-
   frontmatter: WorkMetaProps;
   children: ReactNode;
 }) {

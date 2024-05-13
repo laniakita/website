@@ -9,45 +9,45 @@
     <managingEditor>lani@laniakita.com</managingEditor>
     <webMaster>lani@laniakita.com</webMaster>
     <pubDate>Sun, 31 Mar 2024 18:55:00 -1000</pubDate>
-    <lastBuildDate>Sun, 12 May 2024 13:50:50 -1000</lastBuildDate>
+    <lastBuildDate>Mon, 13 May 2024 01:37:16 -1000</lastBuildDate>
     <category>Technology</category>
     <generator>Next.js v14.2.1</generator>
     <docs>https://www.rssboard.org/rss-specification</docs>
     <ttl>120</ttl>
     <item>
       <title>Test Post Five</title>
-      <link>https://laniakita.com/blog/posts/bf049bd6/Test_Post_Five</link>
+      <link>https://laniakita.com/blog/test-post-five</link>
       <description>It was the best of times, it was the blurst of times.</description>
-      <author>Lani Akita</author>
-      <category>Full-Stack</category>
-      <guid>bf049bd6-224c-4799-bbcb-205e7eb2d97f</guid>
+      <author/>
+      <category>full-stack</category>
+      <guid isPermaLink="false">https://laniakita.com/blog/test-post-five</guid>
       <pubDate>Sun, 31 Mar 2024 18:55:00 -1000</pubDate>
     </item>
     <item>
       <title>Next Full-Stack Post in Town</title>
-      <link>https://laniakita.com/blog/posts/94813c40/Next_Full-Stack_Post_in_Town</link>
+      <link>https://laniakita.com/blog/next-full-stack-post-in-town</link>
       <description>It was the best of times, it was the blurst of times.</description>
-      <author>Lani Akita</author>
-      <category>Full-Stack</category>
-      <guid>94813c40-124c-4358-8258-b2a60e092dbb</guid>
+      <author/>
+      <category>full-stack</category>
+      <guid isPermaLink="false">https://laniakita.com/blog/next-full-stack-post-in-town</guid>
       <pubDate>Thu, 28 Mar 2024 19:59:00 -1000</pubDate>
     </item>
     <item>
       <title>Second Coolest Post in Town</title>
-      <link>https://laniakita.com/blog/posts/fb6875d0/Second_Coolest_Post_in_Town</link>
+      <link>https://laniakita.com/blog/second-post-in-town</link>
       <description>It was the best of times, it was the blurst of times.</description>
-      <author>Lani Akita</author>
-      <category>Blog Meta</category>
-      <guid>fb6875d0-8755-4ed7-8215-978ec80ba3bd</guid>
+      <author/>
+      <category>blog-meta</category>
+      <guid isPermaLink="false">https://laniakita.com/blog/second-post-in-town</guid>
       <pubDate>Thu, 28 Mar 2024 18:55:00 -1000</pubDate>
     </item>
     <item>
       <title>Coolest Post in Town</title>
-      <link>https://laniakita.com/blog/posts/01583a92/Coolest_Post_in_Town</link>
+      <link>https://laniakita.com/blog/coolest-post-in-town</link>
       <description>It was the best of times, it was the blurst of times.</description>
-      <author>Lani Akita</author>
-      <category>Blog Meta</category>
-      <guid>01583a92-ab2d-4b16-a410-bb999321d7c3</guid>
+      <author/>
+      <category>blog-meta</category>
+      <guid isPermaLink="false">https://laniakita.com/blog/coolest-post-in-town</guid>
       <pubDate>Thu, 28 Mar 2024 18:50:00 -1000</pubDate>
     </item>
   </channel>
