@@ -24,7 +24,6 @@ export function HeroShimmer({ dataObject }: { dataObject: PostTeaserObjectProps 
                 priority={false}
                 src={dataObject.heroFile!}
                 alt={dataObject.heroAltText!}
-                placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
                 fill
                 sizes='100vw'
                 className='object-contain'

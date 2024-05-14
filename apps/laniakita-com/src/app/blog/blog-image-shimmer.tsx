@@ -26,7 +26,6 @@ export default function BlogImageShimmer(props: ImgProps) {
             <Image
               loader={imageLoader}
               priority={false}
-              placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
               src={props.src}
               alt={props.alt}
               fill
