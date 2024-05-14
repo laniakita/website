@@ -25,7 +25,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const folder = './src/app/blog/categories/posts/published';
   const data = await fetchMdx(folder, params.slug);
-  const matterData = matter(data!).data;
+  const matterData = matter(data!).data as CategoryProps;
   const projDescrMatter = matter(data!).content;
 
   const findDescr = projDescrMatter.split('\n').map((strPara) => {
@@ -39,19 +39,17 @@ export async function generateMetadata(
 
   const previousImages = (await parent).openGraph?.images ?? [];
 
-  //const heroImg = (matterData as PostTeaserObjectProps).heroFile;
-
   return {
-    title: (matterData as PostTeaserObjectProps).headline,
+    title: matterData.title,
     description: descr[0],
     openGraph: {
-      title: (matterData as PostTeaserObjectProps).headline,
+      title: matterData.title,
       description: descr[0],
       images: [...previousImages],
     },
     twitter: {
       card: 'summary',
-      title: (matterData as PostTeaserObjectProps).headline,
+      title: matterData.title,
       description: descr[0],
       images: [...previousImages],
     },
