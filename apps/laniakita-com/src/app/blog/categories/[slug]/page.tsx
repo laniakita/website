@@ -4,7 +4,7 @@ import matter from 'gray-matter';
 import { batchMatterFetch, batchMatterFetchByType, fetchFrontmatter, fetchMdx } from '@/utils/mdx-utils';
 import { PostNumStoreProvider } from '@/providers/postnum-store-provider';
 import PreviewRollerV3 from '@/app/blog/post-roller-v3';
-import type { PostTeaserObjectProps } from '@/app/blog/page';
+import type { PostTeaserObjectProps } from '@/utils/mdx-utils';
 
 interface CategoryProps {
   type?: string;

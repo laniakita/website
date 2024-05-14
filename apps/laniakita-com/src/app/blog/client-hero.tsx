@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import type { StaticImport } from 'next/dist/shared/lib/get-img-props';
 import { useBeegStore } from '@/providers/beeg-store-provider';
-import type { PostTeaserObjectProps } from '@/app/blog/page';
+import type { PostTeaserObjectProps } from '@/utils/mdx-utils';
 
 export function ClientBg({ dataObject, imageSource }: { dataObject: PostTeaserObjectProps, imageSource: StaticImport }) {
   const {beeg, setBeeg, setSmol} = useBeegStore((state) => state)
