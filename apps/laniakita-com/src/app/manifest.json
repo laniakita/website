@@ -1,6 +1,6 @@
 {
-  "name": "Lani Akita's dev site",
-  "short_name": "Lani's Dev Site",
+  "name": "Lani Akita's Website / Dev Blog",
+  "short_name": "Lani Akita",
   "icons": [
     {
       "src": "/assets/icons/maskable_icon_x192.png",
@@ -19,7 +19,7 @@
       "type": "image/png"
     }
   ],
-  "theme_color": "#000000",
+  "theme_color": "#11111b",
   "background_color": "#000000",
   "start_url": "/",
   "display": "standalone",
