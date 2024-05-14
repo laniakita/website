@@ -15,8 +15,6 @@ export const metadata = {
   },
 };
 
-
-
 export default async function Projects() {
   const data = await batchMatterFetchWithBlurs('./src/app/projects/posts/published');
   return (
