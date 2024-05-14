@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import ShareButton from '@/components/share-btn';
-import type { WorkMetaProps } from './page';
+import type { WorkMetaProps } from '@/utils/mdx-utils';
 import DateOnClient from './date-on-client';
 
 export default function ServerOnlyProjPost({

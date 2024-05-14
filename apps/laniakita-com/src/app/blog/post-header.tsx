@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import ShareButton from '@/components/share-btn';
 import type { PostTeaserObjectProps } from '@/app/blog/page';
-import { HeroBg } from './hero-bg';
+import { BeegStoreProvider } from '@/providers/beeg-store-provider';
+import {HeroWrapper} from './hero-wrapper-v2';
 import PostDate from './post-date';
 
 export function PostHeader({ dataObject }: { dataObject: PostTeaserObjectProps }) {
@@ -14,7 +15,9 @@ export function PostHeader({ dataObject }: { dataObject: PostTeaserObjectProps }
       {dataObject.heroFile !== undefined && (
         <div className='flex size-full flex-col items-center justify-center'>
           <figure className='relative flex size-full flex-col items-center justify-center gap-10'>
-            <HeroBg dataObject={dataObject} />
+            <BeegStoreProvider>
+            <HeroWrapper dataObject={dataObject} />
+            </BeegStoreProvider>
             <figcaption className='flex w-full items-center justify-center px-10 text-2xl font-bold italic leading-tight'>
               <h2 className='max-w-xl'>{dataObject.heroCaption}</h2>
             </figcaption>

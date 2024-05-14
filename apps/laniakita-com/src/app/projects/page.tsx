@@ -1,4 +1,4 @@
-import { batchMatterFetch } from '@/utils/mdx-utils';
+import { type WorkMetaProps, batchMatterFetchWithBlurs } from '@/utils/mdx-utils';
 import WorkPreview from './work-preview';
 
 export const metadata = {
@@ -15,21 +15,10 @@ export const metadata = {
   },
 };
 
-export interface WorkMetaProps {
-  title: string;
-  slug: string;
-  date: Date;
-  updated?: Date;
-  type?: string;
-  teaserImg?: string;
-  teaserAlt?: string;
-  descr: string;
-  tech: string[];
-  status: string;
-}
+
 
 export default async function Projects() {
-  const data = await batchMatterFetch('./src/app/projects/posts/published');
+  const data = await batchMatterFetchWithBlurs('./src/app/projects/posts/published');
   return (
     <main className='flex size-full flex-col items-center justify-center md:px-2'>
       <div className='px-4'>

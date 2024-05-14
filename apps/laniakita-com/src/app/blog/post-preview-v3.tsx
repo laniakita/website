@@ -5,17 +5,14 @@ import dayjs, { extend } from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import timezone from 'dayjs/plugin/timezone';
-import { shimmer, toBase64 } from '@/utils/shimmer-utils';
-import type { PostTeaserObjectProps } from '@/app/blog/page';
+import { imageLoader } from '@/utils/image-loader';
+import type { PostTeaserObjectProps } from '@/utils/mdx-utils';
 
 extend(relativeTime);
 extend(localizedFormat);
 extend(timezone);
 
 const accentTextColor = 'text-ctp-mauve';
-const imageLoader = ({ src, width, quality }: { src?: string; width?: number; quality?: number }) => {
-  return `${src}?w=${width}&q=${quality ?? 50}`;
-};
 
 interface DateGetterReturn {
   cal?: string;
@@ -68,11 +65,12 @@ export function PostPreviewV3({ dataObj }: { dataObj: PostTeaserObjectProps }) {
             <Image
               loader={imageLoader}
               src={dataObj.heroFile!}
-              placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
+              placeholder='blur'
+              blurDataURL={dataObj.blurUrl}
               alt={dataObj.heroAltText!}
-              sizes='100vw'
+              sizes='(max-width: 300px) 70vw, (max-width: 600px) 45vw, (max-width:1500px) 27vw'
               fill
-              className='object-cover'
+              className='object-cover '
             />
           </Link>
         ) : (
@@ -128,7 +126,8 @@ export function FeaturedPostPreviewV3({ dataObj, descr }: { dataObj: PostTeaserO
             <Image
               loader={imageLoader}
               src={dataObj.heroFile}
-              placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
+              placeholder='blur'
+              blurDataURL={dataObj.blurUrl}
               alt={dataObj.heroAltText}
               sizes='100vw'
               fill
