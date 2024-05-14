@@ -17,8 +17,6 @@ export const metadata = {
   },
 };
 
-
-
 export default async function BlogPage() {
   const data = await batchMatterFetchWithBlurs('./src/app/blog/posts/published');
   const folder = './src/app/blog/posts/published';
@@ -31,9 +29,9 @@ export default async function BlogPage() {
     }
     return undefined;
   });
-  
+
   const descr = findDescr.filter((el) => el);
-  
+
   return (
     <PostNumStoreProvider>
       <div className='flex flex-col'>

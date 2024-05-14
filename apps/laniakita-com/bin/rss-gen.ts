@@ -4,7 +4,7 @@
 import { parseArgs } from 'node:util';
 import { toXML } from 'jstoxml';
 import dayjs from 'dayjs';
-import {  batchMatterFetchBun } from '@/utils/mdx-utils';
+import { batchMatterFetchBun } from '@/utils/mdx-utils';
 import type { PostTeaserObjectProps } from '@/utils/mdx-utils';
 
 const packageDataRaw = Bun.file(`${process.cwd()}/package.json`);
@@ -17,9 +17,8 @@ interface Package {
   };
 }
 
-
 const blogPostRaw = await batchMatterFetchBun('./src/app/blog/posts/published');
-const blogPostRes = blogPostRaw as PostTeaserObjectProps[]
+const blogPostRes = blogPostRaw as PostTeaserObjectProps[];
 const lastPostDateRFC822 = dayjs(blogPostRes[0]?.date).format('ddd, DD MMM YYYY HH:mm:ss ZZ');
 const buildDateRFC822 = dayjs().format('ddd, DD MMM YYYY HH:mm:ss ZZ');
 const nextjsVersion = (packageData as Package).dependencies.next.split('^')[1];
@@ -83,11 +82,11 @@ const itemRes = blogPostRes.map((post) => {
       category: post['category-slug'],
     },
     {
-      _name: "guid",
+      _name: 'guid',
       _attrs: {
-          isPermaLink: 'false',
+        isPermaLink: 'false',
       },
-      _content: `${buildUrl}/blog/${post.slug}`
+      _content: `${buildUrl}/blog/${post.slug}`,
     },
     {
       pubDate: dayjs(post.date).format('ddd, DD MMM YYYY HH:mm:ss ZZ'),

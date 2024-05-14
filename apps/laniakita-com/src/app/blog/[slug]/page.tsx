@@ -9,7 +9,7 @@ export async function generateStaticParams() {
   const postMetas = await batchMatterFetch('./src/app/blog/posts/published');
   return postMetas!.map((meta) => ({
     slug: (meta as PostTeaserObjectProps).slug,
-  }));;
+  }));
 }
 
 export async function generateMetadata(

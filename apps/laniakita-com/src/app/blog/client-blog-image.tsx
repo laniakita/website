@@ -8,7 +8,7 @@ interface ImgProps {
   alt: string;
 }
 
-export default function BlogImage({props, blurUrl}: {props: ImgProps, blurUrl: string}) {
+export default function BlogImage({ props, blurUrl }: { props: ImgProps; blurUrl: string }) {
   const [beeg, setBeeg] = useState(false);
 
   return (

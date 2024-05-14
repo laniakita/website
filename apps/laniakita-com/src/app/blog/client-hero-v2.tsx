@@ -1,13 +1,13 @@
-'use client'
+'use client';
 import Image from 'next/image';
 import { useBeegStore } from '@/providers/beeg-store-provider';
 import type { PostTeaserObjectProps } from '@/utils/mdx-utils';
 import { imageLoader } from '@/utils/image-loader';
 
-export function ClientBg({ dataObject, blurUrl } : { dataObject: PostTeaserObjectProps, blurUrl: string}) {
-  const {beeg, setBeeg, setSmol} = useBeegStore((state) => state)
+export function ClientBg({ dataObject, blurUrl }: { dataObject: PostTeaserObjectProps; blurUrl: string }) {
+  const { beeg, setBeeg, setSmol } = useBeegStore((state) => state);
   return (
-      <>
+    <>
       {(beeg as unknown) === true && (
         <picture className='fixed inset-x-0 top-0 z-[2] m-0 size-full '>
           <button
@@ -17,18 +17,18 @@ export function ClientBg({ dataObject, blurUrl } : { dataObject: PostTeaserObjec
               setSmol();
             }}
           >
-          <Image
-            loader={imageLoader}
-            priority={false}
-            src={dataObject.heroFile!}
-            quality={75}
-            placeholder='blur'
-            blurDataURL={blurUrl}
-            alt={dataObject.heroAltText!}
-            fill
-            sizes='100vw'
-            className='object-contain'
-          />
+            <Image
+              loader={imageLoader}
+              priority={false}
+              src={dataObject.heroFile!}
+              quality={75}
+              placeholder='blur'
+              blurDataURL={blurUrl}
+              alt={dataObject.heroAltText!}
+              fill
+              sizes='100vw'
+              className='object-contain'
+            />
           </button>
         </picture>
       )}
@@ -52,7 +52,7 @@ export function ClientBg({ dataObject, blurUrl } : { dataObject: PostTeaserObjec
           />
         </button>
       </picture>
-      </>
+    </>
   );
 }
 
