@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import ShareButton from '@/components/share-btn';
 import type { PostTeaserObjectProps } from '@/utils/mdx-utils';
-import { BeegStoreProvider } from '@/providers/beeg-store-provider';
 import PostDate from './post-date';
 import { HeroShimmer } from './hero-shimmer';
 
@@ -15,9 +14,7 @@ export function PostHeader({ dataObject }: { dataObject: PostTeaserObjectProps }
       {dataObject.heroFile !== undefined && (
         <div className='flex size-full flex-col items-center justify-center'>
           <figure className='relative flex size-full flex-col items-center justify-center gap-10'>
-            <BeegStoreProvider>
-              <HeroShimmer dataObject={dataObject} />
-            </BeegStoreProvider>
+            <HeroShimmer dataObject={dataObject} />
             <figcaption className='flex w-full items-center justify-center px-10 text-2xl font-bold italic leading-tight'>
               <h2 className='max-w-xl'>{dataObject.heroCaption}</h2>
             </figcaption>
