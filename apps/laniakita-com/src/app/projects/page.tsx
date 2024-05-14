@@ -1,4 +1,4 @@
-import { type WorkMetaProps, batchMatterFetchWithBlurs } from '@/utils/mdx-utils';
+import { type WorkMetaProps, batchMatterFetch } from '@/utils/mdx-utils';
 import WorkPreview from './work-preview';
 
 export const metadata = {
@@ -16,7 +16,7 @@ export const metadata = {
 };
 
 export default async function Projects() {
-  const data = await batchMatterFetchWithBlurs('./src/app/projects/posts/published');
+  const data = await batchMatterFetch('./src/app/projects/posts/published');
   return (
     <main className='flex size-full flex-col items-center justify-center md:px-2'>
       <div className='px-4'>

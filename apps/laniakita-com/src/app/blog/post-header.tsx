@@ -2,8 +2,8 @@ import Link from 'next/link';
 import ShareButton from '@/components/share-btn';
 import type { PostTeaserObjectProps } from '@/utils/mdx-utils';
 import { BeegStoreProvider } from '@/providers/beeg-store-provider';
-import { HeroWrapper } from './hero-wrapper-v2';
 import PostDate from './post-date';
+import { HeroShimmer } from './hero-shimmer';
 
 export function PostHeader({ dataObject }: { dataObject: PostTeaserObjectProps }) {
   //const linkTo = baseUrl + "/blog/" + dataObject.category + "/" + dataObject.slug;
@@ -16,7 +16,7 @@ export function PostHeader({ dataObject }: { dataObject: PostTeaserObjectProps }
         <div className='flex size-full flex-col items-center justify-center'>
           <figure className='relative flex size-full flex-col items-center justify-center gap-10'>
             <BeegStoreProvider>
-              <HeroWrapper dataObject={dataObject} />
+              <HeroShimmer dataObject={dataObject} />
             </BeegStoreProvider>
             <figcaption className='flex w-full items-center justify-center px-10 text-2xl font-bold italic leading-tight'>
               <h2 className='max-w-xl'>{dataObject.heroCaption}</h2>

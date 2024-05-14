@@ -7,6 +7,7 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 import timezone from 'dayjs/plugin/timezone';
 import { imageLoader } from '@/utils/image-loader';
 import type { PostTeaserObjectProps } from '@/utils/mdx-utils';
+import { shimmer, toBase64 } from '@/utils/shimmer-utils';
 
 extend(relativeTime);
 extend(localizedFormat);
@@ -65,8 +66,7 @@ export function PostPreviewV3({ dataObj }: { dataObj: PostTeaserObjectProps }) {
             <Image
               loader={imageLoader}
               src={dataObj.heroFile!}
-              placeholder='blur'
-              blurDataURL={dataObj.blurUrl}
+              placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
               alt={dataObj.heroAltText!}
               sizes='(max-width: 300px) 70vw, (max-width: 600px) 45vw, (max-width:1500px) 27vw'
               fill
@@ -126,9 +126,8 @@ export function FeaturedPostPreviewV3({ dataObj, descr }: { dataObj: PostTeaserO
             <Image
               loader={imageLoader}
               src={dataObj.heroFile}
-              placeholder='blur'
-              blurDataURL={dataObj.blurUrl}
               alt={dataObj.heroAltText}
+              placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
               sizes='100vw'
               fill
               className='object-cover'
