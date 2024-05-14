@@ -8,6 +8,7 @@ import { DarkStoreProvider } from '@/providers/theme-store-provider';
 import NavBar from '@/components/navbar/navbar';
 import { themeGetter } from '@/lib/theme-getter';
 import Footer from '@/components/footer/footer';
+import { BASE_URL } from '@/lib/constants';
 
 const inter = Inter({ subsets: ['latin'], display: 'swap', variable: '--font-inter' });
 
@@ -21,10 +22,10 @@ const APP_NAME = 'Lani Akita';
 const APP_DEFAULT_TITLE = 'Lani Akita';
 const APP_TITLE_TEMPLATE = '%s - Lani Akita';
 const APP_DESCRIPTION =
-  "Lani Akita's a Full Stack developer and writes on her blog that's (mostly) about the process of developing (web-based) software.";
+  "Lani Akita's website, which also hosts her blog that's (mostly) about the process of developing (web-based) software.";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.BASE_URL ?? 'https://laniakita.com'),
+  metadataBase: new URL(BASE_URL),
   applicationName: APP_NAME,
   title: {
     default: APP_DEFAULT_TITLE,
@@ -60,7 +61,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#000000',
+  themeColor: '#11111b',
 };
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
