@@ -6,6 +6,7 @@ import { toXML } from 'jstoxml';
 import dayjs from 'dayjs';
 import { batchMatterFetchBun } from '@/utils/mdx-utils';
 import type { PostTeaserObjectProps } from '@/utils/mdx-utils';
+import { BASE_URL } from '@/lib/constants';
 
 const packageDataRaw = Bun.file(`${process.cwd()}/package.json`);
 const packageDataStr: unknown = await packageDataRaw.text();
@@ -24,7 +25,7 @@ const buildDateRFC822 = dayjs().format('ddd, DD MMM YYYY HH:mm:ss ZZ');
 const nextjsVersion = (packageData as Package).dependencies.next.split('^')[1];
 
 const localUrl = 'http://localhost:3000';
-const prodUrl = 'https://laniakita.com';
+const prodUrl = BASE_URL;
 
 const { values } = parseArgs({
   args: Bun.argv,

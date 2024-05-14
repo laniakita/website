@@ -17,18 +17,17 @@ export function ClientBg({ dataObject, blurUrl }: { dataObject: PostTeaserObject
               setSmol();
             }}
           >
-            <Image
-              loader={imageLoader}
-              priority={false}
-              src={dataObject.heroFile!}
-              quality={75}
-              placeholder='blur'
-              blurDataURL={blurUrl}
-              alt={dataObject.heroAltText!}
-              fill
-              sizes='100vw'
-              className='object-contain'
-            />
+            <picture className='relative m-0 size-full max-h-[80vh] overflow-hidden p-0'>
+              <Image
+                loader={imageLoader}
+                priority={false}
+                src={dataObject.heroFile!}
+                alt={dataObject.heroAltText!}
+                fill
+                sizes='100vw'
+                className='object-contain'
+              />
+            </picture>
           </button>
         </picture>
       )}

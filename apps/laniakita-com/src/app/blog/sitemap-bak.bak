@@ -1,0 +1,30 @@
+import type { MetadataRoute } from 'next';
+import { BASE_URL } from '@/lib/constants';
+import { type PostTeaserObjectProps, batchMatterFetch } from '@/utils/mdx-utils';
+
+const POSTS_FOLDER = './src/app/blog/posts/published';
+
+export async function generateSitemaps() {
+  const postMetas = await batchMatterFetch(POSTS_FOLDER);
+  // Fetch the total number of posts and calculate the number of sitemaps needed
+  return postMetas!.map((meta) => ({
+    id: postMetas?.indexOf(meta)  
+  }));
+
+}
+
+export default async function sitemap({id}: {id: number}): Promise<MetadataRoute.Sitemap> {
+  // Google's limit is 50,000 URLs per sitemaps
+  let newId = id;
+  const getAllPostMetasRaw = await batchMatterFetch(POSTS_FOLDER);  
+  const getAllPostMetas = getAllPostMetasRaw as PostTeaserObjectProps[];
+  // our metas are already sorted by most recent, so 
+  const fiftyKArray = getAllPostMetas.slice(0,50000);
+  if (id > 50000) { newId = 50000 };
+  const selectedFromId = fiftyKArray.slice(id,id)
+
+  return selectedFromId.map((post) => ({
+    url: `${BASE_URL}/blog/${fiftyKArray[newId]?.slug}`,
+    lastModified: post.date,
+  }));
+}

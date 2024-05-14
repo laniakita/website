@@ -6,7 +6,7 @@ import { PostNumStoreProvider } from '@/providers/postnum-store-provider';
 import PreviewRollerV3 from '@/app/blog/post-roller-v3';
 import type { PostTeaserObjectProps } from '@/utils/mdx-utils';
 
-interface CategoryProps {
+export interface CategoryProps {
   type?: string;
   slug: string;
   title: string;
