@@ -145,6 +145,26 @@ export const batchMatterFetchWithBlurs = async (inputFolder: string) => {
 };
 
 export const batchMatterFetchByType = async (inputFolder: string, matterType: string, resToMatch: string) => {
+  const resFetchAll = await batchMatterFetch(inputFolder);
+  if (!resFetchAll) return;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- generic function
+  const matchArr = resFetchAll.map((post: any) => {
+    //eslint-disable-next-line @typescript-eslint/no-unsafe-member-access -- generic function
+    if (post[matterType] === resToMatch) {
+      //eslint-disable-next-line @typescript-eslint/no-unsafe-return -- generic function
+      return post;
+    }
+    return undefined;
+  });
+  const finalArr = matchArr.filter((el) => el);
+
+  //eslint-disable-next-line @typescript-eslint/no-unsafe-return -- generic function
+  return finalArr;
+};
+
+
+
+export const batchMatterFetchByTypeWithBlurs = async (inputFolder: string, matterType: string, resToMatch: string) => {
   const resFetchAll = await batchMatterFetchWithBlurs(inputFolder);
   if (!resFetchAll) return;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- generic function

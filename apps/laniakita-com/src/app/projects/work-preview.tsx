@@ -7,6 +7,7 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 import timezone from 'dayjs/plugin/timezone';
 import { imageLoader } from '@/utils/image-loader';
 import type { WorkMetaProps } from '@/utils/mdx-utils';
+import { shimmer, toBase64 } from '@/utils/shimmer-utils';
 
 extend(relativeTime);
 extend(localizedFormat);
@@ -25,8 +26,7 @@ export default function WorkPreview({ workMetaObj }: { workMetaObj: WorkMetaProp
                 <Image
                   loader={imageLoader}
                   src={workMetaObj.teaserImg}
-                  placeholder='blur'
-                  blurDataURL={workMetaObj.blurUrl}
+                  placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
                   alt={workMetaObj.teaserAlt}
                   fill
                   className={`object-cover transition-all `}
