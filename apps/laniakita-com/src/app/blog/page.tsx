@@ -34,7 +34,7 @@ export default async function BlogPage() {
 
   return (
     <PostNumStoreProvider>
-      <div className='flex flex-col'>
+      <main className='motion-safe:simple-color-trans flex flex-col bg-ctp-base dark:bg-ctp-midnight'>
         {data !== undefined && data.length >= 1 ? (
           <PreviewRollerV3 dataArr={data as PostTeaserObjectProps[]} featuredDescr={descr[0]} />
         ) : (
@@ -42,7 +42,7 @@ export default async function BlogPage() {
             <p>{`no posts found. hmm something's not right here.`}</p>
           </div>
         )}
-      </div>
+      </main>
     </PostNumStoreProvider>
   );
 }
