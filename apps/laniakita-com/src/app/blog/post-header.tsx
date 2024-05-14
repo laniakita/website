@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import ShareButton from '@/components/share-btn';
-import type { PostTeaserObjectProps } from '@/app/blog/page';
+import type { PostTeaserObjectProps } from '@/utils/mdx-utils';
 import { BeegStoreProvider } from '@/providers/beeg-store-provider';
 import {HeroWrapper} from './hero-wrapper-v2';
 import PostDate from './post-date';

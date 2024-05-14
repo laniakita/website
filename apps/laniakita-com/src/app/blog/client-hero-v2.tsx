@@ -1,7 +1,7 @@
 'use client'
 import Image from 'next/image';
 import { useBeegStore } from '@/providers/beeg-store-provider';
-import type { PostTeaserObjectProps } from '@/app/blog/page';
+import type { PostTeaserObjectProps } from '@/utils/mdx-utils';
 import { imageLoader } from '@/utils/image-loader';
 
 export function ClientBg({ dataObject, blurUrl } : { dataObject: PostTeaserObjectProps, blurUrl: string}) {

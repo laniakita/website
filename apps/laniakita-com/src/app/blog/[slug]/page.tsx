@@ -3,7 +3,7 @@ import type { Metadata, ResolvingMetadata } from 'next';
 import matter from 'gray-matter';
 import { batchMatterFetch, fetchFrontmatter, fetchMdx } from '@/utils/mdx-utils';
 import { PostHeader } from '@/app/blog/post-header';
-import type { PostTeaserObjectProps } from '../page';
+import type { PostTeaserObjectProps } from '@/utils/mdx-utils';
 
 export async function generateStaticParams() {
   const postMetas = await batchMatterFetch('./src/app/blog/posts/published');
