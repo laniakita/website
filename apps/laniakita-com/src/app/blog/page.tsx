@@ -1,6 +1,6 @@
 import matter from 'gray-matter';
 import { PostNumStoreProvider } from '@/providers/postnum-store-provider';
-import { batchMatterFetch, fetchMdx } from '@/utils/mdx-utils';
+import { type PostTeaserObjectProps, batchMatterFetchWithBlurs, fetchMdx } from '@/utils/mdx-utils';
 import PreviewRollerV3 from './post-roller-v3';
 
 export const metadata = {
@@ -17,24 +17,10 @@ export const metadata = {
   },
 };
 
-export interface PostTeaserObjectProps {
-  id: string;
-  slug: string;
-  authorName: string;
-  date: string;
-  headline: string;
-  subheadline?: string;
-  'category-slug'?: string;
-  heroFile?: string;
-  heroCaption?: string;
-  heroCredit?: string;
-  heroCreditUrl?: string;
-  heroCreditUrlText?: string;
-  heroAltText?: string;
-}
+
 
 export default async function BlogPage() {
-  const data = await batchMatterFetch('./src/app/blog/posts/published');
+  const data = await batchMatterFetchWithBlurs('./src/app/blog/posts/published');
   const folder = './src/app/blog/posts/published';
   const descRes = await fetchMdx(folder, (data as unknown as PostTeaserObjectProps[])[0]!.slug);
   const projDescrMatter = matter(descRes!).content;
@@ -45,9 +31,9 @@ export default async function BlogPage() {
     }
     return undefined;
   });
-
+  
   const descr = findDescr.filter((el) => el);
-
+  
   return (
     <PostNumStoreProvider>
       <div className='flex flex-col'>

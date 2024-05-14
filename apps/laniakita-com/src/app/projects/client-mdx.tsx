@@ -1,7 +1,7 @@
 'use client';
 import dynamic from 'next/dynamic';
 import { type ReactNode, useState } from 'react';
-import type { WorkMetaProps } from '@/app/projects/page';
+import type { WorkMetaProps } from '@/utils/mdx-utils';
 import ShareButton from '@/components/share-btn';
 import DateOnClient from './date-on-client';
 

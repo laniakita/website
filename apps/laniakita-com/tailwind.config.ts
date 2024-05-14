@@ -11,6 +11,13 @@ const config: Config = {
   presets: [sharedConfig],
   theme: {
     extend: {
+      screens: {
+        'narrow-phone': '300px',
+        'small-phone': '350px',
+        'phone': '385px',
+        'phablet': '400px',
+        'fold': '500px',
+      },
       colors: {
         'ctp-midnight': '#07070D',
       },

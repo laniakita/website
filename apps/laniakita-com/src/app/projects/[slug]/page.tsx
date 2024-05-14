@@ -3,7 +3,7 @@ import type { Metadata, ResolvingMetadata } from 'next';
 import dynamic from 'next/dynamic';
 import matter from 'gray-matter';
 import { batchMatterFetch, fetchFrontmatter, fetchMdx } from '@/utils/mdx-utils';
-import type { WorkMetaProps } from '../page';
+import type { WorkMetaProps } from '@/utils/mdx-utils';
 
 const ServerOnlyProjPost = dynamic(() => import('../server-mdx'), { ssr: true });
 const ClientProjPost = dynamic(() => import('../client-mdx'), { ssr: false });

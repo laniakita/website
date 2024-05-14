@@ -1,7 +1,7 @@
 'use client';
 import { useMemo, useState } from 'react';
 import { usePostNumStore } from '@/providers/postnum-store-provider';
-import type { PostTeaserObjectProps } from '@/app/blog/page';
+import type { PostTeaserObjectProps } from '@/utils/mdx-utils';
 import LoadMoreButton from './load-more-button';
 import { FeaturedPostPreviewV3, PostPreviewV3 } from './post-preview-v3';
 

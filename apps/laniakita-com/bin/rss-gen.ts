@@ -5,7 +5,7 @@ import { parseArgs } from 'node:util';
 import { toXML } from 'jstoxml';
 import dayjs from 'dayjs';
 import {  batchMatterFetchBun } from '@/utils/mdx-utils';
-import type { PostTeaserObjectProps } from '@/app/blog/page';
+import type { PostTeaserObjectProps } from '@/utils/mdx-utils';
 
 const packageDataRaw = Bun.file(`${process.cwd()}/package.json`);
 const packageDataStr: unknown = await packageDataRaw.text();

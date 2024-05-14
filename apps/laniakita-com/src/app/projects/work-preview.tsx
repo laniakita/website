@@ -6,8 +6,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import timezone from 'dayjs/plugin/timezone';
 import { imageLoader } from '@/utils/image-loader';
-import { toBase64, shimmer } from '@/utils/shimmer-utils';
-import type { WorkMetaProps } from '@/app/projects/page';
+import type { WorkMetaProps } from '@/utils/mdx-utils';
 
 extend(relativeTime);
 extend(localizedFormat);
@@ -18,7 +17,7 @@ export default function WorkPreview({ workMetaObj }: { workMetaObj: WorkMetaProp
   return (
     <>
       {/* neat css tip: use padding instead of margin when working with flex basis / flex grids */}
-      <div className='flex w-full basis-full md:basis-1/2 md:p-2 lg:basis-1/3'>
+      <div className='flex w-full basis-full md:basis-1/2 md:p-2 2xl:basis-1/3'>
         <div className='flex w-full flex-col gap-10 overflow-hidden border-y border-ctp-surface0  p-10 md:gap-0 md:rounded-2xl md:border md:p-0'>
           <Link href={`/projects/${workMetaObj.slug}`} className=''>
             {workMetaObj.teaserImg && workMetaObj.teaserAlt ? (
@@ -26,11 +25,12 @@ export default function WorkPreview({ workMetaObj }: { workMetaObj: WorkMetaProp
                 <Image
                   loader={imageLoader}
                   src={workMetaObj.teaserImg}
-                  placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
+                  placeholder='blur'
+                  blurDataURL={workMetaObj.blurUrl}
                   alt={workMetaObj.teaserAlt}
                   fill
                   className={`object-cover transition-all `}
-                  sizes='(max-width: 300px) 70vw, (max-width: 600px) 45vw, (max-width:1024px) 27vw'
+                  sizes='(max-width: 300px) 70vw, (max-width: 600px) 45vw, (max-width:1500px) 27vw'
                 />
               </div>
             ) : (
