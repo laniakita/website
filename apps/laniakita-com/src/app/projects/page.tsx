@@ -18,7 +18,7 @@ export const metadata = {
 export default async function Projects() {
   const data = await batchMatterFetch('./src/app/projects/posts/published');
   return (
-    <main className='flex size-full flex-col items-center justify-center md:px-2'>
+    <main className='motion-safe:simple-color-trans flex size-full  flex-col items-center justify-center bg-ctp-base dark:bg-ctp-midnight md:px-2'>
       <div className='px-4'>
         <header className='flex w-full max-w-xl flex-col gap-10 py-10 md:py-20 lg:pb-[6.5rem] lg:pt-36'>
           <h1 className='text-4xl font-black leading-tight md:text-5xl'>Projects / Works</h1>

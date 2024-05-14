@@ -61,7 +61,7 @@ export default async function ProjectDetailPage({ params }: { params: { slug: st
   const { default: MDXContent } = await import(`@/app/projects/posts/published/${params.slug}.mdx`);
 
   return (
-    <main className='size-full min-h-screen'>
+    <main className='motion-safe:simple-color-trans size-full min-h-screen bg-ctp-base dark:bg-ctp-midnight'>
       {(matterData as WorkMetaProps).type === 'computer-graphics' ? (
         <ClientProjPost frontmatter={matterData as WorkMetaProps}>
           <MDXContent />

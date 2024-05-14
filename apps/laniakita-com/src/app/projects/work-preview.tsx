@@ -19,7 +19,7 @@ export default function WorkPreview({ workMetaObj }: { workMetaObj: WorkMetaProp
     <>
       {/* neat css tip: use padding instead of margin when working with flex basis / flex grids */}
       <div className='flex w-full basis-full md:basis-1/2 md:p-2 2xl:basis-1/3'>
-        <div className='flex w-full flex-col gap-10 overflow-hidden border-y border-ctp-surface0  p-10 md:gap-0 md:rounded-2xl md:border md:p-0'>
+        <div className='motion-safe:simple-color-trans flex w-full flex-col gap-10 overflow-hidden border-y border-ctp-surface0 bg-ctp-base p-10  dark:bg-ctp-midnight md:gap-0 md:rounded-2xl md:border md:p-0'>
           <Link href={`/projects/${workMetaObj.slug}`} className=''>
             {workMetaObj.teaserImg && workMetaObj.teaserAlt ? (
               <div className='relative min-h-96 overflow-hidden rounded-2xl md:rounded-none'>
