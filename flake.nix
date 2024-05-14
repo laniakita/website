@@ -4,7 +4,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   };
   
-  outputs = inputs@{self, nixpkgs, ... }: let
+  outputs = inputs@{nixpkgs, ... }: let
     forAllSystems = function:
       nixpkgs.lib.genAttrs [
         "x86_64-linux"
@@ -14,6 +14,7 @@
   in {
     devShells = forAllSystems (pkgs: {
       default = pkgs.mkShell {
+        LD_LIBRARY_PATH = "${pkgs.stdenv.cc.cc.lib}/lib";
         packages = with pkgs; [
           turbo
           bun

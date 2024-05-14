@@ -21,18 +21,17 @@ export default function BlogImage({ props, blurUrl }: { props: ImgProps; blurUrl
             setBeeg(false);
           }}
         >
-          <Image
-            loader={imageLoader}
-            priority={false}
-            src={props.src}
-            quality={75}
-            placeholder='blur'
-            blurDataURL={blurUrl}
-            alt={props.alt}
-            fill
-            sizes='100vw'
-            className='object-contain'
-          />
+          <picture className='relative m-0 size-full max-h-[80vh] overflow-hidden p-0'>
+            <Image
+              loader={imageLoader}
+              priority={false}
+              src={props.src}
+              alt={props.alt}
+              fill
+              sizes='100vw'
+              className='object-contain'
+            />
+          </picture>
         </button>
       )}
 

@@ -10,6 +10,9 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "trustedDependencies": {
+    "sharp": "^0.33.3"
+  },
   "dependencies": {
     "@mdx-js/loader": "^3.0.1",
     "@mdx-js/react": "^3.0.1",
