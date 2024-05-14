@@ -145,7 +145,7 @@ export const batchMatterFetchWithBlurs = async (inputFolder: string) => {
 };
 
 export const batchMatterFetchByType = async (inputFolder: string, matterType: string, resToMatch: string) => {
-  const resFetchAll = await batchMatterFetch(inputFolder);
+  const resFetchAll = await batchMatterFetchWithBlurs(inputFolder);
   if (!resFetchAll) return;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- generic function
   const matchArr = resFetchAll.map((post: any) => {
