@@ -12,14 +12,6 @@
     "noEmit": true,
     "target": "ES2017"
   },
-  "include": [
-    ".",
-    "**/*.ts",
-    "**/*.js"
-  ],
-  "exclude": [
-    "dist",
-    "build",
-    "node_modules"
-  ]
+  "include": [".", "**/*.ts", "**/*.js"],
+  "exclude": ["dist", "build", "node_modules"]
 }

@@ -8,7 +8,7 @@ if (typeof Bun === "undefined") {
   );
 }
 
-import {  parseArgs } from "util";
+import { parseArgs } from "util";
 
 const { values, positionals } = parseArgs({
   args: Bun.argv,

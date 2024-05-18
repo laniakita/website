@@ -1,5 +1,3 @@
 export default function TestMe() {
-  return(
-    <div>hello from test component</div>
-  )
+  return <div>hello from test component</div>;
 }

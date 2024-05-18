@@ -1,32 +1,32 @@
-import { opendir, readFile } from 'node:fs/promises';
-import matter from 'gray-matter';
-import { eq, and, or, desc } from 'drizzle-orm';
-import mdxlitedb from '../lib/drizzle';
-import { authors } from '../lib/schema/authors';
-import { categories } from '../lib/schema/categories';
-import { posts } from '../lib/schema/posts';
+import { opendir, readFile } from "node:fs/promises";
+import matter from "gray-matter";
+import { eq, and, or, desc } from "drizzle-orm";
+import mdxlitedb from "../lib/drizzle";
+import { authors } from "../lib/schema/authors";
+import { categories } from "../lib/schema/categories";
+import { posts } from "../lib/schema/posts";
 
 export const querySinglePost = async (searchHeadline: string) => {
   const postRes = await mdxlitedb.query.posts.findFirst({
-    where: eq(posts.headline, searchHeadline)
-  })
-  return postRes
-}
- 
+    where: eq(posts.headline, searchHeadline),
+  });
+  return postRes;
+};
+
 export const queryCategoryDescr = async (searchTitle: string) => {
   const catDescr = await mdxlitedb.query.categories.findFirst({
-    where: eq(categories.title, searchTitle)
+    where: eq(categories.title, searchTitle),
   });
-  return catDescr
-}
+  return catDescr;
+};
 
-export const queryPostsByCategory = async(category: string) => {
+export const queryPostsByCategory = async (category: string) => {
   const postsInCategory = await mdxlitedb.query.posts.findMany({
     where: eq(posts.category, category),
     orderBy: [desc(posts.date)],
-  })
-  return postsInCategory
-}
+  });
+  return postsInCategory;
+};
 
 export const queryPosts = async () => {
   const postsArr = await mdxlitedb.query.posts.findMany({
@@ -53,14 +53,14 @@ export const blogPostFinder = async (searchFolder: string) => {
     const dir = await opendir(searchFolder, { recursive: true });
     for await (const dirent of dir) {
       const fileName = dirent.name;
-      const fileExt = dirent.name.split('.')[1];
-      if (fileExt === 'mdx' || fileExt === 'md') {
+      const fileExt = dirent.name.split(".")[1];
+      if (fileExt === "mdx" || fileExt === "md") {
         openDirRes.push(`${dirent.path}/${fileName}`);
       }
     }
     const fileArr = await Promise.all(
       openDirRes.map(async (mdxFilePath) => {
-        const str = await readFile(mdxFilePath, { encoding: 'utf8' });
+        const str = await readFile(mdxFilePath, { encoding: "utf8" });
         const fileObj = {
           meta: matter(str).data,
           content: matter(str).content,
@@ -75,21 +75,18 @@ export const blogPostFinder = async (searchFolder: string) => {
   }
 };
 
-
-
-
 export const insertFromRawIndex = async (searchFolder: string) => {
   const rawPostArr = await blogPostFinder(searchFolder);
   if (rawPostArr) {
     await Promise.all(
       rawPostArr.map(async (postObj) => {
-        if (postObj.meta.type === 'authors') {
+        if (postObj.meta.type === "authors") {
           await handleAuthor(postObj as unknown as HandleAuthorProps);
         }
-        if (postObj.meta.type === 'category') {
+        if (postObj.meta.type === "category") {
           await handleCategory(postObj as unknown as HandleCategoryProps);
         }
-        if (postObj.meta.type === 'post') {
+        if (postObj.meta.type === "post") {
           await handlePost(postObj as unknown as HandlePostProps);
         }
       }),
@@ -103,7 +100,7 @@ export interface HandleAuthorProps {
 }
 
 export const handleAuthor = async (postObj: HandleAuthorProps) => {
-  console.log('found author file');
+  console.log("found author file");
   // check if postObj.meta.name == authors.name
   const checkRes = await mdxlitedb
     .select({
@@ -113,7 +110,7 @@ export const handleAuthor = async (postObj: HandleAuthorProps) => {
     .from(authors)
     .where(eq(authors.name, postObj.meta.name));
   if (checkRes.length > 0) {
-    console.log('author exists trying update');
+    console.log("author exists trying update");
     // @ts-expect-error -- types exist because how else could checkRes have a length > 0?
     const { testId, testName } = checkRes[0];
     console.log(`exists with ${testId as string}`);
@@ -125,7 +122,12 @@ export const handleAuthor = async (postObj: HandleAuthorProps) => {
         mastodon: postObj.meta.mastodon,
         bio: postObj.content,
       })
-      .where(and(eq(authors.id, testId as number), eq(authors.name, testName as string)));
+      .where(
+        and(
+          eq(authors.id, testId as number),
+          eq(authors.name, testName as string),
+        ),
+      );
   }
   // insert into db
   if (checkRes.length === 0) {
@@ -148,7 +150,7 @@ export interface HandleCategoryProps {
 }
 
 export const handleCategory = async (postObj: HandleCategoryProps) => {
-  console.log('found category file');
+  console.log("found category file");
   //console.log(postObj)
   // check if postObj.meta.name == authors.name
   const checkRes = await mdxlitedb
@@ -159,7 +161,7 @@ export const handleCategory = async (postObj: HandleCategoryProps) => {
     .from(categories)
     .where(eq(categories.title, postObj.meta.title));
   if (checkRes.length > 0) {
-    console.log('category info file exists trying update');
+    console.log("category info file exists trying update");
     // @ts-expect-error -- types exist because how else could checkRes have a length > 0?
     const { testId, testName } = checkRes[0];
     //console.log(`exists with ${testId as string}`);
@@ -169,9 +171,14 @@ export const handleCategory = async (postObj: HandleCategoryProps) => {
       .set({
         title: postObj.meta.title,
         description: postObj.content,
-        rawContent: postObj.rawStr
+        rawContent: postObj.rawStr,
       })
-      .where(and(eq(categories.id, testId as number), eq(categories.title, testName as string)));
+      .where(
+        and(
+          eq(categories.id, testId as number),
+          eq(categories.title, testName as string),
+        ),
+      );
   }
   // insert into db
   if (checkRes.length === 0) {
@@ -181,7 +188,7 @@ export const handleCategory = async (postObj: HandleCategoryProps) => {
       .values({
         title: postObj.meta.title,
         description: postObj.content,
-        rawContent: postObj.rawStr
+        rawContent: postObj.rawStr,
       })
       .onConflictDoNothing();
   }
@@ -206,8 +213,8 @@ export interface HandlePostProps {
 export const handlePost = async (postObj: HandlePostProps) => {
   //const q1 = await mdxlitedb.query.authors.findMany();
   //console.log(q1)
-  
-  console.log('found post')
+
+  console.log("found post");
   const authorQ = await mdxlitedb
     .select({ name: authors.name })
     .from(authors)
@@ -228,15 +235,21 @@ export const handlePost = async (postObj: HandlePostProps) => {
     .from(posts)
     .where(
       or(
-        and(eq(posts.headline, postObj.meta.headline), eq(posts.date, postObj.meta.date.toUTCString())),
+        and(
+          eq(posts.headline, postObj.meta.headline),
+          eq(posts.date, postObj.meta.date.toUTCString()),
+        ),
         eq(posts.date, postObj.meta.date.toUTCString()),
       ),
     );
 
-  if (typeof authorMatch?.name === 'string' && typeof categoryMatch?.title === 'string') {
-    console.log('author & category exists, inserting post')
+  if (
+    typeof authorMatch?.name === "string" &&
+    typeof categoryMatch?.title === "string"
+  ) {
+    console.log("author & category exists, inserting post");
     if (checkPostExists.length > 0) {
-      console.log('post exists, updating...')
+      console.log("post exists, updating...");
       // @ts-expect-error -- types exist because how else could checkPostExists have a length > 0?
       const { testId, testHeadline, testDate } = checkPostExists[0];
       await mdxlitedb
@@ -256,13 +269,19 @@ export const handlePost = async (postObj: HandlePostProps) => {
         })
         .where(
           or(
-            and(eq(posts.id, testId as number), eq(posts.headline, testHeadline as string)),
-            and(eq(posts.id, testId as number), eq(posts.date, testDate as string)),
+            and(
+              eq(posts.id, testId as number),
+              eq(posts.headline, testHeadline as string),
+            ),
+            and(
+              eq(posts.id, testId as number),
+              eq(posts.date, testDate as string),
+            ),
           ),
         );
     }
     if (checkPostExists.length === 0) {
-      console.log("post doesn't exist, inserting")
+      console.log("post doesn't exist, inserting");
       await mdxlitedb.insert(posts).values({
         authorName: postObj.meta.author,
         date: postObj.meta.date.toUTCString(),
