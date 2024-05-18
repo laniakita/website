@@ -29,7 +29,7 @@ export const socialItems = [
   },
   {
     title: 'RSS',
-    url: '/rss.xml',
+    url: '/dist/rss.xml',
     iconName: 'icon-[ph--rss-bold]',
     linkName: 'your RSS reader!',
     textSize: 'text-5xl',
