@@ -148,7 +148,7 @@ const rssFeed = {
 
 const feedXml = toXML(rssFeed, xmlOpts);
 
-const xmlWritePath = `${process.cwd()}/public/rss.xml`;
+const xmlWritePath = `${process.cwd()}/public/dist/rss.xml`;
 //console.log(xmlWritePath)
 
 await Bun.write(xmlWritePath, feedXml);
