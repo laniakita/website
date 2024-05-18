@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "rss-gen": "bun ./bin/rss-gen.ts",
+    "rss-gen": "bun ./bin/rss-gen.ts -p",
     "analyze": "ANALYZE=true next build",
     "dev": "dotenv -e .env.development -e .env.local -- next dev",
-    "build": "bun ./bin/rss-gen.ts -p && dotenv -e .env.production -e .env.local -- next build",
+    "build": "dotenv -e .env.production -e .env.local -- next build",
     "start": "next start",
     "lint": "next lint"
   },

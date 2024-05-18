@@ -5,9 +5,11 @@
     "analyze": {
       "env": ["ANALYZE"]
     },
+    "rss-gen": {},
     "build": {
       "dotEnv": [".env.production.local", ".env.production", ".env.local", ".env"],
-      "outputs": [".next/**", "!.next/cache/**", "public/**", "!public/sw.js", "!public/rss.xml"]
+      "outputs": [".next/**", "!.next/cache/**", "public/**", "!public/dist/**"],
+      "dependsOn": ["^build", "rss-gen"]
     },
     "dev": {
       "dotEnv": [".env.development.local", ".env.development", ".env.local", ".env"]
