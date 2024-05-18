@@ -1,6 +1,6 @@
 {
   "name": "@ahiakea/eslint-config",
-  "type": "modules",
+  "type": "module",
   "license": "MIT",
   "version": "0.0.0",
   "private": true,
