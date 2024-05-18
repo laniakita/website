@@ -39,7 +39,7 @@ export default function NavBar() {
     if (pageStr.toLowerCase() === 'home') {
       return '/';
     } else if (pageStr.toLowerCase() === 'rss') {
-      return '/rss.xml';
+      return '/dist/rss.xml';
     }
     return `/${pageStr.toLowerCase()}`;
   }
