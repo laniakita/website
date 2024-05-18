@@ -1,5 +1,5 @@
 {
-  "navigationItems": ["Home", "Blog", "About", "Projects", "Contact", "Credits", "Privacy", "Terms"],
+  "navigationItems": ["Home", "Blog", "About", "Projects", "Contact", "Credits"],
   "socialItems": [
     {
       "title": "Github",
@@ -21,7 +21,7 @@
     },
     {
       "title": "RSS",
-      "url": "/rss.xml",
+      "url": "/dist/rss.xml",
       "iconName": "icon-[ph--rss-bold]",
       "textSize": "text-5xl"
     }
