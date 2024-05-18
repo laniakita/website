@@ -4,8 +4,6 @@
   "extends": "./base.json",
   "compilerOptions": {
     "allowJs": true,
-    "declaration": false,
-    "declarationMap": false,
     "incremental": true,
     "jsx": "preserve",
     "lib": ["esnext", "DOM", "DOM.Iterable"],
