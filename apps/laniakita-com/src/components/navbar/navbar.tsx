@@ -11,7 +11,7 @@ interface Clicked {
 export default function NavBar() {
   const { dark } = useDarkStore((state) => state);
   const pagesArr = ['Blog', 'About', 'Projects', 'RSS', 'Contact'];
-  const pagesArrMobile = ['Blog', 'About', 'Projects', 'RSS', 'Contact', 'Credits', 'Terms', 'Privacy'];
+  const pagesArrMobile = ['Blog', 'About', 'Projects', 'RSS', 'Contact'];
   const [clicked, setClicked] = useState<Clicked>({
     stateVal: 'closed',
   });
