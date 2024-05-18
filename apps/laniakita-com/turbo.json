@@ -8,7 +8,7 @@
     "rss-gen": {},
     "build": {
       "dotEnv": [".env.production.local", ".env.production", ".env.local", ".env"],
-      "outputs": [".next/**", "!.next/cache/**", "public/**", "!public/dist/**"],
+      "outputs": [".next/**", "!.next/cache/**", "public/dist/**"],
       "dependsOn": ["^build", "rss-gen"]
     },
     "dev": {
