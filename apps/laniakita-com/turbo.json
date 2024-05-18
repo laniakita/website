@@ -7,8 +7,7 @@
     },
     "build": {
       "dotEnv": [".env.production.local", ".env.production", ".env.local", ".env"],
-      "outputs": [".next/**", "!.next/cache/**", "!public/**"],
-      "dependsOn": ["^build"]
+      "outputs": [".next/**", "!.next/cache/**", "public/**", "!public/sw.js", "!public/rss.xml"]
     },
     "dev": {
       "dotEnv": [".env.development.local", ".env.development", ".env.local", ".env"]
