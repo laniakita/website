@@ -6,6 +6,23 @@ import { imageLoader } from '@/utils/image-loader';
 import { shimmer, toBase64 } from '@/utils/shimmer-utils';
 
 export function HeroShimmer({ dataObject }: { dataObject: PostTeaserObjectProps }) {
+  return (
+    <picture className='relative m-0 flex size-full min-h-96 items-center justify-center p-0 sm:h-[30rem] md:h-[35rem] md:max-w-3xl lg:h-[45rem]  lg:max-w-5xl'>
+      <Image
+        loader={imageLoader}
+        src={dataObject.heroFile!}
+        alt={dataObject.heroAltText!}
+        placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
+        fill
+        sizes='(max-width: 500px) 100vw, (max-width: 1024px) 80vw'
+        style={{ objectFit: 'contain' }}
+        className='overflow-hidden'
+      />
+    </picture>
+  );
+}
+
+export function HeroShimmerZoom({ dataObject }: { dataObject: PostTeaserObjectProps }) {
   const [beeg, setBeeg] = useState(false);
   return (
     <>

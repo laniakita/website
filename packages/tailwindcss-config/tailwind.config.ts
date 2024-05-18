@@ -118,8 +118,8 @@ const config: Omit<Config, "content"> = {
       typography: ({ theme }: { theme: any }) => ({
         DEFAULT: {
           css: {
-            'blockquote p:first-of-type::before': false,
-            'blockquote p:first-of-type::after': false,
+            "blockquote p:first-of-type::before": false,
+            "blockquote p:first-of-type::after": false,
           },
         },
         catppuccin: {

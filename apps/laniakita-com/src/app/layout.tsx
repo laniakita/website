@@ -21,7 +21,8 @@ const zeroxproto = localFont({
 const APP_NAME = 'Lani Akita';
 const APP_DEFAULT_TITLE = 'Lani Akita';
 const APP_TITLE_TEMPLATE = '%s - Lani Akita';
-const APP_DESCRIPTION = "Lani Akita's website, which also hosts her blog that's (mostly) about the process of developing (web-based) software.";
+const APP_DESCRIPTION =
+  "Lani Akita's website, which also hosts her blog that's (mostly) about the process of developing (web-based) software.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),

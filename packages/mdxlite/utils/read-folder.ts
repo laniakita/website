@@ -1,5 +1,5 @@
-import { opendir } from "node:fs/promises"
-import matter from 'gray-matter'
+import { opendir } from "node:fs/promises";
+import matter from "gray-matter";
 
 export const blogPostFinder = async (searchFolder: string) => {
   const openDirRes = [];
@@ -7,15 +7,15 @@ export const blogPostFinder = async (searchFolder: string) => {
     const dir = await opendir(searchFolder, { recursive: true });
     for await (const dirent of dir) {
       const fileName = dirent.name;
-      const fileExt = dirent.name.split('.')[1];
-      if (fileExt === 'mdx' || fileExt === 'md') {
+      const fileExt = dirent.name.split(".")[1];
+      if (fileExt === "mdx" || fileExt === "md") {
         openDirRes.push(`${dirent.path}/${fileName}`);
       }
     }
     const fileArr = await Promise.all(
       openDirRes.map(async (mdxFilePath) => {
         const blob = Bun.file(mdxFilePath);
-        const str = blob.toString()
+        const str = blob.toString();
         const fileObj = {
           meta: matter(str).data,
           content: matter(str).content,
@@ -29,4 +29,3 @@ export const blogPostFinder = async (searchFolder: string) => {
     console.error(err);
   }
 };
-

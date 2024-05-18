@@ -162,8 +162,6 @@ export const batchMatterFetchByType = async (inputFolder: string, matterType: st
   return finalArr;
 };
 
-
-
 export const batchMatterFetchByTypeWithBlurs = async (inputFolder: string, matterType: string, resToMatch: string) => {
   const resFetchAll = await batchMatterFetchWithBlurs(inputFolder);
   if (!resFetchAll) return;

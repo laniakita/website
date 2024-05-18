@@ -1,4 +1,4 @@
-import { sqliteTable, integer, text } from 'drizzle-orm/sqlite-core';
+import { sqliteTable, integer, text } from "drizzle-orm/sqlite-core";
 
 export interface Categories {
   id: number;
@@ -7,9 +7,9 @@ export interface Categories {
   rawContent?: string;
 }
 
-export const categories = sqliteTable('categories', {
-  id: integer('id').primaryKey(),
-  title: text('title').unique().notNull(),
-  description: text('description'),
-  rawContent: text('raw_content')
+export const categories = sqliteTable("categories", {
+  id: integer("id").primaryKey(),
+  title: text("title").unique().notNull(),
+  description: text("description"),
+  rawContent: text("raw_content"),
 });

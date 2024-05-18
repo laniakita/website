@@ -1,12 +1,12 @@
-import 'dotenv/config';
-import type { Config } from 'drizzle-kit';
+import "dotenv/config";
+import type { Config } from "drizzle-kit";
 
 export default {
-  schema: './lib/schema/*',
-  out: './drizzle',
-  driver: 'better-sqlite',
+  schema: "./lib/schema/*",
+  out: "./drizzle",
+  driver: "better-sqlite",
   dbCredentials: {
-    url: 'mdxlite.db',
+    url: "mdxlite.db",
   },
   verbose: true,
 } satisfies Config;

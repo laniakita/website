@@ -3,7 +3,14 @@ import { parseArgs } from "util";
 import path from "node:path";
 import { readdir } from "node:fs/promises";
 import matter from "gray-matter";
-import { handlePost, handleAuthor, handleCategory, HandlePostProps, HandleAuthorProps, HandleCategoryProps } from "../utils/mdxlite";
+import {
+  handlePost,
+  handleAuthor,
+  handleCategory,
+  HandlePostProps,
+  HandleAuthorProps,
+  HandleCategoryProps,
+} from "../utils/mdxlite";
 
 const { values, positionals } = parseArgs({
   args: Bun.argv,
@@ -98,7 +105,7 @@ export const insertFromRawIndexV2 = async (searchFolder: string) => {
       }),
     );
     initFlag = false;
-    console.log('success!')
+    console.log("success!");
   }
   if (rawPostArr && !initFlag) {
     console.log("phase 1 complete, inserting posts");
@@ -109,18 +116,11 @@ export const insertFromRawIndexV2 = async (searchFolder: string) => {
         }
       }),
     );
-    console.log("all done!")
+    console.log("all done!");
   }
 };
 
-await insertFromRawIndexV2(searchFolder)
-
-
-
-
-
-
-
+await insertFromRawIndexV2(searchFolder);
 
 /* ======= V3 Work in Progess: DO NOT USE ======== */
 
@@ -164,5 +164,3 @@ async function importFromSchemas(schemasPath: string) {
 }
 */
 //await importFromSchemas(schemas);
-
-

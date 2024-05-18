@@ -12,6 +12,6 @@
     },
     "types": ["@serwist/next/typings", "bun"]
   },
-  "include": ["next-env.d.ts", "./**/*.ts", "./**/*.tsx", "./**/*.js", "./**/*.mjs", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "./**/*.ts", "./**/*.tsx", "./**/*.js", "./**/*.cjs", "./**/*.mjs", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
 }

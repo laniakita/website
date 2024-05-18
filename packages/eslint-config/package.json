@@ -2,8 +2,8 @@
   "name": "@ahiakea/eslint-config",
   "license": "MIT",
   "version": "0.0.0",
-  "private": true,
-  "devDependencies": {
+  "type": "module",
+   "devDependencies": {
     "@vercel/style-guide": "^6.0.0",
     "eslint-config-turbo": "^1.12.4"
   }

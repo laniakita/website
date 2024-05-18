@@ -57,9 +57,7 @@ export default function ClientProjPost({ frontmatter, children }: { frontmatter:
           </div>
         </div>
 
-        <div
-          className={`relative size-full ${fullScreen ? ' inset-0 z-[99]' : ' flex items-center justify-center'}`}
-        >
+        <div className={`relative size-full ${fullScreen ? ' inset-0 z-[99]' : ' flex items-center justify-center'}`}>
           <div
             className={
               fullScreen
