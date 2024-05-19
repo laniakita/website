@@ -22,7 +22,7 @@ export default function BlogImageShimmer(props: ImgProps) {
             setBeeg(false);
           }}
         >
-          <picture className='relative m-0 size-full max-h-[80vh] overflow-hidden p-0'>
+          <picture className='relative m-0 block size-full max-h-[80vh] overflow-hidden p-0'>
             <Image
               loader={imageLoader}
               priority={false}
@@ -41,7 +41,7 @@ export default function BlogImageShimmer(props: ImgProps) {
           setBeeg(true);
         }}
         type='button'
-        className='relative m-0 size-full min-h-72 cursor-zoom-in p-0 md:min-h-96'
+        className='relative m-0 block size-full min-h-72 cursor-zoom-in p-0 md:min-h-96'
       >
         <Image
           loader={imageLoader}

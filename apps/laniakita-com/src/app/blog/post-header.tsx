@@ -13,7 +13,7 @@ export function PostHeader({ dataObject }: { dataObject: PostTeaserObjectProps }
       {/* bg image + title */}
       {dataObject.heroFile !== undefined && (
         <div className='flex size-full flex-col items-center justify-center'>
-          <figure className='relative flex size-full flex-col items-center justify-center gap-10'>
+          <div className='relative flex size-full flex-col items-center justify-center gap-10'>
             <HeroShimmer dataObject={dataObject} />
             <div className='-mb-2 -mt-6 flex w-full flex-col items-center justify-center px-10 font-mono text-sm font-thin [font-style:_normal]'>
               {dataObject.heroCredit !== undefined && (
@@ -23,11 +23,11 @@ export function PostHeader({ dataObject }: { dataObject: PostTeaserObjectProps }
                 </p>
               )}
             </div>
-            <figcaption className='flex w-full flex-col items-center justify-center gap-10 px-10 '>
+            <div className='flex w-full flex-col items-center justify-center gap-10 px-10 '>
               <h3 className='max-w-xl text-xl font-bold italic leading-tight'>{dataObject.heroCaption}</h3>
               <div className='w-full max-w-xl rounded bg-ctp-text py-px' />
-            </figcaption>
-          </figure>
+            </div>
+          </div>
         </div>
       )}
     </header>
