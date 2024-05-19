@@ -31,8 +31,7 @@ const nextConfigFunction = async (phase, { defaultConfig }) => {
   if (phase === PHASE_DEVELOPMENT_SERVER || phase === PHASE_PRODUCTION_BUILD) {
     const withSerwist = (await import('@serwist/next')).default({
       swSrc: 'src/app/sw.ts',
-      swDest: 'public/dist/sw.js',
-      swUrl: '/dist/sw.js',
+      swDest: 'public/sw.js',
     });
     plugins.push(withSerwist);
 

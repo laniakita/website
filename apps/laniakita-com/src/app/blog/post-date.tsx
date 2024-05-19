@@ -13,7 +13,7 @@ export default function PostDate({ dateStr }: { dateStr: string }) {
   return (
     <p className='flex flex-row gap-2'>
       <span>|</span>
-      {postedDate}
+      <time>{postedDate}</time>
     </p>
   );
 }
