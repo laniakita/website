@@ -7,7 +7,7 @@ import { shimmer, toBase64 } from '@/utils/shimmer-utils';
 
 export function HeroShimmer({ dataObject }: { dataObject: PostTeaserObjectProps }) {
   return (
-    <picture className='relative m-0 flex size-full min-h-96 items-center justify-center p-0 sm:h-[30rem] md:h-[35rem] md:max-w-3xl lg:h-[45rem]  lg:max-w-5xl'>
+    <picture className='relative m-0 flex size-full min-h-48 items-center justify-center p-0 narrow-phone:min-h-64 small-phone:min-h-72 sm:h-[30rem] md:h-[35rem] md:max-w-3xl lg:h-[45rem]  lg:max-w-5xl'>
       <Image
         loader={imageLoader}
         src={dataObject.heroFile!}
