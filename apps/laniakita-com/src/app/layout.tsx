@@ -80,3 +80,15 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
     </html>
   );
 }
+
+/*
+// wip
+          <div className='absolute inset-x-0 top-0 lg:top-[3rem] flex w-full items-center justify-center py-4'>
+            <Link
+              href='#content'
+              className='rounded-full bg-ctp-sapphire px-10 py-2 font-mono font-black text-ctp-base opacity-0 focus:opacity-100'
+            >
+              Skip to Content
+            </Link>
+          </div>
+*/
