@@ -11,6 +11,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ahiakea/eslint-config": "workspace:*",
+    "@ahiakea/tailwindcss-config": "workspace:*",
+    "@ahiakea/typescript-config": "workspace:*",
     "@mdx-js/loader": "^3.0.1",
     "@mdx-js/react": "^3.0.1",
     "@next/mdx": "14.2.2",
@@ -44,9 +47,6 @@
     "zustand": "^4.5.2"
   },
   "devDependencies": {
-    "@ahiakea/eslint-config": "workspace:*",
-    "@ahiakea/tailwindcss-config": "workspace:*",
-    "@ahiakea/typescript-config": "workspace:*",
     "@next/bundle-analyzer": "14.2.2",
     "@react-three/eslint-plugin": "^0.1.1",
     "@types/bun": "^1.1.2",
