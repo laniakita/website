@@ -9,7 +9,7 @@ export function PostHeader({ dataObject }: { dataObject: PostTeaserObjectProps }
   //const linkToCat = baseUrl + "/blog/" + dataObject.category;
   return (
     <>
-      <div className='flex w-full flex-col items-center justify-center gap-4 px-10 pb-8 pt-10 md:gap-6 md:pb-10 md:pt-20 lg:pt-36'>
+      <div className='flex w-full flex-col items-center justify-center gap-4 px-10 pb-6 pt-10 md:gap-6 md:pb-10 md:pt-20 lg:pt-36'>
         <h1 className='w-full max-w-xl text-4xl font-black leading-tight supports-[text-wrap:balance]:text-balance md:text-5xl'>
           {dataObject.headline}
         </h1>
@@ -49,11 +49,16 @@ export function PostHeader({ dataObject }: { dataObject: PostTeaserObjectProps }
                 </span>
               )}
             </p>
-
-            <caption className='max-w-xl text-xl font-bold italic leading-tight'>{dataObject.heroCaption}</caption>
+            <figcaption className='w-full flex justify-center items-center text-xl font-bold italic leading-tight px-10'>
+              <span className='max-w-xl'>
+              {dataObject.heroCaption}
+              </span>
+            </figcaption>
           </figure>
         )}
-        <div className='w-full max-w-xl rounded bg-ctp-text py-px' />
+        <div className='px-10 w-full size-full flex justify-center items-center'>
+        <div className='w-full max-w-xl rounded bg-ctp-text py-px mt-10' />
+        </div>
       </div>
     </>
   );
