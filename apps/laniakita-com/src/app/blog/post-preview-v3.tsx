@@ -90,7 +90,7 @@ export function PostPreviewV3({ dataObj }: { dataObj: PostTeaserObjectProps }) {
             <h3 className='text-xl leading-tight'>{dataObj.subheadline}</h3>
           </div>
           <div className='flex w-full flex-wrap gap-2 font-mono'>
-            <p>{postedDate?.cal}</p>
+            <p>{postedDate?.cal ?? postedDate?.fromNow}</p>
             <span>|</span>
             <Link href={linkToCat} className={`font-mono font-semibold ${accentTextColor}`}>
               #{dataObj['category-slug']}
@@ -157,7 +157,7 @@ export function FeaturedPostPreviewV3({ dataObj, descr }: { dataObj: PostTeaserO
               </div>
               <p className='prose-protocol-omega'>{descr}</p>
               <div className='flex flex-wrap gap-2 font-mono text-lg'>
-                <p>{postedDate?.cal}</p>
+                <p>{postedDate?.cal ?? postedDate?.fromNow}</p>
                 <span>|</span>
                 <Link href={linkToCat} className={`font-mono text-xl font-semibold ${accentTextColor} `}>
                   #{dataObj['category-slug']}
