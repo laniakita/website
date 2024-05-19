@@ -5,8 +5,6 @@ import PostDate from './post-date';
 import { HeroShimmer } from './hero-shimmer';
 
 export function PostHeader({ dataObject }: { dataObject: PostTeaserObjectProps }) {
-  //const linkTo = baseUrl + "/blog/" + dataObject.category + "/" + dataObject.slug;
-  //const linkToCat = baseUrl + "/blog/" + dataObject.category;
   return (
     <>
       <div className='flex w-full flex-col items-center justify-center gap-4 px-10 pb-6 pt-10 md:gap-6 md:pb-10 md:pt-20 lg:pt-36'>
@@ -18,7 +16,7 @@ export function PostHeader({ dataObject }: { dataObject: PostTeaserObjectProps }
           {dataObject.subheadline}
         </h2>
 
-        <div className='flex w-full max-w-xl flex-wrap gap-2'>
+        <div className='flex w-full max-w-xl flex-wrap gap-2 font-mono'>
           <p className='space-x-2'>
             <span>By</span>
             <span>
@@ -28,6 +26,14 @@ export function PostHeader({ dataObject }: { dataObject: PostTeaserObjectProps }
             </span>
           </p>
           <PostDate dateStr={dataObject.date} />
+          <p className='space-x-2'>
+            <span>|</span>
+            <span>
+              <Link href={`/blog/categories/${dataObject['category-slug']}`} className='font-semibold'>
+                #{dataObject['category-slug']}
+              </Link>
+            </span>
+          </p>
         </div>
 
         <div className='flex w-full max-w-xl items-center justify-start'>
@@ -49,35 +55,15 @@ export function PostHeader({ dataObject }: { dataObject: PostTeaserObjectProps }
                 </span>
               )}
             </p>
-            <figcaption className='w-full flex justify-center items-center text-xl font-bold italic leading-tight px-10'>
-              <span className='max-w-xl'>
-              {dataObject.heroCaption}
-              </span>
+            <figcaption className='flex w-full items-center justify-center px-10 text-xl font-bold italic leading-tight'>
+              <span className='max-w-xl'>{dataObject.heroCaption}</span>
             </figcaption>
           </figure>
         )}
-        <div className='px-10 w-full size-full flex justify-center items-center'>
-        <div className='w-full max-w-xl rounded bg-ctp-text py-px mt-10' />
+        <div className='flex size-full w-full items-center justify-center px-10'>
+          <div className='mt-10 w-full max-w-xl rounded bg-ctp-text py-px' />
         </div>
       </div>
-    </>
-  );
-}
-
-/*
- *
- *
- * in case I want to try to make the title cover
- * the image again:
- * motion-safe:simple-color-trans bg-gradient-to-b from-ctp-crust/50 via-ctp-crust/80 to-ctp-crust backdrop-blur-md
- */
-export function PostHeaderInfoBlock({ dataObject }: { dataObject: PostTeaserObjectProps }) {
-  return (
-    <>
-      <div className='flex w-full max-w-xl flex-wrap gap-2 font-mono text-lg'></div>
-      <p className='flex w-full max-w-xl items-center justify-start'>
-        <ShareButton />
-      </p>
     </>
   );
 }

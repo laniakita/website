@@ -22,7 +22,7 @@ const blogPostRaw = await batchMatterFetchBun('./src/app/blog/posts/published');
 const blogPostRes = blogPostRaw as PostTeaserObjectProps[];
 const lastPostDateRFC822 = dayjs(blogPostRes[0]?.date).format('ddd, DD MMM YYYY HH:mm:ss ZZ');
 const buildDateRFC822 = dayjs().format('ddd, DD MMM YYYY HH:mm:ss ZZ');
-const nextjsVersion = (packageData as Package).dependencies.next.split('^')[1];
+const nextjsVersion = (packageData as Package).dependencies.next //split('^')[1];
 
 const localUrl = 'http://localhost:3000';
 const prodUrl = BASE_URL;

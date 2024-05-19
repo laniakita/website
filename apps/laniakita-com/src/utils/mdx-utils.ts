@@ -19,13 +19,14 @@ export interface WorkMetaProps {
 }
 
 export interface PostTeaserObjectProps {
-  id: string;
+  type: string;
+  uuid: string;
   slug: string;
-  author: string;
-  date: string;
+  'category-slug'?: string;
   headline: string;
   subheadline?: string;
-  'category-slug'?: string;
+  author: string;
+  date: string;
   heroFile?: string;
   heroCaption?: string;
   heroCredit?: string;
