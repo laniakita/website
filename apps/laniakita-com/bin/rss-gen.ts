@@ -4,7 +4,7 @@
 import { parseArgs } from 'node:util';
 import { toXML } from 'jstoxml';
 import dayjs from 'dayjs';
-import { batchMatterFetchBun } from '@/utils/mdx-utils';
+import { batchMatterFetchBun } from '@/utils/bun-mdx-utils';
 import type { PostTeaserObjectProps } from '@/utils/mdx-utils';
 import { BASE_URL } from '@/lib/constants';
 
@@ -149,7 +149,6 @@ const rssFeed = {
 const feedXml = toXML(rssFeed, xmlOpts);
 
 const xmlWritePath = `${process.cwd()}/public/dist/rss.xml`;
-//console.log(xmlWritePath)
 
 await Bun.write(xmlWritePath, feedXml);
 console.log('wrote rss.xml to ', xmlWritePath, ' ', urlMsg);

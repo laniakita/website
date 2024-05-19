@@ -1,4 +1,4 @@
-import { opendir, readFile, readdir } from 'node:fs/promises';
+import { opendir, readFile, access } from 'node:fs/promises';
 import path from 'node:path';
 import matter from 'gray-matter';
 import { toBase64Blur } from './blur-util';
@@ -40,7 +40,7 @@ export const fetchMDXfiles = async (inputFolder: string) => {
   const fileArr: string[] = [];
   try {
     const contentFolder = path.resolve(process.cwd(), inputFolder);
-    const dir = await opendir(contentFolder);
+    const dir = await opendir(contentFolder, { recursive: true });
     for await (const dirent of dir) {
       if (dirent.name.split('.').pop() === 'mdx' || dirent.name.split('.').pop() === 'md') {
         fileArr.push(path.resolve(dirent.path, dirent.name));
@@ -52,46 +52,6 @@ export const fetchMDXfiles = async (inputFolder: string) => {
   return fileArr;
 };
 
-export const fetchMDXfilesBun = async (inputFolder: string): Promise<(string | undefined)[]> => {
-  try {
-    const contentFolder = path.resolve(process.cwd(), inputFolder);
-    const dir = await readdir(contentFolder);
-    const fileArr = dir.map((item) => {
-      const itemSplit = item.split('/');
-      const lastItem = itemSplit.pop();
-      const fileExt = lastItem?.split('.')[1];
-      if (fileExt === 'mdx' || fileExt === 'md') {
-        return `${contentFolder}/${item}`;
-      }
-      return undefined;
-    });
-    const finalArr = fileArr.filter((el) => el);
-    return finalArr;
-  } catch (err) {
-    console.error(err);
-    return [''];
-  }
-};
-
-export const batchMatterFetchBun = async (inputFolder: string) => {
-  try {
-    const fetchPathRaw = await fetchMDXfilesBun(inputFolder);
-    const fetchPaths = fetchPathRaw as string[];
-    const matterMeta = await Promise.all(
-      fetchPaths.map(async (mdxPath: string) => {
-        const metaObj = await fetchFrontmatter(mdxPath);
-        return metaObj;
-      }),
-    );
-    const sortedMetas = matterMeta.sort((a, b) => {
-      return b?.date - a?.date;
-    });
-    return sortedMetas;
-  } catch (err) {
-    console.error(err);
-  }
-};
-
 export const fetchFrontmatter = async (pathStr: string) => {
   try {
     const content = await readFile(pathStr, { encoding: 'utf8' });
@@ -99,6 +59,7 @@ export const fetchFrontmatter = async (pathStr: string) => {
     return matterData;
   } catch (err) {
     console.error(err);
+    return {};
   }
 };
 
@@ -112,7 +73,7 @@ export const batchMatterFetch = async (inputFolder: string) => {
       }),
     );
     const sortedMetas = matterMeta.sort((a, b) => {
-      return b?.date - a?.date;
+      return b.date - a.date;
     });
     return sortedMetas;
   } catch (err) {
@@ -136,7 +97,7 @@ export const batchMatterFetchWithBlurs = async (inputFolder: string) => {
       }),
     );
     const sortedMetas = matterMeta.sort((a, b) => {
-      return b?.date - a?.date;
+      return b.date - a.date;
     });
     return sortedMetas;
   } catch (err) {
@@ -180,12 +141,72 @@ export const batchMatterFetchByTypeWithBlurs = async (inputFolder: string, matte
   return finalArr;
 };
 
+const matchMDXFile = async (inputFolder: string, slug: string) => {
+  const altContent = await fetchMDXfiles(inputFolder);
+  const findPostPath = altContent.map((mdxPath) => {
+    if (`${slug}.mdx` === mdxPath.split('/').pop() || `${slug}.md` === mdxPath.split('/').pop()) {
+      return mdxPath;
+    }
+    return undefined;
+  });
+  const finalPath = findPostPath.filter((el) => el);
+  //console.log(finalPath);
+  if (typeof finalPath[0] !== 'string') return;
+  const foundContent = await readFile(finalPath[0], { encoding: 'utf-8' });
+  return foundContent;
+};
+
 export const fetchMdx = async (inputFolder: string, slug: string) => {
   const pathStr = path.resolve(process.cwd(), inputFolder, `${slug}.mdx`);
   try {
-    const content = await readFile(pathStr, { encoding: 'utf8' });
-    return content;
-  } catch (err) {
-    console.error(err);
+    let exists = false;
+    try {
+      await access(pathStr);
+      exists = true;
+    } catch {
+      exists = false;
+    }
+    if (exists) {
+      const content = await readFile(pathStr, { encoding: 'utf8' });
+      return content;
+    }
+    const secondTry = await matchMDXFile(inputFolder, slug);
+    return secondTry;
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+const matchMDXFilePath = async (inputFolder: string, slug: string) => {
+  const altContent = await fetchMDXfiles(inputFolder);
+  const findPostPath = altContent.map((mdxPath) => {
+    if (`${slug}.mdx` === mdxPath.split('/').pop() || `${slug}.md` === mdxPath.split('/').pop()) {
+      return mdxPath;
+    }
+    return undefined;
+  });
+  const finalPath = findPostPath.filter((el) => el);
+  if (typeof finalPath[0] !== 'string') return;
+  //const foundContent = await readFile(finalPath[0], { encoding: 'utf-8' });
+  return finalPath[0];
+};
+
+export const fetchMdxPath = async (inputFolder: string, slug: string) => {
+  const pathStr = path.resolve(process.cwd(), inputFolder, `${slug}.mdx`);
+  try {
+    let exists = false;
+    try {
+      await access(pathStr);
+      exists = true;
+    } catch {
+      exists = false;
+    }
+    if (exists) {
+      return pathStr;
+    }
+    const secondTry = await matchMDXFilePath(inputFolder, slug);
+    return secondTry;
+  } catch (e) {
+    console.error(e);
   }
 };
