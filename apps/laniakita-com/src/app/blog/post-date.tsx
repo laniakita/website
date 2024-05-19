@@ -12,7 +12,7 @@ export default function PostDate({ dateStr }: { dateStr: string }) {
   const postedDate = dayjs(dateStr).format('L');
   return (
     <p className='flex flex-row gap-2'>
-      <span>|</span>
+      <span>on</span>
       <time>{postedDate}</time>
     </p>
   );

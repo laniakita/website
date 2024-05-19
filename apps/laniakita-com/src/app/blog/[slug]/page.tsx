@@ -4,7 +4,6 @@ import matter from 'gray-matter';
 import { batchMatterFetch, fetchMdx, fetchMdxPath } from '@/utils/mdx-utils';
 import { PostHeader } from '@/app/blog/post-header';
 import type { PostTeaserObjectProps } from '@/utils/mdx-utils';
-import Link from 'next/link';
 
 export async function generateStaticParams() {
   const postMetas = await batchMatterFetch('./src/app/blog/posts/published');
