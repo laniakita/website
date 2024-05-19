@@ -23,8 +23,8 @@ export function PostHeader({ dataObject }: { dataObject: PostTeaserObjectProps }
                 </p>
               )}
             </div>
-            <figcaption className='flex w-full flex-col items-center justify-center gap-10 px-10 text-2xl font-bold italic leading-tight'>
-              <h2 className='max-w-xl'>{dataObject.heroCaption}</h2>
+            <figcaption className='flex w-full flex-col items-center justify-center gap-10 px-10 '>
+              <h3 className='max-w-xl text-xl font-bold italic leading-tight'>{dataObject.heroCaption}</h3>
               <div className='w-full max-w-xl rounded bg-ctp-text py-px' />
             </figcaption>
           </figure>
