@@ -21,7 +21,7 @@ export interface WorkMetaProps {
 export interface PostTeaserObjectProps {
   id: string;
   slug: string;
-  authorName: string;
+  author: string;
   date: string;
   headline: string;
   subheadline?: string;

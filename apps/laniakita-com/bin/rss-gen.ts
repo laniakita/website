@@ -77,7 +77,7 @@ const itemRes = blogPostRes.map((post) => {
       description: post.subheadline,
     },
     {
-      author: post.authorName,
+      author: post.author,
     },
     {
       category: post['category-slug'],

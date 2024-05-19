@@ -55,7 +55,7 @@ export function PostHeaderTitleBlock({ dataObject }: { dataObject: PostTeaserObj
           <p>
             <span>
               <Link href='/about' className='font-semibold'>
-                {dataObject.authorName}
+                {dataObject.author}
               </Link>
             </span>
           </p>
