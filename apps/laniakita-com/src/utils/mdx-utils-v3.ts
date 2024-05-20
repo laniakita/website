@@ -1,4 +1,5 @@
-/*
+/* These are useless, don't use. I'm leaving them for posterity.
+ *
  * v3 functions
  * 
  * These are functions optimized for getStaticParams() since that will perform 
