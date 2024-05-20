@@ -1,7 +1,6 @@
 import { opendir, readFile, access } from 'node:fs/promises';
 import path from 'node:path';
 import matter from 'gray-matter';
-import { toBase64Blur } from './blur-util';
 
 // types
 export interface WorkMetaProps {
@@ -37,6 +36,7 @@ export interface PostTeaserObjectProps {
 }
 
 // fyi: opendir works, but not recursively on Bun (unless that's been fixed). ignore this if on node.
+// builds an array of post locations
 export const fetchMDXfiles = async (inputFolder: string) => {
   const fileArr: string[] = [];
   try {
@@ -53,6 +53,7 @@ export const fetchMDXfiles = async (inputFolder: string) => {
   return fileArr;
 };
 
+// fetches frontmatter from a given path
 export const fetchFrontmatter = async (pathStr: string) => {
   try {
     const content = await readFile(pathStr, { encoding: 'utf8' });
@@ -64,6 +65,7 @@ export const fetchFrontmatter = async (pathStr: string) => {
   }
 };
 
+// fetches frontmatter from an entire folder
 export const batchMatterFetch = async (inputFolder: string) => {
   try {
     const fetchPaths = await fetchMDXfiles(inputFolder);
@@ -82,30 +84,7 @@ export const batchMatterFetch = async (inputFolder: string) => {
   }
 };
 
-export const batchMatterFetchWithBlurs = async (inputFolder: string) => {
-  try {
-    const fetchPaths = await fetchMDXfiles(inputFolder);
-    const matterMeta = await Promise.all(
-      fetchPaths.map(async (mdxPath: string) => {
-        const metaObj = await fetchFrontmatter(mdxPath);
-        if ((metaObj as PostTeaserObjectProps).heroFile ?? (metaObj as WorkMetaProps).teaserImg) {
-          const blurUrl = await toBase64Blur(
-            (metaObj as PostTeaserObjectProps).heroFile ?? (metaObj as WorkMetaProps).teaserImg!,
-          );
-          return { ...metaObj, blurUrl };
-        }
-        return metaObj;
-      }),
-    );
-    const sortedMetas = matterMeta.sort((a, b) => {
-      return b.date - a.date;
-    });
-    return sortedMetas;
-  } catch (err) {
-    console.error(err);
-  }
-};
-
+// fetches frontmatter if type matches
 export const batchMatterFetchByType = async (inputFolder: string, matterType: string, resToMatch: string) => {
   const resFetchAll = await batchMatterFetch(inputFolder);
   if (!resFetchAll) return;
@@ -124,24 +103,7 @@ export const batchMatterFetchByType = async (inputFolder: string, matterType: st
   return finalArr;
 };
 
-export const batchMatterFetchByTypeWithBlurs = async (inputFolder: string, matterType: string, resToMatch: string) => {
-  const resFetchAll = await batchMatterFetchWithBlurs(inputFolder);
-  if (!resFetchAll) return;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- generic function
-  const matchArr = resFetchAll.map((post: any) => {
-    //eslint-disable-next-line @typescript-eslint/no-unsafe-member-access -- generic function
-    if (post[matterType] === resToMatch) {
-      //eslint-disable-next-line @typescript-eslint/no-unsafe-return -- generic function
-      return post;
-    }
-    return undefined;
-  });
-  const finalArr = matchArr.filter((el) => el);
-
-  //eslint-disable-next-line @typescript-eslint/no-unsafe-return -- generic function
-  return finalArr;
-};
-
+// gets all mdx paths from a folder, and returns the post as a string
 const matchMDXFile = async (inputFolder: string, slug: string) => {
   const altContent = await fetchMDXfiles(inputFolder);
   const findPostPath = altContent.map((mdxPath) => {
@@ -157,6 +119,8 @@ const matchMDXFile = async (inputFolder: string, slug: string) => {
   return foundContent;
 };
 
+// finds mdx from a folder with a slug, and alternatively recursively searches
+// the folder for any nested posts that match the slug, and returns the string
 export const fetchMdx = async (inputFolder: string, slug: string) => {
   const pathStr = path.resolve(process.cwd(), inputFolder, `${slug}.mdx`);
   try {
@@ -178,6 +142,7 @@ export const fetchMdx = async (inputFolder: string, slug: string) => {
   }
 };
 
+// finds the given path of a mdx file, from an input folder and a slug
 const matchMDXFilePath = async (inputFolder: string, slug: string) => {
   const altContent = await fetchMDXfiles(inputFolder);
   const findPostPath = altContent.map((mdxPath) => {
@@ -192,6 +157,9 @@ const matchMDXFilePath = async (inputFolder: string, slug: string) => {
   return finalPath[0];
 };
 
+// combo function that first searches the first level of a input folder with
+// a given slug. Then searches deeper levels for the post with the slug. On
+//match of either, it returns the file path.
 export const fetchMdxPath = async (inputFolder: string, slug: string) => {
   const pathStr = path.resolve(process.cwd(), inputFolder, `${slug}.mdx`);
   try {
