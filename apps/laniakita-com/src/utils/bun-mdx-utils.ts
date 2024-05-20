@@ -6,7 +6,7 @@ import matter from 'gray-matter';
 export const fetchMDXfilesBun = async (inputFolder: string): Promise<(string | undefined)[]> => {
   try {
     const contentFolder = path.resolve(process.cwd(), inputFolder);
-    const dir = await readdir(contentFolder, {recursive: true});
+    const dir = await readdir(contentFolder, { recursive: true });
     const fileArr = dir.map((item) => {
       const itemSplit = item.split('/');
       const lastItem = itemSplit.pop();

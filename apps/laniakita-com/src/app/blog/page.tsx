@@ -1,6 +1,6 @@
 import matter from 'gray-matter';
 import { PostNumStoreProvider } from '@/providers/postnum-store-provider';
-import { type PostTeaserObjectProps, batchMatterFetchWithBlurs, fetchMdx } from '@/utils/mdx-utils';
+import { type PostTeaserObjectProps, fetchMdx, batchMatterFetch } from '@/utils/mdx-utils';
 import PreviewRollerV3 from './post-roller-v3';
 
 export const metadata = {
@@ -18,7 +18,7 @@ export const metadata = {
 };
 
 export default async function BlogPage() {
-  const data = await batchMatterFetchWithBlurs('./src/app/blog/posts/published');
+  const data = await batchMatterFetch('./src/app/blog/posts/published');
   const folder = './src/app/blog/posts/published';
   const descRes = await fetchMdx(folder, (data as unknown as PostTeaserObjectProps[])[0]!.slug);
   const projDescrMatter = matter(descRes!).content;

@@ -1,5 +1,5 @@
-import { toBase64Blur } from "./blur-util";
-import { PostTeaserObjectProps, WorkMetaProps, fetchFrontmatter, fetchMDXfiles } from "./mdx-utils";
+import { toBase64Blur } from './blur-util';
+import { type PostTeaserObjectProps, type WorkMetaProps, fetchFrontmatter, fetchMDXfiles } from './mdx-utils';
 
 export const batchMatterFetchWithBlurs = async (inputFolder: string) => {
   try {
