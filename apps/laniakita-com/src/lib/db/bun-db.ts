@@ -8,6 +8,4 @@ import * as posts from './schema/posts';
 // todo custom schemas via config file
 
 const sqlite = new Database('sqlite-main.db');
-const maindb = drizzle(sqlite, { schema: { ...authors, ...categories, ...posts } });
-
-export default maindb;
+export const maindb = drizzle(sqlite, { schema: { ...authors, ...categories, ...posts } });
