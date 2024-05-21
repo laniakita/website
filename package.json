@@ -1,9 +1,13 @@
 {
   "name": "ahiakea",
   "devDependencies": {
+    "@testing-library/react": "^15.0.7",
+    "@vitejs/plugin-react": "^4.2.1",
     "eslint": "9.0.0",
+    "jsdom": "^24.0.0",
     "prettier": "^3.2.5",
-    "turbo": "^1.13.2"
+    "turbo": "^1.13.2",
+    "vitest": "^1.6.0"
   },
   "engines": {
     "node": ">=18"
@@ -14,7 +18,9 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "test": "turbo run test",
+    "test:watch": "turbo run test:watch"
   },
   "workspaces": [
     "packages/*",
