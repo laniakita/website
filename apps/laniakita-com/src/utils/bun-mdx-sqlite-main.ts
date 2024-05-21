@@ -1,9 +1,9 @@
 /* eslint-disable no-console -- bun is bun */
-import { eq, and, or } from 'drizzle-orm';
+import { eq, and } from 'drizzle-orm';
 import { maindb } from '@/lib/db/bun-db';
 import { authors } from '@/lib/db/schema/authors';
-import { categories } from '@/lib/db/schema/tags';
-import { posts } from '@/lib/db/schema/posts';
+import { tags } from '@/lib/db/schema/tags';
+//import { posts } from '@/lib/db/schema/posts';
 
 export interface HandleAuthorProps {
   meta: { name: string; mastodon?: string };
@@ -53,45 +53,46 @@ export const handleAuthor = async (postObj: HandleAuthorProps) => {
   }
 };
 
-export interface HandleCategoryProps {
-  meta: { title: string };
+export interface HandletagProps {
+  meta: { title: string, slug: string };
   content: string;
   rawStr: string;
   localKey?: string;
 }
 
-export const handleCategory = async (postObj: HandleCategoryProps) => {
-  console.log('found category file');
+export const handletag = async (postObj: HandletagProps) => {
+  console.log('found tag file');
   // check if postObj.meta.name == authors.name
   const checkRes = await maindb
     .select({
-      testId: categories.id,
-      testName: categories.title,
+      testId: tags.id,
+      testName: tags.title,
     })
-    .from(categories)
-    .where(eq(categories.title, postObj.meta.title));
+    .from(tags)
+    .where(eq(tags.title, postObj.meta.title));
   if (checkRes.length > 0) {
-    console.log('category info file exists trying update');
+    console.log('tag info file exists trying update');
 
     const { testId, testName } = checkRes[0]!;
     console.log(`exists with ${testId}`);
     console.log(`exists with ${testName}`);
     await maindb
-      .update(categories)
+      .update(tags)
       .set({
         title: postObj.meta.title,
         rawContent: postObj.rawStr,
         localKey: postObj.localKey,
       })
-      .where(and(eq(categories.id, testId), eq(categories.title, testName)));
+      .where(and(eq(tags.id, testId), eq(tags.title, testName)));
   }
   // insert into db
   if (checkRes.length === 0) {
-    console.log("category doesn't exist, inserting into categories table");
+    console.log("tag doesn't exist, inserting into tags table");
     await maindb
-      .insert(categories)
+      .insert(tags)
       .values({
         id: crypto.randomUUID(),
+        slug: postObj.meta.slug,
         title: postObj.meta.title,
         rawContent: postObj.rawStr,
         localKey: postObj.localKey,
@@ -102,9 +103,9 @@ export const handleCategory = async (postObj: HandleCategoryProps) => {
 
 export interface HandlePostProps {
   meta: {
-    author: string;
+    postAuthors: string[];
     date: Date;
-    tags: string[];
+    postTags: string[];
     headline: string;
     subheadline: string;
     heroFile: string;
@@ -118,19 +119,21 @@ export interface HandlePostProps {
   localKey?: string;
 }
 
+/*
+
 export const handlePost = async (postObj: HandlePostProps) => {
   console.log('found post');
   const authorQ = await maindb
     .select({ name: authors.name })
     .from(authors)
     .where(eq(authors.name, postObj.meta.author));
-  const categoryQ = await maindb
-    .select({ title: categories.title })
-    .from(categories)
-    .where(eq(categories.title, postObj.meta.category));
+  const tagQ = await maindb
+    .select({ title: tags.title })
+    .from(tags)
+    .where(eq(tags.title, postObj.meta.tag));
 
   const authorMatch = authorQ[0];
-  const categoryMatch = categoryQ[0];
+  const tagMatch = tagQ[0];
   const checkPostExists = await maindb
     .select({
       testId: posts.id,
@@ -145,8 +148,8 @@ export const handlePost = async (postObj: HandlePostProps) => {
       ),
     );
 
-  if (typeof authorMatch?.name === 'string' && typeof categoryMatch?.title === 'string') {
-    console.log('author & category exists, inserting post');
+  if (typeof authorMatch?.name === 'string' && typeof tagMatch?.title === 'string') {
+    console.log('author & tag exists, inserting post');
     if (checkPostExists.length > 0) {
       console.log('post exists, updating...');
 
@@ -158,7 +161,7 @@ export const handlePost = async (postObj: HandlePostProps) => {
           date: postObj.meta.date.toUTCString(),
           headline: postObj.meta.headline,
           subheadline: postObj.meta.subheadline,
-          category: postObj.meta.category,
+          tag: postObj.meta.tag,
           heroFile: postObj.meta.heroFile,
           heroCaption: postObj.meta.heroCaption,
           heroCredit: postObj.meta.heroCredit,
@@ -184,7 +187,7 @@ export const handlePost = async (postObj: HandlePostProps) => {
         date: postObj.meta.date.toUTCString(),
         headline: postObj.meta.headline,
         subheadline: postObj.meta.subheadline,
-        category: postObj.meta.category,
+        tag: postObj.meta.tag,
         heroFile: postObj.meta.heroFile,
         heroCredit: postObj.meta.heroCredit,
         heroCreditUrlText: postObj.meta.heroCreditUrlText,
@@ -196,3 +199,4 @@ export const handlePost = async (postObj: HandlePostProps) => {
     }
   }
 };
+*/

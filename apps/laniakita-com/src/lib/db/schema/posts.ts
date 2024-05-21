@@ -14,8 +14,7 @@ export const categoryRelations = relations(tags, ({ many }) => ({
 export interface Posts {
   id: string;
   date: string;
-  postTags?: string[];
-  postAuthors: string[];
+  postAuthor: string;
   slug: string;
   headline: string;
   subheadline?: string;
@@ -31,13 +30,12 @@ export interface Posts {
 
 export const posts = sqliteTable('posts', {
   id: text('id').primaryKey(),
-  postAuthors: text('post_authors')
-    .references(() => authors.name, { onUpdate: 'cascade', onDelete: 'cascade' })
+  authorId: text('author_id')
+    .references(() => authors.id, { onUpdate: 'cascade', onDelete: 'cascade' })
     .notNull(),
   date: text('date').notNull(),
   headline: text('headline').unique().notNull(),
   subheadline: text('subheadline'),
-  postTags: text('post_tags').references(() => tags.title, { onUpdate: 'cascade', onDelete: 'cascade' }),
   heroFile: text('hero_file'),
   heroCaption: text('hero_caption'),
   heroCredit: text('hero_credit'),
@@ -47,6 +45,14 @@ export const posts = sqliteTable('posts', {
   rawContent: text('raw_content'),
   localKey: text('local_key'),
 });
+
+export const postsRelations = relations(posts, ({ one, many }) => ({
+  author: one(authors, {
+    fields: [posts.authorId],
+    references: [authors.id],
+  }),
+  postToTags: many(postsToTags)
+}));
 
 export const postsToTags = sqliteTable('posts_to_tags', 
   {
@@ -65,20 +71,5 @@ export const postsToTagsRelations = relations(postsToTags, ({ one }) => ({
   }),
 }));
 
-export const postsToAuthors = sqliteTable('posts_to_tags', 
-  {
-    postId: text('post_id').notNull().references(()=>posts.id),
-    authorId: text('author_id').notNull().references(()=>authors.id)
-  },
-  (t) => ({
-    pk: primaryKey({ columns: [t.postId, t.authorId] })
-  }),
-)
 
-export const postsToAuthorsRelations = relations(postsToAuthors, ({ one }) => ({
-  author: one(authors, {
-    fields: [postsToAuthors.authorId],
-    references: [authors.id],
-  }),
-}));
 
