@@ -16,8 +16,8 @@ if (debugAll) {
 
 // useful funcs
 const isNonEmptyArrayOfStrings = (value: unknown): value is string[] => {
-  return Array.isArray(value) && value.length > 0 && value.every(item => typeof item === "string");
-}
+  return Array.isArray(value) && value.length > 0 && value.every((item) => typeof item === 'string');
+};
 
 interface ConfigProps {
   // must be relative path from root project directory => './content'
@@ -103,7 +103,7 @@ export const batchFetchMDXPaths = async ({
 
     debug && console.log(finalArr);
 
-    if (isNonEmptyArrayOfStrings(finalArr)) return finalArr
+    if (isNonEmptyArrayOfStrings(finalArr)) return finalArr;
 
     return;
   } catch (err) {
@@ -128,15 +128,13 @@ interface BatchFetchFrontMatterProps {
   suppressErr?: boolean;
 }
 
-
-
 /*
  * @example batchFetchFrontMatter([pathsArr])
  * () => [{front matter post0}, ..., {front matter postN}]
  */
-const batchFetchFrontMatter = async ({pathsArr, debug, suppressErr}: BatchFetchFrontMatterProps) => {
+const batchFetchFrontMatter = async ({ pathsArr, debug, suppressErr }: BatchFetchFrontMatterProps) => {
   if (debugProcessMdx) {
-    debug = true
+    debug = true;
   }
 
   try {
@@ -148,28 +146,58 @@ const batchFetchFrontMatter = async ({pathsArr, debug, suppressErr}: BatchFetchF
         const rawFile = await readIntoMem.text();
         //console.log(rawFile)
         const frontMatter = matter(rawFile).data;
-        if ('uuid' in frontMatter === false) {
-          debug && console.log(crypto.randomUUID())
-          // todo inject uuid above and write into file location 
+        if ('id' in frontMatter === false) {
+          debug && console.log('no uuid found, injecting...')
+          const uuid = crypto.randomUUID();
+          const fileArr = rawFile.split('\n');
+
+          const getInjectionPoint = fileArr.map((strLine, index) => {
+            // we're going to look for the first "---" of the front matter
+            // then inject. We can test that we're not adding at the end by
+            // checking if the key following injection is valid
+            const keyGuess = fileArr[index + 1]?.split(':')[0]!;
+            const point = index + 1;
+            if (strLine === '---' && keyGuess) {
+              debug && console.log('inject at ', index + 1, 'before ', keyGuess);
+              return point;
+            }
+            return;
+          });
+
+          const injectionPoint = getInjectionPoint.filter((el) => el)[0];
+          if (typeof injectionPoint !== 'number') return;
+          fileArr.splice(injectionPoint, 0, `id: ${uuid}`);
+
+          const finalString = fileArr.join('\n');
+
+          const fileWritePath = absFilePath;
+          debug && console.log(`saving updated markdown file to `, fileWritePath);
+          await Bun.write(fileWritePath, finalString);
+          const newMatter = matter(finalString).data;
+          return newMatter;
           // also mv file to a slugified headline if different
         }
-        return frontMatter
+        console.log(`uuid in front matter already with ${frontMatter.id}`)
+        return frontMatter;
       }),
     );
 
-    debug && console.log(matterMeta)
+    debug && console.log(matterMeta);
 
-    return matterMeta
+    return matterMeta;
   } catch (err) {
     !suppressErr && console.error(err);
-    return
+    return;
   }
 };
 
 export const batchFetchMain = async (config: ConfigProps) => {
   const validMdxPaths = await batchFetchMDXPaths(config);
-  const frontMatterArr = await batchFetchFrontMatter({pathsArr: validMdxPaths!})
-  config.debug && console.log(frontMatterArr)
+  const frontMatterArr = await batchFetchFrontMatter({
+    pathsArr: validMdxPaths!,
+    debug: config.debug,
+    suppressErr: config.suppressErr,
+  });
+  config.debug && console.log(frontMatterArr);
   return frontMatterArr;
-}
-
+};
