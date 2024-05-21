@@ -144,13 +144,25 @@ const batchFetchFrontMatter = async ({ pathsArr, debug, suppressErr }: BatchFetc
         const absFilePath = path.resolve(path.join(cwd, mdxPath));
         const readIntoMem = Bun.file(absFilePath);
         const rawFile = await readIntoMem.text();
-        //console.log(rawFile)
         const frontMatter = matter(rawFile).data;
+
+        /*
+         * before we send the frontmatter into our db, we need to ensure
+         * it has a UUID first. This is to provide some continuity
+         * for our posts, in the event we need to reconstruct the database.
+         *
+         * This way, even if shtf, if you've got a link to a post
+         * (i.e. bookmark), it's likely you'll still be able to find it years
+         * down the line.
+         */
         if ('id' in frontMatter === false) {
-          debug && console.log('no uuid found, injecting...')
+          debug && console.log('no uuid found, injecting...');
+
           const uuid = crypto.randomUUID();
           const fileArr = rawFile.split('\n');
 
+          // we need to search the file string to find out where
+          // we can safely inject the uuid.
           const getInjectionPoint = fileArr.map((strLine, index) => {
             // we're going to look for the first "---" of the front matter
             // then inject. We can test that we're not adding at the end by
@@ -159,6 +171,7 @@ const batchFetchFrontMatter = async ({ pathsArr, debug, suppressErr }: BatchFetc
             const point = index + 1;
             if (strLine === '---' && keyGuess) {
               debug && console.log('inject at ', index + 1, 'before ', keyGuess);
+
               return point;
             }
             return;
@@ -171,13 +184,15 @@ const batchFetchFrontMatter = async ({ pathsArr, debug, suppressErr }: BatchFetc
           const finalString = fileArr.join('\n');
 
           const fileWritePath = absFilePath;
+
           debug && console.log(`saving updated markdown file to `, fileWritePath);
+
           await Bun.write(fileWritePath, finalString);
           const newMatter = matter(finalString).data;
           return newMatter;
-          // also mv file to a slugified headline if different
         }
-        console.log(`uuid in front matter already with ${frontMatter.id}`)
+        debug && console.log(`uuid found in front matter with ${frontMatter.id}, not injecting`);
+
         return frontMatter;
       }),
     );
