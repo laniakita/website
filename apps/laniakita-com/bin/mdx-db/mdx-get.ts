@@ -14,6 +14,11 @@ if (debugAll) {
   debugProcessMdx = true;
 }
 
+// useful funcs
+const isNonEmptyArrayOfStrings = (value: unknown): value is string[] => {
+  return Array.isArray(value) && value.length > 0 && value.every(item => typeof item === "string");
+}
+
 interface ConfigProps {
   // must be relative path from root project directory => './content'
   contentFolder: string;
@@ -42,7 +47,7 @@ export const batchFetchMDXPaths = async ({
   filesToExclude,
   debug,
   suppressErr,
-}: ConfigProps): Promise<(string | undefined)[] | undefined> => {
+}: ConfigProps): Promise<string[] | undefined> => {
   try {
     if (debugFetchPaths) {
       debug = true;
@@ -81,12 +86,12 @@ export const batchFetchMDXPaths = async ({
       return undefined;
     });
 
-
     // validate found paths
+    const cwd = process.cwd();
     const validatedArr = await Promise.all(
       fileArr.map(async (pathStr) => {
         try {
-          await access(path.resolve(path.join(process.cwd(), pathStr!)));
+          await access(path.resolve(path.join(cwd, pathStr!)));
           return pathStr;
         } catch (err) {
           return;
@@ -97,7 +102,10 @@ export const batchFetchMDXPaths = async ({
     const finalArr = validatedArr.filter((el) => el);
 
     debug && console.log(finalArr);
-    return finalArr;
+
+    if (isNonEmptyArrayOfStrings(finalArr)) return finalArr
+
+    return;
   } catch (err) {
     if (err instanceof Error && 'code' in err && err.code === 'ENOENT') {
       !suppressErr &&
@@ -114,22 +122,54 @@ export const batchFetchMDXPaths = async ({
 
 debugFetchPaths && console.log(await batchFetchMDXPaths(defaultConfig));
 
+interface BatchFetchFrontMatterProps {
+  pathsArr: string[];
+  debug?: boolean;
+  suppressErr?: boolean;
+}
+
+
+
 /*
-const batchFetchFrontMatter = async (pathsArr: string[]) => {
+ * @example batchFetchFrontMatter([pathsArr])
+ * () => [{front matter post0}, ..., {front matter postN}]
+ */
+const batchFetchFrontMatter = async ({pathsArr, debug, suppressErr}: BatchFetchFrontMatterProps) => {
+  if (debugProcessMdx) {
+    debug = true
+  }
+
   try {
+    const cwd = process.cwd();
     const matterMeta = await Promise.all(
       pathsArr.map(async (mdxPath: string) => {
-        const metaObj;
-        return metaObj;
+        const absFilePath = path.resolve(path.join(cwd, mdxPath));
+        const readIntoMem = Bun.file(absFilePath);
+        const rawFile = await readIntoMem.text();
+        //console.log(rawFile)
+        const frontMatter = matter(rawFile).data;
+        if ('uuid' in frontMatter === false) {
+          debug && console.log(crypto.randomUUID())
+          // todo inject uuid above and write into file location 
+          // also mv file to a slugified headline if different
+        }
+        return frontMatter
       }),
     );
-    const sortedMetas = matterMeta.sort((a, b) => {
-      return b.date - a.date;
-    });
-    return sortedMetas;
+
+    debug && console.log(matterMeta)
+
+    return matterMeta
   } catch (err) {
-    console.error(err);
-    return [''];
+    !suppressErr && console.error(err);
+    return
   }
 };
-*/
+
+export const batchFetchMain = async (config: ConfigProps) => {
+  const validMdxPaths = await batchFetchMDXPaths(config);
+  const frontMatterArr = await batchFetchFrontMatter({pathsArr: validMdxPaths!})
+  config.debug && console.log(frontMatterArr)
+  return frontMatterArr;
+}
+
