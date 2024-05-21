@@ -2,7 +2,7 @@
 import { eq, and, or } from 'drizzle-orm';
 import { maindb } from '@/lib/db/bun-db';
 import { authors } from '@/lib/db/schema/authors';
-import { categories } from '@/lib/db/schema/categories';
+import { categories } from '@/lib/db/schema/tags';
 import { posts } from '@/lib/db/schema/posts';
 
 export interface HandleAuthorProps {

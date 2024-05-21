@@ -2,8 +2,8 @@
 import { drizzle } from 'drizzle-orm/better-sqlite3';
 import Database from 'better-sqlite3';
 import * as authors from './schema/authors';
-import * as categories from './schema/categories';
+import * as tags from './schema/tags';
 import * as posts from './schema/posts';
 
 const sqlite = new Database('sqlite-main.db');
-export const maindb = drizzle(sqlite, { schema: { ...authors, ...categories, ...posts } });
+export const maindb = drizzle(sqlite, { schema: { ...authors, ...tags, ...posts } });
