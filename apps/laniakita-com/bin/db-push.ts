@@ -5,8 +5,8 @@ import { parseArgs } from 'node:util';
 import path from 'node:path';
 import { readdir } from 'node:fs/promises';
 import matter from 'gray-matter';
-import type { HandlePostProps, HandleAuthorProps, HandleCategoryProps } from '@/utils/bun-mdx-sqlite-main';
-import { handlePost, handleAuthor, handleCategory } from '@/utils/bun-mdx-sqlite-main';
+//import type { HandlePostProps, HandleAuthorProps, HandleCategoryProps } from '@/utils/bun-mdx-sqlite-main';
+//import { handlePost, handleAuthor, handleCategory } from '@/utils/bun-mdx-sqlite-main';
 
 const { values } = parseArgs({
   args: Bun.argv,
@@ -159,6 +159,8 @@ if (debug) {
   console.log(await getPosts(searchFolder));
 }
 
+/*
+
 export const insertFromRawIndexV2 = async (folderOfContent: string) => {
   const rawPostArr = await getPosts(folderOfContent);
   let stage2 = false;
@@ -191,3 +193,5 @@ export const insertFromRawIndexV2 = async (folderOfContent: string) => {
 };
 
 await insertFromRawIndexV2(searchFolder);
+
+*/
