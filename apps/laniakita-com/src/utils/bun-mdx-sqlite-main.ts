@@ -23,7 +23,7 @@ export const handleAuthor = async (postObj: HandleAuthorProps) => {
     .where(eq(authors.name, postObj.meta.name));
   if (checkRes.length > 0) {
     console.log('author exists trying update');
-   
+
     const { testId, testName } = checkRes[0]!;
     console.log(`exists with ${testId}`);
     console.log(`exists with ${testName}`);
@@ -72,7 +72,7 @@ export const handleCategory = async (postObj: HandleCategoryProps) => {
     .where(eq(categories.title, postObj.meta.title));
   if (checkRes.length > 0) {
     console.log('category info file exists trying update');
-   
+
     const { testId, testName } = checkRes[0]!;
     console.log(`exists with ${testId}`);
     console.log(`exists with ${testName}`);
@@ -104,9 +104,9 @@ export interface HandlePostProps {
   meta: {
     author: string;
     date: Date;
+    tags: string[];
     headline: string;
     subheadline: string;
-    category: string;
     heroFile: string;
     heroCaption: string;
     heroCredit: string;
@@ -149,7 +149,7 @@ export const handlePost = async (postObj: HandlePostProps) => {
     console.log('author & category exists, inserting post');
     if (checkPostExists.length > 0) {
       console.log('post exists, updating...');
-     
+
       const { testId, testHeadline, testDate } = checkPostExists[0]!;
       await maindb
         .update(posts)

@@ -16,8 +16,8 @@ const { values } = parseArgs({
     },
     debug: {
       type: 'boolean',
-      short: 'd'
-    }
+      short: 'd',
+    },
   },
   strict: false,
   allowPositionals: true,
@@ -31,13 +31,18 @@ const contentFolderName = values.content as string;
 const debug = values.debug ? values.debug : false;
 
 if (debug) {
-  //const schemas = path.resolve(currentDir, values.schemas!);
+  console.log('debug mode on!');
 }
 
-/* phase 1: process local folder and get paths of MD & MDX files */
+/*
+ * phase 1: process local folder and get paths of MD & MDX files
+ *
+ * @example
+ * getMDXPathsFromContentFolder(contentFolderName)
+ * () => ['/home/user/website/content/post1.mdx', '.../post2.mdx']
+ */
 
-// readdir version of blogPostFinder(), opendir with bun doesn't seem to support recursion yet
-async function getMDXPathsFromContentFolder(contentFolder: string) {
+export async function getMDXPathsFromContentFolder(contentFolder: string) {
   const testDir = await readdir(contentFolder, {
     recursive: true,
   });
@@ -57,11 +62,19 @@ async function getMDXPathsFromContentFolder(contentFolder: string) {
   return finalArr;
 }
 
-//console.log(await getMDXPathsFromContentFolder(searchFolder));
+if (debug) {
+  console.log(await getMDXPathsFromContentFolder(searchFolder));
+}
 
-/* phase 2: with file paths, we can send them into a database */
+/*
+ * phase 2: with file paths, we can send them into a database
+ * 
+ * @example
+ * batchMDXProcessor(['/home/user/website/content/post1.mdx', '../post2.mdx'])
+ * () => [{front matter post1.mdx}, {front matter post2.mdx}]
+ */
 
-async function batchMdxProcessor(absPathArr: string[]) {
+async function batchMDXProcessor(absPathArr: string[]) {
   const getContentFolder = contentFolderName;
   const fileArr = await Promise.all(
     absPathArr.map(async (mdxFilePath: string) => {
@@ -71,10 +84,10 @@ async function batchMdxProcessor(absPathArr: string[]) {
       const splitStr = mdxFilePath.split('/');
 
       /*
-       * This is a script which lets us find the path starting from the content folder,
+       * This is a script which lets us find the path
+       *  starting from the content folder,
        *  purging the process.cwd() from the mdxFilePath
-       * */
-
+       */
       const getLocalKeyIndex = splitStr.map((str1: string) => {
         if (str1 === getContentFolder) {
           return splitStr.indexOf(str1);
@@ -85,11 +98,11 @@ async function batchMdxProcessor(absPathArr: string[]) {
       const freshLocalKey = splitStr.slice(keyIndex[0], splitStr.length).join('/');
 
       /*
-       * if we have images in the frontmatter we can copy them over to the public folder,
-       * and save the path to the image starting from the public folder, in our db so Next
-       * can find them.
-       **/
-
+       * if we have images in the
+       * frontmatter we can copy them over to the public folder,
+       * and save the path to the image starting from the public
+       * folder, in our db so Next can find them.
+       */
       if (frontmatter.heroFile) {
         console.log('found hero image');
         const parentPath = splitStr.slice(0, splitStr.length - 1).join('/');
@@ -100,7 +113,12 @@ async function batchMdxProcessor(absPathArr: string[]) {
         const constPublicImgFile = Bun.file(pathToCheck);
         const imgFile = Bun.file(imgToCopyFilePath);
 
-        /* If the file isn't in the public folder, then copy it. If an image already exists in the public folder, but the declared frontmatter image is different (diff in size), then replace it. */
+        /*
+         * If the file isn't in the public folder, then copy it.
+         * If an image already exists in the public folder,
+         * but the declared frontmatter image is
+         * different (diff in size), then replace it.
+         */
         const checkImg = await constPublicImgFile.exists();
 
         if (!checkImg) {
@@ -133,17 +151,19 @@ async function batchMdxProcessor(absPathArr: string[]) {
 
 async function getPosts(contentFolder: string) {
   const pathsArr = await getMDXPathsFromContentFolder(contentFolder);
-  const mdxArr = await batchMdxProcessor(pathsArr as string[]);
+  const mdxArr = await batchMDXProcessor(pathsArr as string[]);
   return mdxArr;
 }
 
-//console.log( await getPosts(searchFolder) )
+if (debug) {
+  console.log(await getPosts(searchFolder));
+}
 
 export const insertFromRawIndexV2 = async (folderOfContent: string) => {
   const rawPostArr = await getPosts(folderOfContent);
   let stage2 = false;
   if (rawPostArr.length > 0) {
-    console.log('init! insert authors and categories first');
+    if (debug) console.log('init! insert authors and categories first');
     await Promise.all(
       rawPostArr.map(async (postObj) => {
         if (postObj.meta.type === 'authors') {
@@ -155,10 +175,10 @@ export const insertFromRawIndexV2 = async (folderOfContent: string) => {
       }),
     );
     stage2 = true;
-    console.log('success!');
+    if (debug) console.log('success!');
   }
   if (rawPostArr.length > 0 && stage2) {
-    console.log('phase 1 complete, inserting posts');
+    if (debug) console.log('phase 1 complete, inserting posts');
     await Promise.all(
       rawPostArr.map(async (postObj) => {
         if (postObj.meta.type === 'post') {
