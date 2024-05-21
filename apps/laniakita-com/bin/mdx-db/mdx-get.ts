@@ -23,6 +23,7 @@ interface ConfigProps {
   filesToExclude?: string[];
   // debug
   debug?: boolean;
+  suppressErr?: boolean;
 }
 
 const defaultConfig: ConfigProps = {
@@ -40,6 +41,7 @@ export const batchFetchMDXPaths = async ({
   foldersToExclude,
   filesToExclude,
   debug,
+  suppressErr
 }: ConfigProps): Promise<(string | undefined)[] | undefined> => {
   try {
     if (debugFetchPaths) {
@@ -84,13 +86,13 @@ export const batchFetchMDXPaths = async ({
     return finalArr;
   } catch (err) {
     if (err instanceof Error && 'code' in err && err.code === 'ENOENT') {
-      console.error(
+      !suppressErr && console.error(
         "Ooops! Couldn't open that directory! Are you sure that folder is relative to root your project directory, i.e. './src/content/posts'? ",
         err,
       );
       return;
     }
-    console.error(err);
+    !suppressErr && console.error(err);
     return;
   }
 };

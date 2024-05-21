@@ -10,7 +10,7 @@ test('batchFetchMDXPaths produces an array of valid paths to mdx files given a c
     contentFolder,
     foldersToExclude,
     filesToExclude,
-    debug: true,
+    debug: false,
   });
 
   // Assert that the result is an array
@@ -24,11 +24,12 @@ test('batchFetchMDXPaths produces an array of valid paths to mdx files given a c
   });
 });
 
-test('batchFetchMDXPaths fails task successfully', async () => {
+test('batchFetchMDXPaths fails task (invalid folder path) successfully', async () => {
   const invalidContentFolder = '/non-existent-folder'; // Example invalid folder
 
   const result = await batchFetchMDXPaths({
     contentFolder: invalidContentFolder,
+    suppressErr: true
   });
 
   // Assert that the result is undefined (due to error handling)
