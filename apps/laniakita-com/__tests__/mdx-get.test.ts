@@ -10,7 +10,7 @@ test('batchFetchMDXPaths produces an array of valid paths to mdx files given a c
     contentFolder,
     foldersToExclude,
     filesToExclude,
-    debug: false,
+    debug: true,
   });
 
   // Assert that the result is an array

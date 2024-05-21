@@ -2,7 +2,7 @@
 /* eslint-disable no-undef -- bun is bun */
 /* eslint-disable no-console -- doesn't run in the browser, so this is fine */
 import path from 'node:path';
-import { readdir } from 'node:fs/promises';
+import { readdir, access } from 'node:fs/promises';
 import matter from 'gray-matter';
 
 const debugAll = false;
@@ -41,7 +41,7 @@ export const batchFetchMDXPaths = async ({
   foldersToExclude,
   filesToExclude,
   debug,
-  suppressErr
+  suppressErr,
 }: ConfigProps): Promise<(string | undefined)[] | undefined> => {
   try {
     if (debugFetchPaths) {
@@ -81,15 +81,30 @@ export const batchFetchMDXPaths = async ({
       return undefined;
     });
 
-    const finalArr = fileArr.filter((el) => el);
+
+    // validate found paths
+    const validatedArr = await Promise.all(
+      fileArr.map(async (pathStr) => {
+        try {
+          await access(path.resolve(path.join(process.cwd(), pathStr!)));
+          return pathStr;
+        } catch (err) {
+          return;
+        }
+      }),
+    );
+
+    const finalArr = validatedArr.filter((el) => el);
+
     debug && console.log(finalArr);
     return finalArr;
   } catch (err) {
     if (err instanceof Error && 'code' in err && err.code === 'ENOENT') {
-      !suppressErr && console.error(
-        "Ooops! Couldn't open that directory! Are you sure that folder is relative to root your project directory, i.e. './src/content/posts'? ",
-        err,
-      );
+      !suppressErr &&
+        console.error(
+          "Ooops! Couldn't open that directory! Are you sure that folder is relative to root your project directory, i.e. './src/content/posts'? ",
+          err,
+        );
       return;
     }
     !suppressErr && console.error(err);
@@ -104,7 +119,7 @@ const batchFetchFrontMatter = async (pathsArr: string[]) => {
   try {
     const matterMeta = await Promise.all(
       pathsArr.map(async (mdxPath: string) => {
-        const metaObj 
+        const metaObj;
         return metaObj;
       }),
     );
@@ -117,5 +132,4 @@ const batchFetchFrontMatter = async (pathsArr: string[]) => {
     return [''];
   }
 };
-
 */
