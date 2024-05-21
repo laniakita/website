@@ -19,7 +19,7 @@ export interface WorkMetaProps {
 
 export interface PostTeaserObjectProps {
   type: string;
-  uuid: string;
+  uuid?: string;
   slug: string;
   'category-slug'?: string;
   headline: string;

@@ -48,10 +48,14 @@ export function PostHeader({ dataObject }: { dataObject: PostTeaserObjectProps }
             <HeroShimmer dataObject={dataObject} />
 
             <p className='-mb-2 -mt-6 flex w-full flex-col items-center justify-center px-10 font-mono text-sm font-thin [font-style:_normal]'>
-              {dataObject.heroCredit !== undefined && (
+              {(dataObject.heroCredit && dataObject.heroCreditUrl && dataObject.heroCreditUrlText) !== undefined ? (
                 <span className='w-full max-w-xl'>
                   Image source: {dataObject.heroCredit} via{' '}
                   <Link href={dataObject.heroCreditUrl!}>{dataObject.heroCreditUrlText}</Link>
+                </span>
+              ) : (
+                <span className='w-full max-w-xl'>
+                  Image source: Original work by yours truly.
                 </span>
               )}
             </p>
