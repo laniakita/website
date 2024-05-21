@@ -1,6 +1,6 @@
 import { eq, desc, like, or, and } from 'drizzle-orm';
 import { maindb } from '@/lib/db/bun-db';
-import { categories } from '@/lib/db/schema/categories';
+import { categories } from '@/lib/db/schema/tags';
 import { posts } from '@/lib/db/schema/posts';
 
 export const querySinglePost = async (searchId: string, searchSlug: string) => {
