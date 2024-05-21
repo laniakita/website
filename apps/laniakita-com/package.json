@@ -9,7 +9,8 @@
     "build": "dotenv -e .env.production -e .env.local -- next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "vitest"
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@ahiakea/eslint-config": "workspace:*",
@@ -55,7 +56,6 @@
   "devDependencies": {
     "@next/bundle-analyzer": "14.2.2",
     "@react-three/eslint-plugin": "^0.1.1",
-    "@testing-library/react": "^15.0.7",
     "@types/better-sqlite3": "^7.6.10",
     "@types/bun": "^1.1.2",
     "@types/eslint": "^8.56.9",
@@ -65,13 +65,11 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/three": "^0.164.0",
-    "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.19",
     "drizzle-kit": "^0.21.2",
     "eslint": "^8",
     "eslint-config-next": "14.2.2",
     "eslint-plugin-tailwindcss": "^3.15.1",
-    "jsdom": "^24.0.0",
     "postcss": "^8",
     "postcss-import": "^16.1.0",
     "prettier": "^3.2.5",
@@ -79,7 +77,6 @@
     "remark-gfm": "^4.0.0",
     "serwist": "^9.0.2",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5",
-    "vitest": "^1.6.0"
+    "typescript": "^5"
   }
 }
