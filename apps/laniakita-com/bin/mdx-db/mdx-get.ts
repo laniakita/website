@@ -122,20 +122,20 @@ export const batchFetchMDXPaths = async ({
 
 debugFetchPaths && console.log(await batchFetchMDXPaths(defaultConfig));
 
-interface BatchFetchFrontMatterProps {
-  pathsArr: string[];
-  debug?: boolean;
-  suppressErr?: boolean;
+interface BatchFetchFrontMatterProps extends ConfigProps {
+  pathsArr?: string[];
+  imageKey?: string;
 }
 
 /*
  * @example batchFetchFrontMatter([pathsArr])
  * () => [{front matter post0}, ..., {front matter postN}]
  */
-const batchFetchFrontMatter = async ({ pathsArr, debug, suppressErr }: BatchFetchFrontMatterProps) => {
+const batchFetchFrontMatter = async ({ pathsArr, imageKey, debug, suppressErr }: BatchFetchFrontMatterProps) => {
   if (debugProcessMdx) {
     debug = true;
   }
+  if (!pathsArr) return;
 
   try {
     const cwd = process.cwd();
@@ -145,6 +145,40 @@ const batchFetchFrontMatter = async ({ pathsArr, debug, suppressErr }: BatchFetc
         const readIntoMem = Bun.file(absFilePath);
         const rawFile = await readIntoMem.text();
         const frontMatter = matter(rawFile).data;
+
+        if (imageKey && imageKey in frontMatter) {
+          console.log('found hero image with key', imageKey);
+          /*
+          const parentPath = splitStr.slice(0, splitStr.length - 1).join('/');
+          const imgToCopyFilePath = path.resolve(parentPath, frontmatter.heroFile as string);
+          const publicCopyPath = `/public/assets/hero-images/${(frontmatter.heroFile as string).split('/').pop()}`;
+          const embedPublicCopyPath = `/assets/hero-images/${(frontmatter.heroFile as string).split('/').pop()}`;
+          const pathToCheck = path.join(currentDir, publicCopyPath);
+          const constPublicImgFile = Bun.file(pathToCheck);
+          const imgFile = Bun.file(imgToCopyFilePath);
+          */
+          /*
+           * If the file isn't in the public folder, then copy it.
+           * If an image already exists in the public folder,
+           * but the declared frontmatter image is
+           * different (diff in size), then replace it.
+           */
+          /*
+          const checkImg = await constPublicImgFile.exists();
+  
+          if (!checkImg) {
+            console.log('image not in public folder, copying ...');
+            await Bun.write(`${process.cwd()}${publicCopyPath}`, imgFile);
+          } else if (constPublicImgFile.size !== imgFile.size) {
+            console.log('found image is different from public folder, copying ...');
+            await Bun.write(`${process.cwd()}${publicCopyPath}`, imgFile);
+          } else {
+            console.log('image is the same, not copying');
+          }
+  
+          frontmatter.heroFile = embedPublicCopyPath;
+          */
+        }
 
         /*
          * before we send the frontmatter into our db, we need to ensure
@@ -206,12 +240,12 @@ const batchFetchFrontMatter = async ({ pathsArr, debug, suppressErr }: BatchFetc
   }
 };
 
-export const batchFetchMain = async (config: ConfigProps) => {
+export const batchFetchMain = async (config: ConfigProps & BatchFetchFrontMatterProps) => {
   const validMdxPaths = await batchFetchMDXPaths(config);
   const frontMatterArr = await batchFetchFrontMatter({
+    ...config,
     pathsArr: validMdxPaths!,
-    debug: config.debug,
-    suppressErr: config.suppressErr,
+    imageKey: config.imageKey,
   });
   config.debug && console.log(frontMatterArr);
   return frontMatterArr;
