@@ -334,80 +334,88 @@ const comboInject = async ({ rawFile, absFilePath, debug }: InjectionProps) => {
   return newMatter;
 };
 
-interface MatterMetaProps {
-  pathsArr: string[];
+interface MatterProcessorProps {
+  frontMatter: Record<string, unknown>;
+  absFilePath: string;
+  mdxPath: string;
+  rawFile: string;
   imageKey?: string;
   publicPath?: string;
   debug?: boolean;
 }
 
-const matterMeta = async ({ pathsArr, imageKey, publicPath, debug }: MatterMetaProps) => {
-  const cwd = process.cwd();
+const matterProcessor = async ({
+  frontMatter,
+  absFilePath,
+  mdxPath,
+  rawFile,
+  imageKey,
+  publicPath,
+  debug,
+}: MatterProcessorProps): Promise<Record<string, unknown> | undefined> => {
+  // I've made the DRY Principle sadge. I'm sorry.
+  if (!('id' in frontMatter) && !('slug' in frontMatter)) {
+    debug && console.log('no uuid or slug found, injecting...');
+    const newMatter = await comboInject({ absFilePath, rawFile, debug });
 
-  const metaArr = await Promise.all(
-    pathsArr.map(async (mdxPath: string) => {
-      const absFilePath = path.resolve(path.join(cwd, mdxPath));
-      const readIntoMem = Bun.file(absFilePath);
-      const rawFile = await readIntoMem.text();
-      const frontMatter = matter(rawFile).data;
+    if (!newMatter) return;
 
-      // I've made the DRY Principle sadge. I'm sorry.
-      if (!('id' in frontMatter) && !('slug' in frontMatter)) {
-        debug && console.log('no uuid or slug found, injecting...');
-        const newMatter = await comboInject({ absFilePath, rawFile, debug });
+    const finalPass = await matterProcessor({
+      frontMatter: newMatter,
+      absFilePath,
+      mdxPath,
+      rawFile,
+      imageKey,
+      publicPath,
+      debug,
+    });
 
-        if (!newMatter) return;
+    return finalPass;
+  }
 
-        if (imageKey && imageKey in newMatter) {
-          debug && console.log(`found ${newMatter[imageKey]}, processing image, updating injected matter...`);
-          const finalMatter = await comboImageProcessing({ fmatter: newMatter, mdxPath, imageKey, publicPath, debug });
-          return finalMatter;
-        }
+  if (!('id' in frontMatter)) {
+    debug && console.log('no uuid found, injecting...');
+    const newMatter = await injectUUID({ absFilePath, rawFile, debug });
 
-        debug && console.log(`no image in front matter, returning injected`);
-        return newMatter;
-      }
+    if (!newMatter) return;
 
-      if (!('id' in frontMatter)) {
-        debug && console.log('no uuid found, injecting...');
-        const newMatter = await injectUUID({ absFilePath, rawFile, debug });
+    const finalPass = await matterProcessor({
+      frontMatter: newMatter,
+      absFilePath,
+      mdxPath,
+      rawFile,
+      imageKey,
+      publicPath,
+      debug,
+    });
 
-        if (!newMatter) return;
+    return finalPass;
+  } else if (!('slug' in frontMatter)) {
+    debug && console.log('no slug found, injecting...');
+    const newMatter = await injectSlug({ absFilePath, rawFile });
 
-        if (imageKey && imageKey in newMatter) {
-          debug && console.log(`found ${newMatter[imageKey]}, processing image, updating injected matter...`);
-          const finalMatter = await comboImageProcessing({ fmatter: newMatter, mdxPath, imageKey, publicPath, debug });
-          return finalMatter;
-        }
+    if (!newMatter) return;
 
-        debug && console.log(`no image in front matter, returning injected`);
-        return newMatter;
-      } else if (!('slug' in frontMatter)) {
-        debug && console.log('no slug found, injecting...');
-        const newMatter = await injectSlug({ absFilePath, rawFile });
+    const finalPass = await matterProcessor({
+      frontMatter: newMatter,
+      absFilePath,
+      mdxPath,
+      rawFile,
+      imageKey,
+      publicPath,
+      debug,
+    });
 
-        if (!newMatter) return;
+    return finalPass;
+  } else if (imageKey && imageKey in frontMatter) {
+    debug && console.log(`uuid found in front matter with ${frontMatter.id}, not injecting`);
+    debug && console.log(`slug found in front matter with ${frontMatter.slug}, not injecting`);
+    debug && console.log(`found ${frontMatter[imageKey]}, processing image...`);
+    const newMatter = await comboImageProcessing({ fmatter: frontMatter, mdxPath, imageKey, publicPath, debug });
+    return newMatter;
+  }
 
-        if (imageKey && imageKey in newMatter) {
-          debug && console.log(`found ${newMatter[imageKey]}, processing image, updating injected matter...`);
-          const finalMatter = await comboImageProcessing({ fmatter: newMatter, mdxPath, imageKey, publicPath, debug });
-          return finalMatter;
-        }
-
-        debug && console.log(`no image in front matter, returning injected`);
-        return newMatter;
-      } else if (imageKey && imageKey in frontMatter) {
-        debug && console.log(`uuid found in front matter with ${frontMatter.id}, not injecting`);
-        debug && console.log(`slug found in front matter with ${frontMatter.slug}, not injecting`);
-        debug && console.log(`found ${frontMatter[imageKey]}, processing image...`);
-        const newMatter = await comboImageProcessing({ fmatter: frontMatter, mdxPath, imageKey, publicPath, debug });
-        return newMatter;
-      }
-
-      return frontMatter;
-    }),
-  );
-  return metaArr;
+  return frontMatter;
 };
 
 interface BatchFetchFrontMatterProps extends ConfigProps {
@@ -428,10 +436,19 @@ const batchFetchFrontMatter = async ({
   suppressErr,
 }: BatchFetchFrontMatterProps) => {
   if (!pathsArr) return;
-
+  const cwd = process.cwd();
   try {
-    const res = await matterMeta({ pathsArr, imageKey, publicPath, debug });
-    return res;
+    const metaArr = await Promise.all(
+      pathsArr.map(async (mdxPath: string) => {
+        const absFilePath = path.resolve(path.join(cwd, mdxPath));
+        const readIntoMem = Bun.file(absFilePath);
+        const rawFile = await readIntoMem.text();
+        const frontMatter = matter(rawFile).data;
+        const res = await matterProcessor({ frontMatter, absFilePath, mdxPath, rawFile, imageKey, publicPath, debug });
+        return res;
+      }),
+    );
+    return metaArr;
   } catch (err) {
     suppressErr && console.error(err);
   }
