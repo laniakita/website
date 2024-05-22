@@ -162,10 +162,10 @@ const newimageEmbedPath = async ({
 
     if (!checkImg) {
       debug && console.log('image not in public folder, copying ...');
-      //await Bun.write(`${process.cwd()}${publicCopyPath}`, imgFile);
+      await Bun.write(`${process.cwd()}${publicCopyPath}`, imgFile);
     } else if (constPublicImgFile.size !== imgFile.size) {
       debug && console.log('found image is different from public folder, copying ...');
-      //await Bun.write(`${process.cwd()}${publicCopyPath}`, imgFile);
+      await Bun.write(`${process.cwd()}${publicCopyPath}`, imgFile);
     } else {
       debug && console.log('image is the same, not copying');
     }
