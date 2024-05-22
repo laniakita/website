@@ -1,10 +1,6 @@
 #! /usr/bin/env bun
-/* eslint-disable no-undef -- bun is bun */
+/* eslint-disable no-undef -- bun runtime will provide bun functions */
 /* eslint-disable no-console -- doesn't run in the browser, so this is fine */
-/* eslint-disable  @typescript-eslint/no-unsafe-assignment -- some are generic functions */
-/* eslint-disable  @typescript-eslint/no-unsafe-argument -- some are generic functions */
-/* eslint-disable  @typescript-eslint/no-unsafe-call -- some are generic functions */
-/* eslint-disable  @typescript-eslint/no-unsafe-member-access -- some are generic functions */
 import path from 'node:path';
 import { readdir, access } from 'node:fs/promises';
 import matter from 'gray-matter';
@@ -130,16 +126,18 @@ const batchFetchFrontMatter = async ({
       fmatter,
       mdxPath,
     }: {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- generic function
-      fmatter: Record<string, any>;
+      fmatter: Record<string, unknown>;
       mdxPath: string;
     }): Promise<string | undefined> => {
-      if (imageKey && imageKey in fmatter) {
+      if (imageKey && typeof imageKey === 'string' && imageKey in fmatter) {
         debug && console.log('found hero image with key', imageKey);
- 
-        const imageType = 'type' in fmatter && fmatter.type;
+
+        const imageType = 'type' in fmatter && (fmatter.type as string);
 
         const currentImagePath = fmatter[imageKey];
+
+        if (typeof currentImagePath !== 'string') return;
+
         //console.log(currentImagePath)
 
         const splitStr = mdxPath.split('/');
@@ -156,11 +154,11 @@ const batchFetchFrontMatter = async ({
         const imgToCopyFilePath = path.resolve(parentPath, currentImagePath);
         //console.log(imgToCopyFilePath)
 
-        const publicCopyPath = `/public/${publicPath}/${imageType ? `${imageType}/` : `/`}${mdxFileSlug}/${fmatter[imageKey].split('/').pop()}`;
+        const publicCopyPath = `/public/${publicPath}/${imageType ? `${imageType}/` : `/`}${mdxFileSlug}/${currentImagePath.split('/').pop()}`;
 
         //console.log(publicCopyPath)
 
-        const embedPublicCopyPath = `/${publicPath}/${imageType ? `${imageType}/` : `/`}${mdxFileSlug}/${fmatter[imageKey].split('/').pop()}`;
+        const embedPublicCopyPath = `/${publicPath}/${imageType ? `${imageType}/` : `/`}${mdxFileSlug}/${currentImagePath.split('/').pop()}`;
         //console.log(embedPublicCopyPath)
 
         const pathToCheck = path.join(cwd, publicCopyPath);
@@ -194,16 +192,15 @@ const batchFetchFrontMatter = async ({
       fmatter,
       mdxPath,
     }: {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- generic function
-      fmatter: Record<string, any>;
+      fmatter: Record<string, unknown>;
       mdxPath: string;
     }) => {
       if (imageKey && imageKey in fmatter) {
-        debug && console.log(`using ${fmatter[imageKey]} to generate img data + blurs`);
+        debug && console.log(`using ${fmatter[imageKey] as string} to generate img data + blurs`);
         const currentImagePath = fmatter[imageKey];
         const splitStr = mdxPath.split('/');
         const parentPath = splitStr.slice(0, splitStr.length - 1).join('/');
-        const imgToCopyFilePath = path.resolve(parentPath, currentImagePath);
+        const imgToCopyFilePath = path.resolve(parentPath, currentImagePath as string);
 
         const imgFile = Bun.file(imgToCopyFilePath);
         const arrayBuf = await imgFile.arrayBuffer();
@@ -218,8 +215,13 @@ const batchFetchFrontMatter = async ({
       }
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- generic function
-    const comboImageProcessing = async ({ fmatter, mdxPath }: { fmatter: Record<string, any>; mdxPath: string }) => {
+    const comboImageProcessing = async ({
+      fmatter,
+      mdxPath,
+    }: {
+      fmatter: Record<string, unknown>;
+      mdxPath: string;
+    }) => {
       if (imageKey && imageKey in fmatter) {
         // need to do this first (the other function seems to mutate something)
         const imgBlurPlusMetaRes = await imgMetaPlusBlurryPlaiceHolders({ fmatter, mdxPath });
@@ -232,6 +234,23 @@ const batchFetchFrontMatter = async ({
         return { ...fmatter, imgBlur: imgBlurData, imgHeight, imgWidth };
       }
     };
+    const getInjectionPoint = (fileArr: string[], strOfInterest: string, precisionPoint: number) => {
+      const getPoint = fileArr.map((strLine, index): number | undefined => {
+        // we're going to look for the first "---" of the front matter
+        // then inject. We can test that we're not adding at the end by
+        // checking if the key following injection is valid
+        const keyGuess = fileArr[index + precisionPoint]?.split(':')[0];
+        const point = index + precisionPoint;
+        if (strLine === strOfInterest && keyGuess) {
+          debug && console.log('inject at ', point, 'before ', keyGuess);
+
+          return point;
+        }
+        return undefined;
+      });
+      const injectionPoint = getPoint.filter((el) => el)[0];
+      return injectionPoint;
+    };
 
     const injectUUID = async ({ rawFile, absFilePath }: { rawFile: string; absFilePath: string }) => {
       const uuid = crypto.randomUUID();
@@ -239,27 +258,42 @@ const batchFetchFrontMatter = async ({
 
       // we need to search the file string to find out where
       // we can safely inject the uuid.
-      const getInjectionPoint = fileArr.map((strLine, index): number | undefined => {
-        // we're going to look for the first "---" of the front matter
-        // then inject. We can test that we're not adding at the end by
-        // checking if the key following injection is valid
-        const keyGuess = fileArr[index + 1]?.split(':')[0];
-        const point = index + 1;
-        if (strLine === '---' && keyGuess) {
-          debug && console.log('inject at ', index + 1, 'before ', keyGuess);
 
-          return point;
-        }
-        return undefined;
-      });
+      const injectionPoint = getInjectionPoint(fileArr, '---', 1);
 
-      const injectionPoint = getInjectionPoint.filter((el) => el)[0];
       if (typeof injectionPoint !== 'number') return;
       fileArr.splice(injectionPoint, 0, `id: ${uuid}`);
 
       const finalString = fileArr.join('\n');
 
       const fileWritePath = absFilePath;
+
+      debug && console.log(`saving updated markdown file to `, fileWritePath);
+
+      await Bun.write(fileWritePath, finalString);
+      const newMatter = matter(finalString).data;
+
+      // we'll need to update the image path in memory, if it exists
+
+      return newMatter;
+    };
+
+    const injectSlug = async ({ rawFile, absFilePath }: { rawFile: string; absFilePath: string }) => {
+      const fileWritePath = absFilePath;
+      const fileName = fileWritePath.split('/').pop();
+      if (!fileName) return;
+      const slug = fileName.split('.')[0];
+      const fileArr = rawFile.split('\n');
+
+      
+      // assuming we have the id, we'll inject it right after
+      const injectionPoint = getInjectionPoint(fileArr, 'id', 1);
+
+      if (typeof injectionPoint !== 'number') return;
+      fileArr.splice(injectionPoint, 0, `slug: ${slug}`);
+
+      const finalString = fileArr.join('\n');
+
 
       debug && console.log(`saving updated markdown file to `, fileWritePath);
 
@@ -290,6 +324,22 @@ const batchFetchFrontMatter = async ({
         if (!('id' in frontMatter)) {
           debug && console.log('no uuid found, injecting...');
           const newMatter = await injectUUID({ absFilePath, rawFile });
+
+          if (!newMatter) return;
+
+          if (imageKey && imageKey in newMatter) {
+            debug && console.log(`found ${newMatter[imageKey]}, processing image, updating injected matter...`);
+            const finalMatter = await comboImageProcessing({ fmatter: newMatter, mdxPath });
+            return finalMatter;
+          }
+
+          debug && console.log(`no image in front matter, returning injected`);
+          return newMatter;
+        }
+
+        if (!('slug' in frontMatter)) {
+          debug && console.log('no slug found, injecting...');
+          const newMatter = await injectSlug({ absFilePath, rawFile });
 
           if (!newMatter) return;
 
