@@ -21,8 +21,8 @@ test('batchFetchMDXPaths produces an array of valid paths to mdx files given a c
   // Assert that each item in the array is a valid path
   result?.forEach((path) => {
     expect(typeof path).toBe('string');
-    expect(path?.startsWith(contentFolder)).toBe(true);
-    expect(path?.endsWith('.mdx') || path?.endsWith('.md')).toBe(true);
+    expect(path.startsWith(contentFolder)).toBe(true);
+    expect(path.endsWith('.mdx') || path.endsWith('.md')).toBe(true);
   });
 });
 
