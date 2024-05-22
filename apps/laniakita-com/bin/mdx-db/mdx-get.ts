@@ -334,6 +334,34 @@ const comboInject = async ({ rawFile, absFilePath, debug }: InjectionProps) => {
   return newMatter;
 };
 
+const updateSlug = async ({ rawFile, absFilePath, debug }: InjectionProps) => {
+  const fileArr = rawFile.split('\n');
+
+  const fileWritePath = absFilePath;
+  console.log(fileWritePath);
+  const fileName = fileWritePath.split('/').pop();
+  console.log(fileName);
+  if (!fileName) return;
+  const slug = fileName.split('.')[0];
+
+  // assuming we have the id, we'll inject it right after
+  const injectionPoint = getInjectionPoint({ fileArr, strOfInterest: 'slug', precisionPoint: 0, debug });
+
+  if (typeof injectionPoint !== 'number') return;
+  fileArr.splice(injectionPoint, 1, `slug: ${slug}`);
+
+  const finalString = fileArr.join('\n');
+
+  debug && console.log(`saving updated markdown file to `, fileWritePath);
+
+  await Bun.write(fileWritePath, finalString);
+  const newMatter = matter(finalString).data;
+
+  // we'll need to update the image path in memory, if it exists
+
+  return newMatter;
+};
+
 interface MatterProcessorProps {
   frontMatter: Record<string, unknown>;
   absFilePath: string;
@@ -354,6 +382,11 @@ const matterProcessor = async ({
   debug,
 }: MatterProcessorProps): Promise<Record<string, unknown> | undefined> => {
   // I've made the DRY Principle sadge. I'm sorry.
+  const fileNameWithExt = mdxPath.split('/').pop();
+  const fileNameOnlyRaw = (fileNameWithExt as string).split('.');
+  const fileNameOnly = fileNameOnlyRaw && fileNameOnlyRaw[0];
+  console.log(fileNameOnly)
+
   if (!('id' in frontMatter) && !('slug' in frontMatter)) {
     debug && console.log('no uuid or slug found, injecting...');
     const newMatter = await comboInject({ absFilePath, rawFile, debug });
@@ -407,6 +440,25 @@ const matterProcessor = async ({
     });
 
     return finalPass;
+  } else if ('slug' in frontMatter && frontMatter.slug !== fileNameOnly) {
+    console.log('filename !== slug in frontmatter. fixing...')
+    const newMatter = await updateSlug({ absFilePath, rawFile });
+
+    if (!newMatter) return;
+
+    const finalPass = await matterProcessor({
+      frontMatter: newMatter,
+      absFilePath,
+      mdxPath,
+      rawFile,
+      imageKey,
+      publicPath,
+      debug,
+    });
+
+    return finalPass;
+    
+
   } else if (imageKey && imageKey in frontMatter) {
     debug && console.log(`uuid found in front matter with ${frontMatter.id}, not injecting`);
     debug && console.log(`slug found in front matter with ${frontMatter.slug}, not injecting`);
