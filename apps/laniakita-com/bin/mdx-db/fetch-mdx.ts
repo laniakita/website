@@ -107,7 +107,7 @@ interface ImageUtilProps {
   imageKey: string;
   debug?: boolean;
 }
-
+// todo: write test
 const newimageEmbedPath = async ({
   fmatter,
   mdxPath,
@@ -174,6 +174,7 @@ const newimageEmbedPath = async ({
   }
 };
 
+// todo: write test
 const imgMetaPlusBlurryPlaiceHolders = async ({ fmatter, mdxPath, imageKey, debug }: ImageUtilProps) => {
   if (imageKey && imageKey in fmatter) {
     debug && console.log(`using ${fmatter[imageKey] as string} to generate img data + blurs`);
@@ -195,6 +196,7 @@ const imgMetaPlusBlurryPlaiceHolders = async ({ fmatter, mdxPath, imageKey, debu
   }
 };
 
+// todo: write test
 const comboImageProcessing = async ({ fmatter, mdxPath, imageKey, publicPath, debug }: ImageUtilProps) => {
   if (imageKey && imageKey in fmatter) {
     // need to do this first (the other function seems to mutate something)
@@ -216,6 +218,7 @@ interface InjectionPointProps {
   debug?: boolean;
 }
 
+// todo: write test
 const getInjectionPoint = ({ fileArr, strOfInterest, precisionPoint, debug }: InjectionPointProps) => {
   const getPoint = fileArr.map((strLine, index): number | undefined => {
     // we're going to look for the first "---" of the front matter
@@ -245,6 +248,7 @@ interface InjectionProps {
   debug?: boolean;
 }
 
+// todo: write test
 const injectUUID = async ({ rawFile, absFilePath, debug }: InjectionProps) => {
   const uuid = crypto.randomUUID();
   const fileArr = rawFile.split('\n');
@@ -271,6 +275,7 @@ const injectUUID = async ({ rawFile, absFilePath, debug }: InjectionProps) => {
   return newMatter;
 };
 
+// todo: write test
 const injectSlug = async ({ rawFile, absFilePath, debug }: InjectionProps) => {
   const fileArr = rawFile.split('\n');
 
@@ -299,6 +304,7 @@ const injectSlug = async ({ rawFile, absFilePath, debug }: InjectionProps) => {
   return newMatter;
 };
 
+// todo: write test
 const comboInject = async ({ rawFile, absFilePath, debug }: InjectionProps) => {
   const uuid = crypto.randomUUID();
   const fileArr = rawFile.split('\n');
@@ -334,6 +340,7 @@ const comboInject = async ({ rawFile, absFilePath, debug }: InjectionProps) => {
   return newMatter;
 };
 
+// todo: write test
 const updateSlug = async ({ rawFile, absFilePath, debug }: InjectionProps) => {
   const fileArr = rawFile.split('\n');
 
@@ -372,6 +379,7 @@ interface MatterProcessorProps {
   debug?: boolean;
 }
 
+// todo: write test
 const matterProcessor = async ({
   frontMatter,
   absFilePath,
@@ -385,7 +393,14 @@ const matterProcessor = async ({
   const fileNameWithExt = mdxPath.split('/').pop();
   const fileNameOnlyRaw = (fileNameWithExt as string).split('.');
   const fileNameOnly = fileNameOnlyRaw && fileNameOnlyRaw[0];
-  console.log(fileNameOnly)
+  const commonConfig = {
+    absFilePath,
+    mdxPath,
+    rawFile,
+    imageKey,
+    publicPath,
+    debug,
+  };
 
   if (!('id' in frontMatter) && !('slug' in frontMatter)) {
     debug && console.log('no uuid or slug found, injecting...');
@@ -394,35 +409,29 @@ const matterProcessor = async ({
     if (!newMatter) return;
 
     const finalPass = await matterProcessor({
+      ...commonConfig,
       frontMatter: newMatter,
-      absFilePath,
-      mdxPath,
-      rawFile,
-      imageKey,
-      publicPath,
-      debug,
     });
 
-    return finalPass;
-  }
+    const newFileRead = Bun.file(absFilePath);
+    const newFileStr = await newFileRead.text();
 
-  if (!('id' in frontMatter)) {
+    return { ...finalPass, rawStr: newFileStr };
+  } else if (!('id' in frontMatter)) {
     debug && console.log('no uuid found, injecting...');
     const newMatter = await injectUUID({ absFilePath, rawFile, debug });
 
     if (!newMatter) return;
 
     const finalPass = await matterProcessor({
+      ...commonConfig,
       frontMatter: newMatter,
-      absFilePath,
-      mdxPath,
-      rawFile,
-      imageKey,
-      publicPath,
-      debug,
     });
 
-    return finalPass;
+    const newFileRead = Bun.file(absFilePath);
+    const newFileStr = await newFileRead.text();
+
+    return { ...finalPass, rawStr: newFileStr };
   } else if (!('slug' in frontMatter)) {
     debug && console.log('no slug found, injecting...');
     const newMatter = await injectSlug({ absFilePath, rawFile });
@@ -430,44 +439,36 @@ const matterProcessor = async ({
     if (!newMatter) return;
 
     const finalPass = await matterProcessor({
+      ...commonConfig,
       frontMatter: newMatter,
-      absFilePath,
-      mdxPath,
-      rawFile,
-      imageKey,
-      publicPath,
-      debug,
     });
+    const newFileRead = Bun.file(absFilePath);
+    const newFileStr = await newFileRead.text();
 
-    return finalPass;
+    return { ...finalPass, rawStr: newFileStr };
   } else if ('slug' in frontMatter && frontMatter.slug !== fileNameOnly) {
-    console.log('filename !== slug in frontmatter. fixing...')
+    console.log('filename !== slug in frontmatter. fixing...');
     const newMatter = await updateSlug({ absFilePath, rawFile });
 
     if (!newMatter) return;
 
     const finalPass = await matterProcessor({
+      ...commonConfig,
       frontMatter: newMatter,
-      absFilePath,
-      mdxPath,
-      rawFile,
-      imageKey,
-      publicPath,
-      debug,
     });
+    const newFileRead = Bun.file(absFilePath);
+    const newFileStr = await newFileRead.text();
 
-    return finalPass;
-    
-
+    return { ...finalPass, rawStr: newFileStr };
   } else if (imageKey && imageKey in frontMatter) {
     debug && console.log(`uuid found in front matter with ${frontMatter.id}, not injecting`);
     debug && console.log(`slug found in front matter with ${frontMatter.slug}, not injecting`);
     debug && console.log(`found ${frontMatter[imageKey]}, processing image...`);
     const newMatter = await comboImageProcessing({ fmatter: frontMatter, mdxPath, imageKey, publicPath, debug });
-    return newMatter;
+    return { ...newMatter, rawStr: rawFile };
   }
 
-  return frontMatter;
+  return { ...frontMatter, rawStr: rawFile };
 };
 
 interface BatchFetchFrontMatterProps extends ConfigProps {
@@ -476,6 +477,7 @@ interface BatchFetchFrontMatterProps extends ConfigProps {
   publicPath?: string; // i.e. 'assets/images/blog/heros'
 }
 
+// todo: write test
 /*
  * @example batchFetchFrontMatter([pathsArr])
  * () => [{front matter post0}, ..., {front matter postN}]
@@ -506,13 +508,14 @@ const batchFetchFrontMatter = async ({
   }
 };
 
-export const batchFetchMain = async (fetchConfig: ConfigProps & BatchFetchFrontMatterProps) => {
+export interface BatchFetchMain extends ConfigProps, BatchFetchFrontMatterProps {}
+
+// main function
+export const batchFetchMain = async (fetchConfig: BatchFetchMain) => {
   const validMdxPaths = await batchFetchMDXPaths(fetchConfig);
   const frontMatterArr = await batchFetchFrontMatter({
     ...fetchConfig,
     pathsArr: validMdxPaths!,
-    imageKey: fetchConfig.imageKey,
-    publicPath: fetchConfig.publicPath,
   });
   fetchConfig.debug && console.log(frontMatterArr);
   return frontMatterArr;
