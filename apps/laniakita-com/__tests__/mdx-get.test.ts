@@ -39,6 +39,6 @@ test('batchFetchMDXPaths fails task (invalid folder path) successfully', async (
 });
 
 test('batchFetchMain produces an array of front matter objects', async () => {
-  const res = await batchFetchMain({...goodConfig, imageKey: 'heroFile', debug: true})
+  const res = await batchFetchMain({...goodConfig, imageKey: 'heroFile', publicPath: 'tests/assets/images/featured', debug: true})
   expect(Array.isArray(res)).toBe(true);
 })
