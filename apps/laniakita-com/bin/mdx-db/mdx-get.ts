@@ -1,22 +1,15 @@
 #! /usr/bin/env bun
 /* eslint-disable no-undef -- bun is bun */
 /* eslint-disable no-console -- doesn't run in the browser, so this is fine */
+/* eslint-disable  @typescript-eslint/no-unsafe-assignment -- some are generic functions */
+/* eslint-disable  @typescript-eslint/no-unsafe-argument -- some are generic functions */
+/* eslint-disable  @typescript-eslint/no-unsafe-call -- some are generic functions */
+/* eslint-disable  @typescript-eslint/no-unsafe-member-access -- some are generic functions */
 import path from 'node:path';
 import { readdir, access } from 'node:fs/promises';
 import matter from 'gray-matter';
 import { getPlaiceholder } from 'plaiceholder';
-import { metadata } from '@/app/layout';
 
-const debugAll = false;
-let debugFetchPaths = false;
-let debugProcessMdx = false;
-
-if (debugAll) {
-  debugFetchPaths = true;
-  debugProcessMdx = true;
-}
-
-// useful funcs
 const isNonEmptyArrayOfStrings = (value: unknown): value is string[] => {
   return Array.isArray(value) && value.length > 0 && value.every((item) => typeof item === 'string');
 };
@@ -33,7 +26,7 @@ interface ConfigProps {
   suppressErr?: boolean;
 }
 
-const defaultConfig: ConfigProps = {
+export const defaultConfig: ConfigProps = {
   contentFolder: './content',
   foldersToExclude: ['./assets'],
   filesToExclude: ['LICENSE', 'README.md'],
@@ -51,10 +44,6 @@ export const batchFetchMDXPaths = async ({
   suppressErr,
 }: ConfigProps): Promise<string[] | undefined> => {
   try {
-    if (debugFetchPaths) {
-      debug = true;
-    }
-
     const dir = await readdir(contentFolder, { recursive: true });
 
     const excludedFolders = foldersToExclude?.map((folder) => {
@@ -65,38 +54,34 @@ export const batchFetchMDXPaths = async ({
 
     //const absPath = path.resolve(path.join(process.cwd(), contentFolder))
 
-    const fileArr = dir.map((item) => {
+    const fileArr = dir.map((item): string | undefined => {
       debug && console.log('logging raw path:', item);
 
-      let folderSkip = false;
-      let fileSkip = false;
-
       if (excludedFolders?.some((folder) => item.startsWith(folder))) {
-        folderSkip = true;
         debug && console.log('skipping ', item);
+        return;
       }
 
-      if (!folderSkip && filesToExclude?.some((file) => item.endsWith(file))) {
-        fileSkip = true;
+      if (filesToExclude?.some((file) => item.endsWith(file))) {
         debug && console.log('ommitting ', item);
+        return;
       }
 
-      if (!folderSkip && !fileSkip && item.endsWith('.mdx' || '.md')) {
+      if (item.endsWith('.mdx') || item.endsWith('md')) {
         return `${contentFolder}/${item}`;
       }
-
       return undefined;
     });
-
+    const filter1 = fileArr.filter((el) => el);
     // validate found paths
     const cwd = process.cwd();
     const validatedArr = await Promise.all(
-      fileArr.map(async (pathStr) => {
+      filter1.map(async (pathStr) => {
         try {
           await access(path.resolve(path.join(cwd, pathStr!)));
           return pathStr;
         } catch (err) {
-          return;
+          console.error(err);
         }
       }),
     );
@@ -106,8 +91,6 @@ export const batchFetchMDXPaths = async ({
     debug && console.log(finalArr);
 
     if (isNonEmptyArrayOfStrings(finalArr)) return finalArr;
-
-    return;
   } catch (err) {
     if (err instanceof Error && 'code' in err && err.code === 'ENOENT') {
       !suppressErr &&
@@ -118,11 +101,8 @@ export const batchFetchMDXPaths = async ({
       return;
     }
     !suppressErr && console.error(err);
-    return;
   }
 };
-
-debugFetchPaths && console.log(await batchFetchMDXPaths(defaultConfig));
 
 interface BatchFetchFrontMatterProps extends ConfigProps {
   pathsArr?: string[];
@@ -141,26 +121,23 @@ const batchFetchFrontMatter = async ({
   debug,
   suppressErr,
 }: BatchFetchFrontMatterProps) => {
-  if (debugProcessMdx) {
-    debug = true;
-  }
   if (!pathsArr) return;
 
   try {
     const cwd = process.cwd();
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- generic function
     const newimageEmbedPath = async ({
       fmatter,
       mdxPath,
     }: {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- generic function
       fmatter: Record<string, any>;
       mdxPath: string;
     }): Promise<string | undefined> => {
       if (imageKey && imageKey in fmatter) {
         debug && console.log('found hero image with key', imageKey);
-
-        let imageType = 'type' in fmatter && fmatter[`type`];
+ 
+        const imageType = 'type' in fmatter && fmatter.type;
 
         const currentImagePath = fmatter[imageKey];
         //console.log(currentImagePath)
@@ -200,29 +177,29 @@ const batchFetchFrontMatter = async ({
         const checkImg = await constPublicImgFile.exists();
 
         if (!checkImg) {
-          console.log('image not in public folder, copying ...');
+          debug && console.log('image not in public folder, copying ...');
           //await Bun.write(`${process.cwd()}${publicCopyPath}`, imgFile);
         } else if (constPublicImgFile.size !== imgFile.size) {
-          console.log('found image is different from public folder, copying ...');
+          debug && console.log('found image is different from public folder, copying ...');
           //await Bun.write(`${process.cwd()}${publicCopyPath}`, imgFile);
         } else {
-          console.log('image is the same, not copying');
+          debug && console.log('image is the same, not copying');
         }
 
         return embedPublicCopyPath;
       }
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- generic function
     const imgMetaPlusBlurryPlaiceHolders = async ({
       fmatter,
       mdxPath,
     }: {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- generic function
       fmatter: Record<string, any>;
       mdxPath: string;
     }) => {
       if (imageKey && imageKey in fmatter) {
-        console.log(`using ${fmatter[imageKey]} to generate img data + blurs`);
+        debug && console.log(`using ${fmatter[imageKey]} to generate img data + blurs`);
         const currentImagePath = fmatter[imageKey];
         const splitStr = mdxPath.split('/');
         const parentPath = splitStr.slice(0, splitStr.length - 1).join('/');
@@ -245,14 +222,14 @@ const batchFetchFrontMatter = async ({
     const comboImageProcessing = async ({ fmatter, mdxPath }: { fmatter: Record<string, any>; mdxPath: string }) => {
       if (imageKey && imageKey in fmatter) {
         // need to do this first (the other function seems to mutate something)
-        const imgBlurPlusMetaRes = await imgMetaPlusBlurryPlaiceHolders({ fmatter: fmatter, mdxPath: mdxPath });
+        const imgBlurPlusMetaRes = await imgMetaPlusBlurryPlaiceHolders({ fmatter, mdxPath });
         const imgBlurData = imgBlurPlusMetaRes?.base64;
         const imgHeight = imgBlurPlusMetaRes?.height;
         const imgWidth = imgBlurPlusMetaRes?.width;
 
-        const newImgPath = await newimageEmbedPath({ fmatter: fmatter, mdxPath: mdxPath });
+        const newImgPath = await newimageEmbedPath({ fmatter, mdxPath });
         fmatter[imageKey] = newImgPath;
-        return { ...fmatter, imgBlur: imgBlurData, imgHeight: imgHeight, imgWidth: imgWidth };
+        return { ...fmatter, imgBlur: imgBlurData, imgHeight, imgWidth };
       }
     };
 
@@ -262,18 +239,18 @@ const batchFetchFrontMatter = async ({
 
       // we need to search the file string to find out where
       // we can safely inject the uuid.
-      const getInjectionPoint = fileArr.map((strLine, index) => {
+      const getInjectionPoint = fileArr.map((strLine, index): number | undefined => {
         // we're going to look for the first "---" of the front matter
         // then inject. We can test that we're not adding at the end by
         // checking if the key following injection is valid
-        const keyGuess = fileArr[index + 1]?.split(':')[0]!;
+        const keyGuess = fileArr[index + 1]?.split(':')[0];
         const point = index + 1;
         if (strLine === '---' && keyGuess) {
           debug && console.log('inject at ', index + 1, 'before ', keyGuess);
 
           return point;
         }
-        return;
+        return undefined;
       });
 
       const injectionPoint = getInjectionPoint.filter((el) => el)[0];
@@ -310,23 +287,37 @@ const batchFetchFrontMatter = async ({
          * (i.e. bookmark), it's likely you'll still be able to find it years
          * down the line.
          */
-        if ('id' in frontMatter === false) {
+        if (!('id' in frontMatter)) {
           debug && console.log('no uuid found, injecting...');
-          const newMatter = await injectUUID({absFilePath: absFilePath, rawFile: rawFile});
-          return newMatter
+          const newMatter = await injectUUID({ absFilePath, rawFile });
+
+          if (!newMatter) return;
+
+          if (imageKey && imageKey in newMatter) {
+            debug && console.log(`found ${newMatter[imageKey]}, processing image, updating injected matter...`);
+            const finalMatter = await comboImageProcessing({ fmatter: newMatter, mdxPath });
+            return finalMatter;
+          }
+
+          debug && console.log(`no image in front matter, returning injected`);
+          return newMatter;
         }
+
         debug && console.log(`uuid found in front matter with ${frontMatter.id}, not injecting`);
+
+        if (imageKey && imageKey in frontMatter) {
+          debug && console.log(`found ${frontMatter[imageKey]}, processing image...`);
+          const newMatter = await comboImageProcessing({ fmatter: frontMatter, mdxPath });
+          return newMatter;
+        }
 
         return frontMatter;
       }),
     );
 
-    debug && console.log(matterMeta);
-
     return matterMeta;
   } catch (err) {
     !suppressErr && console.error(err);
-    return;
   }
 };
 
