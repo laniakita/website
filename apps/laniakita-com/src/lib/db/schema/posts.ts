@@ -13,9 +13,9 @@ export const categoryRelations = relations(tags, ({ many }) => ({
 
 export interface Posts {
   id: string;
+  slug: string;
   date: string;
   postAuthor: string;
-  slug: string;
   headline: string;
   subheadline?: string;
   heroFile?: string;
@@ -24,8 +24,10 @@ export interface Posts {
   heroCreditUrl?: string;
   heroCreditUrlText?: string;
   heroAltText?: string;
-  rawContent?: string;
-  localKey?: string;
+  imgBlur?: string;
+  imgHeight?: number;
+  imgWidth?: number;
+  rawStr?: string;
 }
 
 export const posts = sqliteTable('posts', {
@@ -42,8 +44,10 @@ export const posts = sqliteTable('posts', {
   heroCreditUrl: text('hero_credit_url'),
   heroCreditUrlText: text('hero_credit_url_text'),
   heroAltText: text('hero_alt_text'),
-  rawContent: text('raw_content'),
-  localKey: text('local_key'),
+  imgBlur: text('img_blur'),
+  imgHeight: text('img_height'),
+  imgWidth: text('img_width'),
+  rawStr: text('raw_str'),
 });
 
 export const postsRelations = relations(posts, ({ one, many }) => ({
@@ -69,6 +73,10 @@ export const postsToTagsRelations = relations(postsToTags, ({ one }) => ({
     fields: [postsToTags.tagId],
     references: [tags.id],
   }),
+  post: one(posts, {
+    fields: [postsToTags.postId],
+    references: [posts.id]
+  })
 }));
 
 

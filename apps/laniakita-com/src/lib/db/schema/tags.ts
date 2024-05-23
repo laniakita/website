@@ -4,14 +4,12 @@ export interface Tags {
   id: string;
   slug: string;
   title: string;
-  rawContent?: string;
-  localKey?: string;
+  rawStr?: string;
 }
 
 export const tags = sqliteTable('tags', {
   id: text('id').primaryKey(),
   slug: text('slug').unique().notNull(),
   title: text('title').unique().notNull(),
-  rawContent: text('raw_content'),
-  localKey: text('local_key'),
+  rawStr: text('raw_str'),
 });

@@ -16,7 +16,7 @@ test('batchPushMain does something', async () => {
     ...goodConfig,
     imageKey: 'heroFile',
     publicPath: 'tests/assets/images/featured',
-    debug: true,
+    debug: false,
   });
   //expect(Array.isArray(res)).toBe(true);
 });
