@@ -7,7 +7,7 @@ export interface Authors {
   mastodon?: string;
   mastodonURL?: string;
   rawStr?: string;
- }
+}
 
 export const authors = sqliteTable('authors', {
   id: text('id').primaryKey(),

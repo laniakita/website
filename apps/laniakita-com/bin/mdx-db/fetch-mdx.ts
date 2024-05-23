@@ -5,7 +5,6 @@ import path from 'node:path';
 import { readdir, access } from 'node:fs/promises';
 import matter from 'gray-matter';
 import { getPlaiceholder } from 'plaiceholder';
-import { a } from 'vitest/dist/suite-IbNSsUWN.js';
 
 const isNonEmptyArrayOfStrings = (value: unknown): value is string[] => {
   return Array.isArray(value) && value.length > 0 && value.every((item) => typeof item === 'string');
@@ -394,8 +393,8 @@ const matterProcessor = async ({
 }: MatterProcessorProps): Promise<Record<string, unknown> | undefined> => {
   // I've made the DRY Principle sadge. I'm sorry.
   const fileNameWithExt = mdxPath.split('/').pop();
-  const fileNameOnlyRaw = (fileNameWithExt as string).split('.');
-  const fileNameOnly = fileNameOnlyRaw && fileNameOnlyRaw[0];
+  const fileNameOnlyRaw = fileNameWithExt!.split('.');
+  const fileNameOnly = fileNameOnlyRaw[0];
   const commonConfig = {
     absFilePath,
     mdxPath,
@@ -405,10 +404,10 @@ const matterProcessor = async ({
     debug,
   };
   let priority;
-  if ('type' in frontMatter && priorityConfig && (frontMatter['type'] as string) in priorityConfig) {
-    console.log('assigning', frontMatter.type, 'with priority', priorityConfig[frontMatter['type'] as string]);
-    priority = priorityConfig[frontMatter['type'] as string];
-    console.log(priority);
+  if ('type' in frontMatter && priorityConfig && (frontMatter.type as string) in priorityConfig) {
+    debug && console.log('assigning', frontMatter.type, 'with priority', priorityConfig[frontMatter.type as string]);
+    priority = priorityConfig[frontMatter.type as string];
+    debug && console.log(priority);
   }
 
   if (!('id' in frontMatter) && !('slug' in frontMatter)) {
@@ -425,7 +424,7 @@ const matterProcessor = async ({
     const newFileRead = Bun.file(absFilePath);
     const newFileStr = await newFileRead.text();
 
-    return { ...finalPass, priority: priority, rawStr: newFileStr };
+    return { ...finalPass, priority, rawStr: newFileStr };
   } else if (!('id' in frontMatter)) {
     debug && console.log('no uuid found, injecting...');
     const newMatter = await injectUUID({ absFilePath, rawFile, debug });
@@ -440,7 +439,7 @@ const matterProcessor = async ({
     const newFileRead = Bun.file(absFilePath);
     const newFileStr = await newFileRead.text();
 
-    return { ...finalPass, priority: priority, rawStr: newFileStr };
+    return { ...finalPass, priority, rawStr: newFileStr };
   } else if (!('slug' in frontMatter)) {
     debug && console.log('no slug found, injecting...');
     const newMatter = await injectSlug({ absFilePath, rawFile });
@@ -454,7 +453,7 @@ const matterProcessor = async ({
     const newFileRead = Bun.file(absFilePath);
     const newFileStr = await newFileRead.text();
 
-    return { ...finalPass, priority: priority, rawStr: newFileStr };
+    return { ...finalPass, priority, rawStr: newFileStr };
   } else if ('slug' in frontMatter && frontMatter.slug !== fileNameOnly) {
     console.log('filename !== slug in frontmatter. fixing...');
     const newMatter = await updateSlug({ absFilePath, rawFile });
@@ -468,16 +467,22 @@ const matterProcessor = async ({
     const newFileRead = Bun.file(absFilePath);
     const newFileStr = await newFileRead.text();
 
-    return { ...finalPass, priority: priority, rawStr: newFileStr };
-  } else if (imageKey && imageKey in frontMatter) {
-    debug && console.log(`uuid found in front matter with ${frontMatter.id}, not injecting`);
-    debug && console.log(`slug found in front matter with ${frontMatter.slug}, not injecting`);
-    debug && console.log(`found ${frontMatter[imageKey]}, processing image...`);
+    return { ...finalPass, priority, rawStr: newFileStr };
+  } else if (
+    imageKey &&
+    imageKey in frontMatter &&
+    'id' in frontMatter &&
+    'slug' in frontMatter &&
+    frontMatter.slug === fileNameOnly
+  ) {
+    debug && console.log(`uuid found in front matter with ${frontMatter.id as string}, not injecting`);
+    debug && console.log(`slug found in front matter with ${frontMatter.slug as string}, not injecting`);
+    debug && console.log(`found ${frontMatter[imageKey] as string}, processing image...`);
     const newMatter = await comboImageProcessing({ fmatter: frontMatter, mdxPath, imageKey, publicPath, debug });
-    return { ...newMatter, priority: priority, rawStr: rawFile };
+    return { ...newMatter, priority, rawStr: rawFile };
   }
 
-  return { ...frontMatter, priority: priority, rawStr: rawFile };
+  return { ...frontMatter, priority, rawStr: rawFile };
 };
 
 interface BatchFetchFrontMatterProps extends ConfigProps {
@@ -522,13 +527,10 @@ const batchFetchFrontMatter = async ({
         return res;
       }),
     );
-    if (!metaArr) return;
-    metaArr.sort((a, b)=>{ 
-      return ( 
-        (a && 'priority' in a && b && 'priority' in b) ? ((a.priority as number) - (b.priority as number)) : 0
-      )
-    })
-    return metaArr
+    metaArr.sort((a, b) => {
+      return a && 'priority' in a && b && 'priority' in b ? (a.priority as number) - (b.priority as number) : 0;
+    });
+    return metaArr;
   } catch (err) {
     suppressErr && console.error(err);
   }
