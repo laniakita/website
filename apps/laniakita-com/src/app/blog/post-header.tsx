@@ -54,9 +54,7 @@ export function PostHeader({ dataObject }: { dataObject: PostTeaserObjectProps }
                   <Link href={dataObject.heroCreditUrl!}>{dataObject.heroCreditUrlText}</Link>
                 </span>
               ) : (
-                <span className='w-full max-w-xl'>
-                  Image source: Original work by yours truly.
-                </span>
+                <span className='w-full max-w-xl'>Image source: Original work by yours truly.</span>
               )}
             </p>
             <figcaption className='flex w-full items-center justify-center px-10 text-xl font-bold italic leading-tight'>

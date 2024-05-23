@@ -44,17 +44,17 @@ export const handleAuthor = async (postObj: HandleAuthorProps) => {
       .insert(authors)
       .values({
         id: crypto.randomUUID(),
+        slug: postObj.meta.slug,
         name: postObj.meta.name,
         mastodon: postObj.meta.mastodon,
-        rawContent: postObj.rawStr,
-        localKey: postObj.localKey,
-      })
+        rawStr: postObj.rawStr,
+d      })
       .onConflictDoNothing();
   }
 };
 
 export interface HandletagProps {
-  meta: { title: string, slug: string };
+  meta: { title: string; slug: string };
   content: string;
   rawStr: string;
   localKey?: string;

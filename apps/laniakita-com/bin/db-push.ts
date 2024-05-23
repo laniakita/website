@@ -68,7 +68,7 @@ if (debug) {
 
 /*
  * phase 2: with file paths, we can send them into a database
- * 
+ *
  * @example
  * batchMDXProcessor(['/home/user/website/content/post1.mdx', '../post2.mdx'])
  * () => [{front matter post1.mdx}, {front matter post2.mdx}]

@@ -10,14 +10,14 @@ const goodConfig = {
   foldersToExclude,
   filesToExclude,
   debug: false,
-}
+};
 
 test('batchFetchMDXPaths produces an array of valid paths to mdx files given a configuration object', async () => {
   const result = await batchFetchMDXPaths(goodConfig);
-  
+
   // Assert that the result is an array
   expect(Array.isArray(result)).toBe(true);
-  
+
   // Assert that each item in the array is a valid path
   result?.forEach((path) => {
     expect(typeof path).toBe('string');
@@ -31,7 +31,7 @@ test('batchFetchMDXPaths fails task (invalid folder path) successfully', async (
 
   const result = await batchFetchMDXPaths({
     contentFolder: invalidContentFolder,
-    suppressErr: true
+    suppressErr: true,
   });
 
   // Assert that the result is undefined (due to error handling)
@@ -39,9 +39,9 @@ test('batchFetchMDXPaths fails task (invalid folder path) successfully', async (
 });
 
 // can't test this if testing push functions (which will test this function, albeit indirectly). front matter is altered in memory, running the same calls basically breaks it.
-/*
+
 test('batchFetchMain produces an array of front matter objects', async () => {
   const res = await batchFetchMain({...goodConfig, imageKey: 'heroFile', publicPath: 'tests/assets/images/featured', debug: false})
   expect(Array.isArray(res)).toBe(true);
 })
-*/
+
