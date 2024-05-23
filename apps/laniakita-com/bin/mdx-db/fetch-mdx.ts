@@ -5,6 +5,7 @@ import path from 'node:path';
 import { readdir, access } from 'node:fs/promises';
 import matter from 'gray-matter';
 import { getPlaiceholder } from 'plaiceholder';
+import { a } from 'vitest/dist/suite-IbNSsUWN.js';
 
 const isNonEmptyArrayOfStrings = (value: unknown): value is string[] => {
   return Array.isArray(value) && value.length > 0 && value.every((item) => typeof item === 'string');
@@ -376,6 +377,7 @@ interface MatterProcessorProps {
   rawFile: string;
   imageKey?: string;
   publicPath?: string;
+  priorityConfig?: Record<string, unknown>;
   debug?: boolean;
 }
 
@@ -387,6 +389,7 @@ const matterProcessor = async ({
   rawFile,
   imageKey,
   publicPath,
+  priorityConfig,
   debug,
 }: MatterProcessorProps): Promise<Record<string, unknown> | undefined> => {
   // I've made the DRY Principle sadge. I'm sorry.
@@ -401,6 +404,12 @@ const matterProcessor = async ({
     publicPath,
     debug,
   };
+  let priority;
+  if ('type' in frontMatter && priorityConfig && (frontMatter['type'] as string) in priorityConfig) {
+    console.log('assigning', frontMatter.type, 'with priority', priorityConfig[frontMatter['type'] as string]);
+    priority = priorityConfig[frontMatter['type'] as string];
+    console.log(priority);
+  }
 
   if (!('id' in frontMatter) && !('slug' in frontMatter)) {
     debug && console.log('no uuid or slug found, injecting...');
@@ -416,7 +425,7 @@ const matterProcessor = async ({
     const newFileRead = Bun.file(absFilePath);
     const newFileStr = await newFileRead.text();
 
-    return { ...finalPass, rawStr: newFileStr };
+    return { ...finalPass, priority: priority, rawStr: newFileStr };
   } else if (!('id' in frontMatter)) {
     debug && console.log('no uuid found, injecting...');
     const newMatter = await injectUUID({ absFilePath, rawFile, debug });
@@ -431,7 +440,7 @@ const matterProcessor = async ({
     const newFileRead = Bun.file(absFilePath);
     const newFileStr = await newFileRead.text();
 
-    return { ...finalPass, rawStr: newFileStr };
+    return { ...finalPass, priority: priority, rawStr: newFileStr };
   } else if (!('slug' in frontMatter)) {
     debug && console.log('no slug found, injecting...');
     const newMatter = await injectSlug({ absFilePath, rawFile });
@@ -445,7 +454,7 @@ const matterProcessor = async ({
     const newFileRead = Bun.file(absFilePath);
     const newFileStr = await newFileRead.text();
 
-    return { ...finalPass, rawStr: newFileStr };
+    return { ...finalPass, priority: priority, rawStr: newFileStr };
   } else if ('slug' in frontMatter && frontMatter.slug !== fileNameOnly) {
     console.log('filename !== slug in frontmatter. fixing...');
     const newMatter = await updateSlug({ absFilePath, rawFile });
@@ -459,22 +468,23 @@ const matterProcessor = async ({
     const newFileRead = Bun.file(absFilePath);
     const newFileStr = await newFileRead.text();
 
-    return { ...finalPass, rawStr: newFileStr };
+    return { ...finalPass, priority: priority, rawStr: newFileStr };
   } else if (imageKey && imageKey in frontMatter) {
     debug && console.log(`uuid found in front matter with ${frontMatter.id}, not injecting`);
     debug && console.log(`slug found in front matter with ${frontMatter.slug}, not injecting`);
     debug && console.log(`found ${frontMatter[imageKey]}, processing image...`);
     const newMatter = await comboImageProcessing({ fmatter: frontMatter, mdxPath, imageKey, publicPath, debug });
-    return { ...newMatter, rawStr: rawFile };
+    return { ...newMatter, priority: priority, rawStr: rawFile };
   }
 
-  return { ...frontMatter, rawStr: rawFile };
+  return { ...frontMatter, priority: priority, rawStr: rawFile };
 };
 
 interface BatchFetchFrontMatterProps extends ConfigProps {
   pathsArr?: string[];
   imageKey?: string;
   publicPath?: string; // i.e. 'assets/images/blog/heros'
+  priorityConfig?: Record<string, number>;
 }
 
 // todo: write test
@@ -488,6 +498,7 @@ const batchFetchFrontMatter = async ({
   publicPath,
   debug,
   suppressErr,
+  priorityConfig,
 }: BatchFetchFrontMatterProps) => {
   if (!pathsArr) return;
   const cwd = process.cwd();
@@ -498,11 +509,26 @@ const batchFetchFrontMatter = async ({
         const readIntoMem = Bun.file(absFilePath);
         const rawFile = await readIntoMem.text();
         const frontMatter = matter(rawFile).data;
-        const res = await matterProcessor({ frontMatter, absFilePath, mdxPath, rawFile, imageKey, publicPath, debug });
+        const res = await matterProcessor({
+          frontMatter,
+          absFilePath,
+          mdxPath,
+          rawFile,
+          imageKey,
+          publicPath,
+          priorityConfig,
+          debug,
+        });
         return res;
       }),
     );
-    return metaArr;
+    if (!metaArr) return;
+    metaArr.sort((a, b)=>{ 
+      return ( 
+        (a && 'priority' in a && b && 'priority' in b) ? ((a.priority as number) - (b.priority as number)) : 0
+      )
+    })
+    return metaArr
   } catch (err) {
     suppressErr && console.error(err);
   }

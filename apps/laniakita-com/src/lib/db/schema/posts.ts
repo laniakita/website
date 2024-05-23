@@ -55,16 +55,21 @@ export const postsRelations = relations(posts, ({ one, many }) => ({
     fields: [posts.authorId],
     references: [authors.id],
   }),
-  postToTags: many(postsToTags)
+  postToTags: many(postsToTags),
 }));
 
-export const postsToTags = sqliteTable('posts_to_tags', 
+export const postsToTags = sqliteTable(
+  'posts_to_tags',
   {
-    postId: text('post_id').notNull().references(()=>posts.id),
-    tagId: text('tag_id').notNull().references(()=>tags.id)
+    postId: text('post_id')
+      .notNull()
+      .references(() => posts.id, { onUpdate: 'cascade', onDelete: 'cascade' }),
+    tagId: text('tag_id')
+      .notNull()
+      .references(() => tags.id, { onUpdate: 'cascade', onDelete: 'cascade' }),
   },
   (t) => ({
-    pk: primaryKey({ columns: [t.postId, t.tagId] })
+    pk: primaryKey({ columns: [t.postId, t.tagId] }),
   }),
 );
 
@@ -75,9 +80,6 @@ export const postsToTagsRelations = relations(postsToTags, ({ one }) => ({
   }),
   post: one(posts, {
     fields: [postsToTags.postId],
-    references: [posts.id]
-  })
+    references: [posts.id],
+  }),
 }));
-
-
-
