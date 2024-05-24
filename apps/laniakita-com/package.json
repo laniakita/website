@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "rss-gen": "bun ./bin/rss-gen.ts -p",
+    "db-gen": "bun ./bin/db-gen.ts",
     "analyze": "ANALYZE=true next build",
     "dev": "dotenv -e .env.development -e .env.local -- next dev",
     "build": "dotenv -e .env.production -e .env.local -- next build",
