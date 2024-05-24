@@ -41,7 +41,17 @@ test('batchFetchMDXPaths fails task (invalid folder path) successfully', async (
 // can't test this if testing push functions (which will test this function, albeit indirectly). front matter is altered in memory, running the same calls basically breaks it.
 
 test('batchFetchMain produces an array of front matter objects', async () => {
-  const res = await batchFetchMain({...goodConfig, imageKey: 'heroFile', publicPath: 'tests/assets/images/featured', debug: false})
+  const res = await batchFetchMain({
+    ...goodConfig,
+    imageKey: 'fileLocation',
+    publicPath: 'tests/assets/images/featured',
+    priorityConfig: {
+      authors: 1,
+      tags: 2,
+      featuredImages: 3,
+      posts: 4,
+    },
+    debug: true
+  });
   expect(Array.isArray(res)).toBe(true);
-})
-
+});

@@ -179,6 +179,7 @@ const imgMetaPlusBlurryPlaiceHolders = async ({ fmatter, mdxPath, imageKey, debu
   if (imageKey && imageKey in fmatter) {
     debug && console.log(`using ${fmatter[imageKey] as string} to generate img data + blurs`);
     const currentImagePath = fmatter[imageKey];
+    //console.log(currentImagePath)
     const splitStr = mdxPath.split('/');
     const parentPath = splitStr.slice(0, splitStr.length - 1).join('/');
     const imgToCopyFilePath = path.resolve(parentPath, currentImagePath as string);
@@ -310,9 +311,9 @@ const comboInject = async ({ rawFile, absFilePath, debug }: InjectionProps) => {
   const fileArr = rawFile.split('\n');
 
   const fileWritePath = absFilePath;
-  console.log(fileWritePath);
+  //console.log(fileWritePath);
   const fileName = fileWritePath.split('/').pop();
-  console.log(fileName);
+  //console.log(fileName);
   if (!fileName) return;
   const slug = fileName.split('.')[0];
 
@@ -345,9 +346,9 @@ const updateSlug = async ({ rawFile, absFilePath, debug }: InjectionProps) => {
   const fileArr = rawFile.split('\n');
 
   const fileWritePath = absFilePath;
-  console.log(fileWritePath);
+  //console.log(fileWritePath);
   const fileName = fileWritePath.split('/').pop();
-  console.log(fileName);
+  //console.log(fileName);
   if (!fileName) return;
   const slug = fileName.split('.')[0];
 
