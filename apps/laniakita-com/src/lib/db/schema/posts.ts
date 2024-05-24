@@ -17,10 +17,11 @@ export interface Posts {
   slug: string;
   date: string;
   tags: string[];
-  authorId: string;
+  author: string;
   headline: string;
   subheadline?: string;
-  featuredImageId: string;
+  featuredImage: string;
+  rawStr: string;
 }
 
 export const posts = sqliteTable('posts', {
@@ -32,9 +33,10 @@ export const posts = sqliteTable('posts', {
   slug: text('slug').unique().notNull(),
   headline: text('headline').unique().notNull(),
   subheadline: text('subheadline'),
-  featuredImageId: text('featured_image_id')
-    .references(() => featuredImages.id, { onUpdate: 'cascade', onDelete: 'cascade' })
-    .notNull(),
+  featuredImageId: text('featured_image_id').references(() => featuredImages.id, {
+    onUpdate: 'cascade',
+    onDelete: 'cascade',
+  }),
   rawStr: text('raw_str'),
 });
 
@@ -45,7 +47,7 @@ export const postsRelations = relations(posts, ({ one, many }) => ({
   }),
   featuredImage: one(featuredImages, {
     fields: [posts.featuredImageId],
-    references: [featuredImages.id]
+    references: [featuredImages.id],
   }),
   postToTags: many(postsToTags),
 }));
@@ -60,9 +62,12 @@ export const postsToTags = sqliteTable(
       .notNull()
       .references(() => tags.id, { onUpdate: 'cascade', onDelete: 'cascade' }),
   },
-  (t) => ({
-    pk: primaryKey({ columns: [t.postId, t.tagId] }),
-  }),
+  (t) => {
+    return {
+      pk: primaryKey({ columns: [t.postId, t.tagId] }),
+      //pk: primaryKey({ name: 'post_and_tag_id', columns: [t.postId, t.tagId] }),
+    };
+  },
 );
 
 export const postsToTagsRelations = relations(postsToTags, ({ one }) => ({
