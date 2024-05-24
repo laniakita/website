@@ -134,17 +134,17 @@ const newimageEmbedPath = async ({
     // now we can get the mdx file name to use as the folder later.
     const mdxFile = splitStr.pop();
     if (!mdxFile) return;
-    const mdxFileSlug = mdxFile.split('.')[0];
+    //const mdxFileSlug = mdxFile.split('.')[0];
     //debug && console.log(mdxFileSlug)
 
     const imgToCopyFilePath = path.resolve(parentPath, currentImagePath);
     //debug && console.log(imgToCopyFilePath)
 
-    const publicCopyPath = `/public/${publicPath}/${imageType ? `${imageType}/` : `/`}${mdxFileSlug}/${currentImagePath.split('/').pop()}`;
+    const publicCopyPath = `/public/${publicPath}/${currentImagePath.split('/').pop()}`;
 
     //debug && console.log(publicCopyPath)
 
-    const embedPublicCopyPath = `/${publicPath}/${imageType ? `${imageType}/` : `/`}${mdxFileSlug}/${currentImagePath.split('/').pop()}`;
+    const embedPublicCopyPath = `/${publicPath}/${currentImagePath.split('/').pop()}`;
     //debug && console.log(embedPublicCopyPath)
 
     const pathToCheck = path.join(process.cwd(), publicCopyPath);
