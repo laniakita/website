@@ -10,6 +10,6 @@ dist-ssr
 .cache
 server/dist
 public/dist
-public/assets/images/blog
-public/tests
+tests/**/images
+apps/laniakita-com/public/assets/images/blog
 sw.js
