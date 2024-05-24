@@ -208,7 +208,7 @@ const comboImageProcessing = async ({ fmatter, mdxPath, imageKey, publicPath, de
 
     const newImgPath = await newimageEmbedPath({ fmatter, mdxPath, imageKey, publicPath, debug });
     fmatter[imageKey] = newImgPath;
-    return { ...fmatter, imgBlur: imgBlurData, imgHeight, imgWidth };
+    return { ...fmatter, blur: imgBlurData, height: imgHeight, width: imgWidth };
   }
 };
 
