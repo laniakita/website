@@ -39,28 +39,3 @@ export const batchPushMain = async (fetchConfig: BatchFetchMain & DbFunctionsPro
   );
 };
 
-// setup
-const testConfig = {
-  contentFolder: './__tests__/test_content',
-  foldersToExclude: ['./assets'],
-  filesToExclude: ['README.md'],
-  imageKey: 'fileLocation',
-  publicPath: 'tests/assets/images/featured',
-  priorityConfig: {
-    authors: 1,
-    tags: 2,
-    featuredImages: 3,
-    posts: 4,
-  },
-  dbFunctionModules: {
-    insert: {
-      authors: { insertAuthors: '@/lib/db-funcs' },
-      tags: { insertTags: '@/lib/db-funcs' },
-      featuredImages: { insertFeaturedImages: '@/lib/db-funcs' },
-      posts: {insertPosts: '@/lib/db-funcs' },
-    },
-  },
-  debug: false,
-};
-
-await batchPushMain(testConfig);
