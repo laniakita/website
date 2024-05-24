@@ -30,43 +30,14 @@ export const batchPushMain = async (fetchConfig: BatchFetchMain & DbFunctionsPro
           if (insModStr && insModPath) {
             /* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- importing types would be a lot to ask for */
             const dbFuncs = await import(insModPath);
-            /* eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment -- importing types would be a lot to ask for */
-            const res = await dbFuncs[insModStr](processedMDX);
-            console.log(res);
-          }
+            /* eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access -- importing types would be a lot to ask for */
+            await dbFuncs[insModStr](processedMDX);
+           }
         }
       }
     }),
   );
 };
-
-/*
- if (!processedMDX) return;
-    if (!('type' in processedMDX)) return;
-    if ((processedMDX.type as string) in fetchConfig.dbFunctionModules.insert) {
-      console.log(fetchConfig.dbFunctionModules.insert[processedMDX.type as string]);
-      return
-    } else if (processedMDX.type) {
-      console.log(processedMDX.type);
-      return
-    }
-    return;
-
-if (
-      processedMDX &&
-      'type' in processedMDX &&
-      'priority' in processedMDX &&
-      typeof processedMDX.priority === 'number' &&
-      fetchConfig.priorityConfig &&
-      'type' in fetchConfig.priorityConfig
-    ) {
-      if (fetchConfig.priorityConfig.type && fetchConfig.priorityConfig.type === fetchConfig.dbFunctionModules.insert[fetchConfig.priorityConfig.type]) {
-        fetchConfig.debug && console.log('inserting', processedMDX.type, 'with priority', processedMDX.priority);
-      }
-      return undefined;
-    }
-    return undefined;
-*/
 
 // setup
 const testConfig = {
