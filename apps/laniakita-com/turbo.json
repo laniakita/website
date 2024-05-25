@@ -5,11 +5,12 @@
     "analyze": {
       "env": ["ANALYZE"]
     },
+    "db-gen": {},
     "rss-gen": {},
     "build": {
       "dotEnv": [".env.production.local", ".env.production", ".env.local", ".env"],
       "outputs": [".next/**", "!.next/cache/**", "public/dist/**", "public/sw.js"],
-      "dependsOn": ["^build", "rss-gen"]
+      "dependsOn": ["^build", "db-gen", "rss-gen"]
     },
     "dev": {
       "dotEnv": [".env.development.local", ".env.development", ".env.local", ".env"]
