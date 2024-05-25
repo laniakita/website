@@ -40,10 +40,10 @@ const laniConfig = {
   },
   dbFunctionModules: {
     insert: {
-      authors: { insertAuthors: '@/lib/db-funcs' },
-      tags: { insertTags: '@/lib/db-funcs' },
-      featuredImages: { insertFeaturedImages: '@/lib/db-funcs' },
-      posts: { insertPosts: '@/lib/db-funcs' },
+      authors: { insertAuthors: '@/lib/bun-db-funcs' },
+      tags: { insertTags: '@/lib/bun-db-funcs' },
+      featuredImages: { insertFeaturedImages: '@/lib/bun-db-funcs' },
+      posts: { insertPosts: '@/lib/bun-db-funcs' },
     },
   },
   debug: false,
