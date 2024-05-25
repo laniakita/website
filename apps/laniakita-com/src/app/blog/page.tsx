@@ -2,6 +2,7 @@ import matter from 'gray-matter';
 import { PostNumStoreProvider } from '@/providers/postnum-store-provider';
 import { type PostTeaserObjectProps, fetchMdx, batchMatterFetch } from '@/utils/mdx-utils';
 import PreviewRollerV3 from './post-roller-v3';
+import { queryPostMetas } from '@/lib/node-db-funcs';
 
 export const metadata = {
   title: 'Yet Another Dev Blog',
@@ -18,6 +19,8 @@ export const metadata = {
 };
 
 export default async function BlogPage() {
+  const res = await queryPostMetas()
+
   const data = await batchMatterFetch('./src/app/blog/posts/published');
   const folder = './src/app/blog/posts/published';
   const descRes = await fetchMdx(folder, (data as unknown as PostTeaserObjectProps[])[0]!.slug);
