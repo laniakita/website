@@ -4,16 +4,18 @@ import Image from 'next/image';
 import type { PostTeaserObjectProps } from '@/utils/mdx-utils';
 import { imageLoader } from '@/utils/image-loader';
 import { shimmer, toBase64 } from '@/utils/shimmer-utils';
+import { type PostQ } from '@/lib/node-db-funcs';
 
-export function HeroShimmer({ dataObject }: { dataObject: PostTeaserObjectProps }) {
+export function HeroShimmer({ dataObject }: { dataObject: PostQ }) {
   return (
     <picture className='relative m-0 flex size-full min-h-48 items-center justify-center p-0 narrow-phone:min-h-64 small-phone:min-h-72 sm:h-[30rem] md:h-[35rem] md:max-w-3xl lg:h-[45rem]  lg:max-w-5xl'>
       <Image
         loader={imageLoader}
-        src={dataObject.heroFile!}
-        alt={dataObject.heroAltText!}
+        src={dataObject.featuredImage.fileLocation}
+        alt={dataObject.featuredImage.altText}
         placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
-        fill
+        height={dataObject.featuredImage.height}
+        width={dataObject.featuredImage.width}
         sizes='(max-width: 500px) 100vw, (max-width: 1024px) 80vw'
         style={{ objectFit: 'contain' }}
         className='overflow-hidden'

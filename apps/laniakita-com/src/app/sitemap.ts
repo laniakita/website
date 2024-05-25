@@ -2,7 +2,7 @@ import type { MetadataRoute } from 'next';
 import { BASE_URL } from '@/lib/constants';
 import { batchMatterFetch } from '@/utils/mdx-utils';
 import type { PostTeaserObjectProps, WorkMetaProps } from '@/utils/mdx-utils';
-import type { CategoryProps } from './blog/categories/[slug]/page';
+import type { CategoryProps } from './blog/tags/[id]/[slug]/page';
 
 const baseSite = [
   {

@@ -1,10 +1,9 @@
 'use client';
 import { useMemo, useState } from 'react';
 import { usePostNumStore } from '@/providers/postnum-store-provider';
-import type { PostTeaserObjectProps } from '@/utils/mdx-utils';
+import { type QueryPostMetaItem } from '@/lib/node-db-funcs';
 import LoadMoreButton from './load-more-button';
 import { FeaturedPostPreviewV3, PostPreviewV3 } from './post-preview-v3';
-import { QueryPostMetaItem } from '@/lib/node-db-funcs';
 
 interface PreviewRollerV3Props {
   dataArr: QueryPostMetaItem[];

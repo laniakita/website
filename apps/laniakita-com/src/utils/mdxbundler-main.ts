@@ -5,8 +5,9 @@ import rehypeMdxImportMedia from 'rehype-mdx-import-media';
 import rehypeShiki from '@shikijs/rehype';
 import { rendererRich, transformerTwoslash } from '@shikijs/twoslash';
 import type { Options } from '@mdx-js/loader';
+import rehypeSlug from 'rehype-slug';
 
-export const resMdxV3 = async (mdxStr: string, inputFolder: string, slug: string, folderName = 'works') => {
+export const resMdxV3 = async (mdxStr: string, inputFolder: string, slug: string, folderName: string) => {
   const folder = path.resolve(process.cwd(), inputFolder);
   const processed = await bundleMDX({
     source: mdxStr,
@@ -31,6 +32,7 @@ export const resMdxV3 = async (mdxStr: string, inputFolder: string, slug: string
             ],
           },
         ],
+        rehypeSlug,
         rehypeMdxImportMedia,
       ];
       return options;

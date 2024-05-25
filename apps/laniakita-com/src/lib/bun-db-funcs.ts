@@ -92,7 +92,7 @@ export async function insertFeaturedImages(data: FeaturedImages) {
       blur: imgData.blur,
       height: imgData.height,
       width: imgData.width,
-      rawStr: imgData.rawStr
+      rawStr: imgData.rawStr,
     })
     .onConflictDoUpdate({
       target: featuredImages.id,
@@ -109,7 +109,7 @@ export async function insertFeaturedImages(data: FeaturedImages) {
         blur: imgData.blur,
         height: imgData.height,
         width: imgData.width,
-        rawStr: imgData.rawStr
+        rawStr: imgData.rawStr,
       },
     });
 
