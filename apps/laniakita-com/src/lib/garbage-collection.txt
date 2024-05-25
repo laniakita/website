@@ -1,0 +1,17 @@
+  /*  
+
+  
+  const postsRes = await maindb.query.posts.findMany({
+    columns: {
+      rawStr: false,
+    },
+    orderBy: [desc(posts.date)],
+  });
+
+  const translatedRes = Promise.all(postsRes.map(async (post) => {
+    const authorName = await getAuthorFromID(post.authorId);
+    const imageLocation = await get
+  }))
+
+  return postsArr;
+  */

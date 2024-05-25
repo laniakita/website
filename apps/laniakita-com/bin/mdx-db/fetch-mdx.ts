@@ -481,10 +481,10 @@ const matterProcessor = async ({
     debug && console.log(`slug found in front matter with ${frontMatter.slug as string}, not injecting`);
     debug && console.log(`found ${frontMatter[imageKey] as string}, processing image...`);
     const newMatter = await comboImageProcessing({ fmatter: frontMatter, mdxPath, imageKey, publicPath, debug });
-    return { ...newMatter, priority, rawStr: rawFile };
+    return { ...newMatter, priority, localKey: mdxPath, rawStr: rawFile };
   }
 
-  return { ...frontMatter, priority, rawStr: rawFile };
+  return { ...frontMatter, priority, localKey: mdxPath, rawStr: rawFile };
 };
 
 interface BatchFetchFrontMatterProps extends ConfigProps {

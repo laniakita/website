@@ -4,7 +4,9 @@ import matter from 'gray-matter';
 import { batchMatterFetch, fetchMdx, fetchMdxPath } from '@/utils/mdx-utils';
 import { PostHeader } from '@/app/blog/post-header';
 import type { PostTeaserObjectProps } from '@/utils/mdx-utils';
+import { queryPostByIdandSlugOrJustId } from '@/lib/node-db-funcs';
 
+/*
 export async function generateStaticParams() {
   const postMetas = await batchMatterFetch('./src/app/blog/posts/published');
   return postMetas!.map((meta) => ({
@@ -51,10 +53,14 @@ export async function generateMetadata(
     },
   };
 }
+*/
 
-export default async function BlogPostPage({ params }: { params: { slug: string } }) {
+export default async function BlogPostPage({ params }: { params: { id: string; slug: string } }) {
+  const postQ = queryPostByIdandSlugOrJustId(params.id, params.slug);
+  
   //const filePath = path.resolve(process.cwd(), './src/app/blog/posts/published/', `${params.slug}.mdx`);
   //const matterData = await fetchFrontmatter(filePath);
+  /*
   const getFile = await fetchMdx('./src/app/blog/posts/published', params.slug);
   if (typeof getFile !== 'string') return;
   const matterData = matter(getFile).data;
@@ -73,7 +79,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
     .join('/');
 
   const { default: MDXContent } = await import(`@/app/blog/${modPath}`);
-
+  */
   return (
     <main className='motion-safe:simple-color-trans -mb-0.5 min-h-full max-w-full bg-ctp-base dark:bg-ctp-midnight'>
       {(matterData as unknown) !== undefined && (
