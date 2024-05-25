@@ -29,5 +29,5 @@ export const featuredImages = sqliteTable('featured_images', {
   altText: text('alt_text'),
   blur: text('blur'),
   height: integer('height'),
-  width: integer('width')
+  width: integer('width'),
 });

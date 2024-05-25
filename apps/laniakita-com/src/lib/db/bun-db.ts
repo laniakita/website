@@ -6,7 +6,6 @@ import * as tags from './schema/tags';
 import * as featuredImages from './schema/featured-images';
 import * as posts from './schema/posts';
 
-
 // todo custom schemas via config file
 
 const sqlite = new Database('sqlite-main.db');
