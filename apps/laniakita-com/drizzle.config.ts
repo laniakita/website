@@ -1,6 +1,6 @@
+import path from 'node:path';
 import 'dotenv/config';
 import type { Config } from 'drizzle-kit';
-import path from 'node:path';
 
 export default {
   schema: './src/lib/db/schema/*',
