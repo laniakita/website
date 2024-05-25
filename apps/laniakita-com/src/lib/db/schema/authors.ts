@@ -1,5 +1,4 @@
 import { sqliteTable, text } from 'drizzle-orm/sqlite-core';
-import { string } from 'three/examples/jsm/nodes/Nodes.js';
 
 export interface Authors {
   id: string;

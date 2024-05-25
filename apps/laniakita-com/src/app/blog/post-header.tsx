@@ -1,10 +1,12 @@
 import Link from 'next/link';
 import ShareButton from '@/components/share-btn';
-import type { PostTeaserObjectProps } from '@/utils/mdx-utils';
+import type { PostQ } from '@/lib/node-db-funcs';
 import PostDate from './post-date';
-import { HeroShimmer } from './hero-shimmer';
+import { HeroBlur } from './hero-blur';
+import { TagsRoller } from './tags-roller';
 
-export function PostHeader({ dataObject }: { dataObject: PostTeaserObjectProps }) {
+export function PostHeader({ dataObject }: { dataObject: PostQ }) {
+  const tagsArr = dataObject.tags;
   return (
     <>
       <div className='flex w-full flex-col items-center justify-center gap-4 px-10 pb-6 pt-10 md:gap-6 md:pb-10 md:pt-20 lg:pt-36'>
@@ -16,49 +18,48 @@ export function PostHeader({ dataObject }: { dataObject: PostTeaserObjectProps }
           {dataObject.subheadline}
         </h2>
 
-        <div className='flex w-full max-w-xl flex-wrap gap-2 font-mono'>
-          <p className='space-x-2'>
-            <span>By</span>
-            <span>
-              <Link href='/about' className='font-semibold'>
-                {dataObject.author}
-              </Link>
-            </span>
-          </p>
-          <PostDate dateStr={dataObject.date} />
-          <p className='space-x-2'>
-            <span>|</span>
-            <span>
-              <Link href={`/blog/categories/${dataObject['category-slug']}`} className='font-semibold'>
-                #{dataObject['category-slug']}
-              </Link>
-            </span>
-          </p>
-        </div>
+        <p className='flex w-full max-w-xl flex-wrap gap-2 font-mono text-lg'>
+          {/* 
+               <span>
+            By,{` `}
+            <Link href='/about' className='font-semibold'>
+              {dataObject.author.name}
+            </Link>
+          </span>
+          
+          <span>|</span>
+          */}
 
-        <div className='flex w-full max-w-xl items-center justify-start'>
+          <PostDate dateStr={dataObject.date} />
+          <span>|</span>
+          <TagsRoller tagsArr={tagsArr} />
+        </p>
+
+        <div className='flex w-full max-w-xl items-center justify-start pt-1'>
           <ShareButton />
         </div>
       </div>
 
       <div className='flex size-full flex-col items-center justify-center'>
         {/* bg image + title */}
-        {(dataObject.heroFile as unknown) !== undefined && (
+        {(dataObject.featuredImage.fileLocation as unknown) !== undefined && (
           <figure className='relative flex size-full flex-col items-center justify-center gap-10'>
-            <HeroShimmer dataObject={dataObject} />
+            <HeroBlur dataObject={dataObject} />
 
             <p className='-mb-2 -mt-6 flex w-full flex-col items-center justify-center px-10 font-mono text-sm font-thin [font-style:_normal]'>
-              {(dataObject.heroCredit && dataObject.heroCreditUrl && dataObject.heroCreditUrlText) !== undefined ? (
+              {(dataObject.featuredImage.credit &&
+                dataObject.featuredImage.creditUrl &&
+                dataObject.featuredImage.creditUrlText) !== undefined ? (
                 <span className='w-full max-w-xl'>
-                  Image source: {dataObject.heroCredit} via{' '}
-                  <Link href={dataObject.heroCreditUrl!}>{dataObject.heroCreditUrlText}</Link>
+                  Image source: {dataObject.featuredImage.credit} via{' '}
+                  <Link href={dataObject.featuredImage.creditUrl}>{dataObject.featuredImage.creditUrlText}</Link>
                 </span>
               ) : (
-                <span className='w-full max-w-xl'>Image source: Original work by yours truly.</span>
+                <span className='w-full max-w-xl'>Image source: OC by me ^-^</span>
               )}
             </p>
-            <figcaption className='flex w-full items-center justify-center px-10 text-xl font-bold italic leading-tight'>
-              <span className='max-w-xl'>{dataObject.heroCaption}</span>
+            <figcaption className='flex w-full items-center justify-center px-10 text-xl font-bold italic leading-tight md:text-2xl'>
+              <span className='max-w-xl'>{dataObject.featuredImage.caption}</span>
             </figcaption>
           </figure>
         )}

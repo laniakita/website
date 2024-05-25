@@ -6,16 +6,12 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import timezone from 'dayjs/plugin/timezone';
 import { imageLoader } from '@/utils/image-loader';
-import type { PostTeaserObjectProps } from '@/utils/mdx-utils';
-import { shimmer, toBase64 } from '@/utils/shimmer-utils';
-import { PostsToTagsItem, QueryPostMetaItem } from '@/lib/node-db-funcs';
-import { postsToTags } from '@/lib/db/schema/posts';
+import type { QueryPostMetaItem } from '@/lib/node-db-funcs';
+import { TagsRoller } from './tags-roller';
 
 extend(relativeTime);
 extend(localizedFormat);
 extend(timezone);
-
-const accentTextColor = 'text-ctp-mauve';
 
 interface DateGetterReturn {
   cal?: string;
@@ -23,6 +19,12 @@ interface DateGetterReturn {
   fromNow?: string;
   timezone: string;
 }
+
+const linker = (idStr: string, slugStr: string) => {
+  const newStr = idStr.split('-').shift();
+  const blogLink = `/blog/posts/${newStr}/${slugStr}`;
+  return blogLink;
+};
 
 const dateGetter = (dateString: Date): DateGetterReturn | undefined => {
   const now = dayjs(new Date());
@@ -46,30 +48,6 @@ const dateGetter = (dateString: Date): DateGetterReturn | undefined => {
   }
 };
 
-interface TagsRollerProps {
-  tagsArr: PostsToTagsItem[];
-}
-
-function TagsRoller({ tagsArr }: { tagsArr: { slug: string; title: string }[] }) {
-  return (
-    <span className='flex flex-wrap gap-2'>
-      {tagsArr.length > 1 ? 'tags:' : 'tagged:'}
-      {tagsArr.length == 1 ? (
-        <Link href={`/blog/tags/${tagsArr[0]?.slug}`} id='post-title'>
-          {tagsArr[0]?.title}
-        </Link>
-      ) : (
-        <>
-          {tagsArr.map((tag) => (
-            <Link href={`/blog/tags/${tag.slug}`} id='post-title'>
-              {tag.title}{tagsArr.indexOf(tag) < tagsArr.length - 1 ? ',' : ''}
-            </Link>
-          ))}
-        </>
-      )}
-    </span>
-  );
-}
 
 export function PostPreviewV3({ dataObj }: { dataObj: QueryPostMetaItem }) {
   let hasImage = false;
@@ -77,7 +55,7 @@ export function PostPreviewV3({ dataObj }: { dataObj: QueryPostMetaItem }) {
     hasImage = true;
   }
 
-  const linkTo = `/blog/${dataObj.slug}`;
+  const linkTo = linker(dataObj.id, dataObj.slug);
 
   const postedDate = dateGetter(dataObj.date);
   const tagsArr = dataObj.tags;
@@ -88,16 +66,18 @@ export function PostPreviewV3({ dataObj }: { dataObj: QueryPostMetaItem }) {
         {hasImage ? (
           <Link
             href={linkTo}
-            className=' relative flex min-h-80 items-center justify-center overflow-hidden rounded-2xl  border-ctp-surface0  motion-safe:[transition:_border_0.3s] md:rounded-none md:border-b'
+            className=' relative flex size-full items-center justify-center overflow-hidden rounded-2xl border-ctp-surface0  motion-safe:[transition:_border_0.3s]  md:size-fit md:rounded-none md:border-b'
           >
             <Image
               loader={imageLoader}
               src={dataObj.featuredImage!.fileLocation}
-              placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
-              alt={dataObj.featuredImage!.altText!}
+              placeholder='blur'
+              blurDataURL={dataObj.featuredImage?.blur}
+              alt={dataObj.featuredImage!.altText}
+              height={dataObj.featuredImage?.height}
+              width={dataObj.featuredImage?.width}
               sizes='(max-width: 300px) 70vw, (max-width: 600px) 45vw, (max-width:1500px) 27vw'
-              fill
-              className='object-cover '
+              className='object-contain md:h-96 md:object-cover'
             />
           </Link>
         ) : (
@@ -133,12 +113,10 @@ export function FeaturedPostPreviewV3({ dataObj, descr }: { dataObj: QueryPostMe
     hasImage = true;
   }
 
-  const linkTo = `/blog/${dataObj.slug}`;
-  const linkToCat = `/blog/categories/`;
-
   const postedDate = dateGetter(dataObj.date);
   const tagsArr = dataObj.tags;
 
+  const linkTo = linker(dataObj.id, dataObj.slug);
 
   return (
     <div className='flex size-full items-center justify-center'>
@@ -148,16 +126,18 @@ export function FeaturedPostPreviewV3({ dataObj, descr }: { dataObj: QueryPostMe
         {hasImage ? (
           <Link
             href={linkTo}
-            className='relative m-0 size-full min-h-96 overflow-hidden rounded-none border-ctp-surface0 p-0 motion-safe:[transition:_border_0.3s] md:h-[30rem] md:border-b lg:rounded-2xl'
+            className='relative m-0 size-full overflow-hidden rounded-none border-ctp-surface0 p-0 motion-safe:[transition:_border_0.3s] md:border-b lg:rounded-2xl'
           >
             <Image
               loader={imageLoader}
               src={dataObj.featuredImage!.fileLocation}
               alt={dataObj.featuredImage!.altText}
-              placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
-              sizes='100vw'
-              fill
-              className='object-cover'
+              height={dataObj.featuredImage?.height}
+              width={dataObj.featuredImage?.width}
+              placeholder='blur'
+              blurDataURL={dataObj.featuredImage?.blur}
+              sizes='(max-width: 600px) 100vw, (max-width:1024px) 50vw'
+              className='object-contain lg:h-[30rem] lg:object-cover'
             />
           </Link>
         ) : (
@@ -183,7 +163,7 @@ export function FeaturedPostPreviewV3({ dataObj, descr }: { dataObj: QueryPostMe
                 </h3>
               </div>
               <p className='prose-protocol-omega'>{descr}</p>
-              <div className='flex flex-wrap gap-2 font-mono text-lg items-center'>
+              <div className='flex flex-wrap items-center gap-2 font-mono text-lg'>
                 <p>{postedDate?.cal ?? postedDate?.fromNow}</p>
                 <span>|</span>
                 <TagsRoller tagsArr={tagsArr} />

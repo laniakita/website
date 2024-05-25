@@ -24,7 +24,7 @@ const testConfig = {
   },
   debug: true,
 };
-
+/*
 const laniConfig = {
   contentFolder: './content',
   foldersToExclude: ['./assets'],
@@ -47,5 +47,7 @@ const laniConfig = {
   },
   debug: false,
 };
+
+*/
 
 await batchPushMain(testConfig);

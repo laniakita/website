@@ -33,5 +33,5 @@ export const featuredImages = sqliteTable('featured_images', {
   blur: text('blur'),
   height: integer('height'),
   width: integer('width'),
-  rawStr: text('raw_str')
+  rawStr: text('raw_str'),
 });
