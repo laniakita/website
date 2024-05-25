@@ -8,6 +8,8 @@ import timezone from 'dayjs/plugin/timezone';
 import { imageLoader } from '@/utils/image-loader';
 import type { PostTeaserObjectProps } from '@/utils/mdx-utils';
 import { shimmer, toBase64 } from '@/utils/shimmer-utils';
+import { PostsToTagsItem, QueryPostMetaItem } from '@/lib/node-db-funcs';
+import { postsToTags } from '@/lib/db/schema/posts';
 
 extend(relativeTime);
 extend(localizedFormat);
@@ -22,7 +24,7 @@ interface DateGetterReturn {
   timezone: string;
 }
 
-const dateGetter = (dateString: string): DateGetterReturn | undefined => {
+const dateGetter = (dateString: Date): DateGetterReturn | undefined => {
   const now = dayjs(new Date());
   const publishedDate = dayjs(dateString);
   const difference = now.diff(publishedDate, 'day');
@@ -44,16 +46,41 @@ const dateGetter = (dateString: string): DateGetterReturn | undefined => {
   }
 };
 
-export function PostPreviewV3({ dataObj }: { dataObj: PostTeaserObjectProps }) {
+interface TagsRollerProps {
+  tagsArr: PostsToTagsItem[];
+}
+
+function TagsRoller({ tagsArr }: { tagsArr: { slug: string; title: string }[] }) {
+  return (
+    <span className='flex flex-wrap gap-2'>
+      {tagsArr.length > 1 ? 'tags:' : 'tagged:'}
+      {tagsArr.length == 1 ? (
+        <Link href={`/blog/tags/${tagsArr[0]?.slug}`} id='post-title'>
+          {tagsArr[0]?.title}
+        </Link>
+      ) : (
+        <>
+          {tagsArr.map((tag) => (
+            <Link href={`/blog/tags/${tag.slug}`} id='post-title'>
+              {tag.title}{tagsArr.indexOf(tag) < tagsArr.length - 1 ? ',' : ''}
+            </Link>
+          ))}
+        </>
+      )}
+    </span>
+  );
+}
+
+export function PostPreviewV3({ dataObj }: { dataObj: QueryPostMetaItem }) {
   let hasImage = false;
-  if (dataObj.heroFile && dataObj.heroAltText) {
+  if (dataObj.featuredImage?.fileLocation && dataObj.featuredImage.altText) {
     hasImage = true;
   }
 
   const linkTo = `/blog/${dataObj.slug}`;
-  const linkToCat = `/blog/categories/${dataObj['category-slug']}`;
 
   const postedDate = dateGetter(dataObj.date);
+  const tagsArr = dataObj.tags;
 
   return (
     <div className='size-full md:p-2'>
@@ -65,9 +92,9 @@ export function PostPreviewV3({ dataObj }: { dataObj: PostTeaserObjectProps }) {
           >
             <Image
               loader={imageLoader}
-              src={dataObj.heroFile!}
+              src={dataObj.featuredImage!.fileLocation}
               placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
-              alt={dataObj.heroAltText!}
+              alt={dataObj.featuredImage!.altText!}
               sizes='(max-width: 300px) 70vw, (max-width: 600px) 45vw, (max-width:1500px) 27vw'
               fill
               className='object-cover '
@@ -92,9 +119,7 @@ export function PostPreviewV3({ dataObj }: { dataObj: PostTeaserObjectProps }) {
           <div className='flex w-full flex-wrap gap-2 font-mono'>
             <p>{postedDate?.cal ?? postedDate?.fromNow}</p>
             <span>|</span>
-            <Link href={linkToCat} className={`font-mono font-semibold ${accentTextColor}`}>
-              #{dataObj['category-slug']}
-            </Link>
+            <TagsRoller tagsArr={tagsArr} />
           </div>
         </div>
       </div>
@@ -102,31 +127,33 @@ export function PostPreviewV3({ dataObj }: { dataObj: PostTeaserObjectProps }) {
   );
 }
 
-export function FeaturedPostPreviewV3({ dataObj, descr }: { dataObj: PostTeaserObjectProps; descr?: string }) {
+export function FeaturedPostPreviewV3({ dataObj, descr }: { dataObj: QueryPostMetaItem; descr?: string }) {
   let hasImage = false;
-  if (dataObj.heroFile && dataObj.heroAltText) {
+  if (dataObj.featuredImage?.fileLocation && dataObj.featuredImage.altText) {
     hasImage = true;
   }
 
   const linkTo = `/blog/${dataObj.slug}`;
-  const linkToCat = `/blog/categories/${dataObj['category-slug']}`;
+  const linkToCat = `/blog/categories/`;
 
   const postedDate = dateGetter(dataObj.date);
+  const tagsArr = dataObj.tags;
+
 
   return (
     <div className='flex size-full items-center justify-center'>
       <div
         className={`${hasImage ? 'pb-10 md:p-0 lg:px-10 lg:pb-24 lg:pt-36' : 'py-10 md:p-0 lg:p-0'} motion-safe:simple-color-trans flex size-full max-w-7xl flex-col gap-10  bg-ctp-base  dark:bg-ctp-midnight md:gap-0 lg:flex-row-reverse lg:items-center lg:justify-between`}
       >
-        {dataObj.heroFile && dataObj.heroAltText ? (
+        {hasImage ? (
           <Link
             href={linkTo}
             className='relative m-0 size-full min-h-96 overflow-hidden rounded-none border-ctp-surface0 p-0 motion-safe:[transition:_border_0.3s] md:h-[30rem] md:border-b lg:rounded-2xl'
           >
             <Image
               loader={imageLoader}
-              src={dataObj.heroFile}
-              alt={dataObj.heroAltText}
+              src={dataObj.featuredImage!.fileLocation}
+              alt={dataObj.featuredImage!.altText}
               placeholder={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
               sizes='100vw'
               fill
@@ -156,12 +183,10 @@ export function FeaturedPostPreviewV3({ dataObj, descr }: { dataObj: PostTeaserO
                 </h3>
               </div>
               <p className='prose-protocol-omega'>{descr}</p>
-              <div className='flex flex-wrap gap-2 font-mono text-lg'>
+              <div className='flex flex-wrap gap-2 font-mono text-lg items-center'>
                 <p>{postedDate?.cal ?? postedDate?.fromNow}</p>
                 <span>|</span>
-                <Link href={linkToCat} className={`font-mono text-xl font-semibold ${accentTextColor} `}>
-                  #{dataObj['category-slug']}
-                </Link>
+                <TagsRoller tagsArr={tagsArr} />
               </div>
             </div>
           </div>

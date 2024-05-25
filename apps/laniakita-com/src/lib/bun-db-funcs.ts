@@ -18,18 +18,20 @@ export async function insertAuthors(data: Authors) {
     .values({
       id: authorData.id,
       slug: authorData.slug,
-      date: authorData.date.toString(),
+      date: authorData.date.toUTCString(),
       name: authorData.name,
       mastodon: authorData.mastodon,
+      localKey: authorData.localKey,
       rawStr: authorData.rawStr,
     })
     .onConflictDoUpdate({
       target: authors.id,
       set: {
         slug: authorData.slug,
-        date: authorData.date.toString(),
+        date: authorData.date.toUTCString(),
         name: authorData.name,
         mastodon: authorData.mastodon,
+        localKey: authorData.localKey,
         rawStr: authorData.rawStr,
       },
     });
@@ -48,13 +50,20 @@ export async function insertTags(data: Tags) {
     .values({
       id: tagData.id,
       slug: tagData.slug,
-      date: tagData.date.toString(),
+      date: tagData.date.toUTCString(),
       title: tagData.title,
+      localKey: tagData.localKey,
       rawStr: tagData.rawStr,
     })
     .onConflictDoUpdate({
       target: tags.id,
-      set: { slug: tagData.slug, date: tagData.date.toString(), title: tagData.title, rawStr: tagData.rawStr },
+      set: {
+        slug: tagData.slug,
+        date: tagData.date.toUTCString(),
+        title: tagData.title,
+        localKey: tagData.localKey,
+        rawStr: tagData.rawStr,
+      },
     });
 
   console.log('inserted', tagData.title, 'into db');
@@ -72,31 +81,35 @@ export async function insertFeaturedImages(data: FeaturedImages) {
     .values({
       id: imgData.id,
       slug: imgData.slug,
-      date: imgData.date.toString(),
+      date: imgData.date.toUTCString(),
       fileLocation: imgData.fileLocation,
       caption: imgData.caption,
       credit: imgData.credit,
       creditUrlText: imgData.creditUrlText,
       creditUrl: imgData.creditUrl,
       altText: imgData.altText,
+      localKey: imgData.localKey,
       blur: imgData.blur,
       height: imgData.height,
       width: imgData.width,
+      rawStr: imgData.rawStr
     })
     .onConflictDoUpdate({
       target: featuredImages.id,
       set: {
         slug: imgData.slug,
-        date: imgData.date.toString(),
+        date: imgData.date.toUTCString(),
         fileLocation: imgData.fileLocation,
         caption: imgData.caption,
         credit: imgData.credit,
         creditUrlText: imgData.creditUrlText,
         creditUrl: imgData.creditUrl,
         altText: imgData.altText,
+        localKey: imgData.localKey,
         blur: imgData.blur,
         height: imgData.height,
         width: imgData.width,
+        rawStr: imgData.rawStr
       },
     });
 
@@ -169,10 +182,11 @@ export async function insertPosts(data: Posts) {
       id: postData.id,
       authorId: authorIdRes.id,
       slug: postData.slug,
-      date: postData.date.toString(),
+      date: postData.date.toUTCString(),
       headline: postData.headline,
       subheadline: postData.subheadline,
       featuredImageId: featuredImageIdRes?.id,
+      localKey: postData.localKey,
       rawStr: postData.rawStr,
     })
     .onConflictDoUpdate({
@@ -180,10 +194,11 @@ export async function insertPosts(data: Posts) {
       set: {
         authorId: authorIdRes.id,
         slug: postData.slug,
-        date: postData.date.toString(),
+        date: postData.date.toUTCString(),
         headline: postData.headline,
         subheadline: postData.subheadline,
         featuredImageId: featuredImageIdRes?.id,
+        localKey: postData.localKey,
         rawStr: postData.rawStr,
       },
     });

@@ -10,10 +10,12 @@ export interface FeaturedImages {
   credit?: string;
   creditUrlText?: string;
   creditUrl?: string;
-  altText?: string;
-  blur?: string;
+  altText: string;
+  localKey: string;
+  blur: string;
   height: number;
   width: number;
+  rawStr: string;
 }
 
 export const featuredImages = sqliteTable('featured_images', {
@@ -26,8 +28,10 @@ export const featuredImages = sqliteTable('featured_images', {
   credit: text('credit'),
   creditUrlText: text('credit_url_text'),
   creditUrl: text('credit_url'),
+  localKey: text('local_key'),
   altText: text('alt_text'),
   blur: text('blur'),
   height: integer('height'),
   width: integer('width'),
+  rawStr: text('raw_str')
 });

@@ -15,12 +15,13 @@ export const featuredImagesRelations = relations(featuredImages, ({ many }) => (
 export interface Posts {
   id: string;
   slug: string;
-  date: string;
+  date: Date;
   tags: string[];
   author: string;
   headline: string;
   subheadline?: string;
   featuredImage: string;
+  localKey: string;
   rawStr: string;
 }
 
@@ -37,6 +38,7 @@ export const posts = sqliteTable('posts', {
     onUpdate: 'cascade',
     onDelete: 'cascade',
   }),
+  localKey: text('local_key'),
   rawStr: text('raw_str'),
 });
 

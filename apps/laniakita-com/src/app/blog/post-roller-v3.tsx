@@ -4,9 +4,10 @@ import { usePostNumStore } from '@/providers/postnum-store-provider';
 import type { PostTeaserObjectProps } from '@/utils/mdx-utils';
 import LoadMoreButton from './load-more-button';
 import { FeaturedPostPreviewV3, PostPreviewV3 } from './post-preview-v3';
+import { QueryPostMetaItem } from '@/lib/node-db-funcs';
 
 interface PreviewRollerV3Props {
-  dataArr: PostTeaserObjectProps[];
+  dataArr: QueryPostMetaItem[];
   featuredDescr?: string;
   baseUrl?: string;
   isCat?: boolean;
@@ -29,7 +30,7 @@ export default function PreviewRollerV3({ dataArr, isCat, featuredDescr }: Previ
         <div className='flex max-w-7xl flex-col-reverse items-center justify-center md:flex-row md:items-start md:px-2 lg:px-8'>
           <div className='size-full'>
             <div className='flex flex-wrap'>
-              {dataArr.slice(isCat ? 0 : 1, postNum).map((post: PostTeaserObjectProps) => (
+              {dataArr.slice(isCat ? 0 : 1, postNum).map((post) => (
                 <div key={dataArr.indexOf(post)} className='basis-full md:basis-1/2 2xl:basis-1/3'>
                   <PostPreviewV3 dataObj={post} />
                 </div>

@@ -1,7 +1,7 @@
 import { batchPushMain } from './mdx-db/push-mdx';
 
 // use for testing
-/*
+
 const testConfig = {
   contentFolder: './__tests__/test_content',
   foldersToExclude: ['./assets'],
@@ -16,15 +16,14 @@ const testConfig = {
   },
   dbFunctionModules: {
     insert: {
-      authors: { insertAuthors: '@/lib/db-funcs' },
-      tags: { insertTags: '@/lib/db-funcs' },
-      featuredImages: { insertFeaturedImages: '@/lib/db-funcs' },
-      posts: { insertPosts: '@/lib/db-funcs' },
+      authors: { insertAuthors: '@/lib/bun-db-funcs' },
+      tags: { insertTags: '@/lib/bun-db-funcs' },
+      featuredImages: { insertFeaturedImages: '@/lib/bun-db-funcs' },
+      posts: { insertPosts: '@/lib/bun-db-funcs' },
     },
   },
   debug: true,
 };
-*/
 
 const laniConfig = {
   contentFolder: './content',
@@ -49,4 +48,4 @@ const laniConfig = {
   debug: false,
 };
 
-await batchPushMain(laniConfig);
+await batchPushMain(testConfig);
