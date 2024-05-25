@@ -19,6 +19,7 @@
           turbo
           bun
           zsh
+          turso-cli
         ];
         shellHook = ''
           exec zsh
