@@ -1,6 +1,7 @@
 import type { Metadata, ResolvingMetadata } from 'next';
 import { useMemo } from 'react';
 import { getMDXComponent } from 'mdx-bundler/client';
+import { redirect } from 'next/navigation';
 import { PostHeader } from '@/app/blog/post-header';
 import {
   type PostQ,
@@ -12,7 +13,6 @@ import {
 } from '@/lib/node-db-funcs';
 import { resMdxV3 } from '@/utils/mdxbundler-main';
 import BlogImageBlurServer from '@/app/blog/blog-image-blur-wrapper';
-import { redirect } from 'next/navigation';
 
 export async function generateStaticParams() {
   const postMetas = (await queryPostMetas()) as unknown as QueryPostMetaItem[];

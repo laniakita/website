@@ -223,7 +223,7 @@ export const getAllTags = async () => {
 
 export const tagQ = async (tagId2: string, tagSlug2: string) => {
   const idRes2 = await maindb.query.tags.findFirst({
-    where: or(like(tags.id, `${tagId2}%`), eq(tags.slug, tagSlug2!)),
+    where: or(like(tags.id, `${tagId2}%`), eq(tags.slug, tagSlug2)),
   });
   return idRes2;
 };
@@ -231,7 +231,7 @@ export const tagQ = async (tagId2: string, tagSlug2: string) => {
 // type of metaItem arr
 export const getPostsWithTagSlug = async (tagIdStr: string, tagSlug: string) => {
   const idRes = await maindb.query.tags.findFirst({
-    where: or(like(tags.id, `${tagIdStr}%`), eq(tags.slug, tagSlug!)),
+    where: or(like(tags.id, `${tagIdStr}%`), eq(tags.slug, tagSlug)),
     columns: {
       id: true,
     },
