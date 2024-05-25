@@ -1,8 +1,8 @@
 import type { MetadataRoute } from 'next';
 import { BASE_URL } from '@/lib/constants';
-import { batchMatterFetch } from '@/utils/mdx-utils';
-import type { PostTeaserObjectProps, WorkMetaProps } from '@/utils/mdx-utils';
-import type { CategoryProps } from './blog/tags/[id]/[slug]/page';
+import { type WorkMetaProps, batchMatterFetch } from '@/utils/mdx-utils';
+import { getAllTags, queryPostMetas } from '@/lib/node-db-funcs';
+import linker from '@/utils/linker';
 
 const baseSite = [
   {
@@ -41,40 +41,26 @@ const baseSite = [
     changeFrequency: 'yearly',
     priority: 0.2,
   },
-  {
-    url: `${BASE_URL}/privacy`,
-    lastModified: new Date(),
-    changeFrequency: 'yearly',
-    priority: 0.1,
-  },
-  {
-    url: `${BASE_URL}/terms`,
-    lastModified: new Date(),
-    changeFrequency: 'yearly',
-    priority: 0.1,
-  },
 ];
 
 // funfact/improbable todo: google only supports 50,000 urls per sitemap, so filter
 // old content if needed.
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const POSTS_FOLDER = './src/app/blog/posts/published';
-  const POST_CATEGORIES_FOLDER = './src/app/blog/categories/posts/published';
   const PROJECTS_FOLDER = './src/app/projects/posts/published';
 
-  const blogMetas = (await batchMatterFetch(POSTS_FOLDER)) as PostTeaserObjectProps[];
-  const blogCategoriesMetas = (await batchMatterFetch(POST_CATEGORIES_FOLDER)) as CategoryProps[];
+  const blogMetas = await queryPostMetas();
+  const blogCategoriesMetas = await getAllTags();
   const projectMetas = (await batchMatterFetch(PROJECTS_FOLDER)) as WorkMetaProps[];
 
-  const blogPosts = blogMetas.map(({ slug, date }: PostTeaserObjectProps) => ({
-    url: `${BASE_URL}/blog/${slug}`,
+  const blogPosts = blogMetas.map(({ id, slug, date }) => ({
+    url: `${BASE_URL}/${linker(id, slug, 'blog/posts')}`,
     lastModified: date,
   }));
 
-  const blogPostCategories = blogCategoriesMetas.map(({ slug }: CategoryProps) => ({
-    url: `${BASE_URL}/blog/categories/${slug}`,
-    lastModified: new Date(),
+  const blogPostCategories = blogCategoriesMetas.map(({ id, slug, date }) => ({
+    url: `${BASE_URL}/${linker(id, slug!, 'blog/tags')}`,
+    lastModified: date ? date : new Date,
   }));
 
   const projects = projectMetas.map(({ slug, date }: WorkMetaProps) => ({

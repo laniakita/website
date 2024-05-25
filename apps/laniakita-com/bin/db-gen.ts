@@ -1,7 +1,7 @@
 import { batchPushMain } from './mdx-db/push-mdx';
 
 // use for testing
-
+/*
 const testConfig = {
   contentFolder: './__tests__/test_content',
   foldersToExclude: ['./assets'],
@@ -24,7 +24,8 @@ const testConfig = {
   },
   debug: true,
 };
-/*
+*/
+
 const laniConfig = {
   contentFolder: './content',
   foldersToExclude: ['./assets'],
@@ -48,6 +49,6 @@ const laniConfig = {
   debug: false,
 };
 
-*/
 
-await batchPushMain(testConfig);
+
+await batchPushMain(laniConfig);

@@ -146,16 +146,15 @@ export interface PostQ extends QueryPostMetaItem {
     width: number;
     blur: string;
   };
+  altCaption?: string;
   rawStr: string;
 }
 
 export const queryPostMetaByIdandSlugOrJustId = async ({ idStr, slugStr }: { idStr: string; slugStr: string }) => {
   const postRes = await maindb.query.posts.findFirst({
-    where: or(or(
+    where: or(
       and(like(posts.id, `${idStr}%`), eq(posts.slug, slugStr)),
-      or(like(posts.id, `${idStr}%`), eq(posts.id, idStr)),
-      ),
-      and(eq(posts.id, idStr), eq(posts.slug, slugStr))
+      or(like(posts.id, `${idStr}%`), eq(posts.id, idStr))
     ),
     columns: {
       authorId: false,
@@ -197,15 +196,30 @@ export const queryPostMetaByIdandSlugOrJustId = async ({ idStr, slugStr }: { idS
       },
     },
   });
-  const tagsMap = postRes?.postToTags.map((tagsObj) => {
+  
+  if (!postRes) return;
+
+  const tagsMap = postRes.postToTags.map((tagsObj) => {
     const slug = tagsObj.tag.slug;
     const title = tagsObj.tag.title;
     const id = tagsObj.tag.id;
     return { slug, title, id };
   });
+
   delete (postRes as unknown as { postToTags: Record<string, unknown> | undefined }).postToTags;
+  
   return { ...postRes, tags: tagsMap };
 };
+
+/*
+    where: or(
+      or(
+        and(like(posts.id, `${idStr}%`), eq(posts.slug, slugStr)),
+        or(like(posts.id, `${idStr}%`), eq(posts.id, idStr)),
+      ),
+      and(eq(posts.id, idStr), eq(posts.slug, slugStr)),
+    ),
+*/
 
 export interface TagQ {
   id: string;
@@ -221,24 +235,29 @@ export const getAllTags = async () => {
   return res;
 };
 
-export const tagQ = async (tagId2: string, tagSlug2: string) => {
+export const getTag = async ({ idStr, slugStr }: { idStr: string; slugStr: string }) => {
   const idRes2 = await maindb.query.tags.findFirst({
-    where: or(like(tags.id, `${tagId2}%`), eq(tags.slug, tagSlug2)),
+    where: or(
+      and(like(tags.id, `${idStr}%`), eq(tags.slug, slugStr)),
+      like(tags.id, `${idStr}%`)),
   });
   return idRes2;
 };
 
 // type of metaItem arr
-export const getPostsWithTagSlug = async (tagIdStr: string, tagSlug: string) => {
+export const getPostsWithTagID = async (tagIdStr: string) => {
+
   const idRes = await maindb.query.tags.findFirst({
-    where: or(like(tags.id, `${tagIdStr}%`), eq(tags.slug, tagSlug)),
+    where: like(tags.id, `${tagIdStr}%`),
     columns: {
       id: true,
     },
   });
 
+  if (!idRes?.id) return;
+
   const queryRes = await maindb.query.postsToTags.findMany({
-    where: eq(postsToTags.tagId, idRes!.id),
+    where: eq(postsToTags.tagId, idRes.id),
     columns: {
       postId: false,
       tagId: false,
