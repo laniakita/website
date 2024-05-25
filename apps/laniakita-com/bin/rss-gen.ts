@@ -4,9 +4,10 @@
 import { parseArgs } from 'node:util';
 import { toXML } from 'jstoxml';
 import dayjs from 'dayjs';
-import { batchMatterFetchBun } from '@/utils/bun-mdx-utils';
-import type { PostTeaserObjectProps } from '@/utils/mdx-utils';
 import { BASE_URL } from '@/lib/constants';
+import { QueryPostMetaItem } from '@/lib/node-db-funcs';
+import linker from '@/utils/linker';
+import { queryPostMetasBun } from '@/lib/bun-db-funcs';
 
 const packageDataRaw = Bun.file(`${process.cwd()}/package.json`);
 const packageDataStr: unknown = await packageDataRaw.text();
@@ -18,8 +19,7 @@ interface Package {
   };
 }
 
-const blogPostRaw = await batchMatterFetchBun('./src/app/blog/posts/published');
-const blogPostRes = blogPostRaw as PostTeaserObjectProps[];
+const blogPostRes = (await queryPostMetasBun() as unknown as QueryPostMetaItem[])
 const lastPostDateRFC822 = dayjs(blogPostRes[0]?.date).format('ddd, DD MMM YYYY HH:mm:ss ZZ');
 const buildDateRFC822 = dayjs().format('ddd, DD MMM YYYY HH:mm:ss ZZ');
 const nextjsVersion = (packageData as Package).dependencies.next; //split('^')[1];
@@ -65,13 +65,29 @@ const xmlOpts = {
   indent: '  ',
 };
 
+const resolveTags = (tagsArr: {id: string, slug: string, title: string}[]) => {
+  const res = tagsArr.map((tagItem) => {
+    const cat = {
+      _name: 'category',
+      _attrs: {
+        domain: `${BASE_URL}/${linker(tagItem.id, tagItem.slug, 'blog/tags')}`
+      },
+      _content: tagItem.title
+    }
+    return cat;
+  })
+  return res
+}
+
 const itemRes = blogPostRes.map((post) => {
+  const tagsArr = resolveTags(post.tags)
+
   const res = [
     {
       title: post.headline,
     },
     {
-      link: `${buildUrl}/blog/${post.slug}`,
+      link: `${buildUrl}/${linker(post.id, post.slug, 'blog/posts')}`,
     },
     {
       description: post.subheadline,
@@ -79,15 +95,13 @@ const itemRes = blogPostRes.map((post) => {
     {
       author: post.author,
     },
-    {
-      category: post['category-slug'],
-    },
+    tagsArr,
     {
       _name: 'guid',
       _attrs: {
         isPermaLink: 'false',
       },
-      _content: `${buildUrl}/blog/${post.slug}`,
+      _content: `${buildUrl}/${linker(post.id, post.slug, 'blog/posts')}`,
     },
     {
       pubDate: dayjs(post.date).format('ddd, DD MMM YYYY HH:mm:ss ZZ'),
@@ -95,6 +109,8 @@ const itemRes = blogPostRes.map((post) => {
   ];
   return { item: res };
 });
+
+
 
 const rssFeed = {
   _name: 'rss',

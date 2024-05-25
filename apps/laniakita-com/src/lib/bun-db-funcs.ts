@@ -1,5 +1,5 @@
 /* eslint-disable no-console -- we're not in the browser, so this is fine. */
-import { eq } from 'drizzle-orm';
+import { eq, desc } from 'drizzle-orm';
 import { maindb } from '@/lib/db/bun-db';
 import { type Authors, authors } from '@/lib/db/schema/authors';
 import { type Tags, tags } from '@/lib/db/schema/tags';
@@ -186,6 +186,7 @@ export async function insertPosts(data: Posts) {
       headline: postData.headline,
       subheadline: postData.subheadline,
       featuredImageId: featuredImageIdRes?.id,
+      altCaption: postData.altCaption,
       localKey: postData.localKey,
       rawStr: postData.rawStr,
     })
@@ -198,9 +199,66 @@ export async function insertPosts(data: Posts) {
         headline: postData.headline,
         subheadline: postData.subheadline,
         featuredImageId: featuredImageIdRes?.id,
+        altCaption: postData.altCaption,
         localKey: postData.localKey,
         rawStr: postData.rawStr,
       },
     });
   console.log('inserted', postData.slug, 'into db');
 }
+
+
+export const queryPostMetasBun = async () => {
+  const postRes = await maindb.query.posts.findMany({
+    orderBy: [desc(posts.date)],
+    columns: {
+      authorId: false,
+      featuredImageId: false,
+      rawStr: false,
+    },
+    with: {
+      author: {
+        columns: {
+          name: true,
+        },
+      },
+      postToTags: {
+        columns: {
+          tagId: false,
+          postId: false,
+        },
+        with: {
+          tag: {
+            columns: {
+              slug: true,
+              title: true,
+              id: true,
+            },
+          },
+        },
+      },
+      featuredImage: {
+        columns: {
+          fileLocation: true,
+          altText: true,
+          blur: true,
+          height: true,
+          width: true,
+        },
+      },
+    },
+  });
+  const finalRes = postRes.map((post) => {
+    const tagsOne = post.postToTags.map((tagsObj) => {
+      const slug = tagsObj.tag.slug;
+      const title = tagsObj.tag.title;
+      const id = tagsObj.tag.id;
+
+      return { slug, title, id };
+    });
+    delete (post as unknown as { postToTags: Record<string, unknown> | undefined }).postToTags;
+    return { ...post, tags: tagsOne };
+  });
+  //console.dir(finalRes, { depth: null });
+  return finalRes;
+};

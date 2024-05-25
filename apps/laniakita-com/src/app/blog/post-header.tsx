@@ -7,7 +7,18 @@ import { TagsRoller } from './tags-roller';
 
 export function PostHeader({ dataObject }: { dataObject: PostQ }) {
   const tagsArr = dataObject.tags;
-  return (
+  let showImageDescr = false;
+  if (
+    ((dataObject.featuredImage.credit as unknown) &&
+      (dataObject.featuredImage.creditUrl as unknown) &&
+      (dataObject.featuredImage.creditUrlText as unknown)) !== null &&
+    ((dataObject.featuredImage.credit as unknown) &&
+      (dataObject.featuredImage.creditUrl as unknown) &&
+      (dataObject.featuredImage.creditUrlText as unknown)) !== undefined
+  ) {
+    showImageDescr = true;
+  }
+   return (
     <>
       <div className='flex w-full flex-col items-center justify-center gap-4 px-10 pb-6 pt-10 md:gap-6 md:pb-10 md:pt-20 lg:pt-36'>
         <h1 className='w-full max-w-xl text-4xl font-black leading-tight supports-[text-wrap:balance]:text-balance md:text-5xl'>
@@ -47,19 +58,25 @@ export function PostHeader({ dataObject }: { dataObject: PostQ }) {
             <HeroBlur dataObject={dataObject} />
 
             <p className='-mb-2 -mt-6 flex w-full flex-col items-center justify-center px-10 font-mono text-sm font-thin [font-style:_normal]'>
-              {(dataObject.featuredImage.credit &&
-                dataObject.featuredImage.creditUrl &&
-                dataObject.featuredImage.creditUrlText) !== undefined ? (
+              {showImageDescr ? (
                 <span className='w-full max-w-xl'>
                   Image source: {dataObject.featuredImage.credit} via{' '}
-                  <Link href={dataObject.featuredImage.creditUrl}>{dataObject.featuredImage.creditUrlText}</Link>
+                  <Link
+                    href={
+                      dataObject.featuredImage.creditUrl ? dataObject.featuredImage.creditUrl : 'https://laniakita.com'
+                    }
+                  >
+                    {dataObject.featuredImage.creditUrlText}
+                  </Link>
                 </span>
               ) : (
                 <span className='w-full max-w-xl'>Image source: OC by me ^-^</span>
               )}
             </p>
             <figcaption className='flex w-full items-center justify-center px-10 text-xl font-bold italic leading-tight md:text-2xl'>
-              <span className='max-w-xl'>{dataObject.featuredImage.caption}</span>
+              <span className='max-w-xl'>
+                {dataObject.altCaption ? dataObject.altCaption : dataObject.featuredImage.caption}
+              </span>
             </figcaption>
           </figure>
         )}

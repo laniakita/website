@@ -21,6 +21,7 @@ export interface Posts {
   headline: string;
   subheadline?: string;
   featuredImage: string;
+  altCaption?: string;
   localKey: string;
   rawStr: string;
 }
@@ -38,6 +39,7 @@ export const posts = sqliteTable('posts', {
     onUpdate: 'cascade',
     onDelete: 'cascade',
   }),
+  altCaption: text('alt_caption'),
   localKey: text('local_key'),
   rawStr: text('raw_str'),
 });
