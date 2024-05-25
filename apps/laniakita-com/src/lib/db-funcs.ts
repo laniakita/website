@@ -103,14 +103,13 @@ export async function insertFeaturedImages(data: FeaturedImages) {
   console.log('inserted', imgData.slug, 'into db');
 }
 
-
 export async function insertPosts(data: Posts) {
   if (!data.id) {
     console.error('no post id! Did you forget something?');
     return;
   }
   const postData = data;
-  
+
   const authorIdRes = await maindb.query.authors.findFirst({
     where: eq(authors.slug, postData.author),
     columns: {
@@ -118,21 +117,27 @@ export async function insertPosts(data: Posts) {
     },
   });
 
-  await Promise.all(postData.tags.map(async(tagSlug) => {
-    const res = await maindb.query.tags.findFirst({
-      where: eq(tags.slug, tagSlug),
-      columns: {
-        id: true,
-      },
-    })
-    if (!(res && 'id' in res)) return;
+  await Promise.all(
+    postData.tags.map(async (tagSlug) => {
+      const res = await maindb.query.tags.findFirst({
+        where: eq(tags.slug, tagSlug),
+        columns: {
+          id: true,
+        },
+      });
+      if (!(res && 'id' in res)) return;
 
-    await maindb.insert(postsToTags)
-      .values({postId: postData.id, tagId: res.id})
-      .onConflictDoUpdate({ target: [postsToTags.postId, postsToTags.tagId],  set: {postId: postData.id, tagId: res.id} })
+      await maindb
+        .insert(postsToTags)
+        .values({ postId: postData.id, tagId: res.id })
+        .onConflictDoUpdate({
+          target: [postsToTags.postId, postsToTags.tagId],
+          set: { postId: postData.id, tagId: res.id },
+        });
 
-    console.log('associated', tagSlug, 'with', postData.slug, 'in db')
-  }));
+      console.log('associated', tagSlug, 'with', postData.slug, 'in db');
+    }),
+  );
 
   const featuredImageIdRes = await maindb.query.featuredImages.findFirst({
     where: eq(featuredImages.slug, postData.featuredImage),
@@ -141,20 +146,23 @@ export async function insertPosts(data: Posts) {
     },
   });
 
-  if (!(authorIdRes && 'id' in authorIdRes)) { 
+  if (!(authorIdRes && 'id' in authorIdRes)) {
     console.error('Could not retrieve author id from slug! Did you forget something?');
-    return; 
+    return;
   }
-  
-  if (typeof(postData.featuredImage) === 'string' && postData.featuredImage.length >= 1 && !(featuredImageIdRes && 'id' in featuredImageIdRes)) { 
+
+  if (
+    typeof postData.featuredImage === 'string' &&
+    postData.featuredImage.length >= 1 &&
+    !(featuredImageIdRes && 'id' in featuredImageIdRes)
+  ) {
     console.error('Could not retrieve image id from slug! Did you forget something?');
-    return; 
+    return;
   }
 
-  console.log(authorIdRes.id, 'is author id')
-  featuredImageIdRes && featuredImageIdRes.id.length >= 1 && console.log(featuredImageIdRes.id, 'is image id')
+  console.log(authorIdRes.id, 'is author id');
+  featuredImageIdRes && featuredImageIdRes.id.length >= 1 && console.log(featuredImageIdRes.id, 'is image id');
 
-  
   await maindb
     .insert(posts)
     .values({
@@ -165,7 +173,7 @@ export async function insertPosts(data: Posts) {
       headline: postData.headline,
       subheadline: postData.subheadline,
       featuredImageId: featuredImageIdRes?.id,
-      rawStr: postData.rawStr
+      rawStr: postData.rawStr,
     })
     .onConflictDoUpdate({
       target: posts.id,
@@ -176,7 +184,7 @@ export async function insertPosts(data: Posts) {
         headline: postData.headline,
         subheadline: postData.subheadline,
         featuredImageId: featuredImageIdRes?.id,
-        rawStr: postData.rawStr
+        rawStr: postData.rawStr,
       },
     });
   console.log('inserted', postData.slug, 'into db');

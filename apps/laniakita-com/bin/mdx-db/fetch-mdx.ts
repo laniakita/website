@@ -118,7 +118,7 @@ const newimageEmbedPath = async ({
   if (imageKey && typeof imageKey === 'string' && imageKey in fmatter) {
     debug && console.log('found hero image with key', imageKey);
 
-    const imageType = 'type' in fmatter && (fmatter.type as string);
+    //const imageType = 'type' in fmatter && (fmatter.type as string);
 
     const currentImagePath = fmatter[imageKey];
 
@@ -404,7 +404,7 @@ const matterProcessor = async ({
     publicPath,
     debug,
   };
-  debug && console.log(frontMatter)
+  debug && console.log(frontMatter);
   let priority;
   if ('type' in frontMatter && priorityConfig && (frontMatter.type as string) in priorityConfig) {
     debug && console.log('assigning', frontMatter.type, 'with priority', priorityConfig[frontMatter.type as string]);
@@ -516,7 +516,7 @@ const batchFetchFrontMatter = async ({
         const readIntoMem = Bun.file(absFilePath);
         const rawFile = await readIntoMem.text();
         const frontMatter = matter(rawFile).data;
-         const res = await matterProcessor({
+        const res = await matterProcessor({
           frontMatter,
           absFilePath,
           mdxPath,

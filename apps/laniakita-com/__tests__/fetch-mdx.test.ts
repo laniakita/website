@@ -51,7 +51,7 @@ test('batchFetchMain produces an array of front matter objects', async () => {
       featuredImages: 3,
       posts: 4,
     },
-    debug: false
+    debug: false,
   });
   expect(Array.isArray(res)).toBe(true);
 });

@@ -6,6 +6,5 @@ import * as tags from './schema/tags';
 import * as posts from './schema/posts';
 import * as featuredImages from './schema/featured-images';
 
-
 const sqlite = new Database('sqlite-main.db');
 export const maindb = drizzle(sqlite, { schema: { ...authors, ...tags, ...featuredImages, ...posts } });

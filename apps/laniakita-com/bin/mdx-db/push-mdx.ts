@@ -32,10 +32,9 @@ export const batchPushMain = async (fetchConfig: BatchFetchMain & DbFunctionsPro
             const dbFuncs = await import(insModPath);
             /* eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access -- importing types would be a lot to ask for */
             await dbFuncs[insModStr](processedMDX);
-           }
+          }
         }
       }
     }),
   );
 };
-
