@@ -14,9 +14,9 @@
     "test:watch": "bun test --watch"
   },
   "dependencies": {
-    "@ahiakea/eslint-config": "workspace:*",
-    "@ahiakea/tailwindcss-config": "workspace:*",
-    "@ahiakea/typescript-config": "workspace:*",
+    "ahiakea/eslint-config": "workspace:*",
+    "ahiakea/tailwindcss-config": "workspace:*",
+    "ahiakea/typescript-config": "workspace:*",
     "@mdx-js/loader": "^3.0.1",
     "@mdx-js/react": "^3.0.1",
     "@next/mdx": "14.2.2",
