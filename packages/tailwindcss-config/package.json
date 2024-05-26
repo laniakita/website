@@ -1,12 +1,12 @@
 {
-  "name": "@ahiakea/tailwindcss-config",
+  "name": "ahiakea/tailwindcss-config",
   "version": "0.0.0",
   "private": true,
   "exports": {
     ".": "./tailwind.config.ts"
   },
   "devDependencies": {
-    "@ahiakea/typescript-config": "workspace:^",
+    "ahiakea/typescript-config": "workspace:*",
     "@catppuccin/tailwindcss": "^0.1.6",
     "@iconify-json/ant-design": "^1.1.16",
     "@iconify-json/fa": "^1.1.8",
