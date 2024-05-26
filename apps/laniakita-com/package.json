@@ -14,9 +14,7 @@
     "test:watch": "bun test --watch"
   },
   "dependencies": {
-    "ahiakea/eslint-config": "workspace:*",
-    "ahiakea/tailwindcss-config": "workspace:*",
-    "ahiakea/typescript-config": "workspace:*",
+    "@libsql/client": "^0.6.0",
     "@mdx-js/loader": "^3.0.1",
     "@mdx-js/react": "^3.0.1",
     "@next/mdx": "14.2.2",
@@ -27,6 +25,9 @@
     "@serwist/next": "^9.0.2",
     "@shikijs/rehype": "^1.3.0",
     "@shikijs/twoslash": "^1.3.0",
+    "ahiakea/eslint-config": "workspace:*",
+    "ahiakea/tailwindcss-config": "workspace:*",
+    "ahiakea/typescript-config": "workspace:*",
     "better-sqlite3": "^10.0.0",
     "dayjs": "^1.11.10",
     "dotenv": "^16.4.5",

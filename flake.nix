@@ -1,7 +1,7 @@
 {
   description = "Dev environment for Lani's Dev Blog";
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/1266f3820e6a279bbf15294557c166237b45c10d";
   };
   
   outputs = inputs@{nixpkgs, ... }: let
