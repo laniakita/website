@@ -5,8 +5,15 @@
     "analyze": {
       "env": ["ANALYZE"]
     },
-    "db-gen": {},
-    "rss-gen": {},
+    "test": {
+      "dependsOn": ["lint"]
+    },
+    "db-gen": {
+      "dependsOn": ["test"]
+    },
+    "rss-gen": {
+      "dependsOn": ["db-gen"]
+    },
     "build": {
       "dotEnv": [".env.production.local", ".env.production", ".env.local", ".env"],
       "outputs": [".next/**", "!.next/cache/**", "public/dist/**", "public/sw.js"],
