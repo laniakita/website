@@ -8,7 +8,7 @@ import { DarkStoreProvider } from '@/providers/theme-store-provider';
 import NavBar from '@/components/navbar/navbar';
 import { themeGetter } from '@/lib/theme-getter';
 import Footer from '@/components/footer/footer';
-import { BASE_URL } from '@/lib/constants';
+import { BASE_URL, APP_NAME, APP_DEFAULT_TITLE, APP_DESCRIPTION, APP_TITLE_TEMPLATE, APP_THEME_COLOR } from '@/lib/constants';
 
 const inter = Inter({ subsets: ['latin'], display: 'swap', variable: '--font-inter' });
 
@@ -17,12 +17,6 @@ const zeroxproto = localFont({
   display: 'swap',
   variable: '--font-zeroxproto',
 });
-
-const APP_NAME = 'Lani Akita';
-const APP_DEFAULT_TITLE = 'Lani Akita';
-const APP_TITLE_TEMPLATE = '%s - Lani Akita';
-const APP_DESCRIPTION =
-  "Lani Akita's website, which also hosts her blog that's (mostly) about the process of developing (web-based) software.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
@@ -61,7 +55,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#11111b',
+  themeColor: APP_THEME_COLOR,
 };
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
