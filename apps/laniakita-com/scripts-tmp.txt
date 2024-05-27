@@ -1,3 +1,0 @@
-"dev": "dotenv -e .env.development -e .env.local -- next dev",
-    "build": "dotenv -e .env.production -e .env.local -- next build",
-
