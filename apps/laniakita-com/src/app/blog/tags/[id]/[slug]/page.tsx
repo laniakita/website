@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation';
 import { PostNumStoreProvider } from '@/providers/postnum-store-provider';
 import PreviewRollerV3 from '@/app/blog/post-roller-v3';
 import { getAllTags, getTag, getPostsWithTagID, type QueryPostMetaItem, type TagQ } from '@/lib/node-db-funcs';
-import { resMdxV3 } from '@/utils/mdxbundler-main';
+import { resMdxNoImgBundle } from '@/utils/mdxbundler-main';
 import descriptionHelper from '@/utils/description-helper';
 import { MdxJsx } from '../../../posts/[id]/[slug]/page';
 
@@ -59,7 +59,7 @@ export default async function TagPage({ params }: { params: { id: string; slug: 
   const rawMdx = firstQ.rawStr;
   if (!rawMdx) return;
   if (!cwdFolderStr) return;
-  const resMdx = await resMdxV3(rawMdx, cwdFolderStr, firstQ.slug, 'tags');
+  const resMdx = await resMdxNoImgBundle(rawMdx, cwdFolderStr);
 
   return (
     <div className='simple-color-trans relative z-[5] -mb-1  bg-ctp-base dark:bg-ctp-midnight'>
