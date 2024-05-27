@@ -2,17 +2,10 @@ import type { Metadata, ResolvingMetadata } from 'next';
 import { redirect } from 'next/navigation';
 import { PostNumStoreProvider } from '@/providers/postnum-store-provider';
 import PreviewRollerV3 from '@/app/blog/post-roller-v3';
-import {
-  getAllTags,
-  getTag,
-  getPostsWithTagID,
-  type QueryPostMetaItem,
-  type TagQ,
-} from '@/lib/node-db-funcs';
+import { getAllTags, getTag, getPostsWithTagID, type QueryPostMetaItem, type TagQ } from '@/lib/node-db-funcs';
 import { resMdxV3 } from '@/utils/mdxbundler-main';
 import descriptionHelper from '@/utils/description-helper';
 import { MdxJsx } from '../../../posts/[id]/[slug]/page';
-
 
 export async function generateStaticParams() {
   const tags = (await getAllTags()) as unknown as TagQ[];
@@ -50,9 +43,8 @@ export async function generateMetadata(
 }
 
 export default async function TagPage({ params }: { params: { id: string; slug: string } }) {
-  const firstQ = await getTag({ idStr: params.id, slugStr: params.slug });
+  const firstQ = (await getTag({ idStr: params.id, slugStr: params.slug })) as unknown as TagQ;
 
-  if (!firstQ) return;
   if (params.slug !== firstQ.slug) {
     const url = `/blog/tags/${params.id}/${firstQ.slug}`;
     redirect(url);
@@ -61,12 +53,13 @@ export default async function TagPage({ params }: { params: { id: string; slug: 
   const relatedPostQ = await getPostsWithTagID(params.id);
   if (!relatedPostQ) return;
 
-  const cwdFolderStrPre = firstQ.localKey?.split('/');
-  const cwdFolderStr = cwdFolderStrPre?.slice(0, cwdFolderStrPre.length - 1).join('/');
+  const cwdFolderStrPre = firstQ.localKey.split('/');
+  const cwdFolderStr = cwdFolderStrPre.slice(0, cwdFolderStrPre.length - 1).join('/');
 
   const rawMdx = firstQ.rawStr;
-  const resMdx = rawMdx && cwdFolderStr && (await resMdxV3(rawMdx, cwdFolderStr, firstQ.slug, 'tags'));
-  if (!resMdx) return;
+  if (!rawMdx) return;
+  if (!cwdFolderStr) return;
+  const resMdx = await resMdxV3(rawMdx, cwdFolderStr, firstQ.slug, 'tags');
 
   return (
     <div className='simple-color-trans relative z-[5] -mb-1  bg-ctp-base dark:bg-ctp-midnight'>
