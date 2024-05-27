@@ -3,10 +3,9 @@
   "version": "0.9.9",
   "private": true,
   "scripts": {
-    "rss-gen": "bun ./bin/rss-gen.ts -p",
-    "db-gen": "bun ./bin/db-gen.ts",
     "analyze": "ANALYZE=true next build",
     "dev": "dotenv -e .env.development -e .env.local -- next dev",
+    "prebuild": "bun ./src/scripts/runner.ts",
     "build": "dotenv -e .env.production -e .env.local -- next build",
     "start": "next start",
     "lint": "next lint",
@@ -14,6 +13,9 @@
     "test:watch": "bun test --watch"
   },
   "dependencies": {
+    "@ahiakea/eslint-config": "workspace:*",
+    "@ahiakea/tailwindcss-config": "workspace:*",
+    "@ahiakea/typescript-config": "workspace:*",
     "@libsql/client": "^0.6.0",
     "@mdx-js/loader": "^3.0.1",
     "@mdx-js/react": "^3.0.1",
@@ -25,9 +27,6 @@
     "@serwist/next": "^9.0.2",
     "@shikijs/rehype": "^1.3.0",
     "@shikijs/twoslash": "^1.3.0",
-    "ahiakea/eslint-config": "workspace:*",
-    "ahiakea/tailwindcss-config": "workspace:*",
-    "ahiakea/typescript-config": "workspace:*",
     "dayjs": "^1.11.10",
     "dotenv": "^16.4.5",
     "dotenv-cli": "^7.4.1",
