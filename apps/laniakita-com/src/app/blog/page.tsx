@@ -1,7 +1,7 @@
 import { PostNumStoreProvider } from '@/providers/postnum-store-provider';
+import descriptionHelper from '@/utils/description-helper';
 import {
   type QueryPostMetaItem,
-  descriptionHelper,
   queryPostByIdForJustRawStr,
   queryPostMetas,
 } from '@/lib/node-db-funcs';
@@ -29,7 +29,7 @@ export default async function BlogPage() {
   const rawDescr = descrRes?.rawStr;
   const findDescr = descriptionHelper(rawDescr!);
 
-  const descr = findDescr!.filter((el) => el)
+  const descr = findDescr!.filter((el) => el);
 
   return (
     <PostNumStoreProvider>

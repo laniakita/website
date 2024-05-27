@@ -18,7 +18,7 @@ export function PostHeader({ dataObject }: { dataObject: PostQ }) {
   ) {
     showImageDescr = true;
   }
-   return (
+  return (
     <>
       <div className='flex w-full flex-col items-center justify-center gap-4 px-10 pb-6 pt-10 md:gap-6 md:pb-10 md:pt-20 lg:pt-36'>
         <h1 className='w-full max-w-xl text-4xl font-black leading-tight supports-[text-wrap:balance]:text-balance md:text-5xl'>

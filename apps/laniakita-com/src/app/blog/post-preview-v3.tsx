@@ -48,7 +48,6 @@ const dateGetter = (dateString: Date): DateGetterReturn | undefined => {
   }
 };
 
-
 export function PostPreviewV3({ dataObj }: { dataObj: QueryPostMetaItem }) {
   let hasImage = false;
   if (dataObj.featuredImage?.fileLocation && dataObj.featuredImage.altText) {

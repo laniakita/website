@@ -5,7 +5,7 @@ import { parseArgs } from 'node:util';
 import { toXML } from 'jstoxml';
 import dayjs from 'dayjs';
 import { BASE_URL } from '@/lib/constants';
-import { QueryPostMetaItem } from '@/lib/node-db-funcs';
+import type { QueryPostMetaItem } from '@/lib/node-db-funcs';
 import linker from '@/utils/linker';
 import { queryPostMetasBun } from '@/lib/bun-db-funcs';
 
@@ -19,7 +19,7 @@ interface Package {
   };
 }
 
-const blogPostRes = (await queryPostMetasBun() as unknown as QueryPostMetaItem[])
+const blogPostRes = (await queryPostMetasBun()) as unknown as QueryPostMetaItem[];
 const lastPostDateRFC822 = dayjs(blogPostRes[0]?.date).format('ddd, DD MMM YYYY HH:mm:ss ZZ');
 const buildDateRFC822 = dayjs().format('ddd, DD MMM YYYY HH:mm:ss ZZ');
 const nextjsVersion = (packageData as Package).dependencies.next; //split('^')[1];
@@ -65,22 +65,22 @@ const xmlOpts = {
   indent: '  ',
 };
 
-const resolveTags = (tagsArr: {id: string, slug: string, title: string}[]) => {
+const resolveTags = (tagsArr: { id: string; slug: string; title: string }[]) => {
   const res = tagsArr.map((tagItem) => {
     const cat = {
       _name: 'category',
       _attrs: {
-        domain: `${BASE_URL}/${linker(tagItem.id, tagItem.slug, 'blog/tags')}`
+        domain: `${BASE_URL}/${linker(tagItem.id, tagItem.slug, 'blog/tags')}`,
       },
-      _content: tagItem.title
-    }
+      _content: tagItem.title,
+    };
     return cat;
-  })
-  return res
-}
+  });
+  return res;
+};
 
 const itemRes = blogPostRes.map((post) => {
-  const tagsArr = resolveTags(post.tags)
+  const tagsArr = resolveTags(post.tags);
 
   const res = [
     {
@@ -109,8 +109,6 @@ const itemRes = blogPostRes.map((post) => {
   ];
   return { item: res };
 });
-
-
 
 const rssFeed = {
   _name: 'rss',

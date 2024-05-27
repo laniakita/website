@@ -1,6 +1,7 @@
 /* eslint-disable no-console -- we're not in the browser, so this is fine. */
 import { eq, desc, and } from 'drizzle-orm';
-import { maindb } from '@/lib/db/bun-db';
+//import { maindb } from '@/lib/db/bun-db';
+import { maindb } from '@/lib/db/turso-db';
 import { type Authors, authors } from '@/lib/db/schema/authors';
 import { type Tags, tags } from '@/lib/db/schema/tags';
 import { type Posts, posts, postsToTags } from '@/lib/db/schema/posts';
@@ -187,6 +188,15 @@ export async function insertPosts(data: Posts) {
   }
   const postData = data;
 
+  // sleep a second
+  console.log('let data load');
+  const sleep = (ms: number) =>
+    new Promise((r) => {
+      setTimeout(r, ms);
+    });
+  await sleep(500);
+  console.log("okay! let's continue");
+
   /*
   if (!(featuredImageIdRes && 'id' in featuredImageIdRes)) {
     console.error('Could not retrieve image id from slug! Did you forget something?');
@@ -233,7 +243,7 @@ export async function insertPosts(data: Posts) {
       rawStr: true,
     },
   });
-  
+
   const authorIdfuncRes = await getAuthorID(postData.author);
   const imgIdfuncRes = await getImgId(postData.featuredImage);
 

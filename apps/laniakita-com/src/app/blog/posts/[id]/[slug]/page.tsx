@@ -6,13 +6,13 @@ import { PostHeader } from '@/app/blog/post-header';
 import {
   type PostQ,
   type QueryPostMetaItem,
-  descriptionHelper,
   queryPostByIdandSlugOrJustIdForJustRawStr,
   queryPostMetaByIdandSlugOrJustId,
   queryPostMetas,
 } from '@/lib/node-db-funcs';
 import { resMdxV3 } from '@/utils/mdxbundler-main';
 import BlogImageBlurServer from '@/app/blog/blog-image-blur-wrapper';
+import descriptionHelper from '@/utils/description-helper';
 
 export async function generateStaticParams() {
   const postMetas = (await queryPostMetas()) as unknown as QueryPostMetaItem[];
@@ -60,7 +60,7 @@ export default async function BlogPostPage({ params }: { params: { id: string; s
     slugStr: params.slug,
   })) as unknown as PostQ;
   if (postQ.slug !== params.slug) {
-    redirect(`/blog/posts/${params.id}/${postQ.slug}`)
+    redirect(`/blog/posts/${params.id}/${postQ.slug}`);
   }
   const cwdFolderStrPre = postQ.localKey.split('/');
   const cwdFolderStr = cwdFolderStrPre.slice(0, cwdFolderStrPre.length - 1).join('/');

@@ -4,4 +4,4 @@ const linker = (idStr: string, slugStr: string, config: string) => {
   return blogLink;
 };
 
-export default linker
+export default linker;

@@ -3,7 +3,6 @@ import { redirect } from 'next/navigation';
 import { PostNumStoreProvider } from '@/providers/postnum-store-provider';
 import PreviewRollerV3 from '@/app/blog/post-roller-v3';
 import {
-  descriptionHelper,
   getAllTags,
   getTag,
   getPostsWithTagID,
@@ -11,6 +10,7 @@ import {
   type TagQ,
 } from '@/lib/node-db-funcs';
 import { resMdxV3 } from '@/utils/mdxbundler-main';
+import descriptionHelper from '@/utils/description-helper';
 import { MdxJsx } from '../../../posts/[id]/[slug]/page';
 
 
@@ -21,7 +21,6 @@ export async function generateStaticParams() {
     slug: meta.slug,
   }));
 }
-
 
 export async function generateMetadata(
   { params }: { params: { id: string; slug: string } },
@@ -49,7 +48,6 @@ export async function generateMetadata(
     },
   };
 }
-
 
 export default async function TagPage({ params }: { params: { id: string; slug: string } }) {
   const firstQ = await getTag({ idStr: params.id, slugStr: params.slug });
