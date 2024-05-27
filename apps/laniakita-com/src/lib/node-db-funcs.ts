@@ -1,21 +1,13 @@
+/* eslint-disable-next-line import/named -- monorepo issues */
+import { cache } from 'react';
+import 'server-only';
 import { eq, desc, like, or, and } from 'drizzle-orm';
-import matter from 'gray-matter';
-import { maindb } from '@/lib/db/drizzle';
+import { maindb } from '@/lib/db/turso-db';
 import { posts, postsToTags } from '@/lib/db/schema/posts';
-import { tags } from './db/schema/tags';
+import { tags } from '@/lib/db/schema/tags';
 
-export const descriptionHelper = (rawStr: string | undefined) => {
-  if (!rawStr) return;
-  const postDescContent = matter(rawStr).content;
+//import { maindb } from '@/lib/db/drizzle';
 
-  const findDescr = postDescContent.split('\n').map((strPara) => {
-    if (strPara !== '' && strPara.split(' ')[0] !== 'import' && strPara.split(' ')[0] !== '##') {
-      return strPara;
-    }
-    return undefined;
-  });
-  return findDescr;
-};
 
 export interface PostsToTagsItem {
   tag: {
@@ -53,7 +45,7 @@ export interface QueryPost extends QueryPostMetaItem {
   rawStr: string;
 }
 
-export const queryPostMetas = async () => {
+export const queryPostMetas = cache(async () => {
   const postRes = await maindb.query.posts.findMany({
     orderBy: [desc(posts.date)],
     columns: {
@@ -106,9 +98,9 @@ export const queryPostMetas = async () => {
   });
   //console.dir(finalRes, { depth: null });
   return finalRes;
-};
+});
 
-export const queryPostByIdForJustRawStr = async (idStr: string) => {
+export const queryPostByIdForJustRawStr = cache(async (idStr: string) => {
   const resOne = await maindb.query.posts.findFirst({
     where: eq(posts.id, idStr),
     columns: {
@@ -116,9 +108,9 @@ export const queryPostByIdForJustRawStr = async (idStr: string) => {
     },
   });
   return resOne;
-};
+});
 
-export const queryPostByIdandSlugOrJustIdForJustRawStr = async ({
+export const queryPostByIdandSlugOrJustIdForJustRawStr = cache(async ({
   idStr,
   slugStr,
 }: {
@@ -132,7 +124,7 @@ export const queryPostByIdandSlugOrJustIdForJustRawStr = async ({
     },
   });
   return postRes;
-};
+});
 
 export interface PostQ extends QueryPostMetaItem {
   featuredImage: {
@@ -150,11 +142,11 @@ export interface PostQ extends QueryPostMetaItem {
   rawStr: string;
 }
 
-export const queryPostMetaByIdandSlugOrJustId = async ({ idStr, slugStr }: { idStr: string; slugStr: string }) => {
+export const queryPostMetaByIdandSlugOrJustId = cache(async ({ idStr, slugStr }: { idStr: string; slugStr: string }) => {
   const postRes = await maindb.query.posts.findFirst({
     where: or(
       and(like(posts.id, `${idStr}%`), eq(posts.slug, slugStr)),
-      or(like(posts.id, `${idStr}%`), eq(posts.id, idStr))
+      or(like(posts.id, `${idStr}%`), eq(posts.id, idStr)),
     ),
     columns: {
       authorId: false,
@@ -196,7 +188,7 @@ export const queryPostMetaByIdandSlugOrJustId = async ({ idStr, slugStr }: { idS
       },
     },
   });
-  
+
   if (!postRes) return;
 
   const tagsMap = postRes.postToTags.map((tagsObj) => {
@@ -207,9 +199,9 @@ export const queryPostMetaByIdandSlugOrJustId = async ({ idStr, slugStr }: { idS
   });
 
   delete (postRes as unknown as { postToTags: Record<string, unknown> | undefined }).postToTags;
-  
+
   return { ...postRes, tags: tagsMap };
-};
+});
 
 /*
     where: or(
@@ -230,23 +222,20 @@ export interface TagQ {
   rawStr: string;
 }
 
-export const getAllTags = async () => {
+export const getAllTags = cache(async () => {
   const res = await maindb.select().from(tags);
   return res;
-};
+});
 
-export const getTag = async ({ idStr, slugStr }: { idStr: string; slugStr: string }) => {
+export const getTag = cache(async ({ idStr, slugStr }: { idStr: string; slugStr: string }) => {
   const idRes2 = await maindb.query.tags.findFirst({
-    where: or(
-      and(like(tags.id, `${idStr}%`), eq(tags.slug, slugStr)),
-      like(tags.id, `${idStr}%`)),
+    where: or(and(like(tags.id, `${idStr}%`), eq(tags.slug, slugStr)), like(tags.id, `${idStr}%`)),
   });
   return idRes2;
-};
+});
 
 // type of metaItem arr
-export const getPostsWithTagID = async (tagIdStr: string) => {
-
+export const getPostsWithTagID = cache(async (tagIdStr: string) => {
   const idRes = await maindb.query.tags.findFirst({
     where: like(tags.id, `${tagIdStr}%`),
     columns: {
@@ -280,4 +269,4 @@ export const getPostsWithTagID = async (tagIdStr: string) => {
   );
 
   return postRes;
-};
+});

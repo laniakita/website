@@ -49,6 +49,4 @@ const laniConfig = {
   debug: false,
 };
 
-
-
 await batchPushMain(laniConfig);
