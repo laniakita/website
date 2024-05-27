@@ -4,10 +4,12 @@
 import { parseArgs } from 'node:util';
 import { toXML } from 'jstoxml';
 import dayjs from 'dayjs';
+import { desc } from 'drizzle-orm';
 import { BASE_URL } from '@/lib/constants';
 import type { QueryPostMetaItem } from '@/lib/node-db-funcs';
 import linker from '@/utils/linker';
-import { queryPostMetasBun } from '@/lib/bun-db-funcs';
+import { maindb } from '@/lib/db/turso-db';
+import { posts } from '@/lib/db/schema/posts';
 
 const packageDataRaw = Bun.file(`${process.cwd()}/package.json`);
 const packageDataStr: unknown = await packageDataRaw.text();
@@ -19,7 +21,62 @@ interface Package {
   };
 }
 
-const blogPostRes = (await queryPostMetasBun()) as unknown as QueryPostMetaItem[];
+const queryPostMetasFresh = async () => {
+  const postRes = await maindb.query.posts.findMany({
+    orderBy: [desc(posts.date)],
+    columns: {
+      authorId: false,
+      featuredImageId: false,
+      rawStr: false,
+    },
+    with: {
+      author: {
+        columns: {
+          name: true,
+        },
+      },
+      postToTags: {
+        columns: {
+          tagId: false,
+          postId: false,
+        },
+        with: {
+          tag: {
+            columns: {
+              slug: true,
+              title: true,
+              id: true,
+            },
+          },
+        },
+      },
+      featuredImage: {
+        columns: {
+          fileLocation: true,
+          altText: true,
+          blur: true,
+          height: true,
+          width: true,
+        },
+      },
+    },
+  });
+  const finalRes = postRes.map((post) => {
+    const tagsOne = post.postToTags.map((tagsObj) => {
+      const slug = tagsObj.tag.slug;
+      const title = tagsObj.tag.title;
+      const id = tagsObj.tag.id;
+
+      return { slug, title, id };
+    });
+    delete (post as unknown as { postToTags: Record<string, unknown> | undefined }).postToTags;
+    return { ...post, tags: tagsOne };
+  });
+  //console.dir(finalRes, { depth: null });
+  return finalRes;
+};
+
+const blogPostRes = (await queryPostMetasFresh()) as unknown as QueryPostMetaItem[];
 const lastPostDateRFC822 = dayjs(blogPostRes[0]?.date).format('ddd, DD MMM YYYY HH:mm:ss ZZ');
 const buildDateRFC822 = dayjs().format('ddd, DD MMM YYYY HH:mm:ss ZZ');
 const nextjsVersion = (packageData as Package).dependencies.next; //split('^')[1];
@@ -167,8 +224,8 @@ const rssGen = async (): Promise<void> => {
     await Bun.write(xmlWritePath, feedXml);
     console.log('wrote rss.xml to ', xmlWritePath, ' ', urlMsg);
   } catch (err) {
-    console.error(err)
+    console.error(err);
   }
 };
 
-export default rssGen
+export default rssGen;
