@@ -1,3 +1,4 @@
+/* eslint-disable no-console -- doesn't run in the browser, so this is fine */
 import { batchPushMain } from './mdx-db/push-mdx';
 
 // use for testing
@@ -49,4 +50,13 @@ const laniConfig = {
   debug: false,
 };
 
-await batchPushMain(laniConfig);
+const dbGen = async (): Promise<void> => {
+  try {
+    await batchPushMain(laniConfig);
+    console.log('db-gen successful');
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export default dbGen

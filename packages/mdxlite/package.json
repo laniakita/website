@@ -1,5 +1,5 @@
 {
-  "name": "ahiakea/mdxlite",
+  "name": "@ahiakea/mdxlite",
   "version": "0.0.1",
   "private": true,
   "description": "",
@@ -14,7 +14,7 @@
   "author": "Lani Akita",
   "license": "GPLv3",
   "devDependencies": {
-    "ahiakea/typescript-config": "workspace:*",
+    "@ahiakea/typescript-config": "workspace:*",
     "@types/bun": "^1.1.0",
     "drizzle-kit": "^0.20.14",
     "gray-matter": "^4.0.3"

@@ -160,9 +160,15 @@ const rssFeed = {
   },
 };
 
-const feedXml = toXML(rssFeed, xmlOpts);
+const rssGen = async (): Promise<void> => {
+  try {
+    const feedXml = toXML(rssFeed, xmlOpts);
+    const xmlWritePath = `${process.cwd()}/public/dist/rss.xml`;
+    await Bun.write(xmlWritePath, feedXml);
+    console.log('wrote rss.xml to ', xmlWritePath, ' ', urlMsg);
+  } catch (err) {
+    console.error(err)
+  }
+};
 
-const xmlWritePath = `${process.cwd()}/public/dist/rss.xml`;
-
-await Bun.write(xmlWritePath, feedXml);
-console.log('wrote rss.xml to ', xmlWritePath, ' ', urlMsg);
+export default rssGen
