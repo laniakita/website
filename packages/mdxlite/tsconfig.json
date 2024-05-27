@@ -1,5 +1,5 @@
 {
-  "extends": "@ahiakea/typescript-config/base.json",
+  "extends": "ahiakea/typescript-config/base.json",
   "compilerOptions": {
     "allowJs": true,
     "declaration": false,
