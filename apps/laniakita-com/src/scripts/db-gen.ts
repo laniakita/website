@@ -55,8 +55,8 @@ const dbGen = async (): Promise<void> => {
     await batchPushMain(laniConfig);
     console.log('db-gen successful');
   } catch (err) {
-    console.error(err)
+    console.error(err);
   }
-}
+};
 
-export default dbGen
+export default dbGen;

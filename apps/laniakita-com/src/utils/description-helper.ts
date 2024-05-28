@@ -13,4 +13,4 @@ const descriptionHelper = (rawStr: string | undefined) => {
   return findDescr;
 };
 
-export default descriptionHelper
+export default descriptionHelper;

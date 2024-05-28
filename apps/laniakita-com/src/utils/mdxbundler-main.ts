@@ -7,7 +7,6 @@ import { rendererRich, transformerTwoslash } from '@shikijs/twoslash';
 import type { Options } from '@mdx-js/loader';
 import rehypeSlug from 'rehype-slug';
 
-
 export const resMdxNoImgBundle = async (mdxStr: string, inputFolder: string) => {
   const folder = path.resolve(process.cwd(), inputFolder);
   const processed = await bundleMDX({
@@ -51,8 +50,6 @@ export const resMdxNoImgBundle = async (mdxStr: string, inputFolder: string) => 
   const { code, frontmatter } = processed;
   return { code, frontmatter };
 };
-
-
 
 export const resMdxV3 = async (mdxStr: string, inputFolder: string, slug: string, folderName: string) => {
   const folder = path.resolve(process.cwd(), inputFolder);

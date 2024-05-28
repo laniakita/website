@@ -8,7 +8,7 @@ function MDXComponent({ code }: { code: string }) {
 }
 
 export function mdxStr(code: string) {
-  const str = (<MDXComponent code={code} />);
+  const str = <MDXComponent code={code} />;
   const html = renderToStaticMarkup(str);
   return html;
 }

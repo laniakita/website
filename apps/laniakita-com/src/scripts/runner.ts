@@ -18,5 +18,5 @@ const runScripts = async (): Promise<void> => {
 try {
   await runScripts();
 } catch (err) {
-  console.error(err)
+  console.error(err);
 }
