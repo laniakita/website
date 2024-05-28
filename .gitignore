@@ -14,3 +14,4 @@ public/dist
 **/public/assets/images/featured
 **/public/assets/images/blog
 **/public/sw.js
+**/public/feed.xml
