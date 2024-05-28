@@ -38,7 +38,7 @@ const dateGetter = (dateString: Date): DateGetterReturn | undefined => {
       timezone: dayjs.tz.guess(),
     };
   }
-  if (difference > 7) {
+  if (difference >= 7) {
     return {
       cal: publishedDate.format('L'),
       time: publishedDate.format('LT'),
