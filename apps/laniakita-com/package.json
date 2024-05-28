@@ -5,7 +5,7 @@
   "scripts": {
     "analyze": "ANALYZE=true next build",
     "dev": "dotenv -e .env.development -e .env.local -- next dev",
-    "prebuild": "bun ./src/scripts/runner.ts",
+    "prebuild": "NODE_ENV=production bun ./src/scripts/runner.ts",
     "build": "dotenv -e .env.production -e .env.local -- next build",
     "start": "next start",
     "lint": "next lint",

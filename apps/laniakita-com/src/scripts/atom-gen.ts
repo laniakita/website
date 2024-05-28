@@ -9,7 +9,7 @@ import linker from '@/utils/linker';
 import { maindb } from '@/lib/db/turso-db';
 import { posts } from '@/lib/db/schema/posts';
 import { resMdxV3 } from '@/utils/mdxbundler-main';
-import { mdxStr } from '@/app/blog/mdxHelper';
+import { mdxStr } from '@/app/blog/mdx-helper';
 
 const packageDataRaw = Bun.file(`${process.cwd()}/package.json`);
 const packageDataStr: unknown = await packageDataRaw.text();
@@ -126,7 +126,7 @@ const entryRes = await Promise.all(blogPostRes.map(async (post) => {
   const imgEmbed = post.featuredImage?.fileLocation ? `
     <figure>
       <img src="${BASE_URL}/${post.featuredImage.fileLocation}" alt="${post.featuredImage.altText}" />
-      <figcaption>${post.altCaption ? post.altCaption : post.featuredImage.caption}${post.featuredImage.credit !== null ? `Image By, ${post.featuredImage.credit}` : ''}</figcaption>
+      <figcaption>${post.altCaption ? post.altCaption : post.featuredImage.caption}${post.featuredImage.credit as unknown !== null ? `Image By, ${post.featuredImage.credit}` : ''}</figcaption>
     </figure>` : '';
 
   const cwdFolderStrPre = post.localKey.split('/');
@@ -157,7 +157,7 @@ const entryRes = await Promise.all(blogPostRes.map(async (post) => {
       id: `${BASE_URL}/${linker(post.id, post.slug, 'blog/posts')}`,
     },
     {
-      updated: new Date(`${post.date}`).toISOString(),
+      updated: new Date(post.date.toString()).toISOString(),
     },
     tagsArr,
     {
@@ -187,7 +187,7 @@ const atomFeed = {
       },
     },
     {
-      updated: `${buildDate}`,
+      updated: buildDate,
     },
     {
       _name: 'author',
