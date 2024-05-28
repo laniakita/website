@@ -12,8 +12,8 @@ export function FooterBox(Props: FooterBoxProps) {
   function handleRef(pageStr: string) {
     if (pageStr.toLowerCase() === 'home') {
       return '/';
-    } else if (pageStr.toLowerCase() === 'rss') {
-      return '/dist/rss.xml';
+    } else if (pageStr.toLowerCase() === 'rss/atom') {
+      return '/feed.xml';
     }
     return `/${pageStr.toLowerCase()}`;
   }
@@ -33,9 +33,9 @@ export function FooterBox(Props: FooterBoxProps) {
                 //prefetch={item.toLowerCase() === "home" ? false : true}
                 href={handleRef(item)}
                 className='footer-nav-item'
-                target={item === 'RSS' ? '_blank' : undefined}
+                target={item === 'RSS/Atom' ? '_blank' : undefined}
               >
-                {item === 'RSS' ? item : item.toLowerCase()}
+                {item === 'RSS/Atom' ? item : item.toLowerCase()}
               </LinkPlus>
             ),
           )}

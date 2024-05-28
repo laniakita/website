@@ -28,10 +28,10 @@ export const socialItems = [
     textSize: 'text-4xl',
   },
   {
-    title: 'RSS',
-    url: '/dist/rss.xml',
+    title: 'RSS/Atom',
+    url: '/feed.xml',
     iconName: 'icon-[ph--rss-bold]',
-    linkName: 'your RSS reader!',
+    linkName: 'your RSS/Atom feed reader!',
     textSize: 'text-5xl',
   },
 ];
