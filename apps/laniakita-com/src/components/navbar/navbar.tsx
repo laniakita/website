@@ -1,10 +1,11 @@
 'use client';
 import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
+import * as darklogo from '@/app/laniakita-logo-transparent-darkmode.svg';
+import * as lightlogo from '@/app/laniakita-logo-transparent-lightmode.svg';
 import { useDarkStore } from '@/providers/theme-store-provider';
 import DarkModeSwitch from './dark-mode-switch';
 import LinkPlus from './link-plus';
-import logo from '@/app/lani-akita-logo.png';
 
 interface Clicked {
   stateVal: string;
@@ -45,6 +46,8 @@ export default function NavBar() {
     }
     return `/${pageStr.toLowerCase()}`;
   }
+  
+  const logo = dark ? darklogo : lightlogo
 
   return (
     <nav className=''>
@@ -83,7 +86,7 @@ export default function NavBar() {
       </Suspense>
 
       <div
-        className={`motion-safe:simple-color-trans fixed bottom-0 left-0 z-50 flex h-16 w-full items-center justify-between border-t border-ctp-surface0 px-4 text-xl shadow-lg backdrop-blur-xl [transition:_opacity_0.8s] lg:top-0 lg:h-12 lg:border-b lg:border-t-0 ${clicked.stateVal === 'open' ? 'bg-ctp-base dark:bg-ctp-midnight' : ' bg-ctp-base/80 dark:bg-ctp-midnight/70'}`}
+        className={`motion-safe:simple-color-trans fixed bottom-0 left-0 z-50 flex h-16 w-full items-center justify-between border-t border-ctp-surface0 px-4 text-xl shadow-lg backdrop-blur-lg [transition:_opacity_0.8s] lg:top-0 lg:h-12 lg:border-b lg:border-t-0 ${clicked.stateVal === 'open' ? 'bg-ctp-base dark:bg-ctp-midnight' : ' bg-ctp-base/80 dark:bg-ctp-midnight/70'}`}
       >
         <LinkPlus href='/' className='nav-logo relative flex size-full w-16 items-center justify-center'>
           <Image
