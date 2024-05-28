@@ -13,8 +13,8 @@ interface Clicked {
 
 export default function NavBar() {
   const { dark } = useDarkStore((state) => state);
-  const pagesArr = ['Blog', 'About', 'Projects', 'RSS', 'Contact'];
-  const pagesArrMobile = ['Blog', 'About', 'Projects', 'RSS', 'Contact'];
+  const pagesArr = ['Blog', 'About', 'Projects', 'RSS/Atom', 'Contact'];
+  const pagesArrMobile = ['Blog', 'About', 'Projects', 'RSS/Atom', 'Contact'];
   const [clicked, setClicked] = useState<Clicked>({
     stateVal: 'closed',
   });
@@ -41,8 +41,8 @@ export default function NavBar() {
   function handleRef(pageStr: string) {
     if (pageStr.toLowerCase() === 'home') {
       return '/';
-    } else if (pageStr.toLowerCase() === 'rss') {
-      return '/dist/rss.xml';
+    } else if (pageStr.toLowerCase() === 'rss/atom') {
+      return '/feed.xml';
     }
     return `/${pageStr.toLowerCase()}`;
   }
@@ -68,16 +68,16 @@ export default function NavBar() {
                   key={page}
                   className='nav-item text-3xl'
                   onClick={() => {
-                    page !== 'RSS' && setClicked({ ...clicked, stateVal: 'closed' });
+                    page !== 'RSS/Atom' && setClicked({ ...clicked, stateVal: 'closed' });
                   }}
-                  target={page === 'RSS' ? '_blank' : undefined}
+                  target={page === 'RSS/Atom' ? '_blank' : undefined}
                 >
-                  {page === 'RSS' ? page : page.toLowerCase()}
+                  {page === 'RSS/Atom' ? page : page.toLowerCase()}
                 </LinkPlus>
               ))}
               <div className='h-px w-full bg-ctp-surface0' />
               <div className='flex flex-row justify-between'>
-                <p>Theme Setting: catppuccin{dark ? ' mocha' : ' frappe'}</p>
+                <p className='flex flex-row gap-2'>Theme Setting: <span>{dark ? 'dark' : 'light'}</span></p>
                 <DarkModeSwitch />
               </div>
             </div>
@@ -124,9 +124,9 @@ export default function NavBar() {
               key={page}
               href={handleRef(page)}
               className='nav-item'
-              target={page === 'RSS' ? '_blank' : undefined}
+              target={page === 'RSS/Atom' ? '_blank' : undefined}
             >
-              {page === 'RSS' ? page : page.toLowerCase()}
+              {page === 'RSS/Atom' ? page : page.toLowerCase()}
             </LinkPlus>
           ))}
           <DarkModeSwitch />
