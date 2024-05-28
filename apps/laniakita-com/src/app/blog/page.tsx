@@ -1,10 +1,6 @@
 import { PostNumStoreProvider } from '@/providers/postnum-store-provider';
 import descriptionHelper from '@/utils/description-helper';
-import {
-  type QueryPostMetaItem,
-  queryPostByIdForJustRawStr,
-  queryPostMetas,
-} from '@/lib/node-db-funcs';
+import { type QueryPostMetaItem, queryPostByIdForJustRawStr, queryPostMetas } from '@/lib/node-db-funcs';
 import PreviewRollerV3 from './post-roller-v3';
 
 export const metadata = {

@@ -46,8 +46,8 @@ export default function NavBar() {
     }
     return `/${pageStr.toLowerCase()}`;
   }
-  
-  const logo = dark ? darklogo : lightlogo
+
+  const logo = dark ? darklogo : lightlogo;
 
   return (
     <nav className=''>
@@ -77,7 +77,9 @@ export default function NavBar() {
               ))}
               <div className='h-px w-full bg-ctp-surface0' />
               <div className='flex flex-row justify-between'>
-                <p className='flex flex-row gap-2'>Theme Setting: <span>{dark ? 'dark' : 'light'}</span></p>
+                <p className='flex flex-row gap-2'>
+                  Theme Setting: <span>{dark ? 'dark' : 'light'}</span>
+                </p>
                 <DarkModeSwitch />
               </div>
             </div>

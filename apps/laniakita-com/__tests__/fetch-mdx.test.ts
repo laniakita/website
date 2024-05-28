@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { batchFetchMDXPaths, batchFetchMain } from '../src/scripts/mdx-db/fetch-mdx'
+import { batchFetchMDXPaths, batchFetchMain } from '../src/scripts/mdx-db/fetch-mdx';
 
 const contentFolder = './__tests__/test_content';
 const foldersToExclude = ['./assets']; // Example excluded folders

@@ -341,9 +341,8 @@ export const insertPosts = async (data: Posts): Promise<void> => {
         }
       }),
     );
-    console.log('all done!')
+    console.log('all done!');
   } catch (err) {
     console.error("Couldn't insert posts", err);
   }
 };
-

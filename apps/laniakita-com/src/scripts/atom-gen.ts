@@ -77,9 +77,9 @@ interface QueryPostsProps extends Omit<QueryPostMetaItem, 'featuredImage'> {
   rawStr: string;
   altCaption: string;
   featuredImage?: {
-    fileLocation: string,
-    altText: string,
-    caption: string,
+    fileLocation: string;
+    altText: string;
+    caption: string;
     credit?: string;
     blur: null | undefined;
     height: null | undefined;
@@ -121,55 +121,59 @@ const resolveTags = (tagsArr: { id: string; slug: string; title: string }[]) => 
   return res;
 };
 
-const entryRes = await Promise.all(blogPostRes.map(async (post) => {
-  const tagsArr = resolveTags(post.tags);
-  const imgEmbed = post.featuredImage?.fileLocation ? `
+const entryRes = await Promise.all(
+  blogPostRes.map(async (post) => {
+    const tagsArr = resolveTags(post.tags);
+    const imgEmbed = post.featuredImage?.fileLocation
+      ? `
     <figure>
       <img src="${BASE_URL}/${post.featuredImage.fileLocation}" alt="${post.featuredImage.altText}" />
-      <figcaption>${post.altCaption ? post.altCaption : post.featuredImage.caption}${post.featuredImage.credit as unknown !== null ? `Image By, ${post.featuredImage.credit}` : ''}</figcaption>
-    </figure>` : '';
+      <figcaption>${post.altCaption ? post.altCaption : post.featuredImage.caption}${(post.featuredImage.credit as unknown) !== null ? `Image By, ${post.featuredImage.credit}` : ''}</figcaption>
+    </figure>`
+      : '';
 
-  const cwdFolderStrPre = post.localKey.split('/');
-  const cwdFolderStr = cwdFolderStrPre.slice(0, cwdFolderStrPre.length - 1).join('/');
-  const rawMDX = post.rawStr;
-  const postId = post.id.split('-').shift();
-  if (!postId) return;
-  if (!rawMDX) return;
-  if (!cwdFolderStr) return;
-  const resMdx = await resMdxV3(rawMDX, cwdFolderStr, postId, 'blog');
-  const mdx = mdxStr(resMdx.code);
-  const res = [
-    {
-      title: post.headline,
-    },
-    {
-      _name: 'link',
-      _attrs: [
-        {
-          rel: 'alternate',
-        },
-        {
-          href: `${BASE_URL}/${linker(post.id, post.slug, 'blog/posts')}`,
-        },
-      ],
-    },
-    {
-      id: `${BASE_URL}/${linker(post.id, post.slug, 'blog/posts')}`,
-    },
-    {
-      updated: new Date(post.date.toString()).toISOString(),
-    },
-    tagsArr,
-    {
-      _name: 'content',
-      _attrs: {
-        type: 'text/html'
+    const cwdFolderStrPre = post.localKey.split('/');
+    const cwdFolderStr = cwdFolderStrPre.slice(0, cwdFolderStrPre.length - 1).join('/');
+    const rawMDX = post.rawStr;
+    const postId = post.id.split('-').shift();
+    if (!postId) return;
+    if (!rawMDX) return;
+    if (!cwdFolderStr) return;
+    const resMdx = await resMdxV3(rawMDX, cwdFolderStr, postId, 'blog');
+    const mdx = mdxStr(resMdx.code);
+    const res = [
+      {
+        title: post.headline,
       },
-      _content: `<![CDATA[${ imgEmbed + mdx }]]>`,
-    }
-  ];
-  return { entry: res };
-}));
+      {
+        _name: 'link',
+        _attrs: [
+          {
+            rel: 'alternate',
+          },
+          {
+            href: `${BASE_URL}/${linker(post.id, post.slug, 'blog/posts')}`,
+          },
+        ],
+      },
+      {
+        id: `${BASE_URL}/${linker(post.id, post.slug, 'blog/posts')}`,
+      },
+      {
+        updated: new Date(post.date.toString()).toISOString(),
+      },
+      tagsArr,
+      {
+        _name: 'content',
+        _attrs: {
+          type: 'text/html',
+        },
+        _content: `<![CDATA[${imgEmbed + mdx}]]>`,
+      },
+    ];
+    return { entry: res };
+  }),
+);
 
 const atomFeed = {
   _name: 'feed',
@@ -254,39 +258,6 @@ const atomFeed = {
   ],
 };
 
-/*
-
-    
-      {
-        description: ,
-      },
-
-      { language: 'en-us' },
-      {
-        copyright: ,
-      },
-
-      {
-        webMaster: 'lani@laniakita.com',
-      },
-      {
-        pubDate: lastPostDateRFC822,
-      },
-      {
-        lastBuildDate: buildDateRFC822,
-      },
- 
-  
-      {
-        docs: 'https://www.rssboard.org/rss-specification',
-      },
-      // todo: cloud pubsubhub
-      {
-        ttl: 120,
-      },
-      itemRes,
-
-*/
 const atomGen = async (): Promise<void> => {
   try {
     const feedXml = toXML(atomFeed, xmlOpts);
@@ -297,7 +268,5 @@ const atomGen = async (): Promise<void> => {
     console.error(err);
   }
 };
-
-//await atomGen();
 
 export default atomGen;

@@ -8,7 +8,14 @@ import { DarkStoreProvider } from '@/providers/theme-store-provider';
 import NavBar from '@/components/navbar/navbar';
 import { themeGetter } from '@/lib/theme-getter';
 import Footer from '@/components/footer/footer';
-import { BASE_URL, APP_NAME, APP_DEFAULT_TITLE, APP_DESCRIPTION, APP_TITLE_TEMPLATE, APP_THEME_COLOR } from '@/lib/constants';
+import {
+  BASE_URL,
+  APP_NAME,
+  APP_DEFAULT_TITLE,
+  APP_DESCRIPTION,
+  APP_TITLE_TEMPLATE,
+  APP_THEME_COLOR,
+} from '@/lib/constants';
 
 const inter = Inter({ subsets: ['latin'], display: 'swap', variable: '--font-inter' });
 

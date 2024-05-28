@@ -8,7 +8,6 @@ import { tags } from '@/lib/db/schema/tags';
 
 //import { maindb } from '@/lib/db/drizzle';
 
-
 export interface PostsToTagsItem {
   tag: {
     slug: string;
@@ -110,21 +109,17 @@ export const queryPostByIdForJustRawStr = cache(async (idStr: string) => {
   return resOne;
 });
 
-export const queryPostByIdandSlugOrJustIdForJustRawStr = cache(async ({
-  idStr,
-  slugStr,
-}: {
-  idStr: string;
-  slugStr: string;
-}) => {
-  const postRes = await maindb.query.posts.findFirst({
-    where: or(and(like(posts.id, `${idStr}%`), eq(posts.slug, slugStr)), like(posts.id, `${idStr}%`)),
-    columns: {
-      rawStr: true,
-    },
-  });
-  return postRes;
-});
+export const queryPostByIdandSlugOrJustIdForJustRawStr = cache(
+  async ({ idStr, slugStr }: { idStr: string; slugStr: string }) => {
+    const postRes = await maindb.query.posts.findFirst({
+      where: or(and(like(posts.id, `${idStr}%`), eq(posts.slug, slugStr)), like(posts.id, `${idStr}%`)),
+      columns: {
+        rawStr: true,
+      },
+    });
+    return postRes;
+  },
+);
 
 export interface PostQ extends QueryPostMetaItem {
   featuredImage: {
@@ -142,66 +137,68 @@ export interface PostQ extends QueryPostMetaItem {
   rawStr: string;
 }
 
-export const queryPostMetaByIdandSlugOrJustId = cache(async ({ idStr, slugStr }: { idStr: string; slugStr: string }) => {
-  const postRes = await maindb.query.posts.findFirst({
-    where: or(
-      and(like(posts.id, `${idStr}%`), eq(posts.slug, slugStr)),
-      or(like(posts.id, `${idStr}%`), eq(posts.id, idStr)),
-    ),
-    columns: {
-      authorId: false,
-      featuredImageId: false,
-    },
-    with: {
-      author: {
-        columns: {
-          name: true,
-        },
+export const queryPostMetaByIdandSlugOrJustId = cache(
+  async ({ idStr, slugStr }: { idStr: string; slugStr: string }) => {
+    const postRes = await maindb.query.posts.findFirst({
+      where: or(
+        and(like(posts.id, `${idStr}%`), eq(posts.slug, slugStr)),
+        or(like(posts.id, `${idStr}%`), eq(posts.id, idStr)),
+      ),
+      columns: {
+        authorId: false,
+        featuredImageId: false,
       },
-      postToTags: {
-        columns: {
-          tagId: false,
-          postId: false,
+      with: {
+        author: {
+          columns: {
+            name: true,
+          },
         },
-        with: {
-          tag: {
-            columns: {
-              slug: true,
-              title: true,
-              id: true,
+        postToTags: {
+          columns: {
+            tagId: false,
+            postId: false,
+          },
+          with: {
+            tag: {
+              columns: {
+                slug: true,
+                title: true,
+                id: true,
+              },
             },
           },
         },
-      },
-      featuredImage: {
-        columns: {
-          fileLocation: true,
-          altText: true,
-          credit: true,
-          creditUrl: true,
-          creditUrlText: true,
-          caption: true,
-          blur: true,
-          height: true,
-          width: true,
+        featuredImage: {
+          columns: {
+            fileLocation: true,
+            altText: true,
+            credit: true,
+            creditUrl: true,
+            creditUrlText: true,
+            caption: true,
+            blur: true,
+            height: true,
+            width: true,
+          },
         },
       },
-    },
-  });
+    });
 
-  if (!postRes) return;
+    if (!postRes) return;
 
-  const tagsMap = postRes.postToTags.map((tagsObj) => {
-    const slug = tagsObj.tag.slug;
-    const title = tagsObj.tag.title;
-    const id = tagsObj.tag.id;
-    return { slug, title, id };
-  });
+    const tagsMap = postRes.postToTags.map((tagsObj) => {
+      const slug = tagsObj.tag.slug;
+      const title = tagsObj.tag.title;
+      const id = tagsObj.tag.id;
+      return { slug, title, id };
+    });
 
-  delete (postRes as unknown as { postToTags: Record<string, unknown> | undefined }).postToTags;
+    delete (postRes as unknown as { postToTags: Record<string, unknown> | undefined }).postToTags;
 
-  return { ...postRes, tags: tagsMap };
-});
+    return { ...postRes, tags: tagsMap };
+  },
+);
 
 /*
     where: or(
