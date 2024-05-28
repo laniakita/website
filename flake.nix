@@ -1,7 +1,7 @@
 {
   description = "Dev environment for Lani's Dev Blog";
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/1266f3820e6a279bbf15294557c166237b45c10d";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   };
   
   outputs = inputs@{nixpkgs, ... }: let
@@ -18,6 +18,7 @@
         packages = with pkgs; [
           turbo
           bun
+          nodejs_20
           zsh
           turso-cli
         ];
