@@ -127,7 +127,7 @@ const entryRes = await Promise.all(
     const imgEmbed = post.featuredImage?.fileLocation
       ? `
     <figure>
-      <img src="${BASE_URL}/${post.featuredImage.fileLocation}" alt="${post.featuredImage.altText}" />
+      <img src="${BASE_URL}${post.featuredImage.fileLocation}" alt="${post.featuredImage.altText}" />
       <figcaption>${post.altCaption ? post.altCaption : post.featuredImage.caption}${(post.featuredImage.credit as unknown) !== null ? `Image By, ${post.featuredImage.credit}` : ''}</figcaption>
     </figure>`
       : '';
