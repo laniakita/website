@@ -1,4 +1,3 @@
-/*
 /// <reference path="./.sst/platform/config.d.ts" />
 
 export default $config({
@@ -10,11 +9,6 @@ export default $config({
     };
   },
   async run() {
-    const infra = await import("./infra");
-
-    return {
-      api: infra.api.url,
-    };
+    await import("./infra");
   },
 });
-*/
