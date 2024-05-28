@@ -15,3 +15,6 @@ public/dist
 **/public/assets/images/blog
 **/public/sw.js
 **/public/feed.xml
+
+# sst
+.sst

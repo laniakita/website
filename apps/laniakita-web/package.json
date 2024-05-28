@@ -1,6 +1,6 @@
 {
-  "name": "laniakita-com",
-  "version": "0.9.9",
+  "name": "laniakita-web",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "analyze": "ANALYZE=true next build",
