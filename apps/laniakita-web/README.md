@@ -6,4 +6,4 @@ Therefore, there are no warranties or support services of any kind offered from 
 
 ## On Licensing
 
-While most of the source code falls under this monorepo's GPLv3 license, much of the written/artistic content does not. Please be advised, that in places where it is stated (e.g. the accompanying LICENSE file in the ./content/blog folder), I've retained the copyrights for things like my blog posts and my own artwork (referred to as Works). As such, you may not redistribute these Works for commercial purposes and or the purpose of claiming them as your own.
+While most of the source code falls under this monorepo's GPLv3 license, much of the written/artistic content does not. Please be advised, that in places where it is stated (e.g. the accompanying LICENSE file in the ./content/blog folder), I've retained the copyrights for things like my blog posts and my own artwork (referred to as Works). As such, you may not redistribute these Works for commercial purposes and or for the purpose of claiming these Works as your own.
