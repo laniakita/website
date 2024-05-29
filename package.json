@@ -11,7 +11,7 @@
     "vitest": "^1.6.0"
   },
   "engines": {
-    "node": "\u003e=18"
+    "node": ">=18"
   },
   "packageManager": "bun@1.1.7",
   "private": true,

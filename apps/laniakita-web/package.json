@@ -10,7 +10,8 @@
     "start": "next start",
     "lint": "next lint",
     "test": "bun test",
-    "test:watch": "bun test --watch"
+    "test:watch": "bun test --watch",
+    "open-next-build": "SHARP_VERSION=0.32.1 bunx open-next build"
   },
   "dependencies": {
     "@ahiakea/eslint-config": "workspace:*",
@@ -48,8 +49,9 @@
     "rehype-slug": "^6.0.0",
     "remark-frontmatter": "^5.0.0",
     "server-only": "^0.0.1",
-    "sharp": "^0.33.3",
+    "sharp": "0.32.1",
     "shiki": "^1.3.0",
+    "sst": "^3.0.32",
     "three": "^0.164.1",
     "three-stdlib": "^2.29.6",
     "zustand": "^4.5.2"
