@@ -15,6 +15,7 @@ public/dist
 **/public/assets/images/blog
 **/public/sw.js
 **/public/feed.xml
-
+secrets.env
 # sst
 .sst
+.open-next

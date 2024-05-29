@@ -10,7 +10,7 @@ const nextConfig = {
     formats: ['image/avif', 'image/webp'],
   },
   experimental: {
-    serverComponentsExternalPackages: ['@shikijs/twoslash'],
+    serverComponentsExternalPackages: ['@shikijs/twoslash', 'sharp'],
   },
   webpack(config) {
     // shader support
