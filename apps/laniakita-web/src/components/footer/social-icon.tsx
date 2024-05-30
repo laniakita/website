@@ -18,6 +18,7 @@ export default function SocialIconNav({ boxItems, hxw }: SocialIconNavProps) {
     <div className='flex flex-wrap items-center justify-center gap-2'>
       {boxItems.map((item) => (
         <Link
+          rel={item.title.toLowerCase() === 'mastodon' ? 'me' : ''}
           key={boxItems.indexOf(item)}
           href={item.url}
           className={`${hxw} social-button`}
