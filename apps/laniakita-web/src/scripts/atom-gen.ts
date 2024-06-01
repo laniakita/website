@@ -166,7 +166,7 @@ const entryRes = await Promise.all(
       {
         _name: 'content',
         _attrs: {
-          type: 'text/html',
+          type: 'html',
         },
         _content: `<![CDATA[${imgEmbed + mdx}]]>`,
       },

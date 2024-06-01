@@ -12,7 +12,7 @@ export const laniakitaWeb = new sst.aws.Nextjs("LaniAkitaWeb", {
   link: [...allSecrets],
   buildCommand: "bun run open-next-build",
   domain: {
-    name: "laniakita.com",
+    name: $app.stage === "production" ? "laniakita.com" : `${$app.stage}.laniakita.com`,
     dns: sst.cloudflare.dns()
   },
   transform: {

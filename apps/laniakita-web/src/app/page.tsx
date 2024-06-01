@@ -3,8 +3,8 @@ import NoiseShader01 from '@/components/canvas/scenes/shaders/noise/noise';
 
 export default function Home() {
   return (
-    <main className='flex h-dvh min-h-[40rem] w-full items-center justify-center'>
-      <div className='absolute z-[2] flex size-full h-dvh min-h-[40rem] items-center justify-center bg-ctp-midnight/10 dark:bg-ctp-midnight/40'>
+    <main className='flex h-screen min-h-[40rem] w-full items-center justify-center'>
+      <div className='absolute z-[2] flex size-full h-screen min-h-[40rem] items-center justify-center bg-ctp-midnight/10 dark:bg-ctp-midnight/40'>
         <div className='flex flex-col items-center justify-center gap-4  md:gap-6'>
           <h1 className='text-4xl font-black uppercase text-ctp-base dark:text-ctp-text md:text-5xl'>Lani Akita</h1>
           <div className='flex w-full flex-col gap-2 md:gap-4'>
