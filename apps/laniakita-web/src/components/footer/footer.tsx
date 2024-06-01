@@ -1,5 +1,4 @@
 'use client';
-import { usePathname } from 'next/navigation';
 import CircleMovie from './circle-movie';
 import { FooterBox, FooterBoxSpecial } from './footer-box';
 import SocialIconNav from './social-icon';

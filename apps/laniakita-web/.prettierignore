@@ -3,6 +3,7 @@ dist/*
 public/*
 .next/*
 node_modules/*
+.open-next/*
 package.json
 *.log
 *.vert
