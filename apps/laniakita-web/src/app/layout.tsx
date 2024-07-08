@@ -2,7 +2,7 @@ import 'dotenv';
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import localFont from 'next/font/local';
-import { type ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import '@/css/app.css';
 import { DarkStoreProvider } from '@/providers/theme-store-provider';
 import NavBar from '@/components/navbar/navbar';
