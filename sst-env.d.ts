@@ -7,6 +7,10 @@ declare module "sst" {
       "type": "sst.sst.Secret"
       "value": string
     }
+    "LaniAkitaWeb": {
+      "type": "sst.aws.Nextjs"
+      "url": string
+    }
     "SharpLayer": {
       "type": "sst.sst.Secret"
       "value": string
