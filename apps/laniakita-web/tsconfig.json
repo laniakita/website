@@ -10,7 +10,7 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "types": ["@serwist/next/typings", "bun"]
+    "types": ["@serwist/next/typings", "bun", "node"]
   },
   "include": [
     "next-env.d.ts",

@@ -65,7 +65,7 @@ export function PostPreviewV3({ dataObj }: { dataObj: QueryPostMetaItem }) {
         {hasImage ? (
           <Link
             href={linkTo}
-            className=' relative flex size-full items-center justify-center overflow-hidden rounded-2xl border-ctp-surface0  motion-safe:[transition:_border_0.3s]  md:size-fit md:rounded-none md:border-b'
+            className='relative flex size-full items-center justify-center overflow-hidden rounded-2xl border-ctp-surface0  motion-safe:[transition:_border_0.3s]  md:size-fit md:rounded-none md:border-b'
           >
             <Image
               loader={imageLoader}
@@ -84,15 +84,15 @@ export function PostPreviewV3({ dataObj }: { dataObj: QueryPostMetaItem }) {
         )}
         <div className={`flex flex-col gap-6 md:p-10 ${hasImage ? '' : 'size-full items-center justify-center'}`}>
           <div className='w-full space-y-2'>
-            <h2>
-              <Link
-                id='post-title'
-                href={linkTo}
-                className=' max-w-max flex-none text-wrap text-3xl font-black leading-tight text-ctp-text supports-[text-wrap:balance]:text-balance md:text-4xl'
-              >
+            <Link
+              id='post-title'
+              href={linkTo}
+              className=''
+            >
+              <h2 className='max-w-md flex-none text-wrap text-3xl font-black leading-tight text-ctp-text supports-[text-wrap:balance]:text-balance md:text-4xl'>
                 {dataObj.headline}
-              </Link>
-            </h2>
+              </h2>
+            </Link>
             <h3 className='text-xl leading-tight'>{dataObj.subheadline}</h3>
           </div>
           <div className='flex w-full flex-wrap gap-2 font-mono'>

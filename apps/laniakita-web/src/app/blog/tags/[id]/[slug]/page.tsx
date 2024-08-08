@@ -19,23 +19,23 @@ export async function generateMetadata(
   { params }: { params: { id: string; slug: string } },
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  const tagQRes = await getTag({ idStr: params.id, slugStr: params.slug });
+  const tagQRes = await getTag({ idStr: params.id, slugStr: params.slug }) as unknown as TagQ;
 
-  const findDescr = descriptionHelper((tagQRes as TagQ).rawStr);
+  const findDescr = descriptionHelper(tagQRes.rawStr);
   const descr = findDescr ? findDescr.filter((el) => el) : '';
   const previousImgs = (await parent).openGraph?.images;
   const previousImages = previousImgs ? previousImgs : [''];
   return {
-    title: (tagQRes as TagQ).title,
+    title: tagQRes.title,
     description: descr[0],
     openGraph: {
-      title: (tagQRes as TagQ).title,
+      title: tagQRes.title,
       description: descr[0],
       images: [...previousImages],
     },
     twitter: {
       card: 'summary',
-      title: (tagQRes as TagQ).title,
+      title: tagQRes.title,
       description: descr[0],
       images: [...previousImages],
     },

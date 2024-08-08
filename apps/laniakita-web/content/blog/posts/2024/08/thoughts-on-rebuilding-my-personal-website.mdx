@@ -1,13 +1,13 @@
 ---
+id: 843fc0c8-e2f7-4267-bdfa-4c6cbef28cb6
 type: posts
 date: 2024-08-08T06:09:41Z
 tags: ['meta', 'full-stack']
 author: lani
 slug: thoughts-on-rebuilding-my-personal-website
-headline: Thoughts on Rebuilding my Personal Website, Developing with Next.js 14.2+, & Deploying to AWS with Ion (SST)
-subheadline: Oh and some thoughts on React Three Fiber, & Zustand too
+headline: "Thoughts on Rebuilding my Personal Website, Developing with Next.js 14.2+, & Deploying to AWS with Ion (SST)"
+subheadline: "Oh and some thoughts on React Three Fiber, & Zustand too"
 featuredImage: sunset-no-14-point-2
-altCaption: "\"The totality is not, as it were, a mere heap, but the whole is something besides the parts; there is a cause.\” - Aristotle"
 ---
 
 This article was a long time coming, it's also quite long. In some respects, this might feel like an article created from a few separate articles I stitched together, and perhaps it is. However, I felt it was important to talk about the primary technologies I used in developing/deploying this site, because they're all pretty tightly integrated.
@@ -113,7 +113,7 @@ Admittedly, I’ve not had a chance to play with the [Server Actions API](https:
 
 > Speaking of, there’s a really wonderful [article by Mandaline](https://www.mandalinedev.com/articles/color-themes-next-js) that talks about how to do exactly that. I happened to stumble across it in this [Next.js discussion thread](https://github.com/vercel/next.js/discussions/53063) that summarizes the approaches to implementing a theme toggle on the latest versions of Next.js.
 >
->My solution was ultimately more traditional (why yes, I did just apply `suppressHydrationWarning` on the root `<HTML />` element. *Thank you for noticing!* >.<), but handling it via cookies is quite a neat approach too (I can’t remember why I chose against it. Perhaps it had something to do with SSG?).
+>My solution was ultimately more traditional (why yes, I did just apply `suppressHydrationWarning` on the root `<HTML />` element. *Thank you for noticing!* >.\<), but handling it via cookies is quite a neat approach too (I can’t remember why I chose against it. Perhaps it had something to do with SSG?).
 
 Aside, I should state my surprise to learn that native server side form handling didn’t really exist in Next.js until relatively recently with React 19. I say that because SvelteKit’s had this feature for a long while now (see: [*form actions*](https://kit.svelte.dev/docs/form-actions)). Granted, Next.js has had the option of creating a custom API endpoint for forms submitted client side for a long while too (see: [Next.js 14 announcement post that talks about this](https://nextjs.org/blog/next-14#forms-and-mutations)), which I suppose gives you the same functionality. What’s really changed is that React, and by extension Next.js, offers a native API to handle this, which simplifies the process; a much welcome addition.
 
@@ -338,7 +338,7 @@ Although, that solution is quite traditional, it worked for my purposes however,
 
 ## My Favorite React State-Management Solution: Zustand
 
-![zustand’s mascot, an adorable bear](https://github.com/pmndrs/zustand/blob/main/bear.jpg?raw=true)
+![zustand’s mascot, an adorable bear](../../../../assets/images/non-oc/bear.jpg)
 
 Created by the [Poimandres dev collective](https://pmnd.rs/) (Pmndrs)—the same collective behind React Three Fiber & the React Three ecosystem—[Zustand](https://zustand-demo.pmnd.rs/) is a featherweight alternative to [React Redux](https://react-redux.js.org/), and I love the little state-management solution dearly.
 
@@ -388,4 +388,4 @@ In addition, there's a whole slew of neat tools and technologies contained in th
 
 Overall, I couldn't be happier with how this site came out, and I'm excited to see how both it and I, will evolve over time.
 
-Finally, this long-form article is going to be published before I’ve integrated a commenting system. So, if you have questions, or want to share your thoughts on this piece, or would like to submit corrections, please send them to <lani@laniakita.com>. Alternatively, you could create an issue on this site’s git repo [here](https://github.com/laniakita/ahiakea/issues/new/choose). Either way, I’d love to hear your thoughts, and I appreciate (constructive) feedback, thank you.
+Finally, this long-form article is going to be published before I’ve integrated a commenting system. So, if you have questions, or want to share your thoughts on this piece, or would like to submit corrections, please send them to lani@laniakita.com. Alternatively, you could create an issue on this site’s git repo [here](https://github.com/laniakita/ahiakea/issues/new/choose). Either way, I’d love to hear your thoughts, and I appreciate (constructive) feedback, thank you.
