@@ -14,6 +14,7 @@ export const insertAuthors = async (data: Authors): Promise<void> => {
   }
   try {
     const authorData = data;
+    console.log(authorData);
 
     // perform check should update
     const inserted = await maindb.query.authors.findFirst({
@@ -24,6 +25,7 @@ export const insertAuthors = async (data: Authors): Promise<void> => {
         date: true,
         name: true,
         mastodon: true,
+        mastodonURL: true,
         localKey: true,
         rawStr: true,
       },
@@ -35,6 +37,7 @@ export const insertAuthors = async (data: Authors): Promise<void> => {
       date: authorData.date,
       name: authorData.name,
       mastodon: authorData.mastodon,
+      mastodonURL: authorData.mastodonURL,
       localKey: authorData.localKey,
       rawStr: authorData.rawStr,
     };
@@ -50,6 +53,7 @@ export const insertAuthors = async (data: Authors): Promise<void> => {
             date: authorData.date,
             name: authorData.name,
             mastodon: authorData.mastodon,
+            mastodonURL: authorData.mastodonURL,
             localKey: authorData.localKey,
             rawStr: authorData.rawStr,
           },
