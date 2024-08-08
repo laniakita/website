@@ -32,7 +32,7 @@ export const insertAuthors = async (data: Authors): Promise<void> => {
     const assembledData = {
       id: authorData.id,
       slug: authorData.slug,
-      date: authorData.date.toUTCString(),
+      date: authorData.date,
       name: authorData.name,
       mastodon: authorData.mastodon,
       localKey: authorData.localKey,
@@ -47,7 +47,7 @@ export const insertAuthors = async (data: Authors): Promise<void> => {
           target: authors.id,
           set: {
             slug: authorData.slug,
-            date: authorData.date.toUTCString(),
+            date: authorData.date,
             name: authorData.name,
             mastodon: authorData.mastodon,
             localKey: authorData.localKey,
@@ -86,7 +86,7 @@ export const insertTags = async (data: Tags): Promise<void> => {
     const assembledData = {
       id: tagData.id,
       slug: tagData.slug,
-      date: tagData.date.toUTCString(),
+      date: tagData.date,
       title: tagData.title,
       localKey: tagData.localKey,
       rawStr: tagData.rawStr,
@@ -100,7 +100,7 @@ export const insertTags = async (data: Tags): Promise<void> => {
           target: tags.id,
           set: {
             slug: tagData.slug,
-            date: tagData.date.toUTCString(),
+            date: tagData.date,
             title: tagData.title,
             localKey: tagData.localKey,
             rawStr: tagData.rawStr,
@@ -147,7 +147,7 @@ export const insertFeaturedImages = async (data: FeaturedImages): Promise<void> 
     const assembledData = {
       id: imgData.id,
       slug: imgData.slug,
-      date: imgData.date.toUTCString(),
+      date: imgData.date,
       fileLocation: imgData.fileLocation,
       caption: imgData.caption,
       credit: imgData.credit ? imgData.credit : null,
@@ -169,7 +169,7 @@ export const insertFeaturedImages = async (data: FeaturedImages): Promise<void> 
           target: featuredImages.id,
           set: {
             slug: imgData.slug,
-            date: imgData.date.toUTCString(),
+            date: imgData.date,
             fileLocation: imgData.fileLocation,
             caption: imgData.caption,
             credit: imgData.credit,
@@ -264,7 +264,7 @@ export const insertPosts = async (data: Posts): Promise<void> => {
       id: postData.id,
       authorId: authorIdfuncRes!.id,
       slug: postData.slug,
-      date: postData.date.toUTCString(),
+      date: postData.date,
       headline: postData.headline,
       subheadline: postData.subheadline,
       featuredImageId: imgIdfuncRes!.id,
@@ -282,7 +282,7 @@ export const insertPosts = async (data: Posts): Promise<void> => {
           set: {
             authorId: authorIdfuncRes?.id,
             slug: postData.slug,
-            date: postData.date.toUTCString(),
+            date: postData.date,
             headline: postData.headline,
             subheadline: postData.subheadline,
             featuredImageId: imgIdfuncRes?.id,

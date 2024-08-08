@@ -21,7 +21,7 @@ export interface FeaturedImages {
 export const featuredImages = sqliteTable('featured_images', {
   id: text('id').primaryKey(),
   slug: text('slug').unique().notNull(),
-  date: text('date'),
+  date: integer('date', { mode: 'timestamp' }),
   title: text('title'),
   fileLocation: text('file_location'),
   caption: text('caption'),
