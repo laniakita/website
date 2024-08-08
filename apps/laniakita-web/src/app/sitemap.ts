@@ -55,7 +55,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const blogPosts = blogMetas.map(({ id, slug, date }) => ({
     url: `${BASE_URL}/${linker(id, slug, 'blog/posts')}`,
-    lastModified: date,
+    lastModified: date ? date : new Date(),
   }));
 
   const blogPostCategories = blogCategoriesMetas.map(({ id, slug, date }) => ({
@@ -65,7 +65,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const projects = projectMetas.map(({ slug, date }: WorkMetaProps) => ({
     url: `${BASE_URL}/projects/${slug}`,
-    lastModified: date,
+    lastModified: date ,
   }));
 
   return [...baseSite, ...projects, ...blogPosts, ...blogPostCategories];
