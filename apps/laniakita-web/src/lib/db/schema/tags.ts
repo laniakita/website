@@ -1,4 +1,4 @@
-import { sqliteTable, text } from 'drizzle-orm/sqlite-core';
+import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
 
 export interface Tags {
   id: string;
@@ -12,7 +12,7 @@ export interface Tags {
 export const tags = sqliteTable('tags', {
   id: text('id').primaryKey(),
   slug: text('slug').unique(),
-  date: text('date'),
+  date: integer('date', { mode: 'timestamp' }),
   title: text('title').unique(),
   localKey: text('local_key'),
   rawStr: text('raw_str'),

@@ -1,4 +1,4 @@
-import { sqliteTable, text, primaryKey } from 'drizzle-orm/sqlite-core';
+import { sqliteTable, text, primaryKey, integer } from 'drizzle-orm/sqlite-core';
 import { relations } from 'drizzle-orm';
 import { authors } from './authors';
 import { tags } from './tags';
@@ -31,7 +31,7 @@ export const posts = sqliteTable('posts', {
   authorId: text('author_id')
     .references(() => authors.id, { onUpdate: 'cascade', onDelete: 'cascade' })
     .notNull(),
-  date: text('date').notNull(),
+  date: integer('date', { mode: 'timestamp' }),
   slug: text('slug').unique().notNull(),
   headline: text('headline').unique().notNull(),
   subheadline: text('subheadline'),
