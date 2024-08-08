@@ -2,6 +2,7 @@ const secrets = {
   tursoUrl: new sst.Secret("TursoUrl"),
   tursoAuth: new sst.Secret("TursoAuth"),
   sharpLayer: new sst.Secret("SharpLayer"),
+  devSharpLayer: new sst.Secret("DevSharpLayer")
 };
 
 const allSecrets = Object.values(secrets);
@@ -22,7 +23,7 @@ export const laniakitaWeb = new sst.aws.Nextjs("LaniAkitaWeb", {
           external: ["sharp"],
         },
       };
-      args.layers = [secrets.sharpLayer.value];
+      args.layers = [$app.stage === "production" ? secrets.sharpLayer.value : secrets.devSharpLayer.value];
     },
   },
 });
