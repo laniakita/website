@@ -15,8 +15,10 @@ export const resMdxNoImgBundle = async (mdxStr: string, inputFolder: string) => 
     mdxOptions(options: Options) {
       options.remarkPlugins = [...(options.remarkPlugins ?? []), remarkGfm];
       options.rehypePlugins = [
+        //@ts-expect-error -- false positive
         ...(options.rehypePlugins ?? []),
         [
+          //@ts-expect-error -- false positive
           rehypeShiki,
           {
             themes: {
@@ -32,7 +34,9 @@ export const resMdxNoImgBundle = async (mdxStr: string, inputFolder: string) => 
             ],
           },
         ],
+        //@ts-expect-error -- false positive
         rehypeSlug,
+        //@ts-expect-error -- false positive
         rehypeMdxImportMedia,
       ];
       return options;
@@ -59,8 +63,10 @@ export const resMdxV3 = async (mdxStr: string, inputFolder: string, slug: string
     mdxOptions(options: Options) {
       options.remarkPlugins = [...(options.remarkPlugins ?? []), remarkGfm];
       options.rehypePlugins = [
+        //@ts-expect-error -- false positive
         ...(options.rehypePlugins ?? []),
         [
+          //@ts-expect-error -- false positive
           rehypeShiki,
           {
             themes: {
@@ -76,7 +82,9 @@ export const resMdxV3 = async (mdxStr: string, inputFolder: string, slug: string
             ],
           },
         ],
+        //@ts-expect-error -- false positive
         rehypeSlug,
+        //@ts-expect-error -- false positive
         rehypeMdxImportMedia,
       ];
       return options;
@@ -105,8 +113,10 @@ export const resMdx = async (mdxStr: string, folderName: string, slug: string) =
     mdxOptions(options: Options) {
       options.remarkPlugins = [...(options.remarkPlugins ?? []), remarkGfm];
       options.rehypePlugins = [
+        //@ts-expect-error -- false positive
         ...(options.rehypePlugins ?? []),
         [
+          //@ts-expect-error -- false positive
           rehypeShiki,
           {
             themes: {
@@ -122,6 +132,7 @@ export const resMdx = async (mdxStr: string, folderName: string, slug: string) =
             ],
           },
         ],
+        //@ts-expect-error -- false positive
         rehypeMdxImportMedia,
       ];
       return options;
