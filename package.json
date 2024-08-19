@@ -13,7 +13,7 @@
   "engines": {
     "node": ">=18"
   },
-  "packageManager": "bun@1.1.7",
+  "packageManager": "bun@1.1.20",
   "private": true,
   "scripts": {
     "build": "turbo build",
