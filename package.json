@@ -29,5 +29,8 @@
   "dependencies": {
     "sst": "ion",
     "turbo": "^2.0.14"
-  }
+  },
+  "trustedDependencies": [
+    "contentlayer2"
+  ]
 }

@@ -7,8 +7,10 @@
         "name": "next"
       }
     ],
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "contentlayer/generated": ["./.contentlayer/generated"]
     },
     "types": ["@serwist/next/typings", "bun", "node"]
   },
@@ -19,7 +21,8 @@
     "./**/*.js",
     "./**/*.cjs",
     "./**/*.mjs",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    ".contentlayer/generated"
   ],
   "exclude": ["node_modules", "public/sw.js"]
 }
