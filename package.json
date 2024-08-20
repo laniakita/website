@@ -27,6 +27,7 @@
     "apps/*"
   ],
   "dependencies": {
-    "sst": "ion"
+    "sst": "ion",
+    "turbo": "^2.0.14"
   }
 }
