@@ -24,9 +24,9 @@ export default {
   dialect: 'sqlite',
   driver: 'turso',
   dbCredentials: {
-    url: Resource.TursoUrl.value,
-    authToken: Resource.TursoAuth.value
-    //url: process.env.TURSO_DATABASE_URL!,
-    //authToken: process.env.TURSO_AUTH_TOKEN,
+    //url: Resource.TursoUrl.value,
+    //authToken: Resource.TursoAuth.value
+    url: process.env.TURSO_DATABASE_URL!,
+    authToken: process.env.TURSO_AUTH_TOKEN,
   },
 } satisfies Config;
