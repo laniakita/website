@@ -2,11 +2,11 @@
 import { cache } from 'react';
 import 'server-only';
 import { eq, desc, like, or, and } from 'drizzle-orm';
-import { maindb } from '@/lib/db/turso-db';
+//import { maindb } from '@/lib/db/turso-db';
 import { posts, postsToTags } from '@/lib/db/schema/posts';
 import { tags } from '@/lib/db/schema/tags';
 
-//import { maindb } from '@/lib/db/drizzle';
+import { maindb } from '@/lib/db/drizzle';
 
 export interface PostsToTagsItem {
   tag: {
