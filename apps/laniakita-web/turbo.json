@@ -1,6 +1,6 @@
 {
   "extends": ["//"],
-  "globalDotEnv": [".env"],
+  "globalEnv": [".env"],
   "tasks": {
     "analyze": {
       "env": ["ANALYZE"]
