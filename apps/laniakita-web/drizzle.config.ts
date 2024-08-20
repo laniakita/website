@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies -- false positive from sst */
 import * as dotenv from 'dotenv';
 import type { Config } from 'drizzle-kit';
-import { Resource } from 'sst';
+//import { Resource } from 'sst';
 
 dotenv.config();
 
