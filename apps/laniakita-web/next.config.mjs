@@ -60,6 +60,9 @@ const nextConfigFunction = async (phase, { defaultConfig }) => {
       },
     });
     plugins.push(withMDX);
+
+    const withContentLayer = (await import('next-contentlayer2')).default({});
+    plugins.push(withContentLayer);
   }
 
   if (phase === PHASE_PRODUCTION_BUILD) {
