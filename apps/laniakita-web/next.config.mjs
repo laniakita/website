@@ -62,8 +62,8 @@ const nextConfigFunction = async (phase, { defaultConfig }) => {
     plugins.push(withMDX);
     
     // ignore webpack cache warnings (see: https://github.com/contentlayerdev/contentlayer/issues/313)
-    //const withContentLayer = (await import('next-contentlayer2')).withContentlayer;
-    //plugins.push(withContentLayer);
+    const withContentLayer = (await import('next-contentlayer2')).withContentlayer;
+    plugins.push(withContentLayer);
   }
 
   if (phase === PHASE_PRODUCTION_BUILD) {
