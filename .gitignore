@@ -19,3 +19,5 @@ secrets.env
 # sst
 .sst
 .open-next
+# contentlayer
+.contentlayer
