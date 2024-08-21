@@ -12,6 +12,7 @@ server/dist
 public/dist
 **/public/tests
 **/public/assets/images/featured
+**/public/assets/images/oc
 **/public/assets/images/blog
 **/public/sw.js
 **/public/feed.xml
