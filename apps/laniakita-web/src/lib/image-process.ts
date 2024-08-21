@@ -1,5 +1,5 @@
 import { existsSync, copyFileSync, mkdirSync } from 'node:fs';
-import { readFile, copyFile, lstat } from 'node:fs/promises';
+import { readFile, lstat } from 'node:fs/promises';
 import path from 'node:path';
 import { getPlaiceholder } from 'plaiceholder';
 
@@ -51,12 +51,26 @@ const imageMover = async ({
   imgPath: string;
   debug?: boolean;
 }) => {
-  const rawPath = path.resolve(path.join(contentDir, prefix, imgPath));
-  const publicPath = path.resolve(path.join('./public', prefix, imgPath));
-  
-  const statusOne = checkImgExists(path.join(contentDir, prefix, imgPath));
-  // can't use publicPath => ENOENT => I assume because it's too deep.
-  const statusTwo = checkImgExists(path.join('./public', prefix, imgPath));
+  if (debug) {
+    console.log('image:', imgPath);
+    console.log('url:', prefix);
+  }
+
+  const postParentRaw = prefix.split('/');
+  postParentRaw.shift(); // removes CONTENT_DIR
+  postParentRaw.pop(); // removes post filename
+  const postParent = postParentRaw.join('/');
+  const urlPath = path.join(postParent, imgPath);
+  const rawPath = path.resolve(path.join(contentDir, postParent, imgPath));
+  const publicPath = path.resolve(path.join('./public', postParent, imgPath));
+
+  if (debug) {
+    console.log('rawPath:', rawPath);
+    console.log('publicPath:', publicPath);
+  }
+
+  const statusOne = checkImgExists(rawPath);
+  const statusTwo = checkImgExists(publicPath);
   const status = {
     exists: statusOne.exists,
     existsInPublic: statusTwo.exists,
@@ -64,17 +78,17 @@ const imageMover = async ({
 
   let copied = 0;
   let isDupe = 0;
-  
+
   // using sync functions, it's faster for our purposes.
   const copier = (from: string, to: string) => {
     try {
       // important to make the directory, it won't copy otherwise (ENOENT).
-      mkdirSync(path.dirname(to));
+      mkdirSync(path.dirname(to), { recursive: true });
       copyFileSync(from, to);
       copied = 1;
       console.log('copied successfully to:', to);
     } catch (err) {
-      console.error(err)
+      console.error(err);
     }
   };
 
@@ -91,7 +105,8 @@ const imageMover = async ({
   }
 
   const result = {
-    url: path.join(prefix, imgPath),
+    url: urlPath,
+    local: rawPath,
     _meta: debug
       ? {
           destination: publicPath,
@@ -127,7 +142,7 @@ export const imageProcessor = async ({
 }) => {
   try {
     const imgCopyRes = await imageMover({ contentDir: contentDir, prefix: prefix, imgPath: imgPath, debug: debug });
-    const blurRes = await imageBlurBase64(path.join(contentDir, imgCopyRes.url));
+    const blurRes = await imageBlurBase64(imgCopyRes.local);
     return { src: `/${imgCopyRes.url}`, ...blurRes, _debug: debug ? imgCopyRes._meta : false };
   } catch (err) {
     console.error(err);

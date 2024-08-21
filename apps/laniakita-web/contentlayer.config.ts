@@ -1,6 +1,6 @@
-import { defineDocumentType, defineNestedType, makeSource } from 'contentlayer2/source-files'
-import remarkGfm from 'remark-gfm'
-import rehypeSlug from 'rehype-slug'
+import { defineDocumentType, makeSource } from 'contentlayer2/source-files';
+import remarkGfm from 'remark-gfm';
+import rehypeSlug from 'rehype-slug';
 import rehypeMdxImportMedia from 'rehype-mdx-import-media';
 import rehypeShiki from '@shikijs/rehype';
 import { rendererRich, transformerTwoslash } from '@shikijs/twoslash';
@@ -8,18 +8,26 @@ import { imageProcessor } from './src/lib/image-process';
 
 const CONTENT_DIR = 'content2';
 
-const Tag = defineNestedType(() => ({
+const Tag = defineDocumentType(() => ({
   name: 'Tag',
+  filePathPattern: 'tags/**/*.mdx',
   fields: {
+    id: {type: 'string', required: false},
     title: { type: 'string', required: false },
+    slug: { type: 'string', required: false },
+    date: { type: 'date', required: false },
   },
 }));
 
-const Category = defineNestedType(() => ({
+const Category = defineDocumentType(() => ({
   name: 'Category',
+  filePathPattern: 'categories/**/*.mdx',
   fields: {
-    title: { type: 'string', required: false}
-  }
+    id: {type: 'string', required: false},
+    title: { type: 'string', required: false },
+    slug: { type: 'string', required: false },
+    date: { type: 'date', required: false },
+  },
 }));
 
 export const Post = defineDocumentType(() => ({
@@ -29,44 +37,60 @@ export const Post = defineDocumentType(() => ({
     remarkPlugins: [remarkGfm],
     rehypePlugins: [
       [
-          rehypeShiki,
-          {
-            themes: {
-              light: 'catppuccin-latte',
-              dark: 'catppuccin-mocha',
-            },
-
-            transformers: [
-              transformerTwoslash({
-                explicitTrigger: true,
-                renderer: rendererRich(),
-              }),
-            ],
+        rehypeShiki,
+        {
+          themes: {
+            light: 'catppuccin-latte',
+            dark: 'catppuccin-mocha',
           },
+
+          transformers: [
+            transformerTwoslash({
+              explicitTrigger: true,
+              renderer: rendererRich(),
+            }),
+          ],
+        },
       ],
       rehypeSlug,
-      rehypeMdxImportMedia
+      rehypeMdxImportMedia,
     ],
   },
   fields: {
-    title: { type: 'string', required: true },
+    id: {type: 'string', required: false},
+    headline: { type: 'string', required: true },
+    subheadline: { type: 'string', required: false },
+    slug: { type: 'string', required: false },
     date: { type: 'date', required: true },
-    category: {
-      type: 'nested',
-      of: [Category, Tag],
+    author: { type: 'string', required: false },
+    categories: {
+      type: 'list',
+      of: Category,
     },
-    imageSrc: {type: 'string', required: false}
+    tags: {
+      type: 'list',
+      of: Tag,
+    },
+    imageSrc: { type: 'string', required: false },
+    altText: { type: 'string', required: false },
+    caption: { type: 'string', required: false },
   },
   computedFields: {
-    url: { type: 'string', resolve: (post) => `content2/posts/${post._raw.flattenedPath}` },
-    featured_image: { type: 'json', resolve: async (post) => {
+    url: { type: 'string', resolve: (post) => post._raw.flattenedPath },
+    featured_image: {
+      type: 'json',
+      resolve: async (post) => {
         if (!post.imageSrc) return;
-        const data = await imageProcessor({contentDir: CONTENT_DIR, prefix: 'assets', imgPath: post.imageSrc, debug: true})
-        return data
-      } 
+        const data = await imageProcessor({
+          contentDir: CONTENT_DIR,
+          prefix: `content2/${post._raw.flattenedPath}`,
+          imgPath: post.imageSrc,
+          debug: false,
+        });
+        return data;
+      },
     },
-
   },
-}))
+}));
 
-export default makeSource({ contentDirPath: CONTENT_DIR, documentTypes: [Post] })
+export default makeSource({ contentDirPath: CONTENT_DIR, documentTypes: [Post, Category, Tag] });
