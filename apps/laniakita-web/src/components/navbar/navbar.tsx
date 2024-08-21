@@ -66,7 +66,7 @@ export default function NavBar() {
                 <LinkPlus
                   href={handleRef(page)}
                   key={page}
-                  className='nav-item text-3xl'
+                  className='nav-item text-xl'
                   onClick={() => {
                     page !== 'RSS/Atom' && setClicked({ ...clicked, stateVal: 'closed' });
                   }}
@@ -77,7 +77,7 @@ export default function NavBar() {
               ))}
               <div className='h-px w-full bg-ctp-surface0' />
               <div className='flex flex-row justify-between'>
-                <p className='flex flex-row gap-2'>
+                <p className='flex flex-row gap-2 font-mono'>
                   Theme Setting: <span>{dark ? 'dark' : 'light'}</span>
                 </p>
                 <DarkModeSwitch />
@@ -88,7 +88,7 @@ export default function NavBar() {
       </Suspense>
 
       <div
-        className={`motion-safe:simple-color-trans fixed bottom-0 left-0 z-50 flex h-16 w-full items-center justify-between border-t border-ctp-surface0 px-4 text-xl shadow-lg backdrop-blur-lg [transition:_opacity_0.8s] lg:top-0 lg:h-12 lg:border-b lg:border-t-0 ${clicked.stateVal === 'open' ? 'bg-ctp-base dark:bg-ctp-midnight' : ' bg-ctp-base/80 dark:bg-ctp-midnight/70'}`}
+        className={`motion-safe:simple-color-trans fixed bottom-0 left-0 z-50 flex h-16 w-full items-center justify-between border-t border-ctp-surface0 px-4 text-xl shadow-lg backdrop-blur-md [transition:_opacity_0.8s] lg:top-0 lg:h-12 lg:border-b lg:border-t-0 ${clicked.stateVal === 'open' ? 'bg-ctp-base dark:bg-ctp-midnight' : ' bg-ctp-base/80 dark:bg-ctp-midnight/70'}`}
       >
         <LinkPlus href='/' className='nav-logo relative flex size-full w-16 items-center justify-center'>
           <Image
