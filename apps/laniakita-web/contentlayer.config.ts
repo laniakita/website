@@ -61,7 +61,7 @@ export const Post = defineDocumentType(() => ({
     url: { type: 'string', resolve: (post) => `content2/posts/${post._raw.flattenedPath}` },
     featured_image: { type: 'json', resolve: async (post) => {
         if (!post.imageSrc) return;
-        const data = await imageProcessor({contentDir: CONTENT_DIR, prefix: 'assets', imgPath: post.imageSrc, debug: false})
+        const data = await imageProcessor({contentDir: CONTENT_DIR, prefix: 'assets', imgPath: post.imageSrc, debug: true})
         return data
       } 
     },
