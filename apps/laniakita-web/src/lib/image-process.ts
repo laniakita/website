@@ -55,12 +55,16 @@ const imageMover = async ({
     console.log('image:', imgPath);
     console.log('url:', prefix);
   }
-
+  /*
+   * we essentially need to work backwards from
+   * where the post is located (postParent), and the
+   * location of the relative asset (imgPath).
+   */
   const postParentRaw = prefix.split('/');
   postParentRaw.shift(); // removes CONTENT_DIR
   postParentRaw.pop(); // removes post filename
   const postParent = postParentRaw.join('/');
-  const urlPath = path.join(postParent, imgPath);
+  const urlPath = path.join(postParent, imgPath); // location of the image in the public folder.
   const rawPath = path.resolve(path.join(contentDir, postParent, imgPath));
   const publicPath = path.resolve(path.join('./public', postParent, imgPath));
 
