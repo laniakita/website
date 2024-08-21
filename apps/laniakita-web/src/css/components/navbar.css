@@ -4,6 +4,6 @@
   }
 
   .nav-item {
-    @apply w-min text-lg capitalize text-ctp-text hover:text-ctp-mauve aria-[current]:text-ctp-mauve aria-[current]:underline;
+    @apply font-mono w-min text-base font-semibold capitalize text-ctp-text hover:text-ctp-mauve aria-[current]:text-ctp-mauve aria-[current]:underline;
   }
 }
