@@ -1,4 +1,4 @@
-import { defineDocumentType, makeSource } from 'contentlayer2/source-files'
+import { defineDocumentType, defineNestedType, makeSource } from 'contentlayer2/source-files'
 import remarkGfm from 'remark-gfm'
 import rehypeSlug from 'rehype-slug'
 import rehypeMdxImportMedia from 'rehype-mdx-import-media';
@@ -6,14 +6,25 @@ import rehypeShiki from '@shikijs/rehype';
 import { rendererRich, transformerTwoslash } from '@shikijs/twoslash';
 import { imageProcessor } from './src/lib/image-process';
 
-interface FeaturedImage {
-  url: string;
-  blur: string;
-}
+const CONTENT_DIR = 'content2';
+
+const Tag = defineNestedType(() => ({
+  name: 'Tag',
+  fields: {
+    title: { type: 'string', required: false },
+  },
+}));
+
+const Category = defineNestedType(() => ({
+  name: 'Category',
+  fields: {
+    title: { type: 'string', required: false}
+  }
+}));
 
 export const Post = defineDocumentType(() => ({
   name: 'Post',
-  filePathPattern: `**/*.mdx`,
+  filePathPattern: `posts/**/*.mdx`,
   mdx: {
     remarkPlugins: [remarkGfm],
     rehypePlugins: [
@@ -40,13 +51,17 @@ export const Post = defineDocumentType(() => ({
   fields: {
     title: { type: 'string', required: true },
     date: { type: 'date', required: true },
+    category: {
+      type: 'nested',
+      of: [Category, Tag],
+    },
     imageSrc: {type: 'string', required: false}
   },
   computedFields: {
-    url: { type: 'string', resolve: (post) => `/posts/${post._raw.flattenedPath}` },
+    url: { type: 'string', resolve: (post) => `content2/posts/${post._raw.flattenedPath}` },
     featured_image: { type: 'json', resolve: async (post) => {
         if (!post.imageSrc) return;
-        const data = await imageProcessor({prefix: 'posts', imgPath: post.imageSrc})
+        const data = await imageProcessor({contentDir: CONTENT_DIR, prefix: 'assets', imgPath: post.imageSrc, debug: false})
         return data
       } 
     },
@@ -54,4 +69,4 @@ export const Post = defineDocumentType(() => ({
   },
 }))
 
-export default makeSource({ contentDirPath: 'posts', documentTypes: [Post] })
+export default makeSource({ contentDirPath: CONTENT_DIR, documentTypes: [Post] })
