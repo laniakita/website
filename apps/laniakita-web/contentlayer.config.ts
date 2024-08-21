@@ -11,6 +11,7 @@ const CONTENT_DIR = 'content2';
 const Tag = defineDocumentType(() => ({
   name: 'Tag',
   filePathPattern: 'tags/**/*.mdx',
+  contentType: 'mdx',
   fields: {
     id: {type: 'string', required: false},
     title: { type: 'string', required: false },
@@ -22,6 +23,7 @@ const Tag = defineDocumentType(() => ({
 const Category = defineDocumentType(() => ({
   name: 'Category',
   filePathPattern: 'categories/**/*.mdx',
+  contentType: 'mdx',
   fields: {
     id: {type: 'string', required: false},
     title: { type: 'string', required: false },
@@ -33,6 +35,7 @@ const Category = defineDocumentType(() => ({
 export const Post = defineDocumentType(() => ({
   name: 'Post',
   filePathPattern: `posts/**/*.mdx`,
+  contentType: 'mdx',
   mdx: {
     remarkPlugins: [remarkGfm],
     rehypePlugins: [
