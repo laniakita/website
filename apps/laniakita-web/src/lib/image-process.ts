@@ -1,24 +1,31 @@
-import { existsSync } from 'node:fs';
+import { existsSync, copyFileSync, mkdirSync } from 'node:fs';
 import { readFile, copyFile, lstat } from 'node:fs/promises';
 import path from 'node:path';
 import { getPlaiceholder } from 'plaiceholder';
 
+/**
+ * A typeguarded version of `instanceof Error` for NodeJS.
+ * @author Joseph JDBar Barron
+ * @link https://dev.to/jdbar
+ */
+export function instanceOfNodeError<T extends new (...args: any) => Error>(
+  value: Error,
+  errorType: T,
+): value is InstanceType<T> & NodeJS.ErrnoException {
+  return value instanceof errorType;
+}
+
 // check in relative assets folder & public folder
 const checkImgExists = (imgPath: string) => {
   let exists = false;
-  let existsInPublic = false;
 
   // read image
   // 1. check if path exists
   if (existsSync(imgPath)) {
     exists = true;
   }
-  // 2. check if path exists in public folder
-  if (existsSync(`./public/${imgPath}`)) {
-    existsInPublic = true;
-  }
 
-  return { exists: exists, existsInPublic: existsInPublic };
+  return { exists: exists };
 };
 
 const checkDuplicate = async (imgPathOne: string, imgPathTwo: string) => {
@@ -33,44 +40,66 @@ const checkDuplicate = async (imgPathOne: string, imgPathTwo: string) => {
   return isDupe;
 };
 
-const imageMover = async ({ prefix, imgPath, debug }: { prefix: string; imgPath: string; debug?: boolean }) => {
-  const rawPath = path.join(prefix, imgPath);
-  const publicPath = path.join('./public', rawPath);
-  const status = checkImgExists(rawPath);
+const imageMover = async ({
+  contentDir,
+  prefix,
+  imgPath,
+  debug,
+}: {
+  contentDir: string;
+  prefix: string;
+  imgPath: string;
+  debug?: boolean;
+}) => {
+  const rawPath = path.resolve(path.join(contentDir, prefix, imgPath));
+  const publicPath = path.resolve(path.join('./public', prefix, imgPath));
+  
+  const statusOne = checkImgExists(path.join(contentDir, prefix, imgPath));
+  // can't use publicPath => ENOENT => I assume because it's too deep.
+  const statusTwo = checkImgExists(path.join('./public', prefix, imgPath));
+  const status = {
+    exists: statusOne.exists,
+    existsInPublic: statusTwo.exists,
+  };
+
   let copied = 0;
   let isDupe = 0;
-
-  const copier = async () => {
+  
+  // using sync functions, it's faster for our purposes.
+  const copier = (from: string, to: string) => {
     try {
-      await copyFile(`./${rawPath}`, `./${publicPath}`);
+      // important to make the directory, it won't copy otherwise (ENOENT).
+      mkdirSync(path.dirname(to));
+      copyFileSync(from, to);
       copied = 1;
-      console.log('copied successfully to:', `/${publicPath}`);
+      console.log('copied successfully to:', to);
     } catch (err) {
-      console.error(`Critical Error: File could not be copied: ${err}`);
+      console.error(err)
     }
-    return copied;
   };
 
   // if valid & in public folder, check if new image is the same
   if (status.exists && status.existsInPublic) {
     isDupe = await checkDuplicate(rawPath, publicPath);
     if (isDupe === 0) {
-      await copier();
+      copier(rawPath, publicPath);
     }
   }
   // if valid, but not in public folder, copy it
   if (status.exists && !status.existsInPublic) {
-    await copier();
+    copier(rawPath, publicPath);
   }
 
   const result = {
-    url: rawPath,
-    _meta: debug ? {
-      destination: publicPath,
-      status: status,
-      didCopy: copied === 1 ? 'copy' : 'no copy',
-      reason: isDupe === 0 ? 'original' : 'duplicate',
-    } : null,
+    url: path.join(prefix, imgPath),
+    _meta: debug
+      ? {
+          destination: publicPath,
+          status: status,
+          didCopy: copied === 1 ? 'copy' : 'no copy',
+          reason: isDupe === 0 ? 'original' : 'duplicate',
+        }
+      : null,
   };
 
   return result;
@@ -85,10 +114,20 @@ const imageBlurBase64 = async (imgPath: string) => {
   return { base64, height, width };
 };
 
-export const imageProcessor = async ({ prefix, imgPath, debug }: { prefix: string; imgPath: string; debug?: boolean }) => {
+export const imageProcessor = async ({
+  contentDir,
+  prefix,
+  imgPath,
+  debug,
+}: {
+  contentDir: string;
+  prefix: string;
+  imgPath: string;
+  debug?: boolean;
+}) => {
   try {
-    const imgCopyRes = await imageMover({prefix: prefix, imgPath: imgPath, debug: debug});
-    const blurRes = await imageBlurBase64(imgCopyRes.url);
+    const imgCopyRes = await imageMover({ contentDir: contentDir, prefix: prefix, imgPath: imgPath, debug: debug });
+    const blurRes = await imageBlurBase64(path.join(contentDir, imgCopyRes.url));
     return { src: `/${imgCopyRes.url}`, ...blurRes, _debug: debug ? imgCopyRes._meta : false };
   } catch (err) {
     console.error(err);
