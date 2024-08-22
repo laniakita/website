@@ -1,7 +1,7 @@
 'use client';
-import { Category, Tag } from 'contentlayer/generated';
-import Link from 'next/link';
 import { useId } from 'react';
+import Link from 'next/link';
+import type { Category, Tag } from 'contentlayer/generated';
 
 export default function EzRoller({ array, title }: { array: Category[] | Tag[]; title: string }) {
   const uniqueKey = useId()
@@ -14,7 +14,7 @@ export default function EzRoller({ array, title }: { array: Category[] | Tag[]; 
             <Link href={arr.url} className='text-ctp-sapphire underline'>
               {arr.title}
             </Link>
-            <span>{idx < array.length - 1 ? <span className='pr-[1ch]'>{`,`}</span> : ''}</span>
+            <span>{idx < array.length - 1 ? <span className='pr-[1ch]'>,</span> : ''}</span>
           </p>
         ))}
       </div>

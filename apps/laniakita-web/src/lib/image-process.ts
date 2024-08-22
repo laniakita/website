@@ -25,7 +25,7 @@ const checkImgExists = (imgPath: string) => {
     exists = true;
   }
 
-  return { exists: exists };
+  return { exists };
 };
 
 const checkDuplicate = async (imgPathOne: string, imgPathTwo: string) => {
@@ -114,7 +114,7 @@ const imageMover = async ({
     _meta: debug
       ? {
           destination: publicPath,
-          status: status,
+          status,
           didCopy: copied === 1 ? 'copy' : 'no copy',
           reason: isDupe === 0 ? 'original' : 'duplicate',
         }
@@ -145,7 +145,7 @@ export const imageProcessor = async ({
   debug?: boolean;
 }) => {
   try {
-    const imgCopyRes = await imageMover({ contentDir: contentDir, prefix: prefix, imgPath: imgPath, debug: debug });
+    const imgCopyRes = await imageMover({ contentDir, prefix, imgPath, debug });
     const blurRes = await imageBlurBase64(imgCopyRes.local);
     return { src: `/${imgCopyRes.url}`, ...blurRes, _debug: debug ? imgCopyRes._meta : false };
   } catch (err) {

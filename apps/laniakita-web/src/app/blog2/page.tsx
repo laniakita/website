@@ -1,13 +1,13 @@
-import { allPosts, Post } from "contentlayer/generated";
 import {compareDesc, format, parseISO} from 'date-fns'
-import PostRollerV4 from "./post-components";
+import { allPosts, Post } from "contentlayer/generated";
 import Sidebar from "@/components/sidebar/main";
+import PostRollerV4 from "./post-components";
 
 export default function BlogPage2 () {
   const posts = allPosts.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)))
   //console.dir(posts, {depth: null})
   return (
-    <main className="flex flex-col-reverse md:flex-row gap-2 md:gap-4 size-full p-2 md:p-6 lg:p-10 lg:pt-28 bg-ctp-base dark:bg-ctp-midnight simple-color-trans justify-center ">
+    <main className="simple-color-trans flex size-full flex-col-reverse justify-center gap-2 bg-ctp-base p-2 dark:bg-ctp-midnight md:flex-row md:gap-4 md:p-6 lg:p-10 lg:pt-28 ">
       <PostRollerV4 posts={posts} />
       <Sidebar />
     </main>

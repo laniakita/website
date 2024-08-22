@@ -1,6 +1,6 @@
-import { allCategories, allTags } from 'contentlayer/generated';
 import Link from 'next/link';
 import { useId } from 'react';
+import { allCategories, allTags } from 'contentlayer/generated';
 
 interface CatTag {
   slug: string;
@@ -40,9 +40,9 @@ export function CatTagRoller({ cats, tags }: { cats?: string[] | undefined; tags
                 <span className='font-bold'>{`${combo?.type === 'Tag' ? '#' : ''}${combo?.title}`}</span>
               </Link>
               {comboArr[idx]?.type === 'Category' && comboArr[idx + 1]?.type === 'Tag' ? (
-                <span className='px-[1ch]'>{`|`}</span>
+                <span className='px-[1ch]'>|</span>
               ) : (
-                idx < comboArr.length - 1 && <span className='pr-[1ch]'>{`,`}</span>
+                idx < comboArr.length - 1 && <span className='pr-[1ch]'>,</span>
               )}
             </p>
           ))
