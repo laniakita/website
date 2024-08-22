@@ -17,7 +17,7 @@ export default async function BlogPostPage({ params }: { params: { id: string; s
 
   const MDXContent = useMDXComponent(post.body.code);
 
-  console.log(post);
+  //console.log(post);
   return (
     <main className='motion-safe:simple-color-trans -mb-0.5 min-h-full max-w-full bg-ctp-base dark:bg-ctp-midnight'>
       {post !== undefined && (
