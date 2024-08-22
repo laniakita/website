@@ -1,8 +1,8 @@
 'use client'
 
 import { useId } from "react";
-import { SocialIconNavProps } from "../social-icon";
 import Link from "next/link";
+import { type SocialIconNavProps } from "../social-icon";
 
 
 export function SocialIconNav2({ boxItems }: SocialIconNavProps) {
@@ -15,7 +15,7 @@ export function SocialIconNav2({ boxItems }: SocialIconNavProps) {
           key={`social-icon-two-${uniqueKey}-${Math.floor(Math.random() * 1000 + idx)}`}
           rel={item.title.toLowerCase() === 'mastodon' ? 'me' : ''}
           href={item.url}
-          className={`flex basis-full items-center justify-center rounded border border-ctp-surface0 dark:border-ctp-base p-2 text-ctp-text hover:text-ctp-base hover:bg-ctp-mauve color-trans-2`}
+          className="color-trans-2 flex basis-full items-center justify-center rounded border border-ctp-surface0 p-2 text-ctp-text hover:bg-ctp-mauve hover:text-ctp-base dark:border-ctp-base"
           target='_blank'
           aria-label={`Follow Lani on ${item.linkName}`}
         >

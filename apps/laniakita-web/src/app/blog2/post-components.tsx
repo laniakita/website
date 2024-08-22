@@ -1,11 +1,11 @@
-import localLoader from '@/lib/local-loader';
 import Markdown from 'markdown-to-jsx';
-import { type Post } from 'contentlayer/generated';
 import Image from 'next/image';
-import LocalDate from './local-date';
 import Link from 'next/link';
-import { CatTagRoller } from './cat-tag-roller';
 import { useId } from 'react';
+import localLoader from '@/lib/local-loader';
+import { type Post } from 'contentlayer/generated';
+import LocalDate from './local-date';
+import { CatTagRoller } from './cat-tag-roller';
 
 export default function PostRollerV4({ posts }: { posts: Post[] }) {
   const uniqueKey = useId();
@@ -22,7 +22,7 @@ export default function PostRollerV4({ posts }: { posts: Post[] }) {
 }
 
 async function PostPreviewV4(post: Post) {
-  const descriptionStr = descriptionHelper(post.body.raw, post.url) as string;
+  const descriptionStr = descriptionHelper(post.body.raw, post.url)!;
 
   return (
     <div className='flex basis-full flex-col overflow-hidden rounded-md border border-ctp-surface0 dark:border-ctp-base'>
@@ -52,7 +52,7 @@ async function PostPreviewV4(post: Post) {
             <p className='w-fit rounded-full font-mono'>
               <LocalDate date={new Date(post.date)} />
             </p>
-            <span className='font-mono'>{'|'}</span>
+            <span className='font-mono'>|</span>
             <CatTagRoller cats={post.categories} tags={post.tags} />
           </div>
 
