@@ -5,6 +5,8 @@ import { type Post } from 'contentlayer/generated';
 //import type { PostQ } from '@/lib/node-db-funcs';
 //import PostDate from './post-date';
 import { HeroBlur2 } from './hero-blur-2';
+import LocalDate from './local-date';
+import { CatTagRoller } from './cat-tag-roller';
 //import { TagsRoller } from './tags-roller';
 
 export function PostHeader2(post: Post) {
@@ -24,34 +26,30 @@ export function PostHeader2(post: Post) {
   */
   return (
     <>
-      <div className='flex w-full flex-col items-center justify-center gap-4 px-10 pb-6 pt-10 md:gap-6 md:pb-10 md:pt-20 lg:pt-36'>
-        <h1 className='w-full max-w-xl text-4xl font-black leading-tight supports-[text-wrap:balance]:text-balance md:text-5xl'>
+      <div className='flex w-full flex-col items-center justify-center gap-2 px-10 pb-6 pt-10 md:pb-10 md:pt-20 lg:pt-36'>
+        <div className='w-full max-w-3xl font-mono'>
+          <CatTagRoller cats={post.categories} tags={post.tags} />
+        </div>
+        <h1 className='w-full max-w-3xl text-3xl font-black supports-[text-wrap:balance]:text-balance md:text-4xl'>
           {post.headline}
         </h1>
-
-        <h2 className='w-full max-w-xl text-2xl font-semibold leading-tight supports-[text-wrap:balance]:text-balance md:text-3xl'>
+        <h2 className='w-full max-w-3xl text-2xl font-light supports-[text-wrap:balance]:text-balance md:text-3xl'>
           {post.subheadline}
         </h2>
 
-        <p className='flex w-full max-w-xl flex-wrap gap-2 font-mono text-lg'>
-          {/* 
-               <span>
-            By,{` `}
-            <Link href='/about' className='font-semibold'>
-              {post.author.name}
+        <div className='flex w-full max-w-3xl flex-wrap gap-2 font-mono'>
+          <p>
+            <Link href='/about' className='font-semibold capitalize'>
+              {post.author}
             </Link>
-          </span>
-          
+          </p>
           <span>|</span>
-          */}
+          <p>
+            <LocalDate date={new Date(post.date)} />
+          </p>
+        </div>
 
-          {/*<PostDate dateStr={post.date} />
-          <span>|</span>
-          <TagsRoller tagsArr={tagsArr} />
-          */}
-        </p>
-
-        <div className='flex w-full max-w-xl items-center justify-start pt-1'>
+        <div className='flex w-full max-w-3xl items-center justify-start pt-3 md:pt-7'>
           <ShareButton />
         </div>
       </div>
@@ -63,10 +61,10 @@ export function PostHeader2(post: Post) {
           <figure className='relative flex size-full flex-col items-center justify-center gap-10'>
             <HeroBlur2 {...post} />
             <p className='-mb-2 -mt-6 flex w-full flex-col items-center justify-center px-10 font-mono text-sm font-thin [font-style:_normal]'>
-              <span className='w-full max-w-xl'>Image source: OC by me ^-^</span>
+              <span className='w-full max-w-3xl'>Image source: OC by me ^-^</span>
             </p>
             <figcaption className='flex w-full items-center justify-center px-10 text-xl font-bold italic leading-tight md:text-2xl'>
-              <span className='max-w-xl'>{post.featured_image.caption}</span>
+              <span className='max-w-3xl'>{post.featured_image.caption}</span>
             </figcaption>
           </figure>
         ) : (
@@ -74,7 +72,7 @@ export function PostHeader2(post: Post) {
         )}
 
         <div className='flex size-full w-full items-center justify-center px-10'>
-          <div className='mt-10 w-full max-w-xl rounded bg-ctp-text py-px' />
+          <div className='mt-10 w-full max-w-3xl rounded bg-ctp-text py-px' />
         </div>
       </div>
     </>

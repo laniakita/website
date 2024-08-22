@@ -1,12 +1,13 @@
 import localLoader from '@/lib/local-loader';
 import { imageLoader } from '@/utils/image-loader';
 import { resMdxNoImgBundle } from '@/utils/mdxbundler-main';
-import { allCategories, allTags, type Post } from 'contentlayer/generated';
+import { type Post } from 'contentlayer/generated';
 import { getMDXComponent } from 'mdx-bundler/client';
 import Image from 'next/image';
 import { useMemo } from 'react';
 import LocalDate from './local-date';
 import Link from 'next/link';
+import { CatTagRoller } from './cat-tag-roller';
 
 export default function PostRollerV4({ posts }: { posts: Post[] }) {
   return (
@@ -26,50 +27,6 @@ function MiniMDX({ code, frontmatter }: Record<string, any>) {
     <>
       <MDXComponent />
     </>
-  );
-}
-
-interface CatTag {
-  slug: string;
-}
-
-export function CatTagRoller({ cats, tags }: { cats?: string[] | undefined; tags?: string[] | undefined }) {
-  const categories = cats
-    ? cats.map((cat) => {
-        const category = allCategories.find(
-          (category) => category._raw.flattenedPath === `categories/${(cat as unknown as CatTag).slug}`,
-        );
-
-        return category;
-      })
-    : [];
-  const tagsArr = tags
-    ? tags.map((tagIdx) => {
-        const tag = allTags.find((tag) => tag._raw.flattenedPath === `tags/${(tagIdx as unknown as CatTag).slug}`);
-
-        return tag;
-      })
-    : [];
-
-  const comboArr = [...categories.sort((a,b) => a!.title!.localeCompare(b!.title!)), ...tagsArr.sort((a,b) => a!.title!.localeCompare(b!.title!))];
-
-  return (
-    <div className='flex flex-wrap'>
-      {comboArr
-        ? comboArr.map((combo, idx) => (
-            <p key={idx} className='font-mono'>
-              <Link href={`/${combo?._raw.flattenedPath}`}>
-                <span className='font-bold'>{`${combo?.type === 'Tag' ? '#' : ''}${combo?.title}`}</span>
-              </Link>
-              {comboArr[idx]?.type === 'Category' && comboArr[idx + 1]?.type === 'Tag' ? (
-                <span className='px-[1ch]'>{`|`}</span>
-              ) : (
-                idx < comboArr.length - 1 && <span className='pr-[1ch]'>{`,`}</span>
-              )}
-            </p>
-          ))
-        : ''}
-    </div>
   );
 }
 
@@ -114,7 +71,7 @@ async function PostPreviewV4(post: Post) {
               {post.headline}
             </Link>
           </h2>
-          <h3 className='text-balance pt-2 text-2xl font-semibold'>{post.subheadline}</h3>
+          <h3 className='text-balance pt-2 text-2xl font-light'>{post.subheadline}</h3>
         </div>
         <div className='h-px w-full rounded bg-ctp-surface0' />
         <div className='prose-protocol-omega max-w-full text-pretty prose-p:my-0 prose-p:text-base prose-a:no-underline prose-code:text-xs'>
