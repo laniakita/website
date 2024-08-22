@@ -7,7 +7,6 @@ import Image from 'next/image';
 import { useMemo } from 'react';
 import LocalDate from './local-date';
 import Link from 'next/link';
-import { Jersey_10 } from 'next/font/google';
 
 export default function PostRollerV4({ posts }: { posts: Post[] }) {
   return (
@@ -34,7 +33,7 @@ interface CatTag {
   slug: string;
 }
 
-function CatTagRoller({ cats, tags }: { cats?: string[] | undefined; tags?: string[] | undefined }) {
+export function CatTagRoller({ cats, tags }: { cats?: string[] | undefined; tags?: string[] | undefined }) {
   const categories = cats
     ? cats.map((cat) => {
         const category = allCategories.find(
@@ -52,7 +51,7 @@ function CatTagRoller({ cats, tags }: { cats?: string[] | undefined; tags?: stri
       })
     : [];
 
-  const comboArr = [...categories, ...tagsArr];
+  const comboArr = [...categories.sort((a,b) => a!.title!.localeCompare(b!.title!)), ...tagsArr.sort((a,b) => a!.title!.localeCompare(b!.title!))];
 
   return (
     <div className='flex flex-wrap'>
