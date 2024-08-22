@@ -80,20 +80,26 @@ async function PostPreviewV4(post: Post) {
 
   return (
     <div className='flex basis-full flex-col overflow-hidden rounded-md border border-ctp-surface0 dark:border-ctp-base'>
-      <Image
-        loader={
-          localLoader
-          //imageLoader
-        }
-        src={post.featured_image.src}
-        placeholder='blur'
-        blurDataURL={post.featured_image.base64}
-        alt={post.altText!}
-        height={post.featured_image.height}
-        width={post.featured_image.width}
-        sizes='(max-width: 300px) 70vw, (max-width: 600px) 45vw, (max-width:1500px) 27vw'
-        className='object-contain'
-      />
+      {post.featured_image.src !== null || post.featured_image.src !== undefined ? (
+        <Link href={post.url}>
+        <Image
+          loader={
+            localLoader
+            //imageLoader
+          }
+          src={post.featured_image.src}
+          placeholder='blur'
+          blurDataURL={post.featured_image.base64}
+          alt={post.altText!}
+          height={post.featured_image.height}
+          width={post.featured_image.width}
+          sizes='(max-width: 300px) 70vw, (max-width: 600px) 45vw, (max-width:1500px) 27vw'
+          className='object-contain'
+        />
+        </Link>
+      ) : (
+        ''
+      )}
       <div className='flex flex-col gap-6 p-6 md:p-10'>
         <div className=''>
           <div className='flex flex-wrap gap-[1ch] pb-2'>
@@ -103,7 +109,12 @@ async function PostPreviewV4(post: Post) {
             <span className='font-mono'>{'|'}</span>
             <CatTagRoller cats={post.categories} tags={post.tags} />
           </div>
-          <h2 className='text-balance text-3xl font-black'>{post.headline}</h2>
+
+          <h2 className='w-fit text-balance text-3xl font-black'>
+            <Link href={post.url} className='text-ctp-text'>
+              {post.headline}
+            </Link>
+          </h2>
           <h3 className='text-balance pt-2 text-2xl font-semibold'>{post.subheadline}</h3>
         </div>
         <div className='h-px w-full rounded bg-ctp-surface0' />
