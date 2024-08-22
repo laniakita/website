@@ -9,7 +9,7 @@ import { CatTagRoller } from './cat-tag-roller';
 export default function PostRollerV4({ posts }: { posts: Post[] }) {
   return (
     <div className='flex items-center justify-center'>
-      <div className='flex w-full max-w-3xl flex-col gap-6 md:gap-10'>
+      <div className='flex w-full max-w-3xl flex-col gap-2 md:gap-6'>
         {posts.map((post, idx) => (
           <PostPreviewV4 key={idx} {...post} />
         ))}
@@ -43,7 +43,7 @@ async function PostPreviewV4(post: Post) {
       ) : (
         ''
       )}
-      <div className='flex flex-col gap-6 p-6 md:p-10'>
+      <div className='flex flex-col gap-4 p-8 md:p-10'>
         <div className=''>
           <div className='flex flex-wrap gap-[1ch] pb-2'>
             <p className='w-fit rounded-full font-mono'>
