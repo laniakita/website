@@ -5,13 +5,16 @@ import Image from 'next/image';
 import LocalDate from './local-date';
 import Link from 'next/link';
 import { CatTagRoller } from './cat-tag-roller';
+import { useId } from 'react';
 
 export default function PostRollerV4({ posts }: { posts: Post[] }) {
+  const uniqueKey = useId();
+
   return (
     <div className='flex items-center justify-center'>
       <div className='flex w-full max-w-3xl flex-col gap-2 md:gap-6'>
         {posts.map((post, idx) => (
-          <PostPreviewV4 key={idx} {...post} />
+          <PostPreviewV4 key={`blog-post-${uniqueKey}-${Math.floor(Math.random() * 1000)}`} {...post} />
         ))}
       </div>
     </div>
@@ -25,20 +28,20 @@ async function PostPreviewV4(post: Post) {
     <div className='flex basis-full flex-col overflow-hidden rounded-md border border-ctp-surface0 dark:border-ctp-base'>
       {post.featured_image.src !== null || post.featured_image.src !== undefined ? (
         <Link href={post.url}>
-        <Image
-          loader={
-            localLoader
-            //imageLoader
-          }
-          src={post.featured_image.src}
-          placeholder='blur'
-          blurDataURL={post.featured_image.base64}
-          alt={post.altText!}
-          height={post.featured_image.height}
-          width={post.featured_image.width}
-          sizes='(max-width: 300px) 70vw, (max-width: 600px) 45vw, (max-width:1500px) 27vw'
-          className='object-contain'
-        />
+          <Image
+            loader={
+              localLoader
+              //imageLoader
+            }
+            src={post.featured_image.src}
+            placeholder='blur'
+            blurDataURL={post.featured_image.base64}
+            alt={post.altText!}
+            height={post.featured_image.height}
+            width={post.featured_image.width}
+            sizes='(max-width: 300px) 70vw, (max-width: 600px) 45vw, (max-width:1500px) 27vw'
+            className='object-contain'
+          />
         </Link>
       ) : (
         ''
@@ -62,7 +65,7 @@ async function PostPreviewV4(post: Post) {
         </div>
         <div className='h-px w-full rounded bg-ctp-surface0' />
         <div className='prose-protocol-omega max-w-full text-pretty prose-p:my-0 prose-a:no-underline'>
-          <Markdown options={{forceBlock: true}}>{descriptionStr}</Markdown>
+          <Markdown options={{ forceBlock: true }}>{descriptionStr}</Markdown>
         </div>
       </div>
     </div>
@@ -86,7 +89,7 @@ const descriptionHelper = (rawStr: string, postSlug?: string) => {
     .toSpliced(-1, 1, `... [\`READ_MORE =>\`](/${postSlug ?? 'blog'})`)
     .join('');
 
-  console.log(foundDescr.splice(-1, 1, endInjection!).join(' '));
+  foundDescr.splice(-1, 1, endInjection!).join(' ');
 
   return foundDescr.join(' ');
 };
