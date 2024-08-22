@@ -75,7 +75,7 @@ function CatTagRoller({ cats, tags }: { cats?: string[] | undefined; tags?: stri
 }
 
 async function PostPreviewV4(post: Post) {
-  const descriptionStr = descriptionHelper(post.body.raw) as string;
+  const descriptionStr = descriptionHelper(post.body.raw, post.url) as string;
   const MDXStr = await resMdxNoImgBundle(descriptionStr, './content2');
 
   return (

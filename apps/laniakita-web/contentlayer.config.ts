@@ -60,7 +60,7 @@ export const Post = defineDocumentType(() => ({
     ],
   },
   fields: {
-    id: {type: 'string', required: false},
+    id: {type: 'string', required: true},
     headline: { type: 'string', required: true },
     subheadline: { type: 'string', required: false },
     slug: { type: 'string', required: false },
@@ -79,7 +79,7 @@ export const Post = defineDocumentType(() => ({
     caption: { type: 'string', required: false },
   },
   computedFields: {
-    url: { type: 'string', resolve: (post) => post._raw.flattenedPath },
+    url: { type: 'string', resolve: (post) => `posts/${post.id?.split('-').shift()}/${post._raw.flattenedPath.split('/').pop()}` },
     featured_image: {
       type: 'json',
       resolve: async (post) => {
