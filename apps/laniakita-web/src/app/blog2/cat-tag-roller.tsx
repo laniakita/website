@@ -1,12 +1,15 @@
-
 import { allCategories, allTags } from 'contentlayer/generated';
 import Link from 'next/link';
+import { useId } from 'react';
 
 interface CatTag {
   slug: string;
 }
 
 export function CatTagRoller({ cats, tags }: { cats?: string[] | undefined; tags?: string[] | undefined }) {
+  const uniqueKey = useId();
+
+
   const categories = cats
     ? cats.map((cat) => {
         const category = allCategories.find(
@@ -30,7 +33,9 @@ export function CatTagRoller({ cats, tags }: { cats?: string[] | undefined; tags
     <div className='flex flex-wrap'>
       {comboArr
         ? comboArr.map((combo, idx) => (
-            <p key={idx} className='font-mono'>
+            <p 
+              key={`category-tag-${uniqueKey}-${Math.floor(Math.random() * 1000)}`}
+              className='font-mono'>
               <Link href={`/${combo?._raw.flattenedPath}`}>
                 <span className='font-bold'>{`${combo?.type === 'Tag' ? '#' : ''}${combo?.title}`}</span>
               </Link>
