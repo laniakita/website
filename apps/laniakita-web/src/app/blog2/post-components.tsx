@@ -1,10 +1,7 @@
 import localLoader from '@/lib/local-loader';
-import { imageLoader } from '@/utils/image-loader';
-import { resMdxNoImgBundle } from '@/utils/mdxbundler-main';
+import Markdown from 'markdown-to-jsx';
 import { type Post } from 'contentlayer/generated';
-import { getMDXComponent } from 'mdx-bundler/client';
 import Image from 'next/image';
-import { useMemo } from 'react';
 import LocalDate from './local-date';
 import Link from 'next/link';
 import { CatTagRoller } from './cat-tag-roller';
@@ -21,18 +18,8 @@ export default function PostRollerV4({ posts }: { posts: Post[] }) {
   );
 }
 
-function MiniMDX({ code, frontmatter }: Record<string, any>) {
-  const MDXComponent = useMemo(() => getMDXComponent(code), [code]);
-  return (
-    <>
-      <MDXComponent />
-    </>
-  );
-}
-
 async function PostPreviewV4(post: Post) {
   const descriptionStr = descriptionHelper(post.body.raw, post.url) as string;
-  const MDXStr = await resMdxNoImgBundle(descriptionStr, './content2');
 
   return (
     <div className='flex basis-full flex-col overflow-hidden rounded-md border border-ctp-surface0 dark:border-ctp-base'>
@@ -74,8 +61,8 @@ async function PostPreviewV4(post: Post) {
           <h3 className='text-balance pt-2 text-2xl font-light'>{post.subheadline}</h3>
         </div>
         <div className='h-px w-full rounded bg-ctp-surface0' />
-        <div className='prose-protocol-omega max-w-full text-pretty prose-p:my-0 prose-p:text-base prose-a:no-underline prose-code:text-xs'>
-          <MiniMDX code={MDXStr.code} />
+        <div className='prose-protocol-omega max-w-full text-pretty prose-p:my-0 prose-a:no-underline'>
+          <Markdown options={{forceBlock: true}}>{descriptionStr}</Markdown>
         </div>
       </div>
     </div>
