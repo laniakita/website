@@ -1,7 +1,7 @@
 'use client';
 import CircleMovie from './circle-movie';
 import { FooterBox, FooterBoxSpecial } from './footer-box';
-import SocialIconNav from './social-icon';
+import SocialIconNav from '@/components/social-icon';
 import data from './common-data.json';
 
 export const socialItems = [
@@ -63,7 +63,7 @@ export default function Footer({ extra }: { extra?: string }) {
           {/* <FooterSubscribe /> */}
           <div className='flex flex-col items-center  justify-center gap-4  pb-16 md:pb-36 md:pt-20 lg:pb-40 lg:pt-20'>
             {/* content container */}
-            <div className='w-full space-y-8 p-10 md:w-fit md:rounded-2xl md:border md:border-ctp-surface0'>
+            <div className='w-full space-y-8 p-10 md:w-fit md:rounded-md md:border md:border-ctp-surface0 dark:md:border-ctp-base'>
               {/* logo + search + social_buttons + +copyright + links */}
               <div className='flex flex-col items-center justify-center gap-8'>
                 <div className='size-full'>

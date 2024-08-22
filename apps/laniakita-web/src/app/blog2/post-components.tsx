@@ -43,7 +43,7 @@ async function PostPreviewV4(post: Post) {
       ) : (
         ''
       )}
-      <div className='flex flex-col gap-4 p-8 md:p-10'>
+      <div className='flex flex-col gap-4 p-8 lg:p-10'>
         <div className=''>
           <div className='flex flex-wrap gap-[1ch] pb-2'>
             <p className='w-fit rounded-full font-mono'>

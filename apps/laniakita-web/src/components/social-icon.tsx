@@ -31,3 +31,22 @@ export default function SocialIconNav({ boxItems, hxw }: SocialIconNavProps) {
     </div>
   );
 }
+
+export function SocialIconNav2({ boxItems }: SocialIconNavProps) {
+  return (
+    <div className='flex flex-row md:grid md:grid-cols-3 gap-2'>
+      {boxItems.map((item, idx) => (
+        <Link
+          key={idx}
+          rel={item.title.toLowerCase() === 'mastodon' ? 'me' : ''}
+          href={item.url}
+          className={`flex basis-full items-center justify-center rounded border border-ctp-surface0 dark:border-ctp-base p-2 text-ctp-text hover:text-ctp-base hover:bg-ctp-mauve color-trans-2`}
+          target='_blank'
+          aria-label={`Follow Lani on ${item.linkName}`}
+        >
+          <p className={`${item.iconName} ${item.textSize}`} />
+        </Link>
+      ))}
+    </div>
+  );
+}
