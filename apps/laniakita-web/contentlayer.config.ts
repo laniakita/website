@@ -79,7 +79,7 @@ export const Post = defineDocumentType(() => ({
     caption: { type: 'string', required: false },
   },
   computedFields: {
-    url: { type: 'string', resolve: (post) => `posts/${post.id?.split('-').shift()}/${post._raw.flattenedPath.split('/').pop()}` },
+    url: { type: 'string', resolve: (post) => `blog2/${post.id?.split('-').shift()}/${post._raw.flattenedPath.split('/').pop()}` },
     featured_image: {
       type: 'json',
       resolve: async (post) => {
@@ -90,7 +90,7 @@ export const Post = defineDocumentType(() => ({
           imgPath: post.imageSrc,
           debug: false,
         });
-        return data;
+        return {...data, altText: post.altText, caption: post.caption};
       },
     },
   },
