@@ -22,7 +22,8 @@
     "./**/*.cjs",
     "./**/*.mjs",
     ".next/types/**/*.ts",
-    ".contentlayer/generated"
+    ".contentlayer/generated",
+    ".eslintrc.cjs"
   ],
   "exclude": ["node_modules", "public/sw.js"]
 }

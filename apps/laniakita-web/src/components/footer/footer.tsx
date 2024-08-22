@@ -1,7 +1,7 @@
 'use client';
+import SocialIconNav from '@/components/social-icon';
 import CircleMovie from './circle-movie';
 import { FooterBox, FooterBoxSpecial } from './footer-box';
-import SocialIconNav from '@/components/social-icon';
 import data from './common-data.json';
 
 export const socialItems = [

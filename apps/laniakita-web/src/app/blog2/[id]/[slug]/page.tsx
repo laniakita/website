@@ -1,7 +1,7 @@
-import { PostHeader2 } from '@/app/blog2/post-header-2';
-import { allPosts } from 'contentlayer/generated';
 import { useMDXComponent } from 'next-contentlayer2/hooks';
 import { notFound, redirect } from 'next/navigation';
+import { PostHeader2 } from '@/app/blog2/post-header-2';
+import { allPosts } from 'contentlayer/generated';
 import BlogImageBlurServer from '../../img-blur-server';
 
 const mdxComponents = { img: BlogImageBlurServer };
@@ -9,8 +9,8 @@ const mdxComponents = { img: BlogImageBlurServer };
 export default async function BlogPostPage({ params }: { params: { id: string; slug: string } }) {
   const post = allPosts.find(
     (post) =>
-      (post.id?.split('-').shift() === params.id && post.url.split('/').pop() === params.slug) ||
-      post.id?.split('-').shift() === params.id,
+      (post.id.split('-').shift() === params.id && post.url.split('/').pop() === params.slug) ||
+      post.id.split('-').shift() === params.id,
   );
 
   if (!post) return notFound();

@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import { imageLoader } from '@/utils/image-loader';
 import localLoader from '@/lib/local-loader';
-import { Post } from 'contentlayer/generated';
+import { type Post } from 'contentlayer/generated';
 
 export function HeroBlur2(post: Post) {
   return (
