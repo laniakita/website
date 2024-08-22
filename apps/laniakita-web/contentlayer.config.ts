@@ -18,6 +18,12 @@ const Tag = defineDocumentType(() => ({
     slug: { type: 'string', required: false },
     date: { type: 'date', required: false },
   },
+  computedFields: {
+    url: {
+      type: 'string',
+      resolve: (tag) => tag._raw.flattenedPath,
+    },
+  },
 }));
 
 const Category = defineDocumentType(() => ({
@@ -29,6 +35,12 @@ const Category = defineDocumentType(() => ({
     title: { type: 'string', required: false },
     slug: { type: 'string', required: false },
     date: { type: 'date', required: false },
+  },
+  computedFields: {
+    url: {
+      type: 'string',
+      resolve: (category) => category._raw.flattenedPath,
+    },
   },
 }));
 

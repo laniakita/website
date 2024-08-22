@@ -1,4 +1,5 @@
 import { SocialIconNav2 } from '@/components/social-icon';
+import { allCategories, allTags, Category, Tag } from 'contentlayer/generated';
 import Markdown from 'markdown-to-jsx';
 import Link from 'next/link';
 
@@ -31,7 +32,7 @@ const socialItems = [
     url: 'https://instagram.com',
     iconName: 'icon-[fa6-brands--instagram]',
     linkName: 'Instagram!',
-    textSize: 'text-4xl'
+    textSize: 'text-4xl',
   },
   {
     title: 'Patreon',
@@ -50,18 +51,45 @@ const socialItems = [
 ];
 
 export default function Sidebar() {
+  const categories = allCategories.sort((a, b) => a!.title!.localeCompare(b!.title!));
+  const tags = allTags.sort((a, b) => a!.title!.localeCompare(b!.title!));
+
   return (
     <>
       {/* wrapper */}
-      <div className=''>
-        <div className='sidebar-box flex flex-col gap-6 lg:gap-10'>
+      <div className='flex flex-col gap-2 md:gap-6'>
+        <div className='sidebar-box flex flex-col gap-6'>
           <div className='prose-protocol-omega font-mono prose-p:my-0'>
             <Markdown options={{ forceBlock: true }}>{blogInfo}</Markdown>
           </div>
-          <div className=''>
-            <SocialIconNav2 boxItems={socialItems} />
+          <SocialIconNav2 boxItems={socialItems} />
+        </div>
+        <div className='sidebar-box flex flex-col gap-2 font-mono'>
+          <div>
+            <EzRoller title={'Categories'} array={categories} />
+          </div>
+          <div>
+            <EzRoller title={'Tags'} array={tags} />
           </div>
         </div>
+      </div>
+    </>
+  );
+}
+
+function EzRoller({ array, title }: { array: Category[] | Tag[]; title: string }) {
+  return (
+    <>
+      <h4 className='font-bold'>{title}</h4>
+      <div className='flex flex-wrap'>
+        {array.map((arr, idx) => (
+          <>
+            <Link key={idx} href={arr.url} className='text-ctp-sapphire underline'>
+              {arr.title}
+            </Link>
+            {idx < array.length - 1 ? <span className='pr-[1ch]'>{`,`}</span> : ''}
+          </>
+        ))}
       </div>
     </>
   );
