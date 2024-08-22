@@ -17,6 +17,7 @@
     "@ahiakea/eslint-config": "workspace:*",
     "@ahiakea/tailwindcss-config": "workspace:*",
     "@ahiakea/typescript-config": "workspace:*",
+    "@date-fns/utc": "^1.2.0",
     "@libsql/client": "^0.6.2",
     "@mdx-js/loader": "^3.0.1",
     "@mdx-js/react": "^3.0.1",
