@@ -20,56 +20,58 @@ export default function InfoBox({
   const [isActiveTab, setIsActiveTab] = useState('info');
 
   return (
-    <div className='sidebar-box relative flex flex-col gap-6'>
-      {isActiveTab === 'info' && (
-        <>
-          <div className='prose-protocol-omega px-6 pt-[4.15rem] font-mono prose-p:my-0'>
-            <Markdown options={{ forceBlock: true }}>{blogInfo}</Markdown>
-          </div>
-          <div className='px-6 pb-6'>
-            <SocialIconNav2 boxItems={socialItems} />
-          </div>
-        </>
-      )}
+    <div className='md:sticky md:top-16'>
+      <div className='sidebar-box relative flex flex-col gap-6'>
+        {isActiveTab === 'info' && (
+          <>
+            <div className='prose-protocol-omega px-6 pt-[4.15rem] font-mono prose-p:my-0'>
+              <Markdown options={{ forceBlock: true }}>{blogInfo}</Markdown>
+            </div>
+            <div className='px-6 pb-6'>
+              <SocialIconNav2 boxItems={socialItems} />
+            </div>
+          </>
+        )}
 
-      {isActiveTab === 'meta' && (
-        <div className='flex flex-col gap-2 px-6 pb-6 pt-[4.15rem] font-mono'>
-          <div>
-            <EzRoller title='Categories' array={categories} />
+        {isActiveTab === 'meta' && (
+          <div className='flex flex-col gap-2 px-6 pb-6 pt-[4.15rem] font-mono'>
+            <div>
+              <EzRoller title='Categories' array={categories} />
+            </div>
+            <div>
+              <EzRoller title='Tags' array={tags} />
+            </div>
           </div>
-          <div>
-            <EzRoller title='Tags' array={tags} />
+        )}
+
+        <div className='absolute top-0 flex w-full flex-col gap-0 bg-ctp-surface2 dark:bg-ctp-crust'>
+          <div className='flex w-full flex-row'>
+            <div className='flex w-full px-6 pt-2'>
+              <button
+                type='button'
+                onClick={() => {
+                  setIsActiveTab('info');
+                }}
+                className={`tab-btn relative ${isActiveTab === 'info' ? 'bg-ctp-crust dark:bg-ctp-base' : ''}`}
+              >
+                <SmoothTab active={isActiveTab === 'info'} />
+                <span className='icon-[ph--info] text-xl' /> info
+              </button>
+              <button
+                type='button'
+                onClick={() => {
+                  setIsActiveTab('meta');
+                }}
+                className={`tab-btn relative ${isActiveTab === 'meta' ? 'bg-ctp-crust dark:bg-ctp-base' : ''}`}
+              >
+                <SmoothTab active={isActiveTab === 'meta'} />
+                <span className='icon-[ph--tag-light] text-xl' /> meta
+              </button>
+            </div>
           </div>
+
+          <div className='h-3 w-full rounded-t bg-ctp-crust dark:bg-ctp-base' />
         </div>
-      )}
-
-      <div className='absolute top-0 flex w-full flex-col gap-0 bg-ctp-surface2 dark:bg-ctp-crust'>
-        <div className='flex w-full flex-row'>
-          <div className='flex w-full px-6 pt-2'>
-            <button
-              type='button'
-              onClick={() => {
-                setIsActiveTab('info');
-              }}
-              className={`tab-btn relative ${isActiveTab === 'info' ? 'bg-ctp-crust dark:bg-ctp-base' : ''}`}
-            >
-              <SmoothTab active={isActiveTab === 'info'} />
-              <span className='icon-[ph--info] text-xl' /> info
-            </button>
-            <button
-              type='button'
-              onClick={() => {
-                setIsActiveTab('meta');
-              }}
-              className={`tab-btn relative ${isActiveTab === 'meta' ? 'bg-ctp-crust dark:bg-ctp-base' : ''}`}
-            >
-              <SmoothTab active={isActiveTab === 'meta'} />
-               <span className='icon-[ph--tag-light] text-xl' /> meta
-            </button>
-          </div>
-        </div>
-
-        <div className='h-3 w-full rounded-t bg-ctp-crust dark:bg-ctp-base' />
       </div>
     </div>
   );
