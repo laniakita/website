@@ -9,7 +9,6 @@ import EzRoller from './ez-roller';
 export default function InfoBox({
   categories,
   tags,
-  socialItems,
   blogInfo,
 }: {
   categories: Category[];
@@ -23,13 +22,13 @@ export default function InfoBox({
     <div className=''>
       <div className='sidebar-box relative flex flex-col gap-6'>
         {isActiveTab === 'info' && (
-          <div className='prose-protocol-omega p-6 pt-[4.15rem] prose-p:my-0'>
+          <div className='prose-protocol-omega p-6 pt-[4.5rem] prose-p:my-0'>
             <Markdown options={{ forceBlock: true }}>{blogInfo}</Markdown>
           </div>
         )}
 
         {isActiveTab === 'meta' && (
-          <div className='flex flex-col gap-2 px-6 pb-6 pt-[4.15rem]'>
+          <div className='flex flex-col gap-2 px-6 pb-6 pt-[4.5rem]'>
             <div>
               <EzRoller title='Categories' array={categories} />
             </div>
@@ -47,20 +46,18 @@ export default function InfoBox({
                 onClick={() => {
                   setIsActiveTab('info');
                 }}
-                className={`tab-btn relative ${isActiveTab === 'info' ? 'bg-ctp-crust dark:bg-ctp-base' : ''}`}
+                className={`tab-btn relative  ${isActiveTab === 'info' ? 'tab-btn-active' : ''}`}
               >
-                <SmoothTab active={isActiveTab === 'info'} />
-                <span className='icon-[ph--info] text-xl' /> info
+                <TabInner title='info' icon='icon-[ph--info]' active={isActiveTab === 'info'} />
               </button>
               <button
                 type='button'
                 onClick={() => {
                   setIsActiveTab('meta');
                 }}
-                className={`tab-btn relative ${isActiveTab === 'meta' ? 'bg-ctp-crust dark:bg-ctp-base' : ''}`}
+                className={`tab-btn relative ${isActiveTab === 'meta' ? 'tab-btn-active' : ''}`}
               >
-                <SmoothTab active={isActiveTab === 'meta'} />
-                <span className='icon-[ph--tag-light] text-xl' /> meta
+                <TabInner title='meta' icon='icon-[ph--tag]' active={isActiveTab === 'meta'} />
               </button>
             </div>
           </div>
@@ -69,6 +66,18 @@ export default function InfoBox({
         </div>
       </div>
     </div>
+  );
+}
+
+function TabInner({ active, title, icon }: { active: boolean, title: string; icon: string }) {
+  return (
+    <>
+      <span className={active ? 'hidden' : 'tab-btn-hover'} />
+      <SmoothTab active={active} />
+      <p className='tab-btn-text'>
+        <span className={`${icon} text-xl`} /> {title}
+      </p>
+    </>
   );
 }
 
