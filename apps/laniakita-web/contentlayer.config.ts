@@ -21,7 +21,7 @@ const Tag = defineDocumentType(() => ({
   computedFields: {
     url: {
       type: 'string',
-      resolve: (tag) => tag._raw.flattenedPath,
+      resolve: (tag) => `/${tag._raw.flattenedPath}`,
     },
   },
 }));
@@ -39,7 +39,7 @@ const Category = defineDocumentType(() => ({
   computedFields: {
     url: {
       type: 'string',
-      resolve: (category) => category._raw.flattenedPath,
+      resolve: (category) => `/${category._raw.flattenedPath}`,
     },
   },
 }));
@@ -75,7 +75,7 @@ export const Post = defineDocumentType(() => ({
   computedFields: {
     url: {
       type: 'string',
-      resolve: (post) => `blog2/${post.id.split('-').shift()}/${post._raw.flattenedPath.split('/').pop()}`,
+      resolve: (post) => `/blog2/${post.id.split('-').shift()}/${post._raw.flattenedPath.split('/').pop()}`,
     },
     featured_image: {
       type: 'json',
