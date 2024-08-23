@@ -40,6 +40,22 @@ const checkDuplicate = async (imgPathOne: string, imgPathTwo: string) => {
   return isDupe;
 };
 
+interface Debug {
+  destination: string;
+  status: {
+    exists: boolean;
+existsInPublic: boolean;
+  };
+  didCopy: string;
+  reason: string;
+}
+
+interface ImageMoverRes {
+  url: string;
+  local: string;
+  _meta: null | Debug;
+}
+
 const imageMover = async ({
   contentDir,
   prefix,
@@ -50,10 +66,10 @@ const imageMover = async ({
   prefix: string;
   imgPath: string;
   debug?: boolean;
-}) => {
+}): Promise<ImageMoverRes> => {
   if (debug) {
-    console.log('image:', imgPath);
-    console.log('url:', prefix);
+    console.debug('image:', imgPath);
+    console.debug('url:', prefix);
   }
   /*
    * we essentially need to work backwards from
@@ -69,8 +85,8 @@ const imageMover = async ({
   const publicPath = path.resolve(path.join('./public', postParent, imgPath));
 
   if (debug) {
-    console.log('rawPath:', rawPath);
-    console.log('publicPath:', publicPath);
+    console.debug('rawPath:', rawPath);
+    console.debug('publicPath:', publicPath);
   }
 
   const statusOne = checkImgExists(rawPath);
@@ -90,7 +106,7 @@ const imageMover = async ({
       mkdirSync(path.dirname(to), { recursive: true });
       copyFileSync(from, to);
       copied = 1;
-      console.log('copied successfully to:', to);
+      console.debug('copied successfully to:', to);
     } catch (err) {
       console.error(err);
     }
@@ -124,7 +140,13 @@ const imageMover = async ({
   return result;
 };
 
-const imageBlurBase64 = async (imgPath: string) => {
+interface BlurRes {
+  base64?: string | undefined;
+  height?: number | undefined;
+  width?: number | undefined;
+}
+
+const imageBlurBase64 = async (imgPath: string): Promise<BlurRes> => {
   const imgFile = await readFile(imgPath);
   const {
     base64,
@@ -132,6 +154,11 @@ const imageBlurBase64 = async (imgPath: string) => {
   } = await getPlaiceholder(imgFile);
   return { base64, height, width };
 };
+
+export interface FeaturedImage extends BlurRes {
+  src?: string | undefined;
+  _debug?: null | Debug;
+}
 
 export const imageProcessor = async ({
   contentDir,
@@ -143,11 +170,11 @@ export const imageProcessor = async ({
   prefix: string;
   imgPath: string;
   debug?: boolean;
-}) => {
+}): Promise<FeaturedImage | undefined> => {
   try {
     const imgCopyRes = await imageMover({ contentDir, prefix, imgPath, debug });
     const blurRes = await imageBlurBase64(imgCopyRes.local);
-    return { src: `/${imgCopyRes.url}`, ...blurRes, _debug: debug ? imgCopyRes._meta : false };
+    return { src: `/${imgCopyRes.url}`, ...blurRes, _debug: debug ? imgCopyRes._meta : null };
   } catch (err) {
     console.error(err);
   }

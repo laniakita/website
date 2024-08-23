@@ -3,8 +3,8 @@ import remarkGfm from 'remark-gfm';
 import rehypeSlug from 'rehype-slug';
 import rehypeShiki from '@shikijs/rehype';
 import { rendererRich, transformerTwoslash } from '@shikijs/twoslash';
-import { imageProcessor } from './src/lib/image-process';
 import rehypeMdxImportMedia from 'rehype-mdx-import-media';
+import { type FeaturedImage, imageProcessor } from './src/lib/image-process';
 
 const CONTENT_DIR = 'content2';
 
@@ -44,6 +44,11 @@ const Category = defineDocumentType(() => ({
   },
 }));
 
+interface ImageR1 extends FeaturedImage {
+  altText: string | undefined;
+  caption: string | undefined;
+}
+
 export const Post = defineDocumentType(() => ({
   name: 'Post',
   filePathPattern: `posts/**/*.mdx`,
@@ -70,19 +75,18 @@ export const Post = defineDocumentType(() => ({
   computedFields: {
     url: {
       type: 'string',
-      resolve: (post) => `blog2/${post.id?.split('-').shift()}/${post._raw.flattenedPath.split('/').pop()}`,
+      resolve: (post) => `blog2/${post.id.split('-').shift()}/${post._raw.flattenedPath.split('/').pop()}`,
     },
     featured_image: {
       type: 'json',
-      resolve: async (post) => {
-        if (!post.imageSrc) return;
-        const data = await imageProcessor({
+      resolve: async (post): Promise<ImageR1 | undefined> => {
+        const data = post.imageSrc && await imageProcessor({
           contentDir: CONTENT_DIR,
           prefix: `content2/${post._raw.flattenedPath}`,
           imgPath: post.imageSrc,
           debug: false,
-        });
-        return { ...data, altText: post.altText, caption: post.caption };
+        }) as unknown as FeaturedImage | undefined;
+        return { ...data, altText: post.altText ?? undefined, caption: post.caption ?? undefined };
       },
     },
   },
@@ -115,7 +119,7 @@ export default makeSource({
       rehypeSlug,
     ],
     resolveCwd: 'relative',
-    esbuildOptions(options, frontmatter) {
+    esbuildOptions(options) {
       options.outdir = `${process.cwd()}/public/assets/images/blog`;
       options.loader = {
         ...options.loader,
