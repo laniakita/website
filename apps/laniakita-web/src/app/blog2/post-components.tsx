@@ -14,19 +14,19 @@ export default function PostRollerV4({ posts }: { posts: Post[] }) {
     <div className='flex items-center justify-center'>
       <div className='flex w-full max-w-3xl flex-col gap-2 md:gap-6'>
         {posts.map((post, idx) => (
-          <PostPreviewV4 key={`blog-post-${uniqueKey}-${Math.floor(Math.random() * 1000)}`} {...post} />
+          <PostPreviewV4 key={`blog-post-${uniqueKey}-${Math.floor(Math.random() * 1000 + idx)}`} {...post} />
         ))}
       </div>
     </div>
   );
 }
 
-async function PostPreviewV4(post: Post) {
+function PostPreviewV4(post: Post) {
   const descriptionStr = descriptionHelper(post.body.raw, post.url)!;
+  const hasImage = post.featured_image?.src !== null;
 
   return (
     <div className='flex basis-full flex-col overflow-hidden rounded-md border border-ctp-surface0 dark:border-ctp-base'>
-      {post.featured_image.src !== null || post.featured_image.src !== undefined ? (
         <Link href={post.url}>
           <Image
             loader={
@@ -43,9 +43,6 @@ async function PostPreviewV4(post: Post) {
             className='object-contain'
           />
         </Link>
-      ) : (
-        ''
-      )}
       <div className='flex flex-col gap-4 p-8 lg:p-10'>
         <div className=''>
           <div className='flex flex-wrap gap-[1ch] pb-2'>
