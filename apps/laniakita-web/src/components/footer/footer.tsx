@@ -68,7 +68,7 @@ export default function Footer({ extra }: { extra?: string }) {
             <div className='w-full space-y-8 p-10 md:w-fit md:rounded-md md:border md:border-ctp-surface0 dark:md:border-ctp-base'>
               {/* logo + search + social_buttons + +copyright + links */}
               <div className='flex flex-col items-center justify-center gap-8'>
-                <div className='size-full max-w-52 small-phone:max-w-xs'>
+                <div className='size-full max-w-52 narrow-phone:max-w-xs small-phone:max-w-sm phablet:px-0 beeg-phablet:px-2 fold:px-6 md:max-w-md md:px-0'>
                   <SocialIconNav2 boxItems={socialItems2} />
                 </div>
                 <FooterNavLinks />

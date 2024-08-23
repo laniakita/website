@@ -15,8 +15,10 @@ const config: Config = {
         'narrow-phone': '300px',
         'small-phone': '350px',
         phone: '385px',
-        phablet: '400px',
+        phablet: '412px',
+        'beeg-phablet': '430px',
         fold: '500px',
+        'not-tablet': '600px',
       },
       colors: {
         'ctp-midnight': '#07070D',
