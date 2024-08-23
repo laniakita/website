@@ -18,10 +18,10 @@ export default function PostRollerV4({ posts }: { posts: Post[] }) {
         {isBlog
           ? posts.map((post, idx) =>
               idx === 1 ? (
-                <>
-                  <SubscribeBox key={`subscribe-${uniqueKey}`} mobile />{' '}
-                  <PostPreviewV4 key={`blog-post-${uniqueKey}-${Math.floor(Math.random() * 1000 + idx)}`} {...post} />
-                </>
+                <div key={`subscribe-blog-post-${uniqueKey}-${Math.floor(Math.random() * 1000 + idx)}`} className='flex flex-col gap-4 md:gap-6'>
+                  <SubscribeBox mobile />
+                  <PostPreviewV4 {...post} />
+                </div>
               ) : (
                 <PostPreviewV4 key={`blog-post-${uniqueKey}-${Math.floor(Math.random() * 1000 + idx)}`} {...post} />
               ),
