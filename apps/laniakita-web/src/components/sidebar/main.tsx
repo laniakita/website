@@ -1,7 +1,7 @@
 import { allCategories, allTags } from 'contentlayer/generated';
 import InfoBox from './info-box';
 
-const socialItems = [
+export const socialItems2 = [
   {
     title: 'Github',
     url: 'https://github.com/laniakita',
@@ -54,7 +54,7 @@ export default function Sidebar() {
 
   return (
     <div className='flex flex-col gap-2 md:gap-6'>
-      <InfoBox categories={categories} tags={tags} socialItems={socialItems} blogInfo={blogInfo} />
+      <InfoBox categories={categories} tags={tags} socialItems={socialItems2} blogInfo={blogInfo} />
     </div>
   );
 }

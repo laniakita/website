@@ -6,6 +6,7 @@ import * as lightlogo from '@/app/laniakita-logo-transparent-lightmode.svg';
 import { useDarkStore } from '@/providers/theme-store-provider';
 import DarkModeSwitch from './dark-mode-switch';
 import LinkPlus from './link-plus';
+import Link from 'next/link';
 
 interface Clicked {
   stateVal: string;
@@ -88,50 +89,71 @@ export default function NavBar() {
       </Suspense>
 
       <div
-        className={`motion-safe:simple-color-trans fixed bottom-0 left-0 z-50 flex h-16 w-full items-center justify-between border-t border-ctp-surface0 px-4 text-xl shadow-lg backdrop-blur-md [transition:_opacity_0.8s] lg:top-0 lg:h-12 lg:border-b lg:border-t-0 ${clicked.stateVal === 'open' ? 'bg-ctp-base dark:bg-ctp-midnight' : ' bg-ctp-base/80 dark:bg-ctp-midnight/70'}`}
+        className={`motion-safe:simple-color-trans fixed inset-x-0 top-0 z-50 flex h-16 w-full items-center justify-between border-t border-ctp-surface0 px-4 text-xl shadow-lg backdrop-blur-md [transition:_opacity_0.8s] lg:border-b lg:border-t-0 ${clicked.stateVal === 'open' ? 'bg-ctp-base dark:bg-ctp-midnight' : ' bg-ctp-base/80 dark:bg-ctp-midnight/70'}`}
       >
-        <LinkPlus href='/' className='nav-logo relative flex size-full w-16 items-center justify-center'>
-          <Image
-            src={logo}
-            alt="Logo of Lani's Initial. Click to go home."
-            className='absolute mb-px h-11 object-contain lg:h-8'
-          />
-        </LinkPlus>
+        <div className='flex flex-row-reverse lg:flex-row items-center justify-center gap-4'>
+          <LinkPlus href='/' className='nav-logo relative flex size-full w-16 items-center justify-center'>
+            <Image
+              src={logo}
+              alt="Logo of Lani's Initial. Click to go home."
+              className='absolute mb-px h-11 object-contain'
+            />
+          </LinkPlus>
+          <div className={`hidden lg:flex  lg:flex-row  lg:items-center lg:justify-center lg:gap-4 `}>
+            {pagesArr.map((page) => (
+              <LinkPlus
+                key={page}
+                href={handleRef(page)}
+                className='nav-item'
+                target={page === 'RSS/Atom' ? '_blank' : undefined}
+              >
+                {page === 'RSS/Atom' ? page : page.toLowerCase()}
+              </LinkPlus>
+            ))}
+          </div>
 
-        <div className='visible flex flex-row-reverse items-center gap-2 lg:hidden'>
-          <button
-            type='button'
-            onClick={() => {
-              clicked.stateVal === 'closed' && setClicked({ ...clicked, stateVal: 'open' });
-            }}
-            className='visible rounded-md lg:hidden'
-            aria-label={`${clicked.stateVal === 'open' ? 'close' : 'open'} mobile navigation menu.`}
-          >
-            <span className='flex h-10 w-12 flex-col items-center justify-center gap-1.5'>
-              <span
-                className={`${clicked.stateVal === 'open' ? 'translate-y-2 rotate-[-40deg] ' : ''} h-0.5 w-8  bg-ctp-text motion-safe:[transition:transform_0.3s]`}
-              />
-              <span
-                className={`${clicked.stateVal === 'open' ? 'opacity-0' : ''} h-0.5 w-8 bg-ctp-text motion-safe:[transition:opacity_0.3s]`}
-              />
-              <span
-                className={`${clicked.stateVal === 'open' ? '-translate-y-2 rotate-[40deg]' : ''} h-0.5 w-8 bg-ctp-text motion-safe:[transition:transform_0.3s]`}
-              />
-            </span>
-          </button>
-        </div>
-        <div className={`hidden lg:flex  lg:flex-row  lg:items-center lg:justify-center lg:gap-4 `}>
-          {pagesArr.map((page) => (
-            <LinkPlus
-              key={page}
-              href={handleRef(page)}
-              className='nav-item'
-              target={page === 'RSS/Atom' ? '_blank' : undefined}
+          <div className='visible flex flex-row-reverse items-center gap-2 lg:hidden'>
+            <button
+              type='button'
+              onClick={() => {
+                clicked.stateVal === 'closed' && setClicked({ ...clicked, stateVal: 'open' });
+              }}
+              className='visible rounded-md lg:hidden'
+              aria-label={`${clicked.stateVal === 'open' ? 'close' : 'open'} mobile navigation menu.`}
             >
-              {page === 'RSS/Atom' ? page : page.toLowerCase()}
-            </LinkPlus>
-          ))}
+              <span className='flex h-10 w-12 flex-col items-center justify-center gap-1.5'>
+                <span
+                  className={`${clicked.stateVal === 'open' ? 'translate-y-2 rotate-[-40deg] ' : ''} h-0.5 w-8  bg-ctp-text motion-safe:[transition:transform_0.3s]`}
+                />
+                <span
+                  className={`${clicked.stateVal === 'open' ? 'opacity-0' : ''} h-0.5 w-8 bg-ctp-text motion-safe:[transition:opacity_0.3s]`}
+                />
+                <span
+                  className={`${clicked.stateVal === 'open' ? '-translate-y-2 rotate-[40deg]' : ''} h-0.5 w-8 bg-ctp-text motion-safe:[transition:transform_0.3s]`}
+                />
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <div className={`flex  flex-row  items-center justify-center gap-4 `}>
           <DarkModeSwitch />
+          <p className=''>
+            <Link
+              href='https://hachyderm.io/@lani'
+              className='flex items-center justify-center text-3xl text-ctp-subtext1'
+            >
+              <span className='icon-[fa6-brands--mastodon]' />
+            </Link>
+          </p>
+          <p className=''>
+            <Link
+              href='https://github.com/laniakita'
+              className='flex items-center justify-center text-3xl text-ctp-subtext1'
+            >
+              <span className='icon-[ant-design--github-filled]' />
+            </Link>
+          </p>
         </div>
       </div>
     </nav>

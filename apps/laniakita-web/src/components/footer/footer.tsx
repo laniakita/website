@@ -3,6 +3,8 @@ import SocialIconNav from '@/components/social-icon';
 import CircleMovie from './circle-movie';
 import { FooterBox, FooterBoxSpecial } from './footer-box';
 import data from './common-data.json';
+import { SocialIconNav2 } from '../sidebar/social-icon-nav-client';
+import { socialItems2 } from '../sidebar/main';
 
 export const socialItems = [
   {
@@ -66,8 +68,8 @@ export default function Footer({ extra }: { extra?: string }) {
             <div className='w-full space-y-8 p-10 md:w-fit md:rounded-md md:border md:border-ctp-surface0 dark:md:border-ctp-base'>
               {/* logo + search + social_buttons + +copyright + links */}
               <div className='flex flex-col items-center justify-center gap-8'>
-                <div className='size-full'>
-                  <SocialIconNav boxItems={socialItems} hxw='h-16 min-w-16 max-w-16 w-full basis-1/5' />
+                <div className='size-full max-w-xs'>
+                  <SocialIconNav2 boxItems={socialItems2} />
                 </div>
                 <FooterNavLinks />
                 <CopyrightTag />
