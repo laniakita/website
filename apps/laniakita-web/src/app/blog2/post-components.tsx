@@ -89,7 +89,7 @@ const descriptionHelper = (rawStr: string, postSlug?: string) => {
 
   const endInjection = foundDescr[foundDescr.length - 1]
     ?.split('.')
-    .toSpliced(-1, 1, `... [\`READ_MORE =>\`](/${postSlug ?? 'blog'})`)
+    .toSpliced(-1, 1, `... [\`READ_MORE =>\`](${postSlug ?? 'blog'})`)
     .join('');
 
   foundDescr.splice(-1, 1, endInjection!).join(' ');

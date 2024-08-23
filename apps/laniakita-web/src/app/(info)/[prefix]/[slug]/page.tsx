@@ -1,35 +1,48 @@
 import { notFound } from 'next/navigation';
 import { useMDXComponent } from 'next-contentlayer2/hooks';
-import { allCategories, allPosts } from 'contentlayer/generated';
+import { allCategories, allTags, allPosts, type Post, type Tag, type Category } from 'contentlayer/generated';
 import PostRollerV4 from '@/app/blog2/post-components';
 
-export default function CategoryPage({ params }: { params: { prefix: string; slug: string } }) {
+export default function CatTagPage({ params }: { params: { prefix: string; slug: string } }) {
+  if (params.prefix === 'tags') {
+    const tag = allTags.find((tagX) => tagX.url.split('/').pop() === params.slug);
+    const matchingPosts = allPosts.filter((postX) =>
+      postX.tags?.some((tagXP) => (tagXP as unknown as { slug: string }).slug === params.slug),
+    );
 
+    if (!tag) return notFound();
 
-  const category = allCategories.find((catX) => catX.url.split('/').pop() === params.slug);
-  const matchingPosts = allPosts.filter((postX) =>
-    postX.categories?.some((cat) => (cat as unknown as { slug: string }).slug === params.slug),
-  );
-
-  if (!category) {
-    return notFound();
+    return <MiniLayout data={tag} posts={matchingPosts} />
   }
 
+  if (params.prefix === 'categories') {
+    const category = allCategories.find((catX) => catX.url.split('/').pop() === params.slug);
+    const matchingPosts = allPosts.filter((postX) =>
+      postX.categories?.some((cat) => (cat as unknown as { slug: string }).slug === params.slug),
+    );
+
+    if (!category) return notFound();
+
+    return <MiniLayout data={category} posts={matchingPosts} />
+  }
+}
+
+function MiniLayout({ data, posts }: { data: Category | Tag; posts: Post[] }) {
   return (
-    <div className='simple-color-trans relative z-[5] -mb-1 flex flex-col gap-2 bg-ctp-base p-2 pt-20 md:pt-20 md:p-6 dark:bg-ctp-midnight md:gap-4'>
+    <div className='simple-color-trans common-padding relative z-[5] -mb-1 flex flex-col gap-2 bg-ctp-base dark:bg-ctp-midnight md:gap-4'>
       <div className='flex items-center justify-center'>
         <div className='flex w-full max-w-3xl flex-col gap-2 rounded-md border border-ctp-surface0 p-6 dark:border-ctp-base'>
           <div className=''>
-            <h1 className='text-4xl font-black md:text-5xl'>{category.title}</h1>
+            <h1 className='text-4xl font-black md:text-5xl'>{data.title}</h1>
           </div>
-          <div className='h-px w-full rounded bg-ctp-base' />
+          <div className='h-px w-full rounded bg-ctp-surface0 dark:bg-ctp-base' />
           <div className='prose-protocol-omega w-full max-w-sm prose-p:my-0'>
-            <MDXComponent content={category.body.code} />
+            <MDXComponent content={data.body.code} />
           </div>
         </div>
       </div>
-      {matchingPosts.length >= 1 ? (
-        <PostRollerV4 posts={matchingPosts} />
+      {posts.length >= 1 ? (
+        <PostRollerV4 posts={posts} />
       ) : (
         <div>
           <p>Oops no categorys founds. Hmm, somethings wrong here.</p>
