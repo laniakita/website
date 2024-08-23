@@ -20,16 +20,16 @@ export default function InfoBox({
   const [isActiveTab, setIsActiveTab] = useState('info');
 
   return (
-    <div className='md:sticky md:top-20'>
+    <div className=''>
       <div className='sidebar-box relative flex flex-col gap-6'>
         {isActiveTab === 'info' && (
-          <div className='prose-protocol-omega p-6 pt-[4.15rem] font-mono prose-p:my-0'>
+          <div className='prose-protocol-omega p-6 pt-[4.15rem] prose-p:my-0'>
             <Markdown options={{ forceBlock: true }}>{blogInfo}</Markdown>
           </div>
         )}
 
         {isActiveTab === 'meta' && (
-          <div className='flex flex-col gap-2 px-6 pb-6 pt-[4.15rem] font-mono'>
+          <div className='flex flex-col gap-2 px-6 pb-6 pt-[4.15rem]'>
             <div>
               <EzRoller title='Categories' array={categories} />
             </div>
@@ -39,7 +39,7 @@ export default function InfoBox({
           </div>
         )}
 
-        <div className='absolute top-0 flex w-full flex-col gap-0 bg-ctp-surface2 dark:bg-ctp-crust'>
+        <div className='absolute top-0 flex w-full flex-col gap-0 rounded-t-md bg-ctp-surface2 dark:bg-ctp-crust'>
           <div className='flex w-full flex-row'>
             <div className='flex w-full px-6 pt-2'>
               <button
