@@ -1,44 +1,19 @@
 {
-  "extends": [
-    "//"
-  ],
-  "globalEnv": [
-    ".env"
-  ],
+  "extends": ["//"],
+  "globalEnv": [".env"],
   "tasks": {
     "analyze": {
-      "env": [
-        "ANALYZE"
-      ]
+      "env": ["ANALYZE"]
     },
+    "pretty": {},
     "test": {},
     "build": {
-      "env": [
-        "TURSO_CONNECTION_URL",
-        "TURSO_AUTH_TOKEN"
-      ],
-      "outputs": [
-        ".next/**",
-        "!.next/cache/**",
-        "public/dist/**",
-        "public/sw.js"
-      ],
-      "inputs": [
-        "$TURBO_DEFAULT$",
-        ".env.production.local",
-        ".env.production",
-        ".env.local",
-        ".env"
-      ]
+      "env": ["TURSO_DATABASE_URL", "TURSO_AUTH_TOKEN"],
+      "outputs": [".next/**", "!.next/cache/**", "public/dist/**", "public/sw.js"],
+      "inputs": ["$TURBO_DEFAULT$", ".env.production.local", ".env.production", ".env.local", ".env"]
     },
     "dev": {
-      "inputs": [
-        "$TURBO_DEFAULT$",
-        ".env.development.local",
-        ".env.development",
-        ".env.local",
-        ".env"
-      ]
+      "inputs": ["$TURBO_DEFAULT$", ".env.development.local", ".env.development", ".env.local", ".env"]
     },
     "start": {}
   }

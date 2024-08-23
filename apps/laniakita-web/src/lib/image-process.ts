@@ -5,10 +5,11 @@ import { getPlaiceholder } from 'plaiceholder';
 
 /**
  * A typeguarded version of `instanceof Error` for NodeJS.
- * @author Joseph JDBar Barron
- * @link https://dev.to/jdbar
+ * author: Joseph JDBar Barron
+ * {@link https://dev.to/jdbar}
  */
-export function instanceOfNodeError<T extends new (...args: any) => Error>(
+
+export function instanceOfNodeError<T extends new (...args: unknown[]) => Error>(
   value: Error,
   errorType: T,
 ): value is InstanceType<T> & NodeJS.ErrnoException {
@@ -44,7 +45,7 @@ interface Debug {
   destination: string;
   status: {
     exists: boolean;
-existsInPublic: boolean;
+    existsInPublic: boolean;
   };
   didCopy: string;
   reason: string;

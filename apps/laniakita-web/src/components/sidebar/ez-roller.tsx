@@ -4,7 +4,7 @@ import Link from 'next/link';
 import type { Category, Tag } from 'contentlayer/generated';
 
 export default function EzRoller({ array, title }: { array: Category[] | Tag[]; title: string }) {
-  const uniqueKey = useId()
+  const uniqueKey = useId();
   return (
     <>
       <h4 className='font-bold'>{title}</h4>

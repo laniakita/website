@@ -52,7 +52,7 @@ const laniConfig = {
 
 const dbGen = async (): Promise<void> => {
   try {
-    console.log('trying to create db')
+    console.log('trying to create db');
     await batchPushMain(laniConfig);
     console.log('db-gen successful');
   } catch (err) {

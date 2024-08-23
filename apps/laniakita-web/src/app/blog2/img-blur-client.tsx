@@ -1,13 +1,12 @@
 'use client';
 import { useState } from 'react';
 import Image from 'next/image';
-import { imageLoader } from '@/utils/image-loader';
+//import { imageLoader } from '@/utils/image-loader';
 import localLoader from '@/lib/local-loader';
 import { type BlurClientProps } from './img-blur-server';
 
 export default function BlogImageBlur({ src, alt, blur, height, width }: BlurClientProps) {
   const [beeg, setBeeg] = useState(false);
-
   return (
     <>
       {(beeg as unknown) === true && (
