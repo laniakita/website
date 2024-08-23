@@ -1,28 +1,14 @@
 import Markdown from 'markdown-to-jsx';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useId } from 'react';
 import type { ImageR1 } from 'contentlayer.config';
 import localLoader from '@/lib/local-loader';
 import { type Post } from 'contentlayer/generated';
 import LocalDate from './local-date';
 import { CatTagRoller } from './cat-tag-roller';
 
-export default function PostRollerV4({ posts }: { posts: Post[] }) {
-  const uniqueKey = useId();
 
-  return (
-    <div className='flex items-center justify-center'>
-      <div className='flex w-full max-w-3xl flex-col gap-2 md:gap-6'>
-        {posts.map((post, idx) => (
-          <PostPreviewV4 key={`blog-post-${uniqueKey}-${Math.floor(Math.random() * 1000 + idx)}`} {...post} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function PostPreviewV4(post: Post) {
+export default function PostPreviewV4(post: Post) {
   const descriptionStr = descriptionHelper(post.body.raw, post.url)!;
   const res = post.featured_image as ImageR1;
   const hasImage = res.src !== undefined && true;

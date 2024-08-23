@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import { useMDXComponent } from 'next-contentlayer2/hooks';
 import { compareDesc } from 'date-fns';
 import { allCategories, allTags, allPosts, type Post, type Tag, type Category } from 'contentlayer/generated';
-import PostRollerV4 from '@/app/blog2/post-components';
+import PostRollerV4 from '@/app/blog2/post-roller-v4';
 
 export default function CatTagPage({ params }: { params: { prefix: string; slug: string } }) {
   if (params.prefix === 'tags') {
