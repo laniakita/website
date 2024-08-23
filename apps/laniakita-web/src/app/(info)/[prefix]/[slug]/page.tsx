@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import { useMDXComponent } from 'next-contentlayer2/hooks';
+import { compareDesc } from 'date-fns';
 import { allCategories, allTags, allPosts, type Post, type Tag, type Category } from 'contentlayer/generated';
 import PostRollerV4 from '@/app/blog2/post-components';
 
@@ -8,7 +9,7 @@ export default function CatTagPage({ params }: { params: { prefix: string; slug:
     const tag = allTags.find((tagX) => tagX.url.split('/').pop() === params.slug);
     const matchingPosts = allPosts.filter((postX) =>
       postX.tags?.some((tagXP) => (tagXP as unknown as { slug: string }).slug === params.slug),
-    );
+    ).sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
 
     if (!tag) return notFound();
 
@@ -19,7 +20,7 @@ export default function CatTagPage({ params }: { params: { prefix: string; slug:
     const category = allCategories.find((catX) => catX.url.split('/').pop() === params.slug);
     const matchingPosts = allPosts.filter((postX) =>
       postX.categories?.some((cat) => (cat as unknown as { slug: string }).slug === params.slug),
-    );
+    ).sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
 
     if (!category) return notFound();
 
