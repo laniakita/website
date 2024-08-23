@@ -70,7 +70,7 @@ export default function DarkModeSwitch() {
         aria-checked={Boolean(dark)}
         aria-label={dark ? 'Toggle Light theme' : 'Toggle Dark theme'}
         onClick={handleClick}
-        className='relative h-[1.6rem] w-[2.8rem] rounded-[1em] border border-stone-600/60 bg-stone-400/60 shadow-inner before:bg-stone-100/90 before:shadow-md aria-checked:border-stone-400/60 aria-checked:bg-stone-900/40 aria-checked:shadow-inner aria-checked:before:bg-stone-400/50 aria-checked:before:shadow-sm'
+        className='relative h-8 w-12 rounded-[1em] border border-ctp-text/60 bg-ctp-overlay2/60 shadow-inner before:bg-ctp-base/90 before:shadow-md aria-checked:border-ctp-surface2/60 aria-checked:bg-ctp-surface0/40 aria-checked:shadow-inner aria-checked:before:bg-ctp-subtext1 aria-checked:before:shadow-sm'
       />
     </div>
   );
