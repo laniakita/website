@@ -98,12 +98,14 @@ export default function Sidebar() {
 export function SubscribeBox({ mobile }: { mobile?: boolean }) {
   return (
     <div className={`sidebar-box  ${mobile ? 'flex md:hidden' : 'hidden md:flex'}  flex-col gap-4 p-6`}>
-      <h4 className='flex-wrap text-balance text-3xl font-black'>
-        Articles delivered right to your feed reader.
-      </h4>
+      <h4 className='flex-wrap text-balance text-3xl font-black'>Articles delivered right to your feed reader.</h4>
       <Link href='/feed.xml' className='font-mono font-bold text-ctp-base hover:text-ctp-base hover:no-underline'>
-        <p className='color-trans-quick w-full rounded bg-ctp-mauve px-4 py-2 text-center hover:bg-ctp-pink'>
-          subscribe
+        <p className='color-trans-quick flex w-full flex-row items-center justify-center gap-[1ch] rounded bg-ctp-mauve px-4 py-2 hover:bg-ctp-pink'>
+          <span>subscribe</span>
+          <span>|</span>
+          <span className='flex flex-row items-center'>
+            <span className='icon-[ph--atom] text-2xl' /> <span className='icon-[ph--rss] text-2xl' />
+          </span>
         </p>
       </Link>
     </div>
