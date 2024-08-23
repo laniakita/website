@@ -20,7 +20,7 @@ export default function InfoBox({
   const [isActiveTab, setIsActiveTab] = useState('info');
 
   return (
-    <div className='md:sticky md:top-16'>
+    <div className='md:sticky md:top-6 lg:top-16'>
       <div className='sidebar-box relative flex flex-col gap-6'>
         {isActiveTab === 'info' && (
           <>
