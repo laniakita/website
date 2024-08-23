@@ -17,31 +17,73 @@ export default function InfoBox({
   socialItems: SocialNavIcon[];
   blogInfo: string;
 }) {
+  const [isActiveTab, setIsActiveTab] = useState('info');
+
   return (
-    <>
-      <div className='sidebar-box relative flex flex-col gap-6'>
-        <div className='prose-protocol-omega px-6 pt-6 font-mono prose-p:my-0'>
-          <Markdown options={{ forceBlock: true }}>{blogInfo}</Markdown>
-        </div>
-        <div className='px-6 pb-12'>
-          <SocialIconNav2 boxItems={socialItems} />
-        </div>
-        <div className='absolute bottom-0 flex w-full flex-row bg-ctp-base'>
-          <div className='flex w-full px-2 pb-2'>
-            <button className='basis-full rounded-b-md bg-ctp-mauve text-center'>Info</button>
-            <button className='basis-full text-center active:bg-ctp-mauve'>Meta</button>
+    <div className='sidebar-box relative flex flex-col gap-6'>
+      {isActiveTab === 'info' && (
+        <>
+          <div className='prose-protocol-omega px-6 pt-[4.15rem] font-mono prose-p:my-0'>
+            <Markdown options={{ forceBlock: true }}>{blogInfo}</Markdown>
+          </div>
+          <div className='px-6 pb-6'>
+            <SocialIconNav2 boxItems={socialItems} />
+          </div>
+        </>
+      )}
+
+      {isActiveTab === 'meta' && (
+        <div className='flex flex-col gap-2 px-6 pb-6 pt-[4.15rem] font-mono'>
+          <div>
+            <EzRoller title='Categories' array={categories} />
+          </div>
+          <div>
+            <EzRoller title='Tags' array={tags} />
           </div>
         </div>
-      </div>
+      )}
 
-      <div className='sidebar-box flex flex-col gap-2 font-mono'>
-        <div>
-          <EzRoller title='Categories' array={categories} />
+      <div className='absolute top-0 flex w-full flex-col gap-0 bg-ctp-surface2 dark:bg-ctp-crust'>
+        <div className='flex w-full flex-row'>
+          <div className='flex w-full px-6 pt-2'>
+            <button
+              type='button'
+              onClick={() => {
+                setIsActiveTab('info');
+              }}
+              className={`tab-btn relative ${isActiveTab === 'info' ? 'bg-ctp-crust dark:bg-ctp-base' : ''}`}
+            >
+              <SmoothTab active={isActiveTab === 'info'} />
+              <span className='icon-[ph--info] text-xl' /> info
+            </button>
+            <button
+              type='button'
+              onClick={() => {
+                setIsActiveTab('meta');
+              }}
+              className={`tab-btn relative ${isActiveTab === 'meta' ? 'bg-ctp-crust dark:bg-ctp-base' : ''}`}
+            >
+              <SmoothTab active={isActiveTab === 'meta'} />
+               <span className='icon-[ph--tag-light] text-xl' /> meta
+            </button>
+          </div>
         </div>
-        <div>
-          <EzRoller title='Tags' array={tags} />
-        </div>
+
+        <div className='h-3 w-full rounded-t bg-ctp-crust dark:bg-ctp-base' />
       </div>
+    </div>
+  );
+}
+
+function SmoothTab({ active }: { active: boolean }) {
+  return (
+    <>
+      <span
+        className={`${active ? 'block' : 'hidden'} absolute -left-4 bottom-0 size-4 [background:radial-gradient(circle_at_25%_25%,_#acb0be,_#acb0be_72%,_#dce0e8_5%,_#dce0e8_100%)] dark:[background:radial-gradient(circle_at_25%_25%,_#11111b,_#11111b_72%,_#1e1e2e_5%,_#1e1e2e_100%)]`}
+      />
+      <span
+        className={`${active ? 'block' : 'hidden'} absolute -right-4 bottom-0 size-4 [background:radial-gradient(circle_at_75%_25%,_#acb0be,_#acb0be_72%,_#dce0e8_5%,_#dce0e8_100%)]  dark:[background:radial-gradient(circle_at_75%_25%,_#11111b,_#11111b_72%,_#1e1e2e_5%,_#1e1e2e_100%)]`}
+      />
     </>
   );
 }

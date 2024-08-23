@@ -1,5 +1,8 @@
 @layer components {
   .sidebar-box {
-    @apply max-h-fit max-w-full rounded-md border border-ctp-surface0 dark:border-ctp-base md:max-w-xs;
+    @apply rounded-md border border-ctp-surface0 dark:border-ctp-base w-full md:w-72 md:max-w-xs;
+  }
+  .tab-btn {
+    @apply basis-full rounded-t-xl text-center py-1 flex justify-center items-center gap-2
   }
 }
