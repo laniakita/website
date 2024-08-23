@@ -46,18 +46,15 @@ const socialItems = [
   },
 ];
 
-const blogInfo = `A blog about life, Linux, and web development. Written by, [Lani Akita](/about).`;
+const blogInfo = "A blog about life, Linux, and web development. Written by, [Lani Akita](/about).";
 
 export default function Sidebar() {
   const categories = allCategories.sort((a, b) => a.title!.localeCompare(b.title!));
   const tags = allTags.sort((a, b) => a.title!.localeCompare(b.title!));
 
   return (
-    <>
-      {/* wrapper */}
-      <div className='flex flex-col gap-2 md:gap-6'>
-        <InfoBox categories={categories} tags={tags} socialItems={socialItems} blogInfo={blogInfo} />
-      </div>
-    </>
+    <div className='flex flex-col gap-2 md:gap-6'>
+      <InfoBox categories={categories} tags={tags} socialItems={socialItems} blogInfo={blogInfo} />
+    </div>
   );
 }
