@@ -1,4 +1,4 @@
-import { BASE_URL } from "@/lib/constants";
+import { BASE_URL } from '@/lib/constants';
 
 // Docs: https://aws.amazon.com/developer/application-security-performance/articles/image-optimization
 // cloudfrontLoader

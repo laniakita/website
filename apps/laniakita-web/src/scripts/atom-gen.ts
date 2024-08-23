@@ -1,5 +1,4 @@
 #! /usr/bin/env bun
-/* eslint-disable no-undef -- bun is bun */
 /* eslint-disable no-console -- bun is bun */
 import { toXML } from 'jstoxml';
 import { desc } from 'drizzle-orm';

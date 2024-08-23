@@ -1,6 +1,5 @@
 @layer components {
   .sidebar-box {
-    @apply max-h-fit max-w-full rounded-md border border-ctp-surface0 dark:border-ctp-base md:max-w-xs
+    @apply max-h-fit max-w-full rounded-md border border-ctp-surface0 dark:border-ctp-base md:max-w-xs;
   }
 }
- 

@@ -29,11 +29,12 @@ module.exports = {
   ignorePatterns: [".next", "dist", "node_modules/"],
   rules: {
     "import/no-default-export": "off",
-    "no-console": ["warn", { allow: ["warn", "error"] }],
+    "no-console": ["warn", { allow: ["warn", "error", "debug"] }],
     "no-unused-vars": "warn",
     "prefer-named-capture-group": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-unused-vars": "warn",
+    "no-undef": "off",
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/restrict-template-expressions": [
       "warn",

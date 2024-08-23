@@ -4,6 +4,7 @@ public/*
 .next/*
 node_modules/*
 .open-next/*
+.contentlayer/*
 package.json
 *.log
 *.vert

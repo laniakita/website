@@ -1,5 +1,4 @@
 #! /usr/bin/env bun
-/* eslint-disable no-undef -- bun runtime will provide bun functions */
 /* eslint-disable no-console -- doesn't run in the browser, so this is fine */
 import path from 'node:path';
 import { readdir, access } from 'node:fs/promises';

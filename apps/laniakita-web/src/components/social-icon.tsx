@@ -15,12 +15,13 @@ export interface SocialNavIcon {
 }
 
 export default function SocialIconNav({ boxItems, hxw }: SocialIconNavProps) {
+  const uKey = useId();
   return (
     <div className='flex flex-wrap items-center justify-center gap-2'>
-      {boxItems.map((item) => (
+      {boxItems.map((item, idx) => (
         <Link
           rel={item.title.toLowerCase() === 'mastodon' ? 'me' : ''}
-          key={boxItems.indexOf(item)}
+          key={`social-icon-one-${uKey}-${Math.floor(Math.random() * 1000 * idx)}`}
           href={item.url}
           className={`${hxw} social-button`}
           target='_blank'
@@ -32,5 +33,3 @@ export default function SocialIconNav({ boxItems, hxw }: SocialIconNavProps) {
     </div>
   );
 }
-
-

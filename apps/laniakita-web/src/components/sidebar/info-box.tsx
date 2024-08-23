@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import Markdown from 'markdown-to-jsx';
 import { useState } from 'react';
 import { type Category, type Tag } from 'contentlayer/generated';
@@ -6,10 +6,17 @@ import { type SocialNavIcon } from '../social-icon';
 import { SocialIconNav2 } from './social-icon-nav-client';
 import EzRoller from './ez-roller';
 
-
-
-export default function InfoBox({ categories, tags, socialItems, blogInfo }: { categories: Category[]; tags: Tag[]; socialItems: SocialNavIcon[]; blogInfo: string;  }) {
-
+export default function InfoBox({
+  categories,
+  tags,
+  socialItems,
+  blogInfo,
+}: {
+  categories: Category[];
+  tags: Tag[];
+  socialItems: SocialNavIcon[];
+  blogInfo: string;
+}) {
   return (
     <>
       <div className='sidebar-box relative flex flex-col gap-6'>
@@ -29,10 +36,10 @@ export default function InfoBox({ categories, tags, socialItems, blogInfo }: { c
 
       <div className='sidebar-box flex flex-col gap-2 font-mono'>
         <div>
-          <EzRoller title="Categories" array={categories} />
+          <EzRoller title='Categories' array={categories} />
         </div>
         <div>
-          <EzRoller title="Tags" array={tags} />
+          <EzRoller title='Tags' array={tags} />
         </div>
       </div>
     </>
