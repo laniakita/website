@@ -3,6 +3,15 @@
     @apply rounded-md border border-ctp-surface0 dark:border-ctp-base w-full md:w-72 md:max-w-xs;
   }
   .tab-btn {
-    @apply basis-full rounded-t-xl text-center py-1 flex justify-center items-center gap-2
+    @apply basis-full rounded-t-xl text-center py-1 pb-2 flex justify-center items-center gap-2
+  }
+  .tab-btn-active {
+    @apply bg-ctp-crust dark:bg-ctp-base
+  }
+  .tab-btn-hover {
+    @apply color-trans-quick absolute inset-0 z-10 mx-2 mt-px mb-1.5 rounded-xl hover:bg-ctp-pink/80 dark:hover:bg-ctp-pink/60
+  }
+  .tab-btn-text {
+    @apply pointer-events-none z-20 flex flex-row items-center gap-[1ch] font-semibold text-ctp-text
   }
 }
