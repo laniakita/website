@@ -68,7 +68,7 @@ export default function Footer({ extra }: { extra?: string }) {
             <div className='w-full space-y-8 p-10 md:w-fit md:rounded-md md:border md:border-ctp-surface0 dark:md:border-ctp-base'>
               {/* logo + search + social_buttons + +copyright + links */}
               <div className='flex flex-col items-center justify-center gap-8'>
-                <div className='size-full max-w-xs'>
+                <div className='size-full max-w-52 small-phone:max-w-xs'>
                   <SocialIconNav2 boxItems={socialItems2} />
                 </div>
                 <FooterNavLinks />
@@ -84,7 +84,7 @@ export default function Footer({ extra }: { extra?: string }) {
 
 function FooterNavLinks() {
   return (
-    <div className='grid grid-cols-1 space-x-4 [@media_(min-width:_240px)]:grid-cols-2 [@media_(min-width:_350px)]:grid-cols-3'>
+    <div className='grid grid-cols-1 gap-4  narrow-phone:grid-cols-2 small-phone:grid-cols-3'>
       <FooterBox title='navigation' navItems={data.navigationItems} />
       <FooterBoxSpecial title='socials' navItems={socialItems} />
       <FooterBox title='account' navItems={['login', 'subscribe']} />

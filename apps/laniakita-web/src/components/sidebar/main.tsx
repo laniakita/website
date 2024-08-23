@@ -1,6 +1,38 @@
 import { allCategories, allTags } from 'contentlayer/generated';
 import InfoBox from './info-box';
 
+export const socialItems3 = [
+  {
+    title: 'Instagram',
+    url: 'https://instagram.com',
+    iconName: 'icon-[fa6-brands--instagram]',
+    linkName: 'Instagram!',
+    textSize: 'text-3xl md:text-4xl',
+  },
+ {
+    title: 'Mastodon',
+    url: 'https://hachyderm.io/@lani',
+    iconName: 'icon-[fa6-brands--mastodon]',
+    linkName: 'Mastodon!',
+    textSize: 'text-3xl md:text-4xl',
+  },
+
+  {
+    title: 'Linkedin',
+    url: 'https://linkedin.com',
+    iconName: 'icon-[fa6-brands--linkedin]',
+    linkName: 'Linkedin!',
+    textSize: 'text-3xl md:text-4xl',
+  },
+   {
+    title: 'Github',
+    url: 'https://github.com/laniakita',
+    iconName: 'icon-[ant-design--github-filled]',
+    linkName: 'Github!',
+    textSize: 'text-3xl md:text-4xl',
+  },
+];
+
 export const socialItems2 = [
   {
     title: 'Github',
@@ -46,7 +78,7 @@ export const socialItems2 = [
   },
 ];
 
-const blogInfo = "A blog about life, Linux, and web development. Written by, [Lani Akita](/about).";
+const blogInfo = 'A blog about life, Linux, and web development. Written by, [Lani Akita](/about).';
 
 export default function Sidebar() {
   const categories = allCategories.sort((a, b) => a.title!.localeCompare(b.title!));

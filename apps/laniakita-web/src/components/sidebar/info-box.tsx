@@ -20,17 +20,12 @@ export default function InfoBox({
   const [isActiveTab, setIsActiveTab] = useState('info');
 
   return (
-    <div className='md:sticky md:top-6 lg:top-16'>
+    <div className='md:sticky md:top-20'>
       <div className='sidebar-box relative flex flex-col gap-6'>
         {isActiveTab === 'info' && (
-          <>
-            <div className='prose-protocol-omega px-6 pt-[4.15rem] font-mono prose-p:my-0'>
-              <Markdown options={{ forceBlock: true }}>{blogInfo}</Markdown>
-            </div>
-            <div className='px-6 pb-6'>
-              <SocialIconNav2 boxItems={socialItems} />
-            </div>
-          </>
+          <div className='prose-protocol-omega p-6 pt-[4.15rem] font-mono prose-p:my-0'>
+            <Markdown options={{ forceBlock: true }}>{blogInfo}</Markdown>
+          </div>
         )}
 
         {isActiveTab === 'meta' && (
