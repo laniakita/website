@@ -84,11 +84,7 @@ export function PostPreviewV3({ dataObj }: { dataObj: QueryPostMetaItem }) {
         )}
         <div className={`flex flex-col gap-6 md:p-10 ${hasImage ? '' : 'size-full items-center justify-center'}`}>
           <div className='w-full space-y-2'>
-            <Link
-              id='post-title'
-              href={linkTo}
-              className=''
-            >
+            <Link id='post-title' href={linkTo} className=''>
               <h2 className='max-w-md flex-none text-wrap text-3xl font-black leading-tight text-ctp-text supports-[text-wrap:balance]:text-balance md:text-4xl'>
                 {dataObj.headline}
               </h2>

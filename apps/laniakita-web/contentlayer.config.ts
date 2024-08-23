@@ -44,7 +44,7 @@ const Category = defineDocumentType(() => ({
   },
 }));
 
-interface ImageR1 extends FeaturedImage {
+export interface ImageR1 extends FeaturedImage {
   altText: string | undefined;
   caption: string | undefined;
 }
@@ -80,12 +80,14 @@ export const Post = defineDocumentType(() => ({
     featured_image: {
       type: 'json',
       resolve: async (post): Promise<ImageR1 | undefined> => {
-        const data = post.imageSrc && await imageProcessor({
-          contentDir: CONTENT_DIR,
-          prefix: `content2/${post._raw.flattenedPath}`,
-          imgPath: post.imageSrc,
-          debug: false,
-        }) as unknown as FeaturedImage | undefined;
+        const data =
+          post.imageSrc &&
+          ((await imageProcessor({
+            contentDir: CONTENT_DIR,
+            prefix: `content2/${post._raw.flattenedPath}`,
+            imgPath: post.imageSrc,
+            debug: false,
+          })) as unknown as FeaturedImage | undefined);
         return { ...data, altText: post.altText ?? undefined, caption: post.caption ?? undefined };
       },
     },

@@ -9,6 +9,7 @@
     "build": "dotenv -e .env.production -e .env.local -- next build",
     "start": "next start",
     "lint": "next lint",
+    "pretty": "prettier . --write",
     "test": "bun test",
     "test:watch": "bun test --watch",
     "open-next-build": "SHARP_VERSION=0.33.4 bunx open-next build"

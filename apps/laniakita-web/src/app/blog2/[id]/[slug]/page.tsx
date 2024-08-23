@@ -19,18 +19,20 @@ export default function BlogPostPage({ params }: { params: { id: string; slug: s
 
   const MDXContent = useMDXComponent(post ? post.body.code : '');
 
-  if (!post) { return notFound() };
+  if (!post) {
+    return notFound();
+  }
 
   return (
     <main className='motion-safe:simple-color-trans -mb-0.5 min-h-full max-w-full bg-ctp-base dark:bg-ctp-midnight'>
-        <article id='content' className='flex size-full flex-col items-center justify-center'>
-          <PostHeader2 {...post} />
-          <div className='flex min-h-full items-center justify-center px-10 py-6'>
-            <div className='prose-protocol-omega max-w-3xl '>
-              <MDXContent code={post.body.code} components={mdxComponents} />
-            </div>
+      <article id='content' className='flex size-full flex-col items-center justify-center'>
+        <PostHeader2 {...post} />
+        <div className='flex min-h-full items-center justify-center px-10 py-6'>
+          <div className='prose-protocol-omega max-w-3xl '>
+            <MDXContent code={post.body.code} components={mdxComponents} />
           </div>
-        </article>
+        </div>
+      </article>
     </main>
   );
 }

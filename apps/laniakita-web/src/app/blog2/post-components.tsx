@@ -2,6 +2,7 @@ import Markdown from 'markdown-to-jsx';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useId } from 'react';
+import type { ImageR1 } from 'contentlayer.config';
 import localLoader from '@/lib/local-loader';
 import { type Post } from 'contentlayer/generated';
 import LocalDate from './local-date';
@@ -23,26 +24,31 @@ export default function PostRollerV4({ posts }: { posts: Post[] }) {
 
 function PostPreviewV4(post: Post) {
   const descriptionStr = descriptionHelper(post.body.raw, post.url)!;
-  const hasImage = post.featured_image?.src !== null;
+  const res = post.featured_image as ImageR1;
+  const hasImage = res.src !== undefined && true;
 
   return (
     <div className='flex basis-full flex-col overflow-hidden rounded-md border border-ctp-surface0 dark:border-ctp-base'>
+      {hasImage ? (
         <Link href={post.url}>
           <Image
             loader={
               localLoader
               //imageLoader
             }
-            src={post.featured_image.src}
+            src={res.src!}
             placeholder='blur'
-            blurDataURL={post.featured_image.base64}
+            blurDataURL={res.base64}
             alt={post.altText!}
-            height={post.featured_image.height}
-            width={post.featured_image.width}
+            height={res.height}
+            width={res.width}
             sizes='(max-width: 300px) 70vw, (max-width: 600px) 45vw, (max-width:1500px) 27vw'
             className='object-contain'
           />
         </Link>
+      ) : (
+        ''
+      )}
       <div className='flex flex-col gap-4 p-8 lg:p-10'>
         <div className=''>
           <div className='flex flex-wrap gap-[1ch] pb-2'>

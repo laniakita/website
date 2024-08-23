@@ -1,4 +1,3 @@
- 
 import * as dotenv from 'dotenv';
 import { drizzle } from 'drizzle-orm/libsql';
 //import { Resource } from 'sst';

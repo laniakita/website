@@ -19,7 +19,7 @@ export async function generateMetadata(
   { params }: { params: { id: string; slug: string } },
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  const tagQRes = await getTag({ idStr: params.id, slugStr: params.slug }) as unknown as TagQ;
+  const tagQRes = (await getTag({ idStr: params.id, slugStr: params.slug })) as unknown as TagQ;
 
   const findDescr = descriptionHelper(tagQRes.rawStr);
   const descr = findDescr ? findDescr.filter((el) => el) : '';
