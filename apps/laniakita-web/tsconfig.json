@@ -10,9 +10,11 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "contentlayer/generated": ["./.contentlayer/generated"]
+      "contentlayer/generated": ["./.contentlayer/generated"],
+      "package-version-saver": ["./.package-version-saver/out.json"]
     },
-    "types": ["@serwist/next/typings", "bun", "node"]
+    "types": ["@serwist/next/typings", "bun", "node"],
+    "resolveJsonModule": true
   },
   "include": [
     "next-env.d.ts",
@@ -23,7 +25,8 @@
     "./**/*.mjs",
     ".next/types/**/*.ts",
     ".contentlayer/generated",
-    ".eslintrc.cjs"
+    ".eslintrc.cjs",
+    ".package-version-saver"
   ],
   "exclude": ["node_modules", "public/sw.js"]
 }

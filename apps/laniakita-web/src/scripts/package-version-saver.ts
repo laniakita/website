@@ -2,13 +2,14 @@
 /* eslint-disable no-console -- local script */
 import { mkdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
+import merge, { assign }  from 'lodash'
 
 const cwd = process.cwd();
 
 // read package.json
 interface Package {
-  dependencies: Record<string, unknown>[];
-  devDependencies: Record<string, unknown>[];
+  dependencies: Record<string, string>[];
+  devDependencies: Record<string, string>[];
 }
 
 const getJson = async (pkgPath?: string): Promise<Package | undefined> => {
@@ -70,8 +71,8 @@ const dangerousSaver = async (config: Config): Promise<200 | 500> => {
 
 const parentDir = (pathStr: string) => {
   const pathRes = pathStr.split('/').slice(0, -1).join('/');
-  return pathRes
-}
+  return pathRes;
+};
 
 const getVersionJson = async (config: Config) => {
   try {
@@ -153,31 +154,42 @@ interface GenVersions {
   };
 }
 
-const genVersions = async (config: Config): Promise<GenVersions | undefined> => {
+
+const genVersions = async (config: Config) => {
   try {
     const packageJsonRes = await getJson(config.package_json_path);
     const packageJson = packageJsonRes!;
 
+    
+
     // dependencies
-    const versionsGenDeps = config.packages.dependencies?.map((pkg) => {
-      const matchPkg = pkg as keyof typeof packageJson.dependencies;
-      const dependenciesArr = new Map([[pkg, packageJson.dependencies[matchPkg] ?? null]]);
-      const genDepObj = Object.fromEntries(dependenciesArr);
-      return genDepObj;
-    });
-
+    const versionsGenDeps = config.packages.dependencies
+      ?.map((pkg): [string, string] => {
+        const matchPkg = pkg as keyof typeof packageJson.dependencies;
+        const val = packageJson.dependencies[matchPkg];
+        
+        return [pkg, typeof(val) === 'string' ? val : 'undefined']
+      
+      })
+    
+    const depObj = versionsGenDeps ? Object.fromEntries(versionsGenDeps) : {}
+    
+    
     // devDependencies
-    const versionsGenDevDeps = config.packages.devDependencies?.map((pkg) => {
-      const matchPkg = pkg as keyof typeof packageJson.devDependencies;
-      const devDepsArr = new Map([[pkg, packageJson.devDependencies[matchPkg] ?? null]]);
-      const genDevDepObj = Object.fromEntries(devDepsArr);
-      return genDevDepObj;
-    });
-
+      const versionsGenDevDeps = config.packages.devDependencies
+      ?.map((pkg): [string, string] => {
+        const matchPkg = pkg as keyof typeof packageJson.devDependencies;
+        const val = packageJson.devDependencies[matchPkg];
+        
+        return [pkg, typeof(val) === 'string' ? val : 'undefined']
+      
+      })
+    
+    const devObj = versionsGenDevDeps ? Object.fromEntries(versionsGenDevDeps) : {}    
     return {
       versions: {
-        dependencies: versionsGenDeps ?? [],
-        devDependencies: versionsGenDevDeps ?? [],
+        dependencies: depObj,
+        devDependencies: devObj,
       },
     };
   } catch (err) {
@@ -187,25 +199,24 @@ const genVersions = async (config: Config): Promise<GenVersions | undefined> => 
 
 const laniConfig: Config = {
   packages: {
-    dependencies: ['next'],
-    devDependencies: ['vitest'],
+    dependencies: ['next', '@next/mdx'],
   },
 };
 
 export const pkgVersionSaver = async (config: Config) => {
   const t0 = performance.now();
   const resSaver = await getVersionJson(config);
-  
+
   if (resSaver === 200) {
     const t1 = performance.now();
-    console.log(`[SUCCESS]: All done! Package Version Saver finished in under ${t1 - t0} ms`)
-    return 200
+    console.log(`[SUCCESS]: All done! Package Version Saver finished in under ${t1 - t0} ms!`);
+    return 200;
   }
 
   if (resSaver === 500) {
     const t1 = performance.now();
-    console.error(`[ERROR]: Oh no! Something's gone wrong in under ${t1 - t0} ms! >.< Maybe the console can help?`)
-    return 500
+    console.error(`[ERROR]: Oh no! Something's gone wrong in under ${t1 - t0} ms! >.< Maybe the console can help?`);
+    return 500;
   }
 };
 
