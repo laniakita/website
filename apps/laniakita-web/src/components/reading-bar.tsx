@@ -21,5 +21,10 @@ export default function ReadingBar() {
     };
   });
 
-  return <div style={{ width: `${width}%` }} className={`h-1 ${width >= 50 ? 'bg-ctp-pink' : 'bg-ctp-mauve'} simple-color-trans`} />;
+  return (
+    <div
+      style={{ width: `${width}%` }}
+      className={`h-1 ${width >= 50 ? 'bg-ctp-pink' : 'bg-ctp-mauve'} simple-color-trans`}
+    />
+  );
 }

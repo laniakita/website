@@ -7,24 +7,24 @@ import PostRollerV4 from '@/app/blog2/post-roller-v4';
 export default function CatTagPage({ params }: { params: { prefix: string; slug: string } }) {
   if (params.prefix === 'tags') {
     const tag = allTags.find((tagX) => tagX.url.split('/').pop() === params.slug);
-    const matchingPosts = allPosts.filter((postX) =>
-      postX.tags?.some((tagXP) => (tagXP as unknown as { slug: string }).slug === params.slug),
-    ).sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
+    const matchingPosts = allPosts
+      .filter((postX) => postX.tags?.some((tagXP) => (tagXP as unknown as { slug: string }).slug === params.slug))
+      .sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
 
     if (!tag) return notFound();
 
-    return <MiniLayout data={tag} posts={matchingPosts} />
+    return <MiniLayout data={tag} posts={matchingPosts} />;
   }
 
   if (params.prefix === 'categories') {
     const category = allCategories.find((catX) => catX.url.split('/').pop() === params.slug);
-    const matchingPosts = allPosts.filter((postX) =>
-      postX.categories?.some((cat) => (cat as unknown as { slug: string }).slug === params.slug),
-    ).sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
+    const matchingPosts = allPosts
+      .filter((postX) => postX.categories?.some((cat) => (cat as unknown as { slug: string }).slug === params.slug))
+      .sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
 
     if (!category) return notFound();
 
-    return <MiniLayout data={category} posts={matchingPosts} />
+    return <MiniLayout data={category} posts={matchingPosts} />;
   }
 }
 

@@ -7,7 +7,6 @@ import { type Post } from 'contentlayer/generated';
 import LocalDate from './local-date';
 import { CatTagRoller } from './cat-tag-roller';
 
-
 export default function PostPreviewV4(post: Post) {
   const descriptionStr = descriptionHelper(post.body.raw, post.url)!;
   const res = post.featured_image as ImageR1;

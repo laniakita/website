@@ -69,7 +69,7 @@ export default function InfoBox({
   );
 }
 
-function TabInner({ active, title, icon }: { active: boolean, title: string; icon: string }) {
+function TabInner({ active, title, icon }: { active: boolean; title: string; icon: string }) {
   return (
     <>
       <span className={active ? 'hidden' : 'tab-btn-hover'} />

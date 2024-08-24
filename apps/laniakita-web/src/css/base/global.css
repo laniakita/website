@@ -42,7 +42,7 @@
   }
 
   a {
-    @apply text-ctp-mauve hover:text-ctp-pink link-color-trans hover:underline aria-[current]:text-ctp-pink aria-[current]:underline;
+    @apply link-color-trans text-ctp-mauve hover:text-ctp-pink hover:underline aria-[current]:text-ctp-pink aria-[current]:underline;
   }
 
   canvas {
