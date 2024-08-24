@@ -149,13 +149,12 @@ const getVersionJson = async (config: Config) => {
 
 interface GenVersions {
   versions: {
-    dependencies?: Record<string, unknown>[] | [];
-    devDependencies?: Record<string, unknown>[] | [];
+    dependencies?: Record<string, string>;
+    devDependencies?: Record<string, string>;
   };
 }
 
-
-const genVersions = async (config: Config) => {
+const genVersions = async (config: Config): Promise<GenVersions | undefined> => {
   try {
     const packageJsonRes = await getJson(config.package_json_path);
     const packageJson = packageJsonRes!;
