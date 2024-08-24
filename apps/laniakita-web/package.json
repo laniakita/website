@@ -15,9 +15,9 @@
     "open-next-build": "SHARP_VERSION=0.33.4 bunx open-next build"
   },
   "dependencies": {
-    "@ahiakea/eslint-config": "workspace:*",
-    "@ahiakea/tailwindcss-config": "workspace:*",
-    "@ahiakea/typescript-config": "workspace:*",
+    "@website/eslint-config": "workspace:*",
+    "@website/tailwindcss-config": "workspace:*",
+    "@website/typescript-config": "workspace:*",
     "@date-fns/utc": "^1.2.0",
     "@giscus/react": "^3.0.0",
     "@libsql/client": "^0.6.2",

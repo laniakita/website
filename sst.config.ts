@@ -2,7 +2,7 @@
 export default $config({
   app(input) {
     return {
-      name: "ahiakea",
+      name: "website",
       removal: input?.stage === "production" ? "retain" : "remove",
       home: "aws",
       providers: {
