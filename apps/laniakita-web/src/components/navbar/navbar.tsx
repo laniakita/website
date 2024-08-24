@@ -151,7 +151,7 @@ function SimpleSocials({ arr }: { arr: SocialNavIcon[] }) {
           <Link
             target='_blank'
             aria-label={`Follow Lani on ${icon.linkName}`}
-            href={icon.linkName}
+            href={icon.url}
             className='flex items-center justify-center text-3xl text-ctp-subtext1'
           >
             <span className={`${icon.iconName} text-3xl`} />
