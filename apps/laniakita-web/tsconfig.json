@@ -11,7 +11,7 @@
     "paths": {
       "@/*": ["./src/*"],
       "contentlayer/generated": ["./.contentlayer/generated"],
-      "package-version-saver": ["./.package-version-saver/out.json"]
+      "versionVault/compiled": ["./.versionvault/compiled/latest.json"]
     },
     "types": ["@serwist/next/typings", "bun", "node"],
     "resolveJsonModule": true

@@ -2,7 +2,6 @@
 /* eslint-disable no-console -- local script */
 import { mkdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
-import merge, { assign }  from 'lodash'
 
 const cwd = process.cwd();
 
@@ -34,25 +33,25 @@ interface Config {
   };
 }
 
-class PVSError extends Error {
+class VersionVaultError extends Error {
   statusCode: string;
 
   constructor(message: string, statusCode: string) {
     super(message);
-    this.name = 'PVSError';
+    this.name = 'VersionVaultError';
     this.statusCode = statusCode;
   }
 
   errLog() {
-    console.error(`[ERROR]: PVS Error ${this.statusCode}: ${this.message}`);
+    console.error(`[ERROR]: Version Vault Error ${this.statusCode}: ${this.message}`);
   }
   warnLog() {
-    console.warn(`[WARNING]: PVS Error ${this.statusCode}: ${this.message}`);
+    console.warn(`[WARNING]: Version Vault Error ${this.statusCode}: ${this.message}`);
   }
 }
 
 const defaults = {
-  output_path: `${cwd}/.package-version-saver/out.json`,
+  output_path: `${cwd}/.versionvault/compiled/latest.json`,
 };
 
 // For internal use only.
@@ -81,14 +80,14 @@ const getVersionJson = async (config: Config) => {
     // check if parent path exists
     const dirExists = existsSync(dirPath);
     if (!dirExists) {
-      throw new PVSError(`Oops ${dirPath} doesn't exist.`, '404Path');
+      throw new VersionVaultError(`Oops ${dirPath} doesn't exist.`, '404Path');
     }
 
     // check if out.json exists
     const versionsMem = Bun.file(outputPath, { type: 'application/json' });
     const outExists = await versionsMem.exists();
     if (!outExists) {
-      throw new PVSError(`${outputPath} doesn't exist.`, '404Out');
+      throw new VersionVaultError(`${outputPath} doesn't exist.`, '404Out');
     }
 
     // todo: deal with old out.json
@@ -110,7 +109,7 @@ const getVersionJson = async (config: Config) => {
 
     return await dangerousSaver(config);
   } catch (err) {
-    if (err instanceof PVSError) {
+    if (err instanceof VersionVaultError) {
       if (err.statusCode === '404Path') {
         if (config.versions_path && !config.allow_custom_path) {
           err.errLog();
@@ -119,7 +118,7 @@ const getVersionJson = async (config: Config) => {
             '\n',
             '1. Create the missing directory.',
             '\n',
-            '2. Allow PVS to create it in the .package-version-saver.ts config.',
+            '2. Allow Version Vault to create it in the .version-vault.ts config.',
           );
         } else if (!config.versions_path || (config.allow_custom_path && config.versions_path)) {
           const outputPathErr = config.versions_path ?? defaults.output_path;
@@ -202,13 +201,13 @@ const laniConfig: Config = {
   },
 };
 
-export const pkgVersionSaver = async (config: Config) => {
+export const syncVersionVault = async (config: Config) => {
   const t0 = performance.now();
   const resSaver = await getVersionJson(config);
 
   if (resSaver === 200) {
     const t1 = performance.now();
-    console.log(`[SUCCESS]: All done! Package Version Saver finished in under ${t1 - t0} ms!`);
+    console.log(`[SUCCESS]: All done! Version Vault finished in under ${t1 - t0} ms!`);
     return 200;
   }
 
@@ -219,6 +218,6 @@ export const pkgVersionSaver = async (config: Config) => {
   }
 };
 
-console.log(await pkgVersionSaver(laniConfig));
+console.log(await syncVersionVault(laniConfig));
 
 //const nextVersion = (packageData as Package).dependencies.next;
