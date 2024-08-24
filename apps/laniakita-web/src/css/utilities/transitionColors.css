@@ -4,7 +4,9 @@
   }
 
   .color-trans-quick {
-    transition: color 0.38s, background-color 0.38s
+    transition:
+      color 0.38s,
+      background-color 0.38s;
   }
 
   .simple-color-trans {

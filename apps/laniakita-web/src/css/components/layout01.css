@@ -3,6 +3,6 @@
     @apply pt-[4rem];
   }
   .common-padding {
-    @apply md:p-6 md:pt-24 p-2 pt-[4.75rem]
+    @apply p-2 pt-[4.75rem] md:p-6 md:pt-24;
   }
 }
