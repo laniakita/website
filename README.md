@@ -1,3 +1,3 @@
-# [laniakita.com](https://laniakita.com)
+# Website
 
 This is the source code for my personal site.
