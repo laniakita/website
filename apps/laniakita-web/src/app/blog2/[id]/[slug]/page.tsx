@@ -1,11 +1,12 @@
 import { useMDXComponent } from 'next-contentlayer2/hooks';
 import { notFound, redirect } from 'next/navigation';
+import ReadingBar from '@/components/reading-bar';
 import { PostHeader2 } from '@/app/blog2/post-header-2';
 import { allPosts } from 'contentlayer/generated';
 import BlogImageBlurServer from '../../img-blur-server';
-import ReadingBar from '@/components/reading-bar';
 
 const mdxComponents = { img: BlogImageBlurServer };
+
 
 export default function BlogPostPage({ params }: { params: { id: string; slug: string } }) {
   const post = allPosts.find(

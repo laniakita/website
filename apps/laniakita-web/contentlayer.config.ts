@@ -4,7 +4,8 @@ import rehypeSlug from 'rehype-slug';
 import rehypeShiki from '@shikijs/rehype';
 import { rendererRich, transformerTwoslash } from '@shikijs/twoslash';
 import rehypeMdxImportMedia from 'rehype-mdx-import-media';
-import { type FeaturedImage, imageProcessor } from './src/lib/image-process';
+import { imageProcessor, FeaturedImageR1 } from './src/lib/image-process';
+import jsxToHtml from './src/lib/mdx-html';
 
 const CONTENT_DIR = 'content2';
 
@@ -44,10 +45,6 @@ const Category = defineDocumentType(() => ({
   },
 }));
 
-export interface ImageR1 extends FeaturedImage {
-  altText: string | undefined;
-  caption: string | undefined;
-}
 
 export const Post = defineDocumentType(() => ({
   name: 'Post',
@@ -73,22 +70,31 @@ export const Post = defineDocumentType(() => ({
     caption: { type: 'string', required: false },
   },
   computedFields: {
+    html: {
+      type: 'string',
+      resolve: (post) => {
+        const renderedMdx = jsxToHtml(post.body.code);
+        return renderedMdx;
+      }
+    },
     url: {
       type: 'string',
       resolve: (post) => `/blog2/${post.id.split('-').shift()}/${post._raw.flattenedPath.split('/').pop()}`,
     },
     featured_image: {
       type: 'json',
-      resolve: async (post): Promise<ImageR1 | undefined> => {
-        const data =
-          post.imageSrc &&
-          ((await imageProcessor({
+      resolve: async (post): Promise<FeaturedImageR1> => {
+        if (!post.imageSrc) return new FeaturedImageR1(false, '', '', 0, 0, '', '', null);
+        const data = await imageProcessor({
             contentDir: CONTENT_DIR,
             prefix: `content2/${post._raw.flattenedPath}`,
             imgPath: post.imageSrc,
             debug: false,
-          })) as unknown as FeaturedImage | undefined);
-        return { ...data, altText: post.altText ?? undefined, caption: post.caption ?? undefined };
+          });
+        
+        const res = new FeaturedImageR1(true, data.src, data.base64, data.height, data.width, post.altText ?? '', post.caption ?? '', data._debug ?? null)
+        return res
+        //return { ...data, altText: post.altText ?? undefined, caption: post.caption ?? undefined };
       },
     },
   },
