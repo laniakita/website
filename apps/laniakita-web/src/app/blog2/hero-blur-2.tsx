@@ -3,10 +3,10 @@ import Image from 'next/image';
 //import { imageLoader } from '@/utils/image-loader';
 import localLoader from '@/lib/local-loader';
 import { type Post } from 'contentlayer/generated';
-import type { ImageR1 } from 'contentlayer.config';
+import type { FeaturedImageR1 } from '@/lib/image-process';
 
 export function HeroBlur2(post: Post) {
-  const res = post.featured_image as ImageR1;
+  const res = post.featured_image as FeaturedImageR1;
 
   return (
     <picture className='relative m-0 flex size-full max-w-5xl items-center justify-center p-0'>
@@ -15,8 +15,8 @@ export function HeroBlur2(post: Post) {
           //imageLoader
           localLoader
         }
-        src={res.src!}
-        alt={res.altText!}
+        src={res.src}
+        alt={res.altText}
         placeholder='blur'
         blurDataURL={res.base64}
         height={res.height}

@@ -14,9 +14,7 @@ export default function CatTagPage({ params }: { params: { prefix: string; slug:
     if (!tag) return notFound();
 
     return <MiniLayout data={tag} posts={matchingPosts} />;
-  }
-
-  if (params.prefix === 'categories') {
+  } else if (params.prefix === 'categories') {
     const category = allCategories.find((catX) => catX.url.split('/').pop() === params.slug);
     const matchingPosts = allPosts
       .filter((postX) => postX.categories?.some((cat) => (cat as unknown as { slug: string }).slug === params.slug))
@@ -26,6 +24,14 @@ export default function CatTagPage({ params }: { params: { prefix: string; slug:
 
     return <MiniLayout data={category} posts={matchingPosts} />;
   }
+  /* I'm skeptical of returning a 404, since this returns a 404
+   * for every page other than cats and tags. However, routing
+   * still works, so I'm guessing next.js just tries the next
+   * available route. Though, I won't be surprised if this
+   * "hacky" workaround for DRY+Aesthetics breaks in the 
+   * future or causes bugs down the line.
+   */
+  return notFound();
 }
 
 function MiniLayout({ data, posts }: { data: Category | Tag; posts: Post[] }) {

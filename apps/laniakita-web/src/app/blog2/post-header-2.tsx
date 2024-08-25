@@ -1,28 +1,12 @@
 import Link from 'next/link';
 import ShareButton from '@/components/share-btn';
 import { type Post } from 'contentlayer/generated';
-import type { ImageR1 } from 'contentlayer.config';
-//import type { PostQ } from '@/lib/node-db-funcs';
-//import PostDate from './post-date';
+import type { FeaturedImageR1 } from '@/lib/image-process';
 import { HeroBlur2 } from './hero-blur-2';
 import LocalDate from './local-date';
 import { CatTagRoller } from './cat-tag-roller';
-//import { TagsRoller } from './tags-roller';
 
 export function PostHeader2(post: Post) {
-  /*
-  let showImageDescr = false;
-  if (
-    ((post.featured_image.credit as unknown) &&
-      (post.featured_image.creditUrl as unknown) &&
-      (post.featured_image.creditUrlText as unknown)) !== null &&
-    ((post.featured_image.credit as unknown) &&
-      (post.featured_image.creditUrl as unknown) &&
-      (post.featured_image.creditUrlText as unknown)) !== undefined
-  ) {
-    showImageDescr = true;
-  }
-  */
   return (
     <>
       <div className='flex w-full flex-col items-center justify-center gap-2 px-10 pb-6 pt-[6.5rem] md:pb-10'>
@@ -56,14 +40,14 @@ export function PostHeader2(post: Post) {
       <div className='flex size-full flex-col items-center justify-center'>
         {/* bg image + title */}
 
-        {(post.featured_image as ImageR1).src !== undefined ? (
+        {(post.featured_image as FeaturedImageR1).hasImage ? (
           <figure className='relative flex size-full flex-col items-center justify-center gap-10'>
             <HeroBlur2 {...post} />
             <p className='-mb-2 -mt-6 flex w-full flex-col items-center justify-center px-10 font-mono text-sm font-thin [font-style:_normal]'>
-              <span className='w-full max-w-3xl'>Image source: OC by me ^-^</span>
+              <span className='w-full max-w-3xl'>{(post.featured_image as FeaturedImageR1).altText}</span>
             </p>
             <figcaption className='flex w-full items-center justify-center px-10 text-xl font-bold italic leading-tight md:text-2xl'>
-              <span className='max-w-3xl'>{(post.featured_image as ImageR1).caption}</span>
+              <span className='max-w-3xl'>{(post.featured_image as FeaturedImageR1).caption}</span>
             </figcaption>
           </figure>
         ) : (

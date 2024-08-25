@@ -3,6 +3,44 @@ import { readFile, lstat } from 'node:fs/promises';
 import path from 'node:path';
 import { getPlaiceholder } from 'plaiceholder';
 
+
+
+export interface DebugR1 {
+  destination: string;
+    status: {
+      exists: boolean;
+      existsInPublic: boolean;
+    };
+    didCopy: string;
+    reason: string;
+
+}
+
+export class FeaturedImageR1 {
+  hasImage: boolean;
+  src: string;
+  base64: string;
+  height: number;
+  width: number;
+  altText: string;
+  caption: string;
+  _debug: DebugR1 | null;
+
+  constructor(hasImage: boolean, src: string, base64: string, height: number, width: number, altText: string, caption: string, _debug: DebugR1 | null ) {
+    this.hasImage = hasImage;
+    this.src = src;
+    this.base64 = base64;
+    this.height = height;
+    this.width = width;
+    this.altText = altText;
+    this.caption = caption;
+    this._debug = _debug;
+  }
+}
+
+
+
+
 /**
  * A typeguarded version of `instanceof Error` for NodeJS.
  * author: Joseph JDBar Barron
@@ -142,9 +180,9 @@ const imageMover = async ({
 };
 
 interface BlurRes {
-  base64?: string | undefined;
-  height?: number | undefined;
-  width?: number | undefined;
+  base64: string;
+  height: number;
+  width: number;
 }
 
 const imageBlurBase64 = async (imgPath: string): Promise<BlurRes> => {
@@ -156,9 +194,9 @@ const imageBlurBase64 = async (imgPath: string): Promise<BlurRes> => {
   return { base64, height, width };
 };
 
-export interface FeaturedImage extends BlurRes {
-  src?: string | undefined;
-  _debug?: null | Debug;
+export interface FeaturedImageRes extends BlurRes {
+  src: string;
+  _debug: null | Debug;
 }
 
 export const imageProcessor = async ({
@@ -171,7 +209,7 @@ export const imageProcessor = async ({
   prefix: string;
   imgPath: string;
   debug?: boolean;
-}): Promise<FeaturedImage | undefined> => {
+}): Promise<FeaturedImageRes> => {
   try {
     const imgCopyRes = await imageMover({ contentDir, prefix, imgPath, debug });
     const blurRes = await imageBlurBase64(imgCopyRes.local);
@@ -179,4 +217,5 @@ export const imageProcessor = async ({
   } catch (err) {
     console.error(err);
   }
+  return {src: '', base64: '', height: 0, width: 0, _debug: null}
 };
