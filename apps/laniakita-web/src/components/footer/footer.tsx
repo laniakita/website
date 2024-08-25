@@ -29,8 +29,8 @@ export const socialItems = [
     textSize: 'text-4xl',
   },
   {
-    title: 'RSS/Atom',
-    url: '/feed.xml',
+    title: 'Atom/RSS',
+    url: '/atom.xml',
     iconName: 'icon-[ph--rss-bold]',
     linkName: 'your RSS/Atom feed reader!',
     textSize: 'text-5xl',

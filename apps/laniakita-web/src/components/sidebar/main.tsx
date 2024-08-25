@@ -71,8 +71,8 @@ export const socialItems2 = [
     textSize: 'text-2xl md:text-3xl',
   },
   {
-    title: 'RSS/Atom',
-    url: '/feed.xml',
+    title: 'Atom/RSS',
+    url: '/atom.xml',
     iconName: 'icon-[ph--rss-bold]',
     linkName: 'your RSS/Atom feed reader!',
     textSize: 'text-3xl md:text-4xl',
@@ -99,7 +99,7 @@ export function SubscribeBox({ mobile }: { mobile?: boolean }) {
   return (
     <div className={`sidebar-box  ${mobile ? 'flex md:hidden' : 'hidden md:flex'}  flex-col gap-4 p-6`}>
       <h4 className='flex-wrap text-balance text-3xl font-black'>Articles delivered right to your feed reader.</h4>
-      <Link href='/feed.xml' className='font-mono font-bold text-ctp-base hover:text-ctp-base hover:no-underline'>
+      <Link href='/atom.xml' className='font-mono font-bold text-ctp-base hover:text-ctp-base hover:no-underline'>
         <p className='color-trans-quick flex w-full flex-row items-center justify-center gap-[1ch] rounded bg-ctp-mauve px-4 py-2 hover:bg-ctp-pink'>
           <span>subscribe</span>
           <span>|</span>

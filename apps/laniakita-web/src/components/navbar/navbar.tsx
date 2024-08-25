@@ -16,8 +16,8 @@ interface Clicked {
 
 export default function NavBar() {
   const { dark } = useDarkStore((state) => state);
-  const pagesArr = ['Blog', 'About', 'Projects', 'RSS/Atom', 'Contact'];
-  const pagesArrMobile = ['Blog', 'About', 'Projects', 'RSS/Atom', 'Contact'];
+  const pagesArr = ['Blog', 'About', 'Projects', 'Atom/RSS', 'Contact'];
+  const pagesArrMobile = ['Blog', 'About', 'Projects', 'Atom/RSS', 'Contact'];
   const [clicked, setClicked] = useState<Clicked>({
     stateVal: 'closed',
   });
@@ -46,8 +46,8 @@ export default function NavBar() {
   function handleRef(pageStr: string) {
     if (pageStr.toLowerCase() === 'home') {
       return '/';
-    } else if (pageStr.toLowerCase() === 'rss/atom') {
-      return '/feed.xml';
+    } else if (pageStr.toLowerCase() === 'atom/rss') {
+      return '/atom.xml';
     }
     return `/${pageStr.toLowerCase()}`;
   }
@@ -73,11 +73,11 @@ export default function NavBar() {
                   key={page}
                   className='nav-item text-xl'
                   onClick={() => {
-                    page !== 'RSS/Atom' && setClicked({ ...clicked, stateVal: 'closed' });
+                    page !== 'Atom/RSS' && setClicked({ ...clicked, stateVal: 'closed' });
                   }}
-                  target={page === 'RSS/Atom' ? '_blank' : undefined}
+                  target={page === 'Atom/RSS' ? '_blank' : undefined}
                 >
-                  {page === 'RSS/Atom' ? page : page.toLowerCase()}
+                  <span className='whitespace-nowrap'>{page === 'Atom/RSS' ? page : page.toLowerCase()}</span>
                 </LinkPlus>
               ))}
             </div>
@@ -102,9 +102,9 @@ export default function NavBar() {
                 key={page}
                 href={handleRef(page)}
                 className='nav-item'
-                target={page === 'RSS/Atom' ? '_blank' : undefined}
+                target={page === 'Atom/RSS' ? '_blank' : undefined}
               >
-                {page === 'RSS/Atom' ? page : page.toLowerCase()}
+                <span className='whitespace-nowrap'>{page === 'Atom/RSS' ? page : page.toLowerCase()}</span>
               </LinkPlus>
             ))}
           </div>

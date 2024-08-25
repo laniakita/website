@@ -9,6 +9,22 @@ import jsxToHtml from './src/lib/mdx-html';
 
 const CONTENT_DIR = 'content2';
 
+const Page = defineDocumentType(() => ({
+  name: 'Page',
+  filePathPattern: 'pages/**/*.mdx',
+  contentType: 'mdx',
+  fields: {
+    title: {type: 'string', required: true},
+    description: {type: 'string', required: false}
+  },
+  computedFields: {
+    url: {
+      type: 'string',
+      resolve: (page) => `/${page._raw.flattenedPath.split('/').pop()}`
+    },
+  }
+}));
+
 const Tag = defineDocumentType(() => ({
   name: 'Tag',
   filePathPattern: 'tags/**/*.mdx',
@@ -102,7 +118,7 @@ export const Post = defineDocumentType(() => ({
 
 export default makeSource({
   contentDirPath: CONTENT_DIR,
-  documentTypes: [Post, Category, Tag],
+  documentTypes: [Post, Category, Tag, Page],
   mdx: {
     remarkPlugins: [remarkGfm],
     rehypePlugins: [
