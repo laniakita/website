@@ -8,11 +8,12 @@
     "pretty": {},
     "test": {},
     "build": {
-      "env": ["TURSO_DATABASE_URL", "TURSO_AUTH_TOKEN"],
+      "env": ["TURSO_DATABASE_URL", "TURSO_AUTH_TOKEN", "NODE_ENV"],
       "outputs": [".next/**", "!.next/cache/**", "public/dist/**", "public/sw.js"],
       "inputs": ["$TURBO_DEFAULT$", ".env.production.local", ".env.production", ".env.local", ".env"]
     },
     "dev": {
+      "env": ["NODE_ENV"],
       "inputs": ["$TURBO_DEFAULT$", ".env.development.local", ".env.development", ".env.local", ".env"]
     },
     "start": {}

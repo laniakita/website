@@ -26,13 +26,16 @@ const BlogImageBlurServer: FC = async (props) => {
     width: blurRes.width,
   };
   return (
-    <BlogImageBlur
-      src={propsObj.src}
-      alt={propsObj.alt}
-      blur={propsObj.blur}
-      height={propsObj.height}
-      width={propsObj.width}
-    />
+    <>
+      <BlogImageBlur
+        src={propsObj.src}
+        alt={propsObj.alt}
+        blur={propsObj.blur}
+        height={propsObj.height}
+        width={propsObj.width}
+      />
+      <p className='font-mono text-sm font-thin'>{propsObj.alt}</p>
+    </>
   );
 };
 export default BlogImageBlurServer;
