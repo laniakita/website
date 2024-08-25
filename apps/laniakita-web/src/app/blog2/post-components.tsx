@@ -1,27 +1,26 @@
 import Markdown from 'markdown-to-jsx';
 import Image from 'next/image';
 import Link from 'next/link';
-import type { ImageR1 } from 'contentlayer.config';
 import localLoader from '@/lib/local-loader';
 import { type Post } from 'contentlayer/generated';
+import type { FeaturedImageR1 } from '@/lib/image-process';
 import LocalDate from './local-date';
 import { CatTagRoller } from './cat-tag-roller';
 
 export default function PostPreviewV4(post: Post) {
   const descriptionStr = descriptionHelper(post.body.raw, post.url)!;
-  const res = post.featured_image as ImageR1;
-  const hasImage = res.src !== undefined && true;
-
-  return (
+  const res = post.featured_image as FeaturedImageR1;
+ 
+ return (
     <div className='flex basis-full flex-col overflow-hidden rounded-md border border-ctp-surface0 dark:border-ctp-base'>
-      {hasImage ? (
+      {res.hasImage ? (
         <Link href={post.url}>
           <Image
             loader={
               localLoader
               //imageLoader
             }
-            src={res.src!}
+            src={res.src}
             placeholder='blur'
             blurDataURL={res.base64}
             alt={post.altText!}
@@ -74,7 +73,7 @@ const descriptionHelper = (rawStr: string, postSlug?: string) => {
 
   const endInjection = foundDescr[foundDescr.length - 1]
     ?.split('.')
-    .toSpliced(-1, 1, `... [\`READ_MORE =>\`](${postSlug ?? 'blog'})`)
+    .toSpliced(-1, 1, `... <nobr>[\`READ_MORE =>\`](${postSlug ?? 'blog'})</nobr>`)
     .join('');
 
   foundDescr.splice(-1, 1, endInjection!).join(' ');

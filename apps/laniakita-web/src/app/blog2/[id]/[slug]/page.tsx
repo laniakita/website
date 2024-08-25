@@ -1,12 +1,21 @@
-import { useMDXComponent } from 'next-contentlayer2/hooks';
+import type { ReactElement, ReactNode } from 'react';
 import { notFound, redirect } from 'next/navigation';
+import { useMDXComponent } from 'next-contentlayer2/hooks';
 import ReadingBar from '@/components/reading-bar';
 import { PostHeader2 } from '@/app/blog2/post-header-2';
 import { allPosts } from 'contentlayer/generated';
 import BlogImageBlurServer from '../../img-blur-server';
 
-const mdxComponents = { img: BlogImageBlurServer };
+export function Paragraph(props: { children?: ReactNode }) {
+  if (typeof props.children !== 'string') {
+    if ((typeof (props.children as ReactElement).type === 'function') || (props.children as ReactElement).type === 'img') {
+      return <>{props.children}</>;
+    }
+  }
+  return <p {...props} />;
+}
 
+const mdxComponents = { p: Paragraph, img: BlogImageBlurServer };
 
 export default function BlogPostPage({ params }: { params: { id: string; slug: string } }) {
   const post = allPosts.find(
