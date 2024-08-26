@@ -31,11 +31,9 @@ export default function BlogPostPage({ params }: { params: { id: string; slug: s
   if (post) {
     if (post.id.split('-').shift() !== params.id) {
       redirect(`/blog/${post.id.split('-').shift()}/${params.slug}`);
-    }
-    else if (post.url.split('/').pop() !== params.slug) {
+    } else if (post.url.split('/').pop() !== params.slug) {
       redirect(`/blog/${params.id}/${post.url.split('/').pop()}`);
     }
-
   }
 
   const MDXContent = useMDXComponent(post ? post.body.code : '');
@@ -49,11 +47,11 @@ export default function BlogPostPage({ params }: { params: { id: string; slug: s
       <div className='fixed left-0 top-[3.8rem] z-50 w-full'>
         <ReadingBar />
       </div>
-      <main className='motion-safe:simple-color-trans -mb-0.5 min-h-full max-w-full bg-ctp-base dark:bg-ctp-midnight'>
-        <article id='content' className='flex size-full flex-col items-center justify-center'>
+      <main className='motion-safe:simple-color-trans pb-common -mb-0.5 min-h-full max-w-full bg-ctp-base dark:bg-ctp-midnight'>
+        <article id='content' className='px-0 mx-0 flex size-full flex-col items-center justify-center'>
           <PostHeader2 {...post} />
-          <div className='flex min-h-full items-center justify-center px-10 py-6'>
-            <div className='prose-protocol-omega max-w-3xl '>
+          <div className='px-10 flex min-h-full items-center justify-center '>
+            <div className='px-0 mx-0 prose-protocol-omega max-w-3xl'>
               <MDXContent code={post.body.code} components={mdxComponents} />
             </div>
           </div>

@@ -15,7 +15,6 @@ export function PageCommon({ slug, prefix }: { slug: string; prefix?: string }) 
     if (!data) return notFound();
     return <Inside {...data} />;
   }
-
 }
 
 function Inside(data: Page) {
@@ -25,10 +24,10 @@ function Inside(data: Page) {
         <ReadingBar />
       </div>
 
-      <main className='simple-color-trans bg-ctp-base pt-20 dark:bg-ctp-midnight'>
-        <article id='content'>
-          <div className='flex min-h-full items-center justify-center px-10 py-6'>
-            <div className='prose-protocol-omega max-w-3xl '>
+      <main className='simple-color-trans pt-common pb-common bg-ctp-base dark:bg-ctp-midnight'>
+        <article id='content' className='flex size-full flex-col items-center justify-center'>
+          <div className='flex min-h-full items-center justify-center px-10'>
+            <div className='prose-protocol-omega max-w-3xl px-0'>
               <MDXPage {...data} />
             </div>
           </div>

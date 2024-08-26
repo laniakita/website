@@ -9,7 +9,7 @@ import { CatTagRoller } from './cat-tag-roller';
 export function PostHeader2(post: Post) {
   return (
     <>
-      <div className='flex w-full flex-col items-center justify-center gap-2 px-10 pb-6 pt-[6.5rem] md:pb-10'>
+      <div className='pt-common flex w-full flex-col items-center justify-center gap-2 px-10 pb-6 md:pb-10'>
         <div className='w-full max-w-3xl font-mono'>
           <CatTagRoller cats={post.categories} tags={post.tags} />
         </div>
