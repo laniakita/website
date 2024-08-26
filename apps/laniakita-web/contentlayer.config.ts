@@ -21,10 +21,44 @@ export const Project = defineDocumentType(() => ({
       type: 'list',
       of: { type: 'string' },
     },
-    imageSrc: { type: 'string', required: true },
-    altText: { type: 'string', required: true },
+    imageSrc: { type: 'string', required: false },
+    altText: { type: 'string', required: false },
+    caption: {type: 'string', required: false},
     description: { type: 'string', required: true },
-    blogPost: { type: 'string', required: true },
+    blogPost: { type: 'string', required: false },
+    link: {type: 'string', required: false},
+  },
+  computedFields: {
+    url: {
+      type: 'string',
+      resolve: (project) => `/${project._raw.flattenedPath}`
+    },
+    featured_image: {
+      type: 'json',
+      resolve: async (project): Promise<FeaturedImageR1> => {
+        if (!project.imageSrc) return new FeaturedImageR1(false, '', '', 0, 0, '', '', null);
+        const data = await imageProcessor({
+          contentDir: CONTENT_DIR,
+          prefix: `${CONTENT_DIR}/${project._raw.flattenedPath}`,
+          imgPath: project.imageSrc,
+          debug: false,
+        });
+
+        const res = new FeaturedImageR1(
+          true,
+          data.src,
+          data.base64,
+          data.height,
+          data.width,
+          project.altText ?? '',
+          project.caption ?? '',
+          data._debug ?? null,
+        );
+
+        return res;
+        //return { ...data, altText: post.altText ?? undefined, caption: post.caption ?? undefined };
+      },
+    },
   },
 }));
 
@@ -122,7 +156,7 @@ export const Post = defineDocumentType(() => ({
         if (!post.imageSrc) return new FeaturedImageR1(false, '', '', 0, 0, '', '', null);
         const data = await imageProcessor({
           contentDir: CONTENT_DIR,
-          prefix: `content2/${post._raw.flattenedPath}`,
+          prefix: `${CONTENT_DIR}/${post._raw.flattenedPath}`,
           imgPath: post.imageSrc,
           debug: false,
         });
