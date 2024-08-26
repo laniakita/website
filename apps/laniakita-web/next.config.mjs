@@ -23,6 +23,35 @@ const nextConfig = {
     return config;
   },
   swcMinify: true,
+  async redirects() {
+    return [
+      {
+        source: '/blog/posts/:slug*',
+        destination: '/blog/:slug*',
+        permanent: true,
+      },
+      {
+        source: '/feed.xml',
+        destination: '/atom.xml',
+        permanent: true
+      },
+      {
+        source: '/blog/tags/d5f3af56/meta',
+        destination: '/categories/meta',
+        permanent: true
+      },
+      {
+        source: '/blog/tags/c6857539/full-stack',
+        destination: '/tags/full-stack',
+        permanent: true
+      },
+      {
+        source: '/projects/credits/bot-clicker',
+        destination: '/credits/bot-clicker',
+        permanent: true
+      }
+    ];
+  },
 };
 
 const nextConfigFunction = async (phase, { defaultConfig }) => {
