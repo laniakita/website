@@ -2,10 +2,9 @@ import { useMDXComponent } from 'next-contentlayer2/hooks';
 import type { Post, Tag, Category } from 'contentlayer/generated';
 import PostRollerV4 from '@/app/blog/post-roller-v4';
 
-
 export function MiniLayout({ data, posts }: { data: Category | Tag; posts: Post[] }) {
   return (
-    <div className='simple-color-trans common-padding relative z-[5] -mb-1 flex flex-col gap-2 bg-ctp-base dark:bg-ctp-midnight md:gap-4'>
+    <div className='simple-color-trans px-page-common pt-common pb-common relative z-[5] -mb-1 flex flex-col gap-2 bg-ctp-base dark:bg-ctp-midnight md:gap-4'>
       <div className='flex items-center justify-center'>
         <div className='flex w-full max-w-3xl flex-col gap-2 rounded-md border border-ctp-surface0 p-6 dark:border-ctp-base'>
           <div className=''>
@@ -21,14 +20,14 @@ export function MiniLayout({ data, posts }: { data: Category | Tag; posts: Post[
         <PostRollerV4 posts={posts} />
       ) : (
         <div>
-          <p>Oops no categorys founds. Hmm, somethings wrong here.</p>
+          <p>Oops no matching posts founds. Hmm, somethings wrong here.</p>
         </div>
       )}
     </div>
   );
 }
 
-function MDXComponent({ content }: { content: string }) {
+export function MDXComponent({ content }: { content: string }) {
   const MDXContent = useMDXComponent(content);
   return <MDXContent />;
 }
