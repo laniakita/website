@@ -61,9 +61,12 @@ export default function PostPreviewV4(post: Post) {
 
 export const descriptionHelper = (rawStr: string, postSlug?: string) => {
   if (!rawStr) return;
-
+  
   const findDescr = rawStr.split('\n').map((strPara) => {
-    if (strPara !== '' && strPara.split(' ')[0] !== 'import' && strPara.split(' ')[0] !== '##') {
+    const paraFound = strPara.split(' ')[0];
+    // negatively matches digits, upper/lowercase letters, whitespaces, colons, and accented latin chars. 
+    // this results in matching everything else, i.e. headers, block quotes, etc.
+    if (strPara !== '' && !(/[^a-zA-Z\d\s:\u00C0-\u00FF]/.test(paraFound!)) ) {
       return strPara;
     }
     return undefined;

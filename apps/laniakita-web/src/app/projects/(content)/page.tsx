@@ -8,8 +8,8 @@ import { allPages, allPosts, allProjects, type Project } from '.contentlayer/gen
 import { MDXComponent } from '@/components/cat-tag-common';
 import type { FeaturedImageR1 } from '@/lib/image-process';
 import localLoader from '@/lib/local-loader';
-import LocalDate from '../blog/local-date';
-import { descriptionHelper } from '../blog/post-components';
+import LocalDate from '@/app/(content)/blog/local-date';
+import { descriptionHelper } from '@/app/(content)/blog/post-components';
 
 export default function Projects() {
   const uKey = useId();
@@ -48,7 +48,7 @@ function ProjectPreview(data: Project) {
   return (
     <div className='flex size-full basis-full flex-col overflow-hidden rounded-md border border-ctp-surface0 dark:border-ctp-base'>
       {res.src ? (
-        <Link href={data.link ?? data.url}>
+        <Link href={data.link ?? data.url} target='_blank'>
           <Image
             loader={
               localLoader
@@ -75,7 +75,7 @@ function ProjectPreview(data: Project) {
             </p>
           </div>
           <h2 className='w-fit text-balance text-3xl font-black'>
-            <Link href={data.link ?? data.url} className='flex flex-row items-end text-ctp-text'>
+            <Link href={data.link ?? data.url} target='_blank' className='flex flex-row items-end text-ctp-text'>
               {data.title}
               <span className='icon-[ph--arrow-up-right-bold] mb-1 text-xl' />
             </Link>
