@@ -2,13 +2,16 @@ import type { ReactElement, ReactNode } from 'react';
 import { notFound, redirect } from 'next/navigation';
 import { useMDXComponent } from 'next-contentlayer2/hooks';
 import ReadingBar from '@/components/reading-bar';
-import { PostHeader2 } from '@/app/blog2/post-header-2';
+import { PostHeader2 } from '@/app/blog/post-header-2';
 import { allPosts } from 'contentlayer/generated';
 import BlogImageBlurServer from '../../img-blur-server';
 
 export function Paragraph(props: { children?: ReactNode }) {
   if (typeof props.children !== 'string') {
-    if ((typeof (props.children as ReactElement).type === 'function') || (props.children as ReactElement).type === 'img') {
+    if (
+      typeof (props.children as ReactElement).type === 'function' ||
+      (props.children as ReactElement).type === 'img'
+    ) {
       return <>{props.children}</>;
     }
   }
@@ -21,11 +24,18 @@ export default function BlogPostPage({ params }: { params: { id: string; slug: s
   const post = allPosts.find(
     (postX) =>
       (postX.id.split('-').shift() === params.id && postX.url.split('/').pop() === params.slug) ||
-      postX.id.split('-').shift() === params.id,
+      postX.id.split('-').shift() === params.id ||
+      postX.url.split('/').pop() === params.slug,
   );
 
-  if (post && post.url.split('/').pop() !== params.slug) {
-    redirect(`/blog2/${params.id}/${post.url.split('/').pop()}`);
+  if (post) {
+    if (post.id.split('-').shift() !== params.id) {
+      redirect(`/blog/${post.id.split('-').shift()}/${params.slug}`);
+    }
+    else if (post.url.split('/').pop() !== params.slug) {
+      redirect(`/blog/${params.id}/${post.url.split('/').pop()}`);
+    }
+
   }
 
   const MDXContent = useMDXComponent(post ? post.body.code : '');

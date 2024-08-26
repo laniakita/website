@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import { useMDXComponent } from 'next-contentlayer2/hooks';
 import { allCategories, allPosts } from 'contentlayer/generated';
-import PostRollerV4 from '@/app/blog2/post-components';
+import PostRollerV4 from '@/app/blog/post-components';
 
 export default function CategoryPage({ params }: { params: { slug: string } }) {
   const category = allCategories.find((catX) => catX.url.split('/').pop() === params.slug);
