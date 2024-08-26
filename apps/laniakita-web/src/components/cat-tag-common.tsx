@@ -1,6 +1,6 @@
 import { useMDXComponent } from 'next-contentlayer2/hooks';
 import type { Post, Tag, Category } from 'contentlayer/generated';
-import PostRollerV4 from '@/app/blog/post-roller-v4';
+import PostRollerV4 from '@/app/(content)/blog/post-roller-v4';
 
 export function MiniLayout({ data, posts }: { data: Category | Tag; posts: Post[] }) {
   return (
