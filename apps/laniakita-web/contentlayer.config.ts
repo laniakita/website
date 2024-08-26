@@ -56,7 +56,6 @@ export const Project = defineDocumentType(() => ({
         );
 
         return res;
-        //return { ...data, altText: post.altText ?? undefined, caption: post.caption ?? undefined };
       },
     },
   },
@@ -172,7 +171,6 @@ export const Post = defineDocumentType(() => ({
           data._debug ?? null,
         );
         return res;
-        //return { ...data, altText: post.altText ?? undefined, caption: post.caption ?? undefined };
       },
     },
   },
