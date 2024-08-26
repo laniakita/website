@@ -10,7 +10,7 @@ export default function PostRollerV4({ posts }: { posts: Post[] }) {
   const uniqueKey = useId();
   const pathname = usePathname();
 
-  const isBlog = pathname === '/blog2' && true;
+  const isBlog = pathname === '/blog' && true;
 
   return (
     <div className='flex items-center justify-center'>

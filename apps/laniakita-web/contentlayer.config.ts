@@ -9,7 +9,7 @@ import jsxToHtml from './src/lib/mdx-html';
 
 const CONTENT_DIR = 'content2';
 
-const Page = defineDocumentType(() => ({
+export const Page = defineDocumentType(() => ({
   name: 'Page',
   filePathPattern: 'pages/**/*.mdx',
   contentType: 'mdx',
@@ -20,7 +20,7 @@ const Page = defineDocumentType(() => ({
   computedFields: {
     url: {
       type: 'string',
-      resolve: (page) => `/${page._raw.flattenedPath.split('/').pop()}`
+      resolve: (page) => `/${page._raw.flattenedPath.split('/').slice(1, page._raw.flattenedPath.split('/').length).join('/')}`
     },
   }
 }));
@@ -95,7 +95,7 @@ export const Post = defineDocumentType(() => ({
     },
     url: {
       type: 'string',
-      resolve: (post) => `/blog2/${post.id.split('-').shift()}/${post._raw.flattenedPath.split('/').pop()}`,
+      resolve: (post) => `/blog/${post.id.split('-').shift()}/${post._raw.flattenedPath.split('/').pop()}`,
     },
     featured_image: {
       type: 'json',
