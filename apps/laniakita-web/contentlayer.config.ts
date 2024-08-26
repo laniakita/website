@@ -9,20 +9,40 @@ import jsxToHtml from './src/lib/mdx-html';
 
 const CONTENT_DIR = 'content2';
 
+export const Project = defineDocumentType(() => ({
+  name: 'Project',
+  filePathPattern: 'projects/**/*.yaml',
+  contentType: 'data',
+  fields: {
+    id: { type: 'string', required: true },
+    date: { type: 'string', required: true },
+    title: { type: 'string', required: true },
+    tech: {
+      type: 'list',
+      of: { type: 'string' },
+    },
+    imageSrc: { type: 'string', required: true },
+    altText: { type: 'string', required: true },
+    description: { type: 'string', required: true },
+    blogPost: { type: 'string', required: true },
+  },
+}));
+
 export const Page = defineDocumentType(() => ({
   name: 'Page',
   filePathPattern: 'pages/**/*.mdx',
   contentType: 'mdx',
   fields: {
-    title: {type: 'string', required: true},
-    description: {type: 'string', required: false}
+    title: { type: 'string', required: true },
+    description: { type: 'string', required: false },
   },
   computedFields: {
     url: {
       type: 'string',
-      resolve: (page) => `/${page._raw.flattenedPath.split('/').slice(1, page._raw.flattenedPath.split('/').length).join('/')}`
+      resolve: (page) =>
+        `/${page._raw.flattenedPath.split('/').slice(1, page._raw.flattenedPath.split('/').length).join('/')}`,
     },
-  }
+  },
 }));
 
 const Tag = defineDocumentType(() => ({
@@ -61,7 +81,6 @@ const Category = defineDocumentType(() => ({
   },
 }));
 
-
 export const Post = defineDocumentType(() => ({
   name: 'Post',
   filePathPattern: `posts/**/*.mdx`,
@@ -91,7 +110,7 @@ export const Post = defineDocumentType(() => ({
       resolve: (post) => {
         const renderedMdx = jsxToHtml(post.body.code);
         return renderedMdx;
-      }
+      },
     },
     url: {
       type: 'string',
@@ -102,14 +121,23 @@ export const Post = defineDocumentType(() => ({
       resolve: async (post): Promise<FeaturedImageR1> => {
         if (!post.imageSrc) return new FeaturedImageR1(false, '', '', 0, 0, '', '', null);
         const data = await imageProcessor({
-            contentDir: CONTENT_DIR,
-            prefix: `content2/${post._raw.flattenedPath}`,
-            imgPath: post.imageSrc,
-            debug: false,
-          });
-        
-        const res = new FeaturedImageR1(true, data.src, data.base64, data.height, data.width, post.altText ?? '', post.caption ?? '', data._debug ?? null)
-        return res
+          contentDir: CONTENT_DIR,
+          prefix: `content2/${post._raw.flattenedPath}`,
+          imgPath: post.imageSrc,
+          debug: false,
+        });
+
+        const res = new FeaturedImageR1(
+          true,
+          data.src,
+          data.base64,
+          data.height,
+          data.width,
+          post.altText ?? '',
+          post.caption ?? '',
+          data._debug ?? null,
+        );
+        return res;
         //return { ...data, altText: post.altText ?? undefined, caption: post.caption ?? undefined };
       },
     },
@@ -118,7 +146,7 @@ export const Post = defineDocumentType(() => ({
 
 export default makeSource({
   contentDirPath: CONTENT_DIR,
-  documentTypes: [Post, Category, Tag, Page],
+  documentTypes: [Post, Category, Tag, Page, Project],
   mdx: {
     remarkPlugins: [remarkGfm],
     rehypePlugins: [
