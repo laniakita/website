@@ -4,10 +4,7 @@ import { Inter } from 'next/font/google';
 import localFont from 'next/font/local';
 import type { ReactNode } from 'react';
 import '@/css/app.css';
-import { DarkStoreProvider } from '@/providers/theme-store-provider';
-import NavBar from '@/components/navbar/navbar';
 import { themeGetter } from '@/lib/theme-getter';
-import Footer from '@/components/footer/footer';
 import {
   BASE_URL,
   APP_NAME,
@@ -72,13 +69,9 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
         <script dangerouslySetInnerHTML={{ __html: themeGetter }} />
       </head>
       <body className={inter.className}>
-        <DarkStoreProvider>
-          <NavBar />
-        </DarkStoreProvider>
+
         {children}
-        <DarkStoreProvider>
-          <Footer />
-        </DarkStoreProvider>
+
       </body>
     </html>
   );
