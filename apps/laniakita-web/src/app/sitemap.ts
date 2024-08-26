@@ -1,8 +1,7 @@
 import type { MetadataRoute } from 'next';
+import { compareDesc } from 'date-fns';
+import { allCategories, allPosts, allTags, allProjects, Post } from 'contentlayer/generated';
 import { BASE_URL } from '@/lib/constants';
-import { type WorkMetaProps, batchMatterFetch } from '@/utils/mdx-utils';
-import { getAllTags, queryPostMetas } from '@/lib/node-db-funcs';
-import linker from '@/utils/linker';
 
 const baseSite = [
   {
@@ -47,18 +46,19 @@ const baseSite = [
 // old content if needed.
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const PROJECTS_FOLDER = './src/app/projects/posts/published';
 
-  const blogMetas = await queryPostMetas();
-  const blogCategoriesMetas = await getAllTags();
-  const projectMetas = (await batchMatterFetch(PROJECTS_FOLDER)) as WorkMetaProps[];
+  const postsRes = allPosts.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
+  const categoriesRes = allCategories.sort((a, b) => a.title!.localeCompare(b.title!));
+  const tagsRes = allTags.sort((a, b) => a.title!.localeCompare(b.title!));
+  const projectsRes = allProjects.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
 
-  const blogPosts = blogMetas.map(({ id, slug, date }) => ({
-    url: `${BASE_URL}/${linker(id, slug, 'blog/posts')}`,
-    lastModified: date ? date : new Date(),
+  
+  const posts = postsRes.map((post) => ({
+    url: `${BASE_URL}${post.url}`,
+    lastModified: post.updated ?? post.date,
   }));
 
-  const blogPostCategories = blogCategoriesMetas.map(({ id, slug, date }) => ({
+  const categories = blogCategoriesMetas.map(({ id, slug, date }) => ({
     url: `${BASE_URL}/${linker(id, slug!, 'blog/tags')}`,
     lastModified: date ? date : new Date(),
   }));

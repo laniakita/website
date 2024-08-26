@@ -7,7 +7,7 @@ import rehypeMdxImportMedia from 'rehype-mdx-import-media';
 import { imageProcessor, FeaturedImageR1 } from './src/lib/image-process';
 import jsxToHtml from './src/lib/mdx-html';
 
-const CONTENT_DIR = 'content2';
+const CONTENT_DIR = 'content';
 
 export const Project = defineDocumentType(() => ({
   name: 'Project',
@@ -15,7 +15,8 @@ export const Project = defineDocumentType(() => ({
   contentType: 'data',
   fields: {
     id: { type: 'string', required: true },
-    date: { type: 'string', required: true },
+    date: { type: 'date', required: true },
+    updated: {type: 'date', required: false},
     title: { type: 'string', required: true },
     tech: {
       type: 'list',
@@ -124,6 +125,7 @@ export const Post = defineDocumentType(() => ({
     subheadline: { type: 'string', required: false },
     slug: { type: 'string', required: false },
     date: { type: 'date', required: true },
+    updated: {type: 'date', required: false},
     author: { type: 'string', required: false },
     categories: {
       type: 'list',

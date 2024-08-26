@@ -24,3 +24,5 @@ secrets.env
 .contentlayer
 # versionvault
 .versionvault
+# eslint
+.eslintcache
