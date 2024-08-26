@@ -1,15 +1,14 @@
-/* eslint-disable no-console -- bun is bun */
 import 'dotenv/config';
-import dbGen from './db-gen';
-import atomGen from './atom-gen';
+import { syncVersionVault } from './version-vault';
 
 const runScripts = async (): Promise<void> => {
   try {
-    console.log('trying to create database');
-    await dbGen();
-    console.log('dbGen success');
-    await atomGen();
-    console.log('atomGen success');
+    const laniVersionVaultConfig = {
+      packages: {
+        dependencies: ['next', 'sharp'],
+      },
+    };
+    await syncVersionVault(laniVersionVaultConfig);
   } catch (err) {
     console.error(err);
   }
