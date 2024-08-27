@@ -1,10 +1,9 @@
 'use client';
-import SocialIconNav from '@/components/social-icon';
+import { socialItems2 } from '../sidebar/main';
+import { SocialIconNav2 } from '../sidebar/social-icon-nav-client';
 import CircleMovie from './circle-movie';
 import { FooterBox, FooterBoxSpecial } from './footer-box';
 import data from './common-data.json';
-import { SocialIconNav2 } from '../sidebar/social-icon-nav-client';
-import { socialItems2 } from '../sidebar/main';
 
 export const socialItems = [
   {

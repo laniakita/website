@@ -6,9 +6,7 @@ interface CatTag {
   slug: string;
 }
 
-export function CatTagRoller({ cats, tags }: { cats?: string[] | undefined; tags?: string[] | undefined }) {
-  const uniqueKey = useId();
-
+export const catTagData = ({ cats, tags }: { cats?: string[] | undefined; tags?: string[] | undefined }) => {
   const categories = cats
     ? cats.map((cat) => {
         const category = allCategories.find(
@@ -30,7 +28,14 @@ export function CatTagRoller({ cats, tags }: { cats?: string[] | undefined; tags
     ...categories.sort((a, b) => a!.title!.localeCompare(b!.title!)),
     ...tagsArr.sort((a, b) => a!.title!.localeCompare(b!.title!)),
   ];
+  
+  return comboArr
+}
 
+export function CatTagRoller({ cats, tags }: { cats?: string[] | undefined; tags?: string[] | undefined }) {
+  const uniqueKey = useId();
+  const comboArr = catTagData({cats, tags})
+  
   return (
     <div className='flex flex-wrap'>
       {comboArr.map((combo, idx) => (

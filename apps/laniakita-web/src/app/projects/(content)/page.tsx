@@ -1,5 +1,6 @@
 import { useId } from 'react';
 import { notFound } from 'next/navigation';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { compareDesc } from 'date-fns';
@@ -10,6 +11,24 @@ import type { FeaturedImageR1 } from '@/lib/image-process';
 import localLoader from '@/lib/local-loader';
 import LocalDate from '@/app/(content)/blog/local-date';
 import { descriptionHelper } from '@/app/(content)/blog/post-components';
+
+const pageData = allPages.find((page) => page.url === '/projects');
+const description = descriptionHelper(pageData!.body.raw, pageData?.url, true);
+
+export const metadata: Metadata = {
+  title: pageData?.title,
+  authors: [{ name: 'Lani Akita' }],
+  description,
+  openGraph: {
+    title: pageData?.title,
+    description,
+  },
+  twitter: {
+    card: 'summary',
+    title: pageData?.title,
+    description,
+  },
+}
 
 export default function Projects() {
   const uKey = useId();
@@ -43,7 +62,7 @@ function ProjectPreview(data: Project) {
     return descriptionHelper(getPost!.body.raw, getPost!.url);
   };
 
-  const description = data.blogPost ? getDescription(data) : data.description;
+  const descriptionX = data.blogPost ? getDescription(data) : data.description;
 
   return (
     <div className='flex size-full basis-full flex-col overflow-hidden rounded-md border border-ctp-surface0 dark:border-ctp-base'>
@@ -84,14 +103,14 @@ function ProjectPreview(data: Project) {
         <div className='h-px w-full bg-ctp-surface0 dark:bg-ctp-base' />
         <div className='prose-protocol-omega max-w-full text-pretty prose-p:my-0 prose-a:no-underline'>
           {/* @ts-expect-error -- there's only one string */}
-          <Markdown options={{ forceBlock: true }}>{description}</Markdown>
+          <Markdown options={{ forceBlock: true }}>{descriptionX}</Markdown>
         </div>
 
         <div className='h-px w-full bg-ctp-surface0 dark:bg-ctp-base' />
         <div className='flex flex-row gap-[1ch]'>
           <div className='flex flex-wrap gap-[1ch]'>
             {data.tech?.map((tag, idx) => (
-              <p key={uKey} className='w-fit font-mono text-sm font-semibold'>
+              <p key={`project-preview-${uKey}-${Math.floor(Math.random() * 100 + idx)}`} className='w-fit font-mono text-sm font-semibold'>
                 {tag}
                 {idx < data.tech!.length - 1 ? <span>,</span> : ''}
               </p>

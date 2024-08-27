@@ -5,7 +5,7 @@ import Footer from '@/components/footer/footer';
 
 export default function ContentLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <section>
+    <>
       <DarkStoreProvider>
         <NavBar />
       </DarkStoreProvider>
@@ -13,6 +13,6 @@ export default function ContentLayout({ children }: Readonly<{ children: ReactNo
       <DarkStoreProvider>
         <Footer />
       </DarkStoreProvider>
-    </section>
+    </>
   );
 }

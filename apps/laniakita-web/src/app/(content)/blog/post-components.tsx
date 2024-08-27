@@ -59,7 +59,7 @@ export default function PostPreviewV4(post: Post) {
   );
 }
 
-export const descriptionHelper = (rawStr: string, postSlug?: string) => {
+export const descriptionHelper = (rawStr: string, postSlug?: string, justDescr?: boolean) => {
   if (!rawStr) return;
   
   const findDescr = rawStr.split('\n').map((strPara) => {
@@ -81,5 +81,5 @@ export const descriptionHelper = (rawStr: string, postSlug?: string) => {
 
   foundDescr.splice(-1, 1, endInjection!).join(' ');
 
-  return foundDescr.join(' ');
+  return justDescr ? findDescr.filter(el => el)[0] : foundDescr.join(' ');
 };
