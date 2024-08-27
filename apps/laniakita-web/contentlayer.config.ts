@@ -57,7 +57,7 @@ export const Project = defineDocumentType(() => ({
         );
 
         return res;
-      },
+    },
     },
   },
 }));
@@ -69,6 +69,7 @@ export const Page = defineDocumentType(() => ({
   fields: {
     title: { type: 'string', required: true },
     description: { type: 'string', required: false },
+    date: {type: 'date', required: false}
   },
   computedFields: {
     url: {

@@ -36,7 +36,7 @@ export default function ShareButton() {
         className={`${isOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'} absolute -bottom-4 z-[1] size-0 border-[1rem] border-x-transparent border-b-ctp-surface0 border-t-transparent`}
       />
       <div
-        className={`${isOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'} absolute -bottom-16 z-[2] min-w-fit whitespace-nowrap rounded-md border border-ctp-surface0 bg-ctp-base p-1 font-mono shadow-lg dark:shadow-ctp-mauve/30`}
+        className={`${isOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'} absolute -bottom-16 z-[2] min-w-fit whitespace-nowrap rounded-md border border-ctp-surface0 bg-ctp-base p-1 font-mono shadow-lg dark:shadow-ctp-pink/30`}
       >
         <ul>
           <li>
@@ -50,7 +50,7 @@ export default function ShareButton() {
                 }, 2000);
               }}
               type='button'
-              className='flex flex-row items-center gap-2 rounded border border-ctp-surface0 px-4 py-2 hover:bg-ctp-mauve hover:text-ctp-base'
+              className='color-trans-quick flex flex-row items-center gap-2 rounded border border-ctp-surface0 px-4 py-2 hover:bg-ctp-pink hover:text-ctp-base'
             >
               <span className='icon-[ph--link] text-xl' />
               <span>{isCopied ? 'copied!' : 'copy link'}</span>
@@ -64,7 +64,7 @@ export default function ShareButton() {
           !isOpen ? setIsOpen(true) : setIsOpen(false);
         }}
         type='button'
-        className='flex flex-row items-center justify-center gap-2 rounded-full border border-ctp-mauve bg-ctp-mauve/10 px-8 py-2 font-mono font-black hover:bg-ctp-mauve hover:text-ctp-base'
+        className='color-trans-quick flex flex-row items-center justify-center gap-2 rounded-full border border-ctp-mauve bg-ctp-mauve/10 px-8 py-2 font-mono font-black hover:border-ctp-flamingo hover:bg-ctp-pink hover:text-ctp-base'
       >
         <span className='icon-[ph--upload-bold] text-2xl' />
         <span>share</span>

@@ -1,4 +1,4 @@
-import { headers } from 'next/headers';
+//import { headers } from 'next/headers';
 import { compareDesc } from 'date-fns';
 import { toXML } from 'jstoxml';
 import { allCategories, allPosts, allTags, type Tag, type Category } from 'contentlayer/generated';
@@ -17,11 +17,12 @@ const NEXTJS_VERSION = versionVault.versions.dependencies.next;
 const posts = allPosts.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
 
 export function GET() {
+  /*
   const headersList = headers();
   const host = headersList.get('host');
   const protocol = process.env.NODE_ENV === 'production' ? 'https://' : 'http://';
-
-  const HOST_URL = `${protocol}${host}`;
+  */
+  const HOST_URL = 'https://laniakita.com' //`${protocol}${host}`;
 
   const catTagRoller = (catsTagArr: Category[] | Tag[]) => {
     const res = catsTagArr.map((catTagX) => {
@@ -88,7 +89,7 @@ export function GET() {
             rel: 'alternate',
           },
           {
-            href: `${HOST_URL}${post.url}}`,
+            href: `${HOST_URL}${post.url}`,
           },
         ],
       },
@@ -122,8 +123,19 @@ export function GET() {
       },
       {
         _name: 'link',
+        _attrs: [
+          {
+            href: `${HOST_URL}/atom.xml`,
+          },
+          {
+            rel: 'self',
+          },
+        ],
+      },
+      {
+        _name: 'link',
         _attrs: {
-          href: `${HOST_URL}/`,
+          href: `${HOST_URL}/blog`,
         },
       },
       {
@@ -143,30 +155,17 @@ export function GET() {
           },
         ],
       },
+
       {
-        _name: 'link',
+        _name: 'category',
         _attrs: [
           {
-            rel: 'self',
+            term: 'technology',
           },
           {
-            href: `${HOST_URL}/atom.xml`,
+            label: 'Technology',
           },
         ],
-      },
-      {
-        _name: 'link',
-        _attrs: [
-          {
-            rel: 'alternate',
-          },
-          {
-            href: `${HOST_URL}/blog`,
-          },
-        ],
-      },
-      {
-        category: 'Technology',
       },
       {
         _name: 'generator',
@@ -188,7 +187,7 @@ export function GET() {
         subtitle: BLOG_DESCR,
       },
       {
-        id: `${HOST_URL}/`,
+        id: `${HOST_URL}/blog`,
       },
       postEntry,
     ],
