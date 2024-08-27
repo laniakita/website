@@ -10,3 +10,4 @@ package.json
 *.vert
 *.frag
 drizzle/meta/*
+.tmp/*
