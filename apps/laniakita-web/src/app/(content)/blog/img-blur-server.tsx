@@ -1,5 +1,5 @@
 import { type FC } from 'react';
-import { betterBlur } from '@/utils/better-blurs';
+import { betterBlur } from '@/lib/better-blurs';
 import BlogImageBlur from './img-blur-client';
 
 export interface BlurClientProps {
