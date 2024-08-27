@@ -1,10 +1,15 @@
+import { Suspense } from 'react';
+import dynamic from 'next/dynamic';
 import { HajClickerStoreProvider } from '@/providers/hajclicker-store-provider';
-import BotClickerScene from './main';
+
+const BotClickerScene = dynamic(() => import('./main'), { ssr: false });
 
 export default function BotClicker() {
   return (
-    <HajClickerStoreProvider>
-      <BotClickerScene />
-    </HajClickerStoreProvider>
+    <Suspense>
+      <HajClickerStoreProvider>
+        <BotClickerScene />
+      </HajClickerStoreProvider>
+    </Suspense>
   );
 }

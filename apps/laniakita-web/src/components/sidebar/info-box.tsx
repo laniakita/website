@@ -3,7 +3,6 @@ import Markdown from 'markdown-to-jsx';
 import { useState } from 'react';
 import { type Category, type Tag } from 'contentlayer/generated';
 import { type SocialNavIcon } from '../social-icon';
-import { SocialIconNav2 } from './social-icon-nav-client';
 import EzRoller from './ez-roller';
 
 export default function InfoBox({

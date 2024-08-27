@@ -11,22 +11,21 @@ import type { Points } from 'three';
 import { useHajClickerStore } from '@/providers/hajclicker-store-provider';
 import CounterOverlayMin from './counter-overlay-min';
 
-const SceneOverlayV3 = dynamic(() => import('@/components/canvas/scenes/bot-clicker/neil/scene-overlay-alt'), {
+/* const SceneOverlayV3 = dynamic(() => import('@/components/canvas/scenes/bot-clicker/neil/scene-overlay-alt'), {
   ssr: false,
-});
+}); */
 
 const Neils = dynamic(() => import('@/components/canvas/scenes/bot-clicker/neil/neil2'), { ssr: false });
 
-const SocialCounterOverlay = dynamic(
+/* const SocialCounterOverlay = dynamic(
   () => import('@/components/canvas/scenes/bot-clicker/neil/scene-social-counter-overlay'),
   { ssr: false },
-);
+); */
 
 export default function BotClickerScene({ isEmbed }: { isEmbed?: boolean }) {
   const ref = useRef(null!);
   const [windowWidth, setWindowWidth] = useState(0);
   const [viewMobile, setViewMobile] = useState(false);
-  const [viewTablet, setViewTablet] = useState(false);
 
   useEffect(() => {
     if (windowWidth !== window.innerWidth) {
@@ -34,10 +33,8 @@ export default function BotClickerScene({ isEmbed }: { isEmbed?: boolean }) {
     }
     if (windowWidth < 768) {
       setViewMobile(true);
-      setViewTablet(false);
     } else if (windowWidth >= 768) {
       setViewMobile(false);
-      setViewTablet(true);
     }
   }, [windowWidth]);
 
@@ -46,10 +43,9 @@ export default function BotClickerScene({ isEmbed }: { isEmbed?: boolean }) {
       ref={ref}
       className={` relative flex size-full min-h-[34rem] items-center justify-center  overflow-hidden ${isEmbed ? 'max-h-96 max-w-7xl' : '[height:_100dvh] lg:max-h-screen '}`}
     >
-      
       <CounterOverlayMin model='Bot' />
       {/* <SceneOverlayV3 viewMobile={viewMobile} viewTablet={viewTablet} />
-      *<SocialCounterOverlay model='Bot' />{' '} */}
+       *<SocialCounterOverlay model='Bot' />{' '} */}
       <Suspense>
         <Canvas
           eventSource={ref}
@@ -117,18 +113,20 @@ function BotClickerMain({ viewMobile }: { viewMobile: boolean }) {
   return (
     <>
       <Neils viewMobile={viewMobile} speed={gameSpeedCalc()} count={viewMobile ? 30 : 60} />
-      {searchParams.get('play') === 'true' && (
-        <>
-          <Stars ref={starRef} />
-          <spotLight decay={1.05} power={40} position={[0, 0, 10]} />
-          <BakeShadows />
-          <EffectComposer enableNormalPass={false} multisampling={0}>
-            <Bloom luminanceThreshold={0.2} luminanceSmoothing={0.25} mipmapBlur intensity={14} />
-          </EffectComposer>
-        </>
-      )}
+      <Suspense>
+        {searchParams.get('play') === 'true' && (
+          <>
+            <Stars ref={starRef} />
+            <spotLight decay={1.05} power={40} position={[0, 0, 10]} />
+            <BakeShadows />
+            <EffectComposer enableNormalPass={false} multisampling={0}>
+              <Bloom luminanceThreshold={0.2} luminanceSmoothing={0.25} mipmapBlur intensity={14} />
+            </EffectComposer>
+          </>
+        )}
+      </Suspense>
       <color attach='background' args={['black']} />
-      {!searchParams.get('play') && <hemisphereLight intensity={1.4} />}
+      <Suspense>{!searchParams.get('play') && <hemisphereLight intensity={1.4} />}</Suspense>
     </>
   );
 }

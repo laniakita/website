@@ -136,6 +136,10 @@ export const Post = defineDocumentType(() => ({
       type: 'list',
       of: Tag,
     },
+    keywords: {
+      type: 'list',
+      of: {type: 'string'},
+    },
     imageSrc: { type: 'string', required: false },
     altText: { type: 'string', required: false },
     caption: { type: 'string', required: false },
