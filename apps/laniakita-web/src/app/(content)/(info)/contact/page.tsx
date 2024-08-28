@@ -22,8 +22,5 @@ export const metadata: Metadata = {
 };
 
 export default function ContactPage() {
-  return (
-    <PageCommon slug='contact' />
-  );
+  return <PageCommon slug='contact' />;
 }
-

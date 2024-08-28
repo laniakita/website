@@ -16,7 +16,7 @@ export const Project = defineDocumentType(() => ({
   fields: {
     id: { type: 'string', required: true },
     date: { type: 'date', required: true },
-    updated: {type: 'date', required: false},
+    updated: { type: 'date', required: false },
     title: { type: 'string', required: true },
     tech: {
       type: 'list',
@@ -24,15 +24,15 @@ export const Project = defineDocumentType(() => ({
     },
     imageSrc: { type: 'string', required: false },
     altText: { type: 'string', required: false },
-    caption: {type: 'string', required: false},
+    caption: { type: 'string', required: false },
     description: { type: 'string', required: true },
     blogPost: { type: 'string', required: false },
-    link: {type: 'string', required: false},
+    link: { type: 'string', required: false },
   },
   computedFields: {
     url: {
       type: 'string',
-      resolve: (project) => `/${project._raw.flattenedPath}`
+      resolve: (project) => `/${project._raw.flattenedPath}`,
     },
     featured_image: {
       type: 'json',
@@ -57,7 +57,7 @@ export const Project = defineDocumentType(() => ({
         );
 
         return res;
-    },
+      },
     },
   },
 }));
@@ -69,7 +69,7 @@ export const Page = defineDocumentType(() => ({
   fields: {
     title: { type: 'string', required: true },
     description: { type: 'string', required: false },
-    date: {type: 'date', required: false}
+    date: { type: 'date', required: false },
   },
   computedFields: {
     url: {
@@ -126,7 +126,7 @@ export const Post = defineDocumentType(() => ({
     subheadline: { type: 'string', required: false },
     slug: { type: 'string', required: false },
     date: { type: 'date', required: true },
-    updated: {type: 'date', required: false},
+    updated: { type: 'date', required: false },
     author: { type: 'string', required: false },
     categories: {
       type: 'list',
@@ -138,7 +138,7 @@ export const Post = defineDocumentType(() => ({
     },
     keywords: {
       type: 'list',
-      of: {type: 'string'},
+      of: { type: 'string' },
     },
     imageSrc: { type: 'string', required: false },
     altText: { type: 'string', required: false },

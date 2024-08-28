@@ -81,7 +81,7 @@ export function FooterBoxSpecial(Props: FooterBoxSpecialProps) {
               href={item.url}
               key={item.title.toLowerCase()}
               target='_blank'
-              className='whitespace-nowrap footer-nav-item w-fit'
+              className='footer-nav-item w-fit whitespace-nowrap'
             >
               {item.title}
             </Link>

@@ -43,7 +43,6 @@ export default function ImageGen({ bgStr, logoStr, title }: { bgStr: ImgGen; log
           laniakita.com
         </h3>
       </div>
-
     </div>
   ) : (
     <div

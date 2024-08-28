@@ -19,8 +19,8 @@ export default async function Image({ params }: { params: { id: string; slug: st
   );
 
   if ((postData?.featured_image as FeaturedImageR1).hasImage) {
-    const featured = (
-      await imageBase64(join(__dirname, `../../../../../../public${(postData?.featured_image as FeaturedImageR1).src}`))
+    const featured = await imageBase64(
+      join(__dirname, `../../../../../../public${(postData?.featured_image as FeaturedImageR1).src}`),
     );
     return new ImageResponse(
       (
@@ -30,7 +30,7 @@ export default async function Image({ params }: { params: { id: string; slug: st
             height: '100%',
             display: 'flex',
             justifyContent: 'center',
-            alignItems: 'center'
+            alignItems: 'center',
           }}
         >
           {/* eslint-disable-next-line -- image component isn't posible here. */}
@@ -41,7 +41,7 @@ export default async function Image({ params }: { params: { id: string; slug: st
             width={featured.width}
             style={{
               display: 'flex',
-              objectFit: 'cover'
+              objectFit: 'cover',
             }}
           />
         </div>
