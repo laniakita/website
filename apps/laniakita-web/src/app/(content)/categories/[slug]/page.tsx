@@ -28,13 +28,11 @@ export async function generateMetadata(
     openGraph: {
       title: catData?.title,
       description,
-      images: [...previousImages],
     },
     twitter: {
       card: 'summary',
       title: catData?.title,
       description,
-      images: [...previousImages],
     },
   };
 }
