@@ -99,7 +99,7 @@ export default function ImageGenTwo({
           backgroundColor: '#07070D',
           border: '0.15rem solid #1e1e2e',
           borderRadius: '0.375rem',
-          maxWidth: '80%'
+          maxWidth: '80%',
         }}
       >
         <h1 style={{ fontWeight: 900, fontSize: 70 }}>{title}</h1>

@@ -15,22 +15,25 @@ export default async function GET() {
     res.arrayBuffer(),
   );
 
-  return new ImageResponse(<ImageGenTwo logo={logoSrc} bg={bgSrc} bgFormat='png' title='Credits/Thanks' logoFormat='png' />, {
-    width: 1200,
-    height: 630,
-    fonts: [
-      {
-        name: 'InterTight',
-        data: interTightBlack,
-        style: 'normal',
-        weight: 900,
-      },
-      {
-        name: 'InterTight',
-        data: interTightSemiBold,
-        style: 'normal',
-        weight: 600,
-      },
-    ],
-  });
+  return new ImageResponse(
+    <ImageGenTwo logo={logoSrc} bg={bgSrc} bgFormat='png' title='Credits/Thanks' logoFormat='png' />,
+    {
+      width: 1200,
+      height: 630,
+      fonts: [
+        {
+          name: 'InterTight',
+          data: interTightBlack,
+          style: 'normal',
+          weight: 900,
+        },
+        {
+          name: 'InterTight',
+          data: interTightSemiBold,
+          style: 'normal',
+          weight: 600,
+        },
+      ],
+    },
+  );
 }

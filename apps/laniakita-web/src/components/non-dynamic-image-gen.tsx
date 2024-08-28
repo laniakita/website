@@ -4,7 +4,6 @@ interface ImgGen {
   height: number;
 }
 
-
 export default function ImageGenAlt({ bgStr, logoStr, title }: { bgStr: ImgGen; logoStr: ImgGen; title: string }) {
   return title.toLowerCase() === 'home' ? (
     <div
