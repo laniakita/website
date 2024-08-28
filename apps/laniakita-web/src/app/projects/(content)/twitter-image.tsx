@@ -1,30 +1,35 @@
-import { readFile } from 'node:fs/promises';
-import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { ImageResponse } from 'next/og';
-import ImageGen from '@/components/non-dynamic-image-gen';
-import { imageBase64 } from '@/lib/better-blurs';
+import ImageGenTwo from '@/components/image-gen-two';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const logoStr = await imageBase64(join(__dirname, '../../laniakita-logo-transparent-darkmore.png'));
-const bgStr = await imageBase64(join(__dirname, '../../noise_shader_01_wide.png'));
+export const runtime = 'edge'
 
 export default async function GET() {
-  return new ImageResponse(<ImageGen logoStr={logoStr} bgStr={bgStr} title='Projects' />, {
+  const logoSrc = await fetch(new URL('../../laniakita-logo-transparent-darkmode.png', import.meta.url)).then(
+    (res) => res.arrayBuffer()
+  );
+  const bgSrc = await fetch(new URL('../../noise_shader_01.png', import.meta.url)).then(
+    (res) => res.arrayBuffer()
+  );
+  const interTightBlack = await fetch(new URL('../../InterTight-Black.ttf', import.meta.url)).then(
+    (res) => res.arrayBuffer()
+  );
+  const interTightSemiBold = await fetch(new URL('../../InterTight-SemiBold.ttf', import.meta.url)).then(
+    (res) => res.arrayBuffer()
+  );
+  
+  return new ImageResponse(<ImageGenTwo logo={logoSrc} bg={bgSrc} bgFormat='png' title='Home' />, {
     width: 1600,
     height: 900,
     fonts: [
       {
         name: 'InterTight',
-        data: await readFile(join(__dirname, '../../InterTight-Black.ttf')),
+        data: interTightBlack,
         style: 'normal',
         weight: 900,
       },
       {
         name: 'InterTight',
-        data: await readFile(join(__dirname, '../../InterTight-SemiBold.ttf')),
+        data: interTightSemiBold,
         style: 'normal',
         weight: 600,
       },
