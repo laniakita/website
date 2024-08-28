@@ -24,7 +24,7 @@ export function FooterBox(Props: FooterBoxProps) {
         <div className='flex flex-col space-y-2 text-2xl'>
           {navItems.map((item) =>
             item === 'login' || item === 'subscribe' ? (
-              <p key={navItems.indexOf(item)} className='text-lg capitalize text-ctp-surface0'>
+              <p key={navItems.indexOf(item)} className='capitalize text-ctp-surface0'>
                 {item}
               </p>
             ) : (
@@ -32,7 +32,7 @@ export function FooterBox(Props: FooterBoxProps) {
                 key={navItems.indexOf(item)}
                 //prefetch={item.toLowerCase() === "home" ? false : true}
                 href={handleRef(item)}
-                className='footer-nav-item'
+                className='footer-nav-item w-fit'
                 target={item === 'RSS/Atom' ? '_blank' : undefined}
               >
                 {item === 'RSS/Atom' ? item : item.toLowerCase()}
@@ -71,7 +71,7 @@ export function FooterBoxSpecial(Props: FooterBoxSpecialProps) {
   } = Props;
 
   return (
-    <div className={`${extraClass} size-min`}>
+    <div className={extraClass}>
       <div className='flex break-inside-avoid flex-col'>
         <h3 className='pb-2 font-mono font-extrabold lowercase '>{title}</h3>
         <div className='flex flex-col space-y-2'>
@@ -81,7 +81,7 @@ export function FooterBoxSpecial(Props: FooterBoxSpecialProps) {
               href={item.url}
               key={item.title.toLowerCase()}
               target='_blank'
-              className='footer-nav-item whitespace-nowrap'
+              className='whitespace-nowrap footer-nav-item w-fit'
             >
               {item.title}
             </Link>

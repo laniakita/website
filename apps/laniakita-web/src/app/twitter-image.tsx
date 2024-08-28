@@ -33,12 +33,6 @@ export default async function GET(
           style: 'normal',
           weight: 600,
         },
-        {
-          name: 'InterTight',
-          data: await readFile(join(__dirname, './InterTight-Regular.ttf')),
-          weight: 400,
-          style: 'normal',
-        },
       ]
     },
   );

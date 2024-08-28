@@ -42,7 +42,7 @@ export async function generateMetadata({ params }: { params: { id: string; slug:
     (postX) => postX.id.split('-').shift() === params.id && postX.url.split('/').pop() === params.slug,
   );
 
-  const description = descriptionHelper(postData!.body.raw, postData!.url, true);
+  const description = descriptionHelper(postData?.body.raw, postData?.url, true);
 
   return {
     title: postData?.headline,
