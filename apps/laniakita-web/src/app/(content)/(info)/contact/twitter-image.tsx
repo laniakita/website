@@ -16,7 +16,7 @@ export default async function GET() {
   );
 
   return new ImageResponse(
-    <ImageGenTwo logo={logoSrc} bg={bgSrc} bgFormat='png' title='Contact Lani' logoFormat='png' />,
+    <ImageGenTwo logo={logoSrc} bg={bgSrc} bgFormat='png' title='Contact Lani' logoFormat='png' twitter />,
     {
       width: 1600,
       height: 900,
