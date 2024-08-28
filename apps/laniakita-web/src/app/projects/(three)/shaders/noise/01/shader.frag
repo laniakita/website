@@ -77,7 +77,7 @@ float snoise(vec2 v) {
 
 void main() {
   vec2 st = vUv;
-  vec2 grid = vec2(st * 9.0);
+  vec2 grid = vec2(st * 20.0);
   
   float point = 0.0;
   
