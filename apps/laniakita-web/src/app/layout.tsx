@@ -1,6 +1,6 @@
 import 'dotenv';
 import type { Metadata, Viewport } from 'next';
-import { Inter } from 'next/font/google';
+import { Inter_Tight } from 'next/font/google';
 import localFont from 'next/font/local';
 import type { ReactNode } from 'react';
 import '@/css/app.css';
@@ -14,7 +14,7 @@ import {
   APP_THEME_COLOR,
 } from '@/lib/constants';
 
-const inter = Inter({ subsets: ['latin'], display: 'swap', variable: '--font-inter' });
+const inter = Inter_Tight({ subsets: ['latin'], display: 'swap', variable: '--font-inter' });
 
 const zeroxproto = localFont({
   src: './0xProto-Regular.woff2',

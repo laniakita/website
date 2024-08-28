@@ -36,7 +36,7 @@ export default function ImageGen({ bgStr, logoStr, title }: { bgStr: ImgGen; log
           style={{
             fontFamily: 'InterTight',
             fontWeight: 900,
-            color: 'white',
+            color: '#cdd6f4',
             fontSize: 51,
           }}
         >
@@ -79,7 +79,7 @@ export default function ImageGen({ bgStr, logoStr, title }: { bgStr: ImgGen; log
           style={{
             fontFamily: 'InterTight',
             fontWeight: 400,
-            color: 'white',
+            color: '#cdd6f4',
             fontSize: 30,
             display: 'flex',
             flexDirection: 'row',
@@ -97,7 +97,7 @@ export default function ImageGen({ bgStr, logoStr, title }: { bgStr: ImgGen; log
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          color: 'white',
+          color: '#cdd6f4',
           padding: '2.25rem 4rem',
           backgroundColor: '#07070D',
           border: '0.15rem solid #1e1e2e',

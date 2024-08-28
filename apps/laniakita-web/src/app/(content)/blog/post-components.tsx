@@ -59,7 +59,7 @@ export default function PostPreviewV4(post: Post) {
   );
 }
 
-export const descriptionHelper = (rawStr: string, postSlug?: string, justDescr?: boolean) => {
+export const descriptionHelper = (rawStr: string | undefined, postSlug?: string | undefined, justDescr?: boolean) => {
   if (!rawStr) return;
   
   const findDescr = rawStr.split('\n').map((strPara) => {

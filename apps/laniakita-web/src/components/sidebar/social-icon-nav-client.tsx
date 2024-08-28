@@ -8,13 +8,13 @@ export function SocialIconNav2({ boxItems }: SocialIconNavProps) {
   const uniqueKey = useId();
 
   return (
-    <div className='grid grid-cols-3 gap-2'>
+    <div className='grid grid-cols-2 gap-2'>
       {boxItems.map((item, idx) => (
         <Link
           key={`social-icon-two-${uniqueKey}-${Math.floor(Math.random() * 1000 + idx)}`}
           rel={item.title.toLowerCase() === 'mastodon' ? 'me' : ''}
           href={item.url}
-          className='color-trans-quick flex basis-full items-center justify-center rounded border border-ctp-surface0 p-2 text-ctp-text transition-none hover:bg-ctp-mauve hover:text-ctp-base dark:border-ctp-base'
+          className='color-trans-quick flex basis-full items-center justify-center rounded border border-ctp-surface0 p-2 text-ctp-text transition-none hover:bg-ctp-pink hover:text-ctp-base dark:border-ctp-base'
           target='_blank'
           aria-label={`Follow Lani on ${item.linkName}`}
         >

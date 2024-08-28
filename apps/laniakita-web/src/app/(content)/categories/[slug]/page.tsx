@@ -19,7 +19,7 @@ export async function generateMetadata(
   const catData = allCategories.find((catY) => catY.url.split('/').pop() === params.slug);
 
   const previousImages = (await parent).openGraph?.images ?? [];
-  const description = descriptionHelper(catData!.body.raw, catData!.url, true);
+  const description = descriptionHelper(catData?.body.raw, catData?.url, true);
 
   return {
     title: catData?.title,

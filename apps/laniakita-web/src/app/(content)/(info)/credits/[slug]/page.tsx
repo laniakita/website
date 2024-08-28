@@ -17,7 +17,7 @@ export async function generateMetadata(
   const tagData = allPages.find((credit) => credit.url.split('/').pop() === params.slug);
 
   const previousImages = (await parent).openGraph?.images ?? [];
-  const description = descriptionHelper(tagData!.body.raw, tagData!.url, true);
+  const description = descriptionHelper(tagData?.body.raw, tagData?.url, true);
 
   return {
     title: tagData?.title,
