@@ -1,5 +1,6 @@
 import 'dotenv';
 import type { Metadata, Viewport } from 'next';
+// eslint-disable-next-line -- I don't control the google fonts package.
 import { Inter_Tight } from 'next/font/google';
 import localFont from 'next/font/local';
 import type { ReactNode } from 'react';
@@ -68,11 +69,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeGetter }} />
       </head>
-      <body className={inter.className}>
-
-        {children}
-
-      </body>
+      <body className={inter.className}>{children}</body>
     </html>
   );
 }

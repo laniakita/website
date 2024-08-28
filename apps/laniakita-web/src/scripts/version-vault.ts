@@ -158,32 +158,25 @@ const genVersions = async (config: Config): Promise<GenVersions | undefined> => 
     const packageJsonRes = await getJson(config.package_json_path);
     const packageJson = packageJsonRes!;
 
-    
-
     // dependencies
-    const versionsGenDeps = config.packages.dependencies
-      ?.map((pkg): [string, string] => {
-        const matchPkg = pkg as keyof typeof packageJson.dependencies;
-        const val = packageJson.dependencies[matchPkg];
-        
-        return [pkg, typeof(val) === 'string' ? val : 'undefined']
-      
-      })
-    
-    const depObj = versionsGenDeps ? Object.fromEntries(versionsGenDeps) : {}
-    
-    
+    const versionsGenDeps = config.packages.dependencies?.map((pkg): [string, string] => {
+      const matchPkg = pkg as keyof typeof packageJson.dependencies;
+      const val = packageJson.dependencies[matchPkg];
+
+      return [pkg, typeof val === 'string' ? val : 'undefined'];
+    });
+
+    const depObj = versionsGenDeps ? Object.fromEntries(versionsGenDeps) : {};
+
     // devDependencies
-      const versionsGenDevDeps = config.packages.devDependencies
-      ?.map((pkg): [string, string] => {
-        const matchPkg = pkg as keyof typeof packageJson.devDependencies;
-        const val = packageJson.devDependencies[matchPkg];
-        
-        return [pkg, typeof(val) === 'string' ? val : 'undefined']
-      
-      })
-    
-    const devObj = versionsGenDevDeps ? Object.fromEntries(versionsGenDevDeps) : {}    
+    const versionsGenDevDeps = config.packages.devDependencies?.map((pkg): [string, string] => {
+      const matchPkg = pkg as keyof typeof packageJson.devDependencies;
+      const val = packageJson.devDependencies[matchPkg];
+
+      return [pkg, typeof val === 'string' ? val : 'undefined'];
+    });
+
+    const devObj = versionsGenDevDeps ? Object.fromEntries(versionsGenDevDeps) : {};
     return {
       versions: {
         dependencies: depObj,

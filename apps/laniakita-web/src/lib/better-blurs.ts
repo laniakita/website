@@ -7,8 +7,8 @@ export const imageBase64 = async (src: string) => {
   const {
     metadata: { height, width, format },
   } = await getPlaiceholder(imgFile);
-  return { base64: `data:image/${format};base64,${ Buffer.from(imgFile).toString('base64')}`,  height, width, format };
-}
+  return { base64: `data:image/${format};base64,${Buffer.from(imgFile).toString('base64')}`, height, width, format };
+};
 
 export const betterBlur = async (src: string) => {
   const imgPath = path.resolve(path.join(process.cwd(), './public/', src));

@@ -1,7 +1,4 @@
 import { PHASE_DEVELOPMENT_SERVER, PHASE_PRODUCTION_BUILD } from 'next/constants.js';
-import remarkFrontmatter from 'remark-frontmatter';
-import rehypeShiki from '@shikijs/rehype';
-import { rendererRich, transformerTwoslash } from '@shikijs/twoslash';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -33,23 +30,23 @@ const nextConfig = {
       {
         source: '/feed.xml',
         destination: '/atom.xml',
-        permanent: true
+        permanent: true,
       },
       {
         source: '/blog/tags/d5f3af56/meta',
         destination: '/categories/meta',
-        permanent: true
+        permanent: true,
       },
       {
         source: '/blog/tags/c6857539/full-stack',
         destination: '/tags/full-stack',
-        permanent: true
+        permanent: true,
       },
       {
         source: '/projects/credits/bot-clicker',
         destination: '/credits/bot-clicker',
-        permanent: true
-      }
+        permanent: true,
+      },
     ];
   },
 };
@@ -63,32 +60,6 @@ const nextConfigFunction = async (phase, { defaultConfig }) => {
       swDest: 'public/sw.js',
     });
     plugins.push(withSerwist);
-
-    const withMDX = (await import('@next/mdx')).default({
-      options: {
-        remarkPlugins: [remarkFrontmatter, (await import('remark-gfm')).default],
-        rehypePlugins: [
-          (await import('rehype-slug')).default,
-          [
-            rehypeShiki,
-            {
-              themes: {
-                light: 'catppuccin-latte',
-                dark: 'catppuccin-mocha',
-              },
-
-              transformers: [
-                transformerTwoslash({
-                  explicitTrigger: true,
-                  renderer: rendererRich(),
-                }),
-              ],
-            },
-          ],
-        ],
-      },
-    });
-    plugins.push(withMDX);
 
     // ignore webpack cache warnings (see: https://github.com/contentlayerdev/contentlayer/issues/313)
     const withContentLayer = (await import('next-contentlayer2')).withContentlayer;

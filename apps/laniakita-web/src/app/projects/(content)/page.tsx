@@ -99,11 +99,7 @@ function ProjectPreview(data: Project) {
             </p>
           </div>
           <h2 className='w-fit text-balance text-3xl font-black'>
-            <Link
-              href={data.link ?? data.url}
-              target='_blank'
-              className='font-title flex flex-row items-end text-ctp-text'
-            >
+            <Link href={data.link ?? data.url} target='_blank' className='flex flex-row items-end text-ctp-text'>
               {data.title}
               <span className='icon-[ph--arrow-up-right-bold] mb-1 text-xl' />
             </Link>

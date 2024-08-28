@@ -5,8 +5,8 @@ import Sidebar from '@/components/sidebar/main';
 import { BLOG_DESCR } from '@/lib/constants';
 import PostRollerV4 from './post-roller-v4';
 
-const title = 'Blog'
-const description = BLOG_DESCR
+const title = 'Blog';
+const description = BLOG_DESCR;
 
 export const metadata: Metadata = {
   title,
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     title,
     description,
   },
-}
+};
 
 export default function BlogPage2() {
   const posts = allPosts.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));

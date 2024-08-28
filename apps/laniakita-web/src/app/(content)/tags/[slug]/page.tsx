@@ -1,4 +1,4 @@
-import type { Metadata, ResolvingMetadata } from 'next';
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { compareDesc } from 'date-fns';
 import { allTags, allPosts } from 'contentlayer/generated';
@@ -12,13 +12,9 @@ export function generateStaticParams() {
   }));
 }
 
-export async function generateMetadata(
-  { params }: { params: { slug: string } },
-  parent: ResolvingMetadata,
-): Promise<Metadata> {
+export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
   const tagData = allTags.find((tagY) => tagY.url.split('/').pop() === params.slug);
 
-  const previousImages = (await parent).openGraph?.images ?? [];
   const description = descriptionHelper(tagData?.body.raw, tagData?.url, true);
 
   return {

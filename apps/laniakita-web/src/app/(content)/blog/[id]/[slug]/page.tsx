@@ -36,8 +36,7 @@ export function generateStaticParams() {
   }));
 }
 
-// eslint-disable-next-line -- requires async
-export async function generateMetadata({ params }: { params: { id: string; slug: string } }): Promise<Metadata> {
+export function generateMetadata({ params }: { params: { id: string; slug: string } }): Metadata {
   const postData = allPosts.find(
     (postX) => postX.id.split('-').shift() === params.id && postX.url.split('/').pop() === params.slug,
   );

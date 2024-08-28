@@ -4,7 +4,7 @@ import { useMDXComponent } from 'next-contentlayer2/hooks';
 
 /*
  * It was necessary to recreate the helper MDX components, because
- * I can't import other components properly. This is due to these 
+ * I can't import other components properly. This is due to these
  * functions being imported via the contentlayer.config.ts.
  *
  * As well, since this is destined for feed readers, it might be

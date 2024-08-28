@@ -22,7 +22,7 @@ export function GET() {
   const host = headersList.get('host');
   const protocol = process.env.NODE_ENV === 'production' ? 'https://' : 'http://';
   */
-  const HOST_URL = 'https://laniakita.com' //`${protocol}${host}`;
+  const HOST_URL = 'https://laniakita.com'; //`${protocol}${host}`;
 
   const catTagRoller = (catsTagArr: Category[] | Tag[]) => {
     const res = catsTagArr.map((catTagX) => {
