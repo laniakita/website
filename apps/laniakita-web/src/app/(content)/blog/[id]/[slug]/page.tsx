@@ -1,6 +1,6 @@
 import type { ReactElement, ReactNode } from 'react';
 import { notFound, redirect } from 'next/navigation';
-import type { Metadata, ResolvingMetadata } from 'next';
+import type { Metadata } from 'next';
 import type { BlogPosting, WithContext } from 'schema-dts';
 import { compareDesc } from 'date-fns';
 import { useMDXComponent } from 'next-contentlayer2/hooks';
@@ -36,21 +36,14 @@ export function generateStaticParams() {
   }));
 }
 
-export async function generateMetadata(
-  { params }: { params: { id: string; slug: string } },
-  parent: ResolvingMetadata,
-): Promise<Metadata> {
+// eslint-disable-next-line -- requires async
+export async function generateMetadata({ params }: { params: { id: string; slug: string } }): Promise<Metadata> {
   const postData = allPosts.find(
     (postX) => postX.id.split('-').shift() === params.id && postX.url.split('/').pop() === params.slug,
   );
 
-  const previousImages = (await parent).openGraph?.images ?? [];
   const description = descriptionHelper(postData!.body.raw, postData!.url, true);
 
-  const imageRes = postData?.featured_image as FeaturedImageR1;
-  //const featuredImg = metaRes.featuredImage?.fileLocation;
-
-  // todo: ImageResponse API for posts / pages without images
   return {
     title: postData?.headline,
     authors: [{ name: 'Lani Akita' }],
@@ -58,19 +51,11 @@ export async function generateMetadata(
     openGraph: {
       title: postData?.headline,
       description,
-      images: [
-        imageRes.hasImage ? imageLoader({ src: imageRes.src, width: evenDiv(imageRes.width, 2), quality: 50 }) : '',
-        ...previousImages,
-      ],
     },
     twitter: {
       card: 'summary',
       title: postData?.headline,
       description,
-      images: [
-        imageRes.hasImage ? imageLoader({ src: imageRes.src, width: evenDiv(imageRes.width, 2), quality: 50 }) : '',
-        ...previousImages,
-      ],
     },
   };
 }
@@ -112,8 +97,7 @@ export default function BlogPostPage({ params }: { params: { id: string; slug: s
   }
 
   const imageRes = post.featured_image as FeaturedImageR1;
-  const catTagArr = catTagData({cats: post.categories, tags: post.tags}).map((catTag) => catTag?.title)
-
+  const catTagArr = catTagData({ cats: post.categories, tags: post.tags }).map((catTag) => catTag?.title);
 
   const jsonLd: WithContext<BlogPosting> = {
     '@context': 'https://schema.org',
@@ -127,8 +111,8 @@ export default function BlogPostPage({ params }: { params: { id: string; slug: s
     datePublished: post.date,
     dateModified: post.updated ?? post.date,
     thumbnailUrl: imageLoader({ src: imageRes.src, width: evenDiv(imageRes.width, 2), quality: 50 }),
-    keywords: post.keywords ?? catTagArr as string[],
-    countryOfOrigin: 'United States'
+    keywords: post.keywords ?? (catTagArr as string[]),
+    countryOfOrigin: 'United States',
   };
 
   return (
