@@ -19,7 +19,7 @@ export async function generateMetadata(
   const tagData = allTags.find((tagY) => tagY.url.split('/').pop() === params.slug);
 
   const previousImages = (await parent).openGraph?.images ?? [];
-  const description = descriptionHelper(tagData!.body.raw, tagData!.url, true);
+  const description = descriptionHelper(tagData?.body.raw, tagData?.url, true);
 
   return {
     title: tagData?.title,
@@ -45,5 +45,5 @@ export default function TagPage({ params }: { params: { prefix: string; slug: st
 
   if (!tag) return notFound();
 
-  return <MiniLayout data={tag} posts={matchingPosts} />;
+  return <MiniLayout data={tag} posts={matchingPosts} isTag />;
 }

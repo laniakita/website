@@ -47,7 +47,7 @@ export default function DynamicImageGen({
           style={{
             fontFamily: 'InterTight',
             fontWeight: 400,
-            color: 'white',
+            color: '#cdd6f4',
             fontSize: 30,
             display: 'flex',
             flexDirection: 'row',
@@ -75,7 +75,7 @@ export default function DynamicImageGen({
             alignItems: 'flex-start',
             justifyContent: 'center',
             gap: '-2.5rem',
-            color: 'white',
+            color: '#cdd6f4',
             padding: '2.5rem 4rem',
             backgroundColor: '#07070D',
             border: '0.15rem solid #1e1e2e',

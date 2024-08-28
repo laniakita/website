@@ -15,7 +15,7 @@ import CounterOverlayMin from './counter-overlay-min';
   ssr: false,
 }); */
 
-const Neils = dynamic(() => import('@/components/canvas/scenes/bot-clicker/neil/neil2'), { ssr: false });
+const Neils = dynamic(() => import('@/app/projects/(three)/bot-clicker/neil2'), { ssr: false });
 
 /* const SocialCounterOverlay = dynamic(
   () => import('@/components/canvas/scenes/bot-clicker/neil/scene-social-counter-overlay'),

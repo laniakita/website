@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     title: pageData?.title,
     description,
   },
-}
+};
 
 export default function Projects() {
   const uKey = useId();
@@ -37,13 +37,18 @@ export default function Projects() {
   const projectData = allProjects.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
 
   return (
-    <main className='simple-color-trans pt-common pb-common bg-ctp-base dark:bg-ctp-midnight'>
-      <div className='flex flex-col items-center justify-center gap-4 px-10 md:gap-6'>
-        <div className='flex min-h-full items-center justify-center'>
-          <div className='prose-protocol-omega max-w-3xl '>
+    <main className='simple-color-trans pt-common pb-common px-page-common bg-ctp-base dark:bg-ctp-midnight'>
+      <div className='flex flex-col items-center justify-center gap-4 md:gap-6'>
+        <div className='flex w-full max-w-3xl flex-col gap-4 rounded-md border border-ctp-surface0 p-8 dark:border-ctp-base'>
+          <div className=''>
+            <h1 className='text-3xl font-black md:text-4xl'>{data.title}</h1>
+          </div>
+          <div className='h-px w-full rounded bg-ctp-surface0 dark:bg-ctp-base' />
+          <div className='prose-protocol-omega w-full max-w-sm prose-p:my-0'>
             <MDXComponent content={data.body.code} />
           </div>
         </div>
+
         <div className='flex size-full max-w-3xl flex-wrap items-center justify-center gap-4 md:gap-6'>
           {projectData.map((proj) => (
             <ProjectPreview key={`project-${uKey}`} {...proj} />
@@ -94,7 +99,11 @@ function ProjectPreview(data: Project) {
             </p>
           </div>
           <h2 className='w-fit text-balance text-3xl font-black'>
-            <Link href={data.link ?? data.url} target='_blank' className='flex flex-row items-end text-ctp-text'>
+            <Link
+              href={data.link ?? data.url}
+              target='_blank'
+              className='font-title flex flex-row items-end text-ctp-text'
+            >
               {data.title}
               <span className='icon-[ph--arrow-up-right-bold] mb-1 text-xl' />
             </Link>
@@ -110,7 +119,10 @@ function ProjectPreview(data: Project) {
         <div className='flex flex-row gap-[1ch]'>
           <div className='flex flex-wrap gap-[1ch]'>
             {data.tech?.map((tag, idx) => (
-              <p key={`project-preview-${uKey}-${Math.floor(Math.random() * 100 + idx)}`} className='w-fit font-mono text-sm font-semibold'>
+              <p
+                key={`project-preview-${uKey}-${Math.floor(Math.random() * 100 + idx)}`}
+                className='w-fit font-mono text-sm font-semibold'
+              >
                 {tag}
                 {idx < data.tech!.length - 1 ? <span>,</span> : ''}
               </p>
