@@ -82,13 +82,13 @@ export default function Common2DCanvas({ children, ...props }: { children: Reado
           <OrthographicCamera
             makeDefault
             manual
-            left={-1}
-            right={1}
-            top={1}
-            bottom={-1}
-            near={0}
-            far={1}
-            position={[0, 0, 0.5]}
+            left={-0.5}
+            right={0.5}
+            top={0.5}
+            bottom={-0.5}
+            near={-1000}
+            far={1000}
+            position={[0, 0, 1]}
           />
           {children}
           <Preload all />

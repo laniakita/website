@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import NoiseShader01 from '@/components/canvas/scenes/shaders/noise/noise';
+import NoiseShader01 from '@/app/projects/(three)/shaders/noise/01/noise';
 
 export default function Home() {
   return (
