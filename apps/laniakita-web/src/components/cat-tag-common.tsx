@@ -2,7 +2,7 @@ import { useMDXComponent } from 'next-contentlayer2/hooks';
 import type { Post, Tag, Category } from 'contentlayer/generated';
 import PostRollerV4 from '@/app/(content)/blog/post-roller-v4';
 
-export function MiniLayout({ data, posts, isTag }: { data: Category | Tag; posts: Post[], isTag?: boolean; }) {
+export function MiniLayout({ data, posts, isTag }: { data: Category | Tag; posts: Post[]; isTag?: boolean }) {
   return (
     <div className='simple-color-trans px-page-common pt-common pb-common relative z-[5] -mb-1 flex flex-col gap-2 bg-ctp-base dark:bg-ctp-midnight md:gap-4'>
       <div className='flex items-center justify-center'>

@@ -28,14 +28,14 @@ export const catTagData = ({ cats, tags }: { cats?: string[] | undefined; tags?:
     ...categories.sort((a, b) => a!.title!.localeCompare(b!.title!)),
     ...tagsArr.sort((a, b) => a!.title!.localeCompare(b!.title!)),
   ];
-  
-  return comboArr
-}
+
+  return comboArr;
+};
 
 export function CatTagRoller({ cats, tags }: { cats?: string[] | undefined; tags?: string[] | undefined }) {
   const uniqueKey = useId();
-  const comboArr = catTagData({cats, tags})
-  
+  const comboArr = catTagData({ cats, tags });
+
   return (
     <div className='flex flex-wrap'>
       {comboArr.map((combo, idx) => (

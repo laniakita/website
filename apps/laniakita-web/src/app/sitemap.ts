@@ -38,11 +38,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     return postResTag?.updated ?? postResTag?.date ?? new Date();
   };
-  
+
   const getPageDate = (pageSlug: string) => {
     const res = allPages.find((page) => page.url === `/${pageSlug}`);
     return res?.date ?? new Date();
-  }
+  };
 
   const baseSite = [
     {

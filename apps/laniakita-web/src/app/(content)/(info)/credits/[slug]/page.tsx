@@ -1,4 +1,4 @@
-import type { Metadata, ResolvingMetadata } from 'next';
+import type { Metadata } from 'next';
 import { allPages } from 'contentlayer/generated';
 import { descriptionHelper } from '@/app/(content)/blog/post-components';
 import { PageCommon } from '../../page-common';
@@ -10,13 +10,9 @@ export function generateStaticParams() {
   }));
 }
 
-export async function generateMetadata(
-  { params }: { params: { slug: string } },
-  parent: ResolvingMetadata,
-): Promise<Metadata> {
+export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
   const tagData = allPages.find((credit) => credit.url.split('/').pop() === params.slug);
 
-  const previousImages = (await parent).openGraph?.images ?? [];
   const description = descriptionHelper(tagData?.body.raw, tagData?.url, true);
 
   return {
@@ -35,10 +31,6 @@ export async function generateMetadata(
   };
 }
 
-
-
-export default function ContactPage({params}: {params: {slug: string;}}) {
-  return (
-    <PageCommon slug={params.slug} prefix='credits' />
-  );
+export default function ContactPage({ params }: { params: { slug: string } }) {
+  return <PageCommon slug={params.slug} prefix='credits' />;
 }

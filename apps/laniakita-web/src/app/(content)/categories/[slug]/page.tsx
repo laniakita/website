@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import type { Metadata, ResolvingMetadata } from 'next';
+import type { Metadata } from 'next';
 import { compareDesc } from 'date-fns';
 import { allCategories, allPosts } from 'contentlayer/generated';
 import { MiniLayout } from '@/components/cat-tag-common';
@@ -12,13 +12,9 @@ export function generateStaticParams() {
   }));
 }
 
-export async function generateMetadata(
-  { params }: { params: { slug: string } },
-  parent: ResolvingMetadata,
-): Promise<Metadata> {
+export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
   const catData = allCategories.find((catY) => catY.url.split('/').pop() === params.slug);
 
-  const previousImages = (await parent).openGraph?.images ?? [];
   const description = descriptionHelper(catData?.body.raw, catData?.url, true);
 
   return {

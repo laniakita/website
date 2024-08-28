@@ -21,7 +21,6 @@ export const metadata: Metadata = {
   },
 };
 
-
 const BotClickerScene = dynamic(() => import('./main'), { ssr: false });
 
 export default function BotClicker() {

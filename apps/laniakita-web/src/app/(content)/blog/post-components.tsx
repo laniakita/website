@@ -10,8 +10,8 @@ import { CatTagRoller } from './cat-tag-roller';
 export default function PostPreviewV4(post: Post) {
   const descriptionStr = descriptionHelper(post.body.raw, post.url)!;
   const res = post.featured_image as FeaturedImageR1;
- 
- return (
+
+  return (
     <div className='flex basis-full flex-col overflow-hidden rounded-md border border-ctp-surface0 dark:border-ctp-base'>
       {res.hasImage ? (
         <Link href={post.url}>
@@ -61,12 +61,12 @@ export default function PostPreviewV4(post: Post) {
 
 export const descriptionHelper = (rawStr: string | undefined, postSlug?: string | undefined, justDescr?: boolean) => {
   if (!rawStr) return;
-  
+
   const findDescr = rawStr.split('\n').map((strPara) => {
     const paraFound = strPara.split(' ')[0];
-    // negatively matches digits, upper/lowercase letters, whitespaces, colons, and accented latin chars. 
+    // negatively matches digits, upper/lowercase letters, whitespaces, colons, and accented latin chars.
     // this results in matching everything else, i.e. headers, block quotes, etc.
-    if (strPara !== '' && !(/[^a-zA-Z\d\s:\u00C0-\u00FF]/.test(paraFound!)) ) {
+    if (strPara !== '' && !/[^a-zA-Z\d\s:\u00C0-\u00FF]/.test(paraFound!)) {
       return strPara;
     }
     return undefined;
@@ -81,5 +81,5 @@ export const descriptionHelper = (rawStr: string | undefined, postSlug?: string 
 
   foundDescr.splice(-1, 1, endInjection!).join(' ');
 
-  return justDescr ? findDescr.filter(el => el)[0] : foundDescr.join(' ');
+  return justDescr ? findDescr.filter((el) => el)[0] : foundDescr.join(' ');
 };

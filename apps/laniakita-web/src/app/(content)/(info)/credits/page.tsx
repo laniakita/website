@@ -19,11 +19,8 @@ export const metadata: Metadata = {
     title: data?.title,
     description,
   },
-}
+};
 
 export default function ContactPage() {
-  return (
-    <PageCommon slug='credits' />
-  );
+  return <PageCommon slug='credits' />;
 }
-

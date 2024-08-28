@@ -3,17 +3,14 @@ import { readFile, lstat } from 'node:fs/promises';
 import path from 'node:path';
 import { getPlaiceholder } from 'plaiceholder';
 
-
-
 export interface DebugR1 {
   destination: string;
-    status: {
-      exists: boolean;
-      existsInPublic: boolean;
-    };
-    didCopy: string;
-    reason: string;
-
+  status: {
+    exists: boolean;
+    existsInPublic: boolean;
+  };
+  didCopy: string;
+  reason: string;
 }
 
 export class FeaturedImageR1 {
@@ -26,7 +23,16 @@ export class FeaturedImageR1 {
   caption: string;
   _debug: DebugR1 | null;
 
-  constructor(hasImage: boolean, src: string, base64: string, height: number, width: number, altText: string, caption: string, _debug: DebugR1 | null ) {
+  constructor(
+    hasImage: boolean,
+    src: string,
+    base64: string,
+    height: number,
+    width: number,
+    altText: string,
+    caption: string,
+    _debug: DebugR1 | null,
+  ) {
     this.hasImage = hasImage;
     this.src = src;
     this.base64 = base64;
@@ -37,9 +43,6 @@ export class FeaturedImageR1 {
     this._debug = _debug;
   }
 }
-
-
-
 
 /**
  * A typeguarded version of `instanceof Error` for NodeJS.
@@ -217,5 +220,5 @@ export const imageProcessor = async ({
   } catch (err) {
     console.error(err);
   }
-  return {src: '', base64: '', height: 0, width: 0, _debug: null}
+  return { src: '', base64: '', height: 0, width: 0, _debug: null };
 };

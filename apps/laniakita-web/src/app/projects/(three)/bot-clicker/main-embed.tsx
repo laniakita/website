@@ -10,9 +10,9 @@ import { A11yAnnouncer, A11yUserPreferences, useUserPreferences } from '@react-t
 import type { Points } from 'three';
 import { useHajClickerStore } from '@/providers/hajclicker-store-provider';
 
-const Neils = dynamic(() => import('@/components/canvas/scenes/bot-clicker/neil/neil2'), { ssr: false });
+const Neils = dynamic(() => import('@/app/projects/(three)/bot-clicker/neil2'), { ssr: false });
 
-const CounterOverlayMin = dynamic(() => import('@/components/canvas/scenes/bot-clicker/neil/counter-overlay-min'), {
+const CounterOverlayMin = dynamic(() => import('@/app/projects/(three)/bot-clicker/counter-overlay-min'), {
   ssr: false,
 });
 
