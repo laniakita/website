@@ -129,7 +129,7 @@ export default function ImageGenTwo({
             alignItems: 'center',
             justifyContent: 'center',
             color: '#cdd6f4',
-            padding: '2.25rem 4rem',
+            padding: '1.25rem 3rem',
             backgroundColor: '#07070D',
             border: '0.15rem solid #1e1e2e',
             borderRadius: '0.375rem',

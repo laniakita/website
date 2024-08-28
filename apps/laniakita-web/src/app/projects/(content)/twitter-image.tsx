@@ -15,7 +15,7 @@ export default async function GET() {
     res.arrayBuffer(),
   );
 
-  return new ImageResponse(<ImageGenTwo logo={logoSrc} bg={bgSrc} bgFormat='png' title='Home' />, {
+  return new ImageResponse(<ImageGenTwo logo={logoSrc} bg={bgSrc} bgFormat='png' title='Projects' />, {
     width: 1600,
     height: 900,
     fonts: [
