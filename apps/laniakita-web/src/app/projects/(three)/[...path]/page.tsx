@@ -36,7 +36,7 @@ export async function generateMetadata(
       images: [
         {
           alt: `${projData?.title}`,
-          type: 'image/jpeg',
+          type: 'image/png',
           width: 1200,
           height: 630,
           url: `/opengraph/projects/${(params.path as unknown as string[]).join('/')}`,
@@ -51,7 +51,7 @@ export async function generateMetadata(
       images: [
         {
           alt: projData?.title,
-          type: 'image/jpeg',
+          type: 'image/png',
           width: 1600,
           height: 900,
           url: `/opengraph/projects/${(params.path as unknown as string[]).join('/')}?twitter=true`,

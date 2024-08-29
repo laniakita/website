@@ -45,7 +45,7 @@ export async function generateMetadata(
       images: [
         {
           alt: `${(postData?.featured_image as FeaturedImageR1).altText || postData?.headline}`,
-          type: 'image/jpeg',
+          type: 'image/png',
           width: 1200,
           height: 630,
           url: `/opengraph/blog/${params.id}/${params.slug}`,
@@ -60,7 +60,7 @@ export async function generateMetadata(
       images: [
         {
           alt: `${(postData?.featured_image as FeaturedImageR1).altText || postData?.headline}`,
-          type: 'image/jpeg',
+          type: 'image/png',
           width: 1600,
           height: 900,
           url: `/opengraph/blog/${params.id}/${params.slug}?twitter=true`,

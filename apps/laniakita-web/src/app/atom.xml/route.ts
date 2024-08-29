@@ -1,4 +1,3 @@
-import { headers } from 'next/headers';
 import { compareDesc } from 'date-fns';
 import { toXML } from 'jstoxml';
 import allPosts from 'contentlayermini/Post/index.json'
@@ -7,25 +6,27 @@ import allCategories from 'contentlayermini/Category/index.json'
 import type { Tag, Post, Category } from 'contentlayer/generated';
 import versionVault from 'versionVault/compiled';
 import type { FeaturedImageR1 } from '@/lib/image-process';
-import { BLOG_DESCR } from '@/lib/constants';
+import { BASE_URL, BLOG_DESCR } from '@/lib/constants';
 // opts
 const xmlOpts = {
   header: true,
   indent: '  ',
 };
 
-export const runtime = 'edge'
-
 export function GET() {
 
   const buildDate = new Date().toISOString();
   const NEXTJS_VERSION = versionVault.versions.dependencies.next;
   const posts = allPosts.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date))) as unknown as Post[] | undefined;
-
+  
+  /*
   const headersList = headers();
   const host = headersList.get('host');
   const protocol = process.env.NODE_ENV === 'production' ? 'https://' : 'http://';
   const HOST_URL = `${protocol}${host}`;
+  */
+  
+  const HOST_URL = BASE_URL
 
   const catTagRoller = (catsTagArr: Category[] | Tag[]) => {
     const res = catsTagArr.map((catTagX) => {

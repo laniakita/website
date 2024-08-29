@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     images: [
       {
         alt: `Home Page`,
-        type: 'image/jpeg',
+        type: 'image/png',
         width: 1200,
         height: 630,
         url: `/opengraph/home`,
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     images: [
       {
         alt: `Home Page`,
-        type: 'image/jpeg',
+        type: 'image/png',
         width: 1600,
         height: 900,
         url: `/opengraph/home?twitter=true`,
