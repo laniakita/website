@@ -7,6 +7,8 @@
     },
     "pretty": {},
     "test": {},
+    "preview:build": {},
+    "preview:dev": {},
     "build": {
       "env": ["NODE_ENV"],
       "outputs": [".next/**", "!.next/cache/**", "public/dist/**", "public/sw.js"],
