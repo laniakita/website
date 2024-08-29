@@ -3,6 +3,8 @@ import type { Metadata, ResolvingMetadata } from 'next';
 import { compareDesc } from 'date-fns';
 import { allProjects } from 'contentlayer/generated';
 
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   const projects = allProjects.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
   return projects.map((projX) => ({

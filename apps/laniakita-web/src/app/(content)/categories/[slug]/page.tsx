@@ -5,6 +5,8 @@ import { allCategories, allPosts } from 'contentlayer/generated';
 import { MiniLayout } from '@/components/cat-tag-common';
 import { descriptionHelper } from '../../blog/post-components';
 
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   const cats = allCategories;
   return cats.map((catX) => ({
