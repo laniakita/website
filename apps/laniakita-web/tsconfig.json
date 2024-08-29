@@ -12,19 +12,19 @@
         "name": "next"
       }
     ],
-    "baseUrl": "./",
+    "baseUrl": ".",
     "paths": {
       "@/*": [
-        "src/*"
+        "./src/*"
       ],
       "contentlayer/generated": [
-        ".contentlayer/generated"
+        "./.contentlayer/generated"
       ],
       "contentlayermini/*": [
-        ".contentlayermini/generated/*"
+        "./.contentlayermini/generated/*"
       ],
       "versionVault/compiled": [
-        ".versionvault/compiled/latest.json"
+        "./.versionvault/compiled/latest.json"
       ]
     },
     "types": [

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "analyze": "ANALYZE=true next build",
-    "prebuild": "NODE_ENV=production bun run ./src/scripts/runner.ts",
+    "prebuild": "NODE_ENV=production contentlayer2 build && bun run ./src/scripts/runner.ts",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
