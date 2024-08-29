@@ -1,5 +1,9 @@
 import { ImageResponse } from 'next/og';
 import type { NextRequest } from 'next/server';
+import allPosts from 'contentlayermini/Post/index.json'
+import allPages from 'contentlayermini/Page/index.json'
+import allCategories from 'contentlayermini/Category/index.json'
+import allTags from 'contentlayermini/Tag/index.json'
 import ImageGenTwo from '@/components/image-gen-two';
 import { allProjects } from 'contentlayer/generated';
 import type { Project, Post, Page, Tag, Category } from 'contentlayer/generated';
@@ -8,32 +12,6 @@ import type { FeaturedImageR1 } from '@/lib/image-process';
 export const runtime = 'edge';
 
 export async function GET(request: NextRequest) {
-  const allPosts = await fetch(new URL('../../../../.contentlayermini/generated/Post/index.json', import.meta.url), {
-    headers: { 'Content-Type': 'application/json' },
-  })
-    .then((res) => res.blob())
-    .then((blob) => blob.text())
-    .then((text) => JSON.parse(text) as Post[]);
-  const allPages = await fetch(new URL('../../../../.contentlayermini/generated/Page/index.json', import.meta.url), {
-    headers: { 'Content-Type': 'application/json' },
-  })
-    .then((res) => res.blob())
-    .then((blob) => blob.text())
-    .then((text) => JSON.parse(text) as Page[]);
-  const allCategories = await fetch(
-    new URL('../../../../.contentlayermini/generated/Category/index.json', import.meta.url), {
-    headers: { 'Content-Type': 'application/json' },
-  })
-    .then((res) => res.blob())
-    .then((blob) => blob.text())
-    .then((text) => JSON.parse(text) as Category[]);
-  const allTags = await fetch(new URL('../../../../.contentlayermini/generated/Tag/index.json', import.meta.url), {
-    headers: { 'Content-Type': 'application/json' },
-  })
-    .then((res) => res.blob())
-    .then((blob) => blob.text())
-    .then((text) => JSON.parse(text) as Tag[]);
-
   const size = {
     width: 1200,
     height: 630,
@@ -93,7 +71,7 @@ export async function GET(request: NextRequest) {
     }
     case 'blog': {
       const postUrl = `/blog/${modUrl}`;
-      data.fetched = allPosts.find((postX) => postX.url === postUrl);
+      data.fetched = allPosts.find((postX) => postX.url === postUrl) as unknown as Post | undefined;
       data.type = 'blog';
       data.title = data.fetched?.headline;
       data.prefix = 'Dev Blog of Lani';
@@ -103,7 +81,7 @@ export async function GET(request: NextRequest) {
     }
     case 'credits': {
       const creditUrl = `/credits/${modUrl}`;
-      data.fetched = allPages.find((credit) => credit.url === creditUrl);
+      data.fetched = allPages.find((credit) => credit.url === creditUrl) as unknown as Page | undefined;
       data.type = 'credits';
       data.title = data.fetched?.title;
       data.prefix = 'Credits';
@@ -111,7 +89,7 @@ export async function GET(request: NextRequest) {
     }
     case 'tags': {
       const tagUrl = `/tags/${modUrl}`;
-      data.fetched = allTags.find((tag) => tag.url === tagUrl);
+      data.fetched = allTags.find((tag) => tag.url === tagUrl) as unknown as Tag | undefined;
       data.type = 'tags';
       data.title = data.fetched?.title;
       data.prefix = 'Tags';
@@ -119,7 +97,7 @@ export async function GET(request: NextRequest) {
     }
     case 'categories': {
       const catUrl = `/categories/${modUrl}`;
-      data.fetched = allCategories.find((cat) => cat.url === catUrl);
+      data.fetched = allCategories.find((cat) => cat.url === catUrl) as unknown as Category | undefined;
       data.type = 'categories';
       data.title = data.fetched?.title;
       data.prefix = 'Categories';
@@ -127,7 +105,7 @@ export async function GET(request: NextRequest) {
     }
     case 'static': {
       const staticUrl = `/${modUrl}`;
-      data.fetched = allPages.find((page) => page.url === staticUrl);
+      data.fetched = allPages.find((page) => page.url === staticUrl) as unknown as Page | undefined;
       data.type = 'static';
       data.title = data.fetched?.title;
       data.dynamic = false;
