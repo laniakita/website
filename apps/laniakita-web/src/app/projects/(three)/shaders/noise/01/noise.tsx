@@ -1,8 +1,8 @@
 'use client';
 import { useRef } from 'react';
-import {  shaderMaterial } from '@react-three/drei';
-import {  extend, useFrame, useThree } from '@react-three/fiber';
-import type { Mesh,  ShaderMaterial } from 'three';
+import { shaderMaterial } from '@react-three/drei';
+import { extend, useFrame, useThree } from '@react-three/fiber';
+import type { Mesh, ShaderMaterial } from 'three';
 import Common2DCanvas from '@/components/canvas/dom/common-2d-canvas';
 // @ts-expect-error -- using glsl loader for this
 import vertex from './shader.vert';
@@ -53,4 +53,3 @@ function Setup() {
     </mesh>
   );
 }
-
