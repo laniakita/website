@@ -23,7 +23,5 @@ secrets.env
 .open-next
 # contentlayer
 .contentlayer
-# versionvault
-.versionvault
 # eslint
 .eslintcache
