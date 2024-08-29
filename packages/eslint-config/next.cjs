@@ -29,7 +29,7 @@ module.exports = {
   ignorePatterns: [".next", "dist", "node_modules/"],
   rules: {
     "import/no-default-export": "off",
-    "no-console": ["warn", { allow: ["warn", "error", "debug"] }],
+    "no-console": ["warn", { allow: ["warn", "error", "debug", "info"] }],
     "no-unused-vars": "warn",
     "prefer-named-capture-group": "off",
     "@typescript-eslint/explicit-function-return-type": "off",

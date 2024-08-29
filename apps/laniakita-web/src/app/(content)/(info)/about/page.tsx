@@ -13,11 +13,29 @@ export const metadata: Metadata = {
   openGraph: {
     title: data?.title,
     description,
+    images: [
+      {
+        alt: `${data?.title}`,
+        type: 'image/jpeg',
+        width: 1200,
+        height: 630,
+        url: `/opengraph/static/about`,
+      },
+    ],
   },
   twitter: {
     card: 'summary',
     title: data?.title,
     description,
+    images: [
+      {
+        alt: `${data?.title}`,
+        type: 'image/jpeg',
+        width: 1200,
+        height: 630,
+        url: `/opengraph/static/about?twitter=true`,
+      },
+    ],
   },
 };
 
