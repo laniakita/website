@@ -3,6 +3,8 @@ import { allPages } from 'contentlayer/generated';
 import { descriptionHelper } from '@/app/(content)/blog/post-components';
 import { PageCommon } from '../../page-common';
 
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   const credits = allPages.filter((page) => page._raw.sourceFileDir === 'pages/credits');
   return credits.map((cred) => ({
