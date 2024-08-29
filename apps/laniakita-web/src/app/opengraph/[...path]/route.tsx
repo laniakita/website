@@ -107,6 +107,12 @@ export async function GET(request: NextRequest) {
       data.dynamic = false;
       break;
     }
+    case 'home': {
+      data.type = 'static';
+      data.title = 'Home';
+      data.dynamic = false;
+      break;
+    }
     default: {
       console.error('Whoops, no data found!');
       break;

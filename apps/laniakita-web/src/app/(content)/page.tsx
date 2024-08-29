@@ -1,5 +1,33 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import NoiseShader01 from '@/app/projects/(three)/shaders/noise/01/noise';
+
+
+export const metadata: Metadata = {
+  openGraph: {
+    images: [
+      {
+        alt: `Home Page`,
+        type: 'image/jpeg',
+        width: 1200,
+        height: 630,
+        url: `/opengraph/home`,
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary',
+    images: [
+      {
+        alt: `Home Page`,
+        type: 'image/jpeg',
+        width: 1600,
+        height: 900,
+        url: `/opengraph/home?twitter=true`,
+      },
+    ],
+  },
+};
 
 export default function Home() {
   return (

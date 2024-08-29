@@ -15,11 +15,29 @@ export const metadata: Metadata = {
   openGraph: {
     title,
     description,
+    images: [
+      {
+        alt: title,
+        type: 'image/jpeg',
+        width: 1200,
+        height: 630,
+        url: `/opengraph/static/projects`,
+      },
+    ],
   },
   twitter: {
     card: 'summary',
     title,
     description,
+    images: [
+      {
+        alt: title,
+        type: 'image/jpeg',
+        width: 1200,
+        height: 630,
+        url: `/opengraph/static/blog?twitter=true`,
+      },
+    ],
   },
 };
 
