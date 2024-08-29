@@ -2,7 +2,6 @@
   "name": "website",
   "devDependencies": {
     "@testing-library/react": "^15.0.7",
-    "@types/aws-lambda": "8.10.138",
     "@vitejs/plugin-react": "^4.2.1",
     "eslint": "9.0.0",
     "jsdom": "^24.0.0",
@@ -17,7 +16,6 @@
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo lint",
     "test": "turbo run test",
     "test:watch": "turbo run test:watch"
