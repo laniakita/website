@@ -35,8 +35,8 @@
         ];
         shellHook = ''
           exec zsh
-          export NIX_LD="${pkgs.lib.fileContents "${pkgs.stdenv.cc}/nix-support/dynamic-linker"}"
-          export NIX_LD_x86_64-linux="${pkgs.lib.fileContents "${pkgs.stdenv.cc}/nix-support/dynamic-linker"}"
+          export NIX_LD=${pkgs.lib.fileContents "${pkgs.stdenv.cc}/nix-support/dynamic-linker"}
+          export NIX_LD_x86_64-linux=${pkgs.lib.fileContents "${pkgs.stdenv.cc}/nix-support/dynamic-linker"}
         '';
       };
     });
