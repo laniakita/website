@@ -1,0 +1,29 @@
+{
+  "type": "Prerender",
+  "expiration": false,
+  "group": 9,
+  "bypassToken": "e0eeda43bc7df6d8ca79ac108e35fe77",
+  "experimentalBypassFor": [
+    {
+      "type": "header",
+      "key": "Next-Action"
+    },
+    {
+      "type": "header",
+      "key": "content-type",
+      "value": "multipart/form-data;.*"
+    }
+  ],
+  "fallback": {
+    "type": "FileFsRef",
+    "mode": 33188,
+    "contentType": "text/xml",
+    "fsPath": "atom.xml.prerender-fallback.body"
+  },
+  "initialHeaders": {
+    "content-type": "text/xml",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/atom.xml/layout,_N_T_/atom.xml/route,_N_T_/atom.xml",
+    "vary": "RSC, Next-Router-State-Tree, Next-Router-Prefetch"
+  },
+  "allowQuery": []
+}
