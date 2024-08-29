@@ -1,6 +1,9 @@
 import { headers } from 'next/headers';
 import { compareDesc } from 'date-fns';
 import { toXML } from 'jstoxml';
+import allPosts from 'contentlayermini/Post/index.json'
+import allTags from 'contentlayermini/Tag/index.json'
+import allCategories from 'contentlayermini/Category/index.json'
 import type { Tag, Post, Category } from 'contentlayer/generated';
 import versionVault from 'versionVault/compiled';
 import type { FeaturedImageR1 } from '@/lib/image-process';
@@ -11,27 +14,13 @@ const xmlOpts = {
   indent: '  ',
 };
 
-export const runtime = 'edge';
+export const runtime = 'edge'
 
-export async function GET() {
-  const allPosts = await fetch(new URL('../../../.contentlayermini/generated/Post/index.json', import.meta.url))
-    .then((res) => res.blob())
-    .then((blob) => blob.text())
-    .then((text) => JSON.parse(text) as Post[]);
-  const allCategories = await fetch(
-    new URL('../../../.contentlayermini/generated/Category/index.json', import.meta.url),
-  )
-    .then((res) => res.blob())
-    .then((blob) => blob.text())
-    .then((text) => JSON.parse(text) as Category[]);
-  const allTags = await fetch(new URL('../../../.contentlayermini/generated/Tag/index.json', import.meta.url))
-    .then((res) => res.blob())
-    .then((blob) => blob.text())
-    .then((text) => JSON.parse(text) as Tag[]);
+export function GET() {
 
   const buildDate = new Date().toISOString();
   const NEXTJS_VERSION = versionVault.versions.dependencies.next;
-  const posts = allPosts.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
+  const posts = allPosts.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date))) as unknown as Post[] | undefined;
 
   const headersList = headers();
   const host = headersList.get('host');
@@ -60,7 +49,7 @@ export async function GET() {
     return res;
   };
 
-  const postEntry = posts.map((post) => {
+  const postEntry = posts?.map((post) => {
     const cats =
       post.categories &&
       (
