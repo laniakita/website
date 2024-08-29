@@ -7,7 +7,7 @@
     },
     "pretty": {},
     "test": {},
-    "preview:build": {},
+    "pages:build": {},
     "preview:dev": {},
     "build": {
       "env": ["NODE_ENV"],
