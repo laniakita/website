@@ -1,6 +1,6 @@
 import type { ReactElement, ReactNode } from 'react';
 import { notFound, redirect } from 'next/navigation';
-import type { Metadata } from 'next';
+import type { Metadata, ResolvingMetadata } from 'next';
 import type { BlogPosting, WithContext } from 'schema-dts';
 import { compareDesc } from 'date-fns';
 import { useMDXComponent } from 'next-contentlayer2/hooks';
@@ -36,13 +36,18 @@ export function generateStaticParams() {
   }));
 }
 
-export function generateMetadata({ params }: { params: { id: string; slug: string } }): Metadata {
+export async function generateMetadata({ params }: { params: { id: string; slug: string}},
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+
   const postData = allPosts.find(
     (postX) => postX.id.split('-').shift() === params.id && postX.url.split('/').pop() === params.slug,
   );
 
   const description = descriptionHelper(postData?.body.raw, postData?.url, true);
+  const previousImages = (await parent).openGraph?.images ?? []
 
+  const previousImagesTwitter = (await parent).twitter?.images ?? []
   return {
     title: postData?.headline,
     authors: [{ name: 'Lani Akita' }],
@@ -50,11 +55,31 @@ export function generateMetadata({ params }: { params: { id: string; slug: strin
     openGraph: {
       title: postData?.headline,
       description,
+      images: [
+        {
+          alt: `${(postData?.featured_image as FeaturedImageR1).altText || postData?.headline}`,
+          type: 'image/jpeg',
+          width: 1200,
+          height: 630,
+          url: `/opengraph/blog/${params.id}/${params.slug}`
+        },
+        ...previousImages
+      ],
     },
     twitter: {
       card: 'summary',
       title: postData?.headline,
       description,
+      images: [
+        {
+          alt: `${(postData?.featured_image as FeaturedImageR1).altText || postData?.headline}`,
+          type: 'image/jpeg',
+          width: 1600,
+          height: 900,
+          url: `/opengraph/blog/${params.id}/${params.slug}?twitter=true`
+        },
+        ...previousImagesTwitter
+      ],
     },
   };
 }
