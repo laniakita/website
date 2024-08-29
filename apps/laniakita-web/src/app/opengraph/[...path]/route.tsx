@@ -1,8 +1,8 @@
 import { ImageResponse } from 'next/og';
 import type { NextRequest } from 'next/server';
 import ImageGenTwo from '@/components/image-gen-two';
-import { allPosts, allProjects, allPages } from 'contentlayer/generated';
-import type { Project, Post, Page } from 'contentlayer/generated';
+import { allPosts, allProjects, allPages, allTags, allCategories } from 'contentlayer/generated';
+import type { Project, Post, Page, Tag, Category } from 'contentlayer/generated';
 import type { FeaturedImageR1 } from '@/lib/image-process';
 
 export const runtime = 'edge';
@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
   const reqType = request.nextUrl.pathname.split('/')[2];
 
   interface ResData {
-    fetched: Project | Post | Page | null | undefined;
+    fetched: Project | Post | Page | Tag | Category | null | undefined;
     title: string | null | undefined;
     prefix: string | null | undefined;
     type: string | null | undefined;
@@ -75,9 +75,25 @@ export async function GET(request: NextRequest) {
     case 'credits': {
       const creditUrl = `/credits/${modUrl}`;
       data.fetched = allPages.find((credit) => credit.url === creditUrl);
-      data.type = 'blog';
+      data.type = 'credits';
       data.title = data.fetched?.title;
       data.prefix = 'Credits';
+      break;     
+    }
+    case 'tags': {
+      const tagUrl = `/tags/${modUrl}`;
+      data.fetched = allTags.find((tag) => tag.url === tagUrl);
+      data.type = 'tags';
+      data.title = data.fetched?.title;
+      data.prefix = 'Tags';
+      break;     
+    }
+    case 'categories': {
+      const catUrl = `/categories/${modUrl}`;
+      data.fetched = allCategories.find((cat) => cat.url === catUrl);
+      data.type = 'categories';
+      data.title = data.fetched?.title;
+      data.prefix = 'Categories';
       break;     
     }
     default: {
