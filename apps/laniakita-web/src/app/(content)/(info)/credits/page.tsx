@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     images: [
       {
         alt: `${data?.title}`,
-        type: 'image/jpeg',
+        type: 'image/png',
         width: 1200,
         height: 630,
         url: `/opengraph/static/credits`,
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     images: [
       {
         alt: `${data?.title}`,
-        type: 'image/jpeg',
+        type: 'image/png',
         width: 1600,
         height: 900,
         url: `/opengraph/static/credits?twitter=true`,

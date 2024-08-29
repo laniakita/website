@@ -32,7 +32,7 @@ export async function generateMetadata(
       images: [
         {
           alt: data?.title,
-          type: 'image/jpeg',
+          type: 'image/png',
           width: 1200,
           height: 630,
           url: `/opengraph/credits/${params.slug}`,
@@ -47,7 +47,7 @@ export async function generateMetadata(
       images: [
         {
           alt: data?.title,
-          type: 'image/jpeg',
+          type: 'image/png',
           width: 1600,
           height: 900,
           url: `/opengraph/credits/${params.slug}?twitter=true`,
