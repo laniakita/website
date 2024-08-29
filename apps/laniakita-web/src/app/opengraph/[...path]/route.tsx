@@ -1,13 +1,30 @@
 import { ImageResponse } from 'next/og';
 import type { NextRequest } from 'next/server';
 import ImageGenTwo from '@/components/image-gen-two';
-import { allPosts, allProjects, allPages, allTags, allCategories } from 'contentlayer/generated';
+import { allProjects } from 'contentlayer/generated';
 import type { Project, Post, Page, Tag, Category } from 'contentlayer/generated';
 import type { FeaturedImageR1 } from '@/lib/image-process';
 
 export const runtime = 'edge';
 
 export async function GET(request: NextRequest) {
+  const allPosts = await fetch(new URL('../../../../.contentlayermini/generated/Post/index.json', import.meta.url))
+    .then((res) => res.blob())
+    .then((blob) => blob.text())
+    .then((text) => JSON.parse(text) as Post[]);
+  const allPages = await fetch(new URL('../../../../.contentlayermini/generated/Page/index.json', import.meta.url))
+    .then((res) => res.blob())
+    .then((blob) => blob.text())
+    .then((text) => JSON.parse(text) as Page[]);
+  const allCategories = await fetch(new URL('../../../../.contentlayermini/generated/Category/index.json', import.meta.url))
+    .then((res) => res.blob())
+    .then((blob) => blob.text())
+    .then((text) => JSON.parse(text) as Category[]);
+  const allTags = await fetch(new URL('../../../../.contentlayermini/generated/Tag/index.json', import.meta.url))
+    .then((res) => res.blob())
+    .then((blob) => blob.text())
+    .then((text) => JSON.parse(text) as Tag[]);
+
   const size = {
     width: 1200,
     height: 630,
@@ -41,7 +58,7 @@ export async function GET(request: NextRequest) {
     prefix: null,
     type: null,
     hasImage: false,
-    dynamic: true
+    dynamic: true,
   };
 
   const searchParams = request.nextUrl.searchParams;
