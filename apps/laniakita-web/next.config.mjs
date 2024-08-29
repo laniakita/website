@@ -1,4 +1,5 @@
 import { PHASE_DEVELOPMENT_SERVER, PHASE_PRODUCTION_BUILD } from 'next/constants.js';
+import { setupDevPlatform } from '@cloudflare/next-on-pages/next-dev';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -52,6 +53,10 @@ const nextConfig = {
 };
 
 const nextConfigFunction = async (phase, { defaultConfig }) => {
+  if (phase === PHASE_DEVELOPMENT_SERVER) {
+    await setupDevPlatform();
+  }
+
   const plugins = [];
 
   if (phase === PHASE_DEVELOPMENT_SERVER || phase === PHASE_PRODUCTION_BUILD) {
