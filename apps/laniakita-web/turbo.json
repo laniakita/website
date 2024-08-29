@@ -7,11 +7,9 @@
     },
     "pretty": {},
     "test": {},
-    "pages:build": {},
-    "preview:dev": {},
     "build": {
       "env": ["NODE_ENV"],
-      "outputs": [".next/**", "!.next/cache/**", "public/dist/**", "public/sw.js"],
+      "outputs": [".next/**", "!.next/cache/**", "public/dist/**", "public/sw.js", ".contentlayer", ".contentlayermini"],
       "inputs": ["$TURBO_DEFAULT$", ".env.production.local", ".env.production", ".env.local", ".env"]
     },
     "dev": {
