@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     images: [
       {
         alt: `${pageData?.title}`,
-        type: 'image/jpeg',
+        type: 'image/png',
         width: 1200,
         height: 630,
         url: `/opengraph/static/projects`,
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     images: [
       {
         alt: `${pageData?.title}`,
-        type: 'image/jpeg',
+        type: 'image/png',
         width: 1200,
         height: 630,
         url: `/opengraph/static/projects?twitter=true`,

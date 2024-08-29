@@ -147,7 +147,7 @@ export async function GET(request: NextRequest) {
       <ImageGenTwo
         logo={logoSrc}
         bg={bgSrc}
-        bgFormat='png'
+        bgFormat='jpeg'
         title={data.title ?? ''}
         logoFormat='png'
         dynamic={data.dynamic}

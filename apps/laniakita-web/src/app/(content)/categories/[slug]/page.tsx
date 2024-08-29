@@ -35,7 +35,7 @@ export async function generateMetadata(
       images: [
         {
           alt: `${catData?.title}`,
-          type: 'image/jpeg',
+          type: 'image/png',
           width: 1200,
           height: 630,
           url: `/opengraph/categories/${params.slug}`,
@@ -50,7 +50,7 @@ export async function generateMetadata(
       images: [
         {
           alt: `${catData?.title}`,
-          type: 'image/jpeg',
+          type: 'image/png',
           width: 1600,
           height: 900,
           url: `/opengraph/categories/${params.slug}?twitter=true`,
