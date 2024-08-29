@@ -5,7 +5,7 @@ const runScripts = async (): Promise<void> => {
   try {
     const laniVersionVaultConfig = {
       packages: {
-        dependencies: ['next', 'sharp'],
+        dependencies: ['next'],
       },
     };
     await syncVersionVault(laniVersionVaultConfig);
