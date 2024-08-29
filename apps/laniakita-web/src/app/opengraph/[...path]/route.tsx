@@ -6,12 +6,13 @@ import type { Project, Post, Page, Tag, Category } from 'contentlayer/generated'
 import type { FeaturedImageR1 } from '@/lib/image-process';
 
 export const runtime = 'edge';
-export const size = {
-  width: 1200,
-  height: 630,
-};
 
 export async function GET(request: NextRequest) {
+  const size = {
+    width: 1200,
+    height: 630,
+  };
+
   const logoSrc = await fetch(new URL('../../laniakita-logo-transparent-darkmode.png', import.meta.url)).then((res) =>
     res.arrayBuffer(),
   );
@@ -48,8 +49,8 @@ export async function GET(request: NextRequest) {
     size.width = 1600;
     size.height = 900;
   }
-  
-  const modUrl = request.nextUrl.pathname.split('/').slice(3, request.nextUrl.pathname.split('/').length).join('/')
+
+  const modUrl = request.nextUrl.pathname.split('/').slice(3, request.nextUrl.pathname.split('/').length).join('/');
 
   switch (reqType) {
     case 'projects': {
@@ -59,7 +60,7 @@ export async function GET(request: NextRequest) {
       data.title = data.fetched?.title;
       data.prefix = 'Projects by Lani';
       // eslint-disable-next-line -- featured_image exists
-      data.hasImage = data.fetched?.featured_image?.hasImage
+      data.hasImage = data.fetched?.featured_image?.hasImage;
       break;
     }
     case 'blog': {
@@ -69,7 +70,7 @@ export async function GET(request: NextRequest) {
       data.title = data.fetched?.headline;
       data.prefix = 'Dev Blog of Lani';
       // eslint-disable-next-line -- featured_image exists
-      data.hasImage = data?.fetched?.featured_image?.hasImage
+      data.hasImage = data?.fetched?.featured_image?.hasImage;
       break;
     }
     case 'credits': {
@@ -78,7 +79,7 @@ export async function GET(request: NextRequest) {
       data.type = 'credits';
       data.title = data.fetched?.title;
       data.prefix = 'Credits';
-      break;     
+      break;
     }
     case 'tags': {
       const tagUrl = `/tags/${modUrl}`;
@@ -86,7 +87,7 @@ export async function GET(request: NextRequest) {
       data.type = 'tags';
       data.title = data.fetched?.title;
       data.prefix = 'Tags';
-      break;     
+      break;
     }
     case 'categories': {
       const catUrl = `/categories/${modUrl}`;
@@ -94,15 +95,13 @@ export async function GET(request: NextRequest) {
       data.type = 'categories';
       data.title = data.fetched?.title;
       data.prefix = 'Categories';
-      break;     
+      break;
     }
     default: {
       console.error('Whoops, no data found!');
       break;
     }
   }
-
-
 
   return new ImageResponse(
     data.hasImage ? (
@@ -112,14 +111,17 @@ export async function GET(request: NextRequest) {
           width: '100%',
           height: '100%',
           alignItems: 'center',
-          justifyContent: 'center'
+          justifyContent: 'center',
         }}
       >
         {/* eslint-disable-next-line -- can't use Image component */}
-        <img style={{
-          objectFit: 'cover',
-          objectPosition: '50% 50%'
-        }} src={((data.fetched as Post | Project).featured_image as FeaturedImageR1).resized} />
+        <img
+          style={{
+            objectFit: 'cover',
+            objectPosition: '50% 50%',
+          }}
+          src={((data.fetched as Post | Project).featured_image as FeaturedImageR1).resized}
+        />
       </div>
     ) : (
       <ImageGenTwo
