@@ -29,7 +29,6 @@
     "turbo": "^2.0.14"
   },
   "trustedDependencies": [
-    "better-sqlite3",
     "contentlayer2",
     "es5-ext",
     "esbuild",
