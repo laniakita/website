@@ -1,8 +1,6 @@
 'use client';
 import { useState } from 'react';
 import Image from 'next/image';
-//import { imageLoader } from '@/utils/image-loader';
-import localLoader from '@/lib/local-loader';
 import { type BlurClientProps } from './img-blur-server';
 
 export default function BlogImageBlur({ src, alt, blur, height, width }: BlurClientProps) {
@@ -18,10 +16,6 @@ export default function BlogImageBlur({ src, alt, blur, height, width }: BlurCli
           }}
         >
           <Image
-            loader={
-              localLoader
-              // imageLoader
-            }
             priority={false}
             src={src}
             alt={alt}
@@ -43,10 +37,6 @@ export default function BlogImageBlur({ src, alt, blur, height, width }: BlurCli
         className='relative m-0 block size-full cursor-zoom-in p-0'
       >
         <Image
-          loader={
-            localLoader
-            // imageLoader
-          }
           priority={false}
           src={src}
           alt={alt}

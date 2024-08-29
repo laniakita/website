@@ -8,7 +8,6 @@ import Markdown from 'markdown-to-jsx';
 import { allPages, allPosts, allProjects, type Project } from '.contentlayer/generated';
 import { MDXComponent } from '@/components/cat-tag-common';
 import type { FeaturedImageR1 } from '@/lib/image-process';
-import localLoader from '@/lib/local-loader';
 import LocalDate from '@/app/(content)/blog/local-date';
 import { descriptionHelper } from '@/app/(content)/blog/post-components';
 
@@ -22,11 +21,29 @@ export const metadata: Metadata = {
   openGraph: {
     title: pageData?.title,
     description,
+    images: [
+      {
+        alt: `${pageData?.title}`,
+        type: 'image/jpeg',
+        width: 1200,
+        height: 630,
+        url: `/opengraph/static/projects`,
+      },
+    ],
   },
   twitter: {
     card: 'summary',
     title: pageData?.title,
     description,
+    images: [
+      {
+        alt: `${pageData?.title}`,
+        type: 'image/jpeg',
+        width: 1200,
+        height: 630,
+        url: `/opengraph/static/projects?twitter=true`,
+      },
+    ],
   },
 };
 
@@ -74,10 +91,6 @@ function ProjectPreview(data: Project) {
       {res.src ? (
         <Link href={data.link ?? data.url} target='_blank'>
           <Image
-            loader={
-              localLoader
-              //imageLoader
-            }
             src={res.src}
             placeholder='blur'
             blurDataURL={res.base64}
