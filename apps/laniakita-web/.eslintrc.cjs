@@ -1,8 +1,6 @@
 /** @type {import("eslint").Linter.Config} */
 module.exports = {
-  plugins: [
-    'next-on-pages'
-  ],
+  plugins: ['next-on-pages'],
   extends: [
     '@ahiakea/eslint-config/next.cjs',
     'plugin:@react-three/recommended',
