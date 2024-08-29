@@ -32,6 +32,7 @@ export async function GET(request: NextRequest) {
     prefix: string | null | undefined;
     type: string | null | undefined;
     hasImage: boolean;
+    dynamic: boolean;
   }
 
   const data: ResData = {
@@ -40,6 +41,7 @@ export async function GET(request: NextRequest) {
     prefix: null,
     type: null,
     hasImage: false,
+    dynamic: true
   };
 
   const searchParams = request.nextUrl.searchParams;
@@ -97,6 +99,14 @@ export async function GET(request: NextRequest) {
       data.prefix = 'Categories';
       break;
     }
+    case 'static': {
+      const staticUrl = `/${modUrl}`;
+      data.fetched = allPages.find((page) => page.url === staticUrl);
+      data.type = 'static';
+      data.title = data.fetched?.title;
+      data.dynamic = false;
+      break;
+    }
     default: {
       console.error('Whoops, no data found!');
       break;
@@ -130,7 +140,7 @@ export async function GET(request: NextRequest) {
         bgFormat='png'
         title={data.title ?? ''}
         logoFormat='png'
-        dynamic
+        dynamic={data.dynamic}
         prefix={data.prefix ?? ''}
         twitter={isTwitter}
       />
