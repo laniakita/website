@@ -5,7 +5,7 @@
   "scripts": {
     "analyze": "ANALYZE=true next build",
     "pages:build": "bunx @cloudflare/next-on-pages",
-    "preview:dev": "wrangler pages dev",
+    "pages:dev": "wrangler pages dev",
     "prebuild": "NODE_ENV=production bun run ./src/scripts/runner.ts",
     "dev": "next dev",
     "build": "next build",
@@ -88,9 +88,5 @@
   },
   "trustedDependencies": [
     "@cloudflare/next-on-pages"
-  ],
-  "patchedDependencies": {
-    "@cloudflare/next-on-pages@1.13.2": "patches/@cloudflare%2Fnext-on-pages@1.13.2.patch"
-  }
-
+  ]
 }
