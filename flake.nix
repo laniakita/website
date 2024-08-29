@@ -24,6 +24,9 @@
           turso-cli
           wrangler
         ];
+        shellHook = ''
+          exec zsh
+        '';
       };
     });
   };
