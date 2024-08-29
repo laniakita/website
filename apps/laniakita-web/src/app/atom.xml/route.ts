@@ -1,7 +1,7 @@
-//import { headers } from 'next/headers';
+import { headers } from 'next/headers';
 import { compareDesc } from 'date-fns';
 import { toXML } from 'jstoxml';
-import { allCategories, allPosts, allTags, type Tag, type Category } from 'contentlayer/generated';
+import type { Tag, Post, Category } from 'contentlayer/generated';
 import versionVault from 'versionVault/compiled';
 import type { FeaturedImageR1 } from '@/lib/image-process';
 import { BLOG_DESCR } from '@/lib/constants';
@@ -11,18 +11,32 @@ const xmlOpts = {
   indent: '  ',
 };
 
-// data
-const buildDate = new Date().toISOString();
-const NEXTJS_VERSION = versionVault.versions.dependencies.next;
-const posts = allPosts.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
+export const runtime = 'edge';
 
-export function GET() {
-  /*
+export async function GET() {
+  const allPosts = await fetch(new URL('../../../.contentlayermini/generated/Post/index.json', import.meta.url))
+    .then((res) => res.blob())
+    .then((blob) => blob.text())
+    .then((text) => JSON.parse(text) as Post[]);
+  const allCategories = await fetch(
+    new URL('../../../.contentlayermini/generated/Category/index.json', import.meta.url),
+  )
+    .then((res) => res.blob())
+    .then((blob) => blob.text())
+    .then((text) => JSON.parse(text) as Category[]);
+  const allTags = await fetch(new URL('../../../.contentlayermini/generated/Tag/index.json', import.meta.url))
+    .then((res) => res.blob())
+    .then((blob) => blob.text())
+    .then((text) => JSON.parse(text) as Tag[]);
+
+  const buildDate = new Date().toISOString();
+  const NEXTJS_VERSION = versionVault.versions.dependencies.next;
+  const posts = allPosts.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
+
   const headersList = headers();
   const host = headersList.get('host');
   const protocol = process.env.NODE_ENV === 'production' ? 'https://' : 'http://';
-  */
-  const HOST_URL = 'https://laniakita.com'; //`${protocol}${host}`;
+  const HOST_URL = `${protocol}${host}`;
 
   const catTagRoller = (catsTagArr: Category[] | Tag[]) => {
     const res = catsTagArr.map((catTagX) => {
