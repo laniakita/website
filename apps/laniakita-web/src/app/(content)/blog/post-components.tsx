@@ -1,7 +1,6 @@
 import Markdown from 'markdown-to-jsx';
 import Image from 'next/image';
 import Link from 'next/link';
-import localLoader from '@/lib/local-loader';
 import { type Post } from 'contentlayer/generated';
 import type { FeaturedImageR1 } from '@/lib/image-process';
 import LocalDate from './local-date';
@@ -16,10 +15,6 @@ export default function PostPreviewV4(post: Post) {
       {res.hasImage ? (
         <Link href={post.url}>
           <Image
-            loader={
-              localLoader
-              //imageLoader
-            }
             src={res.src}
             placeholder='blur'
             blurDataURL={res.base64}

@@ -5,7 +5,8 @@ import { setupDevPlatform } from '@cloudflare/next-on-pages/next-dev';
 const nextConfig = {
   pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
   images: {
-    formats: ['image/avif', 'image/webp'],
+    loader: 'custom',
+    loaderFile: './src/lib/image-loader.ts'
   },
   experimental: {
     serverComponentsExternalPackages: ['@shikijs/twoslash', 'sharp'],
@@ -53,7 +54,7 @@ const nextConfig = {
 };
 
 const nextConfigFunction = async (phase, { defaultConfig }) => {
-  if (phase === PHASE_DEVELOPMENT_SERVER) {
+  if (process.env.NODE_ENV === 'development') {
     await setupDevPlatform();
   }
 
