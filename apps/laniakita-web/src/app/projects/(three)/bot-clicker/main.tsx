@@ -1,5 +1,4 @@
 import { Suspense } from 'react';
-import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 import { HajClickerStoreProvider } from '@/providers/hajclicker-store-provider';
 

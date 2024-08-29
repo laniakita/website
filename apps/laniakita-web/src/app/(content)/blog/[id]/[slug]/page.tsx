@@ -13,6 +13,8 @@ import BlogImageBlurServer from '../../img-blur-server';
 import { descriptionHelper } from '../../post-components';
 import { catTagData } from '../../cat-tag-roller';
 
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   const posts = allPosts.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
   return posts.map((meta) => ({
