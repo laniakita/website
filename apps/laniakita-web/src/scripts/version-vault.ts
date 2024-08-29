@@ -204,4 +204,3 @@ export const syncVersionVault = async (config: Config) => {
     return 500;
   }
 };
-
