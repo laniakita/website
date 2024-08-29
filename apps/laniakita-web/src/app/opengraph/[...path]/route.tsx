@@ -8,19 +8,28 @@ import type { FeaturedImageR1 } from '@/lib/image-process';
 export const runtime = 'edge';
 
 export async function GET(request: NextRequest) {
-  const allPosts = await fetch(new URL('../../../../.contentlayermini/generated/Post/index.json', import.meta.url))
+  const allPosts = await fetch(new URL('../../../../.contentlayermini/generated/Post/index.json', import.meta.url), {
+    headers: { 'Content-Type': 'application/json' },
+  })
     .then((res) => res.blob())
     .then((blob) => blob.text())
     .then((text) => JSON.parse(text) as Post[]);
-  const allPages = await fetch(new URL('../../../../.contentlayermini/generated/Page/index.json', import.meta.url))
+  const allPages = await fetch(new URL('../../../../.contentlayermini/generated/Page/index.json', import.meta.url), {
+    headers: { 'Content-Type': 'application/json' },
+  })
     .then((res) => res.blob())
     .then((blob) => blob.text())
     .then((text) => JSON.parse(text) as Page[]);
-  const allCategories = await fetch(new URL('../../../../.contentlayermini/generated/Category/index.json', import.meta.url))
+  const allCategories = await fetch(
+    new URL('../../../../.contentlayermini/generated/Category/index.json', import.meta.url), {
+    headers: { 'Content-Type': 'application/json' },
+  })
     .then((res) => res.blob())
     .then((blob) => blob.text())
     .then((text) => JSON.parse(text) as Category[]);
-  const allTags = await fetch(new URL('../../../../.contentlayermini/generated/Tag/index.json', import.meta.url))
+  const allTags = await fetch(new URL('../../../../.contentlayermini/generated/Tag/index.json', import.meta.url), {
+    headers: { 'Content-Type': 'application/json' },
+  })
     .then((res) => res.blob())
     .then((blob) => blob.text())
     .then((text) => JSON.parse(text) as Tag[]);
@@ -33,11 +42,11 @@ export async function GET(request: NextRequest) {
   const logoSrc = await fetch(new URL('../../laniakita-logo-transparent-darkmode.png', import.meta.url)).then((res) =>
     res.arrayBuffer(),
   );
-  const bgSrc = await fetch(new URL('../../noise_shader_01.png', import.meta.url)).then((res) => res.arrayBuffer());
+  const bgSrc = await fetch(new URL('../../noise_shader_01.jpg', import.meta.url)).then((res) => res.arrayBuffer());
   const interTightBlack = await fetch(new URL('../../InterTight-Black.ttf', import.meta.url)).then((res) =>
     res.arrayBuffer(),
   );
-  const interTightSemiBold = await fetch(new URL('../../InterTight-SemiBold.ttf', import.meta.url)).then((res) =>
+  const zeroXProto = await fetch(new URL('../../0xProto-Regular.ttf', import.meta.url)).then((res) =>
     res.arrayBuffer(),
   );
 
@@ -67,7 +76,7 @@ export async function GET(request: NextRequest) {
   if (isTwitter) {
     size.width = 1600;
     size.height = 900;
-  };
+  }
 
   const modUrl = request.nextUrl.pathname.split('/').slice(3, request.nextUrl.pathname.split('/').length).join('/');
 
@@ -178,10 +187,10 @@ export async function GET(request: NextRequest) {
           weight: 900,
         },
         {
-          name: 'InterTight',
-          data: interTightSemiBold,
+          name: '0xProto',
+          data: zeroXProto,
           style: 'normal',
-          weight: 600,
+          weight: 400,
         },
       ],
     },

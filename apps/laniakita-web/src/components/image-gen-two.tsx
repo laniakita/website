@@ -113,7 +113,8 @@ export default function ImageGenTwo({
         >
           <h2
             style={{
-              fontWeight: 600,
+              fontWeight: 400,
+              fontFamily: '0xProto',
               fontSize: twitter ? 50 : 40,
             }}
           >
