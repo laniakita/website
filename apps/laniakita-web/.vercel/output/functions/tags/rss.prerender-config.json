@@ -1,0 +1,28 @@
+{
+  "type": "Prerender",
+  "expiration": false,
+  "sourcePath": "/tags/[slug]",
+  "group": 17,
+  "bypassToken": "e0eeda43bc7df6d8ca79ac108e35fe77",
+  "experimentalBypassFor": [
+    {
+      "type": "header",
+      "key": "Next-Action"
+    },
+    {
+      "type": "header",
+      "key": "content-type",
+      "value": "multipart/form-data;.*"
+    }
+  ],
+  "fallback": {
+    "type": "FileFsRef",
+    "mode": 33188,
+    "fsPath": "rss.prerender-fallback.html"
+  },
+  "initialHeaders": {
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/(content)/layout,_N_T_/(content)/tags/layout,_N_T_/(content)/tags/[slug]/layout,_N_T_/(content)/tags/[slug]/page,_N_T_/tags/rss",
+    "vary": "RSC, Next-Router-State-Tree, Next-Router-Prefetch"
+  },
+  "allowQuery": []
+}

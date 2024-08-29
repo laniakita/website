@@ -1,0 +1,30 @@
+{
+  "type": "Prerender",
+  "expiration": false,
+  "group": 5,
+  "bypassToken": "e0eeda43bc7df6d8ca79ac108e35fe77",
+  "experimentalBypassFor": [
+    {
+      "type": "header",
+      "key": "Next-Action"
+    },
+    {
+      "type": "header",
+      "key": "content-type",
+      "value": "multipart/form-data;.*"
+    }
+  ],
+  "fallback": {
+    "type": "FileFsRef",
+    "mode": 33188,
+    "contentType": "image/svg+xml",
+    "fsPath": "icon1.svg.prerender-fallback.body"
+  },
+  "initialHeaders": {
+    "cache-control": "public, immutable, no-transform, max-age=31536000",
+    "content-type": "image/svg+xml",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/icon1.svg/layout,_N_T_/icon1.svg/route,_N_T_/icon1.svg",
+    "vary": "RSC, Next-Router-State-Tree, Next-Router-Prefetch"
+  },
+  "allowQuery": []
+}

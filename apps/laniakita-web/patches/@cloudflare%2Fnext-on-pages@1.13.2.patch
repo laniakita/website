@@ -1,0 +1,16 @@
+diff --git a/dist/index.js b/dist/index.js
+index 4cb150acd490b4ec5c6d1884b2f7819ef6866dc2..a7c2e7ffd553bb5bb8a29a010b7353fd38433520 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -13481,7 +13481,10 @@ async function tryToFixInvalidDynamicISRFuncs({
+       /(\.rsc)?\.func$/,
+       ""
+     );
+-    const isDynamicISRFunc = fnInfo.config.operationType === "ISR" && /\/\[[\w-]+\]$/.test(fnPathWithoutRscOrFuncExt);
++    /* patch from @benmanns (https://github.com/cloudflare/next-on-pages/pull/864/files)
++     * fixes catch-all segments
++     * */
++    const isDynamicISRFunc = fnInfo.config.operationType === "ISR" && /\/\[(?:\.\.\.)?[\w-]+\]$/.test(fnPathWithoutRscOrFuncExt); 
+     if (isDynamicISRFunc) {
+       const matchingPrerenderedChildFunc = prerenderedFunctionEntries.find(
+         (fnInfo2) => fnInfo2.sourcePath === fnPathWithoutRscOrFuncExt
