@@ -2,6 +2,7 @@ import { existsSync, copyFileSync, mkdirSync } from 'node:fs';
 import { readFile, lstat } from 'node:fs/promises';
 import path from 'node:path';
 import { getPlaiceholder } from 'plaiceholder';
+import sharp from 'sharp';
 
 export interface DebugR1 {
   destination: string;
@@ -19,6 +20,7 @@ export class FeaturedImageR1 {
   base64: string;
   height: number;
   width: number;
+  resized: string;
   altText: string;
   caption: string;
   _debug: DebugR1 | null;
@@ -29,6 +31,7 @@ export class FeaturedImageR1 {
     base64: string,
     height: number,
     width: number,
+    resized: string,
     altText: string,
     caption: string,
     _debug: DebugR1 | null,
@@ -38,6 +41,7 @@ export class FeaturedImageR1 {
     this.base64 = base64;
     this.height = height;
     this.width = width;
+    this.resized = resized;
     this.altText = altText;
     this.caption = caption;
     this._debug = _debug;
@@ -182,6 +186,9 @@ const imageMover = async ({
   return result;
 };
 
+
+
+
 interface BlurRes {
   base64: string;
   height: number;
@@ -197,8 +204,21 @@ const imageBlurBase64 = async (imgPath: string): Promise<BlurRes> => {
   return { base64, height, width };
 };
 
+const imageResize = async (imgPath: string) => {
+  const imgFile = await readFile(imgPath);
+  const { data } = await sharp(imgFile)
+                    .resize(1600, 900, {kernel: 'lanczos3'})
+                    .toFormat('jpeg', {mozjpeg: true})
+                    .toBuffer({ resolveWithObject: true });
+  
+  const baseSixtyFour = `data:image/jpeg;base64,${data.toString('base64')}`
+  return baseSixtyFour
+  
+}
+
 export interface FeaturedImageRes extends BlurRes {
   src: string;
+  resized: string;
   _debug: null | Debug;
 }
 
@@ -216,9 +236,10 @@ export const imageProcessor = async ({
   try {
     const imgCopyRes = await imageMover({ contentDir, prefix, imgPath, debug });
     const blurRes = await imageBlurBase64(imgCopyRes.local);
-    return { src: `/${imgCopyRes.url}`, ...blurRes, _debug: debug ? imgCopyRes._meta : null };
+    const resize64 = await imageResize(imgCopyRes.local);
+    return { src: `/${imgCopyRes.url}`, ...blurRes, resized: resize64, _debug: debug ? imgCopyRes._meta : null };
   } catch (err) {
     console.error(err);
   }
-  return { src: '', base64: '', height: 0, width: 0, _debug: null };
+  return { src: '', base64: '', height: 0, width: 0, resized: '', _debug: null };
 };

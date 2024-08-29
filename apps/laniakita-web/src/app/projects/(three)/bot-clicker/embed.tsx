@@ -2,7 +2,7 @@
 import dynamic from 'next/dynamic';
 import { HajClickerStoreProvider } from '@/providers/hajclicker-store-provider';
 
-const BotClickerScene = dynamic(() => import('@/app/projects/(three)/bot-clicker/main-embed'), {
+const BotClickerScene = dynamic(() => import('@/app/projects/(three)/bot-clicker/scene-main-embed'), {
   ssr: false,
   loading: () => (
     <div className='absolute top-0 flex size-full items-center justify-center lg:max-h-dvh'>
