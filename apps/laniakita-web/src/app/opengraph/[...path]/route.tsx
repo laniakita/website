@@ -67,7 +67,7 @@ export async function GET(request: NextRequest) {
   if (isTwitter) {
     size.width = 1600;
     size.height = 900;
-  }
+  };
 
   const modUrl = request.nextUrl.pathname.split('/').slice(3, request.nextUrl.pathname.split('/').length).join('/');
 
