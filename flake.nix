@@ -14,7 +14,8 @@
   in {
     devShells = forAllSystems (pkgs: {
       default = pkgs.mkShell {
-        LD_LIBRARY_PATH = "${pkgs.stdenv.cc.cc.lib}/lib";
+        #LD_LIBRARY_PATH = "${pkgs.stdenv.cc.cc.lib}/lib";
+        NIX_LD = pkgs.lib.fileContents "${pkgs.stdenv.cc.cc}/nix-support/dynamic-linker";
         packages = with pkgs; [
           turbo
           bun
