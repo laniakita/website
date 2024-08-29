@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, ResolvingMetadata } from 'next';
 import { allPages } from 'contentlayer/generated';
 import { descriptionHelper } from '@/app/(content)/blog/post-components';
 import { PageCommon } from '../../page-common';
@@ -9,24 +9,49 @@ export function generateStaticParams() {
     slug: cred.url.split('/').pop(),
   }));
 }
+export async function generateMetadata(
+  { params }: { params: { slug: string } },
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  const data = allPages.find((credit) => credit.url.split('/').pop() === params.slug);
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const tagData = allPages.find((credit) => credit.url.split('/').pop() === params.slug);
+  const description = descriptionHelper(data?.body.raw, data?.url, true);
 
-  const description = descriptionHelper(tagData?.body.raw, tagData?.url, true);
+  const previousImages = (await parent).openGraph?.images ?? [];
+  const previousImagesTwitter = (await parent).twitter?.images ?? []
 
   return {
-    title: tagData?.title,
+    title: data?.title,
     authors: [{ name: 'Lani Akita' }],
     description,
     openGraph: {
-      title: tagData?.title,
+      title: data?.title,
       description,
+      images: [
+        {
+          alt: data?.title,
+          type: 'image/jpeg',
+          width: 1200,
+          height: 630,
+          url: `/opengraph/credits/${params.slug}`,
+        },
+        ...previousImages,
+      ],
     },
     twitter: {
       card: 'summary',
-      title: tagData?.title,
+      title: data?.title,
       description,
+      images: [
+        {
+          alt: data?.title,
+          type: 'image/jpeg',
+          width: 1600,
+          height: 900,
+          url: `/opengraph/credits/${params.slug}?twitter=true`,
+        },
+        ...previousImagesTwitter,
+      ],
     },
   };
 }

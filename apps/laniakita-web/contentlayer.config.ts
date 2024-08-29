@@ -37,7 +37,7 @@ export const Project = defineDocumentType(() => ({
     featured_image: {
       type: 'json',
       resolve: async (project): Promise<FeaturedImageR1> => {
-        if (!project.imageSrc) return new FeaturedImageR1(false, '', '', 0, 0, '', '', null);
+        if (!project.imageSrc) return new FeaturedImageR1(false, '', '', 0, 0, '', '', '', null);
         const data = await imageProcessor({
           contentDir: CONTENT_DIR,
           prefix: `${CONTENT_DIR}/${project._raw.flattenedPath}`,
@@ -51,6 +51,7 @@ export const Project = defineDocumentType(() => ({
           data.base64,
           data.height,
           data.width,
+          data.resized,
           project.altText ?? '',
           project.caption ?? '',
           data._debug ?? null,
@@ -159,7 +160,7 @@ export const Post = defineDocumentType(() => ({
     featured_image: {
       type: 'json',
       resolve: async (post): Promise<FeaturedImageR1> => {
-        if (!post.imageSrc) return new FeaturedImageR1(false, '', '', 0, 0, '', '', null);
+        if (!post.imageSrc) return new FeaturedImageR1(false, '', '', 0, 0, '', '', '', null);
         const data = await imageProcessor({
           contentDir: CONTENT_DIR,
           prefix: `${CONTENT_DIR}/${post._raw.flattenedPath}`,
@@ -173,6 +174,7 @@ export const Post = defineDocumentType(() => ({
           data.base64,
           data.height,
           data.width,
+          data.resized,
           post.altText ?? '',
           post.caption ?? '',
           data._debug ?? null,
