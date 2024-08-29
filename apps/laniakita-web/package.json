@@ -4,9 +4,11 @@
   "private": true,
   "scripts": {
     "analyze": "ANALYZE=true next build",
-    "dev": "bun run pages:build && wrangler pages dev",
     "pages:build": "bunx @cloudflare/next-on-pages",
-    "prebuild": "NODE_ENV=production bun ./src/scripts/runner.ts",
+    "preview:build": "bun run pages:build",
+    "preview:dev": "wrangler pages dev",
+    "prebuild": "NODE_ENV=production bun run ./src/scripts/runner.ts",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
