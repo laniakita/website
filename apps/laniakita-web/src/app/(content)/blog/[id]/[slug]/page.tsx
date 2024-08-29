@@ -8,25 +8,11 @@ import ReadingBar from '@/components/reading-bar';
 import { PostHeader2 } from '@/app/(content)/blog/post-header-2';
 import { allPosts } from 'contentlayer/generated';
 import type { FeaturedImageR1 } from '@/lib/image-process';
-import { imageLoader } from '@/lib/image-loader';
 import { BASE_URL } from '@/lib/constants';
 import BlogImageBlurServer from '../../img-blur-server';
 import { descriptionHelper } from '../../post-components';
 import { catTagData } from '../../cat-tag-roller';
 
-const evenDiv = (num: number, divOne: number) => {
-  if (num % divOne === 0) {
-    return num / divOne;
-  }
-  let divX = divOne;
-  while (num % divX > 0 && divX < 10) {
-    divX++;
-  }
-  if (num % divX === 0) {
-    return num / divX;
-  }
-  return num;
-};
 
 export function generateStaticParams() {
   const posts = allPosts.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
@@ -120,7 +106,6 @@ export default function BlogPostPage({ params }: { params: { id: string; slug: s
     return notFound();
   }
 
-  const imageRes = post.featured_image as FeaturedImageR1;
   const catTagArr = catTagData({ cats: post.categories, tags: post.tags }).map((catTag) => catTag?.title);
 
   const jsonLd: WithContext<BlogPosting> = {
@@ -134,7 +119,7 @@ export default function BlogPostPage({ params }: { params: { id: string; slug: s
     dateCreated: post.date,
     datePublished: post.date,
     dateModified: post.updated ?? post.date,
-    thumbnailUrl: imageLoader({ src: imageRes.src, width: evenDiv(imageRes.width, 2), quality: 50 }),
+    thumbnailUrl: `${BASE_URL}/opengraph/blog/${params.id}/${params.slug}?twitter=true`,
     keywords: post.keywords ?? (catTagArr as string[]),
     countryOfOrigin: 'United States',
   };
