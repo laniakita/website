@@ -3,15 +3,21 @@ import type { Metadata, ResolvingMetadata } from 'next'
 import { compareDesc } from 'date-fns';
 import { allProjects } from 'contentlayer/generated';
 
+export function generateStaticParams() {
+  const projects = allProjects.sort((a,b) => compareDesc(new Date(a.date), new Date(b.date)));
+  return (projects.map((projX) => ({
+    path: projX.url.split('/').slice(2, projX.url.split('/').length),
+  })))
+}
 
-
-
-export async function generateMetadata({ params }: { params: { path: string }},
+export async function generateMetadata({ params }: { params: { path: string | string[] }},
   parent: ResolvingMetadata
 ): Promise<Metadata> {
+
+
   const projData = allProjects.find(
     (projX) =>
-      projX.url === `/projects/${params.path}` ||
+      projX.url === `/projects/${params.path as string}` ||
       projX.url === `/projects/${(params.path as unknown as string[]).join('/')}`,
   );
 
