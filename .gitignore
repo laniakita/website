@@ -16,6 +16,7 @@ public/dist
 **/public/assets/images/blog
 **/public/sw.js
 **/public/feed.xml
+**/public/assets/images/projects
 secrets.env
 # sst
 .sst

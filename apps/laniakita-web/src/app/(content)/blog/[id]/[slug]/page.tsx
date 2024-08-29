@@ -13,7 +13,6 @@ import BlogImageBlurServer from '../../img-blur-server';
 import { descriptionHelper } from '../../post-components';
 import { catTagData } from '../../cat-tag-roller';
 
-
 export function generateStaticParams() {
   const posts = allPosts.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
   return posts.map((meta) => ({
@@ -22,18 +21,18 @@ export function generateStaticParams() {
   }));
 }
 
-export async function generateMetadata({ params }: { params: { id: string; slug: string}},
-  parent: ResolvingMetadata
+export async function generateMetadata(
+  { params }: { params: { id: string; slug: string } },
+  parent: ResolvingMetadata,
 ): Promise<Metadata> {
-
   const postData = allPosts.find(
     (postX) => postX.id.split('-').shift() === params.id && postX.url.split('/').pop() === params.slug,
   );
 
   const description = descriptionHelper(postData?.body.raw, postData?.url, true);
-  const previousImages = (await parent).openGraph?.images ?? []
+  const previousImages = (await parent).openGraph?.images ?? [];
 
-  const previousImagesTwitter = (await parent).twitter?.images ?? []
+  const previousImagesTwitter = (await parent).twitter?.images ?? [];
   return {
     title: postData?.headline,
     authors: [{ name: 'Lani Akita' }],
@@ -47,9 +46,9 @@ export async function generateMetadata({ params }: { params: { id: string; slug:
           type: 'image/jpeg',
           width: 1200,
           height: 630,
-          url: `/opengraph/blog/${params.id}/${params.slug}`
+          url: `/opengraph/blog/${params.id}/${params.slug}`,
         },
-        ...previousImages
+        ...previousImages,
       ],
     },
     twitter: {
@@ -62,9 +61,9 @@ export async function generateMetadata({ params }: { params: { id: string; slug:
           type: 'image/jpeg',
           width: 1600,
           height: 900,
-          url: `/opengraph/blog/${params.id}/${params.slug}?twitter=true`
+          url: `/opengraph/blog/${params.id}/${params.slug}?twitter=true`,
         },
-        ...previousImagesTwitter
+        ...previousImagesTwitter,
       ],
     },
   };

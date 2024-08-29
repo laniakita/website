@@ -18,7 +18,7 @@ export async function generateMetadata(
   const description = descriptionHelper(data?.body.raw, data?.url, true);
 
   const previousImages = (await parent).openGraph?.images ?? [];
-  const previousImagesTwitter = (await parent).twitter?.images ?? []
+  const previousImagesTwitter = (await parent).twitter?.images ?? [];
 
   return {
     title: data?.title,

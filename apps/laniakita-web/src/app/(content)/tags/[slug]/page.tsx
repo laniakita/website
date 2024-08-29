@@ -34,9 +34,9 @@ export async function generateMetadata(
           type: 'image/jpeg',
           width: 1200,
           height: 630,
-          url: `/opengraph/tags/${params.slug}`
+          url: `/opengraph/tags/${params.slug}`,
         },
-        ...previousImages
+        ...previousImages,
       ],
     },
     twitter: {
@@ -49,9 +49,9 @@ export async function generateMetadata(
           type: 'image/jpeg',
           width: 1600,
           height: 900,
-          url: `/opengraph/tags/${params.slug}?twitter=true`
+          url: `/opengraph/tags/${params.slug}?twitter=true`,
         },
-        ...previousImagesTwitter
+        ...previousImagesTwitter,
       ],
     },
   };
