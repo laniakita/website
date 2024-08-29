@@ -188,12 +188,6 @@ const genVersions = async (config: Config): Promise<GenVersions | undefined> => 
   }
 };
 
-const laniConfig: Config = {
-  packages: {
-    dependencies: ['next', '@next/mdx'],
-  },
-};
-
 export const syncVersionVault = async (config: Config) => {
   const t0 = performance.now();
   const resSaver = await getVersionJson(config);
@@ -211,6 +205,3 @@ export const syncVersionVault = async (config: Config) => {
   }
 };
 
-console.log(await syncVersionVault(laniConfig));
-
-//const nextVersion = (packageData as Package).dependencies.next;
