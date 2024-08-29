@@ -5,7 +5,6 @@
   "scripts": {
     "analyze": "ANALYZE=true next build",
     "pages:build": "bunx @cloudflare/next-on-pages",
-    "preview:build": "bun run pages:build",
     "preview:dev": "wrangler pages dev",
     "prebuild": "NODE_ENV=production bun run ./src/scripts/runner.ts",
     "dev": "next dev",
