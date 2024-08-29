@@ -186,9 +186,6 @@ const imageMover = async ({
   return result;
 };
 
-
-
-
 interface BlurRes {
   base64: string;
   height: number;
@@ -207,14 +204,13 @@ const imageBlurBase64 = async (imgPath: string): Promise<BlurRes> => {
 const imageResize = async (imgPath: string) => {
   const imgFile = await readFile(imgPath);
   const { data } = await sharp(imgFile)
-                    .resize(1600, 900, {kernel: 'lanczos3'})
-                    .toFormat('jpeg', {mozjpeg: true})
-                    .toBuffer({ resolveWithObject: true });
-  
-  const baseSixtyFour = `data:image/jpeg;base64,${data.toString('base64')}`
-  return baseSixtyFour
-  
-}
+    .resize(1600, 900, { kernel: 'lanczos3' })
+    .toFormat('jpeg', { mozjpeg: true })
+    .toBuffer({ resolveWithObject: true });
+
+  const baseSixtyFour = `data:image/jpeg;base64,${data.toString('base64')}`;
+  return baseSixtyFour;
+};
 
 export interface FeaturedImageRes extends BlurRes {
   src: string;

@@ -64,7 +64,6 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
   const matchingPosts = allPosts
     .filter((postX) => postX.categories?.some((cat) => (cat as unknown as { slug: string }).slug === params.slug))
     .sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
-  
 
   if (!category) return notFound();
 

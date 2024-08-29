@@ -1,29 +1,28 @@
 import { notFound } from 'next/navigation';
-import type { Metadata, ResolvingMetadata } from 'next'
+import type { Metadata, ResolvingMetadata } from 'next';
 import { compareDesc } from 'date-fns';
 import { allProjects } from 'contentlayer/generated';
 
 export function generateStaticParams() {
-  const projects = allProjects.sort((a,b) => compareDesc(new Date(a.date), new Date(b.date)));
-  return (projects.map((projX) => ({
+  const projects = allProjects.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
+  return projects.map((projX) => ({
     path: projX.url.split('/').slice(2, projX.url.split('/').length),
-  })))
+  }));
 }
 
-export async function generateMetadata({ params }: { params: { path: string | string[] }},
-  parent: ResolvingMetadata
+export async function generateMetadata(
+  { params }: { params: { path: string | string[] } },
+  parent: ResolvingMetadata,
 ): Promise<Metadata> {
-
-
   const projData = allProjects.find(
     (projX) =>
       projX.url === `/projects/${params.path as string}` ||
       projX.url === `/projects/${(params.path as unknown as string[]).join('/')}`,
   );
 
-  const previousImages = (await parent).openGraph?.images ?? []
-  
-  const previousImagesTwitter = (await parent).twitter?.images ?? []
+  const previousImages = (await parent).openGraph?.images ?? [];
+
+  const previousImagesTwitter = (await parent).twitter?.images ?? [];
 
   return {
     title: projData?.title,
@@ -38,9 +37,9 @@ export async function generateMetadata({ params }: { params: { path: string | st
           type: 'image/jpeg',
           width: 1200,
           height: 630,
-          url: `/opengraph/projects/${(params.path as unknown as string[]).join('/')}`
+          url: `/opengraph/projects/${(params.path as unknown as string[]).join('/')}`,
         },
-        ...previousImages
+        ...previousImages,
       ],
     },
     twitter: {
@@ -53,9 +52,9 @@ export async function generateMetadata({ params }: { params: { path: string | st
           type: 'image/jpeg',
           width: 1600,
           height: 900,
-          url: `/opengraph/projects/${(params.path as unknown as string[]).join('/')}?twitter=true`
+          url: `/opengraph/projects/${(params.path as unknown as string[]).join('/')}?twitter=true`,
         },
-        ...previousImagesTwitter
+        ...previousImagesTwitter,
       ],
     },
   };
