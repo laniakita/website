@@ -25,7 +25,7 @@
     "apps/*"
   ],
   "dependencies": {
-    "turbo": "^2.0.14"
+    "turbo": "^2.1.0"
   },
   "trustedDependencies": [
     "better-sqlite3",
