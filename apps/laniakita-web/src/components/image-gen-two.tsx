@@ -121,7 +121,7 @@ export default function ImageGenTwo({
             {prefix}
           </h2>
           <div style={{ width: '100%', height: '0.15rem', backgroundColor: '#1e1e2e', borderRadius: '0.375rem' }} />
-          <h1 style={{ fontWeight: 900, fontSize: twitter ? 80 : 60, textWrap: 'balance' }}>{title}</h1>
+          <h1 style={{ display: 'flex', fontWeight: 900, fontSize: twitter ? 80 : 60, textWrap: title!.length > 14 ? 'balance' : 'wrap',  }}>{title}</h1>
         </div>
       ) : (
         <div

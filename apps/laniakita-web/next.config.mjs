@@ -54,7 +54,7 @@ const nextConfig = {
 };
 
 const nextConfigFunction = async (phase, { defaultConfig }) => {
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.CLOUDFLARE_PAGES_DEV === true) {
     await setupDevPlatform();
   }
 

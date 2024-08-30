@@ -15,7 +15,7 @@
       "inputs": ["$TURBO_DEFAULT$", ".env.production.local", ".env.production", ".env.local", ".env"]
     },
     "dev": {
-      "env": ["NODE_ENV"],
+      "env": ["NODE_ENV", "CLOUDFLARE_PAGES_DEV"],
       "inputs": ["$TURBO_DEFAULT$", ".env.development.local", ".env.development", ".env.local", ".env"]
     },
     "start": {}
