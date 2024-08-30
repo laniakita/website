@@ -4,14 +4,28 @@
   "tasks": {
     "analyze": {
       "env": ["ANALYZE", "NODE_ENV"],
-      "outputs": [".next/**", "!.next/cache/**", "public/dist/**", "public/sw.js", ".contentlayer", ".contentlayermini"],
+      "outputs": [
+        ".next/**",
+        "!.next/cache/**",
+        "public/dist/**",
+        "public/sw.js",
+        ".contentlayer",
+        ".contentlayermini"
+      ],
       "inputs": ["$TURBO_DEFAULT$", ".env.production.local", ".env.production", ".env.local", ".env"]
     },
     "pretty": {},
     "test": {},
     "build": {
       "env": ["NODE_ENV"],
-      "outputs": [".next/**", "!.next/cache/**", "public/dist/**", "public/sw.js", ".contentlayer", ".contentlayermini"],
+      "outputs": [
+        ".next/**",
+        "!.next/cache/**",
+        "public/dist/**",
+        "public/sw.js",
+        ".contentlayer",
+        ".contentlayermini"
+      ],
       "inputs": ["$TURBO_DEFAULT$", ".env.production.local", ".env.production", ".env.local", ".env"]
     },
     "dev": {

@@ -4,7 +4,7 @@ import { allPages, allPosts } from 'contentlayer/generated';
 import Sidebar from '@/components/sidebar/main';
 import PostRollerV4 from './post-roller-v4';
 
-const data = allPages.find((page) => page.url === '/blog')
+const data = allPages.find((page) => page.url === '/blog');
 
 export const metadata: Metadata = {
   title: data?.title,

@@ -1,12 +1,7 @@
 {
   "extends": "@website/typescript-config/nextjs.json",
   "compilerOptions": {
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "esnext",
-      "webworker"
-    ],
+    "lib": ["DOM", "DOM.Iterable", "esnext", "webworker"],
     "plugins": [
       {
         "name": "next"
@@ -14,21 +9,11 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-      "contentlayer/generated": [
-        "./.contentlayer/generated"
-      ],
-      "versionVault/compiled": [
-        "./.versionvault/compiled/latest.json"
-      ]
+      "@/*": ["./src/*"],
+      "contentlayer/generated": ["./.contentlayer/generated"],
+      "versionVault/compiled": ["./.versionvault/compiled/latest.json"]
     },
-    "types": [
-      "@serwist/next/typings",
-      "bun",
-      "node"
-    ],
+    "types": ["@serwist/next/typings", "bun", "node"],
     "resolveJsonModule": true
   },
   "include": [
@@ -44,8 +29,5 @@
     ".eslintrc.cjs",
     ".package-version-saver"
   ],
-  "exclude": [
-    "node_modules",
-    "public/sw.js"
-  ]
+  "exclude": ["node_modules", "public/sw.js"]
 }

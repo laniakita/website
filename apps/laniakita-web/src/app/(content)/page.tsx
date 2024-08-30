@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import NoiseShader01 from '@/app/projects/(three)/shaders/noise/01/noise';
 
-
 export const metadata: Metadata = {
   openGraph: {
     images: [
