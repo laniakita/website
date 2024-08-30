@@ -1,5 +1,4 @@
 import { PHASE_DEVELOPMENT_SERVER, PHASE_PRODUCTION_BUILD } from 'next/constants.js';
-import { setupDevPlatform } from '@cloudflare/next-on-pages/next-dev';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -8,9 +7,10 @@ const nextConfig = {
     loader: 'custom',
     loaderFile: './src/lib/image-loader.ts',
   },
+  /*
   experimental: {
     serverComponentsExternalPackages: ['@shikijs/twoslash', 'sharp'],
-  },
+  },*/
   webpack(config) {
     // shader support
     config.module.rules.push({
@@ -59,10 +59,6 @@ const nextConfig = {
 };
 
 const nextConfigFunction = async (phase, { defaultConfig }) => {
-  if (process.env.CLOUDFLARE_PAGES_DEV === true) {
-    await setupDevPlatform();
-  }
-
   const plugins = [];
 
   if (phase === PHASE_DEVELOPMENT_SERVER || phase === PHASE_PRODUCTION_BUILD) {
