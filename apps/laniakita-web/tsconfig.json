@@ -20,9 +20,6 @@
       "contentlayer/generated": [
         "./.contentlayer/generated"
       ],
-      "contentlayermini/*": [
-        "./.contentlayermini/generated/*"
-      ],
       "versionVault/compiled": [
         "./.versionvault/compiled/latest.json"
       ]
@@ -41,9 +38,9 @@
     "./**/*.js",
     "./**/*.cjs",
     "./**/*.mjs",
+    "./**/*.json",
     ".next/types/**/*.ts",
     ".contentlayer/generated",
-    ".contentlayermini/generated/**/*.json",
     ".eslintrc.cjs",
     ".package-version-saver"
   ],

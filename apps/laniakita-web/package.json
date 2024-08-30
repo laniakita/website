@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "analyze": "ANALYZE=true next build",
+    "analyze": "ANALYZE=true bun run build",
     "prebuild": "NODE_ENV=production contentlayer2 build && bun run ./src/scripts/runner.ts",
+    "pages:build": "bunx @cloudflare/next-on-pages",
+    "pages:preview": "NODE_ENV=development wrangler pages dev",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
