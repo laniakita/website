@@ -78,7 +78,7 @@ const socialItems3 = [
   },
 ];
 
-export function SocialIconNav3({ boxItems }: SocialIconNavProps) {
+function SocialIconNav3({ boxItems }: SocialIconNavProps) {
   const uniqueKey = useId();
   return (
     <div className='flex flex-row items-center gap-2'>
