@@ -1,10 +1,10 @@
 'use client';
+import { usePathname } from 'next/navigation';
 import { socialItems2 } from '../sidebar/main';
 import { SocialIconNav2 } from '../sidebar/social-icon-nav-client';
 import CircleMovie from './circle-movie';
 import { FooterBox, FooterBoxSpecial } from './footer-box';
 import data from './common-data.json';
-import { usePathname } from 'next/navigation';
 
 export const socialItems = [
   {
