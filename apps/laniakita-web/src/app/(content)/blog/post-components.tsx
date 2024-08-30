@@ -65,18 +65,22 @@ export const descriptionHelper = (rawStr: string | undefined, postSlug?: string 
       return strPara;
     }
     return undefined;
-  });
+  }) as string[];
 
   const foundDescr = findDescr.filter((el) => el)[0]?.split(' ');
 
-  if (!foundDescr || foundDescr.length < 1) return;
+  if (!foundDescr || foundDescr.length <= 1) return;
 
-  const endInjection = foundDescr[foundDescr.length - 1]
-    ?.split('.')
-    .toSpliced(-1, 1, `... <nobr>[\`READ_MORE =>\`](${postSlug ?? 'blog'})</nobr>`)
-    .join('');
+  const endInjection = foundDescr[foundDescr.length - 1]?.split('.')
+  
+  if (!endInjection || endInjection.length <= 1) return;
 
-  foundDescr.splice(-1, 1, endInjection!).join(' ');
+  const inject = endInjection.toSpliced(-1, 1, `... <nobr>[\`READ_MORE =>\`](${postSlug ?? 'blog'})</nobr>`)
+  const injected = inject.join('');
+  
+  if (!injected) return;
+
+  foundDescr.splice(-1, 1, injected).join(' ');
 
   return justDescr ? findDescr.filter((el) => el)[0] : foundDescr.join(' ');
 };
