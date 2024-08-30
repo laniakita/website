@@ -30,3 +30,5 @@ secrets.env
 contentlayermini
 # eslint
 .eslintcache
+#version vault
+.versionvault
