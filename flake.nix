@@ -4,10 +4,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   };
 
-  outputs = inputs @ {
-    nixpkgs,
-    ...
-  }: let
+  outputs = inputs @ {nixpkgs, ...}: let
     forAllSystems = function:
       nixpkgs.lib.genAttrs [
         "x86_64-linux"
@@ -16,6 +13,20 @@
   in {
     devShells = forAllSystems (pkgs: {
       default = pkgs.mkShell {
+        NIX_LD_LIBRARY_PATH = builtins.lib.makeLibraryPath [
+          pkgs.stdenv.cc.cc
+          pkgs.openssl
+          pkgs.zlib
+          pkgs.fuse3
+          pkgs.icu
+          pkgs.nss
+          pkgs.openssl
+          pkgs.curl
+          pkgs.expat
+        ];
+
+        NIX_LD = builtins.lib.fileContents "${pkgs.stdenv.cc}/nix-support/dynamic-linker";
+
         packages = with pkgs; [
           turbo
           bun
