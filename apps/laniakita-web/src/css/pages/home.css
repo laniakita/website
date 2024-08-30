@@ -1,8 +1,15 @@
 @layer components {
   .home-btn-standard {
-    @apply color-trans-quick rounded border border-ctp-base  p-2 text-center font-mono text-lg text-ctp-text  backdrop-blur-md hover:border-ctp-pink hover:bg-ctp-pink hover:text-ctp-base  hover:no-underline dark:border-ctp-surface0   dark:hover:border-ctp-flamingo dark:hover:bg-ctp-pink
+    @apply color-trans-quick rounded border border-ctp-mauve  p-2 text-center font-mono text-lg  hover:bg-ctp-pink hover:text-ctp-base hover:no-underline hover:border-ctp-flamingo text-ctp-mauve bg-ctp-base/70 backdrop-blur-md
   }
   .home-btn-extra {
-    @apply home-btn-standard bg-ctp-mauve/80 hover:bg-ctp-pink/80
+    @apply home-btn-standard bg-ctp-mauve/20
   }
-}
+  .home-btn-2 {
+    @apply flex w-full md:w-fit md:whitespace-nowrap py-2 px-4 lowercase text-ctp-text hover:border-ctp-pink border border-ctp-text/40 md:border-ctp-surface1 font-mono rounded justify-center items-center text-base font-bold hover:bg-ctp-pink/40  [transition:_background-color_0.38s,_color_0.38s,_border_0.38s] hover:no-underline hover:text-ctp-base dark:hover:text-ctp-pink 
+    } 
+  .home-btn-2-extra {
+    @apply home-btn-2 bg-ctp-sapphire/20 border-ctp-sapphire hover:border-ctp-sky text-ctp-sapphire hover:bg-ctp-sky/40 hover:text-ctp-base dark:hover:text-ctp-sky 
+  }
+
+} 

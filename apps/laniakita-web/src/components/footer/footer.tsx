@@ -4,6 +4,7 @@ import { SocialIconNav2 } from '../sidebar/social-icon-nav-client';
 import CircleMovie from './circle-movie';
 import { FooterBox, FooterBoxSpecial } from './footer-box';
 import data from './common-data.json';
+import { usePathname } from 'next/navigation';
 
 export const socialItems = [
   {
@@ -37,9 +38,9 @@ export const socialItems = [
 ];
 
 export default function Footer({ extra }: { extra?: string }) {
-  //const pathname = usePathname();
+  const pathname = usePathname();
   return (
-    <footer className='relative w-full'>
+    <footer className={`${pathname === '/' ? 'hidden' : 'block'} relative w-full`}>
       <div
         className={`simple-color-trans relative flex w-full flex-col items-center justify-center overflow-hidden  bg-ctp-base dark:bg-ctp-midnight ${extra}`}
       >
@@ -86,7 +87,7 @@ export default function Footer({ extra }: { extra?: string }) {
 
 function FooterNavLinks() {
   return (
-    <div className='grid w-full grid-cols-1  gap-4 p-4 narrow-phone:grid-cols-2 md:p-0'>
+    <div className='grid w-full grid-cols-1 gap-4 p-4 narrow-phone:grid-cols-2 md:p-0'>
       <FooterBox title='navigation' navItems={data.navigationItems} />
       <FooterBoxSpecial title='socials' navItems={socialItems} />
     </div>
