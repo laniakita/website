@@ -24,7 +24,7 @@ export default function NotFound() {
           <div className='h-px w-full bg-ctp-text' />
           <Link
             href='/'
-            className='rounded border border-ctp-mauve px-4 py-2  font-mono no-underline [transition:_color_0.38s,_border_0.38s,_background-color_0.38s] hover:border-ctp-pink hover:bg-ctp-pink hover:text-ctp-base'
+            className='home-btn-standard'
           >
             return home
           </Link>
