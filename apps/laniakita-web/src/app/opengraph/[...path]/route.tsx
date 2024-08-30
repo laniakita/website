@@ -1,10 +1,8 @@
-import { notFound } from 'next/navigation';
 import { ImageResponse } from 'next/og';
 import type { NextRequest } from 'next/server';
-import ImageGenTwo from '@/components/image-gen-two';
-import { allProjects } from 'contentlayer/generated';
 import type { Project, Post, Page, Tag, Category } from 'contentlayer/generated';
 import type { FeaturedImageR1 } from '@/lib/image-process';
+import ImageGenTwo from '@/components/image-gen-two';
 
 export const runtime = 'edge';
 
@@ -51,6 +49,16 @@ export async function GET(request: NextRequest) {
     .then((blob) => blob.text())
     .then((text) => JSON.parse(text) as Tag[]);
 
+  const allProjects = await fetch(
+    new URL('../../../scripts/dist/contentlayermini/generated/Project/index.json', import.meta.url),
+  )
+    .then((res) => res.arrayBuffer())
+    .then((arr) => new Blob([arr]))
+    .then((blob) => blob.text())
+    .then((text) => JSON.parse(text) as Project[]);
+
+
+
   const logoSrc = await fetch(new URL('../../laniakita-logo-transparent-darkmode.png', import.meta.url)).then((res) =>
     res.arrayBuffer(),
   );
@@ -90,7 +98,7 @@ export async function GET(request: NextRequest) {
     ...validProjectPaths,
   ];
 
-  if (!allValidPaths.includes(request.nextUrl.pathname.toLowerCase())) return notFound();
+  if (!allValidPaths.includes(request.nextUrl.pathname.toLowerCase())) return new Response('Error!', {status: 500});
 
   // phase 2
 
@@ -188,9 +196,9 @@ export async function GET(request: NextRequest) {
       }
     }
   } else if (reqType && !modUrl) {
-    return notFound();
+    return new Response('Error!', {status: 500});
   }
-
+  
   return new ImageResponse(
     data.hasImage ? (
       <div
@@ -202,7 +210,6 @@ export async function GET(request: NextRequest) {
           justifyContent: 'center',
         }}
       >
-        {/* eslint-disable-next-line -- can't use Image component */}
         <img
           style={{
             objectFit: 'cover',

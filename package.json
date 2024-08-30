@@ -28,16 +28,9 @@
     "turbo": "^2.1.0"
   },
   "trustedDependencies": [
-    "better-sqlite3",
     "contentlayer2",
     "es5-ext",
     "esbuild",
-    "postinstall-postinstall",
-    "protobufjs",
-    "sharp",
-    "workerd"
-  ],
-  "patchedDependencies": {
-    "@cloudflare/next-on-pages@1.13.2": "patches/@cloudflare%2Fnext-on-pages@1.13.2.patch"
-  }
+    "sharp"
+  ]
 }
