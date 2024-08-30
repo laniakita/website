@@ -27,6 +27,6 @@ secrets.env
 # contentlayer
 .contentlayer
 # contentlayermini
-.contentlayermini
+contentlayermini
 # eslint
 .eslintcache
