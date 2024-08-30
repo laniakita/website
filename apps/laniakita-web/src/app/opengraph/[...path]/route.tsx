@@ -210,6 +210,7 @@ export async function GET(request: NextRequest) {
           justifyContent: 'center',
         }}
       >
+        {/* eslint-disable @next/next/no-img-element, jsx-a11y/alt-text -- image generator, not html. */}
         <img
           style={{
             objectFit: 'cover',

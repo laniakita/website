@@ -3,7 +3,6 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import NoiseShader01 from '@/app/projects/(three)/shaders/noise/01/noise';
 import { type SocialIconNavProps } from '@/components/social-icon';
-import { SocialIconNav2 } from '@/components/sidebar/social-icon-nav-client';
 
 export const metadata: Metadata = {
   openGraph: {
