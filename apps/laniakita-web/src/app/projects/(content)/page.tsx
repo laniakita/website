@@ -133,7 +133,7 @@ function ProjectPreview(data: Project) {
                 className='w-fit font-mono text-sm font-semibold'
               >
                 {tag}
-                {idx < data.tech!.length - 1 ? <span>,</span> : ''}
+                {data.tech && idx < data.tech.length - 1 ? <span>,</span> : ''}
               </p>
             ))}
           </div>
