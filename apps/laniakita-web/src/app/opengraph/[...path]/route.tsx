@@ -1,9 +1,5 @@
 import { ImageResponse } from 'next/og';
 import type { NextRequest } from 'next/server';
-import allPosts from 'contentlayermini/Post/index.json'
-import allPages from 'contentlayermini/Page/index.json'
-import allCategories from 'contentlayermini/Category/index.json'
-import allTags from 'contentlayermini/Tag/index.json'
 import ImageGenTwo from '@/components/image-gen-two';
 import { allProjects } from 'contentlayer/generated';
 import type { Project, Post, Page, Tag, Category } from 'contentlayer/generated';
@@ -16,15 +12,44 @@ export async function GET(request: NextRequest) {
     width: 1200,
     height: 630,
   };
+  
+  /* res.json was,  
+   * too easy, I guess. Fetching
+   * it this way, "just works".
+   * */
+
+  const allPosts = await fetch(new URL('../../contentlayermini/generated/Post/index.json', import.meta.url))
+    .then((res) => res.arrayBuffer())
+    .then((arr) => new Blob([arr]))
+    .then((blob) => blob.text())
+    .then((text) => JSON.parse(text) as Post[]);
+
+  const allPages = await fetch(new URL('../../contentlayermini/generated/Page/index.json', import.meta.url))
+    .then((res) => res.arrayBuffer())
+    .then((arr) => new Blob([arr]))
+    .then((blob) => blob.text())
+    .then((text) => JSON.parse(text) as Page[]);
+
+  const allCategories = await fetch(new URL('../../contentlayermini/generated/Category/index.json', import.meta.url))
+    .then((res) => res.arrayBuffer())
+    .then((arr) => new Blob([arr]))
+    .then((blob) => blob.text())
+    .then((text) => JSON.parse(text) as Category[]);
+
+  const allTags = await fetch(new URL('../../contentlayermini/generated/Tag/index.json', import.meta.url))
+    .then((res) => res.arrayBuffer())
+    .then((arr) => new Blob([arr]))
+    .then((blob) => blob.text())
+    .then((text) => JSON.parse(text) as Tag[]);
 
   const logoSrc = await fetch(new URL('../../laniakita-logo-transparent-darkmode.png', import.meta.url)).then((res) =>
     res.arrayBuffer(),
   );
   const bgSrc = await fetch(new URL('../../noise_shader_01.jpg', import.meta.url)).then((res) => res.arrayBuffer());
-  const interTightBlack = await fetch(new URL('../../InterTight-Black.ttf', import.meta.url)).then((res) =>
+  const interTightBlack = await fetch(new URL('../../inter-tight-latin-900-normal.woff', import.meta.url)).then((res) =>
     res.arrayBuffer(),
   );
-  const zeroXProto = await fetch(new URL('../../0xProto-Regular.ttf', import.meta.url)).then((res) =>
+  const zeroXProto = await fetch(new URL('../../0xProto-Regular.woff', import.meta.url)).then((res) =>
     res.arrayBuffer(),
   );
 

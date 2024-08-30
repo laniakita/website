@@ -12,3 +12,6 @@ package.json
 *.frag
 drizzle/meta/*
 .tmp/*
+.vercel/*
+.wrangler/*
+contentlayermini/*
