@@ -5,7 +5,7 @@ import { allPosts, allPages, allCategories, allTags } from 'contentlayer/generat
 const allPostsRes = () => {
   return allPosts.map((doc) => {
     // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars -- vars
-    const { body, ...content } = doc;
+    const { body, html, ...content } = doc;
     return content;
   });
 };
@@ -47,7 +47,7 @@ export const writeMinifiedContent = async () => {
     const catsMin = allCatsRes();
     const tagsMin = allTagsRes();
 
-    const mainDir = './.contentlayermini/generated';
+    const mainDir = './src/app/contentlayermini/generated';
     const mainOut = 'index.json';
 
     const postDir = `${mainDir}/Post`;

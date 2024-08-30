@@ -6,7 +6,7 @@ const nextConfig = {
   pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
   images: {
     loader: 'custom',
-    loaderFile: './src/lib/image-loader.ts'
+    loaderFile: './src/lib/image-loader.ts',
   },
   experimental: {
     serverComponentsExternalPackages: ['@shikijs/twoslash', 'sharp'],
@@ -72,12 +72,10 @@ const nextConfigFunction = async (phase, { defaultConfig }) => {
     plugins.push(withContentLayer);
   }
 
-  if (phase === PHASE_PRODUCTION_BUILD) {
-    const withBundleAnalyzer = (await import('@next/bundle-analyzer')).default({
-      enabled: process.env.ANALYZE === 'true',
-    });
-    plugins.push(withBundleAnalyzer);
-  }
+  const withBundleAnalyzer = (await import('@next/bundle-analyzer')).default({
+    enabled: process.env.ANALYZE === 'true',
+  });
+  plugins.push(withBundleAnalyzer);
 
   return plugins.reduce((acc, next) => next(acc), {
     ...defaultConfig,

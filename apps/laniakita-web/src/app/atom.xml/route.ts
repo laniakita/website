@@ -1,8 +1,6 @@
 import { compareDesc } from 'date-fns';
 import { toXML } from 'jstoxml';
-import allPosts from 'contentlayermini/Post/index.json'
-import allTags from 'contentlayermini/Tag/index.json'
-import allCategories from 'contentlayermini/Category/index.json'
+import { allTags, allPosts, allCategories } from 'contentlayer/generated';
 import type { Tag, Post, Category } from 'contentlayer/generated';
 import versionVault from 'versionVault/compiled';
 import type { FeaturedImageR1 } from '@/lib/image-process';
