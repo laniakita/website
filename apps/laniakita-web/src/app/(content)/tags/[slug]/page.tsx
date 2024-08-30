@@ -18,9 +18,9 @@ export async function generateMetadata(
   { params }: { params: { slug: string } },
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  const data = allTags.find((tagY) => tagY.url.split('/').pop() === params.slug);
-
-  const description = descriptionHelper(data?.body.raw, data?.url, true);
+  const data = allTags.find((tagY) => tagY.url === `/tags/${params.slug}`);
+  
+  const description = data?.body.raw && data.url ? descriptionHelper(data.body.raw, data.url, true) : 'Tag page.'
 
   const previousImages = (await parent).openGraph?.images ?? [];
   const previousImagesTwitter = (await parent).twitter?.images ?? [];
@@ -61,8 +61,8 @@ export async function generateMetadata(
   };
 }
 
-export default function CategoryPage({ params }: { params: { slug: string } }) {
-  const tag = allTags.find((tagX) => tagX.url.split('/').pop() === params.slug);
+export default function TagPage({ params }: { params: { slug: string } }) {
+  const tag = allTags.find((tagX) => tagX.url === `/tags/${params.slug}`);
   const matchingPosts = allPosts
     .filter((postX) => postX.tags?.some((tagZ) => (tagZ as unknown as { slug: string }).slug === params.slug))
     .sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
