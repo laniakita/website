@@ -1,9 +1,9 @@
 import type { MetadataRoute } from 'next';
 import { compareDesc } from 'date-fns';
-import allPosts from '@/app/contentlayermini/generated/Post/index.json';
-import allPages from '@/app/contentlayermini/generated/Page/index.json';
-import allCategories from '@/app/contentlayermini/generated/Category/index.json';
-import allTags from '@/app/contentlayermini/generated/Tag/index.json';
+import allPosts from '@/scripts/dist/contentlayermini/generated/Post/index.json';
+import allPages from '@/scripts/dist/contentlayermini/generated/Page/index.json';
+import allCategories from '@/scripts/dist/contentlayermini/generated/Category/index.json';
+import allTags from '@/scripts/dist/contentlayermini/generated/Tag/index.json';
 import { allProjects, type Post, type Tag, type Category } from 'contentlayer/generated';
 import { BASE_URL } from '@/lib/constants';
 

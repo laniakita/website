@@ -55,7 +55,6 @@ export default function PostPreviewV4(post: Post) {
 }
 
 export const descriptionHelper = (rawStr: string | undefined, postSlug?: string | undefined, justDescr?: boolean) => {
-  
   if (!rawStr) return;
 
   const findDescr = rawStr.split('\n').map((strPara) => {
@@ -69,9 +68,9 @@ export const descriptionHelper = (rawStr: string | undefined, postSlug?: string 
   });
 
   const foundDescr = findDescr.filter((el) => el)[0]?.split(' ');
-  
-  if (!foundDescr || foundDescr.length < 1) return
-  
+
+  if (!foundDescr || foundDescr.length < 1) return;
+
   const endInjection = foundDescr[foundDescr.length - 1]
     ?.split('.')
     .toSpliced(-1, 1, `... <nobr>[\`READ_MORE =>\`](${postSlug ?? 'blog'})</nobr>`)

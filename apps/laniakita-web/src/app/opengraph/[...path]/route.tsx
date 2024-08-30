@@ -19,25 +19,33 @@ export async function GET(request: NextRequest) {
    * it this way, "just works".
    * */
 
-  const allPosts = await fetch(new URL('../../contentlayermini/generated/Post/index.json', import.meta.url))
+  const allPosts = await fetch(
+    new URL('../../../scripts/dist/contentlayermini/generated/Post/index.json', import.meta.url),
+  )
     .then((res) => res.arrayBuffer())
     .then((arr) => new Blob([arr]))
     .then((blob) => blob.text())
     .then((text) => JSON.parse(text) as Post[]);
 
-  const allPages = await fetch(new URL('../../contentlayermini/generated/Page/index.json', import.meta.url))
+  const allPages = await fetch(
+    new URL('../../../scripts/dist/contentlayermini/generated/Page/index.json', import.meta.url),
+  )
     .then((res) => res.arrayBuffer())
     .then((arr) => new Blob([arr]))
     .then((blob) => blob.text())
     .then((text) => JSON.parse(text) as Page[]);
 
-  const allCategories = await fetch(new URL('../../contentlayermini/generated/Category/index.json', import.meta.url))
+  const allCategories = await fetch(
+    new URL('../../../scripts/dist/contentlayermini/generated/Category/index.json', import.meta.url),
+  )
     .then((res) => res.arrayBuffer())
     .then((arr) => new Blob([arr]))
     .then((blob) => blob.text())
     .then((text) => JSON.parse(text) as Category[]);
 
-  const allTags = await fetch(new URL('../../contentlayermini/generated/Tag/index.json', import.meta.url))
+  const allTags = await fetch(
+    new URL('../../../scripts/dist/contentlayermini/generated/Tag/index.json', import.meta.url),
+  )
     .then((res) => res.arrayBuffer())
     .then((arr) => new Blob([arr]))
     .then((blob) => blob.text())
@@ -60,7 +68,7 @@ export async function GET(request: NextRequest) {
   const validPagePaths = allPages.map((page) => {
     // we need to find dynamic pages like '/credits/bot-clicker' too
     if (page.url.split('/').length > 2) {
-      return `/opengraph${page.url}`
+      return `/opengraph${page.url}`;
     }
     return `/opengraph/static${page.url.toLowerCase()}`;
   });
@@ -114,7 +122,7 @@ export async function GET(request: NextRequest) {
   }
 
   const modUrl = request.nextUrl.pathname.split('/').slice(3, request.nextUrl.pathname.split('/').length).join('/');
-  if (modUrl || (reqType === 'home' || reqType === 'credits' && !modUrl ) ) {
+  if (modUrl || reqType === 'home' || (reqType === 'credits' && !modUrl)) {
     switch (reqType) {
       case 'projects': {
         const projectUrl = `/projects/${modUrl}`;

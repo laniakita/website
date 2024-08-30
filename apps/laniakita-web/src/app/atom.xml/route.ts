@@ -12,19 +12,20 @@ const xmlOpts = {
 };
 
 export function GET() {
-
   const buildDate = new Date().toISOString();
   const NEXTJS_VERSION = versionVault.versions.dependencies.next;
-  const posts = allPosts.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date))) as unknown as Post[] | undefined;
-  
+  const posts = allPosts.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date))) as unknown as
+    | Post[]
+    | undefined;
+
   /*
   const headersList = headers();
   const host = headersList.get('host');
   const protocol = process.env.NODE_ENV === 'production' ? 'https://' : 'http://';
   const HOST_URL = `${protocol}${host}`;
   */
-  
-  const HOST_URL = BASE_URL
+
+  const HOST_URL = BASE_URL;
 
   const catTagRoller = (catsTagArr: Category[] | Tag[]) => {
     const res = catsTagArr.map((catTagX) => {
