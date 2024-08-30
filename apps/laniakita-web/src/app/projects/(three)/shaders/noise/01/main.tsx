@@ -21,8 +21,8 @@ export const metadata: Metadata = {
 
 export default function NoiseShader1Page() {
   return (
-    <main className='h-screen w-full'>
+    <div className='h-screen w-full'>
       <NoiseShader01 />
-    </main>
+    </div>
   );
 }

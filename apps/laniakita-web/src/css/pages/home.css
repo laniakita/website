@@ -1,0 +1,8 @@
+@layer components {
+  .home-btn-standard {
+    @apply color-trans-quick rounded border border-ctp-base  p-2 text-center font-mono text-lg text-ctp-text  backdrop-blur-md hover:border-ctp-pink hover:bg-ctp-pink hover:text-ctp-base  hover:no-underline dark:border-ctp-surface0   dark:hover:border-ctp-flamingo dark:hover:bg-ctp-pink
+  }
+  .home-btn-extra {
+    @apply home-btn-standard bg-ctp-mauve/80 hover:bg-ctp-pink/80
+  }
+}
