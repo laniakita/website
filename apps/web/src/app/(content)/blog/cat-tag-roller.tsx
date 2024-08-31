@@ -25,8 +25,8 @@ export const catTagData = ({ cats, tags }: { cats?: string[] | undefined; tags?:
     : [];
 
   const comboArr = [
-    ...categories.sort((a, b) => a!.title!.localeCompare(b!.title)),
-    ...tagsArr.sort((a, b) => a!.title!.localeCompare(b!.title)),
+    ...categories.sort((a, b) => a?.title?.localeCompare(b?.title ?? '') ?? 0),
+    ...tagsArr.sort((a, b) => a?.title?.localeCompare(b?.title ?? '') ?? 0),
   ];
 
   return comboArr;
