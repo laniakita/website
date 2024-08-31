@@ -6,7 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import { A11y, useUserPreferences } from '@react-three/a11y';
 import { useFrame, useThree } from '@react-three/fiber';
 import type { LOD } from 'three';
-import { MathUtils, AudioLoader, Audio, AudioListener } from 'three';
+import { MathUtils, AudioLoader, Audio, AudioListener, Cache } from 'three';
 import { Detailed } from '@react-three/drei';
 import { useHajClickerStore } from '@/providers/hajclicker-store-provider';
 
@@ -45,6 +45,7 @@ let canSound = false;
 
 const listener = new AudioListener();
 const audioLoader = new AudioLoader();
+Cache.enabled = true;
 
 function ZunSetup({ z, speed, index, viewMobile }: { z: number; speed: number; index: number; viewMobile: boolean }) {
   const searchParams = useSearchParams();
