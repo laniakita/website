@@ -1,9 +1,9 @@
 {
   "name": "@website/typescript-config",
   "version": "0.0.0",
-  "private": true,
-  "license": "MIT",
   "devDependencies": {
     "@vercel/style-guide": "^6.0.0"
-  }
+  },
+  "license": "MIT",
+  "private": true
 }
