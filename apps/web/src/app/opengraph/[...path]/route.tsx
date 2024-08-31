@@ -202,7 +202,7 @@ export async function GET(request: NextRequest) {
   }
 
   return new ImageResponse(
-    data.hasImage ? (
+    data.hasImage && (data.fetched as Post | Project).featured_image !== undefined ? (
       <div
         style={{
           display: 'flex',
@@ -218,7 +218,7 @@ export async function GET(request: NextRequest) {
             objectFit: 'cover',
             objectPosition: '50% 50%',
           }}
-          src={((data.fetched).featured_image as FeaturedImageR1).resized}
+          src={((data.fetched as Post | Project).featured_image as FeaturedImageR1).resized}
         />
       </div>
     ) : (
