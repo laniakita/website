@@ -28,6 +28,7 @@
         NIX_LD = lib.fileContents "${pkgs.stdenv.cc}/nix-support/dynamic-linker";
 
         packages = with pkgs; [
+          awscli2
           turbo
           bun
           nodejs_20
