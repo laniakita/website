@@ -4,7 +4,7 @@ import { allTags, allPosts, allCategories } from 'contentlayer/generated';
 import type { Tag, Post, Category } from 'contentlayer/generated';
 import versionVault from 'versionVault/compiled';
 import type { FeaturedImageR1 } from '@/lib/image-process';
-import { BASE_URL, BLOG_DESCR } from '@/lib/constants';
+import { APP_URL, BLOG_DESCR } from '@/lib/constants';
 // opts
 const xmlOpts = {
   header: true,
@@ -25,7 +25,7 @@ export function GET() {
   const HOST_URL = `${protocol}${host}`;
   */
 
-  const HOST_URL = BASE_URL;
+  const HOST_URL = APP_URL;
 
   const catTagRoller = (catsTagArr: Category[] | Tag[]) => {
     const res = catsTagArr.map((catTagX) => {

@@ -6,6 +6,8 @@ import ImageGenTwo from '@/components/image-gen-two';
 
 export const runtime = 'edge';
 
+export const maxDuration = 5;
+
 export async function GET(request: NextRequest) {
   const size = {
     width: 1200,
@@ -96,7 +98,9 @@ export async function GET(request: NextRequest) {
     ...validProjectPaths,
   ];
 
-  if (!allValidPaths.includes(request.nextUrl.pathname.toLowerCase())) return new Response('Error!', { status: 500 });
+  if (!allValidPaths.includes(request.nextUrl.pathname.toLowerCase())) {
+    return new Response('Internal Server Error.', { status: 500 })
+  };
 
   // phase 2
 
@@ -194,7 +198,7 @@ export async function GET(request: NextRequest) {
       }
     }
   } else if (reqType && !modUrl) {
-    return new Response('Error!', { status: 500 });
+    return new Response('Internal Server Error.', { status: 500 });
   }
 
   return new ImageResponse(
@@ -214,7 +218,7 @@ export async function GET(request: NextRequest) {
             objectFit: 'cover',
             objectPosition: '50% 50%',
           }}
-          src={((data.fetched as Post | Project).featured_image as FeaturedImageR1).resized}
+          src={((data.fetched).featured_image as FeaturedImageR1).resized}
         />
       </div>
     ) : (

@@ -6,7 +6,7 @@ import type { ReactNode } from 'react';
 import '@/css/app.css';
 import { themeGetter } from '@/lib/theme-getter';
 import {
-  BASE_URL,
+  APP_URL,
   APP_NAME,
   APP_DEFAULT_TITLE,
   APP_DESCRIPTION,
@@ -27,7 +27,7 @@ const zeroxproto = localFont({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.DEPLOYED_URL ? process.env.DEPLOYED_URL : BASE_URL),
+  metadataBase: new URL(APP_URL),
   applicationName: APP_NAME,
   title: {
     default: APP_DEFAULT_TITLE,
