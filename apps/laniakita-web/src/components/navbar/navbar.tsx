@@ -64,7 +64,7 @@ export default function NavBar() {
           {/* menu box */}
           <div
             ref={dropNavRef}
-            className={`${clicked.stateVal === 'open' ? 'opacity-100 [transform:translate3d(0%,0%,0px)]' : 'opacity-0 [transform:translate3d(0%,-100%,-0.01rem)]'} max-h-[calc(100dvh-3.9rem)] w-full overflow-y-auto rounded-b-2xl border-b border-ctp-mauve bg-ctp-base/90 backdrop-blur-md [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:transform_0.5s,_opacity_0.3s,_background-color_0.8s] dark:bg-ctp-midnight/90 lg:hidden`}
+            className={`${clicked.stateVal === 'open' ? 'opacity-100 [transform:translate3d(0%,0%,0px)]' : 'opacity-0 [transform:translate3d(0%,-100%,-0.01rem)]'} max-h-[calc(100dvh-3.9rem)] w-full overflow-y-auto rounded-b-2xl border-b border-ctp-mauve bg-ctp-base/90 backdrop-blur-md [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:transform_0.5s,_opacity_0.3s,_background-color_0.8s] lg:hidden dark:bg-ctp-midnight/90`}
           >
             <div className='flex size-full flex-col gap-3 p-10'>
               {pagesArrMobile.map((page) => (
@@ -161,33 +161,3 @@ function SimpleSocials({ arr }: { arr: SocialNavIcon[] }) {
     </>
   );
 }
-
-/*
- *
- *  
-
-          <p className=''>
-            <Link
-              href='https://github.com/laniakita'
-              className='flex items-center justify-center text-3xl text-ctp-subtext1'
-            >
-              <span className='icon-[ant-design--github-filled]' />
-            </Link>
-          </p>
-
- *
- *          <p className=''>
-            <Link href='https://linkedin.com' className='flex items-center justify-center text-3xl text-ctp-subtext1'>
-              <span className='icon-[fa6-brands--linkedin]' />
-            </Link>
-          </p>
-
-          <p className=''>
-            <Link href='https://instagram.com' className='flex items-center justify-center text-3xl text-ctp-subtext1'>
-              <span className='icon-[fa6-brands--instagram]' />
-            </Link>
-          </p>
-
-
- *
- * */

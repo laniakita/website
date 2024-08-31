@@ -2,7 +2,6 @@
 import { usePathname } from 'next/navigation';
 import { socialItems2 } from '../sidebar/main';
 import { SocialIconNav2 } from '../sidebar/social-icon-nav-client';
-import CircleMovie from './circle-movie';
 import { FooterBox, FooterBoxSpecial } from './footer-box';
 import data from './common-data.json';
 
@@ -44,21 +43,6 @@ export default function Footer({ extra }: { extra?: string }) {
       <div
         className={`simple-color-trans relative flex w-full flex-col items-center justify-center overflow-hidden  bg-ctp-base dark:bg-ctp-midnight ${extra}`}
       >
-        <div className='absolute size-full '>
-          <div className=' relative size-full'>
-            <CircleMovie animationDelayJit='[animation-delay:_1s]' colorClass='bg-ctp-red' />
-            <CircleMovie
-              animationDelayJit='[animation-delay:_2s]'
-              animationClass='animate-growygrowsup'
-              colorClass='bg-ctp-blue'
-            />
-            <CircleMovie
-              animationDelayJit='[animation-delay:_0s]'
-              animationClass='animate-growyshrinky'
-              colorClass='bg-ctp-mauve'
-            />
-          </div>
-        </div>
 
         {/* contents container that givs the blurry bg + the pattern */}
         <div className='flex  size-full  flex-col  backdrop-blur-2xl'>
