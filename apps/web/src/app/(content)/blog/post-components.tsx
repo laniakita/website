@@ -18,7 +18,7 @@ export default function PostPreviewV4(post: Post) {
             src={res.src}
             placeholder='blur'
             blurDataURL={res.base64}
-            alt={post.altText}
+            alt={post.altText ?? ''}
             height={res.height}
             width={res.width}
             sizes='(max-width: 300px) 70vw, (max-width: 600px) 45vw, (max-width:1500px) 27vw'
