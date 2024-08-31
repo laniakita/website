@@ -1,1 +1,1 @@
-export * from './laniakita-web'
+export * from './web'
