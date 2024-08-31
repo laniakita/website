@@ -7,16 +7,13 @@ const nextConfig = {
     loader: 'custom',
     loaderFile: './src/lib/image-loader.ts',
   },
-  /*
-  experimental: {
-    serverComponentsExternalPackages: ['@shikijs/twoslash', 'sharp'],
-  },*/
+  
   webpack(config) {
     // shader support
     config.module.rules.push({
       test: /\.(glsl|vs|fs|vert|frag)$/,
       exclude: /node_modules/,
-      use: ['raw-loader', 'glslify-loader'],
+      use: ['raw-loader'],
     });
     
     return config;
