@@ -20,14 +20,11 @@
     "next-env.d.ts",
     "./**/*.ts",
     "./**/*.tsx",
-    "./**/*.js",
-    "./**/*.cjs",
     "./**/*.mjs",
     "./**/*.json",
     ".next/types/**/*.ts",
     ".contentlayer/generated",
-    ".eslintrc.cjs",
-    ".package-version-saver"
+    ".eslintrc.cjs"
   ],
   "exclude": ["node_modules", "public/sw.js"]
 }

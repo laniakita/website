@@ -1,6 +1,6 @@
+/* eslint-disable camelcase -- that's how it is  */
 import 'dotenv';
 import type { Metadata, Viewport } from 'next';
-// eslint-disable-next-line -- I don't control the google fonts package.
 import { Inter_Tight } from 'next/font/google';
 import localFont from 'next/font/local';
 import type { ReactNode } from 'react';
@@ -15,7 +15,11 @@ import {
   APP_THEME_COLOR,
 } from '@/lib/constants';
 
-const inter = Inter_Tight({ subsets: ['latin'], display: 'swap', variable: '--font-inter' });
+const inter_tight = Inter_Tight({ 
+  subsets: ['latin'], 
+  display: 'swap',
+  variable: '--font-inter-tight' 
+});
 
 const zeroxproto = localFont({
   src: './0xProto-Regular.woff2',
@@ -65,11 +69,11 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <html lang='en-US' dir='ltr' className={`${inter.variable} ${zeroxproto.variable}`} suppressHydrationWarning>
+    <html lang='en-US' dir='ltr' className={`${inter_tight.variable} ${zeroxproto.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeGetter }} />
       </head>
-      <body className={inter.className}>{children}</body>
+      <body className={inter_tight.className}>{children}</body>
     </html>
   );
 }
