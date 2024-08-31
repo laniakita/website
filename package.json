@@ -1,8 +1,7 @@
 {
   "name": "website",
   "devDependencies": {
-    "eslint": "9.0.0",
-    "prettier": "^3.2.5"
+    "prettier": "^3.3.3"
   },
   "engines": {
     "node": ">=18"
@@ -10,9 +9,9 @@
   "packageManager": "bun@1.1.20",
   "private": true,
   "scripts": {
-    "build": "turbo build",
-    "dev": "turbo dev",
-    "lint": "turbo lint",
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
     "test": "turbo run test",
     "test:watch": "turbo run test:watch"
   },
@@ -22,11 +21,5 @@
   ],
   "dependencies": {
     "turbo": "^2.1.0"
-  },
-  "trustedDependencies": [
-    "contentlayer2",
-    "es5-ext",
-    "esbuild",
-    "sharp"
-  ]
+  }
 }
