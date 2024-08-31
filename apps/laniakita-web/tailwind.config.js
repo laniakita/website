@@ -1,18 +1,40 @@
-import type { Config } from "tailwindcss";
-import catppuccin from "@catppuccin/tailwindcss";
-import tailwindProse from "@tailwindcss/typography";
-//import plugin from "tailwindcss/plugin";
-import { addDynamicIconSelectors } from "@iconify/tailwind";
+const catppuccin = require("@catppuccin/tailwindcss");
+const tailwindProse = require("@tailwindcss/typography");
+const { addDynamicIconSelectors } = require("@iconify/tailwind");
 
 const accent = "ctp-mauve";
 const invertAccent = "ctp-orange";
 const linkColor = "ctp-sky";
 const invertLinkColor = "ctp-orange";
 
-// We want each package to be responsible for its own content.
-const config: Omit<Config, "content"> = {
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
+  darkMode: 'selector',
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['var(--font-inter-tight)'],
+        mono: ['var(--font-zeroxproto)'],
+      },
+
+      screens: {
+        'narrow-phone': '300px',
+        'small-phone': '350px',
+        phone: '385px',
+        phablet: '412px',
+        'beeg-phablet': '430px',
+        fold: '500px',
+        'not-tablet': '600px',
+      },
+      colors: {
+        'ctp-midnight': '#07070D',
+      },
+
       keyframes: {
         "fade-in": {
           from: { opacity: "0" },
@@ -34,33 +56,20 @@ const config: Omit<Config, "content"> = {
           "0%": { transform: "translateY(140%)" },
           "100%": { transform: "translateY(0%)" },
         },
-        "nav-slide-up": {
-          //not in use
-          "0%": { transform: "translateY(100%)" },
-          "100%": { transform: "translateY(0%)" },
-        },
-        "nav-slide-down": {
-          // not in use
-          "0%": { transform: "translateY(0%)" },
-          "100%": { transform: "translateY(100%)" },
-        },
       },
       animation: {
         "fade-in": "fade-in 0.8s ease 1s forwards",
-        "quick-fade-in": "fade-in 0.3s ease forwards",
         "fade-in-up": "fade-in-up 0.2s ease 1s forwards",
         "fade-in-down": "fade-in-down 1s ease 1s forwards",
         marquee: "marquee 5s linear infinite",
         upDog: "upDog 1.5s ease 1s forwards",
-        "nav-slide-up": "nav-slide-up 0.8s ease forwards",
-        "nav-slide-down": "nav-slide-down 0.8s ease forwards",
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
-      typography: ({ theme }: { theme: any }) => ({
+      typography: ({ theme }) => ({
         DEFAULT: {
           css: {
             "blockquote p:first-of-type::before": false,
@@ -116,15 +125,8 @@ const config: Omit<Config, "content"> = {
   },
   plugins: [
     tailwindProse,
-    /*
-    plugin(function ({ addVariant }) {
-      addVariant(
-        "prose-inline-code",
-        '&.prose :where(:not(pre)>code):not(:where([class~="not-prose"]))',
-      );
-    }), */
     catppuccin({ prefix: "ctp" }),
     addDynamicIconSelectors(),
   ],
-};
-export default config;
+}
+

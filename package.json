@@ -1,15 +1,8 @@
 {
   "name": "website",
   "devDependencies": {
-    "@shikijs/rehype": "^1.15.1",
-    "@shikijs/twoslash": "^1.15.1",
-    "@testing-library/react": "^15.0.7",
-    "@vitejs/plugin-react": "^4.2.1",
     "eslint": "9.0.0",
-    "jsdom": "^24.0.0",
-    "prettier": "^3.2.5",
-    "shiki": "^1.15.1",
-    "vitest": "^1.6.0"
+    "prettier": "^3.2.5"
   },
   "engines": {
     "node": ">=18"

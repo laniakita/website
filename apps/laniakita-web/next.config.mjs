@@ -18,12 +18,7 @@ const nextConfig = {
       exclude: /node_modules/,
       use: ['raw-loader', 'glslify-loader'],
     });
-
-    config.experiments = {
-      layers: true,
-      futureDefaults: true,
-    };
-
+    
     return config;
   },
   swcMinify: true,
