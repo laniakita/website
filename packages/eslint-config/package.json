@@ -3,8 +3,8 @@
   "license": "MIT",
   "version": "0.0.0",
   "type": "module",
-   "devDependencies": {
+  "devDependencies": {
     "@vercel/style-guide": "^6.0.0",
-    "eslint-config-turbo": "^2.0.14"
+    "eslint-config-turbo": "^2.1.1"
   }
 }
