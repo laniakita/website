@@ -69,8 +69,8 @@ export const socialItems2 = [
 const blogInfo = 'A blog about life, Linux, and web development. Written by, [Lani Akita](/about).';
 
 export default function Sidebar() {
-  const categories = allCategories.sort((a, b) => a.title!.localeCompare(b.title!));
-  const tags = allTags.sort((a, b) => a.title!.localeCompare(b.title!));
+  const categories = allCategories.sort((a, b) => a.title!.localeCompare(b.title));
+  const tags = allTags.sort((a, b) => a.title!.localeCompare(b.title));
 
   return (
     <div className='flex h-fit md:sticky md:top-24'>

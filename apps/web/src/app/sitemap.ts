@@ -1,11 +1,11 @@
 import type { MetadataRoute } from 'next';
 import { compareDesc } from 'date-fns';
+import { allProjects, type Post, type Tag, type Category } from 'contentlayer/generated';
 import allPosts from '@/scripts/dist/contentlayermini/generated/Post/index.json';
 import allPages from '@/scripts/dist/contentlayermini/generated/Page/index.json';
 import allCategories from '@/scripts/dist/contentlayermini/generated/Category/index.json';
 import allTags from '@/scripts/dist/contentlayermini/generated/Tag/index.json';
-import { allProjects, type Post, type Tag, type Category } from 'contentlayer/generated';
-import { BASE_URL } from '@/lib/constants';
+import { APP_URL } from '@/lib/constants';
 
 // funfact/improbable todo: google only supports 50,000 urls per sitemap, so filter
 // old content if needed.
@@ -46,38 +46,38 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const baseSite = [
     {
-      url: BASE_URL,
+      url: APP_URL,
       lastModified: postsRes[0]?.updated ?? postsRes[0]?.date ?? new Date(),
       changeFrequency: 'monthly',
       priority: 1,
     },
     {
-      url: `${BASE_URL}/blog`,
+      url: `${APP_URL}/blog`,
       lastModified: postsRes[0]?.updated ?? postsRes[0]?.date ?? new Date(),
       changeFrequency: 'weekly',
       priority: 0.9,
     },
     {
-      url: `${BASE_URL}/about`,
+      url: `${APP_URL}/about`,
       lastModified: getPageDate('about'),
       changeFrequency: 'yearly',
       priority: 0.7,
     },
 
     {
-      url: `${BASE_URL}/projects`,
+      url: `${APP_URL}/projects`,
       lastModified: projectsRes[0]?.updated ?? projectsRes[0]?.date ?? new Date(),
       changeFrequency: 'monthly',
       priority: 0.6,
     },
     {
-      url: `${BASE_URL}/contact`,
+      url: `${APP_URL}/contact`,
       lastModified: getPageDate('contact'),
       changeFrequency: 'yearly',
       priority: 0.5,
     },
     {
-      url: `${BASE_URL}/credits`,
+      url: `${APP_URL}/credits`,
       lastModified: getPageDate('credits'),
       changeFrequency: 'yearly',
       priority: 0.2,
@@ -85,22 +85,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   const posts = postsRes.map((post) => ({
-    url: `${BASE_URL}${post.url}`,
+    url: `${APP_URL}${post.url}`,
     lastModified: post.updated ?? post.date,
   }));
 
   const categories = categoriesRes.map((cat) => ({
-    url: `${BASE_URL}${cat.url}`,
+    url: `${APP_URL}${cat.url}`,
     lastModified: isNewPostInCatTag(cat, true),
   }));
 
   const tags = tagsRes.map((tag) => ({
-    url: `${BASE_URL}${tag.url}`,
+    url: `${APP_URL}${tag.url}`,
     lastModified: isNewPostInCatTag(tag, false),
   }));
 
   const projects = projectsRes.map((project) => ({
-    url: `${BASE_URL}${project.url}`,
+    url: `${APP_URL}${project.url}`,
     lastModified: project.updated ?? project.date,
   }));
 

@@ -5,11 +5,11 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { compareDesc } from 'date-fns';
 import Markdown from 'markdown-to-jsx';
-import { allPages, allPosts, allProjects, type Project } from '.contentlayer/generated';
 import { MDXComponent } from '@/components/cat-tag-common';
 import type { FeaturedImageR1 } from '@/lib/image-process';
 import LocalDate from '@/app/(content)/blog/local-date';
 import { descriptionHelper } from '@/app/(content)/blog/post-components';
+import { allPages, allPosts, allProjects, type Project } from "contentlayer/generated";
 
 const pageData = allPages.find((page) => page.url === '/projects');
 const description = descriptionHelper(pageData!.body.raw, pageData?.url, true);

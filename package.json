@@ -1,6 +1,9 @@
 {
   "name": "website",
   "devDependencies": {
+    "@iconify-json/ant-design": "^1.1.17",
+    "@iconify-json/fa6-brands": "^1.1.22",
+    "@iconify-json/ph": "^1.1.14",
     "prettier": "^3.3.3",
     "sst": "^3.0.81",
     "syncpack": "^13.0.0",
@@ -21,5 +24,9 @@
   "workspaces": [
     "packages/*",
     "apps/*"
+  ],
+  "trustedDependencies": [
+    "contentlayer2",
+    "protobufjs"
   ]
 }
