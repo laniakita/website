@@ -207,7 +207,6 @@ export default makeSource({
           ],
         },
       ],
-      //@ts-expect-error -- typeof(rehypeMdxImportMedia) !== Unified.Pluggable
       rehypeMdxImportMedia,
       rehypeSlug,
     ],

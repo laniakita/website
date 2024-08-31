@@ -1,4 +1,4 @@
-export const BASE_URL = 'https://laniakita.com';
+export const BASE_URL = process.env.NODE_ENV === 'production' ? 'https://laniakita.com' : 'http://localhost:3000'
 export const APP_NAME = 'Lani Akita';
 export const APP_DEFAULT_TITLE = 'Lani Akita';
 export const APP_TITLE_TEMPLATE = '%s - Lani Akita';
