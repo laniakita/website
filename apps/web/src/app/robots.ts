@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { BASE_URL } from '@/lib/constants';
+import { APP_URL } from '@/lib/constants';
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -8,6 +8,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: '/private/',
     },
-    sitemap: `${BASE_URL}/sitemap.xml`,
+    sitemap: `${APP_URL}/sitemap.xml`,
   };
 }

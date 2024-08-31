@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import ShareButton from '@/components/share-btn';
 import { type Post } from 'contentlayer/generated';
+import ShareButton from '@/components/share-btn';
 import type { FeaturedImageR1 } from '@/lib/image-process';
 import { HeroBlur2 } from './hero-blur-2';
 import LocalDate from './local-date';

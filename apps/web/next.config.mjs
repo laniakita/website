@@ -5,13 +5,18 @@ const nextConfig = {
   pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
   images: {
     loader: 'custom',
-    loaderFile: process.env.DEPLOYED_URL !== undefined ? './src/lib/local-loader.ts' : './src/lib/image-loader.ts',
+    loaderFile: process.env.DEPLOYED_URL !== undefined && process.env.NODE_ENV === 'production' ? './src/lib/image-loader.ts' : './src/lib/local-loader.ts',
     remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: '**.laniakita.com',
-        port: '',
-      }
+      process.env.DEPLOYED_URL !== undefined
+        ? {
+            protocol: 'https',
+            hostname: '**.laniakita.com',
+            port: '',
+          }
+        : {
+          protocol: 'http',
+          hostname: 'localhost',
+        },
     ],
   },
 

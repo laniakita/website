@@ -4,11 +4,11 @@ import type { Metadata, ResolvingMetadata } from 'next';
 import type { BlogPosting, WithContext } from 'schema-dts';
 import { compareDesc } from 'date-fns';
 import { useMDXComponent } from 'next-contentlayer2/hooks';
+import { allPosts } from 'contentlayer/generated';
 import ReadingBar from '@/components/reading-bar';
 import { PostHeader2 } from '@/app/(content)/blog/post-header-2';
-import { allPosts } from 'contentlayer/generated';
 import type { FeaturedImageR1 } from '@/lib/image-process';
-import { BASE_URL } from '@/lib/constants';
+import { APP_URL } from '@/lib/constants';
 import BlogImageBlurServer from '../../img-blur-server';
 import { descriptionHelper } from '../../post-components';
 import { catTagData } from '../../cat-tag-roller';
@@ -113,14 +113,14 @@ export default function BlogPostPage({ params }: { params: { id: string; slug: s
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     name: post.headline,
-    url: `${BASE_URL}${post.url}`,
+    url: `${process.env.DEPLOYED_URL ? process.env.DEPLOYED_URL : APP_URL}${post.url}`,
     description: descriptionHelper(post.body.raw, post.url, true),
     author: 'Lani Akita',
     editor: 'Lani Akita',
     dateCreated: post.date,
     datePublished: post.date,
     dateModified: post.updated ?? post.date,
-    thumbnailUrl: `${BASE_URL}/opengraph/blog/${params.id}/${params.slug}?twitter=true`,
+    thumbnailUrl: `${APP_URL}/opengraph/blog/${params.id}/${params.slug}?twitter=true`,
     keywords: post.keywords ?? (catTagArr as string[]),
     countryOfOrigin: 'United States',
   };
