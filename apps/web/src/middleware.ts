@@ -54,7 +54,7 @@ const ofacCountries = [
   'ZW',
 ];
 
-const limiter = new SlidingWindowCounterRateLimiter(150, 1000*60);
+const limiter = new SlidingWindowCounterRateLimiter(150, 1000 * 60);
 
 export default function middleware(request: NextRequest) {
   const visitorCountryCode = request.geo?.country;

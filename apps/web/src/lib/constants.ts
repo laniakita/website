@@ -1,5 +1,6 @@
 export const BASE_URL = 'http://localhost:3000';
-export const APP_URL = process.env.DEPLOYED_URL && process.env.NODE_ENV === 'production' ? process.env.DEPLOYED_URL : BASE_URL
+export const APP_URL =
+  process.env.DEPLOYED_URL && process.env.NODE_ENV === 'production' ? process.env.DEPLOYED_URL : BASE_URL;
 export const APP_NAME = 'Lani Akita';
 export const APP_DEFAULT_TITLE = 'Lani Akita';
 export const APP_TITLE_TEMPLATE = '%s - Lani Akita';

@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
 import { allPages } from 'contentlayer/generated';
-import { PageCommon } from '../page-common';
-import { descriptionHelper } from '../../blog/post-components';
+import { PageCommon } from '@/app/(content)/(info)/page-common';
+import { descriptionHelper } from '@/app/(content)/blog/post-components';
 
 const data = allPages.find((page) => page.url === '/about');
-const description = descriptionHelper(data!.body.raw, data?.url, true);
+const description = descriptionHelper(data?.body.raw, data?.url, true);
 
 export const metadata: Metadata = {
   title: data?.title,

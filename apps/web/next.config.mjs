@@ -5,7 +5,10 @@ const nextConfig = {
   pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
   images: {
     loader: 'custom',
-    loaderFile: process.env.DEPLOYED_URL !== undefined && process.env.NODE_ENV === 'production' ? './src/lib/image-loader.ts' : './src/lib/local-loader.ts',
+    loaderFile:
+      process.env.DEPLOYED_URL !== undefined && process.env.NODE_ENV === 'production'
+        ? './src/lib/image-loader.ts'
+        : './src/lib/local-loader.ts',
     remotePatterns: [
       process.env.DEPLOYED_URL !== undefined
         ? {
@@ -14,9 +17,9 @@ const nextConfig = {
             port: '',
           }
         : {
-          protocol: 'http',
-          hostname: 'localhost',
-        },
+            protocol: 'http',
+            hostname: 'localhost',
+          },
     ],
   },
 
