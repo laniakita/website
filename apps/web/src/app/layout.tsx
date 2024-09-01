@@ -13,6 +13,7 @@ import {
   APP_TITLE_TEMPLATE,
   APP_THEME_COLOR,
 } from '@/lib/constants';
+import { DarkStoreProvider } from '@/providers/theme-store-provider';
 
 const inter_tight = Inter_Tight({
   subsets: ['latin'],
@@ -72,7 +73,9 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeGetter }} />
       </head>
-      <body className={inter_tight.className}>{children}</body>
+      <body className={inter_tight.className}>
+        <DarkStoreProvider>{children}</DarkStoreProvider>
+      </body>
     </html>
   );
 }
