@@ -68,7 +68,7 @@ export default function Projects() {
 
         <div className='flex size-full max-w-3xl flex-wrap items-center justify-center gap-4 md:gap-6'>
           {projectData.map((proj) => (
-            <ProjectPreview key={`project-${uKey}`} {...proj} />
+            <ProjectPreview key={`project-${uKey}-${Math.floor(Math.PI * Math.random())}`} {...proj} />
           ))}
         </div>
       </div>

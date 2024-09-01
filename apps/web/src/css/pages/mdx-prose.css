@@ -1,5 +1,14 @@
 @layer components {
+  .prose-code-pretty {
+    @apply prose-code:before:hidden prose-code:after:hidden prose-pre:border prose-pre:border-ctp-surface0 [&:where(:not(pre)>code)]:prose-code:rounded-md [&:where(:not(pre)>code)]:prose-code:border [&:where(:not(pre)>code)]:prose-code:border-ctp-surface0 [&:where(:not(pre)>code)]:prose-code:bg-ctp-base [&:where(:not(pre)>code)]:prose-code:px-1 [&:where(:not(pre)>code)]:prose-code:py-0.5 prose-pre:rounded-xl
+  }
+  .prose-headings-pretty {
+   @apply prose-headings:font-black 
+  }
   .prose-protocol-omega {
-    @apply prose prose-catppuccin relative text-lg prose-h1:text-3xl prose-h1:font-black prose-h1:leading-tight prose-h2:leading-tight prose-h3:leading-tight prose-h4:leading-tight prose-p:text-base prose-a:text-base prose-a:text-ctp-mauve prose-a:underline hover:prose-a:text-ctp-pink prose-code:text-sm prose-code:before:hidden prose-code:after:hidden prose-pre:max-w-[68vw] prose-pre:rounded-xl prose-pre:border prose-pre:border-ctp-surface0 prose-pre:shadow-lg prose-pre:shadow-ctp-mauve/30 prose-h1:supports-[text-wrap:balance]:text-balance prose-h2:supports-[text-wrap:balance]:text-balance prose-h3:supports-[text-wrap:balance]:text-balance prose-h4:supports-[text-wrap:balance]:text-balance prose-p:supports-[text-wrap:pretty]:text-pretty narrow-phone:prose-pre:max-w-[76vw] small-phone:prose-pre:max-w-[78vw] phone:prose-pre:max-w-[79vw] phablet:prose-pre:max-w-[80vw] fold:prose-pre:max-w-[81vw] sm:prose-pre:max-w-[86vw] md:prose-h1:text-4xl  [&:where(:not(pre)>code)]:prose-code:rounded-md [&:where(:not(pre)>code)]:prose-code:border [&:where(:not(pre)>code)]:prose-code:border-ctp-surface0 [&:where(:not(pre)>code)]:prose-code:bg-ctp-base [&:where(:not(pre)>code)]:prose-code:px-1 [&:where(:not(pre)>code)]:prose-code:py-0.5;
+    @apply prose prose-catppuccin max-w-3xl prose-code-pretty prose-headings-pretty dark:prose-invert
+  }
+  .prose-protocol-omega-old {
+    @apply prose prose-catppuccin relative text-lg prose-h1:text-3xl prose-h3:text-xl prose-h2:text-2xl md:prose-h2:text-3xl md:prose-h3:text-2xl prose-h1:font-black prose-h1:leading-tight prose-h2:leading-tight prose-h3:leading-tight prose-h4:leading-tight prose-p:text-base prose-a:text-base prose-a:text-ctp-mauve prose-a:underline hover:prose-a:text-ctp-pink prose-code:text-sm  prose-pre:max-w-[68vw]   prose-pre:shadow-lg prose-pre:shadow-ctp-mauve/30 prose-h1:supports-[text-wrap:balance]:text-balance prose-h2:supports-[text-wrap:balance]:text-balance prose-h3:supports-[text-wrap:balance]:text-balance prose-h4:supports-[text-wrap:balance]:text-balance prose-p:supports-[text-wrap:pretty]:text-pretty narrow-phone:prose-pre:max-w-[76vw] small-phone:prose-pre:max-w-[78vw] phone:prose-pre:max-w-[79vw] phablet:prose-pre:max-w-[80vw] fold:prose-pre:max-w-[81vw] sm:prose-pre:max-w-[86vw] md:prose-h1:text-4xl  ;
   }
 }

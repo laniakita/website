@@ -1,51 +1,79 @@
 import { type NextRequest, NextResponse } from 'next/server';
+import { SlidingWindowCounterRateLimiter } from './lib/rate-limiter';
 
 export const config = {
   matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico, sitemap.xml, robots.txt (metadata files)
+     */
     {
-      source: '/assets/(.*)',
+      source:
+        '/((?!_next/static|_next/image|favicon.ico|icon1.svg|icon2.png|icon3.png|apple-icon1.png|apple-icon2.png|apple-icon3.png|sitemap.xml|robots.txt|manifest.json).*)',
       missing: [
         { type: 'header', key: 'next-router-prefetch' },
         { type: 'header', key: 'purpose', value: 'prefetch' },
       ],
     },
-    {
-      source: '/opengraph/(.*)',
-      has: [{ type: 'header', key: 'x-present' }],
-      missing: [
-        { type: 'header', key: 'next-router-prefetch' },
-        { type: 'header', key: 'purpose', value: 'prefetch'}
-      ],
-    },
   ],
 };
 
-// rate limit
-const ALLOWED_REQUESTS = 100;
-const TIME_FRAME = 15 * 60 * 1000;
+/*
+ * The U.S. Department of State prohibits the export of
+ * military/space equipment or technical data to these
+ * countries and to foreign nationals of these countries.^1
+ *
+ * 1 - Countries Subject to Prohibition on Military Exports.
+ * https://orpa.princeton.edu/export-controls/sanctioned-countries.
+ */
+const ofacCountries = [
+  'AF',
+  'BY',
+  'MM',
+  'CF',
+  'CN',
+  'CU',
+  'CG',
+  'CY',
+  'ER',
+  'ET',
+  'HT',
+  'IR',
+  'IQ',
+  'LB',
+  'LY',
+  'NI',
+  'KP',
+  'RU',
+  'SO',
+  'SS',
+  'SY',
+  'VE',
+  'ZW',
+];
 
-const requestRecords: Record<string, number[]> = {};
+const limiter = new SlidingWindowCounterRateLimiter(150, 1000*60);
 
 export default function middleware(request: NextRequest) {
-  const ip = (request.ip ?? request.headers.get('CloudFront-Viewer-Address') ?? request.headers.get('X-Forwarded-For'))!;
+  const visitorCountryCode = request.geo?.country;
+  if (visitorCountryCode) {
+    if (ofacCountries.find((country) => country === visitorCountryCode)) {
+      return new Response('Resource is unavailable.', { status: 451 });
+    }
+  }
+
+  const ip = (request.ip ??
+    request.headers.get('CloudFront-Viewer-Address') ??
+    request.headers.get('X-Forwarded-For'))!;
   const fingerprint = request.headers.get('CloudFront-Viewer-JA3-Fingerprint');
-  
-  const requester = fingerprint ?? ip
-  
 
-  const currentTimestamp = Date.now();
+  const requester = fingerprint ?? ip;
 
-  if (!requestRecords[requester]) {
-    requestRecords[requester] = [];
+  if (limiter.allowed(requester)) {
+    return NextResponse.next();
   }
 
-  // get timestamps only for the last 15 minutes.
-  requestRecords[requester] = requestRecords[requester].filter((ts) => currentTimestamp - ts < TIME_FRAME);
-
-  if (requestRecords[requester].length >= ALLOWED_REQUESTS) {
-    return new Response('Too many requests.', { status: 429 });
-  }
-
-  requestRecords[requester].push(currentTimestamp);
-  return NextResponse.next();
+  return new Response('Too many requests', { status: 429 });
 }
