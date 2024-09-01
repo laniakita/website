@@ -8,3 +8,4 @@
 .tmp/*
 node_modules/*
 contentlayermini/*
+sst-env.d.ts

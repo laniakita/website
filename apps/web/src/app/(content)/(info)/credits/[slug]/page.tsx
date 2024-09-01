@@ -1,6 +1,6 @@
 import type { Metadata, ResolvingMetadata } from 'next';
 import { allPages } from 'contentlayer/generated';
-import { descriptionHelper } from '@/app/(content)/blog/post-components';
+import { descriptionHelper } from '@/lib/description-helper';
 import { PageCommon } from '@/app/(content)/(info)/page-common';
 
 export const dynamicParams = false;
@@ -16,8 +16,8 @@ export async function generateMetadata(
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const data = allPages.find((credit) => credit.url.split('/').pop() === params.slug);
-
-  const description = descriptionHelper(data?.body.raw, data?.url, true);
+  /* eslint-disable @typescript-eslint/no-unnecessary-condition -- testing */
+  const description = descriptionHelper(data?.body?.raw, data?.url, true);
 
   const previousImages = (await parent).openGraph?.images ?? [];
   const previousImagesTwitter = (await parent).twitter?.images ?? [];
