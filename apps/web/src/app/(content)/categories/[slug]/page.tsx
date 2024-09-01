@@ -3,7 +3,8 @@ import type { Metadata, ResolvingMetadata } from 'next';
 import { compareDesc } from 'date-fns';
 import { allCategories, allPosts } from 'contentlayer/generated';
 import { MiniLayout } from '@/components/cat-tag-common';
-import { descriptionHelper } from '../../blog/post-components';
+import { descriptionHelper } from '@/lib/description-helper';
+
 
 export const dynamicParams = false;
 
