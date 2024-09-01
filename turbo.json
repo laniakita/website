@@ -8,6 +8,7 @@
     "test:watch": {
       "cache": false
     },
+    "sso": {},
     "lint": {},
     "deploy": {
       "dependsOn": ["build", "test", "lint"]
