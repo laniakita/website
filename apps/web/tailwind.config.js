@@ -4,8 +4,8 @@ const { addDynamicIconSelectors } = require('@iconify/tailwind');
 
 const accent = 'ctp-mauve';
 const invertAccent = 'ctp-orange';
-const linkColor = 'ctp-sky';
-const invertLinkColor = 'ctp-orange';
+const linkColor = 'ctp-mauve';
+const invertLinkColor = 'ctp-mauve';
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {

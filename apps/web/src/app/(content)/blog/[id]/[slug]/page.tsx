@@ -132,10 +132,11 @@ export default function BlogPostPage({ params }: { params: { id: string; slug: s
         <ReadingBar />
       </div>
       <main className='motion-safe:simple-color-trans pb-common -mb-0.5 min-h-full max-w-full bg-ctp-base dark:bg-ctp-midnight'>
-        <article id='content' className='mx-0 flex size-full flex-col items-center justify-center px-0'>
+        {/* flex box break prose */}
+        <article id='content' className=''>
           <PostHeader2 {...post} />
-          <div className='flex min-h-full items-center justify-center px-10 '>
-            <div className='prose-protocol-omega mx-0 max-w-3xl px-0'>
+          <div className='w-full px-10'>
+            <div className='prose-protocol-omega mx-auto'>
               <MDXContent code={post.body.code} components={mdxComponents} />
             </div>
           </div>
