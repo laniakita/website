@@ -26,7 +26,7 @@
         ".contentlayer",
         ".contentlayermini"
       ],
-      "inputs": ["$TURBO_DEFAULT$", ".env.production.local", ".env.production", ".env.local", ".env"]
+      "inputs": ["$TURBO_DEFAULT$", "../../sst.config.ts", ".env.production.local", ".env.production", ".env.local", ".env"]
     },
     "build:open-next": {
       "dependsOn": ["build"],
