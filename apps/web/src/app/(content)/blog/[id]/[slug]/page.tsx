@@ -1,4 +1,3 @@
-import type { ReactElement, ReactNode } from 'react';
 import { notFound, redirect } from 'next/navigation';
 import type { Metadata, ResolvingMetadata } from 'next';
 import type { BlogPosting, WithContext } from 'schema-dts';
@@ -13,6 +12,7 @@ import BlogImageBlurServer from '../../img-blur-server';
 import { descriptionHelper } from '../../post-components';
 import { catTagData } from '../../cat-tag-roller';
 import CommentsComponent from './comments';
+import { Paragraph } from './paragraph';
 
 export const dynamicParams = false;
 
@@ -70,18 +70,6 @@ export async function generateMetadata(
       ],
     },
   };
-}
-
-export function Paragraph(props: { children?: ReactNode }) {
-  if (typeof props.children !== 'string') {
-    if (
-      typeof (props.children as ReactElement).type === 'function' ||
-      (props.children as ReactElement).type === 'img'
-    ) {
-      return <>{props.children}</>;
-    }
-  }
-  return <p {...props} />;
 }
 
 const mdxComponents = { p: Paragraph, img: BlogImageBlurServer };
@@ -142,7 +130,7 @@ export default function BlogPostPage({ params }: { params: { id: string; slug: s
             </div>
           </div>
         </article>
-          <CommentsComponent />
+        <CommentsComponent />
       </main>
     </>
   );

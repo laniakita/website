@@ -3,7 +3,7 @@
 import "sst"
 declare module "sst" {
   export interface Resource {
-    "LaniAkitaWeb": {
+    "Web": {
       "type": "sst.aws.Nextjs"
       "url": string
     }

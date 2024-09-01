@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 // Docs: https://aws.amazon.com/developer/application-security-performance/articles/image-optimization
 export default function cloudFrontLoader({ src, width, quality }: { src: string; width: number; quality?: number }) {

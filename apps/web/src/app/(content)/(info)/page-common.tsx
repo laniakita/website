@@ -3,7 +3,7 @@ import { useMDXComponent } from 'next-contentlayer2/hooks';
 import { allPages, type Page } from 'contentlayer/generated';
 import ReadingBar from '@/components/reading-bar';
 import BlogImageBlurServer from '@/app/(content)/blog/img-blur-server';
-import { Paragraph } from '@/app/(content)/blog/[id]/[slug]/page';
+import { Paragraph } from '@/app/(content)/blog/[id]/[slug]/paragraph';
 
 export function PageCommon({ slug, prefix }: { slug: string; prefix?: string }) {
   if (!prefix) {
