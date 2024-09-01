@@ -12,6 +12,7 @@ import { APP_URL } from '@/lib/constants';
 import BlogImageBlurServer from '../../img-blur-server';
 import { descriptionHelper } from '../../post-components';
 import { catTagData } from '../../cat-tag-roller';
+import CommentsComponent from './comments';
 
 export const dynamicParams = false;
 
@@ -141,6 +142,7 @@ export default function BlogPostPage({ params }: { params: { id: string; slug: s
             </div>
           </div>
         </article>
+          <CommentsComponent />
       </main>
     </>
   );
