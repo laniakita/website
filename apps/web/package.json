@@ -62,7 +62,7 @@
   "scripts": {
     "analyze": "ANALYZE=true bun run build",
     "build": "next build",
-    "build:open-next": "bunx open-next@OPEN_NEXT_VERSION build",
+    "build:open-next": "bunx open-next@3.1.1 build",
     "dev": "next dev",
     "lint": "eslint . --cache --fix",
     "prebuild": "NODE_ENV=production contentlayer2 build && bun run ./src/scripts/runner.ts",
