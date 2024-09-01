@@ -1,7 +1,7 @@
 import type { Metadata, ResolvingMetadata } from 'next';
 import { allPages } from 'contentlayer/generated';
 import { descriptionHelper } from '@/app/(content)/blog/post-components';
-import { PageCommon } from '../../page-common';
+import { PageCommon } from '@/app/(content)/(info)/page-common';
 
 export const dynamicParams = false;
 

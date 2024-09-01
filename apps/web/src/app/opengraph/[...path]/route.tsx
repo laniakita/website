@@ -99,8 +99,8 @@ export async function GET(request: NextRequest) {
   ];
 
   if (!allValidPaths.includes(request.nextUrl.pathname.toLowerCase())) {
-    return new Response('Internal Server Error.', { status: 500 })
-  };
+    return new Response('Internal Server Error.', { status: 500 });
+  }
 
   // phase 2
 

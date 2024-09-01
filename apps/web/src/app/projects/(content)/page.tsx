@@ -9,10 +9,10 @@ import { MDXComponent } from '@/components/cat-tag-common';
 import type { FeaturedImageR1 } from '@/lib/image-process';
 import LocalDate from '@/app/(content)/blog/local-date';
 import { descriptionHelper } from '@/app/(content)/blog/post-components';
-import { allPages, allPosts, allProjects, type Project } from "contentlayer/generated";
+import { allPages, allPosts, allProjects, type Project } from 'contentlayer/generated';
 
 const pageData = allPages.find((page) => page.url === '/projects');
-const description = descriptionHelper(pageData!.body.raw, pageData?.url, true);
+const description = descriptionHelper(pageData?.body.raw, pageData?.url, true);
 
 export const metadata: Metadata = {
   title: pageData?.title,
@@ -81,7 +81,7 @@ function ProjectPreview(data: Project) {
   const uKey = useId();
   const getDescription = (dataX: Project) => {
     const getPost = allPosts.find((post) => post.url === dataX.blogPost);
-    return descriptionHelper(getPost!.body.raw, getPost!.url);
+    return descriptionHelper(getPost?.body.raw, getPost?.url);
   };
 
   const descriptionX = data.blogPost ? getDescription(data) : data.description;
