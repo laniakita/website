@@ -1,5 +1,8 @@
 {
-  "origins": ["https://laniakita.com"],
+  "origins": [
+    "https://laniakita.com",
+    "https://dev.laniakita.com"
+  ],
   "originsRegex": ["http://localhost:[0-9]+"],
   "defaultCommentOrder": "newest"
 }

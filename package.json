@@ -19,7 +19,8 @@
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "test": "turbo run test",
-    "test:watch": "turbo run test:watch"
+    "test:watch": "turbo run test:watch",
+    "sso": "aws sso login --sso-session=lani"
   },
   "workspaces": [
     "packages/*",
