@@ -3,8 +3,19 @@ export const web = new sst.aws.Nextjs("Web", {
   openNextVersion: "3.1.1",
   buildCommand: "bun run build:open-next",
   server: {
-    install: ["sharp"]
+    install: ["sharp"],
   },
+  /*transform: {
+    server: {
+      url: true,
+      nodejs: {
+        install: ["plaiceholder", "sharp"]
+      },
+      copyFiles: [
+        {from: "public/assets/images/blog"}
+      ],
+    },
+  }*/
   environment: {
     DEPLOYED_URL: $app.stage === "production" ? "https://laniakita.com" : `https://${$app.stage}.laniakita.com`,
   },
