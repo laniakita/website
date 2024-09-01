@@ -29,6 +29,7 @@
       "inputs": ["$TURBO_DEFAULT$", ".env.production.local", ".env.production", ".env.local", ".env"]
     },
     "build:open-next": {
+      "dependsOn": ["build"],
       "env": ["NODE_ENV", "OPEN_NEXT_VERSION", "DEPLOYED_URL"],
       "outputs": [
         ".open-next/**",
