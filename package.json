@@ -5,7 +5,7 @@
     "@iconify-json/fa6-brands": "^1.1.22",
     "@iconify-json/ph": "^1.1.14",
     "prettier": "^3.3.3",
-    "sst": "^3.0.81",
+    "sst": "^3.0.83",
     "syncpack": "^13.0.0",
     "turbo": "^2.1.1"
   },
