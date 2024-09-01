@@ -5,6 +5,7 @@ const config = {
   //buildCommand: 'exit 0', // in my example we set up Nx task distribution to handle the order of building.
   buildOutputPath: '.',
   appPath: '.',
+  packageJsonPath: '../../',  
   functions: {
     edge: {
       runtime: 'edge',
