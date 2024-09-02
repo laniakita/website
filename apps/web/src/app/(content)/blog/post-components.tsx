@@ -34,8 +34,8 @@ export default function PostPreviewV4(post: Post) {
       <div className='flex flex-col gap-4 p-8 lg:p-10'>
         <div className=''>
           <div className='flex flex-wrap gap-[1ch] pb-2'>
-            <p className='w-fit rounded-full font-mono'>
-              <LocalDate date={new Date(post.date)} />
+            <p  className='w-fit rounded-full font-mono'  >
+              <LocalDate  date={post.date}  />
             </p>
             <span className='font-mono'>|</span>
             <CatTagRoller cats={post.categories} tags={post.tags} />

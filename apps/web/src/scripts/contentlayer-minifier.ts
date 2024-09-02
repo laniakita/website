@@ -56,7 +56,7 @@ export const writeMinifiedContent = async () => {
     const tagsMin = allTagsRes();
     const projectsMin = allProjectsRes();
 
-    const mainDir = './src/scripts/dist/contentlayermini/generated';
+    const mainDir = './.contentlayermini/generated';
     const mainOut = 'index.json';
 
     const postDir = `${mainDir}/Post`;
