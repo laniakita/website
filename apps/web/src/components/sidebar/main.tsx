@@ -89,6 +89,7 @@ export function SubscribeBox({ mobile }: { mobile?: boolean }) {
       <Link
         target='_blank'
         href='/atom.xml'
+        type='application/atom+xml'
         className='font-mono font-bold text-ctp-base hover:text-ctp-base hover:no-underline'
       >
         <p className='color-trans-quick flex w-full flex-row items-center justify-center gap-[1ch] rounded bg-ctp-mauve px-4 py-2 hover:bg-ctp-pink'>

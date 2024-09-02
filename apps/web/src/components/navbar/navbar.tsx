@@ -76,6 +76,7 @@ export default function NavBar() {
                     page !== 'Atom/RSS' && setClicked({ ...clicked, stateVal: 'closed' });
                   }}
                   target={page === 'Atom/RSS' ? '_blank' : undefined}
+                  type={page === 'Atom/RSS' ? 'application/atom+xml' : undefined}
                 >
                   <span className='whitespace-nowrap'>{page === 'Atom/RSS' ? page : page.toLowerCase()}</span>
                 </LinkPlus>
@@ -103,6 +104,7 @@ export default function NavBar() {
                 href={handleRef(page)}
                 className='nav-item'
                 target={page === 'Atom/RSS' ? '_blank' : undefined}
+                type={page === 'Atom/RSS' ? 'application/atom+xml' : undefined}
               >
                 <span className='whitespace-nowrap'>{page === 'Atom/RSS' ? page : page.toLowerCase()}</span>
               </LinkPlus>
