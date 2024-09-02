@@ -1,11 +1,11 @@
 'use client';
 
-import Markdown from 'markdown-to-jsx';
 import Image from 'next/image';
 import Link from 'next/link';
 import { descriptionHelper } from '@/lib/description-helper';
 import { type Post } from 'contentlayer/generated';
 import type { FeaturedImageR1 } from '@/lib/image-process';
+import GlobalMDXRenderer from '@/components/mdx/global-mdx-renderer';
 import LocalDate from './local-date';
 import { CatTagRoller } from './cat-tag-roller';
 
@@ -50,7 +50,7 @@ export default function PostPreviewV4(post: Post) {
         </div>
         <div className='h-px w-full rounded bg-ctp-surface0' />
         <div className='prose-protocol-omega max-w-full text-pretty prose-p:my-0 prose-a:no-underline'>
-          <Markdown options={{ forceBlock: true }}>{descriptionStr}</Markdown>
+          <GlobalMDXRenderer>{descriptionStr}</GlobalMDXRenderer>
         </div>
       </div>
     </div>

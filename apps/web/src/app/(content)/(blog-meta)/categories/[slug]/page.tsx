@@ -1,16 +1,17 @@
 import { notFound } from 'next/navigation';
 import type { Metadata, ResolvingMetadata } from 'next';
 import { compareDesc } from 'date-fns';
-import { allTags, allPosts } from 'contentlayer/generated';
-import { MiniLayout } from '@/components/cat-tag-common';
+import { allCategories, allPosts } from 'contentlayer/generated';
 import { descriptionHelper } from '@/lib/description-helper';
+import { MiniLayout } from '../../cat-tag-common';
+
 
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  const tags = allTags;
-  return tags.map((tagX) => ({
-    slug: tagX.url.split('/').pop(),
+  const cats = allCategories;
+  return cats.map((catX) => ({
+    slug: catX.url.split('/').pop(),
   }));
 }
 
@@ -18,42 +19,42 @@ export async function generateMetadata(
   { params }: { params: { slug: string } },
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  const data = allTags.find((tagY) => tagY.url === `/tags/${params.slug}`);
+  const catData = allCategories.find((catY) => catY.url.split('/').pop() === params.slug);
 
-  const description = data?.body.raw && data.url ? descriptionHelper(data.body.raw, data.url, true) : 'Tag page.';
+  const description = descriptionHelper(catData?.body.raw, catData?.url, true);
 
   const previousImages = (await parent).openGraph?.images ?? [];
   const previousImagesTwitter = (await parent).twitter?.images ?? [];
 
   return {
-    title: data?.title,
+    title: catData?.title,
     authors: [{ name: 'Lani Akita' }],
     description,
     openGraph: {
-      title: data?.title,
+      title: catData?.title,
       description,
       images: [
         {
-          alt: `${data?.title}`,
+          alt: `${catData?.title}`,
           type: 'image/png',
           width: 1200,
           height: 630,
-          url: `/opengraph/tags/${params.slug}`,
+          url: `/opengraph/categories/${params.slug}`,
         },
         ...previousImages,
       ],
     },
     twitter: {
       card: 'summary',
-      title: data?.title,
+      title: catData?.title,
       description,
       images: [
         {
-          alt: `${data?.title}`,
+          alt: `${catData?.title}`,
           type: 'image/png',
           width: 1600,
           height: 900,
-          url: `/opengraph/tags/${params.slug}?twitter=true`,
+          url: `/opengraph/categories/${params.slug}?twitter=true`,
         },
         ...previousImagesTwitter,
       ],
@@ -61,13 +62,13 @@ export async function generateMetadata(
   };
 }
 
-export default function TagPage({ params }: { params: { slug: string } }) {
-  const tag = allTags.find((tagX) => tagX.url === `/tags/${params.slug}`);
+export default function CategoryPage({ params }: { params: { slug: string } }) {
+  const category = allCategories.find((catX) => catX.url.split('/').pop() === params.slug);
   const matchingPosts = allPosts
-    .filter((postX) => postX.tags?.some((tagZ) => (tagZ as unknown as { slug: string }).slug === params.slug))
+    .filter((postX) => postX.categories?.some((cat) => (cat as unknown as { slug: string }).slug === params.slug))
     .sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
 
-  if (!tag) return notFound();
+  if (!category) return notFound();
 
-  return <MiniLayout data={tag} posts={matchingPosts} />;
+  return <MiniLayout data={category} posts={matchingPosts} />;
 }
