@@ -23,12 +23,14 @@
     "test:watch": "turbo run test:watch",
     "sso": "aws sso login --sso-session=lani"
   },
+  "trustedDependencies": [
+    "contentlayer2",
+    "esbuild",
+    "protobufjs",
+    "sharp"
+  ],
   "workspaces": [
     "packages/*",
     "apps/*"
-  ],
-  "trustedDependencies": [
-    "contentlayer2",
-    "protobufjs"
   ]
 }
