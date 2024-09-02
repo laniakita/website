@@ -1,7 +1,7 @@
 export const web = new sst.aws.Nextjs("Web", {
   path: "apps/web",
   openNextVersion: "3.1.1",
-  buildCommand: "turbo build:open-next",
+  buildCommand: "turbo copy-sharp",
   /*
   server: {
     layers: [process.env.SHARP_ARN_01],
