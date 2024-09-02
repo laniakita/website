@@ -1,10 +1,14 @@
 import type { MetadataRoute } from 'next';
 import { compareDesc } from 'date-fns';
-import { allProjects, type Post, type Tag, type Category } from 'contentlayer/generated';
-import allPosts from '@/scripts/dist/contentlayermini/generated/Post/index.json';
-import allPages from '@/scripts/dist/contentlayermini/generated/Page/index.json';
-import allCategories from '@/scripts/dist/contentlayermini/generated/Category/index.json';
-import allTags from '@/scripts/dist/contentlayermini/generated/Tag/index.json';
+import {
+  allPosts,
+  allProjects,
+  allCategories,
+  allTags,
+  allPages,
+  type Tag,
+  type Category,
+} from 'contentlayer/generated';
 import { APP_URL } from '@/lib/constants';
 
 // funfact/improbable todo: google only supports 50,000 urls per sitemap, so filter
@@ -12,13 +16,9 @@ import { APP_URL } from '@/lib/constants';
 
 // eslint-disable-next-line @typescript-eslint/require-await -- return expects this to be async, so it's async now, albeit useless.
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const postsRes: Post[] = allPosts.sort((a, b) =>
-    compareDesc(new Date(a.date), new Date(b.date)),
-  ) as unknown as Post[];
-  const categoriesRes: Category[] = allCategories.sort((a, b) =>
-    a.title.localeCompare(b.title),
-  ) as unknown as Category[];
-  const tagsRes: Tag[] = allTags.sort((a, b) => a.title.localeCompare(b.title)) as unknown as Tag[];
+  const postsRes  = allPosts.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
+  const categoriesRes = allCategories.sort((a, b) => a.title.localeCompare(b.title));
+  const tagsRes = allTags.sort((a, b) => a.title.localeCompare(b.title));
   const projectsRes = allProjects.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
   const isNewPostInCatTag = (cattag: Category | Tag, isCat: boolean) => {
     // note: using postsRes above

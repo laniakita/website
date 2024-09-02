@@ -1,7 +1,4 @@
-import { join } from 'node:path';
 import { PHASE_DEVELOPMENT_SERVER, PHASE_PRODUCTION_BUILD } from 'next/constants.js';
-
-const __dirname = import.meta.dirname;
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -37,10 +34,7 @@ const nextConfig = {
     return config;
   },
   swcMinify: true,
-  output: 'standalone',
-  experimental: {
-    outputFileTracingRoot: join(__dirname, '../../'),
-  },
+
   async redirects() {
     return [
       {

@@ -1,15 +1,9 @@
+import { readFile } from 'node:fs/promises';
+import { join } from 'node:path';
 import { ImageResponse } from 'next/og';
 import type { NextRequest } from 'next/server';
-import allPosts from '@/scripts/dist/contentlayermini/generated/Post/index.json'
-import allProjects from '@/scripts/dist/contentlayermini/generated/Project/index.json'
-import allCategories from '@/scripts/dist/contentlayermini/generated/Category/index.json'
-import allTags from '@/scripts/dist/contentlayermini/generated/Tag/index.json'
-import allPages from '@/scripts/dist/contentlayermini/generated/Page/index.json'
 import type { Project, Post, Page, Tag, Category } from 'contentlayer/generated';
 import type { FeaturedImageR1 } from '@/lib/image-process';
-import ImageGenTwo from '@/components/image-gen-two';
-
-export const runtime = 'edge';
 
 export const maxDuration = 5;
 
@@ -18,17 +12,34 @@ export async function GET(request: NextRequest) {
     width: 1200,
     height: 630,
   };
+  
+  const logoData = await readFile(join(process.cwd(), 'laniakita-logo-transparent-darkmode.png'))
+  const logoSrc = Uint8Array.from(logoData).buffer
 
-  const logoSrc = await fetch(new URL('../../laniakita-logo-transparent-darkmode.png', import.meta.url)).then((res) =>
-    res.arrayBuffer(),
-  );
-  const bgSrc = await fetch(new URL('../../noise_shader_01.jpg', import.meta.url)).then((res) => res.arrayBuffer());
-  const interTightBlack = await fetch(new URL('../../inter-tight-latin-900-normal.woff', import.meta.url)).then((res) =>
-    res.arrayBuffer(),
-  );
-  const zeroXProto = await fetch(new URL('../../0xProto-Regular.woff', import.meta.url)).then((res) =>
-    res.arrayBuffer(),
-  );
+  const bgData = await readFile(join(process.cwd(), 'noise_shader_01.jpg'));
+  const bgSrc = Uint8Array.from(bgData).buffer
+  
+  const interData = await readFile(join(process.cwd(), 'inter-tight-latin-900-normal.woff'));
+  const interTightBlack = Uint8Array.from(interData).buffer
+  
+  const zeroXProtoData = await readFile(join(process.cwd(), '0xProto-Regular.woff'));
+  const zeroXProto = Uint8Array.from(zeroXProtoData).buffer
+
+  const allPostData = await readFile(join(process.cwd(), '.contentlayermini/generated/Post/index.json'), { encoding: 'utf8' }) 
+  const allPosts = JSON.parse(allPostData) as Post[];
+
+  const allPagesData = await readFile(join(process.cwd(), '.contentlayermini/generated/Page/index.json'), { encoding: 'utf8' }) 
+  const allPages = JSON.parse(allPagesData) as Page[];
+  
+  const allProjectData = await readFile(join(process.cwd(), '.contentlayermini/generated/Project/index.json'), { encoding: 'utf8' }) 
+  const allProjects = JSON.parse(allProjectData) as Project[];
+
+  const allCategoryData = await readFile(join(process.cwd(), '.contentlayermini/generated/Category/index.json'), { encoding: 'utf8' }) 
+  const allCategories = JSON.parse(allCategoryData) as Category[];
+
+  const allTagData = await readFile(join(process.cwd(), '.contentlayermini/generated/Tag/index.json'), { encoding: 'utf8' }) 
+  const allTags = JSON.parse(allTagData) as Tag[];
+
 
   const validPostPaths = allPosts.map((post) => {
     return `/opengraph${post.url.toLowerCase()}`;
@@ -59,7 +70,7 @@ export async function GET(request: NextRequest) {
   ];
 
   if (!allValidPaths.includes(request.nextUrl.pathname.toLowerCase())) {
-    return new Response('Internal Server Error.', { status: 500 });
+    return new Response('Resource Not found.', { status: 404 });
   }
 
   // phase 2
@@ -96,7 +107,7 @@ export async function GET(request: NextRequest) {
     switch (reqType) {
       case 'projects': {
         const projectUrl = `/projects/${modUrl}`;
-        data.fetched = allProjects.find((projX) => projX.url === projectUrl) as Project | undefined;
+        data.fetched = allProjects.find((projX) => projX.url === projectUrl) as unknown as Project | undefined;
         data.type = 'projects';
         data.title = data.fetched?.title;
         data.prefix = 'Projects by Lani';
@@ -158,7 +169,7 @@ export async function GET(request: NextRequest) {
       }
     }
   } else if (reqType && !modUrl) {
-    return new Response('Internal Server Error.', { status: 500 });
+    return new Response('Resource not found.', { status: 404 });
   }
 
   return new ImageResponse(
@@ -198,17 +209,170 @@ export async function GET(request: NextRequest) {
       fonts: [
         {
           name: 'InterTight',
-          data: interTightBlack,
+          data: interTightBlack as ArrayBuffer,
           style: 'normal',
           weight: 900,
         },
         {
           name: '0xProto',
-          data: zeroXProto,
+          data: zeroXProto as ArrayBuffer,
           style: 'normal',
           weight: 400,
         },
       ],
     },
+  );
+}
+
+
+function ImageGenTwo({
+  logo,
+  logoFormat,
+  bg,
+  bgFormat,
+  title,
+  dynamic,
+  prefix,
+  twitter,
+}: {
+  logo: ArrayBuffer | ArrayBufferLike;
+  logoFormat?: string;
+  bg: ArrayBuffer | ArrayBufferLike;
+  bgFormat?: string;
+  title: string | undefined;
+  dynamic?: boolean;
+  prefix?: string;
+  twitter?: boolean;
+}) {
+  const bgBase = Buffer.from(bg).toString('base64');
+  const logoBase = Buffer.from(logo).toString('base64');
+  const bgData = `data:image/${bgFormat ? bgFormat : 'png'};base64,${bgBase}`;
+  const logoData = `data:image/${logoFormat ? logoFormat : 'png'};base64,${logoBase}`;
+  if (title?.toLowerCase() === 'home') {
+    return (
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          position: 'relative',
+          fontFamily: 'InterTight',
+          backgroundColor: 'black',
+        }}
+      >
+        <img
+          src={bgData}
+          style={{
+            opacity: 0.8,
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            bottom: 0,
+            right: 0,
+            objectFit: 'cover',
+          }}
+        />
+
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '-1rem',
+          }}
+        >
+          <img src={logoData} alt='Logo for lanaiakita.com' style={{ height: '50%' }} />
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div
+      style={{
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'relative',
+        fontFamily: 'InterTight',
+        backgroundColor: 'black',
+      }}
+    >
+      <img
+        src={bgData}
+        style={{
+          opacity: 0.8,
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          bottom: 0,
+          right: 0,
+          objectFit: 'cover',
+        }}
+      />
+
+      {/* eslint-disable-next-line -- Image component can't be used here. */}
+      <img src={logoData} height={`20%`} style={{ position: 'absolute', right: 30, top: 30 }} />
+
+      {dynamic ? (
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '-0.75rem',
+            alignItems: 'flex-start',
+            justifyContent: 'center',
+            color: '#cdd6f4',
+            padding: '1.25rem 3rem',
+            backgroundColor: '#07070D',
+            border: '0.15rem solid #1e1e2e',
+            borderRadius: '0.375rem',
+            maxWidth: '80%',
+          }}
+        >
+          <h2
+            style={{
+              fontWeight: 400,
+              fontFamily: '0xProto',
+              fontSize: twitter ? 50 : 40,
+            }}
+          >
+            {prefix}
+          </h2>
+          <div style={{ width: '100%', height: '0.15rem', backgroundColor: '#1e1e2e', borderRadius: '0.375rem' }} />
+          <h1
+            style={{
+              display: 'flex',
+              fontWeight: 900,
+              fontSize: twitter ? 80 : 60,
+              textWrap: title!.length > 14 ? 'balance' : 'wrap',
+            }}
+          >
+            {title}
+          </h1>
+        </div>
+      ) : (
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#cdd6f4',
+            padding: '1.25rem 3rem',
+            backgroundColor: '#07070D',
+            border: '0.15rem solid #1e1e2e',
+            borderRadius: '0.375rem',
+            maxWidth: '80%',
+          }}
+        >
+          <h1 style={{ fontWeight: 900, fontSize: twitter ? 80 : 60 }}>{title}</h1>
+        </div>
+      )}
+    </div>
   );
 }

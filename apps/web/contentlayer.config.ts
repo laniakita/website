@@ -87,7 +87,7 @@ const Tag = defineDocumentType(() => ({
   contentType: 'mdx',
   fields: {
     id: { type: 'string', required: false },
-    title: { type: 'string', required: false },
+    title: { type: 'string', required: true },
     slug: { type: 'string', required: false },
     date: { type: 'date', required: false },
   },
@@ -105,7 +105,7 @@ const Category = defineDocumentType(() => ({
   contentType: 'mdx',
   fields: {
     id: { type: 'string', required: false },
-    title: { type: 'string', required: false },
+    title: { type: 'string', required: true },
     slug: { type: 'string', required: false },
     date: { type: 'date', required: false },
   },
