@@ -6,7 +6,7 @@
     @apply px-2 md:px-6;
   }
   .py-common-info-page {
-    @apply py-24 md:py-28 lg:py-36
+    @apply py-24 md:py-28 lg:py-36;
   }
   .pt-common {
     @apply pt-20 md:pt-24 lg:pt-36;
@@ -15,7 +15,7 @@
     @apply pb-10 md:pb-24;
   }
   .common-padding {
-    @apply pt-common px-page-common pb-common
+    @apply pt-common px-page-common pb-common;
   }
   .padding-post {
     @apply px-10;

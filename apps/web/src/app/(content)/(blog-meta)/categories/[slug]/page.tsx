@@ -5,7 +5,6 @@ import { allCategories, allPosts } from 'contentlayer/generated';
 import { descriptionHelper } from '@/lib/description-helper';
 import { MiniLayout } from '../../cat-tag-common';
 
-
 export const dynamicParams = false;
 
 export function generateStaticParams() {
