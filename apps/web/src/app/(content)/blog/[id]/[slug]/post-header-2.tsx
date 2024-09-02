@@ -2,16 +2,16 @@ import Link from 'next/link';
 import { type Post } from 'contentlayer/generated';
 import ShareButton from '@/components/share-btn';
 import type { FeaturedImageR1 } from '@/lib/image-process';
+import { CatTagRoller } from '../../cat-tag-roller';
 import { HeroBlur2 } from './hero-blur-2';
-import LocalDate from './local-date';
-import { CatTagRoller } from './cat-tag-roller';
+import PostDate from './post-date';
 
 export function PostHeader2(post: Post) {
   return (
     <>
       <div className='pt-common flex w-full flex-col items-center justify-center gap-2 px-10 pb-6 md:pb-10'>
         <div className='w-full max-w-3xl font-mono'>
-          <CatTagRoller cats={post.categories} tags={post.tags} />
+          <CatTagRoller postDate={post.date} cats={post.categories} tags={post.tags} />
         </div>
         <h1 className='w-full max-w-3xl text-3xl font-black supports-[text-wrap:balance]:text-balance md:text-4xl'>
           {post.headline}
@@ -28,7 +28,7 @@ export function PostHeader2(post: Post) {
           </p>
           <span>|</span>
           <p>
-            <LocalDate date={new Date(post.date)} />
+            <PostDate date={post.date} />
           </p>
         </div>
 

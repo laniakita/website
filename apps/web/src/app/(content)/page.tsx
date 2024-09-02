@@ -99,7 +99,7 @@ function SocialIconNav3({ boxItems }: SocialIconNavProps) {
 
 export default function Home() {
   return (
-    <main className='relative flex h-screen min-h-[40rem] w-full items-end justify-center'>
+    <main className='relative flex h-screen min-h-[60rem] w-full items-end justify-center'>
       <div className='absolute inset-0'>
         <NoiseShader01 />
       </div>

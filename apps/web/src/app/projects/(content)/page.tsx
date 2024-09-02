@@ -6,10 +6,10 @@ import Image from 'next/image';
 import { compareDesc } from 'date-fns';
 import { descriptionHelper } from '@/lib/description-helper';
 import type { FeaturedImageR1 } from '@/lib/image-process';
-import LocalDate from '@/app/(content)/blog/local-date';
 import { allPages, allPosts, allProjects, type Project } from 'contentlayer/generated';
 import GlobalMDXComponent from '@/components/mdx/global-mdx-components';
 import GlobalMDXRenderer from '@/components/mdx/global-mdx-renderer';
+import PostDate from '@/app/(content)/blog/[id]/[slug]/post-date';
 
 const pageData = allPages.find((page) => page.url === '/projects');
 const description = descriptionHelper(pageData?.body.raw, pageData?.url, true);
@@ -54,7 +54,7 @@ export default function Projects() {
   const projectData = allProjects.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
 
   return (
-    <main className='simple-color-trans pt-common pb-common px-page-common bg-ctp-base dark:bg-ctp-midnight'>
+    <main className='simple-color-trans common-padding bg-ctp-base dark:bg-ctp-midnight'>
       <div className='flex flex-col items-center justify-center gap-4 md:gap-6'>
         <div className='flex w-full max-w-3xl flex-col gap-4 rounded-md border border-ctp-surface0 p-8 dark:border-ctp-base'>
           <div className=''>
@@ -110,7 +110,7 @@ function ProjectPreview(data: Project) {
         <div>
           <div className='flex flex-wrap gap-[1ch] pb-2'>
             <p className='w-fit rounded-full font-mono'>
-              <LocalDate date={new Date(data.date)} />
+              <PostDate date={data.date} />
             </p>
           </div>
           <h2 className='w-fit text-balance text-3xl font-black'>

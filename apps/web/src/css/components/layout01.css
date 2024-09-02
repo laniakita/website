@@ -2,19 +2,22 @@
   .layout01 {
     @apply pt-[4rem];
   }
-  .common-padding {
-    @apply p-2 pt-24 md:px-6 md:pt-24 lg:pt-36;
-  }
-  .padding-post {
-    @apply px-10;
-  }
   .px-page-common {
     @apply px-2 md:px-6;
   }
+  .py-common-info-page {
+    @apply py-24 md:py-28 lg:py-36
+  }
   .pt-common {
-    @apply pt-24 md:pt-28 lg:pt-36;
+    @apply pt-20 md:pt-24 lg:pt-36;
   }
   .pb-common {
-    @apply pb-10 md:pb-20;
+    @apply pb-10 md:pb-24;
+  }
+  .common-padding {
+    @apply pt-common px-page-common pb-common
+  }
+  .padding-post {
+    @apply px-10;
   }
 }

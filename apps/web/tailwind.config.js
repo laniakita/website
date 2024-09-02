@@ -69,6 +69,21 @@ module.exports = {
           css: {
             'blockquote p:first-of-type::before': false,
             'blockquote p:first-of-type::after': false,
+            'h1 a': { 
+              fontWeight: 900,
+            },
+            'h2 a': { 
+              fontWeight: 900,
+            },
+            'h3 a': { 
+              fontWeight: 900,
+            },
+            'h4 a': { 
+              fontWeight: 900,
+            },
+            'h5 a': { 
+              fontWeight: 900,
+            },
           },
         },
         catppuccin: {

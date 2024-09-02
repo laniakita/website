@@ -5,12 +5,12 @@ import { compareDesc } from 'date-fns';
 import { allPosts } from 'contentlayer/generated';
 import ReadingBar from '@/components/reading-bar';
 import { descriptionHelper } from '@/lib/description-helper';
-import { PostHeader2 } from '@/app/(content)/blog/post-header-2';
 import type { FeaturedImageR1 } from '@/lib/image-process';
 import { APP_URL } from '@/lib/constants';
 import GlobalMDXComponent from '@/components/mdx/global-mdx-components';
-import { catTagData } from '../../cat-tag-roller';
 import CommentsComponent from './comments';
+import { PostHeader2 } from './post-header-2';
+import { catTagData } from '@/lib/cat-tag-data';
 
 export const dynamicParams = false;
 
