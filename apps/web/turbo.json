@@ -17,7 +17,7 @@
     "pretty": {},
     "test": {},
     "build": {
-      "env": ["NODE_ENV"],
+      "env": ["NODE_ENV", "OPEN_NEXT_VERSION", "NEXT_PUBLIC_DEPLOYED_URL"],
       "outputs": [
         ".next/**",
         "!.next/cache/**",
@@ -30,7 +30,7 @@
     },
     "build:open-next": {
       "dependsOn": ["build"],
-      "env": ["NODE_ENV", "OPEN_NEXT_VERSION", "DEPLOYED_URL"],
+      "env": ["NODE_ENV", "OPEN_NEXT_VERSION", "NEXT_PUBLIC_DEPLOYED_URL"],
       "outputs": [
         ".open-next/**",
         "!.open-next/cache/**",
@@ -39,7 +39,7 @@
         ".contentlayer",
         ".contentlayermini"
       ],
-      "inputs": ["$TURBO_DEFAULT$", ".env.production.local", ".env.production", ".env.local", ".env"]
+      "inputs": ["$TURBO_DEFAULT$", "../../sst.config.ts", ".env.production.local", ".env.production", ".env.local", ".env"]
     },
     "dev": {
       "env": ["NODE_ENV", "CLOUDFLARE_PAGES_DEV"],

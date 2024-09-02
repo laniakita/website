@@ -102,7 +102,7 @@ export default function BlogPostPage({ params }: { params: { id: string; slug: s
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     name: post.headline,
-    url: `${process.env.DEPLOYED_URL ? process.env.DEPLOYED_URL : APP_URL}${post.url}`,
+    url: `${process.env.NEXT_PUBLIC_DEPLOYED_URL ? process.env.NEXT_PUBLIC_DEPLOYED_URL : APP_URL}${post.url}`,
     description: descriptionHelper(post.body.raw, post.url, true),
     author: 'Lani Akita',
     editor: 'Lani Akita',
