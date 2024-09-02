@@ -29,7 +29,6 @@
       "inputs": ["$TURBO_DEFAULT$", "../../sst.config.ts", ".env.production.local", ".env.production", ".env.local", ".env"]
     },
     "build:open-next": {
-      "dependsOn": ["build"],
       "env": ["NODE_ENV", "OPEN_NEXT_VERSION", "NEXT_PUBLIC_DEPLOYED_URL"],
       "outputs": [
         ".open-next/**",
