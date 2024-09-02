@@ -1,7 +1,7 @@
 'use client';
-import Markdown from 'markdown-to-jsx';
 import { useState } from 'react';
 import { type Category, type Tag } from 'contentlayer/generated';
+import GlobalMDXRenderer  from '@/components/mdx/global-mdx-renderer';
 import { type SocialNavIcon } from '../social-icon';
 import EzRoller from './ez-roller';
 
@@ -22,7 +22,7 @@ export default function InfoBox({
       <div className='sidebar-box relative flex flex-col gap-6'>
         {isActiveTab === 'info' && (
           <div className='prose-protocol-omega p-6 pt-[4.5rem] prose-p:my-0'>
-            <Markdown options={{ forceBlock: true }}>{blogInfo}</Markdown>
+            <GlobalMDXRenderer>{blogInfo}</GlobalMDXRenderer>
           </div>
         )}
 

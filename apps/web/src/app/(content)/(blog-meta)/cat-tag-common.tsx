@@ -1,6 +1,6 @@
-import { useMDXComponent } from 'next-contentlayer2/hooks';
 import type { Post, Tag, Category } from 'contentlayer/generated';
 import PostRollerV4 from '@/app/(content)/blog/post-roller-v4';
+import GlobalMDXComponent from '@/components/mdx/global-mdx-components';
 
 export function MiniLayout({ data, posts, isTag }: { data: Category | Tag; posts: Post[]; isTag?: boolean }) {
   return (
@@ -12,7 +12,7 @@ export function MiniLayout({ data, posts, isTag }: { data: Category | Tag; posts
           </div>
           <div className='h-px w-full rounded bg-ctp-surface0 dark:bg-ctp-base' />
           <div className='prose-protocol-omega w-full max-w-sm prose-p:my-0'>
-            <MDXComponent content={data.body.code} />
+            <GlobalMDXComponent {...data} />
           </div>
         </div>
       </div>
@@ -27,7 +27,4 @@ export function MiniLayout({ data, posts, isTag }: { data: Category | Tag; posts
   );
 }
 
-export function MDXComponent({ content }: { content: string }) {
-  const MDXContent = useMDXComponent(content);
-  return <MDXContent />;
-}
+

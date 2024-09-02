@@ -2,17 +2,15 @@ import { notFound, redirect } from 'next/navigation';
 import type { Metadata, ResolvingMetadata } from 'next';
 import type { BlogPosting, WithContext } from 'schema-dts';
 import { compareDesc } from 'date-fns';
-import { useMDXComponent } from 'next-contentlayer2/hooks';
 import { allPosts } from 'contentlayer/generated';
 import ReadingBar from '@/components/reading-bar';
 import { descriptionHelper } from '@/lib/description-helper';
 import { PostHeader2 } from '@/app/(content)/blog/post-header-2';
 import type { FeaturedImageR1 } from '@/lib/image-process';
 import { APP_URL } from '@/lib/constants';
-import BlogImageBlurServer from '../../img-blur-server';
+import GlobalMDXComponent from '@/components/mdx/global-mdx-components';
 import { catTagData } from '../../cat-tag-roller';
 import CommentsComponent from './comments';
-import { Paragraph } from './paragraph';
 
 export const dynamicParams = false;
 
@@ -72,8 +70,6 @@ export async function generateMetadata(
   };
 }
 
-const mdxComponents = { p: Paragraph, img: BlogImageBlurServer };
-
 export default function BlogPostPage({ params }: { params: { id: string; slug: string } }) {
   const post = allPosts.find(
     (postX) =>
@@ -89,8 +85,6 @@ export default function BlogPostPage({ params }: { params: { id: string; slug: s
       redirect(`/blog/${params.id}/${post.url.split('/').pop()}`);
     }
   }
-
-  const MDXContent = useMDXComponent(post ? post.body.code : '');
 
   if (!post) {
     return notFound();
@@ -117,8 +111,10 @@ export default function BlogPostPage({ params }: { params: { id: string; slug: s
   return (
     <>
       <script type='application/ld+json' dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <div className='fixed left-0 top-[3.8rem] z-50 w-full'>
-        <ReadingBar />
+      <div>
+        <div className='fixed left-0 top-[3.8rem] z-50 w-full'>
+          <ReadingBar />
+        </div>
       </div>
       <main className='motion-safe:simple-color-trans pb-common -mb-0.5 min-h-full max-w-full bg-ctp-base dark:bg-ctp-midnight'>
         {/* flex box break prose */}
@@ -126,7 +122,7 @@ export default function BlogPostPage({ params }: { params: { id: string; slug: s
           <PostHeader2 {...post} />
           <div className='w-full px-10'>
             <div className='prose-protocol-omega mx-auto'>
-              <MDXContent code={post.body.code} components={mdxComponents} />
+              <GlobalMDXComponent {...post} />
             </div>
           </div>
         </article>

@@ -4,16 +4,15 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { compareDesc } from 'date-fns';
-import Markdown from 'markdown-to-jsx';
 import { descriptionHelper } from '@/lib/description-helper';
-import { MDXComponent } from '@/components/cat-tag-common';
 import type { FeaturedImageR1 } from '@/lib/image-process';
 import LocalDate from '@/app/(content)/blog/local-date';
 import { allPages, allPosts, allProjects, type Project } from 'contentlayer/generated';
+import GlobalMDXComponent from '@/components/mdx/global-mdx-components';
+import GlobalMDXRenderer from '@/components/mdx/global-mdx-renderer';
 
 const pageData = allPages.find((page) => page.url === '/projects');
-/* eslint-disable @typescript-eslint/no-unnecessary-condition -- testing */
-const description = descriptionHelper(pageData?.body?.raw, pageData?.url, true);
+const description = descriptionHelper(pageData?.body.raw, pageData?.url, true);
 
 export const metadata: Metadata = {
   title: pageData?.title,
@@ -63,7 +62,7 @@ export default function Projects() {
           </div>
           <div className='h-px w-full rounded bg-ctp-surface0 dark:bg-ctp-base' />
           <div className='prose-protocol-omega w-full max-w-sm prose-p:my-0'>
-            <MDXComponent content={data.body.code} />
+            <GlobalMDXComponent {...data} />
           </div>
         </div>
 
@@ -80,9 +79,11 @@ export default function Projects() {
 function ProjectPreview(data: Project) {
   const res = data.featured_image as FeaturedImageR1;
   const uKey = useId();
+
   const getDescription = (dataX: Project) => {
     const getPost = allPosts.find((post) => post.url === dataX.blogPost);
-    return descriptionHelper(getPost?.body.raw, getPost?.url);
+    if (!getPost) return;
+    return descriptionHelper(getPost.body.raw, getPost.url);
   };
 
   const descriptionX = data.blogPost ? getDescription(data) : data.description;
@@ -113,16 +114,18 @@ function ProjectPreview(data: Project) {
             </p>
           </div>
           <h2 className='w-fit text-balance text-3xl font-black'>
-            <Link href={data.link ?? data.url} target='_blank' className='flex flex-row items-end text-ctp-text'>
-              {data.title}
-              <span className='icon-[ph--arrow-up-right-bold] mb-1 text-xl' />
+            <Link href={data.link ?? data.url} target='_blank' className='text-ctp-text'>
+              <span className='relative'>
+                {data.title}
+                <span className='icon-[ph--arrow-up-right-bold] absolute bottom-1 ml-px text-xl' />
+              </span>
             </Link>
           </h2>
         </div>
         <div className='h-px w-full bg-ctp-surface0 dark:bg-ctp-base' />
-        <div className='prose-protocol-omega max-w-full text-pretty prose-p:my-0 prose-a:no-underline'>
-          {/* @ts-expect-error -- there's only one string */}
-          <Markdown options={{ forceBlock: true }}>{descriptionX}</Markdown>
+        <div className='prose-protocol-omega max-w-full prose-p:my-0 prose-a:no-underline'>
+          {/* @ts-expect-error -- single string, but still works. */}
+          <GlobalMDXRenderer>{descriptionX}</GlobalMDXRenderer>
         </div>
 
         <div className='h-px w-full bg-ctp-surface0 dark:bg-ctp-base' />
