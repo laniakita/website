@@ -3,8 +3,8 @@ export const web = new sst.aws.Nextjs("Web", {
   openNextVersion: "3.1.1",
   buildCommand: "turbo build:open-next",
   server: {
-    //layers: [process.env.SHARP_ARN_01],
-    install: ["sharp"],
+    layers: [process.env.SHARP_ARN_01],
+    //install: ["sharp"],
   },
   environment: {
     NEXT_PUBLIC_DEPLOYED_URL:
