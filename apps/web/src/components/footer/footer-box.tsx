@@ -34,6 +34,7 @@ export function FooterBox(Props: FooterBoxProps) {
                 href={handleRef(item)}
                 className='footer-nav-item w-fit'
                 target={item === 'RSS/Atom' ? '_blank' : undefined}
+
               >
                 {item === 'RSS/Atom' ? item : item.toLowerCase()}
               </LinkPlus>
@@ -82,6 +83,7 @@ export function FooterBoxSpecial(Props: FooterBoxSpecialProps) {
               key={item.title.toLowerCase()}
               target='_blank'
               className='footer-nav-item w-fit whitespace-nowrap'
+              type={item.url === '/atom.xml' ? 'application/atom+xml' : undefined}
             >
               {item.title}
             </Link>
