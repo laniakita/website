@@ -10,4 +10,7 @@ module.exports = {
   parserOptions: {
     project: true,
   },
+  rules: {
+    "import/no-extraneous-dependencies": "off",
+  },
 };

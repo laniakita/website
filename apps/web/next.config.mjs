@@ -1,7 +1,7 @@
 import { join } from 'node:path';
 import { PHASE_DEVELOPMENT_SERVER, PHASE_PRODUCTION_BUILD } from 'next/constants.js';
 
-const __dirname = import.meta.dirname
+const __dirname = import.meta.dirname;
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -9,11 +9,11 @@ const nextConfig = {
   images: {
     loader: 'custom',
     loaderFile:
-      process.env.DEPLOYED_URL !== undefined && process.env.NODE_ENV === 'production'
+      process.env.NEXT_PUBLIC_DEPLOYED_URL !== undefined && process.env.NODE_ENV === 'production'
         ? './src/lib/image-loader.ts'
         : './src/lib/local-loader.ts',
     remotePatterns: [
-      process.env.DEPLOYED_URL !== undefined
+      process.env.NEXT_PUBLIC_DEPLOYED_URL !== undefined && process.env.NODE_ENV === 'production'
         ? {
             protocol: 'https',
             hostname: '**.laniakita.com',
@@ -39,7 +39,7 @@ const nextConfig = {
   swcMinify: true,
   output: 'standalone',
   experimental: {
-    outputFileTracingRoot: join(__dirname, '../../')
+    outputFileTracingRoot: join(__dirname, '../../'),
   },
   async redirects() {
     return [
