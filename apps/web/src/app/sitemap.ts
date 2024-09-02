@@ -16,7 +16,7 @@ import { APP_URL } from '@/lib/constants';
 
 // eslint-disable-next-line @typescript-eslint/require-await -- return expects this to be async, so it's async now, albeit useless.
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const postsRes  = allPosts.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
+  const postsRes = allPosts.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
   const categoriesRes = allCategories.sort((a, b) => a.title.localeCompare(b.title));
   const tagsRes = allTags.sort((a, b) => a.title.localeCompare(b.title));
   const projectsRes = allProjects.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));

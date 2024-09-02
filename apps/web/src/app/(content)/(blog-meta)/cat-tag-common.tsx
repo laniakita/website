@@ -26,5 +26,3 @@ export function MiniLayout({ data, posts, isTag }: { data: Category | Tag; posts
     </div>
   );
 }
-
-

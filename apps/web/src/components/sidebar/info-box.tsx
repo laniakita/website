@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { type Category, type Tag } from 'contentlayer/generated';
-import GlobalMDXRenderer  from '@/components/mdx/global-mdx-renderer';
+import GlobalMDXRenderer from '@/components/mdx/global-mdx-renderer';
 import { type SocialNavIcon } from '../social-icon';
 import EzRoller from './ez-roller';
 

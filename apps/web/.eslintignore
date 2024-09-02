@@ -6,6 +6,7 @@
 .turbo/*
 .next/*
 .tmp/*
+.open-next/*
 node_modules/*
 contentlayermini/*
 sst-env.d.ts

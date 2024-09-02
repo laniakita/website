@@ -34,7 +34,6 @@ export function FooterBox(Props: FooterBoxProps) {
                 href={handleRef(item)}
                 className='footer-nav-item w-fit'
                 target={item === 'RSS/Atom' ? '_blank' : undefined}
-
               >
                 {item === 'RSS/Atom' ? item : item.toLowerCase()}
               </LinkPlus>

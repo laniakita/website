@@ -12,34 +12,43 @@ export async function GET(request: NextRequest) {
     width: 1200,
     height: 630,
   };
-  
-  const logoData = await readFile(join(process.cwd(), 'laniakita-logo-transparent-darkmode.png'))
-  const logoSrc = Uint8Array.from(logoData).buffer
+
+  const logoData = await readFile(join(process.cwd(), 'laniakita-logo-transparent-darkmode.png'));
+  const logoSrc = Uint8Array.from(logoData).buffer;
 
   const bgData = await readFile(join(process.cwd(), 'noise_shader_01.jpg'));
-  const bgSrc = Uint8Array.from(bgData).buffer
-  
-  const interData = await readFile(join(process.cwd(), 'inter-tight-latin-900-normal.woff'));
-  const interTightBlack = Uint8Array.from(interData).buffer
-  
-  const zeroXProtoData = await readFile(join(process.cwd(), '0xProto-Regular.woff'));
-  const zeroXProto = Uint8Array.from(zeroXProtoData).buffer
+  const bgSrc = Uint8Array.from(bgData).buffer;
 
-  const allPostData = await readFile(join(process.cwd(), '.contentlayermini/generated/Post/index.json'), { encoding: 'utf8' }) 
+  const interData = await readFile(join(process.cwd(), 'inter-tight-latin-900-normal.woff'));
+  const interTightBlack = Uint8Array.from(interData).buffer;
+
+  const zeroXProtoData = await readFile(join(process.cwd(), '0xProto-Regular.woff'));
+  const zeroXProto = Uint8Array.from(zeroXProtoData).buffer;
+
+  const allPostData = await readFile(join(process.cwd(), '.contentlayermini/generated/Post/index.json'), {
+    encoding: 'utf8',
+  });
   const allPosts = JSON.parse(allPostData) as Post[];
 
-  const allPagesData = await readFile(join(process.cwd(), '.contentlayermini/generated/Page/index.json'), { encoding: 'utf8' }) 
+  const allPagesData = await readFile(join(process.cwd(), '.contentlayermini/generated/Page/index.json'), {
+    encoding: 'utf8',
+  });
   const allPages = JSON.parse(allPagesData) as Page[];
-  
-  const allProjectData = await readFile(join(process.cwd(), '.contentlayermini/generated/Project/index.json'), { encoding: 'utf8' }) 
+
+  const allProjectData = await readFile(join(process.cwd(), '.contentlayermini/generated/Project/index.json'), {
+    encoding: 'utf8',
+  });
   const allProjects = JSON.parse(allProjectData) as Project[];
 
-  const allCategoryData = await readFile(join(process.cwd(), '.contentlayermini/generated/Category/index.json'), { encoding: 'utf8' }) 
+  const allCategoryData = await readFile(join(process.cwd(), '.contentlayermini/generated/Category/index.json'), {
+    encoding: 'utf8',
+  });
   const allCategories = JSON.parse(allCategoryData) as Category[];
 
-  const allTagData = await readFile(join(process.cwd(), '.contentlayermini/generated/Tag/index.json'), { encoding: 'utf8' }) 
+  const allTagData = await readFile(join(process.cwd(), '.contentlayermini/generated/Tag/index.json'), {
+    encoding: 'utf8',
+  });
   const allTags = JSON.parse(allTagData) as Tag[];
-
 
   const validPostPaths = allPosts.map((post) => {
     return `/opengraph${post.url.toLowerCase()}`;
@@ -223,7 +232,6 @@ export async function GET(request: NextRequest) {
     },
   );
 }
-
 
 function ImageGenTwo({
   logo,
