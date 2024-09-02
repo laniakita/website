@@ -4,7 +4,7 @@ import GlobalMDXComponent from '@/components/mdx/global-mdx-components';
 
 export function MiniLayout({ data, posts, isTag }: { data: Category | Tag; posts: Post[]; isTag?: boolean }) {
   return (
-    <div className='simple-color-trans px-page-common pt-common pb-common relative z-[5] -mb-1 flex flex-col gap-2 bg-ctp-base md:gap-4 dark:bg-ctp-midnight'>
+    <div className='simple-color-trans common-padding relative z-[5] -mb-1 flex flex-col gap-4 bg-ctp-base md:gap-6 dark:bg-ctp-midnight'>
       <div className='flex items-center justify-center'>
         <div className='flex w-full max-w-3xl flex-col gap-4 rounded-md border border-ctp-surface0 p-8 dark:border-ctp-base'>
           <div className=''>

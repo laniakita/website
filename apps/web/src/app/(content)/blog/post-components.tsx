@@ -1,13 +1,12 @@
 'use client';
-
 import Image from 'next/image';
 import Link from 'next/link';
 import { descriptionHelper } from '@/lib/description-helper';
 import { type Post } from 'contentlayer/generated';
 import type { FeaturedImageR1 } from '@/lib/image-process';
 import GlobalMDXRenderer from '@/components/mdx/global-mdx-renderer';
-import LocalDate from './local-date';
 import { CatTagRoller } from './cat-tag-roller';
+
 
 export default function PostPreviewV4(post: Post) {
   const descriptionStr = descriptionHelper(post.body.raw, post.url)!;
@@ -34,11 +33,7 @@ export default function PostPreviewV4(post: Post) {
       <div className='flex flex-col gap-4 p-8 lg:p-10'>
         <div className=''>
           <div className='flex flex-wrap gap-[1ch] pb-2'>
-            <p  className='w-fit rounded-full font-mono'  >
-              <LocalDate  date={post.date}  />
-            </p>
-            <span className='font-mono'>|</span>
-            <CatTagRoller cats={post.categories} tags={post.tags} />
+          <CatTagRoller showDate postDate={post.date} cats={post.categories} tags={post.tags} />
           </div>
 
           <h2 className='w-fit text-balance text-3xl font-black'>
