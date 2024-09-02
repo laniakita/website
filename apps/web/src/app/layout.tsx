@@ -73,9 +73,9 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeGetter }} />
       </head>
-      <body className={inter_tight.className}>
-        <DarkStoreProvider>{children}</DarkStoreProvider>
-      </body>
+      <DarkStoreProvider>
+        <body className={inter_tight.className}>{children}</body>
+      </DarkStoreProvider>
     </html>
   );
 }

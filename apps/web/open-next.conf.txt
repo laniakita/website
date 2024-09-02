@@ -1,3 +1,14 @@
+// next-js opts
+ 
+import { join } from 'node:path';
+const __dirname = import.meta.dirname;
+ output: 'standalone',
+  experimental: {
+    outputFileTracingRoot: join(__dirname, '../../'),
+  },
+
+// open-next
+
 import type { OpenNextConfig } from 'open-next/types/open-next.d.ts';
  
 const config = {

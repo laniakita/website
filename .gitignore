@@ -28,6 +28,7 @@ secrets.env
 .contentlayer
 # contentlayermini
 contentlayermini
+.contentlayermini
 # eslint
 .eslintcache
 #version vault

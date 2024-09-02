@@ -69,8 +69,8 @@ export const socialItems2 = [
 const blogInfo = 'A blog about life, Linux, and web development. Written by, [Lani Akita](/about).';
 
 export default function Sidebar() {
-  const categories = allCategories.sort((a, b) => a.title?.localeCompare(b.title ?? '') ?? 0);
-  const tags = allTags.sort((a, b) => a.title?.localeCompare(b.title ?? '') ?? 0);
+  const categories = allCategories.sort((a, b) => a.title.localeCompare(b.title));
+  const tags = allTags.sort((a, b) => a.title.localeCompare(b.title));
 
   return (
     <div className='flex h-fit md:sticky md:top-24'>
@@ -86,7 +86,11 @@ export function SubscribeBox({ mobile }: { mobile?: boolean }) {
   return (
     <div className={`sidebar-box  ${mobile ? 'flex md:hidden' : 'hidden md:flex'}  flex-col gap-4 p-6`}>
       <h4 className='flex-wrap text-balance text-3xl font-black'>Articles delivered right to your feed reader.</h4>
-      <Link href='/atom.xml' className='font-mono font-bold text-ctp-base hover:text-ctp-base hover:no-underline'>
+      <Link
+        target='_blank'
+        href='/atom.xml'
+        className='font-mono font-bold text-ctp-base hover:text-ctp-base hover:no-underline'
+      >
         <p className='color-trans-quick flex w-full flex-row items-center justify-center gap-[1ch] rounded bg-ctp-mauve px-4 py-2 hover:bg-ctp-pink'>
           <span>subscribe</span>
           <span>|</span>

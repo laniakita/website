@@ -8,9 +8,9 @@ export default function ImageGenTwo({
   prefix,
   twitter,
 }: {
-  logo: ArrayBuffer;
+  logo: ArrayBuffer | ArrayBufferLike;
   logoFormat?: string;
-  bg: ArrayBuffer;
+  bg: ArrayBuffer | ArrayBufferLike;
   bgFormat?: string;
   title: string | undefined;
   dynamic?: boolean;

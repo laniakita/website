@@ -58,7 +58,7 @@ export function GET() {
 
           return category;
         }) as Category[]
-      ).sort((a, b) => a.title!.localeCompare(b.title!));
+      ).sort((a, b) => a.title.localeCompare(b.title));
 
     const tagsArr =
       post.tags &&
@@ -68,7 +68,7 @@ export function GET() {
 
           return tagY;
         }) as Tag[]
-      ).sort((a, b) => a.title!.localeCompare(b.title!));
+      ).sort((a, b) => a.title.localeCompare(b.title));
 
     const resCats = cats && catTagRoller(cats);
     const resTags = tagsArr && catTagRoller(tagsArr);
