@@ -13,7 +13,7 @@ import type { OpenNextConfig } from 'open-next/types/open-next.d.ts';
  
 const config = {
   default: {},
-  buildCommand: 'exit 0', // in my example we set up Nx task distribution to handle the order of building.
+  buildCommand: 'exit 0', 
   buildOutputPath: '.',
   appPath: '.',
   packageJsonPath: '../../',  

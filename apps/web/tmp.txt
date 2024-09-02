@@ -1,4 +1,5 @@
-/*  */
+/* how to fetch (locally) on the edge */
+
 
   /* res.json was,
    * too easy, I guess. Fetching
