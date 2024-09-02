@@ -5,7 +5,7 @@ const nextConfig = {
   pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
   images: {
     loader: 'custom',
-    // loader for cloudfront during deploy & loader for local development
+    // loader for cloudfront during deploy & loader for local development.
     loaderFile:
       process.env.NEXT_PUBLIC_DEPLOYED_URL !== undefined && process.env.NODE_ENV === 'production'
         ? './src/lib/image-loader.ts'
