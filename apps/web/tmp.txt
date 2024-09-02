@@ -1,0 +1,47 @@
+/*  */
+
+  /* res.json was,
+   * too easy, I guess. Fetching
+   * it this way, "just works".
+   * */
+  /*
+  const allPosts = await fetch(
+    new URL('../../../scripts/dist/contentlayermini/generated/Post/index.json', import.meta.url),
+  )
+    .then((res) => res.arrayBuffer())
+    .then((arr) => new Blob([arr]))
+    .then((blob) => blob.text())
+    .then((text) => JSON.parse(text) as Post[]);
+
+  const allPages = await fetch(
+    new URL('../../../scripts/dist/contentlayermini/generated/Page/index.json', import.meta.url),
+  )
+    .then((res) => res.arrayBuffer())
+    .then((arr) => new Blob([arr]))
+    .then((blob) => blob.text())
+    .then((text) => JSON.parse(text) as Page[]);
+
+  const allCategories = await fetch(
+    new URL('../../../scripts/dist/contentlayermini/generated/Category/index.json', import.meta.url),
+  )
+    .then((res) => res.arrayBuffer())
+    .then((arr) => new Blob([arr]))
+    .then((blob) => blob.text())
+    .then((text) => JSON.parse(text) as Category[]);
+
+  const allTags = await fetch(
+    new URL('../../../scripts/dist/contentlayermini/generated/Tag/index.json', import.meta.url),
+  )
+    .then((res) => res.arrayBuffer())
+    .then((arr) => new Blob([arr]))
+    .then((blob) => blob.text())
+    .then((text) => JSON.parse(text) as Tag[]);
+
+  const allProjects = await fetch(
+    new URL('../../../scripts/dist/contentlayermini/generated/Project/index.json', import.meta.url),
+  )
+    .then((res) => res.arrayBuffer())
+    .then((arr) => new Blob([arr]))
+    .then((blob) => blob.text())
+    .then((text) => JSON.parse(text) as Project[]);
+  */

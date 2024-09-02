@@ -1,5 +1,10 @@
 import { ImageResponse } from 'next/og';
 import type { NextRequest } from 'next/server';
+import allPosts from '@/scripts/dist/contentlayermini/generated/Post/index.json'
+import allProjects from '@/scripts/dist/contentlayermini/generated/Project/index.json'
+import allCategories from '@/scripts/dist/contentlayermini/generated/Category/index.json'
+import allTags from '@/scripts/dist/contentlayermini/generated/Tag/index.json'
+import allPages from '@/scripts/dist/contentlayermini/generated/Page/index.json'
 import type { Project, Post, Page, Tag, Category } from 'contentlayer/generated';
 import type { FeaturedImageR1 } from '@/lib/image-process';
 import ImageGenTwo from '@/components/image-gen-two';
@@ -13,51 +18,6 @@ export async function GET(request: NextRequest) {
     width: 1200,
     height: 630,
   };
-
-  /* res.json was,
-   * too easy, I guess. Fetching
-   * it this way, "just works".
-   * */
-
-  const allPosts = await fetch(
-    new URL('../../../scripts/dist/contentlayermini/generated/Post/index.json', import.meta.url),
-  )
-    .then((res) => res.arrayBuffer())
-    .then((arr) => new Blob([arr]))
-    .then((blob) => blob.text())
-    .then((text) => JSON.parse(text) as Post[]);
-
-  const allPages = await fetch(
-    new URL('../../../scripts/dist/contentlayermini/generated/Page/index.json', import.meta.url),
-  )
-    .then((res) => res.arrayBuffer())
-    .then((arr) => new Blob([arr]))
-    .then((blob) => blob.text())
-    .then((text) => JSON.parse(text) as Page[]);
-
-  const allCategories = await fetch(
-    new URL('../../../scripts/dist/contentlayermini/generated/Category/index.json', import.meta.url),
-  )
-    .then((res) => res.arrayBuffer())
-    .then((arr) => new Blob([arr]))
-    .then((blob) => blob.text())
-    .then((text) => JSON.parse(text) as Category[]);
-
-  const allTags = await fetch(
-    new URL('../../../scripts/dist/contentlayermini/generated/Tag/index.json', import.meta.url),
-  )
-    .then((res) => res.arrayBuffer())
-    .then((arr) => new Blob([arr]))
-    .then((blob) => blob.text())
-    .then((text) => JSON.parse(text) as Tag[]);
-
-  const allProjects = await fetch(
-    new URL('../../../scripts/dist/contentlayermini/generated/Project/index.json', import.meta.url),
-  )
-    .then((res) => res.arrayBuffer())
-    .then((arr) => new Blob([arr]))
-    .then((blob) => blob.text())
-    .then((text) => JSON.parse(text) as Project[]);
 
   const logoSrc = await fetch(new URL('../../laniakita-logo-transparent-darkmode.png', import.meta.url)).then((res) =>
     res.arrayBuffer(),
@@ -136,7 +96,7 @@ export async function GET(request: NextRequest) {
     switch (reqType) {
       case 'projects': {
         const projectUrl = `/projects/${modUrl}`;
-        data.fetched = allProjects.find((projX) => projX.url === projectUrl);
+        data.fetched = allProjects.find((projX) => projX.url === projectUrl) as Project | undefined;
         data.type = 'projects';
         data.title = data.fetched?.title;
         data.prefix = 'Projects by Lani';
