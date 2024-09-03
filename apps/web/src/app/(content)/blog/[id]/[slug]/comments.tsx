@@ -20,10 +20,10 @@ export default function CommentsComponent() {
           repoId='R_kgDOLYjaFQ'
           category='Announcements'
           categoryId='DIC_kwDOLYjaFc4Cf0F_'
-          mapping='title'
+          mapping='pathname'
           strict='0'
           reactionsEnabled='1'
-          emitMetadata='0'
+          emitMetadata='1'
           inputPosition='top'
           theme={themePref()}
           lang='en'
