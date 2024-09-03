@@ -28,16 +28,21 @@ keywords:
   - IaC
 author: lani
 slug: thoughts-on-rebuilding-my-personal-website
-headline: 'Thoughts on Rebuilding my Website, Next.js 14.2+, & Ion (SST)'
+headline: 'Thoughts on Rebuilding my Website, Next.js 14.2+, & SST [UPDATED]'
 subheadline: 'Bonus thoughts on React Three Fiber, & Zustand too'
 imageSrc: ../../../assets/images/oc/2024/08/sunset-no-14.2-by-lani-akita.png
 altText: Abstract art of a conical gradient. Next.js represented by darker colors on the left, Ion/SST represented by lighter colors on the right.
 caption: The totality is not, as it were, a mere heap, but the whole is something besides the parts; there is a cause. - Aristotle
 ---
 
+> **Updated: September 3rd, 2024**
+>
+> Ion is now stable as SST v3! I've gone ahead and updated some stale parts of this article.
+> I've also since learned more about how Open Next works, and how SST deploys the bundle created by Open Next. You'll see ~~strikethroughs~~ around my old statements.
+
 This article was a long time coming, it's also quite long. In some respects, this might feel like an article created from a few separate articles I stitched together, and perhaps it is. However, I felt it was important to talk about the primary technologies I used in developing/deploying this site, because they're all pretty tightly integrated.
 
-To elaborate, Next.js is the application framework I went with, and I deployed it with Ion. The latter is important because it uses OpenNext as a serverless adapter which modifies how Next.js is compiled, to ensure compatibility with AWS Lambda. In other words, modifying how Next.js is built, modifies the behavior of the production site itself (a bit). So, I really wanted to talk about it.
+To elaborate, Next.js is the application framework I went with, and I deployed it with ~~Ion~~ SST. The latter is important because it uses OpenNext as a serverless adapter, which takes the output from `next build`, and splits it up into bundles that can deploy on specific AWS Lambda functions. This effectively modifies how a production Next.js application ~~is compiled~~ runs to ensure compatibility with AWS Lambda / Lambda@edge. In other words, modifying how it runs, modifies the behavior of the production site itself (a bit). So, I really wanted to talk about it.
 
 As for the WebGL stuff, admittedly, that section could've gone into a separate article. However, learning how to create with those specific technologies was such a significant motivator for myself in rebuilding this site, that it was worth including.
 
@@ -64,9 +69,15 @@ While the latter condition was solved by simply setting this site up in a monore
 
 Likewise, it also meant learning a subfield of programming that I was once wholly intimidated by, graphics. In effect, I used [Three.js](https://threejs.org/), [React Three Fiber](https://docs.pmnd.rs/react-three-fiber/getting-started/introduction), and even some [GLSL](<https://www.khronos.org/opengl/wiki/Core_Language_(GLSL)>) to add some fun WebGL-flare. This can be seen in the shader on the landing page, and also [this mini-game](/projects/bot-clicker) that almost became such a page. I also happened to stumble upon [Zustand](https://zustand-demo.pmnd.rs/), a lightweight state management system for React, which integrated with the latter very well.
 
-Furthermore, I even abandoned the various headless CMSes I’ve grown comfortable with over the years, in favor of something I can call my own. In effect, I wrote a prebuild script to assemble my _data layer_ which takes advantage of [Bun](https://bun.sh/)’s speedy [File I/O API](https://bun.sh/docs/api/file-io) to find and process MDX files with [gray-matter](https://github.com/jonschlinkert/gray-matter)—and any contained featured images with [plaiceholder](https://plaiceholder.co/docs)—saving the resultant array of objects into a SQLite-ish ([libSQL](https://github.com/tursodatabase/libsql)) database on [Turso](https://turso.tech/) via [Drizzle ORM](https://orm.drizzle.team/) statements. I then fetch that data inside a server component to render it out in various ways, such as with [`mdx-bundler`](https://github.com/kentcdodds/mdx-bundler).
+> **Updated: September 03rd, 2024**
+>
+> I'm now using [`timlrx/Contentlayer2`](https://github.com/timlrx/contentlayer2) to handle the data layer. My bespoke solution was fun, but `contentlayer2` was a lot more practical. I'll be writing about it in an upcoming blog post. But, I'll still walk through the below in that article too, since creating your own content backend is quite a project.
+>
+> Likewise, I'm using it's integrated version of `mdx-bundler`, which is convenient in that it performs the `esbuild` step before `next build`. That means if I felt like it, these posts could be server rendered at the edge. That's pretty cool.
 
-I also wrote another prebuild script for the [blog’s web feed](/feed.xml). That one fetches the blog posts, and integrates them into a purpose built object which is turned into an XML string with [`jstoxml`](https://github.com/davidcalhoun/jstoxml). While I’d like to talk about this data layer portion further, it is, admittedly, a bit extensive. So, you’ll have to wait to read about in a later blog post.
+~~Furthermore, I even abandoned the various headless CMSes I’ve grown comfortable with over the years, in favor of something I can call my own. In effect, I wrote a prebuild script to assemble my _data layer_ which takes advantage of [Bun](https://bun.sh/)’s speedy [File I/O API](https://bun.sh/docs/api/file-io) to find and process MDX files with [gray-matter](https://github.com/jonschlinkert/gray-matter)—and any contained featured images with [plaiceholder](https://plaiceholder.co/docs)—saving the resultant array of objects into a SQLite-ish ([libSQL](https://github.com/tursodatabase/libsql)) database on [Turso](https://turso.tech/) via [Drizzle ORM](https://orm.drizzle.team/) statements. I then fetch that data inside a server component to render it out in various ways, such as with [`mdx-bundler`](https://github.com/kentcdodds/mdx-bundler).~~
+
+I also wrote a ~~prebuild~~ [route handler](https://nextjs.org/docs/app/building-your-application/routing/route-handlers) for the [blog’s web feed](/atom.xml). ~~That one~~ It fetches the blog posts from `contentlayer`, and integrates them into a purpose built object which is turned into an XML string with [`jstoxml`](https://github.com/davidcalhoun/jstoxml). While I’d like to talk about this data layer portion further, it is, admittedly, a bit extensive. So, you’ll have to wait to read about in a later blog post.
 
 Beyond that, I’m overall really happy with how everything turned out. While Next.js and Ion/SST aren’t without their flaws—something not too unexpected of bleeding-edge tools—the pairing still came together quite nicely (in tandem with everything else) to create something I’m quite proud of. Even if there’s still bugs (read: mistakes) I’d like to fix in the [codebase](https://github.com/laniakita/website/tree/master/apps/laniakita-web), the end result works like it should for the most part. Page load times are quite fast. Its Lighthouse scores are decent enough (admittedly, I’m sure there’s still more I could do to improve accessibility). There’s all plenty of room for me to grow and build on top of it. As such, I don’t regret developing this site with Next.js or shipping it with Ion/SST at all!
 
@@ -105,6 +116,12 @@ While these blog posts aren’t SSR yet—ergo no streaming—I’ve prepared th
 Overall, I'm quite satisfied in my decision to use the App router as my page routing model. Beyond the App routers integration of server components, it’s forward thinking-features like streaming that improve the user experience, gives me hope for the next-generation of web applications (is that why it’s called _<ins>Next</ins>.js?_), and that makes me very happy.
 
 ### Metadata & Metadata Accessories
+
+> **Updated: September 03rd, 2024**
+>
+> In addition to the below, I've implemented `next/og` on an API endpoint / route handler to generate OpenGraph/Twitter images on demand. You'll notice these blog posts get the featured image if you share it, while blog posts without an image will resemble the images generated for a page like [credits/bot-clicker](/credits/bot-clicker). I'd originally intended to take advantage of the edge runtime for this, but the data I needed didn't seem to be making it into the generated `Lambda@edge` bundle. So, these generate dynamically from a standard `Lambda` running the standard `node.js` runtime instead. You can see how I'm doing this here: [laniakita/website](https://github.com/laniakita/website/blob/master/apps/web/src/app/opengraph/%5B...path%5D/route.tsx)
+>
+> This was quite a feat. It even led to me writing my own custom `middleware.ts` file. So, I'll try to write a blog post for this later.
 
 If Next.js being the premier framework for React, and React being the open-source JS library developed and maintained by Meta for use in Facebook and Instagram. Then, is Next.js great at creating/handling metadata? Yes, yes it is.
 
@@ -226,15 +243,37 @@ In deploying to AWS, I found OpenNext to be a lovely adapter for my Next.js appl
 
 The latter is because [Node.js is thankfully available in a Lambda function](https://docs.aws.amazon.com/lambda/latest/dg/lambda-nodejs.html), unlike in a Cloudflare worker. While Workers offer [partial support](https://developers.cloudflare.com/workers/runtime-apis/nodejs/#nodejs-compatibility) for Node.js APIs, due to their [nature of being Edge functions](https://blog.cloudflare.com/introducing-cloudflare-workers), it’s unlikely Next.js will ever work 100% the same as it would on Vercel or even on AWS.
 
-Runtimes aside, the only thing I got snagged on with OpenNext was the fact that `sharp` (needed for `plaiceholder`) isn’t included in the final build. Despite the fact I [included it as a dependency](https://open-next.js.org/v2/common_issues/bundle_size#sharp), `plaiceholder` just couldn’t find `sharp`.
+Runtimes aside, the only thing I got snagged on with OpenNext was the fact that `sharp` (needed for `plaiceholder`) isn’t included in the final build.
 
-As a workaround, I used a [Lambda Layer](https://docs.aws.amazon.com/lambda/latest/dg/chapter-layers.html) with `sharp` installed to it. Then I just matched the `sharp` version on the layer, with the one in my `package.json`, using the `SHARP_VERSION` env. I injected that right before running `open-next build`.
+> **Updated: September 3rd, 2024**
+>
+> Sharp is **always** excised from the Open Next bundle. The best way to re-add it is to simply install it into server bundle before deploying it. There's two ways of doing it. 
+>
+> - You can either install it into the bundle using `npm install --arch=x64 --platform=linux --libc=glibc --prefix=".open-next/server-functions/default" sharp`. 
+> - You can copy the version of sharp (& it's dependencies) you already have in your `node_modules/` directory over into the server bundle `cp -r ./node_modules/sharp ./open-next/server-functions/default/`. 
+>
+> Since you'll need to do this on every compilation/deploy, you'll probably want to write a script to perform one of the methods above during the build process. You can see how I'm doing thing via the source code repo for this site ([laniakita/website](https://github.com/laniakita/website/tree/master/apps/web)) for an example, or you can jump down to [Transforms (Lambda Layers)](#transforms-lambda-layer).
+
+~~Despite the fact I [included it as a dependency](https://open-next.js.org/v2/common_issues/bundle_size#sharp), `plaiceholder` just couldn’t find `sharp`.~~
+
+~~As a workaround, I used a [Lambda Layer](https://docs.aws.amazon.com/lambda/latest/dg/chapter-layers.html) with `sharp` installed to it.~~
+
+Then I just matched the `sharp` version on the layer, with the one in my `package.json`, using the `SHARP_VERSION` env. I injected that right before running `open-next build`.
 
 Minor gripe aside, I’m extremely grateful to the people who’ve created OpenNext, and all the wonderful people who continue to maintain it. While the little adapter might not give you the complete _Vercel experience_ 100% of the time (how could it? [Vercel uses their own proprietary infra](https://open-next.js.org/faq#will-my-nextjs-app-behave-the-same-as-it-does-on-vercel)) it’s pretty damn close, and that’s incredible. Overall, I’m quite satisfied using OpenNext, and I won’t hesitate to use it in deploying future Next.js projects.
 
 ### Economics
 
-If the words _cloud console_ doesn’t scare you, but the words _cloud bill shock_ sends chills down your spine, then I’d say you’re the perfect dev/team to try out SST/Ion. Especially if the latter phrase came with a thousand-yard-stare too.
+> **Updated: September 3rd, 2024**
+
+If the words _cloud console_ doesn’t scare you, but the words _cloud bill shock_ sends chills down your spine, then I’d say you’re the perfect dev/team to try out SST/Ion. Using SST to deploy your application to AWS is one of the most cost efficient deployment methods I can think of, otherwise you're other alternatives are to:
+
+- Deploy Next.js as it's meant to, on [Vercel](https://vercel.com/home).
+- You can integrate it with your existing AWS infra using Vercel's [official integration](https://vercel.com/partners/aws).
+- You can deploy it in a traditional manner (EC2 instance/VPS) or as a docker/podman container.
+- You can containerize it, then put in a pod on a k8s cluster.
+- You can use [`@cloudflare/next-on-pages`](https://github.com/cloudflare/next-on-pages) to deploy your application to Cloudflare Pages via a Cloudflare Worker.
+- You can use [AWS Amplify](https://aws.amazon.com/amplify/) to deploy your Next.js application.
 
 In following the default [OpenNext architecture](https://open-next.js.org/inner_workings/architecture) recommendations, the various AWS services this site uses—primarily Lambda, S3, CloudFront—means the cost of it all is quite tiny. AWS has fairly generous free tier limits, and I’ll likely stay fairly well within them for this particular application (a portfolio/blog). This is helped enormously by serving the site via CloudFront’s CDN.
 
@@ -252,25 +291,122 @@ Granted, the SST [console](https://console.sst.dev) is a little slow (though tha
 
 ## Things I'd Appreciate in the Upcoming Stable Release of Ion/SST
 
-Ion is an utterly amazing tool in my full stack toolbox. **It’s also in beta**, so there’s expectedly some sharp edges. As such, the following sections run through some of the things I felt could use a bit of polish. As well, there are some things that might help you/your team if you’re looking to work with this super rad, but undoubtedly bleeding-edge tool, too.
+> **Updated: September 3rd, 2024**
+>
+> **Ion is now stable as SST v3!**
+> 
+> I've gone ahead and struck through what's no longer an issue. I'm extremely grateful to the SST team for all their hardwork.
 
-**_Note: Ion is still in beta (as of 7/21/24), and isn’t stable yet. By the time it is, it’ll just be called SST v3. So, if you’re reading this from the future, it’s entirely likely that everything I’m about to be salty about has been fixed. Reader discretion is advised._**
+Ion is an utterly amazing tool in my full stack toolbox. ~~**It’s also in beta**, so~~ There’s also ~~expectedly~~ some sharp edges. As such, the following sections run through some of the things I felt could use a bit of polish. As well, there are notes about some things that might help you/your team if you’re looking to work with this super rad, but undoubtedly bleeding-edge tool, too.
+
+~~**_Note: Ion is still in beta (as of 7/21/24), and isn’t stable yet. By the time it is, it’ll just be called SST v3. So, if you’re reading this from the future, it’s entirely likely that everything I’m about to be salty about has been fixed. Reader discretion is advised._**~~
 
 ### Docs
 
-The Ion docs are still a work in progress (as is Ion itself), so I really can’t fault the SST team too much here. However, it would be nice if some of the examples/guides from the old V2 docs could be migrated/converted over to the Ion docs site. For example, the [_configuring AWS section_](https://docs.sst.dev/setting-up-aws) from the old docs could probably be dropped into the Ion docs without too much editing.
+~~The Ion docs are still a work in progress (as is Ion itself), so I really can’t fault the SST team too much here. However, it would be nice if some of the examples/guides from the old V2 docs could be migrated/converted over to the Ion docs site. For example, the [_configuring AWS section_](https://docs.sst.dev/setting-up-aws) from the old docs could probably be dropped into the Ion docs without too much editing.~~
+> **Updated: September 3rd, 2024**
+>
+> I believe the below is still an [open issue](https://github.com/sst/ion/issues/520). However, I've not tried to deploy without setting the `CLOUDFLARE_DEFAULT_ACCOUNT_ID` since I've encountered this issue.
 
-Beyond simple migrations, there’s also a few features/behaviors that seem to be missing documentation. Notably, the guide on [using Cloudflare as a custom domain provider](https://ion.sst.dev/docs/custom-domains/#cloudflare) fails to mention that in addition to the `CLOUDFLARE_API_TOKEN`, it’s really important to set the `CLOUDFLARE_DEFAULT_ACCOUNT_ID` variable too. Without the latter var set, you’ll likely find `sst deploy` breaks, resulting in a vague set of error messages from the Go compiler.
+~~Beyond simple migrations,~~ There’s ~~also~~ a few features/behaviors that seem to be missing documentation. Notably, the guide on [using Cloudflare as a custom domain provider](https://ion.sst.dev/docs/custom-domains/#cloudflare) fails to mention that in addition to the `CLOUDFLARE_API_TOKEN`, it’s really important to set the `CLOUDFLARE_DEFAULT_ACCOUNT_ID` variable too. Without the latter var set, you’ll likely find `sst deploy` breaks, resulting in a vague set of error messages from the Go compiler.
 
 > Honestly, I think it’s rad the `sst` CLI uses Go, even if this is how I learned that fact.
 
 ### Transforms (Lambda Layer)
 
-For whatever reasons, I just couldn’t replicate the functionality of the old SST v2 transforms (a couple of months ago), to declaratively define and create a Lambda Layer from my `sst.config.ts` / project repo. What I could do is link an existing (imperatively created) Lambda layer, but I couldn’t figure out how to create it from the config itself.
+> **Updated: September 3rd, 2024**
+>
+> I'm no longer using Lamda layers to handle sharp. Currently I just run a script to copy it from my root `node_modules/` into the bundle. This is primarily a workaround to the fact that I've not figured out how to just run `npm install --arch=x64 --platform=linux --libc=glibc --prefix='.open-next/server-functions/default' sharp` in my monorepo, without getting caught up in a registry timeout / 404 error for the local packages that don't exist in the `npm` registry. Likewise, `bun` doesn't support `npm`'s `--prefix` flag.
+>
+> So, I decided to just write a brute force script that copies `sharp` and it's dependencies into the output bundle from `open-next`, specifically into the default server function. A smarter script would grab the named deps that would result from a call to `npm i sharp`, then figure out which ones to install then copy over. However, Sharp seem's pretty stable, I was tired, and I just wanted something that worked immediately and I hard-coded the paths. So, have a gander at my silly little script.
 
-The reason I even looked into this in the first place, was because OpenNext doesn’t include the `sharp` module in the production build. So, the only way to have those blurry placeholders you see generate dynamically, was by creating a Lambda Layer running Node.js with the sharp module loaded into it (there’s more to this story, but that will be another article).
+```ts
+/*
+ * The bun shebang probably isn't necessary (no Bun specific APIs).
+ * But, it ensures I get Bun's versions of the Node filesystem APIs. 
+ */
+#! /usr/bin/env bun
 
-However, in trying to replicate [this guide from the old docs](https://docs.sst.dev/constructs/AstroSite#using-an-image-processing-layer-like-sharp), (whilst converting things as best I could to account for Pulumi’s aws-classic provider, inline with [their docs](https://www.pulumi.com/registry/packages/aws/api-docs/lambda/layerversion/)), I found things would deploy, but I never received any sort of error message, nor did it create the Lambda Layer. This was very confusing to me.
+import { cp, mkdir } from 'node:fs/promises';
+import { join } from 'node:path';
+
+const cwd = process.cwd();
+const monoRepoCorrection = '../../';
+const node_modules = join(cwd, monoRepoCorrection, './node_modules');
+const openNextServerDefault = join(cwd, '.open-next/server-functions/default');
+
+const sharpInstall = `sharp`;
+
+const sharpDeps = ['color', 'detect-libc', 'semver'];
+const colorDeps = ['color-convert', 'color-string'];
+const colorStringDeps = ['color-name', 'simple-swizzle'];
+// color-convert depends on color-name
+
+const pkgsToCopy = [sharpInstall, ...sharpDeps, ...colorDeps, ...colorStringDeps];
+
+const t0 = performance.now();
+
+export default async function copySharp() {
+  try {
+    console.info('copying', sharpInstall, 'to:', openNextServerDefault);
+    const pkgPaths = pkgsToCopy.map((pkg) => {
+      const from = `${node_modules}/${pkg}`;
+      const to = `${openNextServerDefault}/node_modules/${pkg}`;
+      return {
+        source: from,
+        dest: to,
+      };
+    });
+    for await (const pkg of pkgPaths) {
+      console.info('creating dirs from', pkg.source, 'to:', pkg.dest);
+      await mkdir(pkg.dest, { recursive: true });
+    }
+    for await (const copied of pkgPaths) {
+      console.info('copying', copied.source, 'to:', copied.dest);
+      await cp(copied.source, copied.dest, { recursive: true });
+    }
+
+    console.info('finished in ', performance.now() - t0, `ms`);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+await copySharp();
+```
+
+> I've set it up in my `turbo.json` so it runs immediately after `SHARP_VERSION=0.33.5 bunx open-next build`.
+
+```json
+{
+  "extends": ["//"],
+  "tasks": {
+    "build:open-next": {
+      "env": ["OPEN_NEXT_VERSION", "NEXT_PUBLIC_DEPLOYED_URL"],
+      "outputs": [
+        ".open-next/**",
+        "!.open-next/cache/**",
+        "public/dist/**",
+        "public/sw.js",
+        ".contentlayer",
+        ".contentlayermini"
+      ],
+      "inputs": ["$TURBO_DEFAULT$", ".env", ".env.local", ".env.development", ".env.production"]
+    },
+    "copy-sharp": {
+      "inputs": ["$TURBO_DEFAULT$", ".env", ".env.local", ".env.development", ".env.production", ".open-next/**"],
+      "outputs": [".open-next/server-functions/default/**"],
+      "dependsOn": ["build:open-next"]
+    },
+  }
+}
+```
+
+~~For whatever reasons, I just couldn’t replicate the functionality of the old SST v2 transforms (a couple of months ago), to declaratively define and create a Lambda Layer from my `sst.config.ts` / project repo. What I could do is link an existing (imperatively created) Lambda layer, but I couldn’t figure out how to create it from the config itself.~~
+
+~~The reason I even looked into this in the first place, was because OpenNext doesn’t include the `sharp` module in the production build. So, the only way to have those blurry placeholders you see generate dynamically, was by creating a Lambda Layer running Node.js with the sharp module loaded into it (there’s more to this story, but that will be another article).~~
+
+~~However, in trying to replicate [this guide from the old docs](https://docs.sst.dev/constructs/AstroSite#using-an-image-processing-layer-like-sharp), (whilst converting things as best I could to account for Pulumi’s aws-classic provider, inline with [their docs](https://www.pulumi.com/registry/packages/aws/api-docs/lambda/layerversion/)), I found things would deploy, but I never received any sort of error message, nor did it create the Lambda Layer. This was very confusing to me.~~
 
 ```ts
  transform: {
@@ -290,9 +426,9 @@ However, in trying to replicate [this guide from the old docs](https://docs.sst.
   },
 ```
 
-> IIRC, In addition to defining the layer like this, I’m fairly certain I tried a dot notation access of the output ARN string, but that didn’t work either.
+~~> IIRC, In addition to defining the layer like this, I’m fairly certain I tried a dot notation access of the output ARN string, but that didn’t work either.~~
 
-I later came across [this probably relevant issue](https://github.com/sst/ion/issues/422), (which thankfully appears to be [fixed](https://github.com/sst/ion/pull/423) now), but I eventually gave up and just defined it manually in the end, setting the `transform.server.layers` to the generated ARN.
+~~I later came across [this probably relevant issue](https://github.com/sst/ion/issues/422), (which thankfully appears to be [fixed](https://github.com/sst/ion/pull/423) now), but I eventually gave up and just defined it manually in the end, setting the `transform.server.layers` to the generated ARN.~~
 
 ```ts
  transform: {
@@ -309,11 +445,19 @@ I later came across [this probably relevant issue](https://github.com/sst/ion/is
 
 ### AWS SSO Integration
 
-This I think is still an [open issue](https://github.com/sst/ion/issues/284), that will probably get fixed eventually, but it’s something I should point out anyway (at least if you’re running into issues). Because, theoretically, you should be able to configure the SSO profile directly in the `sst.config.ts`, [like so](https://docs.sst.dev/setting-up-aws#configure-sst).
+> **Updated: September 3rd, 2024**
+>
+> This has been fixed. I'm very happy.
 
-However, as it stands, I have to preface my `sst` commands with an environmental variable set to my SSO profile of choice with `AWS_PROFILE=$MY_SSO_PROFILE`, to get things working/deploying properly. If I don’t, I run into the errors pointed out in that issue thread I linked earlier. While it’s not a horrible workaround, it is a little annoying. Granted I could likely export this from my `.zshrc` config, or even a `.env` file, but having it _just work_ in the `sst.config.ts` feels like it would be ideal.
+~~This I think is still an [open issue](https://github.com/sst/ion/issues/284), that will probably get fixed eventually, but it’s something I should point out anyway (at least if you’re running into issues). Because, theoretically, you should be able to configure the SSO profile directly in the `sst.config.ts`, [like so](https://docs.sst.dev/setting-up-aws#configure-sst).~~
+
+~~However, as it stands, I have to preface my `sst` commands with an environmental variable set to my SSO profile of choice with `AWS_PROFILE=$MY_SSO_PROFILE`, to get things working/deploying properly. If I don’t, I run into the errors pointed out in that issue thread I linked earlier. While it’s not a horrible workaround, it is a little annoying. Granted I could likely export this from my `.zshrc` config, or even a `.env` file, but having it _just work_ in the `sst.config.ts` feels like it would be ideal.~~
 
 ### Nix Compatibility
+
+> **Updated: September 3rd, 2024**
+>
+> This is still technically an issue, but I've since realized you can just run `sst` from the package manager, i.e., `bun run sst $COMMAND`. However, since I already went through the effort, I've continued to just run it from a distrobox container.
 
 I’ll admit, I’m a fairly niche user, but Nix compatibility would be hella cool. While there’s actually [an open PR in the nixpkgs repo](https://github.com/NixOS/nixpkgs/pull/300478) to add `sst` to nixpkgs, due to the nature of the `sst` CLI, compatibility with Nix is a little clunky. However, there’s [an open issue in the Ion repo](https://github.com/sst/ion/issues/143) discussing a possible solution that could be implemented on SST’s end to make it _just work_ with Nix, so perhaps `sst` will be fully compatible with Nix one day.
 
@@ -413,4 +557,4 @@ In addition, there's a whole slew of neat tools and technologies contained in th
 
 Overall, I couldn't be happier with how this site came out, and I'm excited to see how both it and I, will evolve over time.
 
-Finally, this long-form article is going to be published before I’ve integrated a commenting system. So, if you have questions, or want to share your thoughts on this piece, or would like to submit corrections, please send them to lani@laniakita.com. Alternatively, you could create an issue on this site’s git repo [here](https://github.com/laniakita/website/issues/new/choose). Either way, I’d love to hear your thoughts, and I appreciate (constructive) feedback, thank you.
+Finally, this long-form article ~~is going to be~~ was published before I ~~I’ve~~ integrated a commenting system. So, if you have questions, or want to share your thoughts on this piece, or would like to submit corrections, please leave a comment below. ~~send them to lani@laniakita.com. Alternatively, you could create an issue on this site’s git repo [here](https://github.com/laniakita/website/issues/new/choose). Either way,~~ I’d love to hear your thoughts, and I appreciate (constructive) feedback, thank you.
