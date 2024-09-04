@@ -12,7 +12,7 @@ export function PostHeader2(post: Post) {
     <>
       <div className='pt-post-page flex w-full flex-col items-center justify-center gap-2 px-10 pb-6 md:pb-10'>
         <div className='w-full max-w-3xl font-mono'>
-          <CatTagRoller postDate={post.date} cats={post.categories} tags={post.tags} />
+          <CatTagRoller cats={post.categories} tags={post.tags} />
         </div>
         <h1 className='w-full max-w-3xl text-3xl font-black supports-[text-wrap:balance]:text-balance md:text-4xl'>
           {post.headline}
@@ -65,7 +65,6 @@ export function PostHeader2(post: Post) {
         <div className='flex size-full w-full items-center justify-center px-10'>
           <div className='mt-10 w-full max-w-3xl rounded bg-ctp-text py-px' />
         </div>
-
       </div>
     </>
   );

@@ -65,7 +65,7 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
   const category = allCategories.find((catX) => catX.url.split('/').pop() === params.slug);
   const matchingPosts = allPosts
     .filter((postX) => postX.categories?.some((cat) => (cat as unknown as { slug: string }).slug === params.slug))
-    .sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
+    .sort((a, b) => compareDesc(new Date(a.updated ?? a.date), new Date(b.updated ?? b.date)));
 
   if (!category) return notFound();
 

@@ -65,7 +65,7 @@ export default function TagPage({ params }: { params: { slug: string } }) {
   const tag = allTags.find((tagX) => tagX.url === `/tags/${params.slug}`);
   const matchingPosts = allPosts
     .filter((postX) => postX.tags?.some((tagZ) => (tagZ as unknown as { slug: string }).slug === params.slug))
-    .sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
+    .sort((a, b) => compareDesc(new Date(a.updated ?? a.date), new Date(b.updated ?? b.date)));
 
   if (!tag) return notFound();
 

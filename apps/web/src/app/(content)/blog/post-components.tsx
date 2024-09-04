@@ -31,14 +31,12 @@ export default function PostPreviewV4(post: Post) {
       )}
       <div className='flex flex-col gap-4 p-8 lg:p-10'>
         <div className='flex flex-col gap-2'>
-
           <div className=''>
             {post.updated ? (
               <div className='flex flex-wrap gap-x-2 font-mono'>
                 <p className='flex w-fit flex-wrap gap-x-2 rounded-full font-mono'>
                   <strong>Updated:</strong> <PostDate date={post.updated} />
                 </p>
-      
               </div>
             ) : (
               <p className='flex w-fit flex-wrap gap-x-2 rounded-full font-mono'>
@@ -46,8 +44,6 @@ export default function PostPreviewV4(post: Post) {
               </p>
             )}
           </div>
-
-
 
           <div>
             <h2 className='w-fit text-balance text-3xl font-black'>
@@ -57,8 +53,6 @@ export default function PostPreviewV4(post: Post) {
             </h2>
             <h3 className='text-balance text-2xl font-light'>{post.subheadline}</h3>
           </div>
-
-
         </div>
         <div className='h-px w-full rounded bg-ctp-surface0' />
         <div className='prose-protocol-omega max-w-full text-pretty prose-p:my-0 prose-a:no-underline'>

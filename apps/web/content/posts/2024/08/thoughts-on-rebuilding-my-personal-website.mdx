@@ -248,10 +248,10 @@ Runtimes aside, the only thing I got snagged on with OpenNext was the fact that 
 
 > **Updated: September 3rd, 2024**
 >
-> Sharp is **always** excised from the Open Next bundle. The best way to re-add it is to simply install it into server bundle before deploying it. There's two ways of doing it. 
+> Sharp is **always** excised from the Open Next bundle. The best way to re-add it is to simply install it into server bundle before deploying it. There's two ways of doing it.
 >
-> - You can either install it into the bundle using `npm install --arch=x64 --platform=linux --libc=glibc --prefix=".open-next/server-functions/default" sharp`. 
-> - You can copy the version of sharp (& it's dependencies) you already have in your `node_modules/` directory over into the server bundle `cp -r ./node_modules/sharp ./open-next/server-functions/default/`. 
+> - You can either install it into the bundle using `npm install --arch=x64 --platform=linux --libc=glibc --prefix=".open-next/server-functions/default" sharp`.
+> - You can copy the version of sharp (& it's dependencies) you already have in your `node_modules/` directory over into the server bundle `cp -r ./node_modules/sharp ./open-next/server-functions/default/`.
 >
 > Since you'll need to do this on every compilation/deploy, you'll probably want to write a script to perform one of the methods above during the build process. You can see how I'm doing thing via the source code repo for this site ([laniakita/website](https://github.com/laniakita/website/tree/master/apps/web)) for an example, or you can jump down to [Transforms (Lambda Layers)](#transforms-lambda-layer).
 
@@ -295,7 +295,7 @@ Granted, the SST [console](https://console.sst.dev) is a little slow (though tha
 > **Updated: September 3rd, 2024**
 >
 > **Ion is now stable as SST v3!**
-> 
+>
 > I've gone ahead and struck through what's no longer an issue. I'm extremely grateful to the SST team for all their hardwork.
 
 Ion is an utterly amazing tool in my full stack toolbox. ~~**It’s also in beta**, so~~ There’s also ~~expectedly~~ some sharp edges. As such, the following sections run through some of the things I felt could use a bit of polish. As well, there are notes about some things that might help you/your team if you’re looking to work with this super rad, but undoubtedly bleeding-edge tool, too.
@@ -305,6 +305,7 @@ Ion is an utterly amazing tool in my full stack toolbox. ~~**It’s also in beta
 ### Docs
 
 ~~The Ion docs are still a work in progress (as is Ion itself), so I really can’t fault the SST team too much here. However, it would be nice if some of the examples/guides from the old V2 docs could be migrated/converted over to the Ion docs site. For example, the [_configuring AWS section_](https://docs.sst.dev/setting-up-aws) from the old docs could probably be dropped into the Ion docs without too much editing.~~
+
 > **Updated: September 3rd, 2024**
 >
 > I believe the below is still an [open issue](https://github.com/sst/ion/issues/520). However, I've not tried to deploy without setting the `CLOUDFLARE_DEFAULT_ACCOUNT_ID` since I've encountered this issue.
@@ -324,7 +325,7 @@ Ion is an utterly amazing tool in my full stack toolbox. ~~**It’s also in beta
 ```ts
 /*
  * The bun shebang probably isn't necessary (no Bun specific APIs).
- * But, it ensures I get Bun's versions of the Node filesystem APIs. 
+ * But, it ensures I get Bun's versions of the Node filesystem APIs.
  */
 #! /usr/bin/env bun
 
@@ -398,7 +399,7 @@ await copySharp();
       "inputs": ["$TURBO_DEFAULT$", ".env", ".env.local", ".env.development", ".env.production", ".open-next/**"],
       "outputs": [".open-next/server-functions/default/**"],
       "dependsOn": ["build:open-next"]
-    },
+    }
   }
 }
 ```

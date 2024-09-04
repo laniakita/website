@@ -16,7 +16,7 @@
   html,
   body,
   #root {
-    @apply [scroll-behavior:_smooth] ctp-latte m-0 min-h-dvh bg-ctp-base p-0 text-ctp-text dark:ctp-mocha scroll-pt-24  dark:bg-ctp-midnight;
+    @apply ctp-latte m-0 min-h-dvh scroll-pt-24 bg-ctp-base p-0 text-ctp-text [scroll-behavior:_smooth] dark:ctp-mocha  dark:bg-ctp-midnight;
   }
 
   a {

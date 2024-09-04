@@ -121,14 +121,13 @@ function ProjectPreview(data: Project) {
           <div className=''>
             {data.updated ? (
               <div className='flex flex-wrap gap-x-2 font-mono'>
-               <p className='flex w-fit flex-wrap gap-x-2 rounded-full font-mono'>
+                <p className='flex w-fit flex-wrap gap-x-2 rounded-full font-mono'>
                   <strong>Released:</strong> <PostDate date={data.date} />
                 </p>
                 <span className=''>|</span>
                 <p className='flex w-fit flex-wrap gap-x-2 rounded-full font-mono'>
                   <strong>Updated:</strong> <PostDate date={data.updated} />
                 </p>
-      
               </div>
             ) : (
               <p className='flex w-fit flex-wrap gap-x-2 rounded-full font-mono'>
