@@ -84,10 +84,28 @@ module.exports = {
             'h5 a': {
               fontWeight: 900,
             },
+            del: {
+              color: 'var(--tw-prose-del)',
+            },
+            'del a': {
+              color: 'var(--tw-prose-del-links)',
+            },
+            'del code': {
+              color: 'var(--tw-prose-del-code)',
+            },
+          },
+        },
+        invert: {
+          css: {
+            '--tw-prose-del': 'var(--tw-prose-invert-del)',
+            '--tw-prose-del-links': 'var(--tw-prose-invert-del-links)',
+            '--tw-prose-del-code': 'var(--tw-prose-invert-del-code)',
           },
         },
         catppuccin: {
           css: {
+            '--tw-prose-del': theme('colors.ctp-surface1.DEFAULT'),
+            '--tw-prose-invert-del': theme('colors.ctp-surface0.DEFAULT'),
             '--tw-prose-body': theme(`colors.ctp-text.DEFAULT`),
             '--tw-prose-headings': theme('colors.ctp-text.DEFAULT'),
             '--tw-prose-lead': theme('colors.ctp-text.DEFAULT'),
