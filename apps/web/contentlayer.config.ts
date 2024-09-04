@@ -75,9 +75,9 @@ export const Author = defineDocumentType(() => ({
   computedFields: {
     url: {
       type: 'string',
-      resolve: (author) => `/${author._raw.flattenedPath}` ,
+      resolve: (author) => `/${author._raw.flattenedPath}`,
     },
-  }
+  },
 }));
 
 export const Page = defineDocumentType(() => ({

@@ -36,7 +36,9 @@ export async function generateMetadata(
   const previousImagesTwitter = (await parent).twitter?.images ?? [];
   return {
     title: postData?.headline,
-    authors: [{ name: (allAuthors.find((author) => author.url === `/authors/${postData?.author}`)?.name) ?? 'Lani Akita' }],
+    authors: [
+      { name: allAuthors.find((author) => author.url === `/authors/${postData?.author}`)?.name ?? 'Lani Akita' },
+    ],
     description,
     openGraph: {
       title: postData?.headline,
