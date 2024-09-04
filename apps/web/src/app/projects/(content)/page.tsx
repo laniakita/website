@@ -51,7 +51,9 @@ export default function Projects() {
   const uKey = useId();
   const data = allPages.find((page) => page.url.split('/').pop() === 'projects');
   if (!data) return notFound();
-  const projectData = allProjects.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
+  const projectData = allProjects.sort((a, b) =>
+    compareDesc(new Date(a.updated ?? a.date), new Date(b.updated ?? b.date)),
+  );
 
   return (
     <main className='simple-color-trans common-padding bg-ctp-base dark:bg-ctp-midnight'>
@@ -107,12 +109,7 @@ function ProjectPreview(data: Project) {
         ''
       )}
       <div className='flex flex-col gap-4 p-8 lg:p-10'>
-        <div>
-          <div className='flex flex-wrap gap-[1ch] pb-2'>
-            <p className='w-fit rounded-full font-mono'>
-              <PostDate date={data.date} />
-            </p>
-          </div>
+        <div className='flex flex-col gap-2'>
           <h2 className='w-fit text-balance text-3xl font-black'>
             <Link href={data.link ?? data.url} target='_blank' className='text-ctp-text'>
               <span className='relative'>
@@ -121,6 +118,24 @@ function ProjectPreview(data: Project) {
               </span>
             </Link>
           </h2>
+          <div className=''>
+            {data.updated ? (
+              <div className='flex flex-wrap gap-x-2 font-mono'>
+               <p className='flex w-fit flex-wrap gap-x-2 rounded-full font-mono'>
+                  <strong>Released:</strong> <PostDate date={data.date} />
+                </p>
+                <span className=''>|</span>
+                <p className='flex w-fit flex-wrap gap-x-2 rounded-full font-mono'>
+                  <strong>Updated:</strong> <PostDate date={data.updated} />
+                </p>
+      
+              </div>
+            ) : (
+              <p className='flex w-fit flex-wrap gap-x-2 rounded-full font-mono'>
+                <strong>Released:</strong> <PostDate date={data.date} />
+              </p>
+            )}
+          </div>
         </div>
         <div className='h-px w-full bg-ctp-surface0 dark:bg-ctp-base' />
         <div className='prose-protocol-omega max-w-full prose-p:my-0 prose-a:no-underline'>

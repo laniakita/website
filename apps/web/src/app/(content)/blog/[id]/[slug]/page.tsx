@@ -2,7 +2,7 @@ import { notFound, redirect } from 'next/navigation';
 import type { Metadata, ResolvingMetadata } from 'next';
 import type { BlogPosting, WithContext } from 'schema-dts';
 import { compareDesc } from 'date-fns';
-import { allPosts } from 'contentlayer/generated';
+import { allAuthors, allPosts } from 'contentlayer/generated';
 import ReadingBar from '@/components/reading-bar';
 import { descriptionHelper } from '@/lib/description-helper';
 import type { FeaturedImageR1 } from '@/lib/image-process';
@@ -36,7 +36,7 @@ export async function generateMetadata(
   const previousImagesTwitter = (await parent).twitter?.images ?? [];
   return {
     title: postData?.headline,
-    authors: [{ name: 'Lani Akita' }],
+    authors: [{ name: (allAuthors.find((author) => author.url === `/authors/${postData?.author}`)?.name) ?? 'Lani Akita' }],
     description,
     openGraph: {
       title: postData?.headline,

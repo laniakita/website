@@ -63,6 +63,23 @@ export const Project = defineDocumentType(() => ({
   },
 }));
 
+export const Author = defineDocumentType(() => ({
+  name: 'Author',
+  filePathPattern: 'authors/**/*.mdx',
+  contentType: 'mdx',
+  fields: {
+    name: { type: 'string', required: true },
+    mastodon: { type: 'string', required: false },
+    github: { type: 'string', required: false },
+  },
+  computedFields: {
+    url: {
+      type: 'string',
+      resolve: (author) => `/${author._raw.flattenedPath}` ,
+    },
+  }
+}));
+
 export const Page = defineDocumentType(() => ({
   name: 'Page',
   filePathPattern: 'pages/**/*.mdx',
@@ -187,7 +204,7 @@ export const Post = defineDocumentType(() => ({
 
 export default makeSource({
   contentDirPath: CONTENT_DIR,
-  documentTypes: [Post, Category, Tag, Page, Project],
+  documentTypes: [Post, Category, Tag, Page, Project, Author],
   mdx: {
     remarkPlugins: [remarkGfm],
     rehypePlugins: [

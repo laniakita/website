@@ -6,6 +6,6 @@ const LocalDate = dynamic(() => import('../../local-date').then((mod) => mod.def
   loading: () => <span>Month, Xst, 2KZZ</span>,
 });
 
-export default function PostDate({ date }: { date: string }) {
-  return <LocalDate date={date} />;
+export default function PostDate({ date, tag }: { date: string; tag?: boolean }) {
+  return <LocalDate date={date} tag={tag} />;
 }

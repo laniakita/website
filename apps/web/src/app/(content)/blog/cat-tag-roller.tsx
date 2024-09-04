@@ -1,41 +1,14 @@
-'use client';
-import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { Suspense, useId } from 'react';
 import { catTagData } from '@/lib/cat-tag-data';
 
-const LocalDate = dynamic(() => import('./local-date').then((mod) => mod.default), {
-  ssr: false,
-  loading: () => <span>Month, Xst, 2KZZ</span>,
-});
-
-export function CatTagRoller({
-  cats,
-  tags,
-  postDate,
-  showDate,
-}: {
-  cats?: string[] | undefined;
-  tags?: string[] | undefined;
-  postDate: string | Date;
-  showDate?: boolean;
-}) {
+export function CatTagRoller({ cats, tags }: { cats?: string[] | undefined; tags?: string[] | undefined }) {
   const uniqueKey = useId();
   const comboArr = catTagData({ cats, tags });
 
   return (
     <Suspense>
-      <div className='flex flex-wrap'>
-        {showDate ? (
-          <>
-            <p className='w-fit rounded-full font-mono'>
-              <LocalDate date={postDate} />
-            </p>
-            <span className='px-[1ch] font-mono'>|</span>
-          </>
-        ) : (
-          ''
-        )}
+      <div className='flex w-fit flex-wrap'>
         {comboArr.map((combo, idx) => (
           <p key={`category-tag-${uniqueKey}-${Math.floor(Math.random() * 1000)}`} className='font-mono'>
             <Link href={`/${combo?._raw.flattenedPath}`}>
