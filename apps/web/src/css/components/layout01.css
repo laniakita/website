@@ -8,6 +8,9 @@
   .py-common-info-page {
     @apply py-24 md:py-28 lg:py-36;
   }
+  .pt-post-page {
+    @apply pt-24 md:pt-28 lg:pt-36
+  };
   .pt-common {
     @apply pt-20 md:pt-24 lg:pt-36;
   }

@@ -1,7 +1,7 @@
 import { compareDesc } from 'date-fns';
 import { toXML } from 'jstoxml';
 import { allTags, allPosts, allCategories } from 'contentlayer/generated';
-import type { Tag, Post, Category } from 'contentlayer/generated';
+import type { Tag, Category } from 'contentlayer/generated';
 import versionVault from 'versionVault/compiled';
 import type { FeaturedImageR1 } from '@/lib/image-process';
 import { APP_URL, BLOG_DESCR } from '@/lib/constants';
@@ -12,12 +12,11 @@ const xmlOpts = {
 };
 
 export function GET() {
-  const buildDate = new Date().toISOString();
   const NEXTJS_VERSION = versionVault.versions.dependencies.next;
-  const posts = allPosts.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date))) as unknown as
-    | Post[]
-    | undefined;
-
+  const posts = allPosts.sort((a, b) => compareDesc(new Date(a.updated ?? a.date), new Date(b.updated ?? b.date)));
+  const buildDate = new Date(
+    posts.length >= 1 && posts[0] !== undefined ? (posts[0].updated ?? posts[0]?.date) : '',
+  ).toISOString();
   /*
   const headersList = headers();
   const host = headersList.get('host');
@@ -49,7 +48,7 @@ export function GET() {
     return res;
   };
 
-  const postEntry = posts?.map((post) => {
+  const postEntry = posts.map((post) => {
     const cats =
       post.categories &&
       (
@@ -100,7 +99,7 @@ export function GET() {
         id: `${HOST_URL}${post.url}`,
       },
       {
-        updated: new Date(post.date.toString()).toISOString(),
+        updated: new Date(post.updated ?? post.date).toISOString(),
       },
       resCats,
       resTags,

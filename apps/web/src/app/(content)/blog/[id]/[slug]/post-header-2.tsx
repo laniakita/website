@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { type Post } from 'contentlayer/generated';
+import { allAuthors, type Post } from 'contentlayer/generated';
 import ShareButton from '@/components/share-btn';
 import type { FeaturedImageR1 } from '@/lib/image-process';
 import { CatTagRoller } from '../../cat-tag-roller';
@@ -7,9 +7,10 @@ import { HeroBlur2 } from './hero-blur-2';
 import PostDate from './post-date';
 
 export function PostHeader2(post: Post) {
+  const authorName = allAuthors.find((author) => author.url === `/authors/${post.author}`)?.name;
   return (
     <>
-      <div className='pt-common flex w-full flex-col items-center justify-center gap-2 px-10 pb-6 md:pb-10'>
+      <div className='pt-post-page flex w-full flex-col items-center justify-center gap-2 px-10 pb-6 md:pb-10'>
         <div className='w-full max-w-3xl font-mono'>
           <CatTagRoller postDate={post.date} cats={post.categories} tags={post.tags} />
         </div>
@@ -20,16 +21,23 @@ export function PostHeader2(post: Post) {
           {post.subheadline}
         </h2>
 
-        <div className='flex w-full max-w-3xl flex-wrap gap-2 font-mono'>
-          <p>
+        <div className='flex w-full max-w-3xl flex-wrap items-center gap-x-2 font-mono'>
+          <p className=''>
             <Link href='/about' className='font-semibold capitalize'>
-              {post.author}
+              {authorName ?? 'Lani'}
             </Link>
           </p>
-          <span>|</span>
-          <p>
-            <PostDate date={post.date} />
-          </p>
+          <span className=''>|</span>
+          {post.updated ? (
+            <p className='flex flex-wrap gap-x-2'>
+              <span className='font-semibold'>Updated:</span>
+              <PostDate date={post.updated} />
+            </p>
+          ) : (
+            <p>
+              <PostDate date={post.date} />
+            </p>
+          )}
         </div>
 
         <div className='flex w-full max-w-3xl items-center justify-start pt-3 md:pt-7'>
@@ -57,6 +65,7 @@ export function PostHeader2(post: Post) {
         <div className='flex size-full w-full items-center justify-center px-10'>
           <div className='mt-10 w-full max-w-3xl rounded bg-ctp-text py-px' />
         </div>
+
       </div>
     </>
   );
