@@ -3,22 +3,9 @@ import { SlidingWindowCounterRateLimiter } from './lib/rate-limiter';
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico, sitemap.xml, robots.txt (metadata files)
-     */
-    {
-      source:
-        '/((?!_next/static|_next/image|favicon.ico|icon1.svg|icon2.png|icon3.png|apple-icon1.png|apple-icon2.png|apple-icon3.png|sitemap.xml|robots.txt|manifest.json).*)',
-      missing: [
-        { type: 'header', key: 'next-router-prefetch' },
-        { type: 'header', key: 'purpose', value: 'prefetch' },
-      ],
-    },
+    '/opengraph/:path*',
   ],
-};
+}
 
 /*
  * The U.S. Department of State prohibits the export of
@@ -28,7 +15,7 @@ export const config = {
  * 1 - Countries Subject to Prohibition on Military Exports.
  * https://orpa.princeton.edu/export-controls/sanctioned-countries.
  */
-const ofacCountries = [
+export const ofacCountries = [
   'AF',
   'BY',
   'MM',
@@ -54,7 +41,8 @@ const ofacCountries = [
   'ZW',
 ];
 
-const limiter = new SlidingWindowCounterRateLimiter(150, 1000 * 60);
+
+const limiter = new SlidingWindowCounterRateLimiter(10, (1000*60));
 
 export default function middleware(request: NextRequest) {
   const visitorCountryCode = request.headers.get('CloudFront-Viewer-Country') ?? request.geo?.country;
@@ -63,12 +51,11 @@ export default function middleware(request: NextRequest) {
       return new Response('Resource is unavailable.', { status: 451 });
     }
   }
-
-  const ip = (request.ip ??
-    request.headers.get('CloudFront-Viewer-Address') ??
+  const ip = (request.headers.get('CloudFront-Viewer-Address') ??
+    request.ip ??
     request.headers.get('X-Forwarded-For'))!;
-  const fingerprint = request.headers.get('CloudFront-Viewer-JA3-Fingerprint');
 
+  const fingerprint = request.headers.get('CloudFront-Viewer-JA3-Fingerprint');
   const requester = fingerprint ?? ip;
 
   if (limiter.allowed(requester)) {

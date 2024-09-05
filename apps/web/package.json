@@ -32,7 +32,7 @@
     "@shikijs/rehype": "^1.15.1",
     "@shikijs/twoslash": "^1.15.1",
     "@tailwindcss/typography": "^0.5.15",
-    "@types/bun": "latest",
+    "@types/bun": "^1.1.8",
     "@types/eslint": "^8.56.12",
     "@types/jstoxml": "^2.0.4",
     "@types/node": "^20.16.2",

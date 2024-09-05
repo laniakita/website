@@ -4,6 +4,7 @@
     "@iconify-json/ant-design": "^1.1.17",
     "@iconify-json/fa6-brands": "^1.1.22",
     "@iconify-json/ph": "^1.1.14",
+    "@types/bun": "^1.1.8",
     "prettier": "^3.3.3",
     "sharp": "^0.33.5",
     "sst": "^3.0.83",
