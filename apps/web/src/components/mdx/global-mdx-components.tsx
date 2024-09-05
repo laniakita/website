@@ -11,3 +11,8 @@ export default function GlobalMDXComponent(data: Post | Page | Category | Tag) {
   const MDXContent = useMDXComponent(data.body.code);
   return <MDXContent code={data.body.code} components={globalMdxComponents} />;
 }
+
+export function GlobalTestMDXComponent(data: Post | Page | Category | Tag) {
+  const MDXContent = useMDXComponent(data.body.code);
+  return <MDXContent code={data.body.code} components={{p: Paragraph}} />;
+}
