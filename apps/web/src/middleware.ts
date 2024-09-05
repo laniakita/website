@@ -2,10 +2,8 @@ import { type NextRequest, NextResponse } from 'next/server';
 import { SlidingWindowCounterRateLimiter } from './lib/rate-limiter';
 
 export const config = {
-  matcher: [
-    '/opengraph/:path*',
-  ],
-}
+  matcher: ['/opengraph/:path*'],
+};
 
 /*
  * The U.S. Department of State prohibits the export of
@@ -41,8 +39,7 @@ export const ofacCountries = [
   'ZW',
 ];
 
-
-const limiter = new SlidingWindowCounterRateLimiter(10, (1000*60));
+const limiter = new SlidingWindowCounterRateLimiter(10, 1000 * 60);
 
 export default function middleware(request: NextRequest) {
   const visitorCountryCode = request.headers.get('CloudFront-Viewer-Country') ?? request.geo?.country;

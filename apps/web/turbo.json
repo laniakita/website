@@ -3,6 +3,7 @@
   "tasks": {
     "test": {},
     "build": {
+      "dependsOn": ["test"],
       "outputs": [
         ".next/**",
         "!.next/cache/**",
@@ -27,6 +28,7 @@
       "dependsOn": ["build"]
     },
     "build:open-next": {
+      "dependsOn": ["test"],
       "env": ["OPEN_NEXT_VERSION", "NEXT_PUBLIC_DEPLOYED_URL"],
       "outputs": [
         ".open-next/**",

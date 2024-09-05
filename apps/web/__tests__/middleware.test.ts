@@ -1,10 +1,10 @@
 import { NextRequest, type NextResponse } from 'next/server';
-import { describe, expect, test, mock, afterEach  } from 'bun:test';
+import { describe, expect, test, mock, afterEach } from 'bun:test';
 import middleware, { ofacCountries } from '@/middleware';
 
 afterEach(() => {
-  mockMiddleware.mockClear()
-})
+  mockMiddleware.mockClear();
+});
 
 const mockRequest = mock((x: URL | RequestInfo) => new NextRequest(x));
 const mockMiddleware = mock(middleware);
@@ -15,7 +15,6 @@ const allowedHeaders = new Headers({ 'CloudFront-Viewer-Country': 'US' });
 const allowedRequest = new Request(endpoint, { headers: allowedHeaders });
 
 describe('Geofencing on endpoints', () => {
-  
   test('Requests from OFAC sanctioned countries return Http status 451', () => {
     const unavailableRequests = ofacCountries.map((country) => {
       const prohibitedHeaders = new Headers({ 'CloudFront-Viewer-Country': country });
@@ -37,9 +36,7 @@ describe('Geofencing on endpoints', () => {
   test('Requests from non-OFAC sanctioned countries return Http status 200', () => {
     expect(mockMiddleware(mockRequest(allowedRequest)).status).toBe(200);
   });
-
 });
-
 
 describe('Endpoints are rate limited', () => {
   test('More than 10 Requests per minute return Http status 429', () => {
@@ -61,4 +58,3 @@ describe('Endpoints are rate limited', () => {
     });
   });
 });
-
