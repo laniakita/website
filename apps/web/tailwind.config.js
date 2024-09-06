@@ -93,6 +93,9 @@ module.exports = {
             'del code': {
               color: 'var(--tw-prose-del-code)',
             },
+            'del strong': {
+              color: 'var(--tw-prose-del-strong)',
+            },
           },
         },
         invert: {
@@ -100,12 +103,13 @@ module.exports = {
             '--tw-prose-del': 'var(--tw-prose-invert-del)',
             '--tw-prose-del-links': 'var(--tw-prose-invert-del-links)',
             '--tw-prose-del-code': 'var(--tw-prose-invert-del-code)',
+            '--tw-prose-del-strong': 'var(--tw-prose-invert-del-strong)',
           },
         },
         catppuccin: {
           css: {
-            '--tw-prose-del': theme('colors.ctp-surface1.DEFAULT'),
-            '--tw-prose-invert-del': theme('colors.ctp-surface0.DEFAULT'),
+            '--tw-prose-del': theme('colors.ctp-overlay0.DEFAULT'),
+            '--tw-prose-invert-del': theme('colors.ctp-overlay0.DEFAULT'),
             '--tw-prose-body': theme(`colors.ctp-text.DEFAULT`),
             '--tw-prose-headings': theme('colors.ctp-text.DEFAULT'),
             '--tw-prose-lead': theme('colors.ctp-text.DEFAULT'),
