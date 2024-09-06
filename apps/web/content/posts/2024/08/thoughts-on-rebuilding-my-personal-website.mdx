@@ -263,27 +263,6 @@ Then I just matched the `sharp` version on the layer, with the one in my `packag
 
 Minor gripe aside, I’m extremely grateful to the people who’ve created OpenNext, and all the wonderful people who continue to maintain it. While the little adapter might not give you the complete _Vercel experience_ 100% of the time (how could it? [Vercel uses their own proprietary infra](https://open-next.js.org/faq#will-my-nextjs-app-behave-the-same-as-it-does-on-vercel)) it’s pretty damn close, and that’s incredible. Overall, I’m quite satisfied using OpenNext, and I won’t hesitate to use it in deploying future Next.js projects.
 
-### Economics
-
-> **Updated: September 3rd, 2024**
-
-If the words _cloud console_ doesn’t scare you, but the words _cloud bill shock_ sends chills down your spine, then I’d say you’re the perfect dev/team to try out SST/Ion. Using SST to deploy your application to AWS is one of the most cost efficient deployment methods I can think of. Otherwise, your other alternatives are to:
-
-- Deploy Next.js as it's meant to, on [Vercel](https://vercel.com/home).
-- You can integrate it with your existing AWS infra using Vercel's [official integration](https://vercel.com/partners/aws).
-- You can deploy it in a traditional manner (EC2 instance/VPS) or as a docker/podman container.
-- You can containerize it, then put in a pod on a k8s cluster.
-- You can use [`@cloudflare/next-on-pages`](https://github.com/cloudflare/next-on-pages) to deploy your application to Cloudflare Pages via a Cloudflare Worker.
-- You can use [AWS Amplify](https://aws.amazon.com/amplify/) to deploy your Next.js application.
-
-In following the default [OpenNext architecture](https://open-next.js.org/inner_workings/architecture) recommendations, the various AWS services this site uses—primarily Lambda, S3, CloudFront—means the cost of it all is quite tiny. AWS has fairly generous free tier limits, and I’ll likely stay fairly well within them for this particular application (a portfolio/blog). This is helped enormously by serving the site via CloudFront’s CDN.
-
-CloudFront is a wonderfully affordable CDN that even provides free egress on origin fetch requests. For other resources, CloudFront’s caching mechanisms help to lower usage costs even further. This is primarily due to the fact that pages get cached into CloudFront on first visit. When successive traffic hits the same page, it _should_ hit CloudFront’s cache instead ([until it’s invalidated](https://open-next.js.org/inner_workings/caching)). In effect, this brings total bandwidth expenses down by a bit more, which is quite nice.
-
-The most expensive service by far is just S3. This is because OpenNext’s architecture requires a few speedy S3 buckets to store assets and various caches for Next.js to function properly.
-
-Of course, if you’ve configured other resources beyond the default, your costs will be quite different. However, the base config (to deploy Next.js) is more than affordable, and I appreciate it.
-
 ### SST Console
 
 In honesty, I feel deploying things the _hard way_ has meant forgoing some of the _luxuries_ offered by managed serverless-deployment services like Vercel. That’s why it’s really wonderful the SST team found a way to offer the most important _luxury_ of all, the console.
