@@ -17,15 +17,15 @@ await mock.module('next/image', () => ({
 
 describe('Header renders', () => {
   const posts = allPosts.sort((a, b) => compareDesc(new Date(a.updated ?? a.date), new Date(b.updated ?? b.date)));
-  const {rerender} = render(<PostHeader2 {...posts[0]!} />);
-  
+  const { rerender } = render(<PostHeader2 {...posts[0]!} />);
+
   for (const post of posts) {
     it(`headline === ${post.headline}`, () => {
-      rerender(<PostHeader2 {...post} />)
+      rerender(<PostHeader2 {...post} />);
       const heading = document.querySelector('h1');
-      expect(heading?.innerText).toEqual(post.headline)
+      expect(heading?.innerText).toEqual(post.headline);
     });
   }
   // @ts-expect-error -- errors cause img component
-  expect(console.error.mock.calls.length).toBeGreaterThan(0)
+  expect(console.error.mock.calls.length).toBeGreaterThan(0);
 });

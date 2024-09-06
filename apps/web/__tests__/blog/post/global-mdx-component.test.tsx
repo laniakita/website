@@ -10,14 +10,14 @@ console.error = jest.fn();
 
 describe('MDX renders', () => {
   const posts = allPosts.sort((a, b) => compareDesc(new Date(a.updated ?? a.date), new Date(b.updated ?? b.date)));
-  const {rerender} = render(<GlobalTestMDXComponent {...posts[0]!} />);
-  
+  const { rerender } = render(<GlobalTestMDXComponent {...posts[0]!} />);
+
   for (const post of posts) {
     it(`GlobalTestMDXComponent renders first paragraph`, () => {
-      rerender(<GlobalTestMDXComponent {...post} />)
-      const descr = descriptionHelper(post.body.raw, '', true)
-      const findDesc = screen.getByText(descr!)
-      expect(findDesc.innerText).toEqual(descr!)
+      rerender(<GlobalTestMDXComponent {...post} />);
+      const descr = descriptionHelper(post.body.raw, '', true);
+      const findDesc = screen.getByText(descr!);
+      expect(findDesc.innerText).toEqual(descr!);
     });
   }
 });
