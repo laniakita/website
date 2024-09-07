@@ -1,4 +1,5 @@
-// originally from: https://blog.burakcankus.com/2024/03/31/disable-aws-cloudfront-distributions-if-budget-is-exceeded.html#1 I've made some slight edits.
+// originally from: https://blog.burakcankus.com/2024/03/31/disable-aws-cloudfront-distributions-if-budget-is-exceeded.html 
+// I've made some slight edits for typescript.
 import { CloudFrontClient, ListDistributionsCommand } from "@aws-sdk/client-cloudfront";
 import { CloudWatchClient, GetMetricDataCommand, MetricDataQuery } from "@aws-sdk/client-cloudwatch";
 import { SNSClient, PublishCommand } from "@aws-sdk/client-sns";
