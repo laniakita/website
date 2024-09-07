@@ -10,7 +10,7 @@ export default function BlogImageBlur({ src, alt, blur, height, width }: BlurCli
       {(beeg as unknown) === true && (
         <button
           type='button'
-          className='fixed inset-x-0 top-0 z-[2] m-0 flex size-full h-screen cursor-zoom-out items-center justify-center  bg-ctp-midnight/20 p-0 backdrop-blur-md md:px-10'
+          className='fixed inset-x-0 top-0 z-[2] m-0 flex size-full h-screen cursor-zoom-out items-center justify-center bg-ctp-midnight/20 p-0 backdrop-blur-md md:px-10'
           onClick={() => {
             setBeeg(false);
           }}

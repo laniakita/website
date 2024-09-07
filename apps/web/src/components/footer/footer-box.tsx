@@ -20,7 +20,7 @@ export function FooterBox(Props: FooterBoxProps) {
   return (
     <div className={`${extraClass} size-min`}>
       <div className='flex break-inside-avoid flex-col'>
-        <h2 className='pb-2 font-mono font-extrabold lowercase '>{title}</h2>
+        <h2 className='pb-2 font-mono font-extrabold lowercase'>{title}</h2>
         <div className='flex flex-col space-y-2 text-2xl'>
           {navItems.map((item) =>
             item === 'login' || item === 'subscribe' ? (
@@ -73,7 +73,7 @@ export function FooterBoxSpecial(Props: FooterBoxSpecialProps) {
   return (
     <div className={extraClass}>
       <div className='flex break-inside-avoid flex-col'>
-        <h3 className='pb-2 font-mono font-extrabold lowercase '>{title}</h3>
+        <h3 className='pb-2 font-mono font-extrabold lowercase'>{title}</h3>
         <div className='flex flex-col space-y-2'>
           {navItems.map((item) => (
             <Link

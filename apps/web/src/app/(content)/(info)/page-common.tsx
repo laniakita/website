@@ -24,7 +24,7 @@ function Inside(data: Page) {
         </div>
       </div>
 
-      <main className='simple-color-trans  py-common-info-page  bg-ctp-base dark:bg-ctp-midnight'>
+      <main className='simple-color-trans py-common-info-page bg-ctp-base dark:bg-ctp-midnight'>
         <article id='content' className='flex size-full flex-col items-center justify-center'>
           <div className='padding-post flex min-h-full items-center justify-center'>
             <div className='prose-protocol-omega max-w-3xl px-0'>

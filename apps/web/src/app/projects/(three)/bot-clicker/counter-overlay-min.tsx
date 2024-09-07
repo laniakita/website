@@ -26,7 +26,7 @@ export default function CounterOverlayMin({ model }: { model: string }) {
       <Suspense>
         {searchParams.get('play') === 'true' && (
           <>
-            <div className='ctp-mocha pointer-events-none absolute bottom-4 right-4 z-[2] flex w-fit touch-none flex-col items-end gap-2 -space-y-4 text-right  text-ctp-text lg:bottom-10  lg:right-10'>
+            <div className='ctp-mocha pointer-events-none absolute bottom-4 right-4 z-[2] flex w-fit touch-none flex-col items-end gap-2 -space-y-4 text-right text-ctp-text lg:bottom-10 lg:right-10'>
               <p className='text-xl font-black uppercase'>{`${model} Clicker Counter`}</p>
               <p className='text-3xl font-black text-ctp-mauve'>{String(clickNum).padStart(11, '0')}</p>
             </div>
@@ -70,7 +70,7 @@ export default function CounterOverlayMin({ model }: { model: string }) {
                         setIsPlayWarn(false);
                       }}
                       type='button'
-                      className='w-full rounded-full border  border-ctp-surface0 bg-ctp-red/80 py-2 hover:bg-ctp-red'
+                      className='w-full rounded-full border border-ctp-surface0 bg-ctp-red/80 py-2 hover:bg-ctp-red'
                     >
                       Cancel
                     </button>
@@ -79,7 +79,7 @@ export default function CounterOverlayMin({ model }: { model: string }) {
               </div>
             )}
 
-            <div className='ctp-mocha absolute bottom-4 right-4 z-[2] flex flex-col items-end gap-4 text-ctp-text lg:bottom-10 lg:right-10 '>
+            <div className='ctp-mocha absolute bottom-4 right-4 z-[2] flex flex-col items-end gap-4 text-ctp-text lg:bottom-10 lg:right-10'>
               <button
                 onClick={() => {
                   setIsPlayWarn(true);

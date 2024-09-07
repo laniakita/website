@@ -68,7 +68,7 @@
     "analyze": "ANALYZE=true bun run build",
     "build": "next build",
     "copy-sharp": "bun run copy-sharp.ts",
-    "build:open-next": "SHARP_VERSION=0.33.5 bunx open-next@3.1.1 build",
+    "build:open-next": "SHARP_VERSION=0.33.5 bunx open-next@3.1.2 build",
     "dev": "next dev",
     "lint": "eslint . --cache --fix",
     "prebuild": "NODE_ENV=production contentlayer2 build && bun run ./src/scripts/runner.ts",

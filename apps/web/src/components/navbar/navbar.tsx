@@ -87,7 +87,7 @@ export default function NavBar() {
       </Suspense>
 
       <div
-        className={`motion-safe:simple-color-trans fixed inset-x-0 top-0 z-50 flex h-16 w-full items-center justify-between border-b border-ctp-base px-6 text-xl shadow-lg backdrop-blur-md [transition:_opacity_0.8s] dark:border-ctp-surface0 ${clicked.stateVal === 'open' ? 'bg-ctp-base/90 dark:bg-ctp-midnight/80' : ' bg-ctp-base/80 dark:bg-ctp-midnight/70'}`}
+        className={`motion-safe:simple-color-trans fixed inset-x-0 top-0 z-50 flex h-16 w-full items-center justify-between border-b border-ctp-base px-6 text-xl shadow-lg backdrop-blur-md [transition:_opacity_0.8s] dark:border-ctp-surface0 ${clicked.stateVal === 'open' ? 'bg-ctp-base/90 dark:bg-ctp-midnight/80' : 'bg-ctp-base/80 dark:bg-ctp-midnight/70'}`}
       >
         <div className='flex flex-row-reverse items-center justify-center gap-1 lg:flex-row'>
           <LinkPlus href='/' className='nav-logo relative flex size-full w-16 items-center justify-center'>
@@ -97,7 +97,7 @@ export default function NavBar() {
               className='absolute mb-px h-11 object-contain'
             />
           </LinkPlus>
-          <div className={`hidden lg:flex  lg:flex-row  lg:items-center lg:justify-center lg:gap-4 `}>
+          <div className="hidden lg:flex lg:flex-row lg:items-center lg:justify-center lg:gap-4">
             {pagesArr.map((page) => (
               <LinkPlus
                 key={page}
@@ -122,7 +122,7 @@ export default function NavBar() {
             >
               <span className='flex size-fit flex-col items-center justify-center gap-1'>
                 <span
-                  className={`${clicked.stateVal === 'open' ? 'translate-y-1 rotate-[-40deg] ' : ''} h-0.5 w-6  bg-ctp-text motion-safe:[transition:transform_0.3s]`}
+                  className={`${clicked.stateVal === 'open' ? 'translate-y-1 rotate-[-40deg]' : ''} h-0.5 w-6 bg-ctp-text motion-safe:[transition:transform_0.3s]`}
                 />
                 <span
                   className={`${clicked.stateVal === 'open' ? 'opacity-0' : ''} h-0.5 w-6 bg-ctp-text motion-safe:[transition:opacity_0.3s]`}
@@ -135,7 +135,7 @@ export default function NavBar() {
           </div>
         </div>
 
-        <div className={`flex  flex-row  items-center justify-center gap-2 `}>
+        <div className="flex flex-row items-center justify-center gap-2">
           <DarkModeSwitch />
           <SimpleSocials arr={socialItems3} />
         </div>

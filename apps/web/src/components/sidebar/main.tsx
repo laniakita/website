@@ -84,7 +84,7 @@ export default function Sidebar() {
 
 export function SubscribeBox({ mobile }: { mobile?: boolean }) {
   return (
-    <div className={`sidebar-box  ${mobile ? 'flex md:hidden' : 'hidden md:flex'}  flex-col gap-4 p-6`}>
+    <div className={`sidebar-box ${mobile ? 'flex md:hidden' : 'hidden md:flex'} flex-col gap-4 p-6`}>
       <h4 className='flex-wrap text-balance text-3xl font-black'>Articles delivered right to your feed reader.</h4>
       <Link
         target='_blank'
