@@ -45,7 +45,7 @@ export default function InfoBox({
                 onClick={() => {
                   setIsActiveTab('info');
                 }}
-                className={`tab-btn relative  ${isActiveTab === 'info' ? 'tab-btn-active' : ''}`}
+                className={`tab-btn relative ${isActiveTab === 'info' ? 'tab-btn-active' : ''}`}
               >
                 <TabInner title='info' icon='icon-[ph--info]' active={isActiveTab === 'info'} />
               </button>
@@ -87,7 +87,7 @@ function SmoothTab({ active }: { active: boolean }) {
         className={`${active ? 'block' : 'hidden'} absolute -left-4 bottom-0 size-4 [background:radial-gradient(circle_at_25%_25%,_#acb0be,_#acb0be_72%,_#dce0e8_5%,_#dce0e8_100%)] dark:[background:radial-gradient(circle_at_25%_25%,_#11111b,_#11111b_72%,_#1e1e2e_5%,_#1e1e2e_100%)]`}
       />
       <span
-        className={`${active ? 'block' : 'hidden'} absolute -right-4 bottom-0 size-4 [background:radial-gradient(circle_at_75%_25%,_#acb0be,_#acb0be_72%,_#dce0e8_5%,_#dce0e8_100%)]  dark:[background:radial-gradient(circle_at_75%_25%,_#11111b,_#11111b_72%,_#1e1e2e_5%,_#1e1e2e_100%)]`}
+        className={`${active ? 'block' : 'hidden'} absolute -right-4 bottom-0 size-4 [background:radial-gradient(circle_at_75%_25%,_#acb0be,_#acb0be_72%,_#dce0e8_5%,_#dce0e8_100%)] dark:[background:radial-gradient(circle_at_75%_25%,_#11111b,_#11111b_72%,_#1e1e2e_5%,_#1e1e2e_100%)]`}
       />
     </>
   );

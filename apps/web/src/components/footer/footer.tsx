@@ -41,12 +41,12 @@ export default function Footer({ extra }: { extra?: string }) {
   return (
     <footer className={`${pathname === '/' ? 'hidden' : 'block'} relative w-full`}>
       <div
-        className={`simple-color-trans relative flex w-full flex-col items-center justify-center overflow-hidden  bg-ctp-base dark:bg-ctp-midnight ${extra}`}
+        className={`simple-color-trans relative flex w-full flex-col items-center justify-center overflow-hidden bg-ctp-base dark:bg-ctp-midnight ${extra}`}
       >
         {/* contents container that givs the blurry bg + the pattern */}
-        <div className='flex  size-full  flex-col  backdrop-blur-2xl'>
+        <div className='flex size-full flex-col backdrop-blur-2xl'>
           {/* <FooterSubscribe /> */}
-          <div className='flex flex-col items-center  justify-center gap-4  pb-16 md:pb-36 md:pt-20 lg:pb-40 lg:pt-20'>
+          <div className='flex flex-col items-center justify-center gap-4 pb-16 md:pb-36 md:pt-20 lg:pb-40 lg:pt-20'>
             {/* content container */}
             <div className='w-full space-y-8 p-10 md:w-fit md:rounded-md md:border md:border-ctp-surface0 dark:md:border-ctp-base'>
               {/* logo + search + social_buttons + +copyright + links */}

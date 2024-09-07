@@ -41,7 +41,7 @@ export default function BotClickerScene({ isEmbed }: { isEmbed?: boolean }) {
   return (
     <div
       ref={ref}
-      className={` relative flex size-full min-h-[34rem] items-center justify-center  overflow-hidden ${isEmbed ? 'max-h-96 max-w-7xl' : '[height:_100dvh] lg:max-h-screen '}`}
+      className={`relative flex size-full min-h-[34rem] items-center justify-center overflow-hidden ${isEmbed ? 'max-h-96 max-w-7xl' : '[height:_100dvh] lg:max-h-screen'}`}
     >
       <CounterOverlayMin model='Bot' />
       {/* <SceneOverlayV3 viewMobile={viewMobile} viewTablet={viewTablet} />

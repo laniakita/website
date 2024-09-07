@@ -105,7 +105,7 @@ export default function Home() {
       </div>
       <div className='z-10 flex size-full flex-col items-center justify-end'>
         <div className='simple-color-trans flex w-full flex-col items-center justify-center gap-6 border-t border-ctp-surface0 bg-ctp-base/80 p-10 backdrop-blur-md md:items-start dark:bg-ctp-midnight/80'>
-          <div className='simple-color-trans flex  flex-col items-center justify-center whitespace-nowrap rounded-md md:w-fit md:justify-start'>
+          <div className='simple-color-trans flex flex-col items-center justify-center whitespace-nowrap rounded-md md:w-fit md:justify-start'>
             <div className='w-fit'>
               <h1 className='text-4xl font-black uppercase md:text-6xl'>Lani Akita</h1>
               <h2 className='text-[1.09rem] font-semibold uppercase leading-none md:text-[1.82rem]'>
@@ -115,7 +115,7 @@ export default function Home() {
           </div>
 
           <div className='simple-color-trans flex w-full items-center justify-between gap-4 rounded-md border border-ctp-pink bg-ctp-base/70 p-4 shadow-2xl backdrop-blur-md md:flex-row md:bg-ctp-base/60 md:p-2 dark:border-ctp-sapphire/40 dark:bg-ctp-midnight/70'>
-            <div className='flex w-full flex-col md:flex-row  md:justify-between'>
+            <div className='flex w-full flex-col md:flex-row md:justify-between'>
               <div className='flex w-full flex-col flex-wrap items-center gap-2 md:w-fit md:flex-row'>
                 <Link href='/about' className='home-btn-2'>
                   <p className=''>About Me</p>
