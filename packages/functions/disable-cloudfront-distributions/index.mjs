@@ -1,3 +1,5 @@
+// sourced from: https://blog.burakcankus.com/2024/03/31/disable-aws-cloudfront-distributions-if-budget-is-exceeded.html
+
 import { CloudFrontClient, GetDistributionConfigCommand, ListDistributionsCommand, UpdateDistributionCommand } from "@aws-sdk/client-cloudfront";
 
 const cloudFrontClient = new CloudFrontClient();
