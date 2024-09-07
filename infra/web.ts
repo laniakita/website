@@ -1,6 +1,5 @@
 export const web = new sst.aws.Nextjs("Web", {
   path: "apps/web",
-  openNextVersion: "3.1.2",
   buildCommand: "turbo copy-sharp",
   environment: {
     NEXT_PUBLIC_DEPLOYED_URL:
