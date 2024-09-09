@@ -80,7 +80,7 @@ Likewise, it also meant learning a subfield of programming that I was once wholl
 
 I also wrote a ~~prebuild~~ [route handler](https://nextjs.org/docs/app/building-your-application/routing/route-handlers) for the [blog’s web feed](/atom.xml). ~~That one~~ It fetches the blog posts from `contentlayer`, and integrates them into a purpose built object which is turned into an XML string with [`jstoxml`](https://github.com/davidcalhoun/jstoxml). While I’d like to talk about this data layer portion further, it is, admittedly, a bit extensive. So, you’ll have to wait to read about in a later blog post.
 
-Beyond that, I’m overall really happy with how everything turned out. While Next.js and Ion/SST aren’t without their flaws—something not too unexpected of bleeding-edge tools—the pairing still came together quite nicely (in tandem with everything else) to create something I’m quite proud of. Even if there’s still bugs (read: mistakes) I’d like to fix in the [codebase](https://github.com/laniakita/website/tree/master/apps/laniakita-web), the end result works like it should for the most part. Page load times are quite fast. Its Lighthouse scores are decent enough (admittedly, I’m sure there’s still more I could do to improve accessibility). There’s all plenty of room for me to grow and build on top of it. As such, I don’t regret developing this site with Next.js or shipping it with Ion/SST at all!
+Beyond that, I’m overall really happy with how everything turned out. While Next.js and Ion/SST aren’t without their flaws—something not too unexpected of bleeding-edge tools—the pairing still came together quite nicely (in tandem with everything else) to create something I’m quite proud of. Even if there’s still bugs (read: mistakes) I’d like to fix in the [codebase](https://github.com/laniakita/website/tree/master/apps/laniakita-web), the end result works like it should for the most part. Page load times are quite fast. Its Lighthouse scores are decent enough (admittedly, I’m sure there’s still more I could do to improve accessibility). There’s still plenty of room for me to grow and build on top of it. As such, I don’t regret developing this site with Next.js or shipping it with Ion/SST at all!
 
 ## What I Like About Next.js
 
@@ -124,7 +124,7 @@ Overall, I'm quite satisfied in my decision to use the App router as my page rou
 >
 > This was quite a feat. It even led to me writing my own custom `middleware.ts` file. So, I'll try to write a blog post for this later.
 
-If Next.js being the premier framework for React, and React being the open-source JS library developed and maintained by Meta for use in Facebook and Instagram. Then, is Next.js great at creating/handling metadata? Yes, yes it is.
+With Meta having developed and maintained React, and React having not-so-subtly championed Next.js as the premier framework for React (at least for the bleeding edge branch), then, you might deduce that Next.js would be great at generating and working with metadata. But is that true? Yes, yes it is.
 
 To demonstrate, there’s quite a lot of [metadata APIs](https://nextjs.org/docs/app/building-your-application/optimizing/metadata) included in Next.js by default. To give you an idea of how much, I put together the following list. It's an overview of the metadata APIs I’m currently using for this site.
 
