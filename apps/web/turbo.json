@@ -12,7 +12,7 @@
         ".contentlayer",
         ".contentlayermini"
       ],
-      "inputs": ["$TURBO_DEFAULT$", ".env", ".env.local", ".env.development", ".env.production"]
+      "inputs": ["$TURBO_DEFAULT$", ".env", ".env.local", ".env.development", ".env.production", "content/**"]
     },
     "analyze": {
       "env": ["ANALYZE"],
@@ -24,7 +24,7 @@
         ".contentlayer",
         ".contentlayermini"
       ],
-      "inputs": ["$TURBO_DEFAULT$", ".env", ".env.local", ".env.development", ".env.production"],
+      "inputs": ["$TURBO_DEFAULT$", ".env", ".env.local", ".env.development", ".env.production", "content/**"],
       "dependsOn": ["build"]
     },
     "build:open-next": {
@@ -38,10 +38,10 @@
         ".contentlayer",
         ".contentlayermini"
       ],
-      "inputs": ["$TURBO_DEFAULT$", ".env", ".env.local", ".env.development", ".env.production"]
+      "inputs": ["$TURBO_DEFAULT$", ".env", ".env.local", ".env.development", ".env.production", "content/**"]
     },
     "copy-sharp": {
-      "inputs": ["$TURBO_DEFAULT$", ".env", ".env.local", ".env.development", ".env.production", ".open-next/**"],
+      "inputs": ["$TURBO_DEFAULT$", ".env", ".env.local", ".env.development", ".env.production", ".open-next/**", "content/**"],
       "outputs": [".open-next/server-functions/default/**"],
       "dependsOn": ["build:open-next"]
     },
