@@ -1,8 +1,8 @@
 import { compareDesc } from 'date-fns';
 import { toXML } from 'jstoxml';
+import versionVault from 'versionVault/compiled';
 import { allTags, allPosts, allCategories } from 'contentlayer/generated';
 import type { Tag, Category } from 'contentlayer/generated';
-import versionVault from 'versionVault/compiled';
 import type { FeaturedImageR1 } from '@/lib/image-process';
 import { APP_URL, BLOG_DESCR } from '@/lib/constants';
 // opts
