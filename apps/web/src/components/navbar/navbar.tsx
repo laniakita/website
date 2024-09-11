@@ -97,7 +97,7 @@ export default function NavBar() {
               className='absolute mb-px h-11 object-contain'
             />
           </LinkPlus>
-          <div className="hidden lg:flex lg:flex-row lg:items-center lg:justify-center lg:gap-4">
+          <div className='hidden lg:flex lg:flex-row lg:items-center lg:justify-center lg:gap-4'>
             {pagesArr.map((page) => (
               <LinkPlus
                 key={page}
@@ -135,7 +135,7 @@ export default function NavBar() {
           </div>
         </div>
 
-        <div className="flex flex-row items-center justify-center gap-2">
+        <div className='flex flex-row items-center justify-center gap-2'>
           <DarkModeSwitch />
           <SimpleSocials arr={socialItems3} />
         </div>
