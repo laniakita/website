@@ -34,7 +34,6 @@ export const socialItems = [
     linkName: 'LinkedIn!',
     textSize: 'text-4xl',
   },
-
   {
     title: 'Instagram',
     url: 'https://instagram.com/laniakita',
@@ -42,7 +41,6 @@ export const socialItems = [
     linkName: 'Instagram!',
     textSize: 'text-5xl',
   },
-
   {
     title: 'Atom/RSS',
     url: '/atom.xml',
