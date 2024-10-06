@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import LinkPlus from '@/components/navbar/link-plus';
+import { RESUME_LINK } from '@/lib/constants';
 
 interface FooterBoxProps {
   title?: string;
@@ -14,6 +15,8 @@ export function FooterBox(Props: FooterBoxProps) {
       return '/';
     } else if (pageStr.toLowerCase() === 'rss/atom') {
       return '/feed.xml';
+    } else if (pageStr.toLowerCase() === 'résumé') {
+      return RESUME_LINK;
     }
     return `/${pageStr.toLowerCase()}`;
   }
