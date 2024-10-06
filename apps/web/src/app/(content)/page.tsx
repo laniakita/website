@@ -114,7 +114,7 @@ export default function Home() {
           </div>
 
           <div className='simple-color-trans flex w-full items-center justify-between gap-4 rounded-md border border-ctp-pink bg-ctp-base/70 p-4 shadow-2xl backdrop-blur-md md:flex-row md:bg-ctp-base/60 md:p-2 dark:border-ctp-sapphire/40 dark:bg-ctp-midnight/70'>
-            <div className='flex w-full flex-col  md:flex-row md:justify-between '>
+            <div className='flex w-full flex-col md:flex-row md:justify-between'>
               <div className='flex w-full flex-col flex-wrap items-center gap-2 md:w-fit md:max-w-[30rem] md:flex-row lg:max-w-full'>
                 <Link href='/about' className='home-btn-2'>
                   <p className=''>About Me</p>

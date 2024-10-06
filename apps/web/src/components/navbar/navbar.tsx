@@ -51,7 +51,7 @@ export default function NavBar() {
       return '/atom.xml';
     } else if (pageStr.toLowerCase() === 'résumé') {
       return RESUME_LINK;
-    };
+    }
     return `/${pageStr.toLowerCase()}`;
   }
 
