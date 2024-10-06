@@ -28,6 +28,22 @@ export const socialItems = [
     textSize: 'text-4xl',
   },
   {
+    title: 'LinkedIn',
+    url: 'www.linkedin.com/in/laniakita',
+    iconName: 'icon-[fa6-brands--linkedin]',
+    linkName: 'LinkedIn!',
+    textSize: 'text-4xl',
+  },
+
+  {
+    title: 'Instagram',
+    url: 'https://instagram.com/laniakita',
+    iconName: 'icon-[fa6-brands--instagram]',
+    linkName: 'Instagram!',
+    textSize: 'text-5xl',
+  },
+
+  {
     title: 'Atom/RSS',
     url: '/atom.xml',
     iconName: 'icon-[ph--rss-bold]',
@@ -51,9 +67,6 @@ export default function Footer({ extra }: { extra?: string }) {
             <div className='w-full space-y-8 p-10 md:w-fit md:rounded-md md:border md:border-ctp-surface0 dark:md:border-ctp-base'>
               {/* logo + search + social_buttons + +copyright + links */}
               <div className='flex w-full flex-col items-center justify-center gap-2 md:gap-10'>
-                {/* <div className='size-full max-w-52 narrow-phone:max-w-xs small-phone:max-w-sm phablet:px-0 beeg-phablet:px-2 fold:px-6 md:max-w-md md:px-0'>
-                  <SocialIconNav2 boxItems={socialItems2} />
-                </div> */}
                 <div className='w-full px-4 md:px-0'>
                   <SocialIconNav2 boxItems={socialItems2} />
                 </div>
@@ -72,22 +85,10 @@ function FooterNavLinks() {
   return (
     <div className='grid w-full grid-cols-1 gap-4 p-4 narrow-phone:grid-cols-2 md:p-0'>
       <FooterBox title='navigation' navItems={data.navigationItems} />
-      <FooterBoxSpecial title='socials' navItems={socialItems} />
+      <FooterBoxSpecial title='socials' navItems={socialItems2} />
     </div>
   );
 }
-
-/*
-function FooterSearchButton() {
-  return (
-    <div className="search-button">
-      <div className="flex flex-row items-center justify-center gap-4">
-        <span className="icon-[ph--magnifying-glass-bold] text-2xl" />
-        <p className="text-xl">Search</p>
-      </div>
-    </div>
-  );
-}*/
 
 function CopyrightTag() {
   const getDate = new Date();

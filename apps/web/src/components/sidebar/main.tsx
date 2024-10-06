@@ -4,10 +4,10 @@ import InfoBox from './info-box';
 
 export const socialItems3 = [
   {
-    title: 'Mastodon',
-    url: 'https://hachyderm.io/@lani',
-    iconName: 'icon-[fa6-brands--mastodon]',
-    linkName: 'Mastodon!',
+    title: 'Linkedin',
+    url: 'https://linkedin.com/in/laniakita',
+    iconName: 'icon-[fa6-brands--linkedin]',
+    linkName: 'Linkedin!',
     textSize: 'text-3xl md:text-4xl',
   },
   {
@@ -27,14 +27,13 @@ export const socialItems2 = [
     linkName: 'Github!',
     textSize: 'text-3xl md:text-4xl',
   },
-  /*
   {
     title: 'Linkedin',
-    url: 'https://linkedin.com',
-    iconName: 'icon-[fa6-brands--linkedin-in]',
+    url: 'https://linkedin.com/in/laniakita',
+    iconName: 'icon-[fa6-brands--linkedin]',
     linkName: 'Linkedin!',
     textSize: 'text-3xl md:text-4xl',
-  },*/
+  },
   {
     title: 'Mastodon',
     url: 'https://hachyderm.io/@lani',
@@ -42,14 +41,13 @@ export const socialItems2 = [
     linkName: 'Mastodon!',
     textSize: 'text-3xl md:text-4xl',
   },
-  /*
   {
     title: 'Instagram',
-    url: 'https://instagram.com',
+    url: 'https://instagram.com/laniakita',
     iconName: 'icon-[fa6-brands--instagram]',
     linkName: 'Instagram!',
     textSize: 'text-3xl md:text-4xl',
-  },*/
+  },
   {
     title: 'Patreon',
     url: 'https://patreon.com/Lani_Akita',
