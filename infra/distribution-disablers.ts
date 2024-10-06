@@ -5,14 +5,14 @@
  * the distributions ASAP, these methods can be
  * referred to as "kill switches".
  *
- * The first "kill switch" is activated when a
- * Budget reaches a "hard" threshold, which will
+ * The first kill switch is activated when a
+ * Budget reaches a hard threshold, which will
  * send a notification to an SNS Topic, that
  * will invoke a Lambda function that can
  * actually bring down, and or disable, active
  * CloudFront distributions.
  *
- * The second "kill switch" is designed to avoid
+ * The second kill switch is designed to avoid
  * the caveat of the first, which is the fact
  * that the AWS Budget metric is only updated
  * three times per day. This second switch,
@@ -23,7 +23,7 @@
  * once the usage metrics are beyond the defined
  * usage limits.
  *
- * These CloudFront Distribution "kill switch"
+ * These CloudFront Distribution kill switch
  * methods are implementations of the ones
  * demonstrated by Burak Can Kus^1, in SST/Pulumi.
  * The Lambda function handlers are also heavily
