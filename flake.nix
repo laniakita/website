@@ -13,6 +13,7 @@
   in {
     devShells = forAllSystems ({pkgs, lib, ...}: {
       default = pkgs.mkShell {
+        
         NIX_LD_LIBRARY_PATH = lib.makeLibraryPath [
           pkgs.stdenv.cc.cc
           pkgs.openssl
@@ -37,6 +38,9 @@
           wrangler
         ];
         shellHook = ''
+          export LD_LIBRARY_PATH=${pkgs.lib.makeLibraryPath [
+            pkgs.stdenv.cc.cc
+          ]}
           exec zsh
         '';
       };
