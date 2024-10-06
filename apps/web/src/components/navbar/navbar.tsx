@@ -9,6 +9,7 @@ import { type SocialNavIcon } from '../social-icon';
 import { socialItems3 } from '../sidebar/main';
 import DarkModeSwitch from './dark-mode-switch';
 import LinkPlus from './link-plus';
+import { RESUME_LINK } from '@/lib/constants';
 
 interface Clicked {
   stateVal: string;
@@ -16,8 +17,8 @@ interface Clicked {
 
 export default function NavBar() {
   const { dark } = useDarkStore((state) => state);
-  const pagesArr = ['Blog', 'About', 'Projects', 'Atom/RSS', 'Contact'];
-  const pagesArrMobile = ['Blog', 'About', 'Projects', 'Atom/RSS', 'Contact'];
+  const pagesArr = ['Blog', 'About', 'Projects', 'Atom/RSS', 'Résumé', 'Contact'];
+  const pagesArrMobile = ['Blog', 'About', 'Projects', 'Résumé', 'Atom/RSS', 'Contact'];
   const [clicked, setClicked] = useState<Clicked>({
     stateVal: 'closed',
   });
@@ -48,7 +49,9 @@ export default function NavBar() {
       return '/';
     } else if (pageStr.toLowerCase() === 'atom/rss') {
       return '/atom.xml';
-    }
+    } else if (pageStr.toLowerCase() === 'résumé') {
+      return RESUME_LINK;
+    };
     return `/${pageStr.toLowerCase()}`;
   }
 
@@ -154,7 +157,7 @@ function SimpleSocials({ arr }: { arr: SocialNavIcon[] }) {
             target='_blank'
             aria-label={`Follow Lani on ${icon.linkName}`}
             href={icon.url}
-            className='flex items-center justify-center text-3xl text-ctp-subtext1/80 dark:hover:text-ctp-sky'
+            className='flex items-center justify-center text-3xl text-ctp-subtext1/80 dark:hover:text-ctp-pink'
           >
             <span className={`${icon.iconName} text-3xl`} />
           </Link>

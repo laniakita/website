@@ -4,10 +4,10 @@ import InfoBox from './info-box';
 
 export const socialItems3 = [
   {
-    title: 'Linkedin',
-    url: 'https://linkedin.com/in/laniakita',
-    iconName: 'icon-[fa6-brands--linkedin]',
-    linkName: 'Linkedin!',
+    title: 'Mastodon',
+    url: 'https://hachyderm.io/@lani',
+    iconName: 'icon-[fa6-brands--mastodon]',
+    linkName: 'Mastodon!',
     textSize: 'text-3xl md:text-4xl',
   },
   {
