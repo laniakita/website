@@ -15,43 +15,43 @@
 
 This wasn't the series of posts I planned to write. Initially, I thought this series was going to be dedicated exclusively to my bespoke content management system. Where, I thought I’d wax poetic for a while about how *sometimes the best solutions, are tailor made.* However, I’ve since come back to my senses to realize that ***the best solution is the one with the smallest number of compromises***, sources be damned.
 
-So, that’s where `contentlayer2`[^1] (maintained fork of `contentlayer`) came in to the equation. it's a library I stumbled upon that did exactly what I’d come up with, but in a better, more robust, and much more practical manner. In short, it's *beautiful*. 
+So, that’s where `contentlayer2`[^1] (maintained fork of `contentlayer`) came in to the equation. it's a library I stumbled upon that did exactly what I’d come up with, but in a better, more robust, and much more practical manner. In short, it's *beautiful*.
 
 In honesty, I was awestruck by contentlayer’s pitch video[^2]. Especially so, because I’d just gone through the whole process of pouring blood, sweat, and tears into my own content management system for this site. It really wasn't long after that, that I swapped my whole custom solution out for it.
 
-But, swallowed pride aside, creating my own content backend was quite a learning experience for me, so I wanted to talk about it. As such, I present to you *Part 01* of my technical summary on my custom solution. 
+But, swallowed pride aside, creating my own content backend was quite a learning experience for me, so I wanted to talk about it. As such, I present to you *Part 01* of my technical summary on my custom solution.
 
 ### Contents
- 
+
 - [Introduction](#introduction)
 - [Setup](#setup)
-	- [Drizzle + Turso](#drizzle--turso)
-	- [Schemas](#schemas)
-	- [Database Config](#database-config)
+ 	- [Drizzle + Turso](#drizzle--turso)
+ 	- [Schemas](#schemas)
+ 	- [Database Config](#database-config)
 - [Overview of my CMS](#overview-of-my-cms)
-	- [Scanning](#scanning)
-	- [Processing](#processing)
-	- [Storing Data](#storing-data)
-	- [Fetching Data](#fetching-data)
-	- [Rendering Data](#rendering-data)
+ 	- [Scanning](#scanning)
+ 	- [Processing](#processing)
+ 	- [Storing Data](#storing-data)
+ 	- [Fetching Data](#fetching-data)
+ 	- [Rendering Data](#rendering-data)
 - [Up Next: Scanning the Posts](#up-next-scanning-the-posts)
 - [Extra Thoughts](#extra-thoughts)
 
 ### Introduction
 
-I started my life in web working with traditional CMSes like WordPress[^3] and then briefly, Ghost[^4]. Later, I took the JAMstack[^5] hype train as far as it could go, fetching data from headless CMSes[^6] like Strapi[^7] and Contentful[^8], and integrating it into Gatsby[^9] frontends. Then, sometime before building this site, I caught myself up on the latest headless CMSes people have been working with. I experimented with Payload CMS[^10] and Directus[^11], before diving into off-the-shelf backends like Supabase[^12], and PocketBase[^13] (my personal favorite). 
+I started my life in web working with traditional CMSes like WordPress[^3] and then briefly, Ghost[^4]. Later, I took the JAMstack[^5] hype train as far as it could go, fetching data from headless CMSes[^6] like Strapi[^7] and Contentful[^8], and integrating it into Gatsby[^9] frontends. Then, sometime before building this site, I caught myself up on the latest headless CMSes people have been working with. I experimented with Payload CMS[^10] and Directus[^11], before diving into off-the-shelf backends like Supabase[^12], and PocketBase[^13] (my personal favorite).
 
 However, something about all the options I weighed kept disappointing me in one way or another. So, after a day of feeling the frustration of yet another imperfect solution, I found myself one late evening going *"Yeah, well, I'll build my own CMS, with Blackjack, and Hookers! In fact, forget the CMS"*[^14]. So, that's what I did.
 
 <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/ubPWaDWcOLU?si=sAKW0ltueLH4SDW0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-My idea was pretty straightforward. Instead of a traditional user-friendly CMS, I based it on Astro's[^15] model of content management (Content Collections[^16]) —leveraging `markdown`[^17], `yaml`[^18], and `jsx`[^19] in `.mdx`[^20] files to store and organize content—with my own twist, a database I can cache all that data i want into. The latter meant I could fetch and generate content live in production, in taking advantage of Next.js’ SSR features[^21]. 
+My idea was pretty straightforward. Instead of a traditional user-friendly CMS, I based it on Astro's[^15] model of content management (Content Collections[^16]) —leveraging `markdown`[^17], `yaml`[^18], and `jsx`[^19] in `.mdx`[^20] files to store and organize content—with my own twist, a database I can cache all that data i want into. The latter meant I could fetch and generate content live in production, in taking advantage of Next.js’ SSR features[^21].
 
 As such, the following was the strategy I'd come up with as I poured over documentation[^22] and the various Next.js markdown blog examples[^23][^24] Vercel[^25] has available:
 
 1. Scan the posts.
 2. Process the data.
-3. Store data into a SQLite database 
+3. Store data into a SQLite database
 4. Fetch data from the database.
 5. Render the data.
 
@@ -59,11 +59,11 @@ Sounds easy enough, right? Well, sorta. The largest hurdle to overcome was in th
 
 Now, while my custom solution worked, it was, admittedly, flawed. First, because I really only implemented the first three letters of the CRUD[^31] acronym for this. Second, by the time I came up with a way to auto delete content I’d removed, well, that's when I stumbled upon a rad little library called `contentlayer2`, as I'd mentioned before. That was the turning point which pretty much signaled the end of any further development on my custom solution.
 
-Before that happened, I should mention why I wound up using Turso[^32], a SQLite[^33] (libSQL[^34]) DBaaS[^35] for this project, since SQLite's whole purpose is that it's embeddable. 
+Before that happened, I should mention why I wound up using Turso[^32], a SQLite[^33] (libSQL[^34]) DBaaS[^35] for this project, since SQLite's whole purpose is that it's embeddable.
 
-Now, I actually did try that; embedding the SQLite database right into my Next.js application, and leveraging Bun’s native SQLite driver[^36] in the process. However, when I was testing development builds of this site on Vercel, I learned there were some limitations[^37][^38][^39]. 
+Now, I actually did try that; embedding the SQLite database right into my Next.js application, and leveraging Bun’s native SQLite driver[^36] in the process. However, when I was testing development builds of this site on Vercel, I learned there were some limitations[^37][^38][^39].
 
-The first issue was that, ephemeral storage in static functions makes SQLite impractical[^37]. Second, while a read-only implementation is possible[^38], you are limited by the serverless function's storage capacity[^39]. Finally, I couldn't get read-only SQLite to work on dynamically rendered routes. In my testing, reading from the embedded SQLite database was only possible on routes generated using `generateStaticParams`[^40]. 
+The first issue was that, ephemeral storage in static functions makes SQLite impractical[^37]. Second, while a read-only implementation is possible[^38], you are limited by the serverless function's storage capacity[^39]. Finally, I couldn't get read-only SQLite to work on dynamically rendered routes. In my testing, reading from the embedded SQLite database was only possible on routes generated using `generateStaticParams`[^40].
 
 So, in thinking about the future, and not wanting to limit my project pre-emptively, a DBaaS seemed my only viable option. However, by the time I'd actually realized that, I'd already written my Drizzle ORM[^41] statements for SQLite, and I wasn't in the mood for converting them into a different SQL format. So, of Drizzle's SQLite compatible drivers[^42], I wound up using Turso.
 
@@ -71,7 +71,7 @@ So, in thinking about the future, and not wanting to limit my project pre-emptiv
 
 ### Setup
 
-Of the ORMs, I had narrowed it down to two options, Prisma[^45] or Drizzle ORM[^41]. I settled on Drizzle because I liked the focus on TypeScript, and I liked that you could write raw(ish) SQL as an escape hatch using its *magic SQL*[^46] operator. I also really liked the idea that the knowledge gained in working with it, would be transferable, since one of their taglines is *if you know SQL, you know Drizzle*. I'm also just a sucker for companies that know how to execute self-deprecating advertising strategies[^47][^48], so my heart was settled on using it. 
+Of the ORMs, I had narrowed it down to two options, Prisma[^45] or Drizzle ORM[^41]. I settled on Drizzle because I liked the focus on TypeScript, and I liked that you could write raw(ish) SQL as an escape hatch using its *magic SQL*[^46] operator. I also really liked the idea that the knowledge gained in working with it, would be transferable, since one of their taglines is *if you know SQL, you know Drizzle*. I'm also just a sucker for companies that know how to execute self-deprecating advertising strategies[^47][^48], so my heart was settled on using it.
 
 #### Drizzle + Turso
 
@@ -98,22 +98,22 @@ export default {
 
 I loosely followed Turso's guide on setting it up with Drizzle[^50], then came up with the resultant code above. In sum:
 
-- I'm importing multiple schemas using the wildcard glob[^51] pattern (`*`). 
+- I'm importing multiple schemas using the wildcard glob[^51] pattern (`*`).
 - SQL migrations get written into the root `drizzle/` directory.
 - I'm using the SQLite flavor of Drizzle, in tandem with the Turso driver.
-- I load in my credentials for Turso using the `{ dbCredentials }` object. 
+- I load in my credentials for Turso using the `{ dbCredentials }` object.
 - There's a type check which ensures that config object is in agreement with the `Config` type imported from `drizzle-kit`.
 
-Something I should note, is that instead of injecting the Turso credentials from a `.env` file using something like `process.env.TURSO_AUTH`[^52], I took advantage of SST's[^53] *secret*[^54] component instead. You'll notice I tapped into the `{ Resource }`[^55] object from `sst` using some simple dot notation[^56]. This really just avoids the hassle of passing around a `.env.local`[^57] file between work machines / dev environments. 
+Something I should note, is that instead of injecting the Turso credentials from a `.env` file using something like `process.env.TURSO_AUTH`[^52], I took advantage of SST's[^53] *secret*[^54] component instead. You'll notice I tapped into the `{ Resource }`[^55] object from `sst` using some simple dot notation[^56]. This really just avoids the hassle of passing around a `.env.local`[^57] file between work machines / dev environments.
 
 #### Schemas
 
 Once I had that, then I just had to define some schemas/tables[^58] for my posts. This resulted in creating the following tables:
 
- - authors
- - tags
- - featured_images
- - posts
+- authors
+- tags
+- featured_images
+- posts
 
 The idea was that the authors, featured_images, and tags tables would respectively create one-many[^59], and many-many[^59] relations to the posts table. Something like this:
 
@@ -217,7 +217,7 @@ export const featuredImages = sqliteTable('featured_images', {
 });
 ```
 
-Since the `posts.ts` schema/table is the most complicated, being the one that integrates all the other tables, it's important to talk about what's happening. You'll notice in the below, I'm importing the previously defined schemas `authors`, `tags`, and `featured_images`, and consuming them both as foreign keys and in relational tables. 
+Since the `posts.ts` schema/table is the most complicated, being the one that integrates all the other tables, it's important to talk about what's happening. You'll notice in the below, I'm importing the previously defined schemas `authors`, `tags`, and `featured_images`, and consuming them both as foreign keys and in relational tables.
 
 ```typescript
 // posts.ts
@@ -309,9 +309,10 @@ export const postsToTagsRelations = relations(postsToTags, ({ one }) => ({
 }));
 ```
 
-In using them as foreign keys, I'm really just taking advantage of the cascade operations. 
+In using them as foreign keys, I'm really just taking advantage of the cascade operations.
 
 As far as relations go, I'm using drizzles relations[^65] feature, and creating relational tables for both *one-to-many* (`authors`, `featured_images`) and *many-to-many* (`tags`) relations. In truth, this was somewhat *extra*, since I had foreign keys available to me on `turso`, but I was curious to know what `drizzle` was capable of, and this is one such addition that `drizzle` brings to the table (no pun intended >.<), beyond (most) vanilla SQL functions.
+
 #### Database Config
 
 With all the schemas fleshed out the last thing to setup, was a connection to the remote DB on Turso[^66], where I then imported the schemas directly into the client connection.
@@ -345,13 +346,13 @@ With the the database configured, the rest of the CMS could then be fleshed out.
 
 #### Scanning
 
-In practice, this took the form of an extensive script I wrote that took advantage of Bun’s speedy File I/O APIs[^69], to scan a folder that held all the blog content, which then read any Markdown and MDX files into memory as UTF-8 strings, sans any ignored ones. 
+In practice, this took the form of an extensive script I wrote that took advantage of Bun’s speedy File I/O APIs[^69], to scan a folder that held all the blog content, which then read any Markdown and MDX files into memory as UTF-8 strings, sans any ignored ones.
 
-From there I used `gray-matter`[^70] to parse the stringified front matter, to then create an object to store both the front matter data and the raw string itself. 
+From there I used `gray-matter`[^70] to parse the stringified front matter, to then create an object to store both the front matter data and the raw string itself.
 
 #### Processing
 
-Then I checked that data for a UUID before generating a fresh UUIDv4 using `Bun.crypto` which gets injected into the original file’s front matter, where it can then be read back into memory to update the data object. 
+Then I checked that data for a UUID before generating a fresh UUIDv4 using `Bun.crypto` which gets injected into the original file’s front matter, where it can then be read back into memory to update the data object.
 
 I also performed a similar step for the post slug as well, where I checked the front matter for the existence of a `slug` before generating one from the file name. I also checked if the slug and file name match, and if not, the file name overrides the slug. This is injected into the original file as well, and like the above, read back into memory to update the working data object.
 
@@ -369,7 +370,7 @@ Once all the data was loaded, I simply fetched it using `drizzle`’s query buil
 
 #### Rendering Data
 
-Once I had the data, the only thing left to do was to use `mdx-bundler`[^74] to process the raw MDX string, and I just loaded everything else into my front end. 
+Once I had the data, the only thing left to do was to use `mdx-bundler`[^74] to process the raw MDX string, and I just loaded everything else into my front end.
 
 ### Up Next: Scanning the Posts
 
