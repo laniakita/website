@@ -12,5 +12,6 @@ module.exports = {
   },
   rules: {
     'import/no-extraneous-dependencies': 'off',
+    'no-nested-ternary': 'off',
   },
 };

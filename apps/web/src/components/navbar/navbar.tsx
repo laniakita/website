@@ -5,11 +5,11 @@ import Link from 'next/link';
 import * as darklogo from '@/app/laniakita-logo-transparent-darkmode.svg';
 import * as lightlogo from '@/app/laniakita-logo-transparent-lightmode.svg';
 import { useDarkStore } from '@/providers/theme-store-provider';
+import { RESUME_LINK } from '@/lib/constants';
 import { type SocialNavIcon } from '../social-icon';
 import { socialItems3 } from '../sidebar/main';
 import DarkModeSwitch from './dark-mode-switch';
 import LinkPlus from './link-plus';
-import { RESUME_LINK } from '@/lib/constants';
 
 interface Clicked {
   stateVal: string;
