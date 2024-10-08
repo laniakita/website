@@ -1,7 +1,10 @@
 {
   "extends": ["//"],
   "tasks": {
-    "test": {},
+    "prebuild": {},
+    "test": {
+      "dependsOn": ["prebuild"]
+    },
     "build": {
       "dependsOn": ["test"],
       "outputs": [
