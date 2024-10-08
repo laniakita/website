@@ -5,7 +5,7 @@ export const descriptionHelper = (rawStr: string | undefined, postSlug?: string 
     const paraFound = strPara.split(' ')[0];
     // negatively matches digits, upper/lowercase letters, whitespaces, colons, and accented latin chars.
     // this results in matching everything else, i.e. headers, block quotes, etc.
-    if (strPara !== '' && !/[^a-zA-Z\d\s:\u00C0-\u00FF]/.test(paraFound!)) {
+    if (strPara !== '' && strPara.split(' ')[0] !== 'import' && !/[^a-zA-Z\d\s:\u00C0-\u00FF]/.test(paraFound!)) {
       return strPara;
     }
     return undefined;
