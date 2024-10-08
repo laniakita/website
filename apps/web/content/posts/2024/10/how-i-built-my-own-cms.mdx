@@ -32,9 +32,9 @@ import YTEmbed from '../../../../src/components/responsive-yt-embed.tsx';
 > - Part 06: Rendering the Data
 > - Part 07: Final Thoughts
 
-This wasn't the series of posts I planned to write. Initially, I thought this series was going to be dedicated exclusively to my bespoke content management system. Where, I thought I’d wax poetic for a while about how _sometimes the best solutions, are tailor made._ However, I’ve since come back to my senses to realize that **_the best solution is the one with the smallest number of compromises_**, sources be damned.
+This wasn't the series of posts I planned to write. Initially, I thought this series was going to be dedicated exclusively to my bespoke content management system. Where, I thought I’d wax poetic for a while about how _sometimes the best solutions, are tailor made._ However, I’ve since come back to my senses to realize that **_the best solution is the one with the smallest number of compromises_**, handcrafted be damned.
 
-In coming to terms with the above, that's when `contentlayer2`[^1] (maintained fork of `contentlayer`) entered the picture to replace my custom backend for this site. it's a library I stumbled upon that did exactly what I’d come up with, but in a better, more robust, and much more practical manner. In short, it's _beautiful_.
+In coming to terms with the above, that's when `contentlayer2`[^1] (a maintained fork of `contentlayer`) entered the picture to replace my custom backend for this site. It's a library I stumbled upon that did exactly what I’d come up with, but in a better, more robust, and much more practical manner. In short, it's _beautiful_.
 
 In honesty, I was awestruck by contentlayer’s pitch video[^2]. Especially so, because I’d just gone through the whole process of pouring blood, sweat, and tears into my own content management system for this site. It really wasn't long after witnessing that, did I make the tough decision to swap my whole custom solution out for it.
 
@@ -90,7 +90,7 @@ So, in thinking about the future, and not wanting to limit my project preemptive
 
 ### Setup
 
-Of the ORMs, I had narrowed it down to two options, Prisma[^45] or Drizzle ORM[^41]. I settled on Drizzle because I liked the focus on TypeScript, and I liked that you could write raw(ish) SQL as an escape hatch using its _magic SQL_[^46] operator. I also really liked the idea that the knowledge gained in working with it, would be transferable, since one of their taglines is _if you know SQL, you know Drizzle_. I'm also just a sucker for companies that know how to execute self-deprecating advertising strategies[^47]<sup>, </sup>[^48], so my heart was settled on using it.
+Of the ORMs, I had narrowed it down to two options, Prisma[^45] or Drizzle ORM[^41]. I settled on Drizzle because I liked the focus on TypeScript, and I liked that you could write raw(ish) SQL as an escape hatch using its _magic SQL_[^46] operator. I also really liked the idea that the knowledge gained in working with it, would be transferable, since one of their taglines is _if you know SQL, you know Drizzle_. As well, I'm also just a sucker for companies that know how to execute self-deprecating advertising strategies[^47]<sup>, </sup>[^48], so my heart was settled on using it.
 
 #### Drizzle + Turso
 
