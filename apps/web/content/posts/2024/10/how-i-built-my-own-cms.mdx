@@ -17,27 +17,28 @@ keywords:
 author: lani
 headline: 'How I Built a CMS, Using TypeScript, Bun, Drizzle, & Turso'
 subheadline: 'Then swapped it out for something better, contentlayer2'
-caption: Your scientists were so preoccupied with whether they could, they didn't stop to think if they should - Ian Malcom (Jurassic Park)
+caption: "Your scientists were so preoccupied with whether they could, they didn't stop to think if they should - Ian Malcom"
 ---
+import YTEmbed from '../../../../src/components/responsive-yt-embed.tsx'
 
-**This is Part 01 in a series of articles where I walkthrough how I built my own CMS**
-*You can find the other parts of this series below (as they become available):*
-
-- Part 01: How I Built a CMS, Using TypeScript, Bun, Drizzle, & Turso \(you're here\)
-- Part 02: Scanning the Posts
-- Part 03: Post Processing & Content Data Generation
-- Part 04: Storing the Content Data
-- Part 05: Retrieving the Content Data
-- Part 06: Rendering the Data
-- Part 07: Final Thoughts
+> **This is Part 01 in a series of articles where I walkthrough how I built my own CMS**
+> *You can find the other parts of this series below (as they become available):*
+>
+> - Part 01: How I Built a CMS, Using TypeScript, Bun, Drizzle, & Turso \(you're here\)
+> - Part 02: Scanning the Posts
+> - Part 03: Post Processing & Content Data Generation
+> - Part 04: Storing the Content Data
+> - Part 05: Retrieving the Content Data
+> - Part 06: Rendering the Data
+> - Part 07: Final Thoughts
 
 This wasn't the series of posts I planned to write. Initially, I thought this series was going to be dedicated exclusively to my bespoke content management system. Where, I thought I’d wax poetic for a while about how *sometimes the best solutions, are tailor made.* However, I’ve since come back to my senses to realize that ***the best solution is the one with the smallest number of compromises***, sources be damned.
 
-So, that’s where `contentlayer2`[^1] (maintained fork of `contentlayer`) came in to the equation. it's a library I stumbled upon that did exactly what I’d come up with, but in a better, more robust, and much more practical manner. In short, it's *beautiful*.
+In coming to terms with the above, that's when `contentlayer2`[^1] (maintained fork of `contentlayer`) entered the picture to replace my custom backend for this site. it's a library I stumbled upon that did exactly what I’d come up with, but in a better, more robust, and much more practical manner. In short, it's *beautiful*.
 
-In honesty, I was awestruck by contentlayer’s pitch video[^2]. Especially so, because I’d just gone through the whole process of pouring blood, sweat, and tears into my own content management system for this site. It really wasn't long after that, that I swapped my whole custom solution out for it.
+In honesty, I was awestruck by contentlayer’s pitch video[^2]. Especially so, because I’d just gone through the whole process of pouring blood, sweat, and tears into my own content management system for this site. It really wasn't long after witnessing that, did I make the tough decision to swap my whole custom solution out for it.
 
-But, swallowed pride aside, creating my own content backend was quite a learning experience for me, so I wanted to talk about it. As such, I present to you *Part 01* of my technical summary on my custom solution.
+Swallowed pride aside, creating my own content backend was quite a learning experience for me, so I wanted to talk about it. As such, I present to you *Part One* of my technical summary on my custom solution.
 
 ### Contents
 
@@ -61,9 +62,9 @@ I started my life in web working with traditional CMSes like WordPress[^3] and t
 
 However, something about all the options I weighed kept disappointing me in one way or another. So, after a day of feeling the frustration of yet another imperfect solution, I found myself one late evening going *"Yeah, well, I'll build my own CMS, with Blackjack, and Hookers! In fact, forget the CMS"*[^14]. So, that's what I did.
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/ubPWaDWcOLU?si=sAKW0ltueLH4SDW0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<YTEmbed videoId="ubPWaDWcOLU" />
 
-My idea was pretty straightforward. Instead of a traditional user-friendly CMS, I based it on Astro's[^15] model of content management (Content Collections[^16]) —leveraging `markdown`[^17], `yaml`[^18], and `jsx`[^19] in `.mdx`[^20] files to store and organize content—with my own twist, a database I can cache all that data i want into. The latter meant I could fetch and generate content live in production, in taking advantage of Next.js’ SSR features[^21].
+My idea was pretty straightforward. Instead of a traditional user-friendly CMS, I decided to base it on Astro's[^15] model of content management (Content Collections[^16])—leveraging `markdown`[^17], `yaml`[^18], and `jsx`[^19] in `.mdx`[^20] files to store and organize content—with my own twist, a database I can cache all that data i want into. The latter meant I could fetch and generate content live in production, in taking advantage of Next.js’ SSR features[^21].
 
 As such, the following was the strategy I'd come up with as I poured over documentation[^22] and the various Next.js markdown blog examples[^23][^24] Vercel[^25] has available:
 
@@ -83,7 +84,7 @@ Now, I actually did try that; embedding the SQLite database right into my Next.j
 
 The first issue was that, ephemeral storage in static functions makes SQLite impractical[^37]. Second, while a read-only implementation is possible[^38], you are limited by the serverless function's storage capacity[^39]. Finally, I couldn't get read-only SQLite to work on dynamically rendered routes. In my testing, reading from the embedded SQLite database was only possible on routes generated using `generateStaticParams`[^40].
 
-So, in thinking about the future, and not wanting to limit my project pre-emptively, a DBaaS seemed my only viable option. However, by the time I'd actually realized that, I'd already written my Drizzle ORM[^41] statements for SQLite, and I wasn't in the mood for converting them into a different SQL format. So, of Drizzle's SQLite compatible drivers[^42], I wound up using Turso.
+So, in thinking about the future, and not wanting to limit my project preemptively, a DBaaS seemed my only viable option. However, by the time I'd actually realized that, I'd already written my Drizzle ORM[^41] statements for SQLite, and I wasn't in the mood for converting them into a different SQL format. So, of Drizzle's SQLite compatible drivers[^42], I wound up using Turso.
 
 > I suppose I could’ve used Cloudflare’s D1[^43], instead of Turso, but the moose mascot was so gosh darn cute! Couple that with the fact they have a wonderfully generous free tier[^44], how could I say no?!
 
@@ -135,7 +136,7 @@ Once I had that, then I just had to define some schemas/tables[^58] for my posts
 
 The idea was that the authors, featured_images, and tags tables would respectively create one-many[^59], and many-many[^59] relations to the posts table. Something like this:
 
-![Entity Relation ship diagram showing 1:M (authors, featured_images), and M:M (tags). The latter made possible with a junction table (posts_to_tags)](../../../assets/images/oc/2024/10/cms-relations-diagram.jpg)
+![Entity Relationship diagram showing 1:M (authors, featured_images), and M:M (tags). The latter made possible with a junction table (posts_to_tags)](../../../assets/images/oc/2024/10/cms-relations-diagram.jpg)
 
 In keeping with SQLites Datatypes[^60] and what's available in Drizzle[^61] Some commonalities between these tables (as we'll see), is that I'm using a `string` for each rows `id` and primary key column, and a `integer` set to `timestamp` for the date column. That's because the `id` is a `UUIDv4`[^62] generated using Bun's  `crypto.randomUUID()`[^63], and the date is a `utc` string. The `rawStr` column, is simply the raw `utf8` string generated from reading the `.mdx` file into memory.
 
@@ -329,7 +330,7 @@ export const postsToTagsRelations = relations(postsToTags, ({ one }) => ({
 
 In using them as foreign keys, I'm really just taking advantage of the cascade operations.
 
-As far as relations go, I'm using drizzles relations[^65] feature, and creating relational tables for both *one-to-many* (`authors`, `featured_images`) and *many-to-many* (`tags`) relations. In truth, this was somewhat *extra*, since I had foreign keys available to me on `turso`, but I was curious to know what `drizzle` was capable of, and this is one such addition that `drizzle` brings to the table (no pun intended >.\<), beyond (most) vanilla SQL functions.
+As far as relations go, I'm using drizzles relations[^65] feature, and creating relational tables for both *one-to-many* (`authors`, `featured_images`) and *many-to-many* (`tags`) relations. In truth, this was somewhat *extra*, since I had foreign keys available to me on `turso`, but I was curious to know what `drizzle` was capable of, and this is one such addition that `drizzle` brings to the table (no pun intended \>.\<), beyond (most) vanilla SQL functions.
 
 #### Database Config
 
@@ -374,7 +375,7 @@ Then I checked that data for a UUID before generating a fresh UUIDv4 using `Bun.
 
 I also performed a similar step for the post slug as well, where I checked the front matter for the existence of a `slug` before generating one from the file name. I also checked if the slug and file name match, and if not, the file name overrides the slug. This is injected into the original file as well, and like the above, read back into memory to update the working data object.
 
-Then I had a whole Image processing step, which, admittedly, is a little more complicated than the other two steps (as we’ll see). In short, a function scans the front matter data for an `imageSrc`, then it copies the (relatively defined) image from the `content/assets` folder, into Next’s `/public` folder[^14]. Then it runs the image through `plaiceholder`[^71] to generate a blurry placeholder image (in `base64`[^72] format) and to also fetch the image dimensions (height, width). Finally, it appends all that data to the object I’d generated earlier.
+Then I had a whole Image processing step, which, admittedly, is a little more complicated than the other two steps (as we’ll see). In short, a function scans the front matter data for an `imageSrc`, then it copies the (relatively defined) image from the `content/assets` folder, into Next’s `/public` folder. Then it runs the image through `plaiceholder`[^71] to generate a blurry placeholder image (in `base64`[^72] format) and to also fetch the image dimensions (height, width). Finally, it appends all that data to the object I’d generated earlier.
 
 #### Storing Data
 
