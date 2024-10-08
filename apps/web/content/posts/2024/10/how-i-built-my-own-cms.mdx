@@ -19,10 +19,10 @@ headline: 'How I Built a CMS, Using TypeScript, Bun, Drizzle, & Turso'
 subheadline: 'Then swapped it out for something better, contentlayer2'
 caption: "Your scientists were so preoccupied with whether they could, they didn't stop to think if they should - Ian Malcom"
 ---
-import YTEmbed from '../../../../src/components/responsive-yt-embed.tsx'
 
-> **This is Part 01 in a series of articles where I walkthrough how I built my own CMS**
-> *You can find the other parts of this series below (as they become available):*
+import YTEmbed from '../../../../src/components/responsive-yt-embed.tsx';
+
+> **This is Part 01 in a series of articles where I walkthrough how I built my own CMS** > _You can find the other parts of this series below (as they become available):_
 >
 > - Part 01: How I Built a CMS, Using TypeScript, Bun, Drizzle, & Turso \(you're here\)
 > - Part 02: Scanning the Posts
@@ -32,27 +32,27 @@ import YTEmbed from '../../../../src/components/responsive-yt-embed.tsx'
 > - Part 06: Rendering the Data
 > - Part 07: Final Thoughts
 
-This wasn't the series of posts I planned to write. Initially, I thought this series was going to be dedicated exclusively to my bespoke content management system. Where, I thought I’d wax poetic for a while about how *sometimes the best solutions, are tailor made.* However, I’ve since come back to my senses to realize that ***the best solution is the one with the smallest number of compromises***, sources be damned.
+This wasn't the series of posts I planned to write. Initially, I thought this series was going to be dedicated exclusively to my bespoke content management system. Where, I thought I’d wax poetic for a while about how _sometimes the best solutions, are tailor made._ However, I’ve since come back to my senses to realize that **_the best solution is the one with the smallest number of compromises_**, sources be damned.
 
-In coming to terms with the above, that's when `contentlayer2`[^1] (maintained fork of `contentlayer`) entered the picture to replace my custom backend for this site. it's a library I stumbled upon that did exactly what I’d come up with, but in a better, more robust, and much more practical manner. In short, it's *beautiful*.
+In coming to terms with the above, that's when `contentlayer2`[^1] (maintained fork of `contentlayer`) entered the picture to replace my custom backend for this site. it's a library I stumbled upon that did exactly what I’d come up with, but in a better, more robust, and much more practical manner. In short, it's _beautiful_.
 
 In honesty, I was awestruck by contentlayer’s pitch video[^2]. Especially so, because I’d just gone through the whole process of pouring blood, sweat, and tears into my own content management system for this site. It really wasn't long after witnessing that, did I make the tough decision to swap my whole custom solution out for it.
 
-Swallowed pride aside, creating my own content backend was quite a learning experience for me, so I wanted to talk about it. As such, I present to you *Part One* of my technical summary on my custom solution.
+Swallowed pride aside, creating my own content backend was quite a learning experience for me, so I wanted to talk about it. As such, I present to you _Part One_ of my technical summary on my custom solution.
 
 ### Contents
 
 - [Introduction](#introduction)
 - [Setup](#setup)
- 	- [Drizzle + Turso](#drizzle--turso)
- 	- [Schemas](#schemas)
- 	- [Database Config](#database-config)
+  - [Drizzle + Turso](#drizzle--turso)
+  - [Schemas](#schemas)
+  - [Database Config](#database-config)
 - [Overview of my CMS](#overview-of-my-cms)
- 	- [Scanning](#scanning)
- 	- [Processing](#processing)
- 	- [Storing Data](#storing-data)
- 	- [Fetching Data](#fetching-data)
- 	- [Rendering Data](#rendering-data)
+  - [Scanning](#scanning)
+  - [Processing](#processing)
+  - [Storing Data](#storing-data)
+  - [Fetching Data](#fetching-data)
+  - [Rendering Data](#rendering-data)
 - [Up Next: Scanning the Posts](#up-next-scanning-the-posts)
 - [Extra Thoughts](#extra-thoughts)
 
@@ -60,9 +60,9 @@ Swallowed pride aside, creating my own content backend was quite a learning expe
 
 I started my life in web working with traditional CMSes like WordPress[^3] and then briefly, Ghost[^4]. Later, I took the JAMstack[^5] hype train as far as it could go, fetching data from headless CMSes[^6] like Strapi[^7] and Contentful[^8], and integrating it into Gatsby[^9] frontends. Then, sometime before building this site, I caught myself up on the latest headless CMSes people have been working with. I experimented with Payload CMS[^10] and Directus[^11], before diving into off-the-shelf backends like Supabase[^12], and PocketBase[^13] (my personal favorite).
 
-However, something about all the options I weighed kept disappointing me in one way or another. So, after a day of feeling the frustration of yet another imperfect solution, I found myself one late evening going *"Yeah, well, I'll build my own CMS, with Blackjack, and Hookers! In fact, forget the CMS"*[^14]. So, that's what I did.
+However, something about all the options I weighed kept disappointing me in one way or another. So, after a day of feeling the frustration of yet another imperfect solution, I found myself one late evening going _"Yeah, well, I'll build my own CMS, with Blackjack, and Hookers! In fact, forget the CMS"_[^14]. So, that's what I did.
 
-<YTEmbed videoId="ubPWaDWcOLU" />
+<YTEmbed videoId='ubPWaDWcOLU' />
 
 My idea was pretty straightforward. Instead of a traditional user-friendly CMS, I decided to base it on Astro's[^15] model of content management (Content Collections[^16])—leveraging `markdown`[^17], `yaml`[^18], and `jsx`[^19] in `.mdx`[^20] files to store and organize content—with my own twist, a database I can cache all that data i want into. The latter meant I could fetch and generate content live in production, in taking advantage of Next.js’ SSR features[^21].
 
@@ -90,7 +90,7 @@ So, in thinking about the future, and not wanting to limit my project preemptive
 
 ### Setup
 
-Of the ORMs, I had narrowed it down to two options, Prisma[^45] or Drizzle ORM[^41]. I settled on Drizzle because I liked the focus on TypeScript, and I liked that you could write raw(ish) SQL as an escape hatch using its *magic SQL*[^46] operator. I also really liked the idea that the knowledge gained in working with it, would be transferable, since one of their taglines is *if you know SQL, you know Drizzle*. I'm also just a sucker for companies that know how to execute self-deprecating advertising strategies[^47]<sup>, </sup>[^48], so my heart was settled on using it.
+Of the ORMs, I had narrowed it down to two options, Prisma[^45] or Drizzle ORM[^41]. I settled on Drizzle because I liked the focus on TypeScript, and I liked that you could write raw(ish) SQL as an escape hatch using its _magic SQL_[^46] operator. I also really liked the idea that the knowledge gained in working with it, would be transferable, since one of their taglines is _if you know SQL, you know Drizzle_. I'm also just a sucker for companies that know how to execute self-deprecating advertising strategies[^47]<sup>, </sup>[^48], so my heart was settled on using it.
 
 #### Drizzle + Turso
 
@@ -110,7 +110,7 @@ export default {
   driver: 'turso',
   dbCredentials: {
     url: Resource.TursoUrl.value,
-    authToken: Resource.TursoAuth.value
+    authToken: Resource.TursoAuth.value,
   },
 } satisfies Config;
 ```
@@ -123,7 +123,7 @@ I loosely followed Turso's guide on setting it up with Drizzle[^50], then came u
 - I load in my credentials for Turso using the `{ dbCredentials }` object.
 - There's a type check which ensures that config object is in agreement with the `Config` type imported from `drizzle-kit`.
 
-Something I should note, is that instead of injecting the Turso credentials from a `.env` file using something like `process.env.TURSO_AUTH`[^52], I took advantage of SST's[^53] *secret*[^54] component instead. You'll notice I tapped into the `{ Resource }`[^55] object from `sst` using some simple dot notation[^56]. This really just avoids the hassle of passing around a `.env.local`[^57] file between work machines / dev environments.
+Something I should note, is that instead of injecting the Turso credentials from a `.env` file using something like `process.env.TURSO_AUTH`[^52], I took advantage of SST's[^53] _secret_[^54] component instead. You'll notice I tapped into the `{ Resource }`[^55] object from `sst` using some simple dot notation[^56]. This really just avoids the hassle of passing around a `.env.local`[^57] file between work machines / dev environments.
 
 #### Schemas
 
@@ -138,9 +138,9 @@ The idea was that the authors, featured_images, and tags tables would respective
 
 ![Entity Relationship diagram showing 1:M (authors, featured_images), and M:M (tags). The latter made possible with a junction table (posts_to_tags)](../../../assets/images/oc/2024/10/cms-relations-diagram.jpg)
 
-In keeping with SQLites Datatypes[^60] and what's available in Drizzle[^61] Some commonalities between these tables (as we'll see), is that I'm using a `string` for each rows `id` and primary key column, and a `integer` set to `timestamp` for the date column. That's because the `id` is a `UUIDv4`[^62] generated using Bun's  `crypto.randomUUID()`[^63], and the date is a `utc` string. The `rawStr` column, is simply the raw `utf8` string generated from reading the `.mdx` file into memory.
+In keeping with SQLites Datatypes[^60] and what's available in Drizzle[^61] Some commonalities between these tables (as we'll see), is that I'm using a `string` for each rows `id` and primary key column, and a `integer` set to `timestamp` for the date column. That's because the `id` is a `UUIDv4`[^62] generated using Bun's `crypto.randomUUID()`[^63], and the date is a `utc` string. The `rawStr` column, is simply the raw `utf8` string generated from reading the `.mdx` file into memory.
 
-Of note, in the below schemas, I'm manually exporting their types. Unfortunately, at the time, I simply wasn't aware of drizzle's `$inferInsert`[^64], `$inferSelect`[^64] functions to automatically generate types. So, that's why I'm doing it *artisanally*, in case you were wondering.
+Of note, in the below schemas, I'm manually exporting their types. Unfortunately, at the time, I simply wasn't aware of drizzle's `$inferInsert`[^64], `$inferSelect`[^64] functions to automatically generate types. So, that's why I'm doing it _artisanally_, in case you were wondering.
 
 ```typescript
 // authors.ts
@@ -330,7 +330,7 @@ export const postsToTagsRelations = relations(postsToTags, ({ one }) => ({
 
 In using them as foreign keys, I'm really just taking advantage of the cascade operations.
 
-As far as relations go, I'm using drizzles relations[^65] feature, and creating relational tables for both *one-to-many* (`authors`, `featured_images`) and *many-to-many* (`tags`) relations. In truth, this was somewhat *extra*, since I had foreign keys available to me on `turso`, but I was curious to know what `drizzle` was capable of, and this is one such addition that `drizzle` brings to the table (no pun intended \>.\<), beyond (most) vanilla SQL functions.
+As far as relations go, I'm using drizzles relations[^65] feature, and creating relational tables for both _one-to-many_ (`authors`, `featured_images`) and _many-to-many_ (`tags`) relations. In truth, this was somewhat _extra_, since I had foreign keys available to me on `turso`, but I was curious to know what `drizzle` was capable of, and this is one such addition that `drizzle` brings to the table (no pun intended \>.\<), beyond (most) vanilla SQL functions.
 
 #### Database Config
 
@@ -351,7 +351,7 @@ dotenv.config();
 
 const client = createClient({
   url: Resource.TursoUrl.value,
-  authToken: Resource.TursoAuth.value
+  authToken: Resource.TursoAuth.value,
 });
 
 export const maindb = drizzle(client, { schema: { ...authors, ...tags, ...featuredImages, ...posts } });
@@ -361,7 +361,7 @@ With that squared away, the final step was to push our schemas as tables to our 
 
 ### Overview of my CMS
 
-With the the database configured, the rest of the CMS could then be fleshed out. This process was in theory quite simple, following the outline from earlier. All I had to do was read content into memory, *process* them, and send it into the database via `insert` statements.
+With the the database configured, the rest of the CMS could then be fleshed out. This process was in theory quite simple, following the outline from earlier. All I had to do was read content into memory, _process_ them, and send it into the database via `insert` statements.
 
 #### Scanning
 
@@ -393,11 +393,11 @@ Once I had the data, the only thing left to do was to use `mdx-bundler`[^74] to 
 
 ### Up Next: Scanning the Posts
 
-Alright, that's it for today's blog post, since the following steps get fairly extensive. The very next post of this series will focus on how the posts were *scanned* or read into memory, and the post after that will get into the processing phase of events.
+Alright, that's it for today's blog post, since the following steps get fairly extensive. The very next post of this series will focus on how the posts were _scanned_ or read into memory, and the post after that will get into the processing phase of events.
 
 ### Extra Thoughts
 
-Originally I was planning on writing out this whole project as one long article, but considering how messy my previous article has gotten since I've *corrected* it, I think breaking things into manageable chunks is probably the way to go. I mean, it works for computers after all, doesn't it?
+Originally I was planning on writing out this whole project as one long article, but considering how messy my previous article has gotten since I've _corrected_ it, I think breaking things into manageable chunks is probably the way to go. I mean, it works for computers after all, doesn't it?
 
 As well, I've decided on using a standard method of citations going forward. It's something I prefer, even though my last article used hyperlinks, rather than actual citations. That was mostly because I dragged my feet on configuring zotero[^75]. But, since I did manage to refamiliarize myself with the little citation manager for this article, please enjoy the extensive bibliography I've generated below.
 
@@ -466,6 +466,7 @@ As well, I've decided on using a standard method of citations going forward. It'
 [^32]: Turso — SQLite for Production [Internet]. Turso. 2024 [cited 2024 Sep 13]. Available from: [https://turso.tech](https://turso.tech)
 
 [^33]: About SQLite [Internet]. [cited 2024 Oct 6]. Available from: [https://www.sqlite.org/about.html](https://www.sqlite.org/about.html)
+
 [^34]: tursodatabase/libsql [Internet]. Turso Database; 2024 [cited 2024 Oct 6]. Available from: [https://github.com/tursodatabase/libsql](https://github.com/tursodatabase/libsql)
 
 [^35]: What Is Database as a Service (DBaaS)? | IBM [Internet]. 2021 [cited 2024 Oct 6]. Available from: [https://www.ibm.com/topics/dbaas](https://www.ibm.com/topics/dbaas)
@@ -509,6 +510,7 @@ As well, I've decided on using a standard method of citations going forward. It'
 [^54]: Secret [Internet]. SST. [cited 2024 Oct 6]. Available from: [https://sst.dev/docs/component/secret/](https://sst.dev/docs/component/secret/)
 
 [^55]: Linking [Internet]. SST. 2024 [cited 2024 Oct 6]. Available from: [https://sst.dev/docs/linking/](https://sst.dev/docs/linking/)
+
 [^56]: Property accessors - JavaScript | MDN [Internet]. 2024 [cited 2024 Oct 6]. Available from: [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Property_accessors](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Property_accessors)
 
 [^57]: Configuring: Environment Variables | Next.js [Internet]. [cited 2024 Oct 6]. Available from: [https://nextjs.org/docs/app/building-your-application/configuring/environment-variables](https://nextjs.org/docs/app/building-your-application/configuring/environment-variables)
@@ -540,6 +542,7 @@ As well, I've decided on using a standard method of citations going forward. It'
 [^70]: Schlinkert J. jonschlinkert/gray-matter [Internet]. 2024 [cited 2024 Sep 13]. Available from: [https://github.com/jonschlinkert/gray-matter](https://github.com/jonschlinkert/gray-matter)
 
 [^71]: Plaiceholder [Internet]. 2023 [cited 2024 Sep 13]. Available from: [https://plaiceholder.co/docs](https://plaiceholder.co/docs)
+
 [^72]: Base64 - MDN Web Docs Glossary: Definitions of Web-related terms | MDN [Internet]. 2024 [cited 2024 Oct 7]. Available from: [https://developer.mozilla.org/en-US/docs/Glossary/Base64](https://developer.mozilla.org/en-US/docs/Glossary/Base64)
 
 [^73]: Building Your Application: Caching | Next.js [Internet]. [cited 2024 Oct 7]. Available from: [https://nextjs.org/docs/app/building-your-application/caching](https://nextjs.org/docs/app/building-your-application/caching)

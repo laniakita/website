@@ -6,7 +6,7 @@
     @apply prose-headings:text-balance prose-headings:font-black prose-p:supports-[text-wrap:pretty]:text-pretty;
   }
   .prose-lists-pretty {
-    @apply prose-ol:leading-tight prose-ul:leading-tight
+    @apply prose-ol:leading-tight prose-ul:leading-tight;
   }
   .prose-protocol-omega {
     @apply prose-code-pretty prose-text-pretty prose-lists-pretty prose prose-catppuccin max-w-3xl dark:prose-invert;

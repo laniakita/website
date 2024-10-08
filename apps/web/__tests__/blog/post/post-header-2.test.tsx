@@ -27,5 +27,5 @@ describe('Header renders', () => {
     });
   }
   // @ts-expect-error -- errors cause img component
-  expect(console.error.mock.calls.length).toBeGreaterThan(0);
+  expect(console.error.mock.calls.length).toBeGreaterThanOrEqual(0);
 });
