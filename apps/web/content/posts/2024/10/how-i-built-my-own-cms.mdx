@@ -66,7 +66,7 @@ However, something about all the options I weighed kept disappointing me in one 
 
 My idea was pretty straightforward. Instead of a traditional user-friendly CMS, I decided to base it on Astro's[^15] model of content management (Content Collections[^16])—leveraging `markdown`[^17], `yaml`[^18], and `jsx`[^19] in `.mdx`[^20] files to store and organize content—with my own twist, a database I can cache all that data i want into. The latter meant I could fetch and generate content live in production, in taking advantage of Next.js’ SSR features[^21].
 
-As such, the following was the strategy I'd come up with as I poured over documentation[^22] and the various Next.js markdown blog examples[^23][^24] Vercel[^25] has available:
+As such, the following was the strategy I'd come up with as I poured over documentation[^22] and the various Next.js markdown blog examples[^23]<sup>, </sup>[^24] Vercel[^25] has available:
 
 1. Scan the posts.
 2. Process the data.
@@ -80,7 +80,7 @@ Now, while my custom solution worked, it was, admittedly, flawed. First, because
 
 Before that happened, I should mention why I wound up using Turso[^32], a SQLite[^33] (libSQL[^34]) DBaaS[^35] for this project, since SQLite's whole purpose is that it's embeddable.
 
-Now, I actually did try that; embedding the SQLite database right into my Next.js application, and leveraging Bun’s native SQLite driver[^36] in the process. However, when I was testing development builds of this site on Vercel, I learned there were some limitations[^37][^38][^39].
+Now, I actually did try that; embedding the SQLite database right into my Next.js application, and leveraging Bun’s native SQLite driver[^36] in the process. However, when I was testing development builds of this site on Vercel, I learned there were some limitations[^37]<sup>, </sup>[^38]<sup>, </sup>[^39].
 
 The first issue was that, ephemeral storage in static functions makes SQLite impractical[^37]. Second, while a read-only implementation is possible[^38], you are limited by the serverless function's storage capacity[^39]. Finally, I couldn't get read-only SQLite to work on dynamically rendered routes. In my testing, reading from the embedded SQLite database was only possible on routes generated using `generateStaticParams`[^40].
 
@@ -90,7 +90,7 @@ So, in thinking about the future, and not wanting to limit my project preemptive
 
 ### Setup
 
-Of the ORMs, I had narrowed it down to two options, Prisma[^45] or Drizzle ORM[^41]. I settled on Drizzle because I liked the focus on TypeScript, and I liked that you could write raw(ish) SQL as an escape hatch using its *magic SQL*[^46] operator. I also really liked the idea that the knowledge gained in working with it, would be transferable, since one of their taglines is *if you know SQL, you know Drizzle*. I'm also just a sucker for companies that know how to execute self-deprecating advertising strategies[^47][^48], so my heart was settled on using it.
+Of the ORMs, I had narrowed it down to two options, Prisma[^45] or Drizzle ORM[^41]. I settled on Drizzle because I liked the focus on TypeScript, and I liked that you could write raw(ish) SQL as an escape hatch using its *magic SQL*[^46] operator. I also really liked the idea that the knowledge gained in working with it, would be transferable, since one of their taglines is *if you know SQL, you know Drizzle*. I'm also just a sucker for companies that know how to execute self-deprecating advertising strategies[^47]<sup>, </sup>[^48], so my heart was settled on using it.
 
 #### Drizzle + Turso
 
@@ -399,7 +399,7 @@ Alright, that's it for today's blog post, since the following steps get fairly e
 
 Originally I was planning on writing out this whole project as one long article, but considering how messy my previous article has gotten since I've *corrected* it, I think breaking things into manageable chunks is probably the way to go. I mean, it works for computers after all, doesn't it?
 
-As well, I've decided on using a standard method of citations going forward. It's something I'm used to, even though my last article used hyperlinks, rather than actual citations. That was mostly because I dragged my feet on configuring zotero[^75]. But, since I did manage to refamiliarize myself with the little citation manager for this article, please enjoy the extensive bibliography I've generated below.
+As well, I've decided on using a standard method of citations going forward. It's something I prefer, even though my last article used hyperlinks, rather than actual citations. That was mostly because I dragged my feet on configuring zotero[^75]. But, since I did manage to refamiliarize myself with the little citation manager for this article, please enjoy the extensive bibliography I've generated below.
 
 [^1]: Timothy. timlrx/contentlayer2 [Internet]. 2024 [cited 2024 Sep 13]. Available from: [https://github.com/timlrx/contentlayer2](https://github.com/timlrx/contentlayer2)
 
