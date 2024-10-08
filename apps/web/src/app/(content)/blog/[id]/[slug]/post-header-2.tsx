@@ -58,6 +58,12 @@ export function PostHeader2(post: Post) {
               <span className='max-w-3xl'>{(post.featured_image as FeaturedImageR1).caption}</span>
             </figcaption>
           </figure>
+        ) : post.caption ? (
+          <div>
+            <p className='flex w-full items-center justify-center px-10 text-xl font-bold italic leading-tight md:text-2xl'>
+              <span className='max-w-3xl'>{post.caption}</span>
+            </p>
+          </div>
         ) : (
           ''
         )}
