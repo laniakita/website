@@ -10,18 +10,15 @@ import { MathUtils, AudioLoader, Audio, AudioListener, Cache } from 'three';
 import { Detailed } from '@react-three/drei';
 import { useHajClickerStore } from '@/providers/hajclicker-store-provider';
 
-const Neilx128 = dynamic(() => import('@/components/canvas/models/bot-neil/x128').then((mod) => ({
-  default: mod.Neilx128,
+const Neilx128 = dynamic(() => import('@/components/canvas/models/bot-neil/x128').then((mod) => mod.Neilx128), {
   ssr: false,
-})));
-const Neilx256 = dynamic(() => import('@/components/canvas/models/bot-neil/x256').then((mod) => ({
-  default: mod.Neilx256,
+});
+const Neilx256 = dynamic(() => import('@/components/canvas/models/bot-neil/x256').then((mod) => mod.Neilx256), {
   ssr: false,
-})));
-const Neilx512 = dynamic(() => import('@/components/canvas/models/bot-neil/x512').then((mod) => ({
-  default: mod.Neilx512,
+});
+const Neilx512 = dynamic(() => import('@/components/canvas/models/bot-neil/x512').then((mod) => mod.Neilx512), {
   ssr: false,
-})));
+});
 
 export default function Zuns({
   speed = 7,
