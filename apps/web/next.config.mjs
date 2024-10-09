@@ -24,7 +24,16 @@ const nextConfig = {
           },
     ],
   },
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+  
+  /*
+=======
+
+>>>>>>> parent of 3685d81 (converting config for next 15)
+>>>>>>> parent of e7ab621 (Revert "next 15 codemods")
   webpack(config) {
     // shader support
     config.module.rules.push({
@@ -34,8 +43,32 @@ const nextConfig = {
     });
 
     return config;
+<<<<<<< HEAD
   },
   swcMinify: true,
+=======
+<<<<<<< HEAD
+  },*/
+
+  experimental: {
+    turbo: {
+      rules: {
+        '*.vert': {
+          loaders: ['raw-loader'],
+          as: '*.js'
+        },
+        '*.frag': {
+          loaders: ['raw-loader'],
+          as: '*.js'
+        },
+      },
+    },
+  },
+=======
+  },
+  swcMinify: true,
+>>>>>>> parent of 3685d81 (converting config for next 15)
+>>>>>>> parent of e7ab621 (Revert "next 15 codemods")
 
   async redirects() {
     return [
