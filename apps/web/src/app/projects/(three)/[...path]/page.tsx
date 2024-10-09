@@ -13,9 +13,10 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata(
-  { params }: { params: { path: string | string[] } },
-  parent: ResolvingMetadata,
+  props: { params: Promise<{ path: string | string[] }> },
+  parent: ResolvingMetadata
 ): Promise<Metadata> {
+  const params = await props.params;
   const projData = allProjects.find(
     (projX) =>
       projX.url === `/projects/${params.path as string}` ||
@@ -62,7 +63,8 @@ export async function generateMetadata(
   };
 }
 
-export default async function ProjectPage({ params }: { params: { path: string } }) {
+export default async function ProjectPage(props: { params: Promise<{ path: string }> }) {
+  const params = await props.params;
   const data = allProjects.find(
     (project) =>
       project.url === `/projects/${params.path}` ||
