@@ -1,5 +1,5 @@
 import { PHASE_DEVELOPMENT_SERVER, PHASE_PRODUCTION_BUILD } from 'next/constants.js';
-import { RESUME_LINK } from './src/lib/constants.mjs';
+import { RESUME_LINK } from './src/lib/constants-js.mjs';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
