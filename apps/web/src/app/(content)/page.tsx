@@ -4,6 +4,7 @@ import Link from 'next/link';
 import NoiseShader01 from '@/app/projects/(three)/shaders/noise/01/noise';
 import { type SocialIconNavProps } from '@/components/social-icon';
 import { RESUME_LINK } from '@/lib/constants';
+import { socialItems2 } from '@/components/sidebar/main';
 
 export const metadata: Metadata = {
   openGraph: {
@@ -30,7 +31,7 @@ export const metadata: Metadata = {
     ],
   },
 };
-
+/*
 const socialItems3 = [
   {
     title: 'Github',
@@ -75,6 +76,7 @@ const socialItems3 = [
     textSize: 'text-4xl -ml-2',
   },
 ];
+*/
 
 function SocialIconNav3({ boxItems }: SocialIconNavProps) {
   const uniqueKey = useId();
@@ -133,12 +135,12 @@ export default function Home() {
                 </Link>
               </div>
               <div className='-mb-1.5 hidden w-fit md:flex md:min-w-28 lg:px-0'>
-                <SocialIconNav3 boxItems={socialItems3} />
+                <SocialIconNav3 boxItems={socialItems2} />
               </div>
             </div>
           </div>
           <div className='flex items-center justify-center md:hidden'>
-            <SocialIconNav3 boxItems={socialItems3} />
+            <SocialIconNav3 boxItems={socialItems2} />
           </div>
         </div>
       </div>

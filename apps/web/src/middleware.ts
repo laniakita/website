@@ -1,5 +1,5 @@
-import { type NextRequest, NextResponse } from 'next/server';
-import { geolocation, ipAddress } from "@vercel/functions";
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 import { SlidingWindowCounterRateLimiter } from './lib/rate-limiter';
 
 export const config = {
@@ -43,14 +43,14 @@ export const ofacCountries = [
 const limiter = new SlidingWindowCounterRateLimiter(10, 1000 * 60);
 
 export default function middleware(request: NextRequest) {
-  const visitorCountryCode = request.headers.get('CloudFront-Viewer-Country') ?? geolocation(request)?.country;
+  const visitorCountryCode = request.headers.get('CloudFront-Viewer-Country') ?? request.geo?.country;
   if (visitorCountryCode) {
     if (ofacCountries.find((country) => country === visitorCountryCode)) {
       return new Response('Resource is unavailable.', { status: 451 });
     }
   }
   const ip = (request.headers.get('CloudFront-Viewer-Address') ??
-    ipAddress(request) ??
+    request.ip ??
     request.headers.get('X-Forwarded-For'))!;
 
   const fingerprint = request.headers.get('CloudFront-Viewer-JA3-Fingerprint');

@@ -1,29 +1,3 @@
 {
-  "navigationItems": ["Home", "Blog", "About", "Projects", "Résumé", "Contact", "Credits"],
-  "socialItems": [
-    {
-      "title": "Github",
-      "url": "https://github.com/laniakita",
-      "iconName": "icon-[ant-design--github-filled]",
-      "textSize": "text-5xl"
-    },
-    {
-      "title": "Mastodon",
-      "url": "https://joinmastodon.org/",
-      "iconName": "icon-[fa6-brands--mastodon]",
-      "textSize": "text-5xl"
-    },
-    {
-      "title": "Patreon",
-      "url": "https://patreon.com",
-      "iconName": "icon-[fa6-brands--patreon]",
-      "textSize": "text-4xl"
-    },
-    {
-      "title": "RSS/Atom",
-      "url": "/feed.xml",
-      "iconName": "icon-[ph--rss-bold]",
-      "textSize": "text-5xl"
-    }
-  ]
+  "navigationItems": ["Home", "Blog", "About", "Projects", "Résumé", "Atom/RSS", "Contact", "Credits"]
 }
