@@ -73,12 +73,19 @@ export function GET() {
     const resTags = tagsArr && catTagRoller(tagsArr);
 
     const imgEmbed =
-      (post.featured_image as FeaturedImageR1).hasImage &&
-      `<figure>
-         <img src="${HOST_URL}${(post.featured_image as FeaturedImageR1).src}" alt="${(post.featured_image as FeaturedImageR1).altText}" />
-         <figcaption>${(post.featured_image as FeaturedImageR1).caption}}</figcaption>
-       </figure>
-      `;
+      (post.featured_image as FeaturedImageR1).hasImage ?
+        `
+          <figure>
+            <img src="${HOST_URL}${(post.featured_image as FeaturedImageR1).src}" alt="${(post.featured_image as FeaturedImageR1).altText}" />
+            <figcaption>${(post.featured_image as FeaturedImageR1).caption}</figcaption>
+          </figure>
+        ` : (
+          `
+          <figure>
+            <img src="${HOST_URL}/opengraph${post.url}" alt="${post.headline}" />
+            <figcaption>${post.caption ?? post.subheadline ?? post.headline}</figcaption>
+          </figure>
+        `);
 
     const res = [
       {
