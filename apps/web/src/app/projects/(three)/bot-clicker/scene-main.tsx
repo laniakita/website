@@ -11,7 +11,16 @@ import type { Points } from 'three';
 import { useHajClickerStore } from '@/providers/hajclicker-store-provider';
 import CounterOverlayMin from './counter-overlay-min';
 
+/* const SceneOverlayV3 = dynamic(() => import('@/components/canvas/scenes/bot-clicker/neil/scene-overlay-alt'), {
+  ssr: false,
+}); */
+
 const Neils = dynamic(() => import('@/app/projects/(three)/bot-clicker/neil2'), { ssr: false });
+
+/* const SocialCounterOverlay = dynamic(
+  () => import('@/components/canvas/scenes/bot-clicker/neil/scene-social-counter-overlay'),
+  { ssr: false },
+); */
 
 export default function BotClickerScene({ isEmbed }: { isEmbed?: boolean }) {
   const ref = useRef(null!);

@@ -1,4 +1,3 @@
-'use client'
 import { Suspense } from 'react';
 import dynamic from 'next/dynamic';
 import { HajClickerStoreProvider } from '@/providers/hajclicker-store-provider';
