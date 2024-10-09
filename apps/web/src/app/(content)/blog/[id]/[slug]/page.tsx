@@ -23,10 +23,9 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata(
-  props: { params: Promise<{ id: string; slug: string }> },
-  parent: ResolvingMetadata
+  { params }: { params: { id: string; slug: string } },
+  parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  const params = await props.params;
   const postData = allPosts.find(
     (postX) => postX.id.split('-').shift() === params.id && postX.url.split('/').pop() === params.slug,
   );
@@ -73,8 +72,7 @@ export async function generateMetadata(
   };
 }
 
-export default async function BlogPostPage(props: { params: Promise<{ id: string; slug: string }> }) {
-  const params = await props.params;
+export default function BlogPostPage({ params }: { params: { id: string; slug: string } }) {
   const post = allPosts.find(
     (postX) =>
       (postX.id.split('-').shift() === params.id && postX.url.split('/').pop() === params.slug) ||

@@ -14,18 +14,17 @@ const nextConfig = {
     remotePatterns: [
       process.env.NEXT_PUBLIC_DEPLOYED_URL !== undefined && process.env.NODE_ENV === 'production'
         ? {
-          protocol: 'https',
-          hostname: '**.laniakita.com',
-          port: '',
-        }
+            protocol: 'https',
+            hostname: '**.laniakita.com',
+            port: '',
+          }
         : {
-          protocol: 'http',
-          hostname: 'localhost',
-        },
+            protocol: 'http',
+            hostname: 'localhost',
+          },
     ],
   },
 
-  /* old webpack config
   webpack(config) {
     // shader support
     config.module.rules.push({
@@ -35,32 +34,7 @@ const nextConfig = {
     });
 
     return config;
-  },*/
-
-  experimental: {
-    turbo: {
-      rules: {
-        '*.glsl': {
-          loaders: ['raw-loader'],
-          as: '*.js'
-        },
-        '*.vs': {
-          loaders: ['raw-loader'],
-          as: '*.js'
-        }, '*.fs': {
-          loaders: ['raw-loader'],
-          as: '*.js'
-        }, '*.vert': {
-          loaders: ['raw-loader'],
-          as: '*.js'
-        }, '*.frag': {
-          loaders: ['raw-loader'],
-          as: '*.js'
-        },
-      },
-    },
   },
-
   swcMinify: true,
 
   async redirects() {

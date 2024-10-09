@@ -14,8 +14,10 @@ export function generateStaticParams() {
   }));
 }
 
-export async function generateMetadata(props: { params: Promise<{ slug: string }> }, parent: ResolvingMetadata): Promise<Metadata> {
-  const params = await props.params;
+export async function generateMetadata(
+  { params }: { params: { slug: string } },
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
   const catData = allCategories.find((catY) => catY.url.split('/').pop() === params.slug);
 
   const description = descriptionHelper(catData?.body.raw, catData?.url, true);
@@ -59,8 +61,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
   };
 }
 
-export default async function CategoryPage(props: { params: Promise<{ slug: string }> }) {
-  const params = await props.params;
+export default function CategoryPage({ params }: { params: { slug: string } }) {
   const category = allCategories.find((catX) => catX.url.split('/').pop() === params.slug);
   const matchingPosts = allPosts
     .filter((postX) => postX.categories?.some((cat) => (cat as unknown as { slug: string }).slug === params.slug))
