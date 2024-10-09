@@ -24,8 +24,12 @@ const nextConfig = {
           },
     ],
   },
+<<<<<<< HEAD
   
   /*
+=======
+
+>>>>>>> parent of 3685d81 (converting config for next 15)
   webpack(config) {
     // shader support
     config.module.rules.push({
@@ -35,6 +39,7 @@ const nextConfig = {
     });
 
     return config;
+<<<<<<< HEAD
   },*/
 
   experimental: {
@@ -51,6 +56,10 @@ const nextConfig = {
       },
     },
   },
+=======
+  },
+  swcMinify: true,
+>>>>>>> parent of 3685d81 (converting config for next 15)
 
   async redirects() {
     return [
