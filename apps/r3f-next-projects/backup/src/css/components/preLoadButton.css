@@ -1,0 +1,5 @@
+@layer components {
+  .pre-load-button {
+    @apply border-lightAccent/10 bg-darkAccent/10 hover:bg-darkAccent flex w-full items-center justify-center border px-2 py-2 text-xl font-black text-ctp-text hover:border-ctp-surface0 hover:no-underline;
+  }
+}

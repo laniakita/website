@@ -1,0 +1,63 @@
+{
+  "extends": ["//"],
+  "tasks": {
+    "prebuild": {},
+    "test": {
+      "dependsOn": ["prebuild"]
+    },
+    "build": {
+      "dependsOn": ["test"],
+      "outputs": [
+        ".next/**",
+        "!.next/cache/**",
+        "public/dist/**",
+        "public/sw.js",
+        ".contentlayer",
+        ".contentlayermini"
+      ],
+      "inputs": ["$TURBO_DEFAULT$", ".env", ".env.local", ".env.development", ".env.production", "content/**"]
+    },
+    "analyze": {
+      "env": ["ANALYZE"],
+      "outputs": [
+        ".next/**",
+        "!.next/cache/**",
+        "public/dist/**",
+        "public/sw.js",
+        ".contentlayer",
+        ".contentlayermini"
+      ],
+      "inputs": ["$TURBO_DEFAULT$", ".env", ".env.local", ".env.development", ".env.production", "content/**"],
+      "dependsOn": ["build"]
+    },
+    "build:open-next": {
+      "dependsOn": ["test"],
+      "env": ["OPEN_NEXT_VERSION", "NEXT_PUBLIC_DEPLOYED_URL"],
+      "outputs": [
+        ".open-next/**",
+        "!.open-next/cache/**",
+        "public/dist/**",
+        "public/sw.js",
+        ".contentlayer",
+        ".contentlayermini"
+      ],
+      "inputs": ["$TURBO_DEFAULT$", ".env", ".env.local", ".env.development", ".env.production", "content/**"]
+    },
+    "copy-sharp": {
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        ".env",
+        ".env.local",
+        ".env.development",
+        ".env.production",
+        ".open-next/**",
+        "content/**"
+      ],
+      "outputs": [".open-next/server-functions/default/**"],
+      "dependsOn": ["build:open-next"]
+    },
+    "pretty": {},
+    "dev": {},
+    "start": {}
+  }
+}

@@ -1,0 +1,120 @@
+---
+id: e045a681-c0f7-40b0-9fe7-aba9534ca8e3
+headline: Bot Clicker
+categories:
+  - slug: technical-summary
+slug: bot-clicker
+author: lani
+date: 2024-05-06T21:41:14Z
+updated: 2024-09-01T23:46:58Z
+imageSrc: ../../../assets/images/oc/2024/05/bot-clicker-pre-release-v05082024.png
+altText: Screenshot of a development build of Bot Clicker, before being officially released to the public.
+caption: Just click on 'em! That'll show those bots whose boss.
+---
+
+> #### Link: _[Bot Clicker](/projects/bot-clicker)_
+>
+> #### Source Code: _[laniakita/bot-clicker](<https://github.com/laniakita/website/tree/master/apps/web/src/app/projects/(three)/bot-clicker>)_
+
+## TLDR
+
+Bot Clicker is a satirical mini-game I made for the landing page where you click on robots to make the clicker counter go up, and in return, they puff up and make enlightening sounds and social commentary.
+
+To briefly summarize Bot Clickers internals, it uses a combination of Three.js + Three.js component libraries and zustand from the Poimandres developer collective. Zustand is used to both add and store the total clicker points, as well as send that data to the overlayed clicker counter. The counter total is also an input parameter in function that calculates game/bot movement speed for added "eXtReMe EnTeRtAiNmEnT vAlUe!".
+
+The actual robot models were provided by Oscar Creativo, and the sounds were provided by FilmCow (voices) and Atelier Magicae (musical sounds). For more details on those amazing Artists, please visit the ["Bot Clicker" credits](/credits/bot-clicker) page.
+
+## Introduction
+
+I kinda created Bot Clicker by accident. Originally, I was just trying to make something visually interesting for my landing page. But, one thing led to another, and I wound up expanding on the [Flying Bananas example](https://codesandbox.io/s/2ycs3) from the react three fiber docs to create this toy "game" that's also somewhat a nod to the iconic [Cow Clicker](https://en.wikipedia.org/wiki/Cow_Clicker), created by Ian Bogost.
+
+I'm putting game in quotes, mostly because I think this enters into uncharted territory as to where we draw the line as to what exactly is and isn't a game. While I'm not saying Bot Clicker is a great game, it's not at all, it does however blur the lines a bit. On the whole, there does happen to be an objective (click the robots) and some sort of stimulating reward (line go up/hear fun sounds) for completing that objective. And if that's your definition of a game, then that's what Bot Clicker is, and if it isn't, well it isn't. I will use the term players instead of users though, since it's not exactly a tool either.
+
+While I didn't clone Cow Clicker's mechanics that make players earn the "clicks" to click on the bots, I also don't feel like that's the point I'm trying to make with Bot Clicker (2024 is also a very different time period than the early 2010s). So, whatever that point might be, is really on the players to conclude, and perhaps it should be (Rembrandt did famously leave the hands of the people in his portraits "unfinished" so viewers would "complete" his paintaings with their minds eye).
+
+As far as technicals go, once I had actually stumbled onto the ideas that led to Bot Clicker, I felt there were two hard requirements I had to keep in mind.
+
+1. Bot clicker needed to load quickly (no long loading screens).
+2. Bot Clicker needed somewhat high fidelity graphics (i.e. post-processing shaders) with a decent framerate to boot.
+
+Admitedly the second goal wasn't that challenging to achieve since many optimization implementations. Still, there were some tiny hills left for me to meander over to get things running as well as they do.
+
+Beyond that, everything else was relatively straight forward. Especially since I could recycle some of the logic for the moving, rotating, teleporting from the example to use for the robots. Which also helped to point me in the right direction for some of the optimization steps I decided to implement. Once I had things moving and in place, the last part was to just build the rest of "Bot Clicker". This is detailed in the [Rest of the Bot Clicker](#rest-of-the-bot-clicker-rotfbc) section.
+
+## Loading Fast
+
+To accomplish the first goal (since Bot Clicker is a web game, after all), it was necessary to compress the robot model from megabytes to mere kilobytes. This was accomplished using gltfjsx, a handy cli tool for running both draco compressions and doing the tedious work of mapping out the transformed model into typed react-three/fiber components.
+
+Because the model is rigged and animated (makes instancing challenging), my best option was implementing a Level of Detail (LOD) which was thankfully provided by Three. This meant compressing the model's textures into three different resolutions: 512x, 256x, and 128x, for respective distances of close, medium, and far. Using the tool above, I was able to compress the 7.7 MiB glTF model into a 393.9 KiB .glb, 228.5 KiB .glb, and a 181.1 KiB .glb.
+
+As I didn't want to make things too data intensive on slower mobile connections, only the latter two textures display on mobile screen sizes. This means 256x model is used for close distances and the 128x model for any distance beyond that. This has the added side effect of increasing framerates, which I'll get to in the next section.
+
+## Optimizations
+
+Since it was important to me to make use of post-processing shaders (I chose to use pmndrs' bloom, which is an implementation of [Léna Piquet's custom bloom for UEv4](https://www.froyok.fr/blog/2021-12-ue4-custom-bloom)), whilst maintaining a decent framerate with WebGL, optimizations were somewhat necessary. The most significant of those optimizations was making use of Three's LOD implementation (which react-three/drei conveniently provides a light wrapper for as the "Detailed" component) with heavily reduced texture resolutions. The rest of the optimizations were mostly tweaks to the canvas setting (turning off anti-aliasing, flat tone mapping, etc.)
+
+### Level of Detail (LOD)
+
+Before settling on LOD, I did initially want to instance the model (why waste 80 draw calls on 80 identical meshes?), and I did with a high-resolution (1024x) non-animated one during the proof-of-concept phase. However, it was only after I moved to a more complicated animated model (the robot you see above), did I learn that Three (to my current knowledge) doesn't yet support animation clips on instanced meshes. So, while I'm sure workarounds do exist to make such a thing possible, I felt just using Three's LOD implementation was a good compromise, even if it meant settling for lower-resolution textures on the meshes. Coincidentally, optimizing with LOD was the same decision the banana example made, though I'm sure it was for very different reasons, but I digress.
+
+As well, as I mentioned in a previous section, Three's LOD implementation takes at least two models to setup the rendering that switches between them depending on their distance from the camera. So, I chose to compress the model's textures three separate times in 512x, 256x, and 128x resolutions to feed the LOD implementation. While I could've added a 1024x resolution to be the closest to the camera, in testing I found it both increased load times (iirc the .glb was about 1.8 MiBs) and weaker devices just chugged frames trying to render it, so I decided against.
+
+I also created two seperate LOD components that reactively render based on the size of a players screen. Non-mobile screen sizes get the LOD component with all three resolutions, and mobile screens get the LOD component with only last two resolutions.
+
+My reasoning for separating the LOD into separate components is two fold. Firstly, for faster load times on slow data connections (which i mentioned previously). Secondly, to accomodate the limitations of mobile phone processors, especially the ones onboard devices with ultra high resolution displays. I found doing things this way, rather than using a single LOD to rule them all, seemed to provide better performance (i.e. higher-framerates) on mobile devices, so the separate LODs made it into the final game.
+
+## Rest of the Bot Clicker (ROTFBC)
+
+Like I said, I could recycle some of the logic from the earlier example to create most of the bones for what would become Bot Clicker. The rest of it was just a small matter of swapping out the model, adding some sounds, adding a few functions, and writing some extra logic. So in no particular order, this is what I did:
+
+1. Used robots instead of bananas
+2. Used Next.js instead of a SPA React app
+3. Added a few optimizations of my own. For example there's only 30 bots on mobile devices, while there's 60 bots on desktop. Also, LOD is used/implemented a bit differently.
+4. Added some functions to load & randomize the sounds when a bot is clicked.
+5. Added functions that scale the robot up on a successful click (and scale back down after a 2 second period).
+6. Implemented zustand to keep track of the clicks (I deliberatly chose to only count clicks of scaled bots to discourage click spamming the same bot).
+7. Added functions that make movement speed dependent on the total number of clicks.
+8. Added (drei's) stars and the logic that make them move.
+9. Used a bloom post-processing shader instead of the depth of field shader.
+10. Implemented React Three A11y to prevent the bots from moving for those who have reduced motion on.
+11. Added a menu with buttons that showcase a warning before you play/enter bot clicker. Also features the actual button that "soft" navigates you to the url (this uses Next's useRouter hook) that enables you to play bot clicker.
+12. Wrote logic for a bright hemisphere light when out of the game, and logic that adds a postional light and removes/greatly decreases the hemisphere light in the game.
+13. Wrote logic that keeps bot movement very limited on the actual landing page, but brings them to life when the game is actually entered.
+14. Wrote logic that ensures the stars, post-processing, and bot animations only get loaded when the game is actually enterered.
+15. Added a very dark and blurry "safety" div to cover the bots when out of the game.
+16. Wrote logic that ensures bots only "react" to clicks when engaged in the game (clicks actually fall right through the blurry div despite my best efforts, so this was what I came up with).
+    I'm sure there's more but that's most of the steps I took to make the rest of the Bot Clicker. ^-^
+
+### Borrowed Logic
+
+Borrowed from the example, there's a few neat functions inside the useFrame hook: one that spreads out the bots to their positions, a second one that moves them upwards, a third one that spins them around, and a final fourth function that triggers once a bot goes beyond the top of a players screen so it can teleport them a little below the bottom edge of the players screen.
+
+### Keeping Track of the Number of Clicked Bots, with Zustand
+
+Bot Clicker wouldn't be a game at all without the ~~score~~ clicker counter (truly the most essential feature of a game), so it was mission critical to find a way to keep track of how many bots a player "successfully" clicks on. What I decided to do was create the counter as an HTML overlay, to ensure positioning/aligning it with the other HTML elements was trivial in comparision to having it stored in the canvas. However, since it's not in the canvas, I needed to create a globally shared context store, so the state value could be both incremented and passed between components. So I used Zustand, which is similar to Redux but much lighter (and also made by the same dev collective behind react three fiber).
+
+So, when a player clicks on a non-scaled-up bot, a callback function triggers a separate function call to increment by one the stored value in the global click-counter store. Fun fact: for these stores to work in the components that call them, they need to be wrapped in that stores context provider component.
+
+As for the counter itself, it's really just a string (styled with tailwindcss) with a padStart() method attached to the value returned from the global zustand click-counter store.
+
+### Sounds
+
+The actual audio is loaded on demand with Three's AudioLoader. As well, since there's two sets of sounds (one enum stores locations of the noises from FilmCow, the other enum stores the locations of noises from Atelier Magicae) I wrote a function so there's roughly a 50% chance (Math.random is pseudo-random afterall) of getting a sound from either library, and then various probabilities of the specific sound you hear from the randomly selected library.
+
+### Stars
+
+A function in the useFrame hook rotates the stars (which come from the drei library) around so it felt like you were spinning with the robots too in outer space.
+
+### Accessibility
+
+You'll also notice the large epilepsy warning for Bot Clicker, which I'm not 100% sure warrants it, but I felt it was best to err on the side of caution anyway. This is because once the bots move fast enough the reflection from the spotlight in the up-close bot might appear as a flicker, which is probably not good for someone with photosensitive epilepsy. This was partially the reason why I disabled the bot animations (bottom spinner thing with lights might look like a flicker) and bright post-processing bloom effect (they make the bot eyes flicker a bit) and the stars too (they twinkle), and significantly slowed down the bot movement speed when you aren't actively engaged in the game. For extra caution I also added a darkened-blurry div on top the canvas. Which I realized also looked sorta cool.
+
+Disabling such extra stuff really helps with out-of-game performance too! As I really don't want to crash anyone's browser for simply visiting my website if the game happens to be too heavy for their device. I'm also not sure the game will even load if your devices browser isn't compatible with the JS version used by Three, so hopefully older devices won't have too much issue visiting the home page (aside from not being able to play Bot Clicker, which some might even view as a plus).
+
+The other thing I did was make use of react-three/a11y to stop the bots from moving around if a user does happen to have "prefer reduced motion" enabled in their browser. This way, even if they don't actually play the game they'll remain static behind the blurred div I layered on top the canvas.
+
+## Conclusion
+
+Bot Clicker is really just a toy for visitors to my site to play with, that also happens to live on the landing page. While the technical details of Bot Clicker aren't too exciting (it's literally just a background image, but more interesting and interactive), it does however inadvertantly posit some philosophical questions and I hope it gives you at least something to think about.
+
+While a part of me does wish I could've made Bot Clicker into something with even a teency bit of substance, I felt it was already pushing the limits on acceptable bandwidth useage for a landing page. So, levels and backgrounds and different models/textures (even physics), likely wouldn't be appreciated by most of the people who come here. I imagine most people just want to read some got dang' ~~Hotdogs~~ articles on how to build stuff.

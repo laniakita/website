@@ -1,0 +1,11 @@
+@layer utilities {
+  @keyframes fade-in-2 {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+}
