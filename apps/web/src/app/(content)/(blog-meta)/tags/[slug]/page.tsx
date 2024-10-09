@@ -14,8 +14,10 @@ export function generateStaticParams() {
   }));
 }
 
-export async function generateMetadata(props: { params: Promise<{ slug: string }> }, parent: ResolvingMetadata): Promise<Metadata> {
-  const params = await props.params;
+export async function generateMetadata(
+  { params }: { params: { slug: string } },
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
   const data = allTags.find((tagY) => tagY.url === `/tags/${params.slug}`);
 
   const description = data?.body.raw && data.url ? descriptionHelper(data.body.raw, data.url, true) : 'Tag page.';
@@ -59,8 +61,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
   };
 }
 
-export default async function TagPage(props: { params: Promise<{ slug: string }> }) {
-  const params = await props.params;
+export default function TagPage({ params }: { params: { slug: string } }) {
   const tag = allTags.find((tagX) => tagX.url === `/tags/${params.slug}`);
   const matchingPosts = allPosts
     .filter((postX) => postX.tags?.some((tagZ) => (tagZ as unknown as { slug: string }).slug === params.slug))
