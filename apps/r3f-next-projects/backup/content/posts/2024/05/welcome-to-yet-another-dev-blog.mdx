@@ -1,0 +1,52 @@
+---
+id: 819cb286-c7a7-440c-aba6-06d7342276fa
+type: Post
+date: 2024-05-28T01:49:37Z
+categories:
+  - slug: meta
+author: lani
+slug: welcome-to-yet-another-dev-blog
+headline: Welcome to Yet Another Dev Blog
+subheadline: There's many like it, but this one is mine
+imageSrc: ../../../assets/images/oc/2024/05/yadb.png
+altText: "Rounded vertical rectangle resembling a text file icon, with the top right of the rectangle folded inward to resemble a page from a book that's been dog-eared. At the bottom is the text YADB.mdx"
+caption: MDX is like markdown, but Xtreem!!! I mean, what else could it possibly stand for? Xylophone?
+---
+
+Hello internet, my name is Lani, and welcome to the official launch of laniakita.com 🎉, my over-engineered (oops 🤗) website and blog. This is where I’ll be showcasing some of my work, as well as my thoughts on developing sites/apps for the modern web (& more, probably).
+
+While I’m aware dev blogs are a dime-a-dozen these days, I figured that writing down my technical knowledge and sharing it with the void of the internet was a good practice still yet. One, because it forces me to think quite a bit deeper on the topics I’m writing about, and two, because someone out there might find my little notes interesting or possibly even useful. Hopefully that’s you in the latter case, but if not, well, there's more blogs than just this one out on the internet.
+
+## A Brief Technical Summary
+
+While I sometimes love nerdy clichés a bit too much for my own good, I'm unfortunately not going to delve into too much detail on this ~~monstrosity~~ site for now (you'll have to stay tuned for that). What I can offer you, is a little sneak peek, so here's the (extended) TLDR from that upcoming deep dive:
+
+> This is a website and (using [serwist](https://serwist.pages.dev/)) a [Progressive Web App (PWA)](https://web.dev/explore/progressive-web-apps) written in [TypeScript](https://www.typescriptlang.org/) and built with [Next.js](https://nextjs.org/docs)/[React](https://react.dev/reference/react). Certain elements rely on [zustand](https://docs.pmnd.rs/zustand/getting-started/introduction) for state management. WebGL elements rely on any combo of [Three.js](https://threejs.org/) + [React Three Fiber](https://docs.pmnd.rs/react-three-fiber/getting-started/introduction) + [React Three Drei](https://github.com/pmndrs/drei) + [React Three A11y](https://docs.pmnd.rs/a11y/introduction). Styles rely on [tailwindcss](https://tailwindcss.com/docs/installation) with the [Catppuccin for TailwindCSS](https://github.com/catppuccin/tailwindcss) plugin (with my own tweaks) for the color palette. [PostCSS](https://postcss.org/) and its [autoprefixer](https://github.com/postcss/autoprefixer) plugin provide CSS vendor prefixes. [0xProto](https://github.com/0xType/0xProto) is used as the primary monospace font, and [Inter](https://fonts.google.com/specimen/Inter) is the primary sans-serif font. Icons are provided by [Phosphor](https://github.com/phosphor-icons/core) and [Font Awesome](https://github.com/FortAwesome/Font-Awesome).
+>
+> The written portion primarily exists as [MDX](https://mdxjs.com/) files, which are rendered with either [@Next/mdx](https://github.com/vercel/next.js/tree/canary/packages/next-mdx) or [MDX-Bundler](https://github.com/kentcdodds/mdx-bundler) and styled via [tailwind's typography plugin](https://github.com/tailwindlabs/tailwindcss-typography). My own custom script runs (prior to `next build`) some of these files through a pre-processing step to generate UUIDs, slugs, and (some) image metadata, so they can be cached into a remote [SQLite database](https://www.sqlite.org/index.html) for convenient sorting/searching/retrieval. This relies on a combination of [Bun](https://bun.sh/docs), [gray-matter](https://github.com/jonschlinkert/gray-matter), [plaice-holder](https://plaiceholder.co/docs), and [Drizzle ORM](https://orm.drizzle.team/) with the [Turso driver](https://orm.drizzle.team/docs/get-started-sqlite#turso).
+>
+> The RSS feed relies on [JSTOXML](https://github.com/davidcalhoun/jstoxml) to process a generated object tree (which in this case was crafted to comply with [RSS 2.0 specifications](https://www.rssboard.org/rss-specification)) into a string. The result is saved into an XML file with Bun, and served via [Next's public folder](https://nextjs.org/docs/app/building-your-application/optimizing/static-assets).
+>
+> Metadata is generated via [Next's generateMetadata API](https://nextjs.org/docs/app/api-reference/functions/generate-metadata), while misc data files (e.g. the sitemap.xml) are generated using the [Metadata Files API](https://nextjs.org/docs/app/api-reference/file-conventions/metadata).
+
+Exciting I know, but you'll just have to be patient until then.
+
+## A Brief Site Map
+
+Aside, this site is broken down into a few sections. There's the blog, the project gallery, and then the about/contact/info pages.
+
+For the blog section, posts like this one will get added probably bi-weekly to maybe monthly, and you can keep up with them by subscribing to the RSS feed.
+
+In the project gallery, you'll find some stuff I've built with an accompanying technical summary (when new projects get added, I'll make sure to add a new blog post that links to it/its write-up).
+
+About the info pages, well, those are just info pages. You can learn more about me, or learn how to contact me, I suppose. But Beyond that? There's just not much else to them.
+
+## The Future
+
+If you haven't noticed, some things are still a bit rough around the edges (like the orthographic camera's aspect ratio on the landing page), but I do plan on smoothing those out in the coming months (the carpenter's **house** is never finished, after all).
+
+As well, there's still some features I'd like to get around to implementing too, like the utterances commenting system, once this site is finally open-sourced. While I did contemplate creating my own bespoke system (this would involve some SSO implementation with [Lucia auth](https://github.com/lucia-auth/lucia), and probably a DBaaS provider), I felt that taking advantage of what already exists would be better (a wild statement coming from me, I know). This is because you don't need to integrate an account with a random application (just utterances itself, which is well established), or you can just comment on GitHub directly.
+
+Also, I'm going to keep adding content, like my backlog of projects to the project gallery, as well as writing more posts and publishing those onto the blog page somewhat regularly.
+
+Aside from all that, you'll just have to stick around to find out what happens next. Subscribing to the [web feed](/feed.xml) will make that easy for you. ^-^
