@@ -11,10 +11,8 @@ export function generateStaticParams() {
     slug: cred.url.split('/').pop(),
   }));
 }
-export async function generateMetadata(
-  { params }: { params: { slug: string } },
-  parent: ResolvingMetadata,
-): Promise<Metadata> {
+export async function generateMetadata(props: { params: Promise<{ slug: string }> }, parent: ResolvingMetadata): Promise<Metadata> {
+  const params = await props.params;
   const data = allPages.find((credit) => credit.url.split('/').pop() === params.slug);
   /* eslint-disable @typescript-eslint/no-unnecessary-condition -- testing */
   const description = descriptionHelper(data?.body?.raw, data?.url, true);
@@ -58,6 +56,7 @@ export async function generateMetadata(
   };
 }
 
-export default function ContactPage({ params }: { params: { slug: string } }) {
+export default async function ContactPage(props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   return <PageCommon slug={params.slug} prefix='credits' />;
 }
