@@ -1,5 +1,4 @@
 'use client';
-import { A11yAnnouncer } from '@react-three/a11y';
 import { OrthographicCamera, Preload } from '@react-three/drei';
 import { Canvas, useThree, type CanvasProps } from '@react-three/fiber';
 import { type ReactNode, Suspense, useRef } from 'react';
@@ -30,7 +29,6 @@ export function Common2DCanvasExperimental({ children, ...props }: { children: R
           {children}
           <Preload all />
         </Canvas>
-        <A11yAnnouncer />
       </Suspense>
     </div>
   );
@@ -93,7 +91,6 @@ export default function Common2DCanvas({ children, ...props }: { children: Reado
           {children}
           <Preload all />
         </Canvas>
-        <A11yAnnouncer />
       </Suspense>
     </div>
   );

@@ -1,5 +1,4 @@
 'use client';
-import { A11yAnnouncer } from '@react-three/a11y';
 import { Preload } from '@react-three/drei';
 import { Canvas, type CanvasProps } from '@react-three/fiber';
 import { type ReactNode, Suspense, useRef } from 'react';
@@ -29,7 +28,6 @@ export default function CommonEmbedCanvas({ children, ...props }: { children: Re
           {children}
           <Preload all />
         </Canvas>
-        <A11yAnnouncer />
       </Suspense>
     </div>
   );
