@@ -1,0 +1,5 @@
+@layer components {
+  .search-button {
+    @apply flex items-center justify-between rounded-xl border border-ctp-surface0 bg-ctp-base px-4 py-4;
+  }
+}
