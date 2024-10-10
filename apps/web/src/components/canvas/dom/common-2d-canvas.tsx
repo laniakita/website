@@ -1,7 +1,7 @@
 'use client';
 import type { ReactNode } from 'react';
-import type { ThreeElement } from '@react-three/fiber';
 import { Suspense, useRef } from 'react';
+import type { ThreeElement } from '@react-three/fiber';
 import { useThree, Canvas, extend } from '@react-three/fiber'
 import { OrthographicCamera } from 'three';
 
@@ -13,66 +13,23 @@ declare module '@react-three/fiber' {
 
 extend({OrthographicCamera})
 
-export function Common2DCanvasExperimental({ children, ...props }: { children: Readonly<ReactNode> }) {
-  const ref = useRef(null!);
-
-  return (
-    <div ref={ref} className='relative size-full'>
-      <Suspense>
-        <Canvas
-          eventSource={ref}
-          orthographic
-          style={{
-            height: '100%',
-            width: '100%',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            overflow: 'hidden',
-            pointerEvents: 'none',
-          }}
-          {...props}
-        >
-          <OrthoCam />
-          {children}
-        </Canvas>
-      </Suspense>
-    </div>
-  );
-}
-
-function OrthoCam() {
-  const frustum = 100;
-  const { size } = useThree();
-  const aspectRatio = size.height / size.width;
-  const horizontal = aspectRatio < 1 ? frustum / aspectRatio : frustum;
-  const vertical = aspectRatio < 1 ? frustum : frustum * aspectRatio;
-
-  return (
-    <orthographicCamera
-      makeDefault
-      position={[0, 0, 10]}
-      zoom={frustum}
-      left={-horizontal}
-      right={horizontal}
-      top={vertical}
-      bottom={-vertical}
-      manual
-    />
-  );
-}
-
 export default function Common2DCanvas({ children, ...props }: { children: Readonly<ReactNode> }) {
   const ref = useRef(null!);
-
   return (
     <div ref={ref} className='relative size-full'>
       <Suspense>
         <Canvas
           eventSource={ref}
           orthographic
+          camera={{
+            left: -0.5,
+            right: 0.5,
+            top: 0.5,
+            bottom: -0.5,
+            near: -1000,
+            far: 1000,
+            position: [0, 0, 1],
+          }}
           style={{
             height: '100%',
             width: '100%',
@@ -86,17 +43,8 @@ export default function Common2DCanvas({ children, ...props }: { children: Reado
           }}
           {...props}
         >
-          <orthographicCamera
-            makeDefault
-            manual
-            left={-0.5}
-            right={0.5}
-            top={0.5}
-            bottom={-0.5}
-            near={-1000}
-            far={1000}
-            position={[0, 0, 1]}
-          />
+          <ambientLight intensity={1.1} />
+
           {children}
         </Canvas>
       </Suspense>
