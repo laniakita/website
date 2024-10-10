@@ -12,7 +12,6 @@ import vertex from './shader.vert';
 // @ts-expect-error -- using glsl loader for this
 import fragment from './shader.frag';
 
-
 interface NoiseShaderMaterialProps extends ShaderMaterial {
   u_time?: number;
 }
@@ -40,11 +39,12 @@ function Setup() {
   const data = useMemo(
     () => ({
       uniforms: {
-        u_time: { value: 0.0 }
+        u_time: { value: 0.0 },
       },
       fragmentShader: fragment,
       vertexShader: vertex,
-    }), []
+    }),
+    [],
   );
   //@ts-expect-error -- bad types
   useFrame((state, delta) => {
@@ -65,9 +65,9 @@ function Setup() {
         {/* @ts-expect-error -- bad types */}
         <planeGeometry args={[PLANE_HEIGHT, PLANE_WIDTH]} />
         {/* @ts-expect-error -- bad types */}
-        <shaderMaterial ref={shaderRef} attach="material" {...data} />
+        <shaderMaterial ref={shaderRef} attach='material' {...data} />
         {/* @ts-expect-error -- bad types */}
-      </mesh >
+      </mesh>
     </>
   );
 }
