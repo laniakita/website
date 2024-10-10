@@ -1,4 +1,4 @@
-export const web = new sst.aws.Nextjs("Web", {
+export const showcase = new sst.aws.Nextjs("Showcase", {
   path: "apps/showcase",
   buildCommand: "turbo build:open-next",
   environment: {

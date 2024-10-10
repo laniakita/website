@@ -19,7 +19,7 @@
  * routinely fetches usage metrics from CloudWatch
  * for all CloudFront distributions, and sends a
  * notification to the SNS Topic that invokes
- * the CloudFront disabler "kill switch" Lambda,
+ * the CloudFront disabler kill switch Lambda,
  * once the usage metrics are beyond the defined
  * usage limits.
  *
