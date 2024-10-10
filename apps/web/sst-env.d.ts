@@ -17,6 +17,10 @@ declare module "sst" {
       "name": string
       "type": "sst.aws.Function"
     }
+    "Showcase": {
+      "type": "sst.aws.Nextjs"
+      "url": string
+    }
     "Web": {
       "type": "sst.aws.Nextjs"
       "url": string

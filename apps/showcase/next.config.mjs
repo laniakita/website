@@ -39,7 +39,7 @@ const nextConfig = {
     return [
       {
         source: '/',
-        destination: MAIN_SITE_URL,
+        destination: 'https://laniakita.com',
         permanent: true,
       },
     ];
