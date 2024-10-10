@@ -8,7 +8,7 @@ export const dynamicParams = false;
 export function generateStaticParams() {
   const projects = allProjects.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
   const embeddedProjs = projects.map((projX) => {
-    const obj = !projX.offsite ? { path: projX.url.split('/').slice(2, projX.url.split('/').length) } : undefined;
+    const obj = projX.embedded ? { path: projX.url.split('/').slice(2, projX.url.split('/').length) } : undefined;
     return obj;
   });
   return embeddedProjs.filter((el) => el);
