@@ -1,9 +1,10 @@
 import { PHASE_DEVELOPMENT_SERVER, PHASE_PRODUCTION_BUILD } from 'next/constants.js';
+import { MAIN_SITE_URL } from './src/lib/constants-js.mjs';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
-    
+
   webpack(config) {
     // shader support
     config.module.rules.push({
@@ -14,7 +15,7 @@ const nextConfig = {
 
     return config;
   },
-  
+
   /* replace webpack for next 15
   experimental: {
     turbo: {
@@ -34,6 +35,15 @@ const nextConfig = {
 
   swcMinify: true,
 
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: MAIN_SITE_URL,
+        permanent: true,
+      },
+    ];
+  },
 };
 
 const nextConfigFunction = async (phase, { defaultConfig }) => {

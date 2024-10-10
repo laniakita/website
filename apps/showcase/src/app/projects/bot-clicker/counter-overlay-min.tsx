@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname, useSearchParams, useRouter } from 'next/navigation';
 import { useHajClickerStore } from '@/providers/hajclicker-store-provider';
 import TextSplitterUltra from '@/components/text-splitter-v2';
+import { MAIN_SITE_URL } from '@/lib/constants';
 
 export default function CounterOverlayMin({ model }: { model: string }) {
   const [isPlayWarn, setIsPlayWarn] = useState(false);
@@ -113,7 +114,7 @@ export default function CounterOverlayMin({ model }: { model: string }) {
           </>
         )}
         <div className='ctp-mocha absolute bottom-4 left-4 z-[2] lg:bottom-10 lg:left-10'>
-          <Link href='/credits/bot-clicker' className='underline'>
+          <Link target='_blank' href={`${MAIN_SITE_URL}/credits/bot-clicker`} className='underline'>
             Credits
           </Link>
         </div>
