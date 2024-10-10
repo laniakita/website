@@ -2,7 +2,6 @@
 module.exports = {
   extends: [
     '@website/eslint-config/next.cjs',
-    'plugin:@react-three/recommended',
     'plugin:tailwindcss/recommended',
     'prettier',
   ],
