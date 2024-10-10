@@ -1,7 +1,7 @@
 'use client';
 import { usePathname } from 'next/navigation';
-import { socialItems2 } from '../sidebar/main';
-import { SocialIconNav2 } from '../sidebar/social-icon-nav-client';
+import { socialItems2 } from '@/lib/constants';
+import { SocialIconNav2 } from './social-icon-nav-client';
 import { FooterBox, FooterBoxSpecial } from './footer-box';
 import data from './common-data.json';
 

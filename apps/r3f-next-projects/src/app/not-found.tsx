@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { DarkStoreProvider } from '@/providers/theme-store-provider';
 import NavBar from '@/components/navbar/navbar';
 import Footer from '@/components/footer/footer';
-import NoiseShader01 from './projects/(three)/shaders/noise/01/noise';
+import NoiseShader01 from '@/app/shaders/noise/01/noise';
 
 export default function NotFound() {
   return (

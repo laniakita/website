@@ -17,3 +17,4 @@ drizzle/meta/*
 .contentlayermini/*
 sst-env.d.ts
 .turbo/*
+backup/*
