@@ -1,9 +1,19 @@
 'use client';
-import { OrthographicCamera, Preload } from '@react-three/drei';
-import { Canvas, useThree, type CanvasProps } from '@react-three/fiber';
-import { type ReactNode, Suspense, useRef } from 'react';
+import type { ReactNode } from 'react';
+import type { ThreeElement } from '@react-three/fiber';
+import { Suspense, useRef } from 'react';
+import { useThree, Canvas, extend } from '@react-three/fiber'
+import { OrthographicCamera } from 'three';
 
-export function Common2DCanvasExperimental({ children, ...props }: { children: Readonly<ReactNode> } & CanvasProps) {
+declare module '@react-three/fiber' {
+  interface ThreeElements {
+    orthographicCamera: ThreeElement<typeof OrthographicCamera>
+  }
+}
+
+extend({OrthographicCamera})
+
+export function Common2DCanvasExperimental({ children, ...props }: { children: Readonly<ReactNode> }) {
   const ref = useRef(null!);
 
   return (
@@ -27,7 +37,6 @@ export function Common2DCanvasExperimental({ children, ...props }: { children: R
         >
           <OrthoCam />
           {children}
-          <Preload all />
         </Canvas>
       </Suspense>
     </div>
@@ -42,7 +51,7 @@ function OrthoCam() {
   const vertical = aspectRatio < 1 ? frustum : frustum * aspectRatio;
 
   return (
-    <OrthographicCamera
+    <orthographicCamera
       makeDefault
       position={[0, 0, 10]}
       zoom={frustum}
@@ -55,7 +64,7 @@ function OrthoCam() {
   );
 }
 
-export default function Common2DCanvas({ children, ...props }: { children: Readonly<ReactNode> } & CanvasProps) {
+export default function Common2DCanvas({ children, ...props }: { children: Readonly<ReactNode> }) {
   const ref = useRef(null!);
 
   return (
@@ -77,7 +86,7 @@ export default function Common2DCanvas({ children, ...props }: { children: Reado
           }}
           {...props}
         >
-          <OrthographicCamera
+          <orthographicCamera
             makeDefault
             manual
             left={-0.5}
@@ -89,7 +98,6 @@ export default function Common2DCanvas({ children, ...props }: { children: Reado
             position={[0, 0, 1]}
           />
           {children}
-          <Preload all />
         </Canvas>
       </Suspense>
     </div>
