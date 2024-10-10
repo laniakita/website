@@ -13,7 +13,11 @@ import vertex from './shader.vert';
 import fragment from './shader.frag';
 
 interface NoiseShaderMaterialProps extends ShaderMaterial {
-  u_time?: number;
+  uniforms: {
+    u_time: {
+      value: number;
+    };
+  };
 }
 
 //const NoiseShaderMaterial = shaderMaterial({ u_time: 0 }, `${vertex}`, `${fragment}`);
@@ -27,6 +31,7 @@ export default function NoiseShader01() {
   );
 }
 
+
 function Setup() {
   const shaderRef = useRef<NoiseShaderMaterialProps>();
   const meshRef = useRef<Mesh>(null);
@@ -36,19 +41,19 @@ function Setup() {
   const PLANE_ASPECT = PLANE_WIDTH / PLANE_HEIGHT;
   const VIEW_ASPECT = viewport.width / viewport.height;
 
-  const data = useMemo(
+  const uniforms = useMemo(
     () => ({
-      uniforms: {
-        u_time: { value: 0.0 },
+      u_time: {
+        value: 0.0,
       },
-      fragmentShader: fragment,
-      vertexShader: vertex,
     }),
     [],
   );
   //@ts-expect-error -- bad types
   useFrame((state, delta) => {
-    shaderRef.current!.u_time!++;
+    const { clock } = state;
+    (meshRef.current?.material as NoiseShaderMaterialProps).uniforms.u_time.value = 0.4 * clock.getElapsedTime();
+
     if (PLANE_ASPECT > VIEW_ASPECT) {
       meshRef.current?.scale.setX(PLANE_ASPECT / VIEW_ASPECT);
       meshRef.current?.scale.setY(1);
@@ -65,7 +70,7 @@ function Setup() {
         {/* @ts-expect-error -- bad types */}
         <planeGeometry args={[PLANE_HEIGHT, PLANE_WIDTH]} />
         {/* @ts-expect-error -- bad types */}
-        <shaderMaterial ref={shaderRef} attach='material' {...data} />
+        <shaderMaterial fragmentShader={fragment} vertexShader={vertex} uniforms={uniforms} />
         {/* @ts-expect-error -- bad types */}
       </mesh>
     </>

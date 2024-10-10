@@ -6,8 +6,11 @@ import {
   allCategories,
   allTags,
   allPages,
-  type Tag,
-  type Category,
+} from 'contentlayer/generated';
+import type {
+  Tag,
+  Category,
+  Project,
 } from 'contentlayer/generated';
 import { APP_URL } from '@/lib/constants';
 
@@ -61,13 +64,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${APP_URL}/about`,
       lastModified: getPageDate('about'),
       changeFrequency: 'yearly',
-      priority: 0.7,
+      priority: 0.8,
     },
-
     {
       url: `${APP_URL}/projects`,
       lastModified: projectsRes[0]?.updated ?? projectsRes[0]?.date ?? new Date(),
       changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${APP_URL}/resume`,
+      lastModified: new Date('2024-10-05T07:42:42Z'),
+      changeFrequency: 'yearly',
       priority: 0.6,
     },
     {
@@ -98,8 +106,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url: `${APP_URL}${tag.url}`,
     lastModified: isNewPostInCatTag(tag, false),
   }));
+  
+  const embeddedProjectsSearch = projectsRes.map((proj) => {
+    if (proj.embedded) {
+      return proj
+    }
+    return undefined
+  })
+  
+  const projRes = embeddedProjectsSearch.filter(el => el) as Project[];
 
-  const projects = projectsRes.map((project) => ({
+  const projects = projRes.map((project) => ({
     url: `${APP_URL}${project.url}`,
     lastModified: project.updated ?? project.date,
   }));

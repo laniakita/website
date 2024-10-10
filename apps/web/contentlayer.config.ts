@@ -27,7 +27,7 @@ export const Project = defineDocumentType(() => ({
     caption: { type: 'string', required: false },
     description: { type: 'string', required: true },
     blogPost: { type: 'string', required: false },
-    offsite: { type: 'boolean', required: false },
+    embedded: { type: 'boolean', required: true },
   },
   computedFields: {
     url: {
