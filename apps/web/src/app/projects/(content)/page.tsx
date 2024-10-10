@@ -92,7 +92,9 @@ function ProjectPreview(data: Project) {
   const descriptionX = data.blogPost ? getDescription(data) : data.description;
 
   function projectLink() {
-    if (data.offsite) {
+    if (data.foreignUrl) {
+      return data.foreignUrl
+    } else if (!data.embedded && !data.foreignUrl) {
       return `${SHOWCASE_URL}${data.url}`;
     }
     return `${APP_URL}${data.url}`;

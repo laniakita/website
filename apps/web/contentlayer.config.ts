@@ -28,6 +28,7 @@ export const Project = defineDocumentType(() => ({
     description: { type: 'string', required: true },
     blogPost: { type: 'string', required: false },
     embedded: { type: 'boolean', required: true },
+    foreignUrl: {type: 'string', required: false},
   },
   computedFields: {
     url: {
