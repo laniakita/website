@@ -44,7 +44,7 @@ export const ofacCountries = [
 const limiter = new SlidingWindowCounterRateLimiter(10, 1000 * 60);
 
 export default function middleware(request: NextRequest) {
-  const visitorCountryCode = request.headers.get('CloudFront-Viewer-Country') ?? geolocation(request)?.country;
+  const visitorCountryCode = request.headers.get('CloudFront-Viewer-Country') ?? geolocation(request).country;
   if (visitorCountryCode) {
     if (ofacCountries.find((country) => country === visitorCountryCode)) {
       return new Response('Resource is unavailable.', { status: 451 });
