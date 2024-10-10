@@ -1,3 +1,5 @@
+'use client'
+import { Suspense } from 'react';
 import Link from 'next/link';
 import { DarkStoreProvider } from '@/providers/theme-store-provider';
 import NavBar from '@/components/navbar/navbar';
@@ -6,7 +8,7 @@ import NoiseShader01 from './projects/(three)/shaders/noise/01/noise';
 
 export default function NotFound() {
   return (
-    <>
+    <Suspense>
       <DarkStoreProvider>
         <NavBar />
       </DarkStoreProvider>
@@ -30,6 +32,6 @@ export default function NotFound() {
       <DarkStoreProvider>
         <Footer />
       </DarkStoreProvider>
-    </>
+    </Suspense>
   );
 }

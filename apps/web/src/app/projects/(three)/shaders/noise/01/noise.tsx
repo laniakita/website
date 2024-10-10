@@ -3,9 +3,8 @@
 
 import { useMemo, useRef } from 'react';
 // @ts-expect-error -- bad types
-import { extend, useFrame, useThree } from '@react-three/fiber';
+import { useFrame, useThree } from '@react-three/fiber';
 import type { Mesh, ShaderMaterial } from 'three';
-import { Vector2 } from 'three';
 import Common2DCanvas from '@/components/canvas/dom/common-2d-canvas';
 // @ts-expect-error -- using glsl loader for this
 import vertex from './shader.vert';
@@ -33,7 +32,6 @@ export default function NoiseShader01() {
 
 
 function Setup() {
-  const shaderRef = useRef<NoiseShaderMaterialProps>();
   const meshRef = useRef<Mesh>(null);
   const { viewport } = useThree();
   const PLANE_HEIGHT = 1;
@@ -50,7 +48,7 @@ function Setup() {
     [],
   );
   //@ts-expect-error -- bad types
-  useFrame((state, delta) => {
+  useFrame((state) => {
     const { clock } = state;
     (meshRef.current?.material as NoiseShaderMaterialProps).uniforms.u_time.value = 0.4 * clock.getElapsedTime();
 

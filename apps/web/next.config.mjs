@@ -36,7 +36,6 @@ const nextConfig = {
     return config;
   },
 
-  // replace webpack for next 15
   experimental: {
     turbo: {
       rules: {
@@ -52,6 +51,8 @@ const nextConfig = {
     },
   },
 
+
+    
   //swcMinify: true,
 
   async redirects() {
