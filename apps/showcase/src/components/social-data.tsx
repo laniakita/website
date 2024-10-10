@@ -58,6 +58,4 @@ export const socialItems2 = [
     linkName: 'Patreon!',
     textSize: 'text-2xl md:text-3xl',
   },
-
 ];
-

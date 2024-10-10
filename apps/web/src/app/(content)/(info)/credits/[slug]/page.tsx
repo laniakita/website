@@ -11,7 +11,10 @@ export function generateStaticParams() {
     slug: cred.url.split('/').pop(),
   }));
 }
-export async function generateMetadata(props: { params: Promise<{ slug: string }> }, parent: ResolvingMetadata): Promise<Metadata> {
+export async function generateMetadata(
+  props: { params: Promise<{ slug: string }> },
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
   const params = await props.params;
   const data = allPages.find((credit) => credit.url.split('/').pop() === params.slug);
   /* eslint-disable @typescript-eslint/no-unnecessary-condition -- testing */

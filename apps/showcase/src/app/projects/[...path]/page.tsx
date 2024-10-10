@@ -14,7 +14,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata(
   props: { params: Promise<{ path: string | string[] }> },
-  parent: ResolvingMetadata
+  parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const params = await props.params;
   const projData = allProjects.find(

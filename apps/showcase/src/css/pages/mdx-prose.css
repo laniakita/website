@@ -9,9 +9,9 @@
     @apply prose-ol:leading-tight prose-ul:leading-tight;
   }
   .prose-protocol-omega {
-    @apply prose-code-pretty prose-text-pretty prose-lists-pretty prose prose-catppuccin max-w-3xl dark:prose-invert;
+    @apply prose-code-pretty prose-text-pretty prose-lists-pretty prose prose-catppuccin dark:prose-invert max-w-3xl;
   }
   .prose-protocol-omega-old {
-    @apply prose prose-catppuccin relative text-lg prose-h1:text-3xl prose-h1:font-black prose-h1:leading-tight prose-h2:text-2xl prose-h2:leading-tight prose-h3:text-xl prose-h3:leading-tight prose-h4:leading-tight prose-p:text-base prose-a:text-base prose-a:text-ctp-mauve prose-a:underline hover:prose-a:text-ctp-pink prose-code:text-sm prose-pre:max-w-[68vw] prose-pre:shadow-lg prose-pre:shadow-ctp-mauve/30 prose-h1:supports-[text-wrap:balance]:text-balance prose-h2:supports-[text-wrap:balance]:text-balance prose-h3:supports-[text-wrap:balance]:text-balance prose-h4:supports-[text-wrap:balance]:text-balance prose-p:supports-[text-wrap:pretty]:text-pretty narrow-phone:prose-pre:max-w-[76vw] small-phone:prose-pre:max-w-[78vw] phone:prose-pre:max-w-[79vw] phablet:prose-pre:max-w-[80vw] fold:prose-pre:max-w-[81vw] sm:prose-pre:max-w-[86vw] md:prose-h1:text-4xl md:prose-h2:text-3xl md:prose-h3:text-2xl;
+    @apply prose prose-catppuccin prose-h1:text-3xl prose-h1:font-black prose-h1:leading-tight prose-h2:text-2xl prose-h2:leading-tight prose-h3:text-xl prose-h3:leading-tight prose-h4:leading-tight prose-p:text-base prose-a:text-base prose-a:text-ctp-mauve prose-a:underline hover:prose-a:text-ctp-pink prose-code:text-sm prose-pre:max-w-[68vw] prose-pre:shadow-lg prose-pre:shadow-ctp-mauve/30 prose-h1:supports-[text-wrap:balance]:text-balance prose-h2:supports-[text-wrap:balance]:text-balance prose-h3:supports-[text-wrap:balance]:text-balance prose-h4:supports-[text-wrap:balance]:text-balance prose-p:supports-[text-wrap:pretty]:text-pretty narrow-phone:prose-pre:max-w-[76vw] small-phone:prose-pre:max-w-[78vw] phone:prose-pre:max-w-[79vw] phablet:prose-pre:max-w-[80vw] fold:prose-pre:max-w-[81vw] sm:prose-pre:max-w-[86vw] md:prose-h1:text-4xl md:prose-h2:text-3xl md:prose-h3:text-2xl relative text-lg;
   }
 }

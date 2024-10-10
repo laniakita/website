@@ -33,9 +33,7 @@ export async function GET(request: NextRequest) {
   const validProjectPaths = allProjects.map((proj) => {
     return `/opengraph${proj.url.toLowerCase()}`;
   });
-  const allValidPaths = [
-    ...validProjectPaths,
-  ];
+  const allValidPaths = [...validProjectPaths];
 
   if (!allValidPaths.includes(request.nextUrl.pathname.toLowerCase())) {
     return new Response('Resource Not found.', { status: 404 });

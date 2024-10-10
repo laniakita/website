@@ -1,6 +1,6 @@
 #! /usr/bin/env bun
 import { mkdir } from 'node:fs/promises';
-import {  allProjects } from 'contentlayer/generated';
+import { allProjects } from 'contentlayer/generated';
 
 const allProjectsRes = () => {
   return allProjects.map((doc) => {

@@ -46,8 +46,8 @@ export const Project = defineDocumentType(() => ({
           data.height,
           data.width,
           data.resized,
-          (project.altText) ?? '',
-          (project.caption) ?? '',
+          project.altText ?? '',
+          project.caption ?? '',
           data._debug ?? null,
         );
 

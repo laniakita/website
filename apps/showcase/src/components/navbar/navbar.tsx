@@ -8,7 +8,7 @@ import { useDarkStore } from '@/providers/theme-store-provider';
 import { MAIN_SITE_URL } from '@/lib/constants';
 import { socialItems3 } from '../social-data';
 import type { SocialNavIcon } from '../social-icon';
-import { mainNavArr} from '../nav-data'
+import { mainNavArr } from '../nav-data';
 import DarkModeSwitch from './dark-mode-switch';
 import LinkPlus from './link-plus';
 

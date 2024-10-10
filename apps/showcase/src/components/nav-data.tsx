@@ -1,1 +1,1 @@
- export const mainNavArr = ['Blog', 'About', 'Projects', 'Atom/RSS', 'Résumé', 'Contact'];
+export const mainNavArr = ['Blog', 'About', 'Projects', 'Atom/RSS', 'Résumé', 'Contact'];
