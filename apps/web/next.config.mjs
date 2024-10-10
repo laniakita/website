@@ -24,7 +24,8 @@ const nextConfig = {
           },
     ],
   },
-
+  
+  /*
   webpack(config) {
     // shader support
     config.module.rules.push({
@@ -34,9 +35,9 @@ const nextConfig = {
     });
 
     return config;
-  },
+  },*/
 
-  /* replace webpack for next 15
+  // replace webpack for next 15
   experimental: {
     turbo: {
       rules: {
@@ -51,9 +52,9 @@ const nextConfig = {
       },
     },
   },
-  */
+  
 
-  swcMinify: true,
+  //swcMinify: true,
 
   async redirects() {
     return [
