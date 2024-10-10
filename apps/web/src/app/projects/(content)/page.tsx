@@ -10,7 +10,7 @@ import { allPages, allPosts, allProjects, type Project } from 'contentlayer/gene
 import GlobalMDXComponent from '@/components/mdx/global-mdx-components';
 import GlobalMDXRenderer from '@/components/mdx/global-mdx-renderer';
 import PostDate from '@/app/(content)/blog/[id]/[slug]/post-date';
-import { BASE_URL, SHOWCASE_URL } from '@/lib/constants';
+import { APP_URL, SHOWCASE_URL } from '@/lib/constants';
 
 const pageData = allPages.find((page) => page.url === '/projects');
 const description = descriptionHelper(pageData?.body.raw, pageData?.url, true);
@@ -95,7 +95,7 @@ function ProjectPreview(data: Project) {
     if (data.offsite) {
       return `${SHOWCASE_URL}${data.url}`;
     }
-    return `${BASE_URL}${data.url}`;
+    return `${APP_URL}${data.url}`;
   }
 
   return (
