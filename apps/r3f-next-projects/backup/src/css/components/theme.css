@@ -1,5 +1,0 @@
-@layer components {
-  .theme-accents {
-    @apply text-lightAccent dark:text-darkAccent;
-  }
-}
