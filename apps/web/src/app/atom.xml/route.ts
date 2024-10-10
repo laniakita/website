@@ -11,6 +11,8 @@ const xmlOpts = {
   indent: '  ',
 };
 
+export const dynamic = 'force-static'
+
 export function GET() {
   const NEXTJS_VERSION = versionVault.versions.dependencies.next;
   const posts = allPosts.sort((a, b) => compareDesc(new Date(a.updated ?? a.date), new Date(b.updated ?? b.date)));

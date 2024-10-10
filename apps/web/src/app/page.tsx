@@ -5,6 +5,8 @@ import NoiseShader01 from '@/app/projects/(three)/shaders/noise/01/noise';
 import { type SocialIconNavProps } from '@/components/social-icon';
 import { RESUME_LINK } from '@/lib/constants';
 import { socialItems2 } from '@/components/sidebar/main';
+import NavBar from '@/components/navbar/navbar';
+import Footer from '@/components/footer/footer';
 
 export const metadata: Metadata = {
   openGraph: {
@@ -100,50 +102,54 @@ function SocialIconNav3({ boxItems }: SocialIconNavProps) {
 
 export default function Home() {
   return (
-    <main className='relative flex h-screen min-h-[40rem] w-full items-end justify-center md:min-h-[22rem]'>
-      <div className='absolute inset-0'>
-        <NoiseShader01 />
-      </div>
-      <div className='z-10 flex size-full flex-col items-center justify-end'>
-        <div className='simple-color-trans flex w-full flex-col items-center justify-center gap-6 border-t border-ctp-surface0 bg-ctp-base/80 p-10 backdrop-blur-md md:items-start dark:bg-ctp-midnight/80'>
-          <div className='simple-color-trans flex flex-col items-center justify-center whitespace-nowrap rounded-md md:w-fit md:justify-start'>
-            <div className='w-fit'>
-              <h1 className='text-4xl font-black uppercase md:text-6xl'>Lani Akita</h1>
-              <h2 className='text-[1.09rem] font-semibold uppercase leading-none md:text-[1.82rem]'>
-                Full Stack Developer
-              </h2>
+    <>
+      <NavBar />
+      <main className='relative flex h-screen min-h-[40rem] w-full items-end justify-center md:min-h-[22rem]'>
+        <div className='absolute inset-0'>
+          <NoiseShader01 />
+        </div>
+        <div className='z-10 flex size-full flex-col items-center justify-end'>
+          <div className='simple-color-trans flex w-full flex-col items-center justify-center gap-6 border-t border-ctp-surface0 bg-ctp-base/80 p-10 backdrop-blur-md md:items-start dark:bg-ctp-midnight/80'>
+            <div className='simple-color-trans flex flex-col items-center justify-center whitespace-nowrap rounded-md md:w-fit md:justify-start'>
+              <div className='w-fit'>
+                <h1 className='text-4xl font-black uppercase md:text-6xl'>Lani Akita</h1>
+                <h2 className='text-[1.09rem] font-semibold uppercase leading-none md:text-[1.82rem]'>
+                  Full Stack Developer
+                </h2>
+              </div>
             </div>
-          </div>
 
-          <div className='simple-color-trans flex w-full items-center justify-between gap-4 rounded-md border border-ctp-pink bg-ctp-base/70 p-4 shadow-2xl backdrop-blur-md md:flex-row md:bg-ctp-base/60 md:p-2 dark:border-ctp-sapphire/40 dark:bg-ctp-midnight/70'>
-            <div className='flex w-full flex-col md:flex-row md:justify-between'>
-              <div className='flex w-full flex-col flex-wrap items-center gap-2 md:w-fit md:max-w-[30rem] md:flex-row lg:max-w-full'>
-                <Link href='/about' className='home-btn-2'>
-                  <p className=''>About Me</p>
-                </Link>
-                <Link href='/projects' className='home-btn-2'>
-                  <p>My Projects</p>
-                </Link>
-                <Link href={RESUME_LINK} className='home-btn-2'>
-                  <p>My Résumé</p>
-                </Link>
-                <Link href='/blog' className='home-btn-2'>
-                  <p>Read the Blog</p>
-                </Link>
-                <Link href='/contact' className='home-btn-2-extra'>
-                  <p>Contact Me</p>
-                </Link>
-              </div>
-              <div className='-mb-1.5 hidden w-fit md:flex md:min-w-28 lg:px-0'>
-                <SocialIconNav3 boxItems={socialItems2} />
+            <div className='simple-color-trans flex w-full items-center justify-between gap-4 rounded-md border border-ctp-pink bg-ctp-base/70 p-4 shadow-2xl backdrop-blur-md md:flex-row md:bg-ctp-base/60 md:p-2 dark:border-ctp-sapphire/40 dark:bg-ctp-midnight/70'>
+              <div className='flex w-full flex-col md:flex-row md:justify-between'>
+                <div className='flex w-full flex-col flex-wrap items-center gap-2 md:w-fit md:max-w-[30rem] md:flex-row lg:max-w-full'>
+                  <Link href='/about' className='home-btn-2'>
+                    <p className=''>About Me</p>
+                  </Link>
+                  <Link href='/projects' className='home-btn-2'>
+                    <p>My Projects</p>
+                  </Link>
+                  <Link href={RESUME_LINK} className='home-btn-2'>
+                    <p>My Résumé</p>
+                  </Link>
+                  <Link href='/blog' className='home-btn-2'>
+                    <p>Read the Blog</p>
+                  </Link>
+                  <Link href='/contact' className='home-btn-2-extra'>
+                    <p>Contact Me</p>
+                  </Link>
+                </div>
+                <div className='-mb-1.5 hidden w-fit md:flex md:min-w-28 lg:px-0'>
+                  <SocialIconNav3 boxItems={socialItems2} />
+                </div>
               </div>
             </div>
-          </div>
-          <div className='flex items-center justify-center md:hidden'>
-            <SocialIconNav3 boxItems={socialItems2} />
+            <div className='flex items-center justify-center md:hidden'>
+              <SocialIconNav3 boxItems={socialItems2} />
+            </div>
           </div>
         </div>
-      </div>
-    </main>
+      </main>
+      <Footer />
+    </>
   );
 }
