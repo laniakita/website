@@ -62,7 +62,6 @@ export const socialItems2 = [
     linkName: 'Patreon!',
     textSize: 'text-2xl md:text-3xl',
   },
-
 ];
 
 const blogInfo = 'A blog about life, Linux, and web development. Written by, [Lani Akita](/about).';

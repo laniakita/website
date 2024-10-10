@@ -90,12 +90,12 @@ function ProjectPreview(data: Project) {
   };
 
   const descriptionX = data.blogPost ? getDescription(data) : data.description;
-  
-  function projectLink () {
+
+  function projectLink() {
     if (data.offsite) {
-      return `${SHOWCASE_URL}${data.url}`
+      return `${SHOWCASE_URL}${data.url}`;
     }
-    return `${BASE_URL}${data.url}`
+    return `${BASE_URL}${data.url}`;
   }
 
   return (

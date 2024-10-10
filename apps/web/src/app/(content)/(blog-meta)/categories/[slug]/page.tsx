@@ -14,7 +14,10 @@ export function generateStaticParams() {
   }));
 }
 
-export async function generateMetadata(props: { params: Promise<{ slug: string }> }, parent: ResolvingMetadata): Promise<Metadata> {
+export async function generateMetadata(
+  props: { params: Promise<{ slug: string }> },
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
   const params = await props.params;
   const catData = allCategories.find((catY) => catY.url.split('/').pop() === params.slug);
 

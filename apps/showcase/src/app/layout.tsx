@@ -13,7 +13,7 @@ import {
   APP_THEME_COLOR,
 } from '@/lib/constants';
 import { DarkStoreProvider } from '@/providers/theme-store-provider';
-import '@/css/app.css'
+import '@/css/app.css';
 
 const inter_tight = Inter_Tight({
   subsets: ['latin'],
@@ -66,7 +66,6 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   themeColor: APP_THEME_COLOR,
 };
-
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
