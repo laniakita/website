@@ -1,5 +1,5 @@
 import { PHASE_DEVELOPMENT_SERVER, PHASE_PRODUCTION_BUILD } from 'next/constants.js';
-import { RESUME_LINK } from './src/lib/constants-js.mjs';
+import { RESUME_LINK, SHOWCASE_URL } from './src/lib/constants-js.mjs';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -86,6 +86,11 @@ const nextConfig = {
         source: '/resume',
         destination: RESUME_LINK,
         permanent: true,
+      },
+      {
+        source: '/projects/bot-clicker',
+        destination: `${SHOWCASE_URL}/projects/bot-clicker`,
+        permanent: true
       },
     ];
   },
