@@ -1,4 +1,5 @@
 import { PHASE_DEVELOPMENT_SERVER, PHASE_PRODUCTION_BUILD } from 'next/constants.js';
+import { MAIN_SITE_URL } from './src/lib/constants-js.mjs';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -38,7 +39,7 @@ const nextConfig = {
     return [
       {
         source: '/',
-        destination: 'https://laniakita.com',
+        destination: `${MAIN_SITE_URL}/`,
         permanent: true,
       },
     ];
