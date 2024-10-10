@@ -2,7 +2,7 @@ import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { ImageResponse } from 'next/og';
 import type { NextRequest } from 'next/server';
-import type { Project, Post, Page, Tag, Category } from 'contentlayer/generated';
+import type { Project } from 'contentlayer/generated';
 import type { FeaturedImageR1 } from '@/lib/image-process';
 
 export const maxDuration = 5;
@@ -25,56 +25,15 @@ export async function GET(request: NextRequest) {
   const zeroXProtoData = await readFile(join(process.cwd(), '0xProto-Regular.woff'));
   const zeroXProto = Uint8Array.from(zeroXProtoData).buffer;
 
-  const allPostData = await readFile(join(process.cwd(), '.contentlayermini/generated/Post/index.json'), {
-    encoding: 'utf8',
-  });
-  const allPosts = JSON.parse(allPostData) as Post[];
-
-  const allPagesData = await readFile(join(process.cwd(), '.contentlayermini/generated/Page/index.json'), {
-    encoding: 'utf8',
-  });
-  const allPages = JSON.parse(allPagesData) as Page[];
-
   const allProjectData = await readFile(join(process.cwd(), '.contentlayermini/generated/Project/index.json'), {
     encoding: 'utf8',
   });
   const allProjects = JSON.parse(allProjectData) as Project[];
 
-  const allCategoryData = await readFile(join(process.cwd(), '.contentlayermini/generated/Category/index.json'), {
-    encoding: 'utf8',
-  });
-  const allCategories = JSON.parse(allCategoryData) as Category[];
-
-  const allTagData = await readFile(join(process.cwd(), '.contentlayermini/generated/Tag/index.json'), {
-    encoding: 'utf8',
-  });
-  const allTags = JSON.parse(allTagData) as Tag[];
-
-  const validPostPaths = allPosts.map((post) => {
-    return `/opengraph${post.url.toLowerCase()}`;
-  });
-  const validPagePaths = allPages.map((page) => {
-    // we need to find dynamic pages like '/credits/bot-clicker' too
-    if (page.url.split('/').length > 2) {
-      return `/opengraph${page.url}`;
-    }
-    return `/opengraph/static${page.url.toLowerCase()}`;
-  });
-  const validCategoryPaths = allCategories.map((cat) => {
-    return `/opengraph${cat.url.toLowerCase()}`;
-  });
-  const validTagPaths = allTags.map((tag) => {
-    return `/opengraph${tag.url.toLowerCase()}`;
-  });
   const validProjectPaths = allProjects.map((proj) => {
     return `/opengraph${proj.url.toLowerCase()}`;
   });
   const allValidPaths = [
-    '/opengraph/home',
-    ...validPagePaths,
-    ...validPostPaths,
-    ...validCategoryPaths,
-    ...validTagPaths,
     ...validProjectPaths,
   ];
 
@@ -87,7 +46,7 @@ export async function GET(request: NextRequest) {
   const reqType = request.nextUrl.pathname.split('/')[2];
 
   interface ResData {
-    fetched: Project | Post | Page | Tag | Category | null | undefined;
+    fetched: Project | null | undefined;
     title: string | null | undefined;
     prefix: string | null | undefined;
     type: string | null | undefined;
@@ -124,54 +83,6 @@ export async function GET(request: NextRequest) {
         data.hasImage = data.fetched?.featured_image?.hasImage;
         break;
       }
-      case 'blog': {
-        const postUrl = `/blog/${modUrl}`;
-        data.fetched = allPosts.find((postX) => postX.url === postUrl) as unknown as Post | undefined;
-        data.type = 'blog';
-        data.title = data.fetched?.headline;
-        data.prefix = 'Dev Blog of Lani';
-        // eslint-disable-next-line -- featured_image exists
-        data.hasImage = data?.fetched?.featured_image?.hasImage;
-        break;
-      }
-      case 'credits': {
-        const creditUrl = `/credits/${modUrl}`;
-        data.fetched = allPages.find((credit) => credit.url === creditUrl) as unknown as Page | undefined;
-        data.type = 'credits';
-        data.title = data.fetched?.title;
-        data.prefix = 'Credits';
-        break;
-      }
-      case 'tags': {
-        const tagUrl = `/tags/${modUrl}`;
-        data.fetched = allTags.find((tag) => tag.url === tagUrl) as unknown as Tag | undefined;
-        data.type = 'tags';
-        data.title = data.fetched?.title;
-        data.prefix = 'Tags';
-        break;
-      }
-      case 'categories': {
-        const catUrl = `/categories/${modUrl}`;
-        data.fetched = allCategories.find((cat) => cat.url === catUrl) as unknown as Category | undefined;
-        data.type = 'categories';
-        data.title = data.fetched?.title;
-        data.prefix = 'Categories';
-        break;
-      }
-      case 'static': {
-        const staticUrl = `/${modUrl}`;
-        data.fetched = allPages.find((page) => page.url === staticUrl) as unknown as Page | undefined;
-        data.type = 'static';
-        data.title = data.fetched?.title;
-        data.dynamic = false;
-        break;
-      }
-      case 'home': {
-        data.type = 'static';
-        data.title = 'Home';
-        data.dynamic = false;
-        break;
-      }
       default: {
         console.error('Whoops, no data found!');
         break;
@@ -182,7 +93,7 @@ export async function GET(request: NextRequest) {
   }
 
   return new ImageResponse(
-    data.hasImage && (data.fetched as Post | Project).featured_image !== undefined ? (
+    data.hasImage && data.fetched?.featured_image !== undefined ? (
       <div
         style={{
           display: 'flex',
@@ -198,7 +109,7 @@ export async function GET(request: NextRequest) {
             objectFit: 'cover',
             objectPosition: '50% 50%',
           }}
-          src={((data.fetched as Post | Project).featured_image as FeaturedImageR1).resized}
+          src={(data.fetched.featured_image as FeaturedImageR1).resized}
         />
       </div>
     ) : (

@@ -1,5 +1,0 @@
-@layer components {
-  .gate-button {
-    @apply bg-lightAccent/40 hover:bg-lightAccent dark:bg-darkAccent/40 hover:dark:bg-darkAccent flex w-full items-center justify-center rounded-xl border border-ctp-surface0/60 px-2 py-2 text-lg font-black text-ctp-base backdrop-blur-md hover:border-ctp-base hover:text-ctp-crust lg:px-4 lg:py-4 lg:text-2xl;
-  }
-}
