@@ -6,16 +6,16 @@ import { Suspense, useRef } from 'react';
 import type { ThreeElement } from '@react-three/fiber';
 // @ts-expect-error -- bad types
 // eslint-disable-next-line -- bad types
-import { useThree, Canvas, extend } from '@react-three/fiber'
+import { useThree, Canvas, extend } from '@react-three/fiber';
 import { OrthographicCamera } from 'three';
 
 declare module '@react-three/fiber' {
   interface ThreeElements {
-    orthographicCamera: ThreeElement<typeof OrthographicCamera>
+    orthographicCamera: ThreeElement<typeof OrthographicCamera>;
   }
 }
 
-extend({OrthographicCamera})
+extend({ OrthographicCamera });
 
 export default function Common2DCanvas({ children, ...props }: { children: Readonly<ReactNode> }) {
   const ref = useRef(null!);
@@ -47,7 +47,7 @@ export default function Common2DCanvas({ children, ...props }: { children: Reado
           }}
           {...props}
         >
-          {/* @ts-expect-error -- bad types */} 
+          {/* @ts-expect-error -- bad types */}
           <ambientLight intensity={1.1} />
 
           {children}

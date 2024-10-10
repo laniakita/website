@@ -24,8 +24,7 @@ const nextConfig = {
           },
     ],
   },
-  
-  
+
   webpack(config) {
     // shader support
     config.module.rules.push({
@@ -43,11 +42,11 @@ const nextConfig = {
       rules: {
         '*.vert': {
           loaders: ['raw-loader'],
-          as: '*.js'
+          as: '*.js',
         },
         '*.frag': {
           loaders: ['raw-loader'],
-          as: '*.js'
+          as: '*.js',
         },
       },
     },
@@ -90,7 +89,7 @@ const nextConfig = {
       {
         source: '/projects/bot-clicker',
         destination: `${SHOWCASE_URL}/projects/bot-clicker`,
-        permanent: true
+        permanent: true,
       },
     ];
   },

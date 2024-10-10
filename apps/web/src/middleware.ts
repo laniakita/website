@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { geolocation, ipAddress } from "@vercel/functions";
+import { geolocation, ipAddress } from '@vercel/functions';
 import type { NextRequest } from 'next/server';
 import { SlidingWindowCounterRateLimiter } from './lib/rate-limiter';
 
