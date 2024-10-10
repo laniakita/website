@@ -1,7 +1,11 @@
 'use client';
+/* eslint-disable @typescript-eslint/no-unsafe-call, react/no-unknown-property -- bad types */
 import type { ReactNode } from 'react';
 import { Suspense, useRef } from 'react';
+// @ts-expect-error -- bad types
 import type { ThreeElement } from '@react-three/fiber';
+// @ts-expect-error -- bad types
+// eslint-disable-next-line -- bad types
 import { useThree, Canvas, extend } from '@react-three/fiber'
 import { OrthographicCamera } from 'three';
 
@@ -43,6 +47,7 @@ export default function Common2DCanvas({ children, ...props }: { children: Reado
           }}
           {...props}
         >
+          {/* @ts-expect-error -- bad types */} 
           <ambientLight intensity={1.1} />
 
           {children}

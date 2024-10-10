@@ -1,5 +1,8 @@
 'use client';
+/* eslint-disable  @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment, react/no-unknown-property, import/named -- bad types */
+
 import { useMemo, useRef } from 'react';
+// @ts-expect-error -- bad types
 import { extend, useFrame, useThree } from '@react-three/fiber';
 import type { Mesh, ShaderMaterial } from 'three';
 import { Vector2 } from 'three';
@@ -33,7 +36,7 @@ function Setup() {
   const PLANE_WIDTH = 1;
   const PLANE_ASPECT = PLANE_WIDTH / PLANE_HEIGHT;
   const VIEW_ASPECT = viewport.width / viewport.height;
-  
+
   const data = useMemo(
     () => ({
       uniforms: {
@@ -43,7 +46,7 @@ function Setup() {
       vertexShader: vertex,
     }), []
   );
-
+  //@ts-expect-error -- bad types
   useFrame((state, delta) => {
     shaderRef.current!.u_time!++;
     if (PLANE_ASPECT > VIEW_ASPECT) {
@@ -56,9 +59,15 @@ function Setup() {
   });
 
   return (
-    <mesh ref={meshRef}>
-      <planeGeometry args={[PLANE_HEIGHT, PLANE_WIDTH]} />
-      <shaderMaterial ref={shaderRef} attach="material" {...data} />
-    </mesh >
+    <>
+      {/* @ts-expect-error -- bad types */}
+      <mesh ref={meshRef}>
+        {/* @ts-expect-error -- bad types */}
+        <planeGeometry args={[PLANE_HEIGHT, PLANE_WIDTH]} />
+        {/* @ts-expect-error -- bad types */}
+        <shaderMaterial ref={shaderRef} attach="material" {...data} />
+        {/* @ts-expect-error -- bad types */}
+      </mesh >
+    </>
   );
 }
