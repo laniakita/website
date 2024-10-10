@@ -3,6 +3,7 @@ import { DarkStoreProvider } from '@/providers/theme-store-provider';
 import NavBar from '@/components/navbar/navbar';
 import Footer from '@/components/footer/footer';
 import NoiseShader01 from '@/app/projects/shaders/noise/01/noise';
+import { MAIN_SITE_URL } from '@/lib/constants';
 
 export default function NotFound() {
   return (
@@ -22,7 +23,7 @@ export default function NotFound() {
             <h2 className='text-2xl font-semibold md:text-3xl'>Not Found.</h2>
           </div>
           <div className='h-px w-full bg-ctp-text' />
-          <Link href='/' className='home-btn-standard'>
+          <Link href={MAIN_SITE_URL} className='home-btn-standard'>
             return home
           </Link>
         </div>

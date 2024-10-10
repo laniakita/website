@@ -5,7 +5,7 @@ import Link from 'next/link';
 import * as darklogo from '@/app/laniakita-logo-transparent-darkmode.svg';
 import * as lightlogo from '@/app/laniakita-logo-transparent-lightmode.svg';
 import { useDarkStore } from '@/providers/theme-store-provider';
-import { MAIN_SITE_URL, RESUME_LINK } from '@/lib/constants';
+import { MAIN_SITE_URL } from '@/lib/constants';
 import { socialItems3 } from '../social-data';
 import type { SocialNavIcon } from '../social-icon';
 import { mainNavArr} from '../nav-data'
@@ -49,9 +49,9 @@ export default function NavBar() {
     } else if (pageStr.toLowerCase() === 'atom/rss') {
       return `${MAIN_SITE_URL}/atom.xml`;
     } else if (pageStr.toLowerCase() === 'résumé') {
-      return `${MAIN_SITE_URL}/RESUME_LINK`;
+      return `${MAIN_SITE_URL}/resume`;
     }
-    return `/${pageStr.toLowerCase()}`;
+    return `${MAIN_SITE_URL}/${pageStr.toLowerCase()}`;
   }
 
   const logo = dark ? darklogo : lightlogo;
@@ -92,7 +92,7 @@ export default function NavBar() {
         className={`motion-safe:simple-color-trans fixed inset-x-0 top-0 z-50 flex h-16 w-full items-center justify-between border-b border-ctp-base px-6 text-xl shadow-lg backdrop-blur-md [transition:_opacity_0.8s] dark:border-ctp-surface0 ${clicked.stateVal === 'open' ? 'bg-ctp-base/90 dark:bg-ctp-midnight/80' : 'bg-ctp-base/80 dark:bg-ctp-midnight/70'}`}
       >
         <div className='flex flex-row-reverse items-center justify-center gap-1 lg:flex-row'>
-          <LinkPlus href='/' className='nav-logo relative flex size-full w-16 items-center justify-center'>
+          <LinkPlus href={MAIN_SITE_URL} className='nav-logo relative flex size-full w-16 items-center justify-center'>
             <Image
               src={logo}
               alt="Logo of Lani's Initial. Click to go home."

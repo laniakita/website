@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import LinkPlus from '@/components/navbar/link-plus';
-import { RESUME_LINK } from '@/lib/constants';
+import { MAIN_SITE_URL } from '@/lib/constants';
 
 interface FooterBoxProps {
   title?: string;
@@ -12,13 +12,13 @@ export function FooterBox(Props: FooterBoxProps) {
   const { title = 'Box Name', navItems = ['Home', 'Blog'], extraClass = '' } = Props;
   function handleRef(pageStr: string) {
     if (pageStr.toLowerCase() === 'home') {
-      return '/';
+      return MAIN_SITE_URL;
     } else if (pageStr.toLowerCase() === 'atom/rss') {
-      return '/atom.xml';
+      return `${MAIN_SITE_URL}/atom.xml`;
     } else if (pageStr.toLowerCase() === 'résumé') {
-      return RESUME_LINK;
+      return `${MAIN_SITE_URL}/resume`;
     }
-    return `/${pageStr.toLowerCase()}`;
+    return `${MAIN_SITE_URL}/${pageStr.toLowerCase()}`;
   }
   return (
     <div className={`${extraClass} size-min`}>

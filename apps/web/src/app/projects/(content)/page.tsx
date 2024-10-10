@@ -10,6 +10,7 @@ import { allPages, allPosts, allProjects, type Project } from 'contentlayer/gene
 import GlobalMDXComponent from '@/components/mdx/global-mdx-components';
 import GlobalMDXRenderer from '@/components/mdx/global-mdx-renderer';
 import PostDate from '@/app/(content)/blog/[id]/[slug]/post-date';
+import { BASE_URL, SHOWCASE_URL } from '@/lib/constants';
 
 const pageData = allPages.find((page) => page.url === '/projects');
 const description = descriptionHelper(pageData?.body.raw, pageData?.url, true);
@@ -32,7 +33,7 @@ export const metadata: Metadata = {
     ],
   },
   twitter: {
-    card: 'summary',
+    card: 'summary_large_image',
     title: pageData?.title,
     description,
     images: [
@@ -89,11 +90,18 @@ function ProjectPreview(data: Project) {
   };
 
   const descriptionX = data.blogPost ? getDescription(data) : data.description;
+  
+  function projectLink () {
+    if (data.offsite) {
+      return `${SHOWCASE_URL}${data.url}`
+    }
+    return `${BASE_URL}${data.url}`
+  }
 
   return (
     <div className='flex size-full basis-full flex-col overflow-hidden rounded-md border border-ctp-surface0 dark:border-ctp-base'>
       {res.src ? (
-        <Link href={data.link ?? data.url} target='_blank'>
+        <Link href={projectLink()} target='_blank'>
           <Image
             src={res.src}
             placeholder='blur'
@@ -111,7 +119,7 @@ function ProjectPreview(data: Project) {
       <div className='flex flex-col gap-4 p-8 lg:p-10'>
         <div className='flex flex-col gap-2'>
           <h2 className='w-fit text-balance text-3xl font-black'>
-            <Link href={data.link ?? data.url} target='_blank' className='text-ctp-text'>
+            <Link href={projectLink()} target='_blank' className='text-ctp-text'>
               <span className='relative'>
                 {data.title}
                 <span className='icon-[ph--arrow-up-right-bold] absolute bottom-1 ml-px text-xl' />
