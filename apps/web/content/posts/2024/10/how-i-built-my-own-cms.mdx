@@ -1906,7 +1906,7 @@ We can see how the blurry `srcset` and the image dimensions are obtained, below.
 
 ###### `imgMetaPlusBlurryPlaiceHolders()`
 
-This function finds the absolute image path from the relative path given in the front matter, and then reads it into memory as an `arrayBuffer`, leveraging Bun's File I/O API. Then it transforms it from an array to simply a `Buffer`, which can be used as the input for `getPlaiceHolder()`. That function from `plaiceholder`, is what generates the blurry `srcset` and provides the image dimensions.
+This function finds the absolute image path from the relative path given in the front matter, and then reads it into memory as an `arrayBuffer`, leveraging Bun's File I/O API. Then it transforms it from an `arrayBuffer` to simply a `Buffer`, which can be used as an input for `getPlaiceHolder()`. It's a function from `plaiceholder`, which also relies on `sharp` under the hood. It's also the actual function that generates the blurry `srcset` and provides the image dimensions.
 
 ```typescript
 import { getPlaiceholder } from 'plaiceholder';
