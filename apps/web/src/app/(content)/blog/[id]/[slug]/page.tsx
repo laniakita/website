@@ -33,8 +33,17 @@ export async function generateMetadata(
 
   const description = descriptionHelper(postData?.body.raw, postData?.url, true);
   const previousImages = (await parent).openGraph?.images ?? [];
-
+  
   const previousImagesTwitter = (await parent).twitter?.images ?? [];
+  
+  function descriptionTruncator(descr: string) {
+    const maxLen = 200;
+    if (descr.length > maxLen) {
+      return `${descr.substring(0, maxLen - 3)}...`;
+    }
+    return descr
+  }
+
   return {
     title: postData?.headline,
     authors: [
@@ -43,10 +52,10 @@ export async function generateMetadata(
     description,
     openGraph: {
       title: postData?.headline,
-      description,
+      description: descriptionTruncator(description!),
       images: [
         {
-          alt: `${(postData?.featured_image as FeaturedImageR1).altText || postData?.headline}`,
+          alt: `${descriptionTruncator((postData?.featured_image as FeaturedImageR1).altText) || postData?.headline}`,
           type: 'image/png',
           width: 1200,
           height: 630,
@@ -58,10 +67,10 @@ export async function generateMetadata(
     twitter: {
       card: 'summary_large_image',
       title: postData?.headline,
-      description,
+      description: descriptionTruncator(description!),
       images: [
         {
-          alt: `${(postData?.featured_image as FeaturedImageR1).altText || postData?.headline}`,
+          alt: `${descriptionTruncator((postData?.featured_image as FeaturedImageR1).altText) || postData?.headline}`,
           type: 'image/png',
           width: 1600,
           height: 900,
