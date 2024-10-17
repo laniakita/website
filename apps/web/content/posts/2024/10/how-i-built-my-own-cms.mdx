@@ -32,7 +32,7 @@ So, that’s where `contentlayer2`[^1] (maintained fork of `contentlayer`) came 
 
 In honesty, I was awestruck by contentlayer’s pitch video[^2]. Especially so, because I’d just gone through the whole process of pouring blood, sweat, and tears into my own content management system for this site. It really wasn't long after that, that I swapped my whole custom solution out for it.
 
-But, swallowed pride aside, creating my own content backend was quite a learning experience for me, so I wanted to talk about it. As such, I present to you *Part 01* of my technical summary on my custom solution.
+But, swallowed pride aside, creating my own content backend was quite a learning experience for me, so I wanted to talk about it. As such, I present to you my technical summary on my custom solution.
 
 ### Contents
 
@@ -2905,7 +2905,7 @@ Aside, in the below you can see how the `runner` script is called with `package.
 }
 ```
 
-With everything now in place, every time I ran `next build`, content would be scanned, processed, and then fresh content would be inserted into the database, while old content would remain the same. I was then able to retrieve it using the functions I wrote in the previous section.
+With everything now in place, every time I ran `bun run build`, content would be scanned, processed, and fresh content would be inserted into the database, while old content would remain the same. I was then able to retrieve it using the functions I wrote in the previous section.
 
 ### Rendering Content
 
