@@ -30,12 +30,10 @@
 
         packages = with pkgs; [
           awscli2
-          turbo
           bun
           nodejs_20
           zsh
           turso-cli
-          wrangler
         ];
         shellHook = ''
           export LD_LIBRARY_PATH=${pkgs.lib.makeLibraryPath [
