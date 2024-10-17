@@ -1,0 +1,18 @@
+id: c02d1b8a-5178-481c-8303-54c9d69ef10e
+date: 2024-10-17T02:33:45Z
+title: A Custom CMS
+tech:
+  - TypeScript
+  - React
+  - Bun
+  - Node.js
+  - Drizzle ORM
+  - Turso
+  - MDX
+  - gray-matter
+  - mdx-bundler
+  - plaiceholder
+description: A custom CMS I built, that launched with this website. 
+blogPost: /blog/438e83f7/how-i-built-my-own-cms
+embedded: false
+foreignUrl: /blog/438e83f7/how-i-built-my-own-cms
