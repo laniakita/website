@@ -6,6 +6,7 @@ import { rendererRich, transformerTwoslash } from '@shikijs/twoslash';
 import rehypeMdxImportMedia from 'rehype-mdx-import-media';
 import { imageProcessor, FeaturedImageR1 } from './src/lib/image-process';
 import jsxToHtml from './src/lib/mdx-html';
+import rehypeHighlight from 'rehype-highlight';
 
 const CONTENT_DIR = 'content';
 
@@ -209,22 +210,7 @@ export default makeSource({
   mdx: {
     remarkPlugins: [remarkGfm],
     rehypePlugins: [
-      [
-        rehypeShiki,
-        {
-          themes: {
-            light: 'catppuccin-latte',
-            dark: 'catppuccin-mocha',
-          },
-
-          transformers: [
-            transformerTwoslash({
-              explicitTrigger: true,
-              renderer: rendererRich(),
-            }),
-          ],
-        },
-      ],
+      rehypeHighlight,
       rehypeMdxImportMedia,
       rehypeSlug,
     ],

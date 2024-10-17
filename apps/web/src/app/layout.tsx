@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from 'next';
 import { Inter_Tight } from 'next/font/google';
 import localFont from 'next/font/local';
 import type { ReactNode } from 'react';
+import '@catppuccin/highlightjs/css/catppuccin-variables.rgb.css'
 import '@/css/app.css';
 import { themeGetter } from '@/lib/theme-getter';
 import {
