@@ -75,6 +75,7 @@ export async function generateMetadata(
 
 export default async function BlogPostPage(props: { params: Promise<{ id: string; slug: string }> }) {
   const params = await props.params;
+  
   const post = allPosts.find(
     (postX) =>
       (postX.id.split('-').shift() === params.id && postX.url.split('/').pop() === params.slug) ||
