@@ -139,7 +139,7 @@ module.exports = {
             '--tw-prose-invert-captions': theme('colors.ctp-text.DEFAULT'),
             '--tw-prose-invert-code': theme('colors.ctp-text.DEFAULT'),
             '--tw-prose-invert-pre-code': theme('colors.ctp-text.DEFAULT'),
-            '--tw-prose-invert-pre-bg': theme('rgb(0 0 0 / 50%)'),
+            '--tw-prose-invert-pre-bg': theme('colors.ctp-base.DEFAULT'),
             '--tw-prose-invert-th-borders': theme(`colors.${invertAccent}.DEFAULT`),
             '--tw-prose-invert-td-borders': theme(`colors.${invertAccent}.DEFAULT`),
           },
