@@ -1328,8 +1328,8 @@ const batchFetchFrontMatter = async ({
   try {
     const metaArr = await Promise.all(
       pathsArr.map(async (mdxPath: string) => {
-  const absFilePath = path.resolve(path.join(cwd, mdxPath));
-  ...
+        const absFilePath = path.resolve(path.join(cwd, mdxPath));
+        ...
       }),
     );
     ...
@@ -1349,14 +1349,14 @@ const batchFetchFrontMatter = async ({
   if (!pathsArr) return;
   const cwd = process.cwd();
   try {
-    const metaArr = await Promise.all(
-      pathsArr.map(async (mdxPath: string) => {
-  const absFilePath = path.resolve(path.join(cwd, mdxPath));
-  const readIntoMem = Bun.file(absFilePath);
-        const rawFile = await readIntoMem.text();
-  ...
-      }),
-    );
+      const metaArr = await Promise.all(
+        pathsArr.map(async (mdxPath: string) => {
+          const absFilePath = path.resolve(path.join(cwd, mdxPath));
+          const readIntoMem = Bun.file(absFilePath);
+          const rawFile = await readIntoMem.text();
+        ...
+        }),
+      );
     ...
   } catch (err) {
  ...
@@ -1379,10 +1379,10 @@ const batchFetchFrontMatter = async ({
   try {
     const metaArr = await Promise.all(
       pathsArr.map(async (mdxPath: string) => {
-  ...
-  const rawFile = await readIntoMem.text();
+        ...
+        const rawFile = await readIntoMem.text();
         const frontMatter = matter(rawFile).data;
-  ...
+        ...
       }),
     );
     ...
@@ -1408,7 +1408,7 @@ const batchFetchFrontMatter = async ({
   try {
     const metaArr = await Promise.all(
       pathsArr.map(async (mdxPath: string) => {
-  ...
+        ...
         const res = await matterProcessor({
           frontMatter,
           absFilePath,
@@ -1424,7 +1424,7 @@ const batchFetchFrontMatter = async ({
     );
     ...
   } catch (err) {
- ...
+    ...
   }
 };
 ```
@@ -2518,11 +2518,11 @@ export const batchPushMain = async (fetchConfig: BatchFetchMain & DbFunctionsPro
 
 What I'm most proud of here, is that I figured out how to dynamically import modules from the given string from the configuration object. It's admittedly not pretty, as I import the functions based on their given declared `type`, but the defined functions were successfully imported by leveraging `Object.keys()`, and React's dynamic import syntax. However, you'll probably notice the eslint directives to disable typechecking on those functions. That's simply because I didn't know of a easy way to type them.
 
-While the latter problem could've been solved by simply creating/importing those function types, this script was written at a point where I thought I could release this thing to the public as ready to use software. The biggest hurdle to that I later realized, was: *how was it supposed to generate the tables people wanted?* Again, I didn't solve that problem, because by that point, I was set on moving over to something that seemed less brittle, i.e., `contentlayer`.
+While the latter problem could've been solved by simply creating/importing those function types, this script was written at a point where I thought I could release this thing to the public as ready to use software. Thus, demanding people provide types with their functions seemed like a big ask, in my opinion. Though, I suppose expecting users to create their own database functions in the first place was probably a much greater ask. By that point, why even use something like this? But, I digress.
 
-As well, you'll notice I'm importing the main fetch function (`batchFetchMain()`), which both fetches the posts to read, and performs various processing steps. If you'll recall, many of those optimizations steps are admittedly quite *rigid*, or *inflexible*, which would create further problems if I ever did wind up generalizing this code based content management system.
+As well, you'll notice I'm importing the main fetch function (`batchFetchMain()`), which again both fetches the posts to read, and performs various processing steps. If you'll recall, many of those steps are admittedly quite *rigid*, or *inflexible*, which would create further problems if I ever did wind up generalizing this code based content management system.
 
-Tech debt aside, you can see how my generic script, integrated with the configuration object defined in the next section.
+Inherent problems aside, you can see how my generic script was integrated with the configuration object in the next section.
 
 #### `db-gen.ts`
 
