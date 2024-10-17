@@ -349,7 +349,7 @@ export const postsToTagsRelations = relations(postsToTags, ({ one }) => ({
 
 In using them as foreign keys, I'm really just taking advantage of the cascade operations.
 
-As far as relations go, I'm using drizzles relations[^65] feature, and creating relational tables for both *one-to-many* (`authors`, `featured_images`) and *many-to-many* (`tags`) relations. In truth, this was somewhat *extra*, since I had foreign keys available to me on `turso`, but I was curious to know what `drizzle` was capable of, and this is one such addition that `drizzle` brings to the table (no pun intended >.<), beyond (most) vanilla SQL functions.
+As far as relations go, I'm using drizzles relations[^65] feature, and creating relational tables for both *one-to-many* (`authors`, `featured_images`) and *many-to-many* (`tags`) relations. In truth, this was somewhat *extra*, since I had foreign keys available to me on `turso`, but I was curious to know what `drizzle` was capable of, and this is one such addition that `drizzle` brings to the table (no pun intended \>.\<), beyond (most) vanilla SQL functions.
 
 #### Database Config
 
