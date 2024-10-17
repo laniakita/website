@@ -1884,7 +1884,7 @@ interface ImageUtilProps {
 }
 ```
 
-Then we have the actual function `comboImageProcessing()`, that leverage inner functions to both generates the `srcset` and dimension data, and performs the copying step to the public folder.
+Then we have the actual function `comboImageProcessing()`, that leverage inner functions to both generate the `srcset` and dimension data, and performs the copying step to the public folder.
 
 ```typescript
 const comboImageProcessing = async ({ fmatter, mdxPath, imageKey, publicPath, debug }: ImageUtilProps) => {
@@ -1902,11 +1902,11 @@ const comboImageProcessing = async ({ fmatter, mdxPath, imageKey, publicPath, de
 };
 ```
 
-We can see how the blurry `srcset` and the image dimensions are obtained, below.
+We can see how the blurry `srcset` and the image dimensions are obtained below.
 
 ###### `imgMetaPlusBlurryPlaiceHolders()`
 
-This function finds the absolute image path from the relative path given in the front matter, and then reads it into memory as an `arrayBuffer`, leveraging Bun's File I/O API. Then it transforms it from an `arrayBuffer` to simply a `Buffer`, which can be used as an input for `getPlaiceHolder()`. It's a function from `plaiceholder`, which also relies on `sharp` under the hood. It's also the actual function that generates the blurry `srcset` and provides the image dimensions.
+This function finds the absolute image path from the relative path given in the front matter, and then reads it into memory as an `arrayBuffer`, leveraging Bun's File I/O API. Then it transforms it from an `arrayBuffer` to simply a `Buffer`, which can be used as an input for `getPlaiceHolder()`. The latter is a function from `plaiceholder`, and it relies on `sharp` under the hood. It's also the actual function that generates the blurry `srcset` and provides the image dimensions.
 
 ```typescript
 import { getPlaiceholder } from 'plaiceholder';
@@ -1936,7 +1936,7 @@ const imgMetaPlusBlurryPlaiceHolders = async ({ fmatter, mdxPath, imageKey, debu
 
 ###### `newImageEmbedPath()`
 
-With that out of the way, the final step is to copy the image from the `content` folder, to the public folder, which Next.js can use to serve the images. The below function both performs that step, as well as generates the new relative path (to the public folder), which will be saved into the in-memory post object.
+With that out of the way, the final step is to copy the image from the `content` folder, to the public folder, which Next.js can use to serve the image. The below function both performs that step, as well as generates the new relative path (to the public folder), which will be saved into the in-memory post object.
 
 ```typescript
 const newimageEmbedPath = async ({
@@ -3007,9 +3007,9 @@ export function MdxJsx({ code }: { code: string }) {
 }
 ```
 
-The above is sorta complicated on first look, but the important thing to notice is that I'm taking the retrieved raw `mdx` string, and feeding into my `mdx-bundler` functions, which declares all the plugins I use for these posts.
+The above is sorta complicated on first look, but the important thing to notice is that I'm taking the retrieved raw `mdx` string, and feeding it into my `mdx-bundler` function. That function simultaneously configures `mdx-bundler` with all the plugins I use for these posts.
 
-Et voila! A CMS I built all by myself, with data flowing from a database, directly into this Next.js application, to generate these posts.
+Et voila! A CMS I built all by myself, with data flowing from a database, directly into this Next.js application, to generate a blog on the internet.
 
 ### Discussion / Moving to Contentlayer2
 
