@@ -92,6 +92,11 @@ const nextConfig = {
         destination: `${SHOWCASE_URL}/projects/bot-clicker`,
         permanent: true,
       },
+      {
+        source: '/blog/438e83f7/how-i-built-my-own-cms',
+        destination: `/blog/438e83f7/how-i-built-my-own-cms-complete`,
+        permanent: true,
+      },
     ];
   },
 };
