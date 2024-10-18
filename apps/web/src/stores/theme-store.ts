@@ -1,22 +1,23 @@
-'use client';
-import { createStore } from 'zustand';
+import { createStore } from "zustand/vanilla";
 
 export interface DarkState {
-  dark: boolean;
+  dark: boolean
 }
-
-export const defaultInitState: DarkState = {
-  dark: true,
-};
 
 export interface DarkActions {
   themeDark: () => void;
   themeLight: () => void;
 }
 
-export type DarkStore = DarkState & DarkActions;
+export type DarkStore = DarkState & DarkActions
 
-export const createDarkStore = (initState: DarkState = defaultInitState) => {
+export const defaultInitState: DarkState = {
+  dark: true
+}
+
+export const createDarkStore = (
+  initState: DarkState = defaultInitState,
+) => {
   return createStore<DarkStore>()((set) => ({
     ...initState,
     themeDark: () => {
@@ -25,5 +26,5 @@ export const createDarkStore = (initState: DarkState = defaultInitState) => {
     themeLight: () => {
       set((state) => ({ dark: (state.dark = false) }));
     },
-  }));
-};
+  }))
+}

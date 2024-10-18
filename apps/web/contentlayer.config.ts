@@ -1,12 +1,10 @@
 import { defineDocumentType, makeSource } from 'contentlayer2/source-files';
 import remarkGfm from 'remark-gfm';
 import rehypeSlug from 'rehype-slug';
-import rehypeShiki from '@shikijs/rehype';
-import { rendererRich, transformerTwoslash } from '@shikijs/twoslash';
 import rehypeMdxImportMedia from 'rehype-mdx-import-media';
+import rehypeHighlight from 'rehype-highlight';
 import { imageProcessor, FeaturedImageR1 } from './src/lib/image-process';
 import jsxToHtml from './src/lib/mdx-html';
-import rehypeHighlight from 'rehype-highlight';
 
 const CONTENT_DIR = 'content';
 
