@@ -1,17 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { compareDesc } from 'date-fns';
-import {
-  allPosts,
-  allProjects,
-  allCategories,
-  allTags,
-  allPages,
-} from 'contentlayer/generated';
-import type {
-  Tag,
-  Category,
-  Project,
-} from 'contentlayer/generated';
+import { allPosts, allProjects, allCategories, allTags, allPages } from 'contentlayer/generated';
+import type { Tag, Category, Project } from 'contentlayer/generated';
 import { APP_URL } from '@/lib/constants';
 
 // funfact/improbable todo: google only supports 50,000 urls per sitemap, so filter
@@ -106,15 +96,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url: `${APP_URL}${tag.url}`,
     lastModified: isNewPostInCatTag(tag, false),
   }));
-  
+
   const embeddedProjectsSearch = projectsRes.map((proj) => {
     if (proj.embedded) {
-      return proj
+      return proj;
     }
-    return undefined
-  })
-  
-  const projRes = embeddedProjectsSearch.filter(el => el) as Project[];
+    return undefined;
+  });
+
+  const projRes = embeddedProjectsSearch.filter((el) => el) as Project[];
 
   const projects = projRes.map((project) => ({
     url: `${APP_URL}${project.url}`,

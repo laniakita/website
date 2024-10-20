@@ -27,7 +27,7 @@ export const Project = defineDocumentType(() => ({
     description: { type: 'string', required: true },
     blogPost: { type: 'string', required: false },
     embedded: { type: 'boolean', required: true },
-    foreignUrl: {type: 'string', required: false},
+    foreignUrl: { type: 'string', required: false },
   },
   computedFields: {
     url: {
@@ -207,11 +207,7 @@ export default makeSource({
   documentTypes: [Post, Category, Tag, Page, Project, Author],
   mdx: {
     remarkPlugins: [remarkGfm],
-    rehypePlugins: [
-      rehypeHighlight,
-      rehypeMdxImportMedia,
-      rehypeSlug,
-    ],
+    rehypePlugins: [rehypeHighlight, rehypeMdxImportMedia, rehypeSlug],
     resolveCwd: 'relative',
     esbuildOptions(options) {
       options.outdir = `${process.cwd()}/public/assets/images/blog`;

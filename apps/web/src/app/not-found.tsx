@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { Suspense } from 'react';
 import Link from 'next/link';
 import { DarkStoreProvider } from '@/providers/theme-store-provider';

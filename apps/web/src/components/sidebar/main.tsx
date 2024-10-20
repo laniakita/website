@@ -4,11 +4,11 @@ import InfoBox from './info-box';
 
 export const socialItems3 = [
   {
-    title: 'X/Twitter',
-    url: 'https://x.com/laniakita',
-    iconName: 'icon-[fa6-brands--x-twitter]',
-    linkName: 'X/Twitter!',
-    textSize: 'text-3xl md:text-4xl',
+    title: 'Mastodon',
+    url: 'https://hachyderm.io/@lani',
+    iconName: 'icon-[fa6-brands--mastodon]',
+    linkName: 'Mastodon!',
+    textSize: 'text-4xl',
   },
   {
     title: 'Github',
@@ -28,18 +28,18 @@ export const socialItems2 = [
     textSize: 'text-3xl md:text-4xl',
   },
   {
-    title: 'X/Twitter',
-    url: 'https://x.com/laniakita',
-    iconName: 'icon-[fa6-brands--x-twitter]',
-    linkName: 'X/Twitter!',
-    textSize: 'text-3xl md:text-4xl',
-  },
-  {
     title: 'Mastodon',
     url: 'https://hachyderm.io/@lani',
     iconName: 'icon-[fa6-brands--mastodon]',
     linkName: 'Mastodon!',
     textSize: 'text-4xl',
+  },
+  {
+    title: 'X/Twitter',
+    url: 'https://x.com/laniakita',
+    iconName: 'icon-[fa6-brands--x-twitter]',
+    linkName: 'X/Twitter!',
+    textSize: 'text-3xl md:text-4xl',
   },
   {
     title: 'Instagram',
