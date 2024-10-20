@@ -33,15 +33,15 @@ export async function generateMetadata(
 
   const description = descriptionHelper(postData?.body.raw, postData?.url, true);
   const previousImages = (await parent).openGraph?.images ?? [];
-  
+
   const previousImagesTwitter = (await parent).twitter?.images ?? [];
-  
+
   function descriptionTruncator(descr: string) {
     const maxLen = 200;
     if (descr.length > maxLen) {
       return `${descr.substring(0, maxLen - 3)}...`;
     }
-    return descr
+    return descr;
   }
 
   return {
@@ -84,7 +84,7 @@ export async function generateMetadata(
 
 export default async function BlogPostPage(props: { params: Promise<{ id: string; slug: string }> }) {
   const params = await props.params;
-  
+
   const post = allPosts.find(
     (postX) =>
       (postX.id.split('-').shift() === params.id && postX.url.split('/').pop() === params.slug) ||

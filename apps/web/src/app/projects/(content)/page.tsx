@@ -3,10 +3,12 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
+import Markdown from 'markdown-to-jsx';
 import { compareDesc } from 'date-fns';
 import { descriptionHelper } from '@/lib/description-helper';
 import type { FeaturedImageR1 } from '@/lib/image-process';
-import { allPages, allPosts, allProjects, type Project } from 'contentlayer/generated';
+import { allPages, allPosts, allProjects } from 'contentlayer/generated';
+import type { Project } from 'contentlayer/generated';
 import GlobalMDXComponent from '@/components/mdx/global-mdx-components';
 import GlobalMDXRenderer from '@/components/mdx/global-mdx-renderer';
 import PostDate from '@/app/(content)/blog/[id]/[slug]/post-date';
@@ -70,8 +72,11 @@ export default function Projects() {
         </div>
 
         <div className='flex size-full max-w-3xl flex-wrap items-center justify-center gap-4 md:gap-6'>
-          {projectData.map((proj) => (
-            <ProjectPreview key={`project-${uKey}-${Math.floor(Math.PI * Math.random())}`} {...proj} />
+          {projectData.map((proj, idx) => (
+            <ProjectPreview
+              key={`project-${uKey}-${Math.floor(Math.PI * Math.random() * 1000)}-${idx * Math.random()}`}
+              {...proj}
+            />
           ))}
         </div>
       </div>
@@ -89,11 +94,12 @@ function ProjectPreview(data: Project) {
     return descriptionHelper(getPost.body.raw, getPost.url);
   };
 
-  const descriptionX = data.blogPost ? getDescription(data) : data.description;
+  const projDescription = data.description;
+  const blogDescription = getDescription(data);
 
   function projectLink() {
     if (data.foreignUrl) {
-      return data.foreignUrl
+      return data.foreignUrl;
     } else if (!data.embedded && !data.foreignUrl) {
       return `${SHOWCASE_URL}${data.url}`;
     }
@@ -128,6 +134,7 @@ function ProjectPreview(data: Project) {
               </span>
             </Link>
           </h2>
+
           <div className=''>
             {data.updated ? (
               <div className='flex flex-wrap gap-x-2 font-mono'>
@@ -145,11 +152,18 @@ function ProjectPreview(data: Project) {
               </p>
             )}
           </div>
+          <div className='prose-protocol-omega max-w-full prose-p:my-0 prose-a:no-underline'>
+            <GlobalMDXRenderer>{projDescription}</GlobalMDXRenderer>
+          </div>
         </div>
-        <div className='h-px w-full bg-ctp-surface0 dark:bg-ctp-base' />
+
+        {blogDescription ? <div className='h-px w-full bg-ctp-surface0 dark:bg-ctp-base' /> : ''}
         <div className='prose-protocol-omega max-w-full prose-p:my-0 prose-a:no-underline'>
-          {/* @ts-expect-error -- single string, but still works. */}
-          <GlobalMDXRenderer>{descriptionX}</GlobalMDXRenderer>
+          {blogDescription ? (
+            <MDXRenderer>{`<p className="inline mr-[1ch] font-mono font-black">Technical Summary:</p> <p className="inline">${blogDescription}</p>`}</MDXRenderer>
+          ) : (
+            ''
+          )}
         </div>
 
         <div className='h-px w-full bg-ctp-surface0 dark:bg-ctp-base' />
@@ -157,7 +171,7 @@ function ProjectPreview(data: Project) {
           <div className='flex flex-wrap gap-[1ch]'>
             {data.tech?.map((tag, idx) => (
               <p
-                key={`project-preview-${uKey}-${Math.floor(Math.random() * 100 + idx)}`}
+                key={`project-preview-${uKey}-${Math.floor(Math.random() * 100 + idx)}-${idx * Math.random()}`}
                 className='w-fit font-mono text-sm font-semibold'
               >
                 {tag}
@@ -168,5 +182,14 @@ function ProjectPreview(data: Project) {
         </div>
       </div>
     </div>
+  );
+}
+
+function MDXRenderer({ children }: { children: unknown }) {
+  return (
+    <>
+      {/* @ts-expect-error -- types not updated */}
+      <Markdown>{children}</Markdown>
+    </>
   );
 }

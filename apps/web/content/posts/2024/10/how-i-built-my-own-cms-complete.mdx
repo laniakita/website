@@ -20,17 +20,17 @@ author: lani
 headline: 'How I Built a CMS, Using TypeScript, Bun, Drizzle, & MDX (complete version)'
 subheadline: 'Then swapped it out for something better, contentlayer2'
 imageSrc: ../../../assets/images/non-oc/a-custom-cms.jpg
-altText: "A parody, that features a main figure, with a Bun for a head and a blindfold featuring MDX across it. TypeScript, Drizzle, and Turso are background characters. A character with a W for a head, represents a standard CMS, and is eating popcorn in the corner."
+altText: 'A parody, that features a main figure, with a Bun for a head and a blindfold featuring MDX across it. TypeScript, Drizzle, and Turso are background characters. A character with a W for a head, represents a standard CMS, and is eating popcorn in the corner.'
 caption: "Your scientists were so preoccupied with whether they could, they didn't stop to think if they should - Ian Malcom"
 ---
 
 import YTEmbed from '../../../../src/components/responsive-yt-embed.tsx';
 
-*A previous version of this article thought this would be a series of posts. I've since decided that it would be better to continue the long format after all. So, enjoy this updated article, now fully complete.*
+_A previous version of this article thought this would be a series of posts. I've since decided that it would be better to continue the long format after all. So, enjoy this updated article, now fully complete._
 
-This wasn't the post I planned to write. Initially, I thought this post was going to be dedicated exclusively to my bespoke content management system. Where, I thought I’d wax poetic for a while about how *sometimes the best solutions, are tailor made.* However, I’ve since come back to my senses to realize that ***the best solution is the one with the smallest number of compromises***, hand crafted be damned.
+This wasn't the post I planned to write. Initially, I thought this post was going to be dedicated exclusively to my bespoke content management system. Where, I thought I’d wax poetic for a while about how _sometimes the best solutions, are tailor made._ However, I’ve since come back to my senses to realize that **_the best solution is the one with the smallest number of compromises_**, hand crafted be damned.
 
-So, that’s where `contentlayer2`[^1] (maintained fork of `contentlayer`) came in to the equation. it's a library I stumbled upon that did exactly what I’d come up with, but in a better, more robust, and much more practical manner. In short, it's *beautiful*.
+So, that’s where `contentlayer2`[^1] (maintained fork of `contentlayer`) came in to the equation. it's a library I stumbled upon that did exactly what I’d come up with, but in a better, more robust, and much more practical manner. In short, it's _beautiful_.
 
 In honesty, I was awestruck by contentlayer’s pitch video[^2]. Especially so, because I’d just gone through the whole process of pouring blood, sweat, and tears into my own content management system for this site. It really wasn't long after that, that I swapped my whole custom solution out for it.
 
@@ -81,7 +81,7 @@ But, swallowed pride aside, creating my own content backend was quite a learning
 
 I started my life in web working with traditional CMSes like WordPress[^3] and then briefly, Ghost[^4]. Later, I took the JAMstack[^5] hype train as far as it could go, fetching data from headless CMSes[^6] like Strapi[^7] and Contentful[^8], and integrating it into Gatsby[^9] frontends. Then, sometime before building this site, I caught myself up on the latest headless CMSes people have been working with. I experimented with Payload CMS[^10] and Directus[^11], before diving into off-the-shelf backends like Supabase[^12], and PocketBase[^13] (my personal favorite).
 
-However, something about all the options I weighed kept disappointing me in one way or another. So, after a day of feeling the frustration of yet another imperfect solution, I found myself one late evening going *"Yeah, well, I'll build my own CMS, with Blackjack, and Hookers! In fact, forget the CMS"*[^14]. So, that's what I did.
+However, something about all the options I weighed kept disappointing me in one way or another. So, after a day of feeling the frustration of yet another imperfect solution, I found myself one late evening going _"Yeah, well, I'll build my own CMS, with Blackjack, and Hookers! In fact, forget the CMS"_[^14]. So, that's what I did.
 
 <YTEmbed videoId='ubPWaDWcOLU' />
 
@@ -111,7 +111,7 @@ So, in thinking about the future, and not wanting to limit my project pre-emptiv
 
 ### Setup
 
-Of the ORMs, I had narrowed it down to two options, Prisma[^45] or Drizzle ORM[^41]. I settled on Drizzle because I liked the focus on TypeScript, and I liked that you could write raw(ish) SQL as an escape hatch using its *magic SQL*[^46] operator. I also really liked the idea that the knowledge gained in working with it, would be transferable, since one of their taglines is *if you know SQL, you know Drizzle*. I'm also just a sucker for companies that know how to execute self-deprecating advertising strategies[^47][^48], so my heart was settled on using it.
+Of the ORMs, I had narrowed it down to two options, Prisma[^45] or Drizzle ORM[^41]. I settled on Drizzle because I liked the focus on TypeScript, and I liked that you could write raw(ish) SQL as an escape hatch using its _magic SQL_[^46] operator. I also really liked the idea that the knowledge gained in working with it, would be transferable, since one of their taglines is _if you know SQL, you know Drizzle_. I'm also just a sucker for companies that know how to execute self-deprecating advertising strategies[^47][^48], so my heart was settled on using it.
 
 #### Drizzle + Turso
 
@@ -131,7 +131,7 @@ export default {
   driver: 'turso',
   dbCredentials: {
     url: Resource.TursoUrl.value,
-    authToken: Resource.TursoAuth.value
+    authToken: Resource.TursoAuth.value,
   },
 } satisfies Config;
 ```
@@ -144,7 +144,7 @@ I loosely followed Turso's guide on setting it up with Drizzle[^50], then came u
 - I load in my credentials for Turso using the `{ dbCredentials }` object.
 - There's a type check which ensures that config object is in agreement with the `Config` type imported from `drizzle-kit`.
 
-Something I should note, is that instead of injecting the Turso credentials from a `.env` file using something like `process.env.TURSO_AUTH`[^52], I took advantage of SST's[^53] *secret*[^54] component instead. You'll notice I tapped into the `{ Resource }`[^55] object from `sst` using some simple dot notation[^56]. This really just avoids the hassle of passing around a `.env.local`[^57] file between work machines / dev environments.
+Something I should note, is that instead of injecting the Turso credentials from a `.env` file using something like `process.env.TURSO_AUTH`[^52], I took advantage of SST's[^53] _secret_[^54] component instead. You'll notice I tapped into the `{ Resource }`[^55] object from `sst` using some simple dot notation[^56]. This really just avoids the hassle of passing around a `.env.local`[^57] file between work machines / dev environments.
 
 #### Schemas
 
@@ -159,9 +159,9 @@ The idea was that the authors, featured_images, and tags tables would respective
 
 ![Entity Relationship diagram showing 1:M (authors, featured_images), and M:M (tags). The latter made possible with a junction table (posts_to_tags)](../../../assets/images/oc/2024/10/cms-relations-diagram.jpg)
 
-In keeping with SQLites Datatypes[^60] and what's available in Drizzle[^61] Some commonalities between these tables (as we'll see), is that I'm using a `string` for each rows `id` and primary key column, and a `integer` set to `timestamp` for the date column. That's because the `id` is a `UUIDv4`[^62] generated using Bun's  `crypto.randomUUID()`[^63], and the date is a `utc` string. The `rawStr` column, is simply the raw `utf8` string generated from reading the `.mdx` file into memory.
+In keeping with SQLites Datatypes[^60] and what's available in Drizzle[^61] Some commonalities between these tables (as we'll see), is that I'm using a `string` for each rows `id` and primary key column, and a `integer` set to `timestamp` for the date column. That's because the `id` is a `UUIDv4`[^62] generated using Bun's `crypto.randomUUID()`[^63], and the date is a `utc` string. The `rawStr` column, is simply the raw `utf8` string generated from reading the `.mdx` file into memory.
 
-Of note, in the below schemas, I'm manually exporting their types. Unfortunately, at the time, I simply wasn't aware of drizzle's `$inferInsert`[^64], `$inferSelect`[^64] functions to automatically generate types. So, that's why I'm doing it *artisanally*, in case you were wondering.
+Of note, in the below schemas, I'm manually exporting their types. Unfortunately, at the time, I simply wasn't aware of drizzle's `$inferInsert`[^64], `$inferSelect`[^64] functions to automatically generate types. So, that's why I'm doing it _artisanally_, in case you were wondering.
 
 ```typescript
 // authors.ts
@@ -351,7 +351,7 @@ export const postsToTagsRelations = relations(postsToTags, ({ one }) => ({
 
 In using them as foreign keys, I'm really just taking advantage of the cascade operations.
 
-As far as relations go, I'm using drizzles relations[^65] feature, and creating relational tables for both *one-to-many* (`authors`, `featured_images`) and *many-to-many* (`tags`) relations. In truth, this was somewhat *extra*, since I had foreign keys available to me on `turso`, but I was curious to know what `drizzle` was capable of, and this is one such addition that `drizzle` brings to the table (no pun intended \>.\<), beyond (most) vanilla SQL functions.
+As far as relations go, I'm using drizzles relations[^65] feature, and creating relational tables for both _one-to-many_ (`authors`, `featured_images`) and _many-to-many_ (`tags`) relations. In truth, this was somewhat _extra_, since I had foreign keys available to me on `turso`, but I was curious to know what `drizzle` was capable of, and this is one such addition that `drizzle` brings to the table (no pun intended \>.\<), beyond (most) vanilla SQL functions.
 
 #### Database Config
 
@@ -372,7 +372,7 @@ dotenv.config();
 
 const client = createClient({
   url: Resource.TursoUrl.value,
-  authToken: Resource.TursoAuth.value
+  authToken: Resource.TursoAuth.value,
 });
 
 export const maindb = drizzle(client, { schema: { ...authors, ...tags, ...featuredImages, ...posts } });
@@ -382,7 +382,7 @@ With that squared away, the final step was to push our schemas as tables to our 
 
 ### Overview of my CMS
 
-With the the database configured, the rest of the CMS could then be fleshed out. This process was in theory quite simple, following the outline from earlier. All I had to do was read content into memory, *process* them, and send it into the database via `insert` statements.
+With the the database configured, the rest of the CMS could then be fleshed out. This process was in theory quite simple, following the outline from earlier. All I had to do was read content into memory, _process_ them, and send it into the database via `insert` statements.
 
 #### Scanning
 
@@ -1031,7 +1031,7 @@ import path from 'node:path';
 import { readdir, access } from 'node:fs/promises';
 ```
 
-And relies on the following function I found loving on stackoverflow *... somewhere*:
+And relies on the following function I found loving on stackoverflow _... somewhere_:
 
 ```typescript
 const isNonEmptyArrayOfStrings = (value: unknown): value is string[] => {
@@ -1113,7 +1113,6 @@ export const batchFetchMDXPaths = async ({
     !suppressErr && console.error(err);
   }
 };
-
 ```
 
 Going through it, it recursively reads the contents of the given `contentFolder` using `readdir` and saves the result into an array of `fs.Dirent` objects I lovingly called `dir`:
@@ -1261,11 +1260,11 @@ If at any point during this whole process a catastrophic failure occurred, it wo
 ...
 ```
 
-Once the `finalArr` is generated from `batchFetchMDXPaths`, the posts can then be read into memory, and move on to *processing* via `batchFetchFrontMatter()`.
+Once the `finalArr` is generated from `batchFetchMDXPaths`, the posts can then be read into memory, and move on to _processing_ via `batchFetchFrontMatter()`.
 
 ### Post Processing & Content Data Generation
 
-With all the data in memory, it became possible to actually *do something* with it. That's where the pre-processing step (of the posts) came into play. Just like before, we'll start with the main function (`batchFetchFrontMatter()`) and work our way through it.
+With all the data in memory, it became possible to actually _do something_ with it. That's where the pre-processing step (of the posts) came into play. Just like before, we'll start with the main function (`batchFetchFrontMatter()`) and work our way through it.
 
 #### Batch processing of front matter: `batchFetchFrontMatter()`
 
@@ -1392,7 +1391,7 @@ const batchFetchFrontMatter = async ({
 };
 ```
 
-Then it gets to the heart of the function, the `matterProcessor`, which is, *"Ha, quite a doozy"* (we'll break it down next), and returns the result:
+Then it gets to the heart of the function, the `matterProcessor`, which is, _"Ha, quite a doozy"_ (we'll break it down next), and returns the result:
 
 ```typescript
 /*
@@ -1550,7 +1549,6 @@ const matterProcessor = async ({
 
   return { ...frontMatter, priority, localKey: mdxPath, rawStr: rawFile };
 };
-
 ```
 
 Let's chew through this one as well, shall we? First, we're defining a configuration type for this that looks like this:
@@ -1688,7 +1686,6 @@ const comboInject = async ({ rawFile, absFilePath, debug }: InjectionProps) => {
 
   return newMatter;
 };
-
 ```
 
 You'll notice it generates the `uuid` (v4) with Bun's `crypto.randomUUID()`, then it generates the `slug` by splitting and popping the absolute file path (`absFilePath`). This essentially means the file name, is the ultimate source of truth for the slug, and if the filename changes, the slug changes with it.
@@ -2004,12 +2001,11 @@ const newimageEmbedPath = async ({
     return embedPublicCopyPath;
   }
 };
-
 ```
 
 #### Zooming out
 
-Once it has all of that, it returns the assembled *processed* object:
+Once it has all of that, it returns the assembled _processed_ object:
 
 ```typescript
 const matterProcessor = async ({
@@ -2027,7 +2023,7 @@ const matterProcessor = async ({
 };
 ```
 
-From there, we can zoom further back out to the parent function to notice we return the assembled *processed* object as the `res`, to generate the `metaArr` array, which is then sorted and returned according to the priority we defined earlier:
+From there, we can zoom further back out to the parent function to notice we return the assembled _processed_ object as the `res`, to generate the `metaArr` array, which is then sorted and returned according to the priority we defined earlier:
 
 ```typescript
 /*
@@ -2457,7 +2453,7 @@ export const insertPosts = async (data: Posts): Promise<void> => {
 
 One thing you'll probably notice, is that I'm assembling a temporary object within each insertion function (respective of the given table, e.g., `authors`), from what already exists in the database. By running this comparison, I'm ensuring that only new content is inserted into the database, or content that needs to be updated. As such, this drastically reduces the number of rows that need to be written.
 
-> Turso ***only*** gives 25 million row additions per month for free, so I decided it was important to keep as much of that 25 million as possible. You know, just in case.
+> Turso **_only_** gives 25 million row additions per month for free, so I decided it was important to keep as much of that 25 million as possible. You know, just in case.
 
 Another thing you might notice is that I've commented out the `maindb` that's imported from `@/lib/db/bun-db`. That database, is the local one that relied on Bun's native SQLite driver. But, for the reasons I went over earlier, I wound up using Turso instead.
 
@@ -2520,7 +2516,7 @@ What I'm most proud of here, is that I figured out how to dynamically import mod
 
 While the latter problem could've been solved by simply creating/importing those function types, this script was written at a point where I thought I could release this thing to the public as ready to use software. Thus, demanding people provide types with their functions seemed like a big ask, in my opinion. Though, I suppose expecting users to create their own database functions in the first place was probably a much greater ask. By that point, why even use something like this? But, I digress.
 
-As well, you'll notice I'm importing the main fetch function (`batchFetchMain()`), which again both fetches the posts to read, and performs various processing steps. If you'll recall, many of those steps are admittedly quite *rigid*, or *inflexible*, which would create further problems if I ever did wind up generalizing this code based content management system.
+As well, you'll notice I'm importing the main fetch function (`batchFetchMain()`), which again both fetches the posts to read, and performs various processing steps. If you'll recall, many of those steps are admittedly quite _rigid_, or _inflexible_, which would create further problems if I ever did wind up generalizing this code based content management system.
 
 Inherent problems aside, you can see how my generic script was integrated with the configuration object in the next section.
 
@@ -2558,7 +2554,7 @@ const laniConfig = {
 
 const dbGen = async (): Promise<void> => {
   try {
-    console.log('trying to create db')
+    console.log('trying to create db');
     await batchPushMain(laniConfig);
     console.log('db-gen successful');
   } catch (err) {
@@ -2577,7 +2573,7 @@ What good would a CMS be if you couldn't access any of the data you stored on to
 
 #### `node-db-funcs.ts`
 
-One thing to point out, is there's a switch over from `bun` to `node` functions, and that's because the production build of a Next.js application runs on `node`. While it is possible to run the Next.js development server from `bun`, the production run time environment is strictly node, *for good reason*: Next.js often relies on the latest Node.js APIs that Bun simply hasn't had time to implement, *yet*.
+One thing to point out, is there's a switch over from `bun` to `node` functions, and that's because the production build of a Next.js application runs on `node`. While it is possible to run the Next.js development server from `bun`, the production run time environment is strictly node, _for good reason_: Next.js often relies on the latest Node.js APIs that Bun simply hasn't had time to implement, _yet_.
 
 ```typescript
 // node-db-funcs.ts
@@ -3526,6 +3522,7 @@ Which, speaking of, `contentlayer` isn't perfect, it's far from it. Because it r
 With that said, `contentlayer` for a site like mine, just seems like the right tool for the job. At this scale, it's as close to perfect as I'm going to get, and I'm incredibly appreciative of all the work behind it too.
 
 ---
+
 [^1]: Timothy. timlrx/contentlayer2 [Internet]. 2024 [cited 2024 Sep 13]. Available from: [https://github.com/timlrx/contentlayer2](https://github.com/timlrx/contentlayer2)
 
 [^2]: Contentlayer Makes Working with Content Easy for Developers [Internet]. 2022 [cited 2024 Sep 13]. Available from: [https://www.youtube.com/watch?v=58Pj4a4Us7A](https://www.youtube.com/watch?v=58Pj4a4Us7A)

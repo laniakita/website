@@ -11,7 +11,7 @@ const xmlOpts = {
   indent: '  ',
 };
 
-export const dynamic = 'force-static'
+export const dynamic = 'force-static';
 
 export function GET() {
   const NEXTJS_VERSION = versionVault.versions.dependencies.next;

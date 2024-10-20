@@ -30,7 +30,6 @@ export default function NoiseShader01() {
   );
 }
 
-
 function Setup() {
   const meshRef = useRef<Mesh>(null);
   const { viewport } = useThree();
