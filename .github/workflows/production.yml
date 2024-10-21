@@ -44,13 +44,11 @@ jobs:
       # nodejs
       - name: nodejs
         uses: actions/setup-node@v4
+        with: 
+          node-version: '20.17.0'
+      # install bun
+      - run: npm install --global bun
 
-      # install Bun
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
-      - run: echo "Installed bun"
 
       # install packages
       - name: install packages
@@ -58,7 +56,7 @@ jobs:
 
       # ROTFB
       - name: Deploy
-        run: bun sst deploy --stage=production --verbose --print-logs
+        run: bun sst deploy --stage=production --verbose
         timeout-minutes: 30
 
 
