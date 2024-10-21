@@ -46,9 +46,9 @@ jobs:
         uses: actions/setup-node@v4
         with: 
           node-version: '20.17.0'
+
       # install bun
       - run: npm install --global bun
-
 
       # install packages
       - name: install packages
@@ -58,5 +58,3 @@ jobs:
       - name: Deploy
         run: bun sst deploy --stage=production --verbose
         timeout-minutes: 30
-
-
