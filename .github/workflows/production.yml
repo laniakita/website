@@ -33,6 +33,7 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
           aws-region: ${{ secrets.AWS_REGION }}
           mask-aws-account-id: true
+          role-duration-seconds: 14390
     
       - name: Add AWS profile to ~/.aws/credentials
         run: |
@@ -48,8 +49,13 @@ jobs:
           bun-version: latest
       - run: echo "Installed bun"
 
+      # install packages
+      - name: install packages
+        run: bun install
+
       # ROTFB
-      - run: bun install
-      - run: bun sst deploy --stage=production --verbose
+      - name: Deploy
+        run: bun sst deploy --stage=production --verbose --print-logs
+        timeout-minutes: 30
 
 
