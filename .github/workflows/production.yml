@@ -29,8 +29,8 @@ jobs:
       - name: Configure AWS
         uses: aws-actions/configure-aws-credentials@v4
         with: 
-          role-to-assume: ${{ env.AWS_ROLE_TO_ASSUME }}
-          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: "$AWS_ROLE_TO_ASSUME"
+          aws-region: "$AWS_REGION"
       # install Bun
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
