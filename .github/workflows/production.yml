@@ -1,5 +1,5 @@
 name: Production Build Action
-run-name: ${{github.actor}} is building ${{ github.repository }} for production
+run-name: ${{github.actor}} is building for production
 on: 
   push:
     branches:
