@@ -33,7 +33,6 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
           aws-region: ${{ secrets.AWS_REGION }}
           mask-aws-account-id: true
-          role-duration-seconds: 14390
     
       - name: Add AWS profile to ~/.aws/credentials
         run: |
