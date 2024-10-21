@@ -1,6 +1,9 @@
 name: Production Build Action
 run-name: ${{github.actor}} is building ${{ github.repository }} for production
-on: [push]
+on: 
+  push:
+    branches:
+      - production
 permissions:
   id-token: write
   contents: read
