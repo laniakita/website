@@ -12,8 +12,6 @@ import { catTagData } from '@/lib/cat-tag-data';
 import CommentsComponent from './comments';
 import { PostHeader2 } from './post-header-2';
 
-export const dynamicParams = false;
-
 export function generateStaticParams() {
   const posts = allPosts.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
   return posts.map((meta) => ({
@@ -36,8 +34,9 @@ export async function generateMetadata(
 
   const previousImagesTwitter = (await parent).twitter?.images ?? [];
 
-  function descriptionTruncator(descr: string) {
+  function descriptionTruncator(descr: string | undefined) {
     const maxLen = 200;
+    if (!descr) return '';
     if (descr.length > maxLen) {
       return `${descr.substring(0, maxLen - 3)}...`;
     }
@@ -52,7 +51,7 @@ export async function generateMetadata(
     description,
     openGraph: {
       title: postData?.headline,
-      description: descriptionTruncator(description!),
+      description: descriptionTruncator(description),
       images: [
         {
           alt: `${descriptionTruncator((postData?.featured_image as FeaturedImageR1).altText) || postData?.headline}`,
@@ -67,7 +66,7 @@ export async function generateMetadata(
     twitter: {
       card: 'summary_large_image',
       title: postData?.headline,
-      description: descriptionTruncator(description!),
+      description: descriptionTruncator(description),
       images: [
         {
           alt: `${descriptionTruncator((postData?.featured_image as FeaturedImageR1).altText) || postData?.headline}`,
