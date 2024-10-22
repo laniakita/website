@@ -83,7 +83,12 @@ const nextConfig = {
       {
         source: '/resume',
         destination: RESUME_LINK,
-        permanent: true,
+        permanent: false,
+      },
+      {
+        source: '/lani-akita_resume-october-2024.pdf',
+        destination: RESUME_LINK,
+        permanent: true
       },
       {
         source: '/projects/bot-clicker',
