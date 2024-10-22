@@ -25,8 +25,12 @@ export async function generateMetadata(
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const params = await props.params;
+
   const postData = allPosts.find(
-    (postX) => postX.id.split('-').shift() === params.id && postX.url.split('/').pop() === params.slug,
+    (postX) =>
+      (postX.id.split('-').shift() === params.id && postX.url.split('/').pop() === params.slug) ||
+      postX.id.split('-').shift() === params.id ||
+      postX.url.split('/').pop() === params.slug,
   );
 
   const description = descriptionHelper(postData?.body.raw, postData?.url, true);
