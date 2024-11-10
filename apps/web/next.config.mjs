@@ -14,14 +14,14 @@ const nextConfig = {
     remotePatterns: [
       process.env.NEXT_PUBLIC_DEPLOYED_URL !== undefined && process.env.NODE_ENV === 'production'
         ? {
-            protocol: 'https',
-            hostname: '**.laniakita.com',
-            port: '',
-          }
+          protocol: 'https',
+          hostname: '**.laniakita.com',
+          port: '',
+        }
         : {
-            protocol: 'http',
-            hostname: 'localhost',
-          },
+          protocol: 'http',
+          hostname: 'localhost',
+        },
     ],
   },
 
@@ -109,6 +109,7 @@ const nextConfigFunction = async (phase, { defaultConfig }) => {
     const withSerwist = (await import('@serwist/next')).default({
       swSrc: 'src/app/sw.ts',
       swDest: 'public/sw.js',
+      maximumFileSizeToCacheInBytes: 7864000,
     });
     plugins.push(withSerwist);
 

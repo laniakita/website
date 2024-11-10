@@ -3,7 +3,7 @@
 import { useId } from 'react';
 import { usePathname } from 'next/navigation';
 import type { Post } from 'contentlayer/generated';
-import { SubscribeBox } from '@/components/sidebar/main';
+import { SocialBox, SubscribeBox } from '@/components/sidebar/main';
 import PostPreviewV4 from './post-components';
 
 export default function PostRollerV4({ posts }: { posts: Post[] }) {
@@ -22,6 +22,7 @@ export default function PostRollerV4({ posts }: { posts: Post[] }) {
                   key={`subscribe-blog-post-${uniqueKey}-${Math.floor(Math.random() * 1000 + idx)}`}
                   className='flex flex-col gap-4 md:gap-6'
                 >
+                  <SocialBox mobile />
                   <SubscribeBox mobile />
                   <PostPreviewV4 {...post} />
                 </div>

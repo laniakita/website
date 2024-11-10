@@ -19,7 +19,7 @@ export default function InfoBox({
 
   return (
     <div className=''>
-      <div className='sidebar-box relative flex flex-col gap-6'>
+      <div className='sidebar-box simple-color-trans relative flex flex-col gap-6 bg-ctp-base dark:bg-ctp-midnight'>
         {isActiveTab === 'info' && (
           <div className='prose-protocol-omega p-6 pt-[4.5rem] prose-p:my-0'>
             <GlobalMDXRenderer>{blogInfo}</GlobalMDXRenderer>
@@ -37,7 +37,7 @@ export default function InfoBox({
           </div>
         )}
 
-        <div className='absolute top-0 flex w-full flex-col gap-0 rounded-t-md bg-ctp-surface2 dark:bg-ctp-crust'>
+        <div className=' absolute top-0 flex w-full flex-col gap-0 rounded-t-md bg-ctp-surface2 dark:bg-ctp-crust'>
           <div className='flex w-full flex-row'>
             <div className='flex w-full px-6 pt-2'>
               <button
@@ -84,10 +84,10 @@ function SmoothTab({ active }: { active: boolean }) {
   return (
     <>
       <span
-        className={`${active ? 'block' : 'hidden'} absolute -left-4 bottom-0 size-4 [background:radial-gradient(circle_at_25%_25%,_#acb0be,_#acb0be_72%,_#dce0e8_5%,_#dce0e8_100%)] dark:[background:radial-gradient(circle_at_25%_25%,_#11111b,_#11111b_72%,_#1e1e2e_5%,_#1e1e2e_100%)]`}
+        className={`${active ? 'block' : 'hidden'} simple-color-trans absolute -left-4 bottom-0 size-4 [background:radial-gradient(circle_at_25%_25%,_#acb0be,_#acb0be_72%,_#dce0e8_5%,_#dce0e8_100%)] dark:[background:radial-gradient(circle_at_25%_25%,_#11111b,_#11111b_72%,_#1e1e2e_5%,_#1e1e2e_100%)]`}
       />
       <span
-        className={`${active ? 'block' : 'hidden'} absolute -right-4 bottom-0 size-4 [background:radial-gradient(circle_at_75%_25%,_#acb0be,_#acb0be_72%,_#dce0e8_5%,_#dce0e8_100%)] dark:[background:radial-gradient(circle_at_75%_25%,_#11111b,_#11111b_72%,_#1e1e2e_5%,_#1e1e2e_100%)]`}
+        className={`${active ? 'block' : 'hidden'} simple-color-trans absolute -right-4 bottom-0 size-4 [background:radial-gradient(circle_at_75%_25%,_#acb0be,_#acb0be_72%,_#dce0e8_5%,_#dce0e8_100%)] dark:[background:radial-gradient(circle_at_75%_25%,_#11111b,_#11111b_72%,_#1e1e2e_5%,_#1e1e2e_100%)]`}
       />
     </>
   );
