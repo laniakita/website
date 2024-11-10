@@ -1,8 +1,10 @@
 import Link from 'next/link';
 import { allCategories, allTags } from 'contentlayer/generated';
+import { MAIN_PAGES, SOCIALS_FULL } from '../nav-constants';
+import { FooterBox, FooterBoxSpecial } from '../footer/footer-box';
+import { CopyrightTag } from '../footer/footer';
 import InfoBox from './info-box';
 import { SocialIconNav2 } from './social-icon-nav-client';
-import { SOCIALS_FULL } from '../nav-constants';
 
 export const socialItems3 = [
   {
@@ -83,19 +85,33 @@ export default function Sidebar() {
   const tags = allTags.sort((a, b) => a.title.localeCompare(b.title));
 
   return (
-    <div className='flex h-fit md:sticky md:top-24'>
-      <div className='flex size-full h-fit max-h-[calc(100vh-6rem)] flex-col overflow-y-auto md:gap-6'>
+    <div className='flex h-full max-h-[calc(100vh-4rem)] shadow-xl md:sticky md:top-16'>
+      <div className='flex size-full flex-col gap-0 overflow-y-auto border-l border-l-ctp-surface0 bg-ctp-surface0/20 md:gap-6 md:border md:p-4 dark:border-ctp-base dark:bg-ctp-base/20'>
         <InfoBox categories={categories} tags={tags} socialItems={socialItems2} blogInfo={blogInfo} />
         <SubscribeBox />
-        <SocialIconNav2 boxItems={SOCIALS_FULL} />
+        <div className='relative flex flex-col items-center justify-center md:pb-4'>
+          <SocialBox />
+          <div className='absolute bottom-2 hidden w-fit rounded-xl bg-ctp-surface0/0 px-2 text-center backdrop-blur md:flex dark:bg-ctp-midnight'>
+            <CopyrightTag />
+          </div>
+        </div>
+
       </div>
     </div>
   );
 }
 
+export function SocialBox({ mobile }: { mobile?: boolean }) {
+  return (
+    <div className={`${mobile ? 'block md:hidden' : 'hidden md:block'} simple-color-trans w-full rounded-md border border-ctp-surface0 bg-ctp-base p-6 dark:border-ctp-base dark:bg-ctp-midnight`}>
+      <SocialIconNav2 boxItems={SOCIALS_FULL} />
+    </div>
+  )
+}
+
 export function SubscribeBox({ mobile }: { mobile?: boolean }) {
   return (
-    <div className={`sidebar-box ${mobile ? 'flex md:hidden' : 'hidden md:flex'} flex-col gap-4 p-6`}>
+    <div className={`sidebar-box ${mobile ? 'flex md:hidden' : 'hidden md:flex'} simple-color-trans flex-col gap-4 bg-ctp-base p-6 dark:bg-ctp-midnight`}>
       <h4 className='flex-wrap text-balance text-3xl font-black'>Articles delivered right to your feed reader.</h4>
       <Link
         target='_blank'

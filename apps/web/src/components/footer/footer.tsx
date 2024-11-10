@@ -1,7 +1,7 @@
 'use client';
 import { usePathname } from 'next/navigation';
 import { SocialIconNav2 } from '../sidebar/social-icon-nav-client';
-import { SOCIALS_FULL } from '../nav-constants';
+import { MAIN_PAGES, SOCIALS_FULL } from '../nav-constants';
 import { FooterBox, FooterBoxSpecial } from './footer-box';
 import data from './common-data.json';
 
@@ -52,9 +52,11 @@ export const socialItems = [
 
 export default function Footer({ extra }: { extra?: string }) {
   const pathname = usePathname();
-  const hiddenPaths = ["/", "/blog"]
+  const hiddenPaths = ["/"];
+  const weirdPaths = ["/blog"];
+
   return (
-    <footer className={`${hiddenPaths.includes(pathname) ? 'hidden' : 'block'} relative w-full`}>
+    <footer className={`${hiddenPaths.includes(pathname) ? 'hidden' : 'block'} ${weirdPaths.includes(pathname) ? 'md:hidden' : ''} relative w-full`}>
       <div
         className={`simple-color-trans relative flex w-full flex-col items-center justify-center overflow-hidden bg-ctp-base dark:bg-ctp-midnight ${extra}`}
       >
@@ -66,19 +68,28 @@ export default function Footer({ extra }: { extra?: string }) {
             <div className='relative w-full space-y-8 p-10 md:max-w-3xl md:rounded-md  md:border md:border-ctp-surface0 dark:md:border-ctp-base'>
               {/* logo + search + social_buttons + +copyright + links */}
               <div className='flex w-full flex-col items-center justify-center gap-2 md:flex-row md:gap-20'>
+
                 <div className='w-full space-y-4 px-4 md:px-0 md:pl-8'>
                   <SocialIconNav2 boxItems={SOCIALS_FULL} />
                 </div>
-                <div className='hidden h-80 w-px bg-ctp-base md:flex' />
-                <FooterNavLinks />
+
+                <div className='hidden h-80 w-px  bg-ctp-surface0 md:flex dark:bg-ctp-base' />
+                <div className='flex w-full px-4 md:hidden'>
+                  <div className='mt-4 flex h-px w-full bg-ctp-surface0 md:hidden dark:bg-ctp-base' />
+                </div>
+                <div className='relative flex size-full flex-col'>
+                  <FooterNavLinks />
+                  <div className='absolute bottom-[-4.25rem] hidden bg-ctp-base px-2 md:flex dark:bg-ctp-midnight'>
+                    <CopyrightTag />
+                  </div>
+                </div>
+
                 <div className='md:hidden'>
                   <CopyrightTag />
                 </div>
               </div>
 
-              <div className='absolute -bottom-1.5 right-6 hidden bg-ctp-midnight px-2 md:flex'>
-                <CopyrightTag />
-              </div>
+
 
             </div>
           </div>
@@ -91,13 +102,13 @@ export default function Footer({ extra }: { extra?: string }) {
 function FooterNavLinks() {
   return (
     <div className='grid w-full grid-cols-1 gap-4 p-4 narrow-phone:grid-cols-2 md:gap-14 md:p-0'>
-      <FooterBox title='navigation' navItems={data.navigationItems} />
+      <FooterBox title='navigation' navItems={Object.keys(MAIN_PAGES)} />
       <FooterBoxSpecial title='socials' navItems={SOCIALS_FULL} />
     </div>
   );
 }
 
-function CopyrightTag() {
+export function CopyrightTag() {
   const getDate = new Date();
   const currentYear = getDate.getFullYear(); //2024 bby
   return (

@@ -1,13 +1,16 @@
-export const MAIN_PAGES = [
-  "/",
-  "/blog",
-  "/about",
-  "/work",
-  "/projects",
-  "/feed.xml",
-  "/resume",
-  "/contact"
-]
+const MAIN_PAGES_ARR = new Map([
+  ["home", "/"],
+  ["blog", "/blog"],
+  ["about", "/about"],
+  ["work", "/work"],
+  ["projects", "/projects"],
+  ["Atom/RSS", "/feed.xml"],
+  ["résumé", "/resume"],
+  ["contact", "/contact"]
+]);
+
+export const MAIN_PAGES = Object.fromEntries(MAIN_PAGES_ARR);
+
 
 export const SOCIALS_NAVBAR = [
   {

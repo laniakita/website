@@ -42,9 +42,16 @@ export const metadata: Metadata = {
 export default function BlogPage2() {
   const posts = allPosts.sort((a, b) => compareDesc(new Date(a.updated ?? a.date), new Date(b.updated ?? b.date)));
   return (
-    <main className='simple-color-trans common-padding flex size-full flex-col-reverse justify-center gap-4 bg-ctp-base md:flex-row md:gap-6 dark:bg-ctp-midnight'>
-      <PostRollerV4 posts={posts} />
-      <Sidebar />
-    </main>
+    <div className='flex size-full flex-row'>
+      <main className='simple-color-trans common-padding flex size-full flex-col-reverse justify-center gap-4 bg-ctp-base md:flex-row md:gap-6 dark:bg-ctp-midnight'>
+        <PostRollerV4 posts={posts} />
+        <div className='block md:hidden'>
+          <Sidebar />
+        </div>
+      </main>
+      <div className='hidden md:block'>
+        <Sidebar />
+      </div>
+    </div>
   );
 }
