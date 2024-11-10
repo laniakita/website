@@ -1,5 +1,5 @@
 'use client';
-/* eslint-disable @typescript-eslint/no-unsafe-call, react/no-unknown-property -- bad types */
+/* eslint-disable react/no-unknown-property -- bad types */
 import type { ReactNode } from 'react';
 import { Suspense, useRef } from 'react';
 // @ts-expect-error -- bad types
