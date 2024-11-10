@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { allCategories, allTags } from 'contentlayer/generated';
-import { MAIN_PAGES, SOCIALS_FULL } from '../nav-constants';
-import { FooterBox, FooterBoxSpecial } from '../footer/footer-box';
+import {  SOCIALS_FULL } from '../nav-constants';
 import { CopyrightTag } from '../footer/footer';
 import InfoBox from './info-box';
 import { SocialIconNav2 } from './social-icon-nav-client';
