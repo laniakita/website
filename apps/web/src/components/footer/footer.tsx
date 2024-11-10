@@ -1,7 +1,7 @@
 'use client';
 import { usePathname } from 'next/navigation';
-import { socialItems2 } from '../sidebar/main';
 import { SocialIconNav2 } from '../sidebar/social-icon-nav-client';
+import { SOCIALS_FULL } from '../nav-constants';
 import { FooterBox, FooterBoxSpecial } from './footer-box';
 import data from './common-data.json';
 
@@ -52,25 +52,34 @@ export const socialItems = [
 
 export default function Footer({ extra }: { extra?: string }) {
   const pathname = usePathname();
+  const hiddenPaths = ["/", "/blog"]
   return (
-    <footer className={`${pathname === '/' ? 'hidden' : 'block'} relative w-full`}>
+    <footer className={`${hiddenPaths.includes(pathname) ? 'hidden' : 'block'} relative w-full`}>
       <div
         className={`simple-color-trans relative flex w-full flex-col items-center justify-center overflow-hidden bg-ctp-base dark:bg-ctp-midnight ${extra}`}
       >
         {/* contents container that givs the blurry bg + the pattern */}
         <div className='flex size-full flex-col backdrop-blur-2xl'>
           {/* <FooterSubscribe /> */}
-          <div className='flex flex-col items-center justify-center gap-4 pb-16 md:pb-36 md:pt-20 lg:pb-40 lg:pt-20'>
+          <div className='md:pb-common flex flex-col items-center justify-center gap-4 md:px-10'>
             {/* content container */}
-            <div className='w-full space-y-8 p-10 md:w-fit md:rounded-md md:border md:border-ctp-surface0 dark:md:border-ctp-base'>
+            <div className='relative w-full space-y-8 p-10 md:max-w-3xl md:rounded-md  md:border md:border-ctp-surface0 dark:md:border-ctp-base'>
               {/* logo + search + social_buttons + +copyright + links */}
-              <div className='flex w-full flex-col items-center justify-center gap-2 md:gap-10'>
-                <div className='w-full px-4 md:px-0'>
-                  <SocialIconNav2 boxItems={socialItems2} />
+              <div className='flex w-full flex-col items-center justify-center gap-2 md:flex-row md:gap-20'>
+                <div className='w-full space-y-4 px-4 md:px-0 md:pl-8'>
+                  <SocialIconNav2 boxItems={SOCIALS_FULL} />
                 </div>
+                <div className='hidden h-80 w-px bg-ctp-base md:flex' />
                 <FooterNavLinks />
+                <div className='md:hidden'>
+                  <CopyrightTag />
+                </div>
+              </div>
+
+              <div className='absolute -bottom-1.5 right-6 hidden bg-ctp-midnight px-2 md:flex'>
                 <CopyrightTag />
               </div>
+
             </div>
           </div>
         </div>
@@ -81,9 +90,9 @@ export default function Footer({ extra }: { extra?: string }) {
 
 function FooterNavLinks() {
   return (
-    <div className='grid w-full grid-cols-1 gap-4 p-4 narrow-phone:grid-cols-2 md:p-0'>
+    <div className='grid w-full grid-cols-1 gap-4 p-4 narrow-phone:grid-cols-2 md:gap-14 md:p-0'>
       <FooterBox title='navigation' navItems={data.navigationItems} />
-      <FooterBoxSpecial title='socials' navItems={socialItems2} />
+      <FooterBoxSpecial title='socials' navItems={SOCIALS_FULL} />
     </div>
   );
 }

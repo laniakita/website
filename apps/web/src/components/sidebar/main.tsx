@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { allCategories, allTags } from 'contentlayer/generated';
 import InfoBox from './info-box';
+import { SocialIconNav2 } from './social-icon-nav-client';
+import { SOCIALS_FULL } from '../nav-constants';
 
 export const socialItems3 = [
   {
@@ -85,6 +87,7 @@ export default function Sidebar() {
       <div className='flex size-full h-fit max-h-[calc(100vh-6rem)] flex-col overflow-y-auto md:gap-6'>
         <InfoBox categories={categories} tags={tags} socialItems={socialItems2} blogInfo={blogInfo} />
         <SubscribeBox />
+        <SocialIconNav2 boxItems={SOCIALS_FULL} />
       </div>
     </div>
   );
