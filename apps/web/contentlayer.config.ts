@@ -8,6 +8,60 @@ import jsxToHtml from './src/lib/mdx-html';
 
 const CONTENT_DIR = 'content';
 
+export const Work = defineDocumentType(() => ({
+  name: 'Work',
+  filePathPattern: 'works/**/*.mdx',
+  contentType: 'mdx',
+  fields: {
+    id: { type: 'string', required: true },
+    startDate: { type: 'date', required: true },
+    endDate: { type: 'date', required: false },
+    title: { type: 'string', required: true },
+    domain: { type: 'string', required: true },
+    active: { type: 'boolean', required: true },
+    tech: {
+      type: 'list',
+      of: { type: 'string' },
+    },
+    imageSrc: { type: 'string', required: false },
+    altText: { type: 'string', required: false },
+  },
+  computedFields: {
+    url: {
+      type: 'string',
+      resolve: (work) => `/${work._raw.flattenedPath}`,
+    },
+    featured_image: {
+      type: 'json',
+      resolve: async (work): Promise<FeaturedImageR1> => {
+        if (!work.imageSrc) return new FeaturedImageR1(false, '', '', 0, 0, '', '', '', null);
+        const data = await imageProcessor({
+          contentDir: CONTENT_DIR,
+          prefix: `${CONTENT_DIR}/${work._raw.flattenedPath}`,
+          imgPath: work.imageSrc,
+          debug: false,
+        });
+
+        const res = new FeaturedImageR1(
+          true,
+          data.src,
+          data.base64,
+          data.height,
+          data.width,
+          data.resized,
+          work.altText ?? '',
+          '',
+          data._debug ?? null,
+        );
+
+        return res;
+      },
+    },
+  },
+}));
+
+
+
 export const Project = defineDocumentType(() => ({
   name: 'Project',
   filePathPattern: 'projects/**/*.yaml',
@@ -204,7 +258,7 @@ export const Post = defineDocumentType(() => ({
 
 export default makeSource({
   contentDirPath: CONTENT_DIR,
-  documentTypes: [Post, Category, Tag, Page, Project, Author],
+  documentTypes: [Post, Category, Tag, Page, Project, Author, Work],
   mdx: {
     remarkPlugins: [remarkGfm],
     rehypePlugins: [rehypeHighlight, rehypeMdxImportMedia, rehypeSlug],

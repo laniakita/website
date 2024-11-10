@@ -17,8 +17,7 @@ interface Clicked {
 
 export default function NavBar() {
   const { dark } = useDarkStore((state) => state);
-  const pagesArr = ['Blog', 'About', 'Projects', 'Atom/RSS', 'Résumé', 'Contact'];
-  const pagesArrMobile = ['Blog', 'About', 'Projects', 'Résumé', 'Atom/RSS', 'Contact'];
+  const pagesArr = ['Blog', 'About', 'Work', 'Projects', 'Atom/RSS', 'Résumé', 'Contact'];
   const [clicked, setClicked] = useState<Clicked>({
     stateVal: 'closed',
   });
@@ -70,7 +69,7 @@ export default function NavBar() {
             className={`${clicked.stateVal === 'open' ? 'opacity-100 [transform:translate3d(0%,0%,0px)]' : 'opacity-0 [transform:translate3d(0%,-100%,-0.01rem)]'} max-h-[calc(100dvh-3.9rem)] w-full overflow-y-auto rounded-b-2xl border-b border-ctp-pink bg-ctp-base/90 backdrop-blur-md [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:transform_0.5s,_opacity_0.3s,_background-color_0.8s] lg:hidden dark:border-ctp-sky dark:bg-ctp-midnight/90`}
           >
             <div className='flex size-full flex-col gap-3 p-10'>
-              {pagesArrMobile.map((page) => (
+              {pagesArr.map((page) => (
                 <LinkPlus
                   href={handleRef(page)}
                   key={page}
@@ -139,15 +138,20 @@ export default function NavBar() {
         </div>
 
         <div className='flex flex-row items-center justify-center gap-2'>
-          <DarkModeSwitch />
           <SimpleSocials arr={socialItems3} />
+          <span className='px-1 font-thin text-ctp-subtext1/80'>|</span>
+          <DarkModeSwitch />
         </div>
       </div>
     </nav>
   );
 }
 
-function SimpleSocials({ arr }: { arr: SocialNavIcon[] }) {
+interface SimpleIcon extends SocialNavIcon {
+  textSizeAlt: string;
+}
+
+function SimpleSocials({ arr }: { arr: SimpleIcon[] }) {
   const uKey = useId();
   return (
     <>
@@ -159,7 +163,7 @@ function SimpleSocials({ arr }: { arr: SocialNavIcon[] }) {
             href={icon.url}
             className='flex items-center justify-center text-3xl text-ctp-subtext1/80 dark:hover:text-ctp-pink'
           >
-            <span className={`${icon.iconName} text-3xl`} />
+            <span className={`${icon.iconName} ${icon.textSizeAlt}`} />
           </Link>
         </p>
       ))}
