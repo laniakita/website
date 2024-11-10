@@ -41,6 +41,7 @@ const allProjectsRes = () => {
   });
 };
 
+/*
 const allWorksRes = () => {
   return allWorks.map((doc) => {
     // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars -- vars
@@ -48,7 +49,7 @@ const allWorksRes = () => {
     return content;
   });
 };
-
+*/
 
 
 export const writeMinifiedContent = async () => {
@@ -57,8 +58,8 @@ export const writeMinifiedContent = async () => {
   console.info(`Creating ${allPages.length} minified pages...`);
   console.info(`Creating ${allCategories.length} minified categories...`);
   console.info(`Creating ${allTags.length} minified tags...`);
-  console.info(`Creating ${allProjects.length} minified tags...`);
-  console.info(`Creating ${allWorks.length} minified tags...`);
+  console.info(`Creating ${allProjects.length} minified projects...`);
+  //console.info(`Creating ${allWorks.length} minified tags...`);
 
 
   try {
@@ -67,7 +68,7 @@ export const writeMinifiedContent = async () => {
     const catsMin = allCatsRes();
     const tagsMin = allTagsRes();
     const projectsMin = allProjectsRes();
-    const worksMin = allWorksRes();
+    //const worksMin = allWorksRes();
 
 
     const mainDir = './.contentlayermini/generated';
@@ -78,21 +79,21 @@ export const writeMinifiedContent = async () => {
     const catDir = `${mainDir}/Category`;
     const tagDir = `${mainDir}/Tag`;
     const projDir = `${mainDir}/Project`;
-    const workDir = `${mainDir}/Work`;
+    //const workDir = `${mainDir}/Work`;
     
     await mkdir(postDir, { recursive: true });
     await mkdir(pageDir, { recursive: true });
     await mkdir(catDir, { recursive: true });
     await mkdir(tagDir, { recursive: true });
     await mkdir(projDir, { recursive: true });
-    await mkdir(workDir, { recursive: true });
+    //await mkdir(workDir, { recursive: true });
 
     await Bun.write(`${postDir}/${mainOut}`, JSON.stringify(postsMin));
     await Bun.write(`${pageDir}/${mainOut}`, JSON.stringify(pagesMin));
     await Bun.write(`${catDir}/${mainOut}`, JSON.stringify(catsMin));
     await Bun.write(`${tagDir}/${mainOut}`, JSON.stringify(tagsMin));
     await Bun.write(`${projDir}/${mainOut}`, JSON.stringify(projectsMin));
-    await Bun.write(`${workDir}/${mainOut}`, JSON.stringify(worksMin));
+    //await Bun.write(`${workDir}/${mainOut}`, JSON.stringify(worksMin));
 
     const t1 = performance.now();
     const tDelta = `${t1 - t0} ms`;
@@ -102,7 +103,7 @@ export const writeMinifiedContent = async () => {
     console.info(`[SUCCESS]: wrote ${allCategories.length} mini categories to ${catDir}/${mainOut} in ${tDelta}`);
     console.info(`[SUCCESS]: wrote ${allTags.length} mini tags to ${tagDir}/${mainOut} in ${tDelta}`);
     console.info(`[SUCCESS]: wrote ${allProjects.length} mini projects to ${projDir}/${mainOut} in ${tDelta}`);
-    console.info(`[SUCCESS]: wrote ${allWorks.length} mini works to ${workDir}/${mainOut} in ${tDelta}`);
+    //console.info(`[SUCCESS]: wrote ${allWorks.length} mini works to ${workDir}/${mainOut} in ${tDelta}`);
 
   } catch (err) {
     console.error(err);
