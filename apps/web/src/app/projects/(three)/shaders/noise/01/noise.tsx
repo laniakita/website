@@ -1,8 +1,6 @@
 'use client';
-/* eslint-disable  @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment, react/no-unknown-property, import/named -- bad types */
-
+/* eslint-disable  @typescript-eslint/no-unsafe-assignment, react/no-unknown-property -- bad types */
 import { useMemo, useRef } from 'react';
-// @ts-expect-error -- bad types
 import { useFrame, useThree } from '@react-three/fiber';
 import type { Mesh, ShaderMaterial } from 'three';
 import Common2DCanvas from '@/components/canvas/dom/common-2d-canvas';
@@ -18,9 +16,6 @@ interface NoiseShaderMaterialProps extends ShaderMaterial {
     };
   };
 }
-
-//const NoiseShaderMaterial = shaderMaterial({ u_time: 0 }, `${vertex}`, `${fragment}`);
-//extend({ NoiseShaderMaterial });
 
 export default function NoiseShader01() {
   return (
@@ -46,7 +41,7 @@ function Setup() {
     }),
     [],
   );
-  //@ts-expect-error -- bad types
+
   useFrame((state) => {
     const { clock } = state;
     (meshRef.current?.material as NoiseShaderMaterialProps).uniforms.u_time.value = 0.4 * clock.getElapsedTime();
@@ -61,15 +56,9 @@ function Setup() {
   });
 
   return (
-    <>
-      {/* @ts-expect-error -- bad types */}
-      <mesh ref={meshRef}>
-        {/* @ts-expect-error -- bad types */}
-        <planeGeometry args={[PLANE_HEIGHT, PLANE_WIDTH]} />
-        {/* @ts-expect-error -- bad types */}
-        <shaderMaterial fragmentShader={fragment} vertexShader={vertex} uniforms={uniforms} />
-        {/* @ts-expect-error -- bad types */}
-      </mesh>
-    </>
+    <mesh ref={meshRef}>
+      <planeGeometry args={[PLANE_HEIGHT, PLANE_WIDTH]} />
+      <shaderMaterial fragmentShader={fragment} vertexShader={vertex} uniforms={uniforms} />
+    </mesh>
   );
 }
