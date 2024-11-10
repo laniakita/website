@@ -33,52 +33,6 @@ export const metadata: Metadata = {
     ],
   },
 };
-/*
-const socialItems3 = [
-  {
-    title: 'Github',
-    url: 'https://github.com/laniakita',
-    iconName: 'icon-[ant-design--github-filled]',
-    linkName: 'Github!',
-    textSize: 'text-4xl',
-  },
-  {
-    title: 'Linkedin',
-    url: 'https://linkedin.com/in/laniakita',
-    iconName: 'icon-[fa6-brands--linkedin]',
-    linkName: 'Linkedin!',
-    textSize: 'text-4xl',
-  },
-  {
-    title: 'Mastodon',
-    url: 'https://hachyderm.io/@lani',
-    iconName: 'icon-[fa6-brands--mastodon]',
-    linkName: 'Mastodon!',
-    textSize: 'text-4xl',
-  },
-  {
-    title: 'Instagram',
-    url: 'https://instagram.com/laniakita',
-    iconName: 'icon-[fa6-brands--instagram]',
-    linkName: 'Instagram!',
-    textSize: 'text-4xl',
-  },
-  {
-    title: 'Patreon',
-    url: 'https://patreon.com/Lani_Akita',
-    iconName: 'icon-[fa6-brands--patreon]',
-    linkName: 'Patreon!',
-    textSize: 'text-3xl',
-  },
-  {
-    title: 'Atom/RSS',
-    url: '/atom.xml',
-    iconName: 'icon-[ph--rss-bold]',
-    linkName: 'your RSS/Atom feed reader!',
-    textSize: 'text-4xl -ml-2',
-  },
-];
-*/
 
 function SocialIconNav3({ boxItems }: SocialIconNavProps) {
   const uniqueKey = useId();
@@ -119,11 +73,14 @@ export default function Home() {
               </div>
             </div>
 
-            <div className='simple-color-trans flex w-full items-center justify-between gap-4 rounded-md border border-ctp-pink bg-ctp-base/70 p-4 shadow-2xl backdrop-blur-md md:flex-row md:bg-ctp-base/60 md:p-2 dark:border-ctp-sapphire/40 dark:bg-ctp-midnight/70'>
+            <div className='simple-color-trans flex w-full items-center justify-between gap-4 rounded-md border border-ctp-pink bg-ctp-base/70 p-4 shadow-2xl backdrop-blur-md md:flex-row md:bg-ctp-base/60 md:p-2 lg:pr-4 dark:border-ctp-sapphire/40 dark:bg-ctp-midnight/70'>
               <div className='flex w-full flex-col md:flex-row md:justify-between'>
-                <div className='flex w-full flex-col flex-wrap items-center gap-2 md:w-fit md:max-w-[30rem] md:flex-row lg:max-w-full'>
+                <div className='flex w-full flex-col flex-wrap items-center gap-2 md:w-fit md:max-w-[30rem] md:flex-row xl:max-w-full'>
                   <Link href='/about' className='home-btn-2'>
                     <p className=''>About Me</p>
+                  </Link>
+                  <Link href='/work' className='home-btn-2'>
+                    <p>My Work</p>
                   </Link>
                   <Link href='/projects' className='home-btn-2'>
                     <p>My Projects</p>
@@ -138,8 +95,9 @@ export default function Home() {
                     <p>Contact Me</p>
                   </Link>
                 </div>
-                <div className='-mb-1.5 hidden w-fit md:flex md:min-w-28 lg:px-0'>
-                  <SocialIconNav3 boxItems={socialItems2} />
+                <div className='mt-1.5 hidden md:flex md:flex-col xl:flex-row xl:gap-2'>
+                  <SocialIconNav3 boxItems={socialItems2.slice(0, 3)} />
+                  <SocialIconNav3 boxItems={socialItems2.slice(3, 6)} />
                 </div>
               </div>
             </div>

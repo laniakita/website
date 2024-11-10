@@ -51,8 +51,6 @@ const nextConfig = {
     },
   },
 
-  //swcMinify: true,
-
   async redirects() {
     return [
       {
