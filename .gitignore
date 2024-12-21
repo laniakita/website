@@ -1,5 +1,6 @@
 .DS_Store
 .vscode
+tmp.txt
 node_modules
 .turbo
 *.log
