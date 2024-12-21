@@ -1,15 +1,28 @@
-.DS_Store
-.vscode
-tmp.txt
-node_modules
-.turbo
-*.log
-.next
-dist
-dist-ssr
+# secrets
 *.local
 .env
 .cache
+
+# misc
+.DS_Store
+.vscode
+tmp.txt
+
+# debug
+*.log
+
+# node.js
+node_modules
+
+# next.js
+.next
+
+# turborepo
+.turbo
+
+# output
+dist
+dist-ssr
 server/dist
 public/dist
 **/public/tests
@@ -19,20 +32,26 @@ public/dist
 **/public/sw.js
 **/public/feed.xml
 **/public/assets/images/projects
+
 # wrangler / @cloudflare/next-on-pages
 .wrangler
 .vercel
 secrets.env
+
 # sst
 .sst
 .open-next
+
 # contentlayer
 .contentlayer
+
 # contentlayermini
 contentlayermini
 .contentlayermini
+
 # eslint
 .eslintcache
+
 #version vault
 .versionvault
 .backup
