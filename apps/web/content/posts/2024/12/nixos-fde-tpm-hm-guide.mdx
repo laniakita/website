@@ -1,0 +1,1623 @@
+---
+id: d1fa986f-813e-4ff0-9342-db842c5d4a76
+type: Post
+date: 2024-12-27T19:04:58Z
+categories:
+  - slug: linux
+  - slug: security
+  - slug: guides
+tags:
+  - slug: nix-nixos
+keywords:
+  - NixOS Full Disk Encryption Guide
+  - NixOS Full Disk Encryption LLVM
+  - How to install NixOS with Full Disk Encryption
+  - How to install NixOS with Minimal ISO
+  - NixOS LUKS TPM unlock Guide
+  - TPM
+  - From Zero to NixOS
+  - NixOS FDE Flake
+  - NixOS Home Manager Flake Guide
+author: lani
+headline: 'NixOS Full Disk Encryption + Secure Boot + TPM Auto-Unlock - A Guide'
+subheadline: 'Bonus feature: Setting up Home Manager'
+caption: "Yes to love, yes to life, yes to staying in more! - Liz Lemon"
+---
+
+After taking the time to setup a fresh install of one of my favorite distros, I felt it was a good idea to post a write up about this somewhat extensive process.
+
+As well, I based this guide pretty heavily off of what I’ve found on the internet, which means there are likely better guides than this one out there. Still yet, this is probably the only Full Disk Encryption (FDE) guide you'll find that ties in how to enable secure boot, to then enable the enrollment/re-enrollment of your LUKS decryption keys into your motherboards TPM slots. Also, the bonus feature briefly examines how to configure Home Manager via the `flake.nix` we'll be setting up today, so that's gotta be worth some brownie points, right? ;3
+
+Hypothetical points aside, by the end of this article, my hope is that you’ll be able to:
+
+1. Install NixOS with Full Disk Encryption
+2. Install and use Lanzaboote to enable secure boot on your machine.
+3. Use `systemd-cryptenroll` to store your key on the TPM module
+4. Use `home-manager` to configure your shell and `git`/`gh`
+
+## Part 00: Requirements
+
+1. A machine with a UEFI motherboard
+2. A machine with a TPM chip (**this guide assumes TPM2.** YMMV if you have a older TPM chip)
+3. A bootable USB (4 GB minimum) with the [Minimal NixOS](https://nixos.org/download/#nixos-iso) ISO loaded onto it
+
+## Part 01: From Zero to NixOS
+
+### Booting the installer
+
+1. Repeatedly mash `F2` or whatever key let’s you into your system’s UEFI/Bios
+2. Disable secure boot (if enabled)
+3. Disable the CSM/Legacy Support (if enabled/applicable)
+   1. **WARNING: If this was enabled, any legacy hardware you might have (e.g., a GTX 660 with a VBIOS lacking UEFI support) will immediately become incompatible/stop working (until you re-enable CSM/Legacy Support). If you continue, you acknowledge that you're comfortable with removing/losing any incompatible hardware from your current system.**
+4. Move the NixOS USB to the highest boot priority (if applicable)
+5. Save your changes, and boot into your NixOS USB
+6. Once you've reached GRUB, feel free to either load the installer from the USB itself, or copy it to the RAM. You can also choose *"no modeset"* if you're having issues (usually graphical) reaching the installer shell
+
+### Connect to the Internet
+
+Before we proceed with the installation, it’s a good idea to make sure you can access the internet way before making any drastic changes (partitioning, formatting, etc.) that would affect your currently installed OS.
+
+So, plug in an ethernet cable, or follow the steps below to setup WiFi, then try to ping a website: e.g., `ping google.com`. If you can see packets coming back, hit `ctrl+c` to stop the pinging, and you should be okay to continue.
+
+Otherwise, stop here, and start troubleshooting. If you still can’t connect to the internet, it’s possible your network adapter is just too new, and thus isn’t supported by the Linux kernel at this time.
+
+#### WiFi Setup
+
+First, make sure your wireless network adapter is actually enabled. You can see which adapters are available with `ip link`
+
+```shell
+[nixos@nixos:'']$ ip link
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
+ link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+2: enp: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc fq_codel state DOWN mode DEFAULT group default qlen 1000
+ link/ether 55:a5:b5:c5:d5:f5 brd ff:ff:ff:ff:ff:ff
+3: wlp: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN mode DORMANT group default qlen 1000
+ link/ether f5:d5:c5:b5:af:f5 brd ff:ff:ff:ff:ff:ff
+```
+
+If your WiFi adapter is *DOWN* like mine (wlp) just run:
+
+- `# ip link set <your-interface> up`
+
+If that results in an error:
+
+- `RTNETLINK answers: Operation not possible due to RF-kill`
+
+Proceed to [RF-kill Unblocking](#rf-kill-unblocking), otherwise skip to [Getting Connected with `wpa_supplicant`](#connecting-to-a-network-with-wpa-supplicant).
+
+##### RF-kill Unblocking
+
+First, run `rfkill` to investigate what interface is blocked.
+
+```shell
+[nixos@nixos:'']$ rfkill
+ID TYPE      DEVICE               SOFT      HARD 
+ 0 wlan      ideapad_wlan      blocked unblocked
+ 1 bluetooth ideapad_bluetooth blocked unblocked
+ 2 bluetooth hci0              blocked unblocked
+ 3 wlan      phy0              blocked unblocked
+```
+
+In my case, my `wlan` interface is “soft” blocked. So, running `# rfkill unblock wlan` unblocks it.
+
+```shell
+[nixos@nixos:'']$ sudo rfkill unblock wlan
+ID TYPE      DEVICE                 SOFT      HARD 
+ 0 wlan      ideapad_wlan      unblocked unblocked
+ 1 bluetooth ideapad_bluetooth   blocked unblocked
+ 2 bluetooth hci0                blocked unblocked
+ 3 wlan      phy0              unblocked unblocked
+```
+
+Then running `ip link set wlp up` results in no error.
+
+```shell
+[nixos@nixos:'']$ sudo ip link set wlp up
+
+[nixos@nixos:'']$ _
+```
+
+##### Getting Connected with `wpa_supplicant`
+
+With the WiFi adapter actually available, we can now continue (mostly) from the official NixOS manual for getting connected to the internet:
+
+ 1. `# systemctl start wpa_supplicant`
+ 2. `wpa_cli`
+
+Then scan for networks:
+
+```shell
+> scan
+OK
+> scan_results
+bssid / frequency / signal level / flags / ssid
+1a:2b:34:56:70    5555  -53 [WPA2-PSK+SAE-CCMP][WPS][ESS] myhomenetwork
+...
+```
+
+Then add, set, and enable your network:
+
+```shell
+> add_network 
+0 
+> set_network 0 ssid "myhomenetwork"
+OK
+> set_network 0 psk "mypassword"
+OK
+> set_network 0 key_mgmt WPA-PSK
+OK 
+> enable_network 0 
+OK
+```
+
+Alternatively for an enterprise network:
+
+```shell
+> add_network
+0 
+> set_network 0 ssid "eduroam"
+OK 
+> set_network 0 identity "myname@example.com"
+OK
+> set_network 0 password "mypassword"
+OK 
+> set_network 0 key_mgmt WPA-EAP
+OK
+> enable_network 0 
+OK
+```
+
+if everything went okay after the last command, you’ll something like:
+
+```shell
+...
+> enable_network 0 
+OK
+<3>CTRL-EVENT-SCAN-STARTED
+<3>CTRL-EVENT-SCAN-RESULTS
+<3>SME: Trying to authenticate with 1a:2b:34:56:70 (SSID='myhomenetwork' freq=5555 MHz)
+<3>Associated with 1a:2b:34:56:70
+<3>CTRL-EVENT-SUBNET-STATUS-UPDATE status=0
+<3>WPA: Key negotiation completed with 1a:2b:34:56:70  [PTK=CCMP GTK=CCMP]
+<3>CTRL-EVENT-CONNECTED - Connection to 1a:2b:34:56:70 completed [id=0 id_str=]
+>
+```
+
+Then all you have to do is run `quit` to return to the shell, and we can proceed with the next step.
+
+### Partitioning
+
+**WARNING: The following steps will result in DATA LOSS! Please back up anything important before proceeding!**
+
+Now that we’re absolutely positive we can connect to the internet, we’re going to use `fdisk` to partition the drive we want to install NixOS on. Running the ensuing `fdisk` commands will create both a boot partition and a LVM partition. The LVM partition will hold both a root partition and a swap partition.
+
+> It’s important that we install NixOS in UEFI mode. Most modern motherboards/hardware supports UEFI by default. Still yet, you might want to ensure that the Compatibility Support Module (CSM) is disabled if your motherboard UEFI/BIOS has that option.
+
+We’ll use `fdisk` for this. So to find the disk to partition:
+
+- `# fdisk -l`
+
+```shell
+[nixos@nixos:'']$ sudo fdisk -l
+Disk /dev/loop0: 1021.89 MiB, 1071525888 bytes, 2092824 sectors
+
+Disk /dev/nvme0n1: 476.94 GiB, 512110190592 bytes, 1000215216 sectors
+Disk model: SAMSUNG M2VLB512
+Units: sectors of 1 ** 512 = 512 butes
+Sector Size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: gpt
+Disk identifier: 09515620-9D73-11EF-BE8C-0800200C9A66
+
+Device             Start        End   Sectors   Size Type
+/dev/nvme0n1p1      2048     206847    204800   100M EFI System
+/dev/nvme0n1p2    206848     239615     32768    16M Microsoft reserved
+/dev/nvme0n1p3    239616  998639615 998400000 476.1G Microsoft basic data
+/dev/nvme0n1p4 998639616 1000212479   1572864   768M Windows recovery environment
+
+...
+```
+
+Then we’ll run `fdisk` on our disk:
+ `# fdisk /dev/your-disk-to-partition`
+
+In my case the command looks like:
+ `# fdisk /dev/nvme0n1`
+
+#### Create a Empty GPT Table
+
+To begin, we’ll clean up any old partitions by creating a empty GPT partition table (`g`):
+
+```shell
+Command (m for help): g
+Created a new GPT disklabel (GUID: 5213d2a2-a040-44c4-ba6a-02787812777e).
+
+Command (m for help):
+```
+
+To verify this, you can print (`p`) out the new partition table, which should now be empty:
+
+```shell
+Command (m for help): p
+Disk /dev/nvme0n1: 476.94 GiB, 512110190592 bytes, 1000215216 sectors
+Disk model: SAMSUNG M2VLB512
+Units: sectors of 1 ** 512 = 512 butes
+Sector Size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: gpt
+Disk identifier: 5213d2a2-a040-44c4-ba6a-02787812777e
+
+Command (m for help):
+```
+
+#### Create the EFI System Partition (ESP)
+
+We can then create the ESP like so:
+
+1. n
+2. (partition number; default) enter
+3. (first sector: default) enter
+4. (last sector) +1G
+5. (remove signature if applicable) Y
+6. t (change partition type)
+
+> this partition should be selected by default, since it’s the only one
+
+8. (partition type) 1 (EFI)
+
+```shell
+Command (m for help): n
+First sector (2048-1000214527), default 2048):
+Last sector, +sectors or +size{K,M,G,T,P} (2048-1000214527, default 1000215216): +1G
+
+Created a new partition 1 of type 'Linux filesystem' and of size 1 GiB.
+
+Command (m for help): t
+Partition type or alias (type L to list all): 1
+Changed type of partition 'Linux filesystem' to 'EFI'.
+
+Command (m for help): 
+```
+
+#### Create the LVM Partition
+
+Next, we’ll add our LVM partition:
+
+1. n
+2. (partition number: default) enter
+3. (first sector: default) enter
+4. (last sector: default) enter
+5. (remove signature if applicable) Y
+6. t (change partition type)
+7. (partition number: (1, 2, default 2)) enter
+8. (partition type) 44 (Linux LVM)
+
+```shell
+Command (m for help): n
+Partition number (1, 2, default 2):
+First sector (2099200-1000214527), default 2099200):
+Last sector, +sectors or +size{K,M,G,T,P} (2048-1000215216, default 1000215216):
+
+Created a new partition 2 of type 'Linux filesystem' and of size 475.9 GiB.
+
+Command (m for help): t
+Partition number (1, 2, default 2):
+Partition type or alias (type L to list all): 44
+Changed type of partition 'Linux filesystem' to 'Linux LVM'.
+
+Command (m for help): 
+```
+
+#### Verifying the Partitions
+
+If you print (`p`) out the partition table again, it'll probably look similar to this:
+
+```shell
+Command (m for help): p
+Disk /dev/nvme0n1: 476.94 GiB, 512110190592 bytes, 1000215216 sectors
+Disk model: SAMSUNG M2VLB512
+Units: sectors of 1 ** 512 = 512 butes
+Sector Size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: gpt
+Disk identifier: 5213d2a2-a040-44c4-ba6a-02787812777e
+
+Device           Start        End   Sectors   Size Type
+/dev/nvme0n1p1    2048    2099199   2097152     1G EFI System
+/dev/nvme0n1p2 2099200 1000214527 998115328 475.9G Linux LVM
+
+Command (m for help):
+```
+
+if it looks right, then we can save (`w`) our changes and exit!
+
+1. w
+
+Now, running `# lsblk` should look something like this:
+
+```shell
+[nixos@nixos:'']$ sudo lsblk
+NAME        MAJ:MIN RM   SIZE  RO TYPE MOUNTPOINTS
+...
+nvme0n1      259:0    0  476.9G  0 disk
+|-nvme0n1p1 259:3    0      1G  0 part
+|-nvme0n1p2 259:4    0  475.9G  0 part
+
+[nixos@nixos:'']$
+```
+
+### Encrypting with LUKS
+
+We’ll be encrypting the LVM partition with LUKS (version 2). To do that, we just have to run the following command:
+
+- `# cryptsetup -v -y --label=NIXLUKS luksFormat --type luks2 /dev/nvme0n1p2`
+
+The `-v` flag ensures a verbose output, `-y` ensures it’ll ask us for our encryption password twice to confirm, the label flag is simply assigned to `NIXLUKS` but you can call it whatever you want. `luksFormat` actually encrypts our disk, and the `--type` flag set to `luks2` is both a newer LUKS version, and also enables us to decrypt the partition with our TPM module with `systemd-cryptenroll`.
+
+```shell
+[nixos@nixos:'']$ sudo cryptsetup -v -y --label=NIXLUKS luksFormat --type luks2 /dev/nvme0n1p2
+
+WARNING!
+========
+This will overwrite data on /dev/nvme0n1p2 irrevocably.
+
+Are you sure? (Type 'yes' in capital letters): YES
+Enter passphrase fpr /dev/nvme0n1p2:
+verify passphrase:
+Key slot 0 created.
+Command successful.
+
+[nixos@nixos:'']$
+```
+
+#### Verifying the LUKS Device
+
+To verify the partition got encrypted, you can inspect the LUKS header using:
+
+- `# cryptsetup luksDump /dev/nvme0n1p2`
+
+Which will give an output similar to this:
+
+```shell
+[nixos@nixos:'']$ sudo cryptsetup luksDump /dev/nvme0n1p2
+LUKS header information
+Version         2
+...
+UUID:           09515620-9D73-11EF-BE8C-0800200C9A66
+label:          NIXLUKS
+...
+```
+
+The most important thing to note is the version number and your label. If it’s “2”, and your label looks right, then we’re all good to go.
+
+> As a best practice, you may want to backup the header sometime later. You can do so with the following command:
+>
+> `# cryptsetup luksHeaderBackup /dev/nvme0n1p2 --header-backup-file /path/to/backup.dat`
+
+#### Opening the LUKS Device
+
+Now, we’re going to open our encrypted LUKS partition and create a reference to it on `/dev/mapper/cryptroot`.
+
+- `# cryptsetup luksOpen /dev/nvme0n1p2 cryptroot`
+
+You can then check our mapped partition exists with:
+
+- `ls /dev/mapper/cryptroot`.
+
+Note: This won't return anything really (because there's nothing in `cryptroot` yet), unless `cryptroot` doesn't exist.
+
+```shell
+[nixos@nixos:'']$ ls /dev/mapper/cryptroot
+/dev/mapper/cryptroot
+
+[nixos@nixos:'']$
+```
+
+### LVM Partitioning
+
+Before creating the root and swap (and other possible) logical volumes (LVs), we'll first need to create a Physical Volume on `cryptroot`, which can then be used to create a Logical Volume Group (LVG) named `lvmroot`.
+
+1. `# pvcreate /dev/mapper/cryptroot`
+2. `# vgcreate lvmroot /dev/mapper/cryptroot`
+
+With that, we can create the *root* LV and the *swap* LV. You can of course create as many LVs as you want, such as a *home* LV. However, for my purposes, I’m going to keep it simple.
+
+#### Create the `swap` Logical Volume
+
+We can create the swap LV on our root LVG (lvmroot) with the following command:
+
+- `# lvcreate -L24G lvmroot -n swap`
+
+>Note: How much swap space you may need varies. You might not even need it! So, please see this ~~stackoverflow~~ askubuntu thread for more info: <https://askubuntu.com/questions/49109/i-have-16gb-ram-do-i-need-32gb-swap>.  In my case, I’ve got 16 GB of ram on this laptop, and plan to use hibernate, so 16 \* 1.5 = 24 GB.
+
+#### Create the `root` Logical Volume
+
+With the swap LV set, we can set the root LV to take up the rest of the available space:
+
+- `# lvcreate -l 100%FREE lvmroot -n root`
+
+### Formatting
+
+This is a fairly standard procedure, the only deviation here is adding labels, which makes mounting the partitions much easier.
+
+> Important! Your label names should be a maximum of 11 Bytes long for the boot partition, and a maximum of 16 Bytes long for every other partition. Ensure your labels are short and sweet!
+
+#### 1. Format the ESP partition
+
+- `# mkfs.fat -F 32 -n NIXBOOT /dev/nvme0n1p1`
+
+#### 2. Format the Root LV
+
+- `# mkfs.ext4 -L NIXROOT /dev/mapper/lvmroot-root`
+
+#### 3. Format the Swap LV (if you made one)
+
+- `# mkswap -L NIXSWAP /dev/mapper/lvmroot-swap`
+
+### Mounting
+
+Then we can mount the formatted partitions like so.
+
+#### 1. Mount the Root LV
+
+- `# mount /dev/disk/by-label/NIXROOT /mnt`
+
+#### 2. Create the ESP Directory
+
+- `# mkdir /mnt/boot`
+
+#### 3. Mount the ESP
+
+- `# mount -o umask=0077 /dev/disk/by-label/NIXBOOT /mnt/boot`
+
+#### 4. Turn on Swap
+
+- `# swapon -L NIXSWAP`
+
+#### Verifying the Mounts
+
+To verify everything is in the right place, running `# lsblk -o name,label,size,type,mountpoints /dev/nvme0n1` should result in output similar to this:
+
+```shell
+[nixos@nixos:'']$ sudo lsblk -o name,label,size,type,mountpoints /dev/nvme0n1
+NAME                LABEL     SIZE TYPE  MOUNTPOINTS
+nvme0n1                     476.9G disk
+|-nvme0n1p1         NIXBOOT     1G part  /mnt/boot
+|-nvme0n1p2         NIXLUKS 475.9G part
+   |-cryptroot              475.9G crypt
+     |-lvmroot-swap NIXSWAP    24G lvm   [SWAP]
+     |-lvmroot-root NIXROOT 451.9G lvm   /mnt
+     
+[nixos@nixos:'']$
+```
+
+### Installing NixOS
+
+We’ll first generate a minimal configuration file. Then we’ll edit it to support our LUKS encrypted partitions.
+
+- `# nixos-generate-config --root /mnt`
+
+then we can use Vim (or nano) prefixed with `sudo` to edit our generated config to mount our LUKS partition. If you forget to elevate your editor command, you won't be able to save your changes (don't ask me how I know that).
+
+- `# vim /mnt/etc/nixos/hardware-configuration`
+
+#### `hardware-configuration.nix`
+
+Our generated config currently looks something like this:
+
+```nix
+# Do not modify this file! It was generated by ■nixos-generate-config■
+# and may be overwritten by future invocations. Please make changes
+# to /etc/nixos/configuration.nix instead.
+{ config, lib, pkgs, modulesPath, ... }:
+
+{
+  imports =
+    [ (modulesPath + "/installer/scan/not-detected.nix")
+    ]; 
+
+  boot.initrd.availableKernerlModules = ["xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod" ];
+  boot.initrd.kernelModules = [ "dm-snapshot" ];
+  boot.kernelModules = [ "kvm-intel" ];
+  boot.extraModulePackages = [ ];
+
+  fileSystems."/" = 
+    {
+      device = "/dev/disk/by-uuid/f96d7825-6b61-452b-a6f9-456ad8ba308f";
+      fsType = "ext4";
+    };
+
+  fileSystems."/boot" = 
+    {
+      device = "/dev/disk/by-uuid/6335-2377";
+      fsType = "vfat";
+      options = [ "fmask=0077" "dmask=0077" ];
+    };
+
+  swapDevices = 
+    [{ device = "/dev/disk/by-uuid/b0849f28-36bf-41c1-b58f-108f4a51442a"; }
+    ];
+
+  # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
+  # (the default) this is the recommended approach. When using systemd-networkd it's
+  # still possible to use this option, but it's recommended to use it in conjunction
+  # with explicit per-interface declaration with `networking.interfaces.<interface>.useDHCP`.
+  networking.useDHCP = lib.mkDefault true;
+
+  nixpkgs.hostPlatform = lib.mkDefault = "x86_64-linux";
+  hardware.cpu.intel.updatedMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+}
+```
+
+While it's nearly perfect, it doesn't take into account our LUKS device, and so we'll have to disregard the ominous warnings to make some minor changes if we want our machine to be useable. In short, all we have to do is:
+
+- Add `cryptd` to `boot.initrd.kernelModules`.
+- Define our LUKS partition as a LUKS device under `boot.initrd.luks.devices."cryptroot"`.
+- Update our filesystem mounts to use “by-label” for ease of use / readability.
+
+This last change is optional, but I find it helpful for compatibility reasons:
+
+- Set `hardware.enableAllFirmware` to `true`.
+
+```nix
+# Do not modify this file! It was generated by ■nixos-generate-config■
+# and may be overwritten by future invocations. Please make changes
+# to /etc/nixos/configuration.nix instead.
+{config, lib, pkgs, modulesPath, ...}:
+
+{
+  imports =
+    [ (modulesPath + "/installer/scan/not-detected.nix")
+    ]; 
+
+  boot.initrd.availableKernerlModules = ["xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod" ];
+  boot.initrd.kernelModules = [ "dm-snapshot" "cryptd" ]; # add cryptd
+  # Define our LUKS device
+  boot.initrd.luks.devices."cryptroot".device = "/dev/disk/by-label/NIXLUKS";
+  boot.kernelModules = [ "kvm-intel" ];
+  boot.extraModulePackages = [ ];
+
+  # Use labels instead of UUIDs to mount our LVs
+  fileSystems."/" = 
+    {
+      device = "/dev/disk/by-label/NIXROOT";
+      fsType = "ext4";
+    };
+
+  fileSystems."/boot" = 
+    {
+      device = "/dev/disk/by-label/NIXBOOT";
+      fsType = "vfat";
+      options = [ "fmask=0077" "dmask=0077" ];
+    };
+    
+  swapDevices = 
+    [{ device = "/dev/disk/by-label/NIXSWAP"; }
+    ];
+
+  # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
+  # (the default) this is the recommended approach. When using systemd-networkd it's
+  # still possible to use this option, but it's recommended to use it in conjunction
+  # with explicit per-interface declaration with `networking.interfaces.<interface>.useDHCP`.
+  networking.useDHCP = lib.mkDefault true;
+
+  nixpkgs.hostPlatform = lib.mkDefault = "x86_64-linux";
+  hardware.enableAllFirmware = true; # Helps with compatibility
+  hardware.cpu.intel.updatedMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+}
+```
+
+With our edits in place, we can save and exit the `hardware-configuration.nix` file and move on to `configuration.nix`.
+
+> ##### Thoughts on the *ominous warnings*
+>
+> In all likelihood, this is the only time you'll ever run `nixos-generate-config`, so feel free to make edits to `hardware-configuration.nix`. Just be aware that running `nixos-generate-config` again, will undo all the changes you've made to it.
+
+#### `configuration.nix`
+
+`configuration.nix` is where you'll want to configure everything else about your machine (e.g., hostname, user accounts, networking, window managers, programs, etc.). As such, we'll want to make some edits from the minimal configuration to something a lot more useable. Because, as it stands, the generated `configuration.nix` has most of what we need commented out:
+
+```nix
+# Edit this configuration file to define what should be installed on
+# your system. Help is available in the configuration.nix(5) man page, on
+# https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
+
+{ config, lib, pkgs, ... }:
+
+{
+  imports = 
+    [ # Include the results of the hardware scan.
+      ./hardware-configuration.nix
+    ];
+
+  # Use the systemd-boot EFI boot loader.
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+
+  # networking.hostName = "nixos"; # Define your hostname.
+  # Pick only one of the below networking options.
+  # networking.wireless.enable = true; # Enables wireless support via wpa_supplicant
+  # networking.networkManager.enable = true; # Easiest to use and most distros use this by default.
+
+  # Set your time zone.
+  # time.timeZone = "America/New_York";
+
+  # Configure network proxy if necessary
+  # networking.proxy.default = "http://user:password@proxy:port/";
+  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+
+  # Select internationalisation properties.
+  # i18n.defaultLocale = "en_US.UTF-8";
+  # console = {
+  # font = "Lat2-Terminus16";
+  #  keyMap = "us";
+  #  useXkbConfig = true; # use xkb.options in tty.
+  # }
+
+  # Enable the X11 windowing system.
+  # services.xserver.enable = true;
+
+  # Configure keymap in X11
+  # services.xserver.xkb.layout = "us";
+  # services.xserver.xkb.options = "eurosign:e,caps:escape";
+
+  # Enable CUPS to print documents.
+  # services.printing.enable = true;
+
+  # Enable sound.
+  # hardware.pulseaudio.enable = true;
+  # OR
+  # services.pipewire = {
+  #  enable = true;
+  #  pulse.enable = true;
+  # }
+
+  # Enable touchpad support (enabled default in most desktopManager).
+  # services.libinput.enable = true;
+
+  # Define a user account. Don't forget to set a password with ■passwd■.
+  # users.users.name = {
+  #  isNormalUser = true;
+  #  extraGroups = [ "wheel" ]; # enable ■sudo■ for the user.
+  # }
+
+  # List packages installed in system profile. To search, run:
+  # $ nix search wget
+  # environment.systemPackages = with pkgs; [
+  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+  #  wget
+  # ];
+
+  # Some programs need SUID wrappers, can be configured further or are
+  # started in user sessions.
+  # programs.mtr.enable = true;
+  # programs.gnupg.agent = {
+  #   enable = true;
+  #   enableSSHSupport = true;
+  # };
+
+  # List services that you want to enable:
+
+  # Enable the OpenSSH daemon.
+  # services.openssh.enable = true;
+
+  # Open ports in the firewall.
+  # networking.firewall.allowedTCPPorts = [ ... ];
+  # networking.firewall.allowedUDPPorts = [ ... ];
+  # Or disable the firewall altogether.
+  # networking.firewall.enable = false;
+
+  # Copy the NixOS configuration file and link it from the resulting system
+  # (/run/current-system/configuration.nix). This is useful in cage you
+  # accidentally delete configuration.nix.
+  # system.copySystemConfiguration = true;
+
+  # The option defines the first version of NixOS you have installed on this particular machine.
+  # and is used to maintain compatibillity with application data (e.g. databases) created on older NixOS versions.
+  #
+  # Most users should NEVER change this value after the initial install, for any reason,
+  # even if you've upgraded your system to a new NixOS release.
+  #
+  # This value does NOT affect the Nixpkgs version your pacakges and OS are pulled from,
+  # so changing it will NOT upgrade your system - see https://nixos.org/manual/nixos/stable/#sec-upgrading for how to actually do that.
+  #
+  # This value being lower than the current NixOS release does NOT mean your system is
+  # out of date, out of support, or vulnerable.
+  #
+  # Do NOT change this value unless you have manually inspected all the changes it would make to your configuration,
+  # and migrated your data accordingly.
+  #
+  $ For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
+  system.stateVersion = "24.05"; # Did you read the comment?
+}
+```
+
+To make our changes, we can use `vim` or `nano` again to load `configuration.nix` into an editing buffer.
+
+ `# vim /mnt/etc/nixos/configuration.nix`
+
+From there we'll, uncomment out network manager, we'll enable flakes, we'll update our time zone, add an account, and anything else we might need.
+
+##### Core configuration
+
+The following configures/enables what I believe to be the most important features/options. You'll be able to enable most of them simply by uncommenting them out (removing the `#` before them) and or modifying their default values.
+
+###### Add a hostname
+
+   `networking.hostName = "my-nixos-machine"; # Define your hostname.`
+
+Your hostname will correlate with the host system defined in your `nixosConfiguration`. If you plan on sharing a single `flake.nix` between multiple NixOS machines, it's probably for the best you change this to something unique—well, unique amongst the machine's that have differing configurations.
+
+###### Enable network manager
+
+ `networking.networkManager.enable = true;`
+
+Network Manager is both the easiest and (unsurprisingly) the default networking tool for most Distros. It's also what I prefer using, but you might prefer `wpa_supplicant` instead.
+
+###### Enable flakes
+
+ `nix.settings.experimental-features = [“nix-command” “flakes”];`
+
+Flakes are one of my most favorite things about Nix. They're incredibly versatile from setting up [modular, multi-machine configurations from a single `flake.nix`](https://nixos-and-flakes.thiscute.world/nixos-with-flakes/modularize-the-configuration#modularize-your-nixos-configuration) to creating reproducible [development environments](https://github.com/the-nix-way/dev-templates). In short, they're quite handy.
+
+###### Update the time zone
+
+ `time.timeZone = “America/Los_Angeles”`
+
+I believe it's also possible to update your time zone imperatively as well, if you're Desktop Environment (i.e., Gnome, Plasma, etc.) allows it. As such, setting it from `configuration.nix` will thus establish it as the "default" global/system time zone.
+
+###### Add a user account with `superuser` privileges, that's also in the *`networkmanager`* group
+
+```nix
+users.users.mycoolusername = {
+  isNormalUser = true;
+  extraGroups = [“wheel” “networkmanager”];
+};
+```
+
+`superuser` privileges via the "wheel" group, gives your user (in this case a user named `mycoolusername`) access to `sudo`. If you tried to use `sudo` without being in the `wheel` group or being given explicit access somewhere in the `sudoers` file, well [it becomes an "incident", and gets reported ... somewhere](https://xkcd.com/838/).
+
+Adding your user to the `networkmanager` group, while possibly optional, helps to ensure your user has the right permissions to use/configure `networkmanager`.
+
+> If you're wondering about the user password, that's something we'll configure at the very end, just before rebooting.
+
+###### Enable unfree packages (optional)
+
+ `nixpkgs.config.allowUnfree = true;`
+
+Allowing "unfree" packages, will give you access to closed-source/proprietary binaries/software, such as Nvidia's proprietary Linux drivers. It's really up to you whether you want to enable this feature or not.
+
+###### Helpful Packages/Software
+
+```
+environment.systemPackages = with pkgs; [
+  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+  wget
+  firefox
+  chromium # swap for ungoogled-chromium if you prefer
+];
+```
+
+At minimum, you'll want to add a secondary terminal based editor like `vim`, and a browser like `firefox` or alternatively, `chromium` and or `ungoogled-chromium`.
+
+##### Anything Else You Might Want
+
+Beyond the [Core configuration](#core-configuration) above, I'll leave it up to you to determine how you want to configure the rest of your machine. For example, you'll probably want to choose a Desktop Environment (DE) or alternatively, configure a Window Manager (WM). I'll leave the following suggestions to give you some ideas:
+
+###### Add a Desktop Environment or, alternatively, a Window Manager
+
+In 2024, the two most popular DEs remain to be Gnome and Plasma. You can enable Gnome like this (see: [wiki.nixos.org/wiki/GNOME](https://wiki.nixos.org/wiki/GNOME)):
+
+```nix
+services.xserver.enable = true;
+services.xserver.displayManager.gdm.enable = true;
+services.xserver.desktopManager.gnome.enable = true;
+```
+
+Or KDE Plasma like this (see: [wiki.nixos.org/wiki/KDE](https://wiki.nixos.org/wiki/KDE))
+
+```nix
+services.xserver.enable = true; # optional
+services.displayManager.sddm.enable = true;
+services.displayManager.sddm.wayland.enable = true;
+services.desktopManager.plasma6.enable = true;
+```
+
+Alternatively you can configure a Window Manager, such as Sway, like this (see: [wiki.nixos.org/wiki/Sway](https://wiki.nixos.org/wiki/Sway))
+
+```nix
+# A very minimal Sway configuration
+environment.systemPackages = with pkgs; [
+  grim # screenshot functionality
+  slurp # screenshot functionality
+  wl-clipboard # wl-copy and wl-paste for copy/paste from stdin / stdout
+  mako # notification system developed by swaywm maintainer
+];
+
+# Enable the gnome-keyring secrets vault. 
+# Will be exposed through DBus to programs willing to store secrets.
+services.gnome.gnome-keyring.enable = true;
+
+# enable sway window manager
+programs.sway = {
+  enable = true;
+  wrapperFeatures.gtk = true;
+};
+
+services.xserver = {
+  displayManager.gdm = {
+    enable = true;
+    wayland = true;
+  };
+};
+```
+
+Most importantly, please remember that life's too short to get into bitter arguments about DEs and WMs and display protocols. So, try them all, and use the one you like the most. NixOS, by its nature, makes DE/WM hopping incredibly easy.
+
+###### Enable PipeWire (sound)
+
+```nix
+# rtkit is optional but recommended
+security.rtkit.enable = true;
+services.pipewire = {
+  enable = true; # if not already enabled
+  alsa.enable = true;
+  alsa.support32Bit = true;
+  pulse.enable = true;
+  # If you want to use JACK applications, uncomment this
+  #jack.enable = true;
+};
+```
+
+PipeWire is a modern replacement for Pulse Audio, and if you're using Ardour or some other DAW, you'll want to enable JACK as well (see: [wiki.nixos.org/wiki/PipeWire](https://wiki.nixos.org/wiki/PipeWire)). For configuring Bluetooth audio you'll want to see: [wiki.nixos.org/wiki/PipeWire#Bluetooth_Configuration](https://wiki.nixos.org/wiki/PipeWire#Bluetooth_Configuration).
+
+###### Enable Bluetooth
+
+```nix
+hardware.bluetooth.enable = true; # enables support for Bluetooth
+hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot
+```
+
+The above should enable Bluetooth, and if your DE doesn't come with a Bluetooth manager GUI, you can additionally enable the `blueman` applet
+
+```nix
+services.blueman.enable = true;
+```
+
+For more see: [wiki.nixos.org/wiki/Bluetooth](https://wiki.nixos.org/wiki/Bluetooth).
+
+###### Enable CUPS + Avahi
+
+```
+# Enable CUPS to print documents.
+services.printing.enable = true;
+services.avahi = {
+  enable = true;
+  nssmdns4 = true;
+  openFirewall = true;
+};
+```
+
+Enabling CUPS will allow you to print things. Enabling Avahi will allow you to find printers on your network. For more see: [wiki.nixos.org/wiki/Printing](https://wiki.nixos.org/wiki/Printing).
+
+###### Use an Alternative Shell (e.g., `zsh`)
+
+```nix
+programs.zsh.enable = true;
+users.defaultUserShell = pkgs.zsh;
+```
+
+If you've been hacking away at the command line on a Mac in the last decade, chances are you've become attached to using `zsh` instead of `bash`. In that case, the above will change the default shell (`bash`) to something that feels much more at home (`zsh`).  For more see: [wiki.nixos.org/wiki/Zsh](https://wiki.nixos.org/wiki/Zsh).
+
+Alternatively, you can use [`fish`](https://wiki.nixos.org/wiki/Fish) or even [`nushell`](https://wiki.nixos.org/wiki/Nushell).****
+
+> As for custom prompts like [starship](https://starship.rs/) and plugins like [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting), we'll be using Home-Manager via the `flake.nix` in this guide to configure that.
+
+##### Example `configuration.nix`
+
+```nix
+{ config, lib, pkgs, ... }:
+
+{
+  imports = 
+    [ # Include the results of the hardware scan.
+      ./hardware-configuration.nix
+    ];
+
+  # Use the systemd-boot EFI boot loader.
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+
+  networking.hostName = "nixos"; # Define your hostname.
+  networking.networkManager.enable = true; # Easiest to use and most distros use this by default.
+
+  # Set your time zone.
+  time.timeZone = "America/Los_Angeles";
+
+  # Enable Flakes
+  nix.settings.experimental-features = [“nix-command” “flakes”];
+
+  # Enable the Gnome Desktop Environment
+  services.xserver.enable = true;
+  services.xserver.displayManager.gdm.enable = true;
+  services.xserver.desktopManager.gnome.enable = true;
+
+  # Enable CUPS to print documents.
+  services.printing.enable = true;
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+    openFirewall = true;
+  };
+
+  # Enable sound.
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true; # if not already enabled
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    # If you want to use JACK applications, uncomment this
+    #jack.enable = true;
+  };
+
+  # Bluetooth
+  hardware.bluetooth.enable = true; # enables support for Bluetooth
+  hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot
+
+  # Define a user account. Don't forget to set a password with ■passwd■.
+  users.users.mycoolusername = {
+    isNormalUser = true;
+    extraGroups = [“wheel” “networkmanager”];
+  };
+
+  # Default shell => ZSH
+  programs.zsh.enable = true;
+  users.defaultUserShell = pkgs.zsh;
+
+  # Allow Unfree packages
+  nixpkgs.config.allowUnfree = true;
+
+  # List packages installed in system profile. To search, run:
+  # $ nix search wget
+  environment.systemPackages = with pkgs; [
+    vim
+    wget
+    firefox
+    chromium
+  ];
+
+  system.stateVersion = "24.05"; # Did you read the comment?
+}
+
+```
+
+If you're happy with the above, we can move on to the best part, the `flake.nix`.
+
+#### `flake.nix`
+
+Alright, we're nearly at the finish line. The final piece of the (installation) puzzle is to create a `flake.nix` at `/mnt/etc/nixos`, in the same place where you've created the `hardware-configuration.nix` and `configuration.nix`, to bring everything together.
+
+The `flake.nix` is where you'll be able to add additional modules as inputs, such as `home-manager` and `lanzaboote`.
+
+> I'll be honest, Nix flakes are far more versatile/feature-packed than I've let on. I **highly recommend** giving [ryan4yin's](https://github.com/ryan4yin) [NixOS & Flakes Book](https://nixos-and-flakes.thiscute.world/preface) a read sometime.
+
+We can define a minimal `flake.nix` like so:
+
+```nix
+{
+  description: "A minimal flake.nix for a NixOS machine"
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+  }:
+  outputs = {self, nixpkgs, ... }@inputs: {
+    nixosConfigurations = {
+      my-nixos-machine = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux"; # Assumes a standard x86 CPU
+        modules = [./configuration.nix];
+      };
+    };
+  };
+}
+```
+
+And with that, we can finally proceed to the very much anticipated install command.
+
+#### `nixos-install`
+
+This is it, moment of truth time. To begin, we’ll change directories to our `nixos` directory:
+
+ `$ cd /mnt/etc/nixos`
+
+Then we’ll update our flake. However, because the minimal NixOS install doesn't enable the `nix-command` nor `flakes`, we'll need to append these features as flags to actually perform this step:
+
+ `# nix --extra-experimental-features nix-command --extra-experimental-features flakes flake update`
+
+If that presented no errors, your output should look something like this:
+
+```shell
+[nixos@nixos:/mnt/etc/nixos]$ sudo nix --extra-experimental-features nix-command --extra-experimental-features flakes flake update
+warning: creating lock file '/mnt/etc/nixos/flake.lock'
+
+[nixos@nixos:/mnt/etc/nixos]$
+```
+
+With a clean `flake update`, that's the go-ahead to perform the magical install command.
+
+ `# nixos-install --root /mnt --no-root-passwd --flake /mnt/etc/nixos#nixos`
+
+Be warned though, this step could take a while (even assuming no compilation errors). As such, now's probably a good time to stretch your legs and get some fresh air. You've probably been sitting here reading this guide for a while now, so, maybe relax your eyes, and go enjoy a refreshment of some kind (a cup of tea, coffee, etc.). That way, if there are any unexpected errors (likely syntax, like a forgotten semi-colon), you'll at least be better prepared to deal with it.
+
+Alright, if everything did go according to plan you should see output like the following:
+
+```shell
+[nixos@nixos:/mnt/etc/nixos]$ sudo nixos-install --root /mnt --no-root-passwd --flake /mnt/etc/nixos#my-nixos-machine
+copying channel...
+building the flake in path:/mnt/etc/nixos?lastModified=1729820879@narHash=sha256-xRGYbMOgJiuxxVKLtkxb0yi01srhw/NL652Uq/ghXXY%3D...
+Installing the boot loader...
+setting up /etc...
+Initializing machine ID from random generator.
+Created "/boot/EFI".
+Created "/boot/EFI/systemd".
+Created "/boot/EFI/BOOT".
+Created "/boot/loader".
+Created "/boot/EFI/Linux".
+Copied "/nix/store/xg6f0c5pchmc2jq84s4np19jirnn90mn-systemd-256.6/lib/systemd/boot/efi/systemd-bootx64.efi" to "/boot/EFI/systemd/systemd-bootx64.efi".
+Copied "/nix/store/xg6f0c5pchmc2jq84s4np19jirnn90mn-systemd-256.6/lib/systemd/boot/efi/systemd-bootx64.efi" to "/boot/EFI/BOOT/BOOTX64.EFI".
+Created EFI boot entry "Linux Boot Manager".
+Installation finished!
+
+[nixos@nixos:/mnt/etc/nixos]$
+```
+
+#### Finishing Touches
+
+**VERY IMPORTANT:** We still need to setup a password for our user account. We can do that like so:
+
+ `# nixos-enter --root /mnt -c “passwd mycoolusername”`
+
+Once that's all set, it's finally time to reboot. You can do that safely like so:
+
+```bash
+sudo umount -R /mnt sudo swapoff -L NIXOS_SWAP sudo vgchange -a n lvmroot sudo cryptsetup close /dev/mapper/cryptroot reboot
+```
+
+Or dangerously via a simple:
+
+ `$ reboot`
+
+If everything went well, you’ll be greeted by LUKS asking for your passphrase.
+
+```tty
+<<< NixOS Stage 1 >>>
+
+loading module dm-snapshot...
+loading module cryptd...
+loading module dm_mod...
+running udev...
+Starting sytemd-udevd version 256.6
+Passphrase for /dev/disk/by-label/NIXLUKS: _
+```
+
+If it went really well, it'll accept your passphrase, and you'll arrive at your Display Manager of choice (or a TTY if that's what you configured), and you'll be able to login to your user with the password you just set.
+
+At this point you can either continue configuring/tweaking your new NixOS machine to your liking before continuing to the next section, or you can just keep pushing through, the choice is up to you.
+
+## Part 02: Secure Boot with Lanzaboote
+
+`Lanzaboote` is a wonderful project that I’ve been happily using on my NixOS machines for about a year now without a single issue. Still yet, it’s always a good idea to back up any important data before setting it up (like, your Windows BitLocker Recovery Keys, in case you're securely dual booting), and especially before updating `Lanzaboote` to the latest release.
+
+In any event, we’ll be following along with the quick start guide (<https://github.com/nix-community/lanzaboote/blob/master/docs/QUICK_START.md>) for this section.
+
+**PLEASE BE ADVISED: THE QUICK START GUIDE LINKED ABOVE WILL PROVIDE YOU WITH FAR MORE ACCURATE/CURRENT INSTRUCTIONS THAN WHAT'S SHOWN HERE FOR THIS ARTICLE. THE FOLLOWING SECTIONS ABOUT LANZABOOTE SHOULD BE REGARDED AS SUGGESTIONS/COMMENTARY FOR EDUCATIONAL PURPOSES ONLY, RATHER THAN AS A TRUE INSTRUCTION MANUAL.**
+
+### Confirm NixOS is installed in UEFI mode
+
+Assuming you met the prerequisites and you successfully installed NixOS into the UEFI, the output of `bootctl status` should look like this:
+
+```console
+$ bootctl status
+System:
+     Firmware: UEFI 2.60 (INSYDE Corp. 22532)
+Firmware Arch: x64
+  Secure Boot: disabled (disabled)
+ TPM2 Support: yes
+ Measured UKI: no
+ Boot into FW: supported
+
+Current Boot Loader:
+      Product: systemd-boot 256.6
+...
+```
+
+If the firmware is `UEFI` and the current boot loader is `systemd-boot` we can continue.
+
+### Generate the Keys
+
+We’ll need to use `sbctl` for this. You can add it to your system packages like so:
+
+```nix
+{pkgs, ...}:
+{
+  environment.systemPackages = with; pkgs [
+    # sbctl needed to generate keys
+    sbctl
+  ];
+}
+```
+
+Alternatively, you probably want to just run it from an ephemeral nix shell via `$ nix-shell -p sbctl` (we're going to declare this package in a module, as we'll see).
+
+Either way, once you have `sbctl` just run `# sbctl create-keys` like so:
+
+```console
+$ sudo sbctl create-keys
+[sudo] password for mycoolusername:
+Created Owner UUID fcdc9ade-1757-4fd6-8376-bc21c7f4d093
+Creating secure boot keys...✓
+Secure boot keys created!
+```
+
+### Configure the Lanzaboote Module (Flake)
+
+The following is how I personally like to modularize my own NixOS flake based configuration. What we'll do is amend our minimal flake from earlier,  adding `lanzaboote` as an input, and we'll enable it by adding it to our hosts module array. We're also going to create a directory in our `/etc/nixos` folder, called `modules` that will contain a module I'm calling `lanza.nix`. This is what the flake should look like:
+
+```nix
+{
+  description: "A minimal flake.nix for a SecureBoot-enabled NixOS machine"
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote/v0.4.1";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+  }:
+  outputs = {self, nixpkgs, lanzaboote, ... }@inputs: {
+    nixosConfigurations = {
+      my-nixos-machine = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux"; # Assumes a standard x86 CPU
+        modules = [
+         ./configuration.nix
+         lanzaboote.nixosModules.lanzaboote
+         ./modules/lanza.nix
+     ];
+      };
+    };
+  };
+}
+```
+
+Of course, the `./modules/lanza.nix` doesn't exist yet, so let's create it and bring it up in our editor.
+
+```shell
+sudo mkdir /etc/nixos/modules
+sudo touch /etc/nixos/modules/lanza.nix
+sudo vim /etc/nixos/modules/lanza.nix
+```
+
+Then we can create something like this:
+
+```nix
+{pkgs, lib, ... }:
+
+{
+  environment.systemPackages = with pkgs; [
+    # For debugging and troubleshooting Secure Boot.
+    sbctl
+  ];
+
+  # Lanzaboote currently replaces the systemd-boot module.
+  # This setting is usually set to true in configuration.nix
+  # generated at installation time. So we force it to false
+  # for now.
+  boot.loader.systemd-boot.enable = lib.mkForce false;
+
+  boot.lanzaboote = {
+    enable = true;
+    pkiBundle = "/etc/secureboot";
+  };
+}
+```
+
+> Note: If you previously declared `pkgs.sbctl` in your `configuration.nix`, now might be a good time to remove it from your `configuration.nix` and redeclare it here.
+
+### Enable Lanzaboote
+
+With the module configured, you should be cleared to run `# nixos-rebuild switch`, which will result in `Lanzaboote` being installed/enabled. You can check everything went well with the output from `# sbctl verify`
+
+```console
+$ sudo sbctl verify
+Verifying file database and EFI images in /boot...
+✓ /boot/EFI/BOOT/BOOTX64.EFI is signed
+✓ /boot/EFI/Linux/nixos-generation-1.efi is signed
+✓ /boot/EFI/Linux/nixos-generation-2.efi is signed
+✗ /boot/EFI/nixos/kernel-linux-6.11.5.efi is not signed
+✓ /boot/EFI/systemd/systemd-bootx64.efi is signed
+```
+
+If the output looks clean, we can enable secure boot.
+
+> *"It is expected that the files ending with `bzImage.efi` are **not** signed."* - *The QUICK_START guide for Lanzaboote*
+
+### Enabling Secure Boot
+
+if you followed the beginning of this guide, secure boot is currently disabled. What we’re going to do now is turn it back on, but with *setup mode* enabled.
+
+#### Enable Setup Mode
+
+My Lenovo laptop has this *setup mode*, and if you happen to have it as well, simply turn it on and proceed to the next step.
+
+> Note: on my Lenovo laptop, when I enable setup mode, it disables secure boot simultaneously. So, make sure to re-enable it either before you leave the UEFI/BIOS, or after enrolling the keys.
+
+However, if you, like me, also happen to have a machine with an ASUS motherboard, then we’ll have to take some extra steps.
+
+1. Enable secure boot
+2. Install factory default keys (if they’re empty)
+3. Delete every key **except the Forbidden Signature Database (dbx)**
+ 1. This is typically the key at the bottom of the list
+4. Save changes and reboot
+
+### Enroll the Keys
+
+Now that secure boot’s enabled (sorta), we can enroll the keys we generated earlier with vendor keys from Microsoft.
+
+```console
+$ sudo sbctl enroll-keys --microsoft
+[sudo] password for lani:
+Enrolling keys to EFI variables...
+With vendor keys from microsoft...✓
+Enrolled keys to the EFI variables!
+```
+
+And now, just reboot! Once you’re back in, you can verify secure boot is activated (user mode).
+
+```console
+$ bootctl status
+System:
+      Firmware: UEFI 2.60 (INSYDE Corp. 225332)
+ Firmware Arch: x64
+   Secure Boot: enabled (user)
+  TPM2 Support: yes
+  Measured UKI: yes
+  Boot into FW: supported
+```
+
+## Part 2.5: Unlocking LUKS with the TPM using `systemd-cryptenroll`
+
+At the very beginning of this guide, I promised I’d show you how to auto decrypt your LUKS device with TPM2. So, to do that, we’re going to amend the `lanza.nix` module we created earlier, to both install `tpm2-tss` and to create a tiny script (`luks-helper`) to leverage a handy tool included in systemd,`systemd-cryptenroll`.  The command our script calls on our LUKS device (NIXLUKS) looks something like this:
+
+ `# systemd-cryptenroll --wipe-slot=tpm2 --tpm2-device=auto --tpm2-pcrs=0+7 /dev/disk/by-label/NIXLUKS`. 
+
+The flags on the command do the following:
+
+- `--wipe-slot=tpm2` clears out any previous keys bound to the slot.
+- `--tpm2-device=auto` automatically grabs the default TPM2 chip (found on your motherboard)
+- `--tpm2-pcrs=0+7` can be useful when binding multiple keys/devices. It separates the Platform Configuration Registers the keys bind to by 7 (default).
+
+```
+{pkgs, lib, ... }:
+let
+  luksCryptenroller = pkgs.writeTextFile {
+    name = "luksCryptenroller";
+    destination = "/bin/luksCryptenroller";
+    executable = true;
+
+    # Note: You can hardcode additional LUKS devices like so:
+    # text = let 
+    #   ...
+    #   luksDevice02 = "BEEGLUKS01";
+    #   luksDevice03 = "BEEGLUKS02";
+    # in ''
+    #   ...
+    #   sudo systemd-cryptenroll --wipe-slot=tpm2 --tpm2-device=auto --tpm2-pcrs=0+7 /dev/disk/by-label/${luksDevice02}
+    #   sudo systemd-cryptenroll --wipe-slot=tpm2 --tpm2-device=auto --tpm2-pcrs=0+7 /dev/disk/by-label/${luksDevice03}
+    # '';
+
+    text = let 
+      luksDevice01 = "NIXLUKS"; 
+    in ''
+      sudo systemd-cryptenroll --wipe-slot=tpm2 --tpm2-device=auto --tpm2-pcrs=0+7 /dev/disk/by-label/${luksDevice01}
+    '';
+  };
+in
+{
+  environment.systemPackages = with [
+    luksCryptenroller
+    # For debugging and troubleshooting Secure Boot.
+    pkgs.sbctl
+    pkgs.tpm2-tss
+  ];
+
+  # Lanzaboote currently replaces the systemd-boot module.
+  # This setting is usually set to true in configuration.nix
+  # generated at installation time. So we force it to false
+  # for now.
+  boot.loader.systemd-boot.enable = lib.mkForce false;
+
+  boot.lanzaboote = {
+    enable = true;
+    pkiBundle = "/etc/secureboot";
+  };
+}
+```
+
+I'll admit, not the prettiest (or the DRYest) `bash` script in the world, but *hey*, it gets the job done. A far more *sophisticated* approach would probably store the LUKS devices in an array, and use a for loop to run through it, calling `systemd-cryptenroll` with the current/*ith* device in the array. I'll leave that up to you to implement.
+
+### Enrolling the keys
+
+This is rather straight forward just run `$ luksCryptenroller` (you'll immediately be prompted for your `superuser` password). Then just enter your passphrase for each LUKS device, in the order you declared them in.
+
+> Fun fact, if all your LUKS devices share the same passphrase, `systemd-cryptenroll` seems to just know to re-use it, rather than prompting you for it again. As to how that's possible ... well I have no idea. Perhaps `systemd-cryptenroll` stores the passphrase temporarily in memory, and makes a call to check if it still exists/validates on every enrollment, and if it does, uses it until it comes across a device the stored passphrase doesn't decrypt. That's just a best guess though, it's also entirely possible this *feature* isn't purposeful, and might actually be a bug.
+
+## Part 03: Home Manager (Abridged)
+
+`home-manager` is a very extensive utility for configuring the user (rather than the global/system) environment on a Nix/NixOS machine. It's far too much to talk about in detail here, so I'll leave you with the official [Home Manager Manual](https://nix-community.github.io/home-manager/), a very handy tool: [Home Manager Option Search](https://home-manager-options.extranix.com/), and finally the [nix-community/home-manager/issues](https://github.com/nix-community/home-manager/issues) page for when things go awry (It doesn't happen that often, but I'll admit weird bugs do happen on occasion).
+
+As such, I'm going to very briefly walk you through configuring `home-manager` via further amending our `flake.nix`, and setting up the most important features I use it for (shell configuration, `git`/`gh` configuration, etc.).
+
+### Step 0 - `fonts.nix`
+
+Shells look best with monospaced fonts, especially *monospaced nerd-fonts*, so before we get ahead of ourselves, let's create a `fonts.nix` in the systemwide space.
+
+```shell
+sudo touch /etc/nixos/modules/fonts.nix
+```
+
+And we'll bring it into an editor with `# vim /etc/nixos/modules/fonts.nix`, to create the following:
+
+```nix
+# modules/fonts.nix
+{pkgs, ...}: 
+{
+  fonts = {
+    fontconfig = {
+      enable = true;
+    };
+    packages = with pkgs; [
+      noto-fonts
+      noto-fonts-emoji-blob-bin
+      noto-fonts-cjk-sans
+      nerd-fonts._0xproto
+      nerd-fonts.symbols-only
+    ];
+  };
+}
+```
+
+As you'll notice, this module enables a system wide `fontconfig` (we'll use home-manager to enable the user space one), and several common font packages, along with my favorite monospaced font (0xProto) packaged as a nerd-font.
+
+We can then import it into `configuration.nix` like so:
+
+```nix
+# configuration.nix
+{ config, lib, pkgs, ... }:
+
+{
+  imports = 
+    [ # Include the results of the hardware scan.
+      ./hardware-configuration.nix
+      ./modules/fonts.nix
+    ];
+    
+  ...
+}
+```
+
+And with a single `# nixos-rebuild switch` we'll have all the fonts we need to continue.
+
+### Configuring Home Manager via  `flake.nix`
+
+This is rather straight forward (it's one of the neat things about flakes!), just like we added `lanzaboote`, we'll add `home-manager` as an input, and configure it as a module.
+
+```nix
+{
+  description: "A minimal flake.nix for a SecureBoot-enabled NixOS machine, with Home Manager"
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote/v0.4.1";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+  }:
+  outputs = {self, nixpkgs, lanzaboote, home-manager, ... }@inputs: {
+    nixosConfigurations = {
+      my-nixos-machine = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux"; # Assumes a standard x86 CPU
+        specialArgs = {
+       inherit inputs;
+        };
+        modules = [
+       ./configuration.nix
+       lanzaboote.nixosModules.lanzaboote
+       ./modules/lanza.nix
+       home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.mycoolusername = import ./home;
+            home-manager.extraSpecialArgs = inputs;
+          }
+     ];
+      };
+    };
+  };
+}
+```
+
+Then we'll create our `home` directory, along with the module's we'll need:
+
+```shell
+sudo mkdir /etc/nixos/home
+sudo mkdir /etc/nixos/home/modules
+sudo mkdir /etc/nixos/home/modules/shell
+sudo touch /etc/nixos/home/default.nix
+sudo touch /etc/nixos/home/home-configuration.nix
+sudo touch /etc/nixos/home/modules/shell/default.nix
+sudo touch /etc/nixos/home/modules/shell/zsh.nix
+sudo touch /etc/nixos/home/modules/shell/starship.nix
+sudo touch /etc/nixos/home/modules/shell/git-gh.nix
+```
+
+The above is pretty verbose, so let's walk through each module.
+
+#### Quick Aside: `default.nix`
+
+You probably noticed in our flake config this line:
+
+```nix
+{ 
+  ...
+  home-manager.users.mycoolusername = import ./home;
+  ...
+}
+```
+
+As well as the two `default.nix` modules we created in `./home` and `./home/modules/shell`. So, what does it do? Well, it's a module that primarily serves to imports other modules. As an added bonus, the way to import a `default.nix` module, is through referencing it's parent directory, such as `home` or `home/modules/shell`.
+
+This is a feature that becomes more useful, when you have modules that shouldn't be imported by default. For example, you might decide to create modules for AMD GPUs (`modules/amd.nix`) and Nvidia GPUs (`modules/nvidia.nix`). Unless you want to install both sets of drivers across all your machines, you'll probably want to manually import those on a system by system basis via the flake.nix, rather than importing both via a `default.nix` in a `modules/gpu` directory.  
+
+#### `home/default.nix`
+
+Continuing, let's start with `home/default.nix`. Using a `superuser` privileged editor, you'll want to assemble `home/default.nix` like this:
+
+```nix
+{
+  imports = [
+    ./home-configuration.nix
+    ./modules/shell
+  ];
+}
+```
+
+Inline with the spirit of `default.nix`, this simply imports a file called `./home-configuration.nix` (which we'll configure next), and another `default.nix` which declares the default imports for the `shell` module.
+
+#### `home/home-configuration.nix`
+
+And we can assemble `home-configuration.nix` like so:
+
+```nix
+{
+  home.username = "mycoolusername";
+  home.homeDirectory = "/home/mycoolusername";
+  home.stateVersion = "24.05";
+  programs.home-manager.enable = true;
+}
+```
+
+The above configures Home Manager to act on `mycoolusername`'s home directory, and enables itself.
+
+#### `home/modules/shell/default.nix`
+
+Another `default.nix` module, it'll import modules used primarily within the terminal shell.
+
+```nix
+{
+  imports = [
+    ./zsh.nix
+    ./starship.nix
+    ./git-gh.nix
+  ];
+}
+```
+
+#### `home/modules/shell/zsh.nix`
+
+```nix
+{config, ...}: {
+  home.packages = with pkgs; [
+    pfetch-rs
+  ];
+
+  programs.zsh = {
+    enable = true;
+    autosuggestion.enable = true;
+    syntaxHighlighting.enable = true;
+    history = {
+      size = 10000;
+      path = "${config.xdg.dataHome}/zsh/history";
+    };
+    initExtra = ''
+    case $(tty) in 
+      (/dev/tty[1-9]);; 
+      (*) 
+        eval pfetch;; 
+    esac
+    '';
+  };
+}
+```
+
+The above configures `zsh` (which we declared and enabled as the default shell from `configuration.nix`), with some common plugins, a decent history size, and even runs `pfetch` every time you open a fresh shell. The little if/case statement in `initExtra` ensures `pfetch` doesn't run in a bare `tty` (which, I'm sure you're very familiar with if you followed [Part 01: From Zero to NixOS](#part-01-from-zero-to-nixos) all the way through).
+
+#### `home/modules/shell/starship.nix`
+
+```
+{
+  programs.starship = {
+    enable = true;
+    settings = {
+      add_newline = false;
+     
+      nix_shell = {
+        symbol = " ";
+      };
+
+      git_status = {
+        format = "([\$all_status$ahead_behind\]($style) )";
+        modified = "󰇂 ";
+        ahead = " $\{count}";
+        conflicted = "󱚝 ";
+        behind = " $\{count}";
+        diverged = "󰹺   $\{ahead_count}  $\{behind_count}";
+        up_to_date = " ";
+        deleted = "󰮉 ";
+        untracked = "󱚠 ";
+        stashed = " ";
+        staged = " ";
+        style = "bold blue";
+      };
+    };
+  };
+}
+```
+
+The above is my personal Starship Prompt configuration, and I hope it serves you well in your version control adventures (if you choose to implement this module).
+
+#### `home/modules/shell/git-gh.nix`
+
+```nix
+{
+  programs.git = {
+    enable = true;
+    userName = "mycoolgithubusername";
+    userEmail = "mycoolgithubacctemail@xample.com";
+    extraConfig = {
+      safe.directory = "/etc/nixos";
+      core.editor = "nvim"; # We didn't cover this, but I trust you can setup neovim on your own, perhaps via nixvim ;3 (https://nix-community.github.io/nixvim/)
+    };
+  };
+  programs.gh = {
+    enable = true;
+  };
+}
+```
+
+#### Finishing Touches
+
+With all the modules configured, it's time to run `# nixos-rebuild switch` and bask in the triumph of having accomplished a LOT today, with a base Home Manager configuration as the cherry on top.
+
+## Discussion
+
+Welcome to the end of a very long blog post. If you completed the above, you have earned a very well deserved break and celebration of your accomplishments today (or however long it took to get through this guide).
+
+What you've done is no small feat. In reaching the end of this guide, you've installed NixOS with Full Disk Encryption, enabled secure boot with `lanzaboote`, enabled auto decryption of your LUKS devices with `systemd-cryptenroller`, and finally configured a slick `zsh` shell with Starship Prompt, some plugins, and configured `git` and `gh`, ready to turn your `/etc/nixos` folder into a repo (please see: [nixos-and-flakes.thiscute.world/nixos-with-flakes/other-useful-tips#managing-the-configuration-with-git](https://nixos-and-flakes.thiscute.world/nixos-with-flakes/other-useful-tips#managing-the-configuration-with-git)).  If you knew nothing about Nix when you first got here, well, I hope you were able to get the gist of it after reaching the end here.
+
+I also hope that in being your guide on this journey through the major circles of Nix, that you were able to overcome some of the steep learning curve Nix/NixOS is infamously known for. If however, I failed to help with that, well, I guess I'll just have to update this post in accordance to your feedback.
+
+In any event, I hope you learned something, and if you were ever a chronic distro hopper like I was, I hope NixOS brings you the same peace of mind it brought me, serving as the final distro following a very long journey of hops.
+
+*PS, I'd love to hear your thoughts! Feel free to drop a comment below, or reach out to me on social media to let me know what you thought of this article.*
