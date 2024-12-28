@@ -136,21 +136,18 @@ export default async function BlogPostPage(props: { params: Promise<{ id: string
         </div>
       </div>
 
-
-
-        
-        <main className='motion-safe:simple-color-trans pb-common -mb-0.5 min-h-full max-w-full bg-ctp-base dark:bg-ctp-midnight'>
-          {/* flex box break prose */}
-          <article id='content' className=''>
-            <PostHeader2 {...post} />
-            <div className='w-full px-10'>
-              <div className='prose-protocol-omega mx-auto'>
-                <GlobalMDXComponent {...post} />
-              </div>
+      <main className='motion-safe:simple-color-trans pb-common -mb-0.5 flex min-h-full w-full flex-col bg-ctp-base dark:bg-ctp-midnight'>
+        {/* flex box break prose */}
+        <article id='content' className=''>
+          <PostHeader2 {...post} />
+          <div className='w-full px-10'>
+            <div className='prose-protocol-omega mx-auto'>
+              <GlobalMDXComponent {...post} />
             </div>
-          </article>
-          <CommentsComponent />
-        </main>
-     </>
+          </div>
+        </article>
+        <CommentsComponent />
+      </main>
+    </>
   );
 }

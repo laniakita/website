@@ -14,7 +14,7 @@ export function PostHeader2(post: Post) {
         <div className='w-full max-w-3xl font-mono'>
           <CatTagRoller cats={post.categories} tags={post.tags} />
         </div>
-        <h1 className='w-full max-w-3xl text-3xl font-black supports-[text-wrap:balance]:text-balance md:text-4xl'>
+        <h1 id={post.url.split('/').pop()} className='w-full max-w-3xl text-3xl font-black supports-[text-wrap:balance]:text-balance md:text-4xl'>
           {post.headline}
         </h1>
         <h2 className='w-full max-w-3xl text-2xl font-light supports-[text-wrap:balance]:text-balance md:text-3xl'>

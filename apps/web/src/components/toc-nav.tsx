@@ -42,18 +42,26 @@ const getNestedHeadings = (headings: HTMLHeadingElement[], level: number) => {
     }
   }
   return nestedTree;
-}
+};
 
 const useHeadingsData = () => {
   const [nestedHeadings, setNestedHeadings] = useState<unknown>([]);
 
   useEffect(() => {
+    const titleEl = document.querySelector('h1');
+    const titleNode: HeadingNode = {
+      id: titleEl?.id ?? '#',
+      level: 1,
+      title: titleEl?.innerText ?? '',
+      children: [],
+    };
+
     // filtering by id length excises the sub-headline from the array
     const headingEls = Array.from(document.querySelectorAll('h2, h3, h4, h5, h6, h7')).filter((el) => el.id.length > 0);
 
     const nested = getNestedHeadings(headingEls as HTMLHeadingElement[], 2);
 
-    setNestedHeadings(nested);
+    setNestedHeadings([titleNode, ...nested]);
   }, []);
 
   return { nestedHeadings };
@@ -61,9 +69,18 @@ const useHeadingsData = () => {
 
 function HeadingNode({ node }: { node: HeadingNode }) {
   return (
-    <li key={node.id}>
-      <Link href={`#${node.id}`} className='text-ctp-subtext0 hover:text-ctp-text font-mono text-sm'>{node.title}</Link>
-      <ul className='list-none pl-[2ch]'>{node.children && node.children.map((childNode) => <HeadingNode key={childNode.id} node={childNode} />)}</ul>
+    <li key={node.id} className=''>
+      <p className='text-balance'>
+        <Link
+          href={`#${node.id}`}
+          className='text-balance font-mono text-sm leading-relaxed text-ctp-subtext0 hover:text-ctp-text md:max-w-xs lg:max-w-sm md:break-words lg:break-keep'
+        >
+          {node.title}
+        </Link>
+      </p>
+      <ul className='list-none pl-[2ch]'>
+        {node.children && node.children.map((childNode) => <HeadingNode key={childNode.id} node={childNode} />)}
+      </ul>
     </li>
   );
 }
@@ -79,18 +96,16 @@ function Headings({ tree }: { tree: HeadingNode[] }) {
 }
 
 const useIntersectionObserver = () => {
-  useEffect(() => {
-
-  })
-}
+  useEffect(() => {});
+};
 
 export default function ToCMenu() {
   const { nestedHeadings } = useHeadingsData();
   console.log('filtered:', nestedHeadings);
 
   return (
-    <div className='flex h-screen max-h-[calc(100vh-4rem)] w-full max-w-lg bg-ctp-base/20 dark:bg-ctp-base/20 text-slate-100 md:sticky md:top-16 overflow-y-auto px-10 py-[4.5rem] items-start'>
-      <nav aria-label='Table of contents' className='w-full'>
+    <div className='flex h-screen max-h-[calc(100vh-4rem)] w-full min-w-[22rem] md:max-w-xs lg:max-w-sm py-10 items-start justify-center overflow-y-auto bg-ctp-base/20  text-slate-100 sticky top-16 dark:bg-ctp-base/20'>
+      <nav aria-label='Table of contents' className='w-full px-4'>
         <Headings tree={nestedHeadings as HeadingNode[]} />
       </nav>
     </div>
