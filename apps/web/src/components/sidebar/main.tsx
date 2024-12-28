@@ -85,7 +85,7 @@ export default function Sidebar() {
 
   return (
     <div className='flex h-full max-h-[calc(100vh-4rem)] shadow-xl md:sticky md:top-16'>
-      <div className='flex size-full flex-col gap-0 overflow-y-auto border-l border-l-ctp-surface0 bg-ctp-surface0/20 md:gap-6 md:border md:p-4 dark:border-ctp-base dark:bg-ctp-base/20'>
+      <div className='flex size-full flex-col gap-0 overflow-y-auto bg-ctp-surface0/20 md:gap-6 md:border md:p-4 dark:border-ctp-base dark:bg-ctp-base/20'>
         <InfoBox categories={categories} tags={tags} socialItems={socialItems2} blogInfo={blogInfo} />
         <SubscribeBox />
         <div className='relative flex flex-col items-center justify-center md:pb-4'>

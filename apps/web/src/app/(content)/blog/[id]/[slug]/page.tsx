@@ -11,6 +11,7 @@ import GlobalMDXComponent from '@/components/mdx/global-mdx-components';
 import { catTagData } from '@/lib/cat-tag-data';
 import CommentsComponent from './comments';
 import { PostHeader2 } from './post-header-2';
+import ToCMenu from '@/components/toc-nav';
 
 export function generateStaticParams() {
   const posts = allPosts.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
@@ -128,23 +129,28 @@ export default async function BlogPostPage(props: { params: Promise<{ id: string
   return (
     <>
       <script type='application/ld+json' dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+
       <div>
         <div className='fixed left-0 top-[3.8rem] z-50 w-full'>
           <ReadingBar />
         </div>
       </div>
-      <main className='motion-safe:simple-color-trans pb-common -mb-0.5 min-h-full max-w-full bg-ctp-base dark:bg-ctp-midnight'>
-        {/* flex box break prose */}
-        <article id='content' className=''>
-          <PostHeader2 {...post} />
-          <div className='w-full px-10'>
-            <div className='prose-protocol-omega mx-auto'>
-              <GlobalMDXComponent {...post} />
+
+
+
+        
+        <main className='motion-safe:simple-color-trans pb-common -mb-0.5 min-h-full max-w-full bg-ctp-base dark:bg-ctp-midnight'>
+          {/* flex box break prose */}
+          <article id='content' className=''>
+            <PostHeader2 {...post} />
+            <div className='w-full px-10'>
+              <div className='prose-protocol-omega mx-auto'>
+                <GlobalMDXComponent {...post} />
+              </div>
             </div>
-          </div>
-        </article>
-        <CommentsComponent />
-      </main>
-    </>
+          </article>
+          <CommentsComponent />
+        </main>
+     </>
   );
 }

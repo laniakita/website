@@ -22,7 +22,6 @@ export default function PostRollerV4({ posts }: { posts: Post[] }) {
                   key={`subscribe-blog-post-${uniqueKey}-${Math.floor(Math.random() * 1000 + idx)}`}
                   className='flex flex-col gap-4 md:gap-6'
                 >
-                  <SocialBox mobile />
                   <SubscribeBox mobile />
                   <PostPreviewV4 {...post} />
                 </div>

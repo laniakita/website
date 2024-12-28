@@ -36,48 +36,7 @@ In honesty, I was awestruck by contentlayer’s pitch video[^2]. Especially so, 
 
 But, swallowed pride aside, creating my own content backend was quite a learning experience for me, so I wanted to talk about it. As such, I present to you my technical summary on my custom solution.
 
-### Contents
-
-- [Introduction](#introduction)
-- [Setup](#setup)
-  - [Drizzle + Turso](#drizzle--turso)
-  - [Schemas](#schemas)
-  - [Database Config](#database-config)
-- [Overview of my CMS](#overview-of-my-cms)
-  - [Scanning](#scanning)
-  - [Processing](#processing)
-  - [Storing Data](#storing-data)
-  - [Fetching Data](#fetching-data)
-  - [Rendering Data](#rendering-data)
-- [Scanning the Posts](#scanning-the-posts)
-  - [The Big Script: `fetch-mdx.ts`](#the-big-script-fetch-mdxts)
-  - [The Main Function: `batchFetchMain()`](#the-main-function-batchfetchmain)
-  - [Fetching file paths: `batchFetchMDXPaths()`](#fetching-file-paths-batchfetchmdxpaths)
-- [Post Processing & Content Data Generation](#post-processing--content-data-generation)
-  - [Batch processing of front matter: `batchFetchFrontMatter()`](#batch-processing-of-front-matter-batchfetchfrontmatter)
-  - [Zooming in: Processing with `matterProcessor()`](#zooming-in-processing-with-matterprocessor)
-    - [Assigning UUIDs & Slugs](#assigning-uuids--slugs)
-      - [No ID or Slug => `comboInject()`](#no-id-or-slug--comboinject)
-      - [No ID? =>`injectUUID()`](#no-id-injectuuid)
-      - [No Slug? => `injectSlug()`](#no-slug--injectslug)
-      - [Slug !== filename? =>`updateSlug()`](#slug--filename-updateslug)
-    - [Generating Image Data](#generating-image-data)
-      - [`comboImageProcessing()`](#comboimageprocessing)
-      - [`imgMetaPlusBlurryPlaiceHolders()`](#imgmetaplusblurryplaiceholders)
-      - [`newImageEmbedPath()`](#newimageembedpath)
-  - [Zooming out](#zooming-out)
-- [Inserting Content Data into the DB](#inserting-content-data-into-the-db)
-  - [`bun-db-funcs.ts`](#bun-db-funcsts)
-  - [`push-mdx.ts`](#push-mdxts)
-  - [`db-gen.ts`](#db-gents)
-- [Fetching Data from the DB](#fetching-data-from-the-db)
-  - [`node-db-funcs.ts`](#node-db-funcsts)
-- [Putting it Together](#putting-it-together)
-  - [`runner.ts`](#runnerts)
-- [Rendering Content](#rendering-content)
-- [Discussion / Moving to Contentlayer2](#discussion--moving-to-contentlayer2)
-
-### Introduction
+## Introduction
 
 I started my life in web working with traditional CMSes like WordPress[^3] and then briefly, Ghost[^4]. Later, I took the JAMstack[^5] hype train as far as it could go, fetching data from headless CMSes[^6] like Strapi[^7] and Contentful[^8], and integrating it into Gatsby[^9] frontends. Then, sometime before building this site, I caught myself up on the latest headless CMSes people have been working with. I experimented with Payload CMS[^10] and Directus[^11], before diving into off-the-shelf backends like Supabase[^12], and PocketBase[^13] (my personal favorite).
 
@@ -109,11 +68,11 @@ So, in thinking about the future, and not wanting to limit my project pre-emptiv
 
 > I suppose I could’ve used Cloudflare’s D1[^43], instead of Turso, but the moose mascot was so gosh darn cute! Couple that with the fact they have a wonderfully generous free tier[^44], how could I say no?!
 
-### Setup
+## Setup
 
 Of the ORMs, I had narrowed it down to two options, Prisma[^45] or Drizzle ORM[^41]. I settled on Drizzle because I liked the focus on TypeScript, and I liked that you could write raw(ish) SQL as an escape hatch using its _magic SQL_[^46] operator. I also really liked the idea that the knowledge gained in working with it, would be transferable, since one of their taglines is _if you know SQL, you know Drizzle_. I'm also just a sucker for companies that know how to execute self-deprecating advertising strategies[^47][^48], so my heart was settled on using it.
 
-#### Drizzle + Turso
+## Drizzle + Turso
 
 Anyways, since I did end up using Drizzle, there was some configuration required before I could flesh out the rest of my solution. Aside from registering for Turso and generating my API keys, the first thing I had to do was setup a `drizzle.config.ts`[^49] file to use with Turso.
 
@@ -146,7 +105,7 @@ I loosely followed Turso's guide on setting it up with Drizzle[^50], then came u
 
 Something I should note, is that instead of injecting the Turso credentials from a `.env` file using something like `process.env.TURSO_AUTH`[^52], I took advantage of SST's[^53] _secret_[^54] component instead. You'll notice I tapped into the `{ Resource }`[^55] object from `sst` using some simple dot notation[^56]. This really just avoids the hassle of passing around a `.env.local`[^57] file between work machines / dev environments.
 
-#### Schemas
+## Schemas
 
 Once I had that, then I just had to define some schemas/tables[^58] for my posts. This resulted in creating the following tables:
 
@@ -353,7 +312,7 @@ In using them as foreign keys, I'm really just taking advantage of the cascade o
 
 As far as relations go, I'm using drizzles relations[^65] feature, and creating relational tables for both _one-to-many_ (`authors`, `featured_images`) and _many-to-many_ (`tags`) relations. In truth, this was somewhat _extra_, since I had foreign keys available to me on `turso`, but I was curious to know what `drizzle` was capable of, and this is one such addition that `drizzle` brings to the table (no pun intended \>.\<), beyond (most) vanilla SQL functions.
 
-#### Database Config
+### Database Config
 
 With all the schemas fleshed out the last thing to setup, was a connection to the remote DB on Turso[^66], where I then imported the schemas directly into the client connection.
 
@@ -380,17 +339,17 @@ export const maindb = drizzle(client, { schema: { ...authors, ...tags, ...featur
 
 With that squared away, the final step was to push our schemas as tables to our database on `turso`, with a single command: `drizzle-kit push`[^67]. Though, since I was importing credentials via SST, that command was more like: `sst shell bun run drizzle-kit push`[^68], but I digress.
 
-### Overview of my CMS
+## Overview of my CMS
 
 With the the database configured, the rest of the CMS could then be fleshed out. This process was in theory quite simple, following the outline from earlier. All I had to do was read content into memory, _process_ them, and send it into the database via `insert` statements.
 
-#### Scanning
+### Scanning
 
 In practice, this took the form of an extensive script I wrote that took advantage of Bun’s speedy File I/O APIs[^69], to scan a folder that held all the blog content, which then read any Markdown and MDX files into memory as UTF-8 strings, sans any ignored ones.
 
 From there I used `gray-matter`[^70] to parse the stringified front matter, to then create an object to store both the front matter data and the raw string itself.
 
-#### Processing
+### Processing
 
 Then I checked that data for a UUID before generating a fresh UUIDv4 using `Bun.crypto` which gets injected into the original file’s front matter, where it can then be read back into memory to update the data object.
 
@@ -398,25 +357,25 @@ I also performed a similar step for the post slug as well, where I checked the f
 
 Then I had a whole Image processing step, which, admittedly, is a little more complicated than the other two steps (as we’ll see). In short, a function scans the front matter data for an `imageSrc`, then it copies the (relatively defined) image from the `content/assets` folder, into Next’s `/public` folder[^14]. Then it runs the image through `plaiceholder`[^71] to generate a blurry placeholder image (in `base64`[^72] format) and to also fetch the image dimensions (height, width). Finally, it appends all that data to the object I’d generated earlier.
 
-#### Storing Data
+### Storing Data
 
 Then, with another script, I just pushed all the data to the SQLite database on Turso using `drizzle` statements to insert/update the database.
 
-#### Fetching Data
+### Fetching Data
 
 Once all the data was loaded, I simply fetched it using `drizzle`’s query builder (mostly, some calls were proper `select` statements), and I took advantage of using the React `cache`[^73] hook built into Next.js to memoize those DB calls.
 
 > There wasn’t a real point to doing so, seeing as I never implemented ISR, so the post page data never really went stale. Still, I figured in the event I did implement it, it’d come in handy. Well, at least I know how it works now.
 
-#### Rendering Data
+### Rendering Data
 
 Once I had the data, the only thing left to do was to use `mdx-bundler`[^74] to process the raw MDX string, and I just loaded everything else into my front end.
 
-### Scanning the Posts
+## Scanning the Posts
 
 Alright, the very first thing to do, was to ingest the files that actually had the content, and bring everything into memory. The below script puts into action exactly that. It’s a little complicated, but most of the complexity stems from the added processing steps. We'll go through this, chunk by chunk, over the following sections, this is just to show you the final product, upfront.
 
-#### The Big Script: `fetch-mdx.ts`
+### The Big Script: `fetch-mdx.ts`
 
 One thing to note, is that this is the raw script I was previously using, complete with `eslint` ignore directives, suggestions, and the comments I left for myself, to help explain to myself what’s going on.
 
@@ -984,7 +943,7 @@ export const batchFetchMain = async (fetchConfig: BatchFetchMain) => {
 
 Alright, there’s a lot going on here. Let's start with the main function, and work our way through it, shall we?
 
-#### The Main Function: `batchFetchMain()`
+### The Main Function: `batchFetchMain()`
 
 ```typescript
 // main function
@@ -1022,7 +981,7 @@ interface BatchFetchMain {
 
 From there, it generates an array of valid `.mdx` paths using `batchFetchMDXPaths`, as defined by the configuration object.
 
-#### Fetching file paths: `batchFetchMDXPaths()`
+### Fetching file paths: `batchFetchMDXPaths()`
 
 `batchFetchMDXPaths` imports the following File I/O APIs:
 
@@ -1262,11 +1221,11 @@ If at any point during this whole process a catastrophic failure occurred, it wo
 
 Once the `finalArr` is generated from `batchFetchMDXPaths`, the posts can then be read into memory, and move on to _processing_ via `batchFetchFrontMatter()`.
 
-### Post Processing & Content Data Generation
+## Post Processing & Content Data Generation
 
 With all the data in memory, it became possible to actually _do something_ with it. That's where the pre-processing step (of the posts) came into play. Just like before, we'll start with the main function (`batchFetchFrontMatter()`) and work our way through it.
 
-#### Batch processing of front matter: `batchFetchFrontMatter()`
+### Batch processing of front matter: `batchFetchFrontMatter()`
 
 This function is responsible for performing all the processing of the post data, and returns a resultant array of assembled post objects. They get consumed in the `push-mdx.ts` script (which we'll see later), that does the actual database insertions.
 
@@ -1428,7 +1387,7 @@ const batchFetchFrontMatter = async ({
 };
 ```
 
-#### Zooming in: Processing with `matterProcessor()`
+### Zooming in: Processing with `matterProcessor()`
 
 In brief, the posts get assigned a UUID and a slug as needed. Then, if they have a featured image, they get copied over to the public folder and a blurry `srcset` image gets generated and stored as a `base64` string into the in-memory data object, along with the image dimensions. Finally, all that data generated during this step, gets returned as an array of objects.
 
@@ -1645,9 +1604,9 @@ case_0: If there's no `id` or `slug` in the frontmatter, it injects them using `
 ...
 ```
 
-##### Assigning UUIDs & Slugs
+#### Assigning UUIDs & Slugs
 
-###### No ID or Slug => `comboInject()`
+##### No ID or Slug => `comboInject()`
 
 `comboInject` is the function that handles this case, it looks like this:
 
@@ -1729,7 +1688,7 @@ Once it's injected into the raw file `string` array (`fileArr`), it can be conde
 
 The other two cases, case_1: no slug in `frontMatter` and case_2: no `id` in `frontMatter`, repeat the respective `comboInject` processes, but for their respective needs.
 
-###### No ID? =>`injectUUID()`
+##### No ID? =>`injectUUID()`
 
 Both `injectUUID()` and `injectSlug()`, rely on the below interface `InjectionProps`.
 
@@ -1771,7 +1730,7 @@ const injectUUID = async ({ rawFile, absFilePath, debug }: InjectionProps) => {
 };
 ```
 
-###### No Slug? => `injectSlug()`
+##### No Slug? => `injectSlug()`
 
 As for handling just the slug, this does something similar, except it doesn't generate a UUID to inject, it simply takes the file pathname, and creates a slug from that.
 
@@ -1805,7 +1764,7 @@ const injectSlug = async ({ rawFile, absFilePath, debug }: InjectionProps) => {
 };
 ```
 
-###### Slug !== filename? =>`updateSlug()`
+##### Slug !== filename? =>`updateSlug()`
 
 and in case_03: `slug` in `frontMatter` `!==` to `fileNameOnly` the `updateSlug` function is used. It's extremely similar to the above function.
 
@@ -1859,7 +1818,7 @@ In our final case, case_04: image (`imageKey`) declared in `frontMatter`, `id` a
 
 This relies on a function called `comboImageProcessing()`, which brings us to our next section.
 
-##### Generating Image Data
+#### Generating Image Data
 
 This step is somewhat intensive. In this step I'm generating the blurry `srcset` image using `plaiceholder` and grabbing the resultant image dimensions, as well as copying over the featured image into the public folder.
 
@@ -1867,7 +1826,7 @@ The latter strategy ensures that featured images can be served directly from `Ne
 
 Aside, we'll begin our look at this process by understanding the main function here, `comboImageProcessing()`.
 
-###### `comboImageProcessing()`
+##### `comboImageProcessing()`
 
 Similar to before, we have a interface for a generic configuration object.
 
@@ -1901,7 +1860,7 @@ const comboImageProcessing = async ({ fmatter, mdxPath, imageKey, publicPath, de
 
 We can see how the blurry `srcset` and the image dimensions are obtained below.
 
-###### `imgMetaPlusBlurryPlaiceHolders()`
+##### `imgMetaPlusBlurryPlaiceHolders()`
 
 This function finds the absolute image path from the relative path given in the front matter, and then reads it into memory as an `arrayBuffer`, leveraging Bun's File I/O API. Then it transforms it from an `arrayBuffer` to simply a `Buffer`, which can be used as an input for `getPlaiceHolder()`. The latter is a function from `plaiceholder`, and it relies on `sharp` under the hood. It's also the actual function that generates the blurry `srcset` and provides the image dimensions.
 
@@ -1931,7 +1890,7 @@ const imgMetaPlusBlurryPlaiceHolders = async ({ fmatter, mdxPath, imageKey, debu
 };
 ```
 
-###### `newImageEmbedPath()`
+##### `newImageEmbedPath()`
 
 With that out of the way, the final step is to copy the image from the `content` folder, to the public folder, which Next.js can use to serve the image. The below function both performs that step, as well as generates the new relative path (to the public folder), which will be saved into the in-memory post object.
 
@@ -2003,7 +1962,7 @@ const newimageEmbedPath = async ({
 };
 ```
 
-#### Zooming out
+### Zooming out
 
 Once it has all of that, it returns the assembled _processed_ object:
 
@@ -2086,11 +2045,11 @@ export const batchFetchMain = async (fetchConfig: BatchFetchMain) => {
 
 To notice we then return the `frontMatterArr` generated from the `batchFetchFrontMatter()`. With that, our walk through of the first part of the CMS (Scanning and Processing) is complete!
 
-### Inserting Content Data into the DB
+## Inserting Content Data into the DB
 
 Okay, so I've talked a lot about generating data, but where does it all go? Well, the remote database on Turso, of course! You can check out the below scripts to witness it in action! The first is a collection of insertion functions (`bun-db-funcs.ts`), the second is a helper function that imports the previous functions dynamically from the configuration object (`push-mdx.ts`), the final script integrates all of this into `db-gen.ts`, which is called by the `runner.ts` script which is called during `prebuild` (runs before `next build`).
 
-#### `bun-db-funcs.ts`
+### `bun-db-funcs.ts`
 
 The below isn't that complicated (thankfully). You'll notice that I'm primarily integrating all the schemas/tables defined all the way at the beginning of this article, and leveraging drizzle's statement builder to insert the data we generated into the database.
 
@@ -2463,7 +2422,7 @@ For example, when I asked that database if there was content for the other table
 
 With that, you can then see how these functions might be integrated in the below `push-mdx.ts` script.
 
-#### `push-mdx.ts`
+### `push-mdx.ts`
 
 The below is more or less a helper function, that integrates closely with a configuration object (which defines the functions to be imported, such as from the script above). This was essentially my attempt at creating a generic function, which others could use if they created their own functions to be imported and used.
 
@@ -2520,7 +2479,7 @@ As well, you'll notice I'm importing the main fetch function (`batchFetchMain()`
 
 Inherent problems aside, you can see how my generic script was integrated with the configuration object in the next section.
 
-#### `db-gen.ts`
+### `db-gen.ts`
 
 This is where the two scripts above are integrated into one main function that does everything. `batchPushMain()` is called with the configuration object, shamelessly called `laniConfig`.
 
@@ -2567,11 +2526,11 @@ export default dbGen;
 
 The point of this script, was to create a simple function that could be integrated into the `runner.ts` prebuild script—which I'll cover a bit later—along with setting up a integrated configuration file for my CMS.
 
-### Fetching Data from the DB
+## Fetching Data from the DB
 
 What good would a CMS be if you couldn't access any of the data you stored on to it? Pretty awful I'm betting. So, that's why it was important to write the script below to get that data.
 
-#### `node-db-funcs.ts`
+### `node-db-funcs.ts`
 
 One thing to point out, is there's a switch over from `bun` to `node` functions, and that's because the production build of a Next.js application runs on `node`. While it is possible to run the Next.js development server from `bun`, the production run time environment is strictly node, _for good reason_: Next.js often relies on the latest Node.js APIs that Bun simply hasn't had time to implement, _yet_.
 
@@ -2853,11 +2812,11 @@ In this script, I'm primarily just using the Drizzle query builder to create fun
 
 As well, I'm also making use of the `cache` function, that Next.js integrates from React. In theory, this meant that each call to the database was memoized, so I'd reduce the number of row reads to the database. In practice, all these posts were statically generated, so there was ultimately no point to doing things like this, other than for science, I suppose—which is quite important!
 
-### Putting it Together
+## Putting it Together
 
 The last step was to ensure the `dbGen()` function ran before `next build`, which was accomplished simply by creating a script runner, and calling it in our `package.json`.
 
-#### `runner.ts`
+### `runner.ts`
 
 ```typescript
 // runner.ts
@@ -2905,7 +2864,7 @@ Aside, in the below you can see how the `runner` script is called with `package.
 
 With everything now in place, every time I ran `bun run build`, content would be scanned, processed, and fresh content would be inserted into the database, while old content would remain the same. I was then able to retrieve it using the functions I wrote in the previous section.
 
-### Rendering Content
+## Rendering Content
 
 So, now that we've seen how content get's transformed into data, stored, then retrieved from a remote database on Turso, the final piece of the puzzle was to load it into the frontend. The below is the old source code for these posts, which demonstrates exactly that.
 
@@ -3007,7 +2966,7 @@ The above is sorta complicated on first look, but the important thing to notice 
 
 Et voila! A CMS I built all by myself, with data flowing from a database, directly into this Next.js application, to generate a blog on the internet.
 
-### Discussion / Moving to Contentlayer2
+## Discussion / Moving to Contentlayer2
 
 Alright, so after pouring all this time and energy into creating the above system, what went so wrong, that I felt the need to switch to `timlrx/contentlayer2`? Well, nothing major per se, it was just that by the time I'd written everything out, it felt overly complex, and a little half baked. I suppose once all the pieces were in place, and the high of finishing something I'd worked months on wore off, I quickly began to realize all it's flaws.
 

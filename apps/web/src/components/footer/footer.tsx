@@ -4,13 +4,27 @@ import { SocialIconNav2 } from '../sidebar/social-icon-nav-client';
 import { MAIN_PAGES, SOCIALS_FULL } from '../nav-constants';
 import { FooterBox, FooterBoxSpecial } from './footer-box';
 
-export default function Footer({ extra }: { extra?: string }) {
+export default function Footer({ extra, override }: { extra?: string; override?: boolean }) {
   const pathname = usePathname();
   const hiddenPaths = ["/"];
-  const weirdPaths = ["/blog"];
+  const weirdPaths = ["blog"];
+ 
+  const isWeirdPath = (path: string, override?: boolean): boolean => {
+    const splitPath = path.split('/');
+    let flag = false;
+    for (const part of weirdPaths) {
+      console.log(part)
+      if (splitPath.includes(part)) {
+        flag = true;
+      }
+    }
+    console.log(flag)
+    return override ?? flag
+  }
+  
 
   return (
-    <footer className={`${hiddenPaths.includes(pathname) ? 'hidden' : 'block'} ${weirdPaths.includes(pathname) ? 'md:hidden' : ''} relative w-full`}>
+    <footer className={`${hiddenPaths.includes(pathname) ? 'hidden' : 'block'} ${isWeirdPath(pathname, override) ? 'md:hidden' : ''} relative w-full`}>
       <div
         className={`simple-color-trans relative flex w-full flex-col items-center justify-center overflow-hidden bg-ctp-base dark:bg-ctp-midnight ${extra}`}
       >

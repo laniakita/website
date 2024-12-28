@@ -2,6 +2,8 @@ import { defineDocumentType, makeSource } from 'contentlayer2/source-files';
 import remarkGfm from 'remark-gfm';
 import rehypeSlug from 'rehype-slug';
 import rehypeMdxImportMedia from 'rehype-mdx-import-media';
+import nix from 'highlight.js/lib/languages/nix'
+import {common} from 'lowlight'
 import rehypeHighlight from 'rehype-highlight';
 import { imageProcessor, FeaturedImageR1 } from './src/lib/image-process';
 import jsxToHtml from './src/lib/mdx-html';
@@ -261,7 +263,7 @@ export default makeSource({
   documentTypes: [Post, Category, Tag, Page, Project, Author, Work],
   mdx: {
     remarkPlugins: [remarkGfm],
-    rehypePlugins: [rehypeHighlight, rehypeMdxImportMedia, rehypeSlug],
+    rehypePlugins: [[rehypeHighlight, {languages: {...common, nix}}], rehypeMdxImportMedia, rehypeSlug],
     resolveCwd: 'relative',
     esbuildOptions(options) {
       options.outdir = `${process.cwd()}/public/assets/images/blog`;
