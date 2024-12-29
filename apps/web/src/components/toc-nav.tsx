@@ -74,19 +74,20 @@ function HeadingNode({ node, activeId }: { node: HeadingNode; activeId: string }
       <p className='text-balance'>
         <Link
           href={`#${node.id}`}
-          className={`text-balance font-mono text-sm leading-relaxed text-ctp-subtext0 hover:text-ctp-text hover:font-bold ${activeId === node.id ? 'text-ctp-text underline font-bold' : ''} md:max-w-xs md:break-words lg:max-w-sm lg:break-keep`}
+          className={`text-balance font-mono text-sm leading-relaxed text-ctp-subtext0 hover:font-bold hover:text-ctp-text ${activeId === node.id ? 'font-bold text-ctp-text underline' : ''} md:max-w-xs md:break-words lg:max-w-sm lg:break-keep`}
         >
           {node.title}
         </Link>
       </p>
       <ul className='list-none pl-[2ch]'>
-        {node.children && node.children.map((childNode) => <HeadingNode key={childNode.id} node={childNode} activeId={activeId} />)}
+        {node.children &&
+          node.children.map((childNode) => <HeadingNode key={childNode.id} node={childNode} activeId={activeId} />)}
       </ul>
     </li>
   );
 }
 
-function Headings({ tree, activeId }: { tree: HeadingNode[]; activeId: string}) {
+function Headings({ tree, activeId }: { tree: HeadingNode[]; activeId: string }) {
   return (
     <ul className='list-none leading-relaxed'>
       {tree.map((heading) => (
@@ -102,7 +103,7 @@ const useIntersectionObserver = (setActiveId: Dispatch<SetStateAction<string>>, 
   useEffect(() => {
     const callback = (headings: IntersectionObserverEntry[]) => {
       //console.log('running callback with', headings)
-      
+
       headingElsRef.current = headings.reduce<Record<string, IntersectionObserverEntry>>((map, headingEl) => {
         //console.log('current map:', map)
         map[headingEl.target.id] = headingEl;
@@ -118,7 +119,6 @@ const useIntersectionObserver = (setActiveId: Dispatch<SetStateAction<string>>, 
           const headingEl = headingElsRef.current![key];
           if (headingEl?.isIntersecting) visibleHeadings.push(headingEl);
           //console.log('current visible headings after push:', visibleHeadings)
-
         });
       }
 
@@ -170,10 +170,16 @@ export default function ToCMenu() {
   useIntersectionObserver(setActiveId, activeId);
   //console.log('currently active should be:', activeId);
   return (
-    <div className='sticky top-16 flex h-screen max-h-[calc(100vh-4rem)] w-full min-w-[22rem] items-start justify-center overflow-y-auto bg-ctp-base/20 py-10 text-slate-100 md:max-w-xs lg:max-w-sm dark:bg-ctp-base/20'>
-      <nav aria-label='Table of contents' className='w-full px-4'>
-        <Headings tree={nestedHeadings as HeadingNode[]} activeId={activeId} />
-      </nav>
-    </div>
+    <>
+      <div className='sticky top-16 hidden h-screen max-h-[calc(100vh-4rem)] w-full min-w-[18rem] items-start justify-center overflow-y-auto bg-ctp-base/20 py-10 text-slate-100 md:flex max-w-[24rem] dark:bg-ctp-base/20'>
+        <nav aria-label='Table of contents' className='w-full px-4'>
+          <Headings tree={nestedHeadings as HeadingNode[]} activeId={activeId} />
+        </nav>
+      </div>
+
+      <div className='md:hidden sticky top-16 w-full px-6 h-[3rem] flex flex-row items-center border-b border-ctp-surface0 bg-ctp-base/50 dark:bg-ctp-midnight/50 backdrop-blur-sm z-50'>
+        <button>Menu</button>
+      </div>
+    </>
   );
 }

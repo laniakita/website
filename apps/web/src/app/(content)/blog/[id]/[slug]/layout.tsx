@@ -4,9 +4,9 @@ import type { ReactNode } from 'react';
 
 export default function ContentLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <div className='flex size-full flex-row'>
+    <div className='flex size-full flex-col md:flex-row'>
       <ToCMenu />
-      <div className='m-auto flex flex-col max-w-7xl min-w-[10rem]'>
+      <div className='md:m-auto flex md:min-w-[10rem] max-w-7xl flex-col'>
         {children}
         <Footer override={false} />
       </div>
