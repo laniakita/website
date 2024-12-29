@@ -74,7 +74,7 @@ function HeadingNode({ node, activeId }: { node: HeadingNode; activeId: string }
       <p className='text-balance'>
         <Link
           href={`#${node.id}`}
-          className={`text-balance font-mono text-sm leading-relaxed text-ctp-subtext0 hover:text-ctp-text ${activeId === node.id ? 'text-ctp-text underline' : ''} md:max-w-xs md:break-words lg:max-w-sm lg:break-keep`}
+          className={`text-balance font-mono text-sm leading-relaxed text-ctp-subtext0 hover:text-ctp-text hover:font-bold ${activeId === node.id ? 'text-ctp-text underline font-bold' : ''} md:max-w-xs md:break-words lg:max-w-sm lg:break-keep`}
         >
           {node.title}
         </Link>

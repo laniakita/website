@@ -5,6 +5,7 @@ import rehypeMdxImportMedia from 'rehype-mdx-import-media';
 import nix from 'highlight.js/lib/languages/nix'
 import {common} from 'lowlight'
 import rehypeHighlight from 'rehype-highlight';
+import rehypeHighlightLines from 'rehype-highlight-code-lines';
 import { imageProcessor, FeaturedImageR1 } from './src/lib/image-process';
 import jsxToHtml from './src/lib/mdx-html';
 
@@ -263,7 +264,15 @@ export default makeSource({
   documentTypes: [Post, Category, Tag, Page, Project, Author, Work],
   mdx: {
     remarkPlugins: [remarkGfm],
-    rehypePlugins: [[rehypeHighlight, {languages: {...common, nix}}], rehypeMdxImportMedia, rehypeSlug],
+    rehypePlugins: [
+      [rehypeHighlight, {languages: {...common, nix}}],
+      [rehypeHighlightLines, {
+        showLineNumbers: true,
+        lineContainerTagName: 'div'
+      }],
+      rehypeMdxImportMedia,
+      rehypeSlug
+    ],
     resolveCwd: 'relative',
     esbuildOptions(options) {
       options.outdir = `${process.cwd()}/public/assets/images/blog`;

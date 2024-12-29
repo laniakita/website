@@ -5,6 +5,9 @@
   .prose-text-pretty {
     @apply prose-headings:text-balance prose-headings:font-black prose-a:break-words prose-p:supports-[text-wrap:pretty]:text-pretty;
   }
+  .prose-headings-mod {
+    @apply prose-h2:text-3xl;
+  }
   .prose-lists-pretty {
     @apply prose-ol:leading-tight prose-ul:leading-tight;
   }

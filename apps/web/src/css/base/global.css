@@ -27,4 +27,5 @@
     opacity: 0;
     @apply animate-fade-in;
   }
+
 }

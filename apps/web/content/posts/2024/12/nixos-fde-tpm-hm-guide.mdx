@@ -65,7 +65,7 @@ Otherwise, stop here, and start troubleshooting. If you still can’t connect to
 
 First, make sure your wireless network adapter is actually enabled. You can see which adapters are available with `ip link`
 
-```sh
+```sh noLineNumbers
 [nixos@nixos:'']$ ip link
 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
  link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
@@ -89,7 +89,7 @@ Proceed to [RF-kill Unblocking](#rf-kill-unblocking), otherwise skip to [Getting
 
 First, run `rfkill` to investigate what interface is blocked.
 
-```sh
+```sh noLineNumbers
 [nixos@nixos:'']$ rfkill
 ID TYPE      DEVICE               SOFT      HARD 
  0 wlan      ideapad_wlan      blocked unblocked
@@ -100,7 +100,7 @@ ID TYPE      DEVICE               SOFT      HARD
 
 In my case, my `wlan` interface is “soft” blocked. So, running `# rfkill unblock wlan` unblocks it.
 
-```sh
+```sh noLineNumbers
 [nixos@nixos:'']$ sudo rfkill unblock wlan
 ID TYPE      DEVICE                 SOFT      HARD 
  0 wlan      ideapad_wlan      unblocked unblocked
@@ -111,7 +111,7 @@ ID TYPE      DEVICE                 SOFT      HARD
 
 Then running `ip link set wlp up` results in no error.
 
-```sh
+```sh noLineNumbers
 [nixos@nixos:'']$ sudo ip link set wlp up
 
 [nixos@nixos:'']$ _
@@ -126,7 +126,7 @@ With the WiFi adapter actually available, we can now continue (mostly) from the 
 
 Then scan for networks:
 
-```sh
+```sh noLineNumbers
 > scan
 OK
 > scan_results
@@ -137,7 +137,7 @@ bssid / frequency / signal level / flags / ssid
 
 Then add, set, and enable your network:
 
-```sh
+```sh noLineNumbers
 > add_network 
 0 
 > set_network 0 ssid "myhomenetwork"
@@ -152,7 +152,7 @@ OK
 
 Alternatively for an enterprise network:
 
-```sh
+```sh noLineNumbers
 > add_network
 0 
 > set_network 0 ssid "eduroam"
@@ -169,7 +169,7 @@ OK
 
 if everything went okay after the last command, you’ll something like:
 
-```sh
+```sh noLineNumbers
 ...
 > enable_network 0 
 OK
@@ -197,7 +197,7 @@ We’ll use `fdisk` for this. So to find the disk to partition:
 
 - `# fdisk -l`
 
-```sh
+```sh noLineNumbers
 [nixos@nixos:'']$ sudo fdisk -l
 Disk /dev/loop0: 1021.89 MiB, 1071525888 bytes, 2092824 sectors
 
@@ -228,7 +228,7 @@ In my case the command looks like:
 
 To begin, we’ll clean up any old partitions by creating a empty GPT partition table (`g`):
 
-```sh
+```sh noLineNumbers
 Command (m for help): g
 Created a new GPT disklabel (GUID: 5213d2a2-a040-44c4-ba6a-02787812777e).
 
@@ -237,7 +237,7 @@ Command (m for help):
 
 To verify this, you can print (`p`) out the new partition table, which should now be empty:
 
-```sh
+```sh noLineNumbers
 Command (m for help): p
 Disk /dev/nvme0n1: 476.94 GiB, 512110190592 bytes, 1000215216 sectors
 Disk model: SAMSUNG M2VLB512
@@ -265,7 +265,7 @@ We can then create the ESP like so:
 
 8. (partition type) 1 (EFI)
 
-```sh
+```sh noLineNumbers
 Command (m for help): n
 First sector (2048-1000214527), default 2048):
 Last sector, +sectors or +size{K,M,G,T,P} (2048-1000214527, default 1000215216): +1G
@@ -292,7 +292,7 @@ Next, we’ll add our LVM partition:
 7. (partition number: (1, 2, default 2)) enter
 8. (partition type) 44 (Linux LVM)
 
-```sh
+```sh noLineNumbers
 Command (m for help): n
 Partition number (1, 2, default 2):
 First sector (2099200-1000214527), default 2099200):
@@ -312,7 +312,7 @@ Command (m for help):
 
 If you print (`p`) out the partition table again, it'll probably look similar to this:
 
-```sh
+```sh noLineNumbers
 Command (m for help): p
 Disk /dev/nvme0n1: 476.94 GiB, 512110190592 bytes, 1000215216 sectors
 Disk model: SAMSUNG M2VLB512
@@ -335,7 +335,7 @@ if it looks right, then we can save (`w`) our changes and exit!
 
 Now, running `# lsblk` should look something like this:
 
-```sh
+```sh noLineNumbers
 [nixos@nixos:'']$ sudo lsblk
 NAME        MAJ:MIN RM   SIZE  RO TYPE MOUNTPOINTS
 ...
@@ -354,7 +354,7 @@ We’ll be encrypting the LVM partition with LUKS (version 2). To do that, we ju
 
 The `-v` flag ensures a verbose output, `-y` ensures it’ll ask us for our encryption password twice to confirm, the label flag is simply assigned to `NIXLUKS` but you can call it whatever you want. `luksFormat` actually encrypts our disk, and the `--type` flag set to `luks2` is both a newer LUKS version, and also enables us to decrypt the partition with our TPM module with `systemd-cryptenroll`.
 
-```sh
+```sh noLineNumbers
 [nixos@nixos:'']$ sudo cryptsetup -v -y --label=NIXLUKS luksFormat --type luks2 /dev/nvme0n1p2
 
 WARNING!
@@ -378,7 +378,7 @@ To verify the partition got encrypted, you can inspect the LUKS header using:
 
 Which will give an output similar to this:
 
-```sh
+```sh noLineNumbers
 [nixos@nixos:'']$ sudo cryptsetup luksDump /dev/nvme0n1p2
 LUKS header information
 Version         2
@@ -406,7 +406,7 @@ You can then check our mapped partition exists with:
 
 Note: This won't return anything really (because there's nothing in `cryptroot` yet), unless `cryptroot` doesn't exist.
 
-```sh
+```sh noLineNumbers
 [nixos@nixos:'']$ ls /dev/mapper/cryptroot
 /dev/mapper/cryptroot
 
@@ -478,7 +478,7 @@ Then we can mount the formatted partitions like so.
 
 To verify everything is in the right place, running `# lsblk -o name,label,size,type,mountpoints /dev/nvme0n1` should result in output similar to this:
 
-```sh
+```sh noLineNumbers
 [nixos@nixos:'']$ sudo lsblk -o name,label,size,type,mountpoints /dev/nvme0n1
 NAME                LABEL     SIZE TYPE  MOUNTPOINTS
 nvme0n1                     476.9G disk
@@ -559,7 +559,7 @@ This last change is optional, but I find it helpful for compatibility reasons:
 
 - Set `hardware.enableAllFirmware` to `true`.
 
-```nix
+```nix {12,13,14,18,21,27,33,43}
 # Do not modify this file! It was generated by ■nixos-generate-config■
 # and may be overwritten by future invocations. Please make changes
 # to /etc/nixos/configuration.nix instead.
@@ -789,7 +789,7 @@ Allowing "unfree" packages, will give you access to closed-source/proprietary bi
 
 ###### Helpful Packages/Software
 
-```
+```nix
 environment.systemPackages = with pkgs; [
   vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
   wget
@@ -1035,7 +1035,7 @@ Then we’ll update our flake. However, because the minimal NixOS install doesn'
 
 If that presented no errors, your output should look something like this:
 
-```sh
+```sh noLineNumbers
 [nixos@nixos:/mnt/etc/nixos]$ sudo nix --extra-experimental-features nix-command --extra-experimental-features flakes flake update
 warning: creating lock file '/mnt/etc/nixos/flake.lock'
 
@@ -1050,7 +1050,7 @@ Be warned though, this step could take a while (even assuming no compilation err
 
 Alright, if everything did go according to plan you should see output like the following:
 
-```sh
+```sh noLineNumbers
 [nixos@nixos:/mnt/etc/nixos]$ sudo nixos-install --root /mnt --no-root-passwd --flake /mnt/etc/nixos#my-nixos-machine
 copying channel...
 building the flake in path:/mnt/etc/nixos?lastModified=1729820879@narHash=sha256-xRGYbMOgJiuxxVKLtkxb0yi01srhw/NL652Uq/ghXXY%3D...
@@ -1078,7 +1078,7 @@ Installation finished!
 
 Once that's all set, it's finally time to reboot. You can do that safely like so:
 
-```sh
+```sh noLineNumbers
 sudo umount -R /mnt sudo swapoff -L NIXOS_SWAP sudo vgchange -a n lvmroot sudo cryptsetup close /dev/mapper/cryptroot reboot
 ```
 
@@ -1088,7 +1088,7 @@ Or dangerously via a simple:
 
 If everything went well, you’ll be greeted by LUKS asking for your passphrase.
 
-```console
+```sh noLineNumbers
 <<< NixOS Stage 1 >>>
 
 loading module dm-snapshot...
@@ -1115,8 +1115,8 @@ In any event, we’ll be following along with the quick start guide [nix-communi
 
 Assuming you met the prerequisites and you successfully installed NixOS into the UEFI, the output of `bootctl status` should look like this:
 
-```console
-$ bootctl status
+```sh noLineNumbers
+❯ bootctl status
 System:
      Firmware: UEFI 2.60 (INSYDE Corp. 22532)
 Firmware Arch: x64
@@ -1150,7 +1150,7 @@ Alternatively, you probably want to just run it from an ephemeral nix shell via 
 
 Either way, once you have `sbctl` just run `# sbctl create-keys` like so:
 
-```console
+```sh noLineNumbers
 ❯ sudo sbctl create-keys
 [sudo] password for mycoolusername:
 Created Owner UUID fcdc9ade-1757-4fd6-8376-bc21c7f4d093
@@ -1189,7 +1189,7 @@ The following is how I personally like to modularize my own NixOS flake based co
 
 Of course, the `./modules/lanza.nix` doesn't exist yet, so let's create it and bring it up in our editor.
 
-```sh
+```sh noLineNumbers
 sudo mkdir /etc/nixos/modules
 sudo touch /etc/nixos/modules/lanza.nix
 sudo vim /etc/nixos/modules/lanza.nix
@@ -1225,7 +1225,7 @@ Then we can create something like this:
 
 With the module configured, you should be cleared to run `# nixos-rebuild switch`, which will result in `Lanzaboote` being installed/enabled. You can check everything went well with the output from `# sbctl verify`
 
-```console
+```sh noLineNumbers
 ❯ sudo sbctl verify
 Verifying file database and EFI images in /boot...
 ✓ /boot/EFI/BOOT/BOOTX64.EFI is signed
@@ -1261,7 +1261,7 @@ However, if you, like me, also happen to have a machine with an ASUS motherboard
 
 Now that secure boot’s enabled (sorta), we can enroll the keys we generated earlier with vendor keys from Microsoft.
 
-```console
+```sh noLineNumbers
 $ sudo sbctl enroll-keys --microsoft
 [sudo] password for lani:
 Enrolling keys to EFI variables...
@@ -1271,7 +1271,7 @@ Enrolled keys to the EFI variables!
 
 And now, just reboot! Once you’re back in, you can verify secure boot is activated (user mode).
 
-```sh
+```sh noLineNumbers
 $ bootctl status
 System:
       Firmware: UEFI 2.60 (INSYDE Corp. 225332)
@@ -1359,7 +1359,7 @@ As such, I'm going to very briefly walk you through configuring `home-manager` v
 
 Shells look best with monospaced fonts, especially *monospaced nerd-fonts*, so before we get ahead of ourselves, let's create a `fonts.nix` in the systemwide space.
 
-```sh
+```sh noLineNumbers
 ❯ sudo touch /etc/nixos/modules/fonts.nix
 ```
 
@@ -1450,7 +1450,7 @@ This is rather straight forward (it's one of the neat things about flakes!), jus
 
 Then we'll create our `home` directory, along with the module's we'll need:
 
-```sh
+```sh noLineNumbers
 ❯ sudo mkdir /etc/nixos/home
 ❯ sudo mkdir /etc/nixos/home/modules
 ❯ sudo mkdir /etc/nixos/home/modules/shell

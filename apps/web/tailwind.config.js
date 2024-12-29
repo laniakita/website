@@ -96,6 +96,50 @@ module.exports = {
             'del strong': {
               color: 'var(--tw-prose-del-strong)',
             },
+            pre: {
+              overflowX: 'auto',
+            },
+            'pre > code': {
+              float: 'left',
+              minWidth: '100%'
+            },
+            'div.code-line:empty': {
+              /* it is necessary because there is no even eol character in div code-lines */
+              //height: '15.5938px', /* calculated height */
+            },
+            'span.code-line': {
+              minWidth: '100%',
+              display: 'inline-block'
+            },
+            '.code-line': {
+              paddingLeft: '12px',
+              paddingRight: '12px',
+              marginLeft: '-12px',
+              marginRight: '-12px',
+              borderLeft: '4px solid transparent', /* prepare for highlighted code-lines */
+            },
+            '.code-line.inserted': {
+              backgroundColor: 'var(--code-line-inserted)' /* inserted code-line (+) color */
+            },
+            '.code-line.deleted': {
+              backgroundColor: 'var(--code-line-deleted)' /* deleted code-line (-) color */
+            },
+            '.highlighted-code-line': {
+              backgroundColor: 'var(--code-line-highlighted)',
+              borderLeft: '4px solid var(--code-line-highlight-indicator)'
+            },
+            '.numbered-code-line::before': {
+              content: 'attr(data-line-number)',
+              marginLeft: '-8px',
+              marginRight: '16px',
+              paddingRight: '1ch',
+              paddingLeft: '3ch', // Note: assumes codeblock < 1000 lines
+              borderRight: '0.05rem solid var(--code-line-border)',
+              width: '1rem',
+              color: 'var(--code-line-number)',
+              display: 'inline-flex',
+              justifyContent: 'end',
+            }
           },
         },
         invert: {
@@ -104,10 +148,20 @@ module.exports = {
             '--tw-prose-del-links': 'var(--tw-prose-invert-del-links)',
             '--tw-prose-del-code': 'var(--tw-prose-invert-del-code)',
             '--tw-prose-del-strong': 'var(--tw-prose-invert-del-strong)',
+            '--code-line-inserted': 'var(--invert-code-line-inserted)',
+            '--code-line-deleted': 'var(--invert-code-line-deleted)',
           },
         },
         catppuccin: {
           css: {
+            '--code-line-highlighted': theme('colors.ctp-surface0.DEFAULT'),
+            '--code-line-highlight-indicator': theme('colors.ctp-sapphire.DEFAULT'),
+            '--code-line-inserted': 'rgba(64, 160, 43, 0.2)',
+            '--invert-code-line-inserted': 'rgba(166, 227, 161, 0.2)',
+            '--code-line-deleted': 'rgba(210, 15, 57, 0.2)',
+            '--invert-code-line-deleted': 'rgba(243, 139, 168, 0.2)',
+            '--code-line-border': theme('colors.ctp-overlay0.DEFAULT'),
+            '--code-line-number': theme('colors.ctp-overlay0.DEFAULT'),
             '--tw-prose-del': theme('colors.ctp-overlay0.DEFAULT'),
             '--tw-prose-invert-del': theme('colors.ctp-overlay0.DEFAULT'),
             '--tw-prose-body': theme(`colors.ctp-text.DEFAULT`),
