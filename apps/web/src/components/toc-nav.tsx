@@ -3,6 +3,15 @@
 import Link from 'next/link';
 import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
 
+const MED_SCREEN = 768; // px
+
+const Z_FOLD_SCREEN = 344;
+const IPHONE_SE_SCREEN = 375;
+const PIXEL_SEVEN_SCREEN = 412;
+const IPHONE_FOURTEEN_PRO_MAX = 430;
+const WEIRD_PHABLET = 500;
+const SMALL_SCREEN_MAX = 600;
+
 // inspired by Emma Goto React ToC: https://www.emgoto.com/react-table-of-contents
 
 export interface HeadingNode {
@@ -12,7 +21,7 @@ export interface HeadingNode {
   children: HeadingNode[];
 }
 
-const getNestedHeadings = (headings: HTMLHeadingElement[], level: number) => {
+const getNestedHeadings = (headings: HTMLHeadingElement[], level: number): HeadingNode[] => {
   const nestedTree: HeadingNode[] = [];
   let currNode: HeadingNode = {
     id: '',
@@ -45,7 +54,7 @@ const getNestedHeadings = (headings: HTMLHeadingElement[], level: number) => {
 };
 
 const useHeadingsData = () => {
-  const [nestedHeadings, setNestedHeadings] = useState<unknown>([]);
+  const [nestedHeadings, setNestedHeadings] = useState<HeadingNode[]>([]);
 
   useEffect(() => {
     const titleEl = document.querySelector('h1');
@@ -153,10 +162,9 @@ const useIntersectionObserver = (setActiveId: Dispatch<SetStateAction<string>>, 
       }
     };
 
-    const MED_SCREEN = 768; // px
-    const DESKTOP_TABLET_TOP_TOTAL = '-72px' // 3.8 rem base 16px font
-    const MOBILE_MENU_TOP_TOTAL = '-112px' // 7 rem base 16px font
-    
+    const DESKTOP_TABLET_TOP_TOTAL = '-72px'; // 3.8 rem base 16px font +/- 72px
+    const MOBILE_MENU_TOP_TOTAL = '-112px'; // 7 rem base 16px font +/- 112px
+
     const observer = new IntersectionObserver(callback, {
       rootMargin: `${window.innerWidth < MED_SCREEN ? MOBILE_MENU_TOP_TOTAL : DESKTOP_TABLET_TOP_TOTAL} 0px -40% 0px`,
     });
@@ -171,6 +179,9 @@ const useIntersectionObserver = (setActiveId: Dispatch<SetStateAction<string>>, 
 export default function ToCMenu() {
   const [activeId, setActiveId] = useState('');
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [flatHeadings, setFlatHeadings] = useState<HTMLHeadingElement[]>([]);
+  const [concatTitle, setConcatTitle] = useState('');
+
   const { nestedHeadings } = useHeadingsData();
   useIntersectionObserver(setActiveId, activeId);
   //console.log('currently active should be:', activeId);
@@ -195,24 +206,79 @@ export default function ToCMenu() {
     [showMobileMenu],
   );
 
+  const concatDynamic = (input: string | undefined) => {
+    if (!input) return;
+    if (!window.innerWidth) return;
+
+    const newInput = input.split('');
+
+    let concat = 0;
+
+    if (window.innerWidth <= Z_FOLD_SCREEN) {
+      concat = 12;
+    } else if (window.innerWidth <= 360) {
+      concat = 14;
+    } else if (window.innerWidth <= IPHONE_SE_SCREEN) {
+      concat = 15;
+    } else if (window.innerWidth <= 390) {
+      concat = 17;
+    } else if (window.innerWidth <= 414) {
+      concat = 20;
+    } else if (window.innerWidth <= IPHONE_FOURTEEN_PRO_MAX) {
+      concat = 22;
+    } else if (window.innerWidth <= WEIRD_PHABLET) {
+      concat = 28;
+    } else if (window.innerWidth <= SMALL_SCREEN_MAX) {
+      concat = 33;
+    } else if (window.innerWidth <= MED_SCREEN) {
+      concat = 45;
+    }
+
+    if (input.length > concat) {
+      while (newInput.length > concat) {
+        // concat
+        newInput.pop();
+      }
+      newInput.splice(-1, 1, '...');
+    }
+
+    return newInput.join('');
+  };
+
   useEffect(() => {
+    const headingsQuery = Array.from(document.querySelectorAll('h1, h2, h3, h4, h5, h6')) as HTMLHeadingElement[];
+
+    if (flatHeadings.length <= 0) {
+      setFlatHeadings(headingsQuery as HTMLHeadingElement[]);
+    }
+    function handleResize() {
+      const currTitle = flatHeadings.find((el) => el.id === activeId)?.innerText;
+      const concatRes = concatDynamic(currTitle);
+      setConcatTitle(concatRes ?? '');
+    }
+    if (window.innerWidth < MED_SCREEN) {
+      handleResize();
+    }
+
+    //window.addEventListener('resize', handleResize);
     document.addEventListener('click', handleToCOffClick);
     return () => {
       document.removeEventListener('click', handleToCOffClick);
+      //document.removeEventListener('resize', handleResize);
     };
-  }, [handleToCOffClick]);
+  }, [handleToCOffClick, concatDynamic, setFlatHeadings, flatHeadings]);
 
   return (
     <>
-      <div className='sticky top-16 hidden h-screen max-h-[calc(100vh-4rem)] w-full min-w-[18rem] max-w-[24rem] items-start justify-center overflow-y-auto bg-ctp-base/20 py-10 text-slate-100 md:flex dark:bg-ctp-base/20'>
+      <div className='simple-color-trans sticky top-16 hidden h-screen max-h-[calc(100vh-4rem)] w-full min-w-[18rem] max-w-[24rem] items-start justify-center overflow-y-auto bg-ctp-base/20 py-10 text-slate-100 md:flex dark:bg-ctp-base/20'>
         <nav aria-label='Table of contents' className='w-full px-4'>
           <Headings tree={nestedHeadings as HeadingNode[]} activeId={activeId} />
         </nav>
       </div>
 
-      <div className='sticky top-16 z-30 flex h-[3rem] w-full flex-row items-center border-b border-ctp-surface0 bg-ctp-base/50 px-6 backdrop-blur-sm md:hidden dark:bg-ctp-midnight/50'>
+      <div className='simple-color-trans sticky top-16 z-30 flex h-[3rem] w-full flex-row items-center gap-4 overflow-x-hidden border-b border-ctp-surface0 bg-ctp-base/50 px-6 backdrop-blur-sm md:hidden dark:bg-ctp-midnight/50'>
         <button
-          className={`link-color-trans ${showMobileMenu ? 'font-bold text-ctp-text underline' : ''} -m-1.5 flex items-center font-mono text-sm text-ctp-subtext0 hover:font-bold hover:text-ctp-text hover:underline`}
+          className={`link-color-trans ${showMobileMenu ? 'font-bold text-ctp-text underline' : ''} -m-1.5 flex items-center whitespace-pre font-mono text-sm text-ctp-subtext0 hover:font-bold hover:text-ctp-text hover:underline`}
           onClick={() => setShowMobileMenu(!showMobileMenu)}
         >
           <span
@@ -220,10 +286,14 @@ export default function ToCMenu() {
           />
           On this page
         </button>
+        <p className='flex flex-row items-center gap-[1ch] overflow-x-hidden whitespace-pre font-mono text-sm'>
+          <span className='icon-[ph--caret-double-right-bold] min-w-[2ch] text-xl text-ctp-subtext0' />
+          <span className='font-bold'>{concatTitle}</span>
+        </p>
       </div>
 
       <div
-        className={`${showMobileMenu ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'} fixed inset-x-0 bottom-0 top-[7rem] z-20 flex size-full h-[calc(100dvh-3.9rem)] md:top-[3.8rem] md:max-h-[calc(100dvh-3.8rem)] max-h-[calc(100dvh-7rem)] w-full flex-col justify-start bg-black/40 [perspective:_5px] [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:_opacity_0.3s,] lg:bottom-0`}
+        className={`${showMobileMenu ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'} fixed inset-x-0 bottom-0 top-[7rem] z-20 flex size-full h-[calc(100dvh-3.9rem)] max-h-[calc(100dvh-7rem)] w-full flex-col justify-start bg-black/40 [perspective:_5px] [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:_opacity_0.3s,] md:top-[3.8rem] md:max-h-[calc(100dvh-3.8rem)] lg:bottom-0`}
       >
         <nav
           aria-label='Table of contents'
