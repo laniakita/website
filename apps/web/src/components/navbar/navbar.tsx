@@ -25,6 +25,7 @@ export default function NavBar() {
 
   const handleNavOffClick = useCallback(
     (e: MouseEvent) => {
+      e.stopPropagation();
       if ((e.target as Node).nodeName === 'BUTTON') {
         // do nothing
       } else if (dropNavRef.current.contains(e.target as Node)) {

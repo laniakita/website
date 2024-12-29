@@ -13,12 +13,12 @@ export default function Footer({ extra, override }: { extra?: string; override?:
     const splitPath = path.split('/');
     let flag = false;
     for (const part of weirdPaths) {
-      console.log(part)
+      //console.log(part)
       if (splitPath.includes(part)) {
         flag = true;
       }
     }
-    console.log(flag)
+    //console.log(flag)
     return override ?? flag
   }
   
