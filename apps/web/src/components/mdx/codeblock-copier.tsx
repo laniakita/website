@@ -1,5 +1,5 @@
 'use client';
-import React, { ReactElement, Suspense, useEffect, useId, useRef, useState } from 'react';
+import React, { ReactElement, Suspense, UIEventHandler, UIEvent, useEffect, useId, useRef, useState } from 'react';
 
 export default function CodeBlockCopier(
   props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLPreElement>, HTMLPreElement>,
@@ -20,14 +20,34 @@ function CodeBlockAssemble(props: React.DetailedHTMLProps<React.HTMLAttributes<H
       };
     }
 
+    // refs
+    const codeBlockRef = useRef<HTMLDivElement>(null!);
+    const preRef = useRef<HTMLPreElement>(null!);
+    const btnRef = useRef<HTMLButtonElement>(null!);
+    const blockSerial = useId();
+    const blockId = `codeblock-${blockSerial}`;
+    const preId = `pre-${blockId}`;
+
+    const handlePreScroll = (insideCollapsedBlock?: boolean, isExpanded?: boolean) => {
+      if (!insideCollapsedBlock || isExpanded === true) {
+        btnRef.current.style.pointerEvents = 'none';
+        btnRef.current.style.opacity = '0';
+        setTimeout(() => {
+          btnRef.current.style.pointerEvents = 'auto';
+          btnRef.current.style.opacity = '100%';
+        }, 500);
+      } else if (insideCollapsedBlock && !isExpanded) {
+        btnRef.current.style.opacity = '0';
+        setTimeout(() => {
+          btnRef.current.style.opacity = '20%';
+        }, 500);
+      }
+    };
+
     // string is a weird edge case here.
     if (inputBlock.props.children.length > 30 && typeof inputBlock.props.children !== 'string') {
       const [isExpanded, setIsExpanded] = useState(false);
       const [codeHeight, setCodeHeight] = useState(0);
-
-      const codeBlockRef = useRef<HTMLDivElement>(null!);
-      const preRef = useRef<HTMLPreElement>(null!);
-      const overlayRef = useRef<HTMLDivElement>(null!);
 
       const collapsedBlock = {
         ...inputBlock,
@@ -37,9 +57,6 @@ function CodeBlockAssemble(props: React.DetailedHTMLProps<React.HTMLAttributes<H
         },
       };
 
-      const blockSerial = useId();
-      const blockId = `codeblock-${blockSerial}`;
-      const preId = `pre-${blockId}`;
       //console.log(inputBlock.props.children.length, blockId);
 
       useEffect(() => {
@@ -57,6 +74,7 @@ function CodeBlockAssemble(props: React.DetailedHTMLProps<React.HTMLAttributes<H
         setTimeout(() => {
           //console.log('await getting height');
           setCodeHeight(preRef.current.offsetHeight);
+          btnRef.current.style.opacity = '100%';
         }, 50);
       };
 
@@ -66,8 +84,11 @@ function CodeBlockAssemble(props: React.DetailedHTMLProps<React.HTMLAttributes<H
           id={blockId}
           className='relative my-[1.5rem] overflow-y-hidden [transition:_height_0.8s_ease]'
         >
-          <div ref={overlayRef} className='pointer-events-none absolute inset-0'>
-            <button className='pointer-events-auto absolute right-4 top-4 flex items-center justify-center rounded-md border border-ctp-overlay0 bg-ctp-mantle/20 p-2 text-center text-ctp-overlay1 backdrop-blur'>
+          <div className='pointer-events-none absolute inset-0'>
+            <button
+              ref={btnRef}
+              className={` ${isExpanded ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-20'} absolute right-4 top-4 flex items-center justify-center rounded-lg border border-ctp-mauve bg-ctp-mauve/20 p-2 text-ctp-mauve shadow-lg backdrop-blur-sm [transition:_color_0.3s,_border_0.3s,_box-shadow_0.3s,_backdrop-filter_0.3s,_background_0.3s,_opacity_0.3s] hover:border-ctp-pink hover:bg-ctp-pink/10 hover:text-ctp-pink hover:shadow-xl hover:backdrop-blur`}
+            >
               <span className='icon-[ph--clipboard-text] h-[1.5rem] w-[1.5rem]' />
             </button>
 
@@ -83,7 +104,7 @@ function CodeBlockAssemble(props: React.DetailedHTMLProps<React.HTMLAttributes<H
             </div>
           </div>
 
-          <pre ref={preRef} id={preId} className='my-0' {...props}>
+          <pre ref={preRef} id={preId} onScroll={() => handlePreScroll(true, isExpanded)} className='my-0' {...props}>
             {isExpanded ? props.children : collapsedBlock}
           </pre>
         </div>
@@ -95,24 +116,27 @@ function CodeBlockAssemble(props: React.DetailedHTMLProps<React.HTMLAttributes<H
     const [topPos, setTopPos] = useState('top-4');
 
     useEffect(() => {
-      console.log()
+      console.log();
       if (nonCollapsedPreRef.current.childNodes.length == 2 && nonCollapsedPreRef.current.childNodes[1]?.childNodes) {
         if (nonCollapsedPreRef.current.childNodes[1]?.childNodes.length <= 3) {
-          if(nonCollapsedPreRef.current.childNodes[1]?.childNodes[0]?.nodeName === "DIV") {
-            if( nonCollapsedPreRef.current.childNodes[1]?.childNodes.length === 1) {
+          if (nonCollapsedPreRef.current.childNodes[1]?.childNodes[0]?.nodeName === 'DIV') {
+            if (nonCollapsedPreRef.current.childNodes[1]?.childNodes.length === 1) {
               setTopPos('top-2');
             }
           }
         }
       }
-    },[])
+    }, []);
 
     return (
-      <div className='relative'>
-        <pre ref={nonCollapsedPreRef} {...props}>
-        <button className={`pointer-events-auto absolute right-4 ${topPos} flex items-center justify-center rounded-md border border-ctp-overlay0 bg-ctp-mantle/20 p-1 text-center text-ctp-overlay1 backdrop-blur`}>
-              <span className='icon-[ph--clipboard-text] h-[1.5rem] w-[1.5rem]' />
-            </button>
+      <div id={blockId} className='relative'>
+        <pre id={preId} ref={nonCollapsedPreRef} onScroll={() => handlePreScroll()} {...props}>
+          <button
+            ref={btnRef}
+            className={`pointer-events-auto absolute right-4 ${topPos} flex items-center justify-center rounded-lg border border-ctp-mauve bg-ctp-mauve/20 p-2 text-ctp-mauve shadow-lg backdrop-blur-sm [transition:_color_0.3s,_border_0.3s,_box-shadow_0.3s,_backdrop-filter_0.3s,_background_0.3s,_opacity_0.3s] hover:border-ctp-pink hover:bg-ctp-pink/10 hover:text-ctp-pink hover:shadow-xl hover:backdrop-blur`}
+          >
+            <span className='icon-[ph--clipboard-text] h-[1.5rem] w-[1.5rem]' />
+          </button>
           {props.children}
         </pre>
       </div>
