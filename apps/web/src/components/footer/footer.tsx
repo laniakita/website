@@ -6,9 +6,9 @@ import { FooterBox, FooterBoxSpecial } from './footer-box';
 
 export default function Footer({ extra, override }: { extra?: string; override?: boolean }) {
   const pathname = usePathname();
-  const hiddenPaths = ["/"];
-  const weirdPaths = ["blog"];
- 
+  const hiddenPaths = ['/'];
+  const weirdPaths = ['blog'];
+
   const isWeirdPath = (path: string, override?: boolean): boolean => {
     const splitPath = path.split('/');
     let flag = false;
@@ -19,12 +19,13 @@ export default function Footer({ extra, override }: { extra?: string; override?:
       }
     }
     //console.log(flag)
-    return override ?? flag
-  }
-  
+    return override ?? flag;
+  };
 
   return (
-    <footer className={`${hiddenPaths.includes(pathname) ? 'hidden' : 'block'} ${isWeirdPath(pathname, override) ? 'hidden' : ''} relative w-full`}>
+    <footer
+      className={`${hiddenPaths.includes(pathname) ? 'hidden' : 'block'} ${isWeirdPath(pathname, override) ? 'hidden' : ''} relative w-full`}
+    >
       <div
         className={`simple-color-trans relative flex w-full flex-col items-center justify-center overflow-hidden bg-ctp-base dark:bg-ctp-midnight ${extra}`}
       >
@@ -33,15 +34,14 @@ export default function Footer({ extra, override }: { extra?: string; override?:
           {/* <FooterSubscribe /> */}
           <div className='lg:pb-common flex flex-col items-center justify-center gap-4 lg:px-4'>
             {/* content container */}
-            <div className='relative w-full space-y-8 p-10 lg:max-w-3xl lg:rounded-md  lg:border lg:border-ctp-surface0 dark:lg:border-ctp-base'>
+            <div className='relative w-full space-y-8 p-10 lg:max-w-3xl lg:rounded-md lg:border lg:border-ctp-surface0 dark:lg:border-ctp-base'>
               {/* logo + search + social_buttons + +copyright + links */}
               <div className='flex w-full flex-col items-center justify-center gap-2 lg:flex-row lg:gap-14'>
-
                 <div className='w-full space-y-4 px-4 lg:px-0 lg:pl-4'>
                   <SocialIconNav2 boxItems={SOCIALS_FULL} />
                 </div>
 
-                <div className='hidden h-80 w-px  bg-ctp-surface0 lg:flex dark:bg-ctp-base' />
+                <div className='hidden h-80 w-px bg-ctp-surface0 lg:flex dark:bg-ctp-base' />
                 <div className='flex w-full px-4 lg:hidden'>
                   <div className='mt-4 flex h-px w-full bg-ctp-surface0 lg:hidden dark:bg-ctp-base' />
                 </div>
@@ -56,9 +56,6 @@ export default function Footer({ extra, override }: { extra?: string; override?:
                   <CopyrightTag />
                 </div>
               </div>
-
-
-
             </div>
           </div>
         </div>

@@ -19,7 +19,7 @@ export default function InfoBox({
 
   return (
     <div className=''>
-      <div className='sidebar-box simple-color-trans relative flex flex-col gap-6 bg-ctp-base dark:bg-ctp-midnight min-w-full'>
+      <div className='sidebar-box simple-color-trans relative flex min-w-full flex-col gap-6 bg-ctp-base dark:bg-ctp-midnight'>
         {isActiveTab === 'info' && (
           <div className='prose-protocol-omega p-6 pt-[4.5rem] prose-p:my-0'>
             <GlobalMDXRenderer>{blogInfo}</GlobalMDXRenderer>
@@ -37,7 +37,7 @@ export default function InfoBox({
           </div>
         )}
 
-        <div className=' absolute top-0 flex w-full flex-col gap-0 rounded-t-md bg-ctp-surface2 dark:bg-ctp-crust'>
+        <div className='absolute top-0 flex w-full flex-col gap-0 rounded-t-md bg-ctp-surface2 dark:bg-ctp-crust'>
           <div className='flex w-full flex-row'>
             <div className='flex w-full px-6 pt-2'>
               <button

@@ -101,7 +101,7 @@ module.exports = {
             },
             'pre > code': {
               float: 'left',
-              minWidth: '100%'
+              minWidth: '100%',
             },
             'div.code-line:empty': {
               /* it is necessary because there is no even eol character in div code-lines */
@@ -109,24 +109,24 @@ module.exports = {
             },
             'span.code-line': {
               minWidth: '100%',
-              display: 'inline-block'
+              display: 'inline-block',
             },
             '.code-line': {
               paddingLeft: '12px',
               paddingRight: '12px',
               marginLeft: '-12px',
               marginRight: '-12px',
-              borderLeft: '4px solid transparent', /* prepare for highlighted code-lines */
+              borderLeft: '4px solid transparent' /* prepare for highlighted code-lines */,
             },
             '.code-line.inserted': {
-              backgroundColor: 'var(--code-line-inserted)' /* inserted code-line (+) color */
+              backgroundColor: 'var(--code-line-inserted)' /* inserted code-line (+) color */,
             },
             '.code-line.deleted': {
-              backgroundColor: 'var(--code-line-deleted)' /* deleted code-line (-) color */
+              backgroundColor: 'var(--code-line-deleted)' /* deleted code-line (-) color */,
             },
             '.highlighted-code-line': {
               backgroundColor: 'var(--code-line-highlighted)',
-              borderLeft: '4px solid var(--code-line-highlight-indicator)'
+              borderLeft: '4px solid var(--code-line-highlight-indicator)',
             },
             '.numbered-code-line::before': {
               content: 'attr(data-line-number)',
@@ -139,7 +139,7 @@ module.exports = {
               color: 'var(--code-line-number)',
               display: 'inline-flex',
               justifyContent: 'end',
-            }
+            },
           },
         },
         invert: {

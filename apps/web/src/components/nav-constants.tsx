@@ -1,16 +1,15 @@
 const MAIN_PAGES_ARR = new Map([
-  ["home", "/"],
-  ["blog", "/blog"],
-  ["about", "/about"],
-  ["work", "/work"],
-  ["projects", "/projects"],
-  ["Atom/RSS", "/feed.xml"],
-  ["résumé", "/resume"],
-  ["contact", "/contact"]
+  ['home', '/'],
+  ['blog', '/blog'],
+  ['about', '/about'],
+  ['work', '/work'],
+  ['projects', '/projects'],
+  ['Atom/RSS', '/feed.xml'],
+  ['résumé', '/resume'],
+  ['contact', '/contact'],
 ]);
 
 export const MAIN_PAGES = Object.fromEntries(MAIN_PAGES_ARR);
-
 
 export const SOCIALS_NAVBAR = [
   {
@@ -82,4 +81,4 @@ export const SOCIALS_FULL = [
     linkName: 'Patreon!',
     textSize: 'text-2xl md:text-3xl min-h-[2rem] min-w-[2rem]',
   },
-]
+];

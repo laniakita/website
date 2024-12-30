@@ -6,7 +6,7 @@ export default function ContentLayout({ children }: Readonly<{ children: ReactNo
   return (
     <div className='flex size-full flex-col md:flex-row'>
       <ToCMenu />
-      <div className='md:m-auto flex md:min-w-[10rem] max-w-7xl flex-col'>
+      <div className='flex max-w-7xl flex-col md:m-auto md:min-w-[10rem]'>
         {children}
         <Footer override={false} />
       </div>

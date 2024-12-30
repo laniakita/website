@@ -51,7 +51,6 @@ const allWorksRes = () => {
 };
 */
 
-
 export const writeMinifiedContent = async () => {
   const t0 = performance.now();
   console.info(`Creating ${allPosts.length} minified posts...`);
@@ -61,7 +60,6 @@ export const writeMinifiedContent = async () => {
   console.info(`Creating ${allProjects.length} minified projects...`);
   //console.info(`Creating ${allWorks.length} minified tags...`);
 
-
   try {
     const postsMin = allPostsRes();
     const pagesMin = allPagesRes();
@@ -69,7 +67,6 @@ export const writeMinifiedContent = async () => {
     const tagsMin = allTagsRes();
     const projectsMin = allProjectsRes();
     //const worksMin = allWorksRes();
-
 
     const mainDir = './.contentlayermini/generated';
     const mainOut = 'index.json';
@@ -80,7 +77,7 @@ export const writeMinifiedContent = async () => {
     const tagDir = `${mainDir}/Tag`;
     const projDir = `${mainDir}/Project`;
     //const workDir = `${mainDir}/Work`;
-    
+
     await mkdir(postDir, { recursive: true });
     await mkdir(pageDir, { recursive: true });
     await mkdir(catDir, { recursive: true });
@@ -104,7 +101,6 @@ export const writeMinifiedContent = async () => {
     console.info(`[SUCCESS]: wrote ${allTags.length} mini tags to ${tagDir}/${mainOut} in ${tDelta}`);
     console.info(`[SUCCESS]: wrote ${allProjects.length} mini projects to ${projDir}/${mainOut} in ${tDelta}`);
     //console.info(`[SUCCESS]: wrote ${allWorks.length} mini works to ${workDir}/${mainOut} in ${tDelta}`);
-
   } catch (err) {
     console.error(err);
   }

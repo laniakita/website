@@ -14,14 +14,14 @@ const nextConfig = {
     remotePatterns: [
       process.env.NEXT_PUBLIC_DEPLOYED_URL !== undefined && process.env.NODE_ENV === 'production'
         ? {
-          protocol: 'https',
-          hostname: '**.laniakita.com',
-          port: '',
-        }
+            protocol: 'https',
+            hostname: '**.laniakita.com',
+            port: '',
+          }
         : {
-          protocol: 'http',
-          hostname: 'localhost',
-        },
+            protocol: 'http',
+            hostname: 'localhost',
+          },
     ],
   },
 
@@ -86,7 +86,7 @@ const nextConfig = {
       {
         source: '/lani-akita_resume-october-2024.pdf',
         destination: RESUME_LINK,
-        permanent: true
+        permanent: true,
       },
       {
         source: '/projects/bot-clicker',

@@ -131,7 +131,7 @@ export default async function BlogPostPage(props: { params: Promise<{ id: string
       <script type='application/ld+json' dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       <div>
-        <div className='fixed left-0 top-[6.8rem] md:top-[3.8rem] z-30 md:z-50 w-full'>
+        <div className='fixed left-0 top-[6.8rem] z-30 w-full md:top-[3.8rem] md:z-50'>
           <ReadingBar />
         </div>
       </div>

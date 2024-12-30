@@ -84,8 +84,7 @@ export default function Works() {
 function WorkPreview(data: Work) {
   const res = data.featured_image as FeaturedImageR1;
   const uKey = useId();
-  
-  
+
   return (
     <div className='flex size-full basis-full flex-col overflow-hidden rounded-md border border-ctp-surface0 dark:border-ctp-base'>
       {res.src ? (
@@ -107,7 +106,12 @@ function WorkPreview(data: Work) {
       <div className='flex flex-col gap-4 p-8 lg:p-10'>
         <div className='flex flex-col gap-2'>
           <h2 className='w-fit text-balance text-3xl font-black'>
-            <Link href={`https://${data.domain}`} target='_blank' className='text-ctp-text' aria-disabled={!data.active}>
+            <Link
+              href={`https://${data.domain}`}
+              target='_blank'
+              className='text-ctp-text'
+              aria-disabled={!data.active}
+            >
               <span className='relative'>
                 {data.title}
                 <span className='icon-[ph--arrow-up-right-bold] absolute bottom-1 ml-px text-xl' />
@@ -133,7 +137,7 @@ function WorkPreview(data: Work) {
             )}
           </div>
           <div className='prose-protocol-omega max-w-full prose-a:no-underline'>
-            <GlobalMDXComponent {...data}/>
+            <GlobalMDXComponent {...data} />
           </div>
         </div>
 
@@ -155,4 +159,3 @@ function WorkPreview(data: Work) {
     </div>
   );
 }
-

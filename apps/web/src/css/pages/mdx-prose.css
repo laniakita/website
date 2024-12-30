@@ -1,6 +1,6 @@
 @layer components {
   .prose-code-pretty {
-    @apply prose-code:before:hidden prose-code:after:hidden prose-pre:rounded-xl prose-pre:border prose-pre:border-ctp-surface0 [&:where(:not(pre)>code)]:prose-code:rounded-md [&:where(:not(pre)>code)]:prose-code:border [&:where(:not(pre)>code)]:prose-code:border-ctp-surface0 [&:where(:not(pre)>code)]:prose-code:bg-ctp-base [&:where(:not(pre)>code)]:prose-code:px-1 [&:where(:not(pre)>code)]:prose-code:py-0.5 [&:where(:not(pre)>code)]:prose-code:break-words;
+    @apply prose-code:before:hidden prose-code:after:hidden prose-pre:rounded-xl prose-pre:border prose-pre:border-ctp-surface0 [&:where(:not(pre)>code)]:prose-code:break-words [&:where(:not(pre)>code)]:prose-code:rounded-md [&:where(:not(pre)>code)]:prose-code:border [&:where(:not(pre)>code)]:prose-code:border-ctp-surface0 [&:where(:not(pre)>code)]:prose-code:bg-ctp-base [&:where(:not(pre)>code)]:prose-code:px-1 [&:where(:not(pre)>code)]:prose-code:py-0.5;
   }
   .prose-text-pretty {
     @apply prose-headings:text-balance prose-headings:font-black prose-a:break-words prose-p:supports-[text-wrap:pretty]:text-pretty;

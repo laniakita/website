@@ -46,7 +46,7 @@ export default function BlogPage2() {
       <div className='hidden md:flex md:w-full md:max-w-xs lg:max-w-sm'>
         <Sidebar />
       </div>
-      <main className='simple-color-trans common-padding flex flex-col-reverse justify-center gap-4 bg-ctp-base md:flex-row md:gap-6 dark:bg-ctp-midnight m-auto'>
+      <main className='simple-color-trans common-padding m-auto flex flex-col-reverse justify-center gap-4 bg-ctp-base md:flex-row md:gap-6 dark:bg-ctp-midnight'>
         <PostRollerV4 posts={posts} />
         <div className='block md:hidden'>
           <Sidebar />

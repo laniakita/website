@@ -1,5 +1,15 @@
 'use client';
-import React, { ReactElement, Suspense, UIEventHandler, UIEvent, useEffect, useId, useRef, useState } from 'react';
+import React, {
+  ReactElement,
+  Suspense,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  RefObject,
+  Dispatch,
+  SetStateAction,
+} from 'react';
 
 export default function CodeBlockCopier(
   props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLPreElement>, HTMLPreElement>,
@@ -27,6 +37,8 @@ function CodeBlockAssemble(props: React.DetailedHTMLProps<React.HTMLAttributes<H
     const blockSerial = useId();
     const blockId = `codeblock-${blockSerial}`;
     const preId = `pre-${blockId}`;
+
+    const [isCopied, setIsCopied] = useState<boolean | null>(false);
 
     const handlePreScroll = (insideCollapsedBlock?: boolean, isExpanded?: boolean) => {
       if (!insideCollapsedBlock || isExpanded === true) {
@@ -85,15 +97,18 @@ function CodeBlockAssemble(props: React.DetailedHTMLProps<React.HTMLAttributes<H
           className='relative my-[1.5rem] overflow-y-hidden [transition:_height_0.8s_ease]'
         >
           <div className='pointer-events-none absolute inset-0'>
-            <button
-              ref={btnRef}
-              className={` ${isExpanded ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-20'} absolute right-4 top-4 flex items-center justify-center rounded-lg border border-ctp-mauve bg-ctp-mauve/20 p-2 text-ctp-mauve shadow-lg backdrop-blur-sm [transition:_color_0.3s,_border_0.3s,_box-shadow_0.3s,_backdrop-filter_0.3s,_background_0.3s,_opacity_0.3s] hover:border-ctp-pink hover:bg-ctp-pink/10 hover:text-ctp-pink hover:shadow-xl hover:backdrop-blur`}
-            >
-              <span className='icon-[ph--clipboard-text] h-[1.5rem] w-[1.5rem]' />
-            </button>
+            <CopyBtn
+              preRef={preRef}
+              btnRef={btnRef}
+              setIsCopied={setIsCopied}
+              topPos='top-4'
+              isCopied={isCopied}
+              special={`pointer-events-none`}
+              isExpanded={isExpanded}
+            />
 
             <div
-              className={`absolute ${isExpanded ? 'hidden' : ''} inset-x-0 bottom-0 flex h-full max-h-[50%] w-full items-center justify-center overflow-x-auto rounded-b-lg bg-ctp-mantle/20 bg-gradient-to-b from-transparent to-ctp-base text-center text-ctp-overlay0 dark:to-ctp-midnight`}
+              className={`absolute ${isExpanded ? 'hidden' : ''} inset-x-0 bottom-0 flex h-full max-h-[50%] w-full items-center justify-center overflow-x-auto rounded-b-lg border border-t-0 border-ctp-surface0 bg-ctp-mantle/20 bg-gradient-to-b from-transparent to-ctp-base text-center text-ctp-overlay0 dark:to-ctp-midnight`}
             >
               <button
                 onClick={() => handleExpand()}
@@ -112,16 +127,18 @@ function CodeBlockAssemble(props: React.DetailedHTMLProps<React.HTMLAttributes<H
     }
 
     // handle weird singleline blocks
-    const nonCollapsedPreRef = useRef<HTMLPreElement>(null!);
+    //const preRef = useRef<HTMLPreElement>(null!);
     const [topPos, setTopPos] = useState('top-4');
 
     useEffect(() => {
       console.log();
-      if (nonCollapsedPreRef.current.childNodes.length == 2 && nonCollapsedPreRef.current.childNodes[1]?.childNodes) {
-        if (nonCollapsedPreRef.current.childNodes[1]?.childNodes.length <= 3) {
-          if (nonCollapsedPreRef.current.childNodes[1]?.childNodes[0]?.nodeName === 'DIV') {
-            if (nonCollapsedPreRef.current.childNodes[1]?.childNodes.length === 1) {
+      if (preRef.current.childNodes.length == 2 && preRef.current.childNodes[1]?.childNodes) {
+        if (preRef.current.childNodes[1]?.childNodes.length <= 3) {
+          if (preRef.current.childNodes[1]?.childNodes[0]?.nodeName === 'DIV') {
+            if (preRef.current.childNodes[1]?.childNodes.length === 1) {
               setTopPos('top-2');
+            } else if (preRef.current.childNodes[1]?.childNodes.length === 2) {
+              setTopPos('top-5');
             }
           }
         }
@@ -130,13 +147,15 @@ function CodeBlockAssemble(props: React.DetailedHTMLProps<React.HTMLAttributes<H
 
     return (
       <div id={blockId} className='relative'>
-        <pre id={preId} ref={nonCollapsedPreRef} onScroll={() => handlePreScroll()} {...props}>
-          <button
-            ref={btnRef}
-            className={`pointer-events-auto absolute right-4 ${topPos} flex items-center justify-center rounded-lg border border-ctp-mauve bg-ctp-mauve/20 p-2 text-ctp-mauve shadow-lg backdrop-blur-sm [transition:_color_0.3s,_border_0.3s,_box-shadow_0.3s,_backdrop-filter_0.3s,_background_0.3s,_opacity_0.3s] hover:border-ctp-pink hover:bg-ctp-pink/10 hover:text-ctp-pink hover:shadow-xl hover:backdrop-blur`}
-          >
-            <span className='icon-[ph--clipboard-text] h-[1.5rem] w-[1.5rem]' />
-          </button>
+        <pre id={preId} ref={preRef} onScroll={() => handlePreScroll()} {...props}>
+          <CopyBtn
+            preRef={preRef}
+            btnRef={btnRef}
+            setIsCopied={setIsCopied}
+            topPos={topPos}
+            isCopied={isCopied}
+            special={`pointer-events-auto`}
+          />
           {props.children}
         </pre>
       </div>
@@ -144,4 +163,56 @@ function CodeBlockAssemble(props: React.DetailedHTMLProps<React.HTMLAttributes<H
   }
 
   return <pre {...props} />;
+}
+
+function CopyBtn({
+  preRef,
+  btnRef,
+  setIsCopied,
+  topPos,
+  isCopied,
+  special,
+  isExpanded,
+}: {
+  preRef: RefObject<HTMLPreElement>;
+  btnRef: RefObject<HTMLButtonElement>;
+  setIsCopied: Dispatch<SetStateAction<boolean | null>>;
+  topPos?: string;
+  isCopied: Boolean | null;
+  special?: string;
+  isExpanded?: Boolean;
+}) {
+  const handleCopyClick = () => {
+    let code = preRef.current.innerText;
+    if (code) {
+      navigator.clipboard.writeText(code);
+      setIsCopied(true);
+      console.log('copied code to clipboard');
+    } else {
+      setIsCopied(null);
+      console.error('error: failed to copy code to clipboard (<pre/>.innerText not found)');
+    }
+    setTimeout(() => {
+      setIsCopied(false);
+    }, 2000);
+  };
+  return (
+    <div className={`absolute inset-x-0 flex w-full flex-row items-center justify-end ${topPos ?? ''} gap-4 pr-4`}>
+      <span
+        className={`pointer-events-none flex rounded-full border border-ctp-base p-1 px-4 font-mono font-bold opacity-0 backdrop-blur-md [transition:_opacity_0.3s] ${isCopied ? 'pointer-events-auto border-ctp-green bg-ctp-green/20 text-ctp-green opacity-100 hover:border-ctp-green hover:bg-ctp-green/20 hover:text-ctp-green' : isCopied === null ? 'pointer-events-auto border-ctp-red bg-ctp-red/20 text-ctp-red opacity-100 hover:border-ctp-red hover:bg-ctp-red/20 hover:text-ctp-red' : ''} text-xs md:text-base`}
+      >
+        {isCopied ? 'Copied to clipboard!' : isCopied === null ? 'Error: Copying failed.' : ''}
+      </span>
+
+      <button
+        ref={btnRef}
+        onClick={handleCopyClick}
+        className={`${special} flex items-center justify-center rounded-lg border border-ctp-mauve bg-ctp-mauve/20 p-1 text-ctp-mauve shadow-lg backdrop-blur-md [transition:_color_0.3s,_border_0.3s,_box-shadow_0.3s,_backdrop-filter_0.3s,_background_0.3s,_opacity_0.3s] hover:border-ctp-pink hover:bg-ctp-pink/10 hover:text-ctp-pink hover:shadow-xl hover:backdrop-blur ${isExpanded == true && 'pointer-events-auto opacity-100'} ${isExpanded == false && isExpanded !== undefined && 'pointer-events-none opacity-20'} ${isCopied ? 'border-ctp-green/[.99] bg-ctp-green/[.20] text-ctp-green/[.99] hover:border-ctp-green hover:bg-ctp-green/20 hover:text-ctp-green' : isCopied === null ? 'border-ctp-red bg-ctp-red/20 text-ctp-red hover:border-ctp-red hover:bg-ctp-red/20 hover:text-ctp-red' : ''}`}
+      >
+        <span
+          className={`${isCopied ? 'icon-[ph--check-fat-duotone]' : isCopied === null ? 'icon-[ph--x-circle-duotone]' : 'icon-[ph--copy-duotone]'} h-[1.5rem] w-[1.5rem]`}
+        />
+      </button>
+    </div>
+  );
 }

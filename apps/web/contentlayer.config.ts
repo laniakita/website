@@ -2,8 +2,8 @@ import { defineDocumentType, makeSource } from 'contentlayer2/source-files';
 import remarkGfm from 'remark-gfm';
 import rehypeSlug from 'rehype-slug';
 import rehypeMdxImportMedia from 'rehype-mdx-import-media';
-import nix from 'highlight.js/lib/languages/nix'
-import {common} from 'lowlight'
+import nix from 'highlight.js/lib/languages/nix';
+import { common } from 'lowlight';
 import rehypeHighlight from 'rehype-highlight';
 import rehypeHighlightLines from 'rehype-highlight-code-lines';
 import { imageProcessor, FeaturedImageR1 } from './src/lib/image-process';
@@ -62,8 +62,6 @@ export const Work = defineDocumentType(() => ({
     },
   },
 }));
-
-
 
 export const Project = defineDocumentType(() => ({
   name: 'Project',
@@ -265,13 +263,16 @@ export default makeSource({
   mdx: {
     remarkPlugins: [remarkGfm],
     rehypePlugins: [
-      [rehypeHighlight, {languages: {...common, nix}}],
-      [rehypeHighlightLines, {
-        showLineNumbers: true,
-        lineContainerTagName: 'div'
-      }],
+      [rehypeHighlight, { languages: { ...common, nix } }],
+      [
+        rehypeHighlightLines,
+        {
+          showLineNumbers: true,
+          lineContainerTagName: 'div',
+        },
+      ],
       rehypeMdxImportMedia,
-      rehypeSlug
+      rehypeSlug,
     ],
     resolveCwd: 'relative',
     esbuildOptions(options) {
