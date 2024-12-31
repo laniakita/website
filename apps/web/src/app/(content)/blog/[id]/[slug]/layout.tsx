@@ -11,7 +11,7 @@ export default function ContentLayout({ children }: Readonly<{ children: ReactNo
           {children}
           <Footer
             override
-            outsidePadding='px-0 md:px-6 md:pb-10 lg:pb-common lg:px-10'
+            outsidePadding='px-0 md:px-6 pb-10 lg:pb-common lg:px-10'
             insidePadding='p-6 md:p-0 lg:p-10'
             linksContainerPadding='p-4'
           />
