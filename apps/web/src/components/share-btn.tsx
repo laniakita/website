@@ -72,7 +72,7 @@ export default function ShareButton() {
         className={`${isOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'} absolute -bottom-4 z-[1] size-0 border-[1rem] border-x-transparent border-b-ctp-surface0 border-t-transparent [transition:_opacity_0.3s]`}
       />
       <div
-        className={`${isOpen ? 'pointer-events-auto translate-y-[115%] opacity-100' : 'pointer-events-none opacity-0 [transform:_translateY(70%)]'} absolute bottom-0 z-[2] min-w-fit whitespace-nowrap rounded-md border border-ctp-surface0 bg-ctp-base p-1 font-mono shadow-lg [transition:_opacity_0.3s,_transform_0.8s] dark:shadow-ctp-pink/30`}
+        className={`${isOpen ? 'pointer-events-auto translate-y-[108%] opacity-100' : 'pointer-events-none opacity-0 [transform:_translateY(70%)]'} absolute bottom-0 z-[2] min-w-fit whitespace-nowrap rounded-md border border-ctp-surface0 bg-ctp-base p-1 font-mono shadow-lg [transition:_opacity_0.3s,_transform_0.8s] dark:shadow-ctp-pink/30`}
       >
         <ul className='space-y-2'>
           <li>
@@ -100,6 +100,28 @@ export default function ShareButton() {
             >
               <span className='icon-[fa6-brands--bluesky] w-[2ch] text-xl' />
               <span>Bluesky</span>
+            </a>
+          </li>
+          <li>
+            <a
+              className='color-trans-quick flex w-full flex-row items-center gap-[1ch] rounded border border-ctp-surface0 px-4 py-2 text-ctp-text hover:bg-black hover:text-ctp-base dark:hover:text-ctp-text'
+              href={`https://x.com/intent/tweet?text=${shareUnderChar(minPageData, false)}`}
+              target='_blank'
+              rel='noreferrer'
+            >
+              <span className='icon-[fa6-brands--x-twitter] w-[2ch] text-xl' />
+              <span>X/Twitter</span>
+            </a>
+          </li>
+          <li>
+            <a
+              className='color-trans-quick flex w-full flex-row items-center gap-[1ch] rounded border border-ctp-surface0 px-4 py-2 text-ctp-text hover:bg-black hover:text-ctp-base dark:hover:text-ctp-text'
+              href={`https://www.threads.net/intent/post?text=${shareUnderChar(minPageData, false)}`}
+              target='_blank'
+              rel='noreferrer'
+            >
+              <span className='icon-[fa6-brands--threads] w-[2ch] text-xl' />
+              <span>Threads</span>
             </a>
           </li>
         </ul>
