@@ -3,7 +3,7 @@
 import { useId } from 'react';
 import { usePathname } from 'next/navigation';
 import type { Post } from 'contentlayer/generated';
-import { SocialBox, SubscribeBox } from '@/components/sidebar/main';
+import { SubscribeBox } from '@/components/sidebar/main';
 import PostPreviewV4 from './post-components';
 
 export default function PostRollerV4({ posts }: { posts: Post[] }) {

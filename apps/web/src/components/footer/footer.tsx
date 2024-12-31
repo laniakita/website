@@ -86,7 +86,7 @@ export default function Footer({
                 <div className='relative flex size-full flex-col'>
                   <FooterNavLinks linksContainerPadding={linksContainerPadding} override />
                   <div
-                    className={`absolute hidden bg-ctp-base px-2 ${override ? 'bottom-[-4.25rem] z-50 lg:flex' : 'bottom-[-3.25rem] md:flex'} dark:bg-ctp-midnight`}
+                    className={`absolute hidden bg-ctp-base px-2 ${override ? 'bottom-[-3.25rem] z-50 lg:flex' : 'bottom-[-3.25rem] md:flex'} dark:bg-ctp-midnight`}
                   >
                     <CopyrightTag />
                   </div>
@@ -109,7 +109,7 @@ function FooterNavLinks({ linksContainerPadding, override }: { linksContainerPad
     <div
       className={`grid w-full grid-cols-1 gap-4 ${linksContainerPadding ? linksContainerPadding : 'p-4'} narrow-phone:grid-cols-2 ${override ? 'lg:gap-14 lg:p-0' : 'md:gap-14 md:p-0'}`}
     >
-      <FooterBox title='navigation' navItems={Object.keys(MAIN_PAGES)} />
+      <FooterBox title='navigation' navItems={Object.keys({ ...MAIN_PAGES, credits: '/credits' })} />
       <FooterBoxSpecial title='socials' navItems={SOCIALS_FULL} />
     </div>
   );

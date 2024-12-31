@@ -90,9 +90,11 @@ export default function Sidebar() {
         <SubscribeBox />
         <div className='relative flex w-full flex-col items-center justify-center md:pb-4'>
           <SocialBox />
+          {/*
           <div className='absolute bottom-2 hidden w-fit rounded-xl bg-ctp-surface0/0 px-2 text-center backdrop-blur md:flex dark:bg-ctp-midnight'>
             <CopyrightTag />
           </div>
+          */}
         </div>
       </div>
     </div>

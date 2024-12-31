@@ -76,7 +76,9 @@ export default function NavBar() {
                   key={page}
                   className='nav-item text-xl'
                   onClick={() => {
-                    page !== 'Atom/RSS' && setClicked({ ...clicked, stateVal: 'closed' });
+                    if (page !== 'Atom/RSS') {
+                      setClicked({ ...clicked, stateVal: 'closed' });
+                    }
                   }}
                   target={page === 'Atom/RSS' ? '_blank' : undefined}
                   type={page === 'Atom/RSS' ? 'application/atom+xml' : undefined}
@@ -118,7 +120,9 @@ export default function NavBar() {
             <button
               type='button'
               onClick={() => {
-                clicked.stateVal === 'closed' && setClicked({ ...clicked, stateVal: 'open' });
+                if (clicked.stateVal === 'closed') {
+                  setClicked({ ...clicked, stateVal: 'open' });
+                }
               }}
               className='visible rounded-md lg:hidden'
               aria-label={`${clicked.stateVal === 'open' ? 'close' : 'open'} mobile navigation menu.`}
