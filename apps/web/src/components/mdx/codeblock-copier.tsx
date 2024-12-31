@@ -26,7 +26,7 @@ function CodeBlockAssemble(props: React.DetailedHTMLProps<React.HTMLAttributes<H
     const inputBlock = props.children as PreCodeBlock;
     interface PreCodeBlock extends ReactElement {
       props: {
-        children: Object[];
+        children: object[];
       };
     }
 
@@ -76,7 +76,7 @@ function CodeBlockAssemble(props: React.DetailedHTMLProps<React.HTMLAttributes<H
         if (codeHeight <= 0 && codeBlockRef.current.offsetHeight > codeHeight) {
           setCodeHeight(codeBlockRef.current.offsetHeight);
         }
-        codeBlockRef.current.style.height = `${codeHeight  }px`;
+        codeBlockRef.current.style.height = `${codeHeight}px`;
       }, [isExpanded, codeHeight]);
 
       const handleExpand = () => {
@@ -91,11 +91,7 @@ function CodeBlockAssemble(props: React.DetailedHTMLProps<React.HTMLAttributes<H
       };
 
       return (
-        <div
-          ref={codeBlockRef}
-          id={blockId}
-          className='relative my-6 overflow-y-hidden [transition:_height_0.8s_ease]'
-        >
+        <div ref={codeBlockRef} id={blockId} className='relative my-6 overflow-y-hidden [transition:_height_0.8s_ease]'>
           <div className='pointer-events-none absolute inset-0'>
             <CopyBtn
               preRef={preRef}
@@ -103,7 +99,7 @@ function CodeBlockAssemble(props: React.DetailedHTMLProps<React.HTMLAttributes<H
               setIsCopied={setIsCopied}
               topPos='top-4'
               isCopied={isCopied}
-              special="pointer-events-none"
+              special='pointer-events-none'
               isExpanded={isExpanded}
             />
 
@@ -111,7 +107,9 @@ function CodeBlockAssemble(props: React.DetailedHTMLProps<React.HTMLAttributes<H
               className={`absolute ${isExpanded ? 'hidden' : ''} inset-x-0 bottom-0 flex size-full max-h-[50%] items-center justify-center overflow-x-auto rounded-b-lg border border-t-0 border-ctp-surface0 bg-ctp-mantle/20 bg-gradient-to-b from-transparent to-ctp-base text-center text-ctp-overlay0 dark:to-ctp-midnight`}
             >
               <button
-                onClick={() => { handleExpand(); }}
+                onClick={() => {
+                  handleExpand();
+                }}
                 className='pointer-events-auto flex w-fit flex-row items-center rounded-lg border border-ctp-mauve bg-ctp-mauve/10 p-4 text-ctp-mauve shadow-lg backdrop-blur-sm [transition:_color_0.3s,_border_0.3s,_box-shadow_0.3s,_backdrop-filter_0.3s,_background_0.3s] hover:border-ctp-pink hover:bg-ctp-pink/10 hover:text-ctp-pink hover:shadow-xl hover:backdrop-blur'
               >
                 {`</> show code`}
@@ -119,7 +117,15 @@ function CodeBlockAssemble(props: React.DetailedHTMLProps<React.HTMLAttributes<H
             </div>
           </div>
 
-          <pre ref={preRef} id={preId} onScroll={() => { handlePreScroll(true, isExpanded); }} className='my-0' {...props}>
+          <pre
+            ref={preRef}
+            id={preId}
+            onScroll={() => {
+              handlePreScroll(true, isExpanded);
+            }}
+            className='my-0'
+            {...props}
+          >
             {isExpanded ? props.children : collapsedBlock}
           </pre>
         </div>
@@ -147,14 +153,21 @@ function CodeBlockAssemble(props: React.DetailedHTMLProps<React.HTMLAttributes<H
 
     return (
       <div id={blockId} className='relative'>
-        <pre id={preId} ref={preRef} onScroll={() => { handlePreScroll(); }} {...props}>
+        <pre
+          id={preId}
+          ref={preRef}
+          onScroll={() => {
+            handlePreScroll();
+          }}
+          {...props}
+        >
           <CopyBtn
             preRef={preRef}
             btnRef={btnRef}
             setIsCopied={setIsCopied}
             topPos={topPos}
             isCopied={isCopied}
-            special="pointer-events-auto"
+            special='pointer-events-auto'
           />
           {props.children}
         </pre>

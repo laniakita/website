@@ -42,7 +42,6 @@ export default function ShareButton() {
           <li>
             <button
               onClick={() => {
-                // eslint-disable-next-line @typescript-eslint/no-floating-promises -- won't work with official void function syntax for somereason. needs more investigation
                 navigator.clipboard.writeText(linkGen());
                 setIsCopied(true);
                 setTimeout(() => {

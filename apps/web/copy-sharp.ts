@@ -1,5 +1,5 @@
 #! /usr/bin/env bun
-/* eslint-disable camelcase -- that's how it is */
+
 import { cp, mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
 

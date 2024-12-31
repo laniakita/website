@@ -1,4 +1,3 @@
-/* eslint-disable camelcase -- that's how it is  */
 import type { Metadata, Viewport } from 'next';
 import { Inter_Tight } from 'next/font/google';
 import localFont from 'next/font/local';

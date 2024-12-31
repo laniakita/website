@@ -89,7 +89,9 @@ function HeadingNode({ node, activeId }: { node: HeadingNode; activeId: string }
         </Link>
       </p>
       <ul className='list-none pl-[2ch]'>
-        {node.children ? node.children.map((childNode) => <HeadingNode key={childNode.id} node={childNode} activeId={activeId} />) : null}
+        {node.children
+          ? node.children.map((childNode) => <HeadingNode key={childNode.id} node={childNode} activeId={activeId} />)
+          : null}
       </ul>
     </li>
   );
@@ -169,9 +171,13 @@ const useIntersectionObserver = (setActiveId: Dispatch<SetStateAction<string>>, 
     });
 
     const headingEls = Array.from(document.querySelectorAll('h1, h2, h3, h4, h5, h6'));
-    headingEls.forEach((el) => { observer.observe(el); });
+    headingEls.forEach((el) => {
+      observer.observe(el);
+    });
 
-    return () => { observer.disconnect(); };
+    return () => {
+      observer.disconnect();
+    };
   }, [setActiveId, activeId]);
 };
 
@@ -278,7 +284,9 @@ export default function ToCMenu() {
       <div className='simple-color-trans sticky top-16 z-30 flex h-12 w-full flex-row items-center gap-4 overflow-x-hidden border-b border-ctp-surface0 bg-ctp-base/50 px-6 backdrop-blur-sm md:hidden dark:bg-ctp-midnight/50'>
         <button
           className={`link-color-trans ${showMobileMenu ? 'font-bold text-ctp-text underline' : ''} -m-1.5 flex items-center whitespace-pre font-mono text-sm text-ctp-subtext0 hover:font-bold hover:text-ctp-text hover:underline`}
-          onClick={() => { setShowMobileMenu(!showMobileMenu); }}
+          onClick={() => {
+            setShowMobileMenu(!showMobileMenu);
+          }}
         >
           <span
             className={`${showMobileMenu ? '[transform:_rotate(90deg)_translate3d(-0.05rem,-0.3rem,0px)]' : ''} icon-[ph--caret-right-bold] mr-[1ch] text-xl [transition:_transform_0.3s]`}

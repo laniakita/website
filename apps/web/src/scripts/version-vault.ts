@@ -1,5 +1,5 @@
 #! /usr/bin/env bun
-/* eslint-disable no-console -- local script */
+
 import { mkdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 

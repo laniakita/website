@@ -75,7 +75,6 @@ export default async function ProjectPage(props: { params: Promise<{ path: strin
   if (!data) return notFound();
   const importUrl = data.url.split('/').slice(2, data.url.split('/').length).join('/');
 
-  // eslint-disable-next-line -- dangerous importer
   const { default: Project } = await import(`../${importUrl}/main.tsx`);
 
   return <Project />;

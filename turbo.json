@@ -11,7 +11,9 @@
       "cache": false
     },
     "sso": {},
-    "lint": {},
+    "lint": {
+      "inputs": ["./packages/eslint-config-v9/**", "eslint.config.js"]
+    },
     "deploy": {
       "dependsOn": ["build", "test", "lint"]
     },

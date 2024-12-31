@@ -15,7 +15,6 @@ interface ImgProps {
   alt: string;
 }
 
-/*eslint-disable react/function-component-definition -- mdx bundlers component substitution type complains without this formatting */
 const BlogImageBlurServer: FC = async (props) => {
   if (!(props as unknown)) return;
   const blurRes = await betterBlur((props as ImgProps).src);

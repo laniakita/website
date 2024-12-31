@@ -1,4 +1,3 @@
-/* eslint-disable -- It works, deal with it. eslint stay mad. */
 import React, { ReactElement, ReactNode } from 'react';
 import * as _jsx_runtime from 'react/jsx-runtime';
 import * as _jsx_dev_runtime from 'react/jsx-dev-runtime';

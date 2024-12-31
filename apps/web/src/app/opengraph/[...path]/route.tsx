@@ -120,7 +120,7 @@ export async function GET(request: NextRequest) {
         data.type = 'projects';
         data.title = data.fetched?.title;
         data.prefix = 'Projects by Lani';
-        // eslint-disable-next-line -- featured_image exists
+
         data.hasImage = data.fetched?.featured_image?.hasImage;
         break;
       }
@@ -130,7 +130,7 @@ export async function GET(request: NextRequest) {
         data.type = 'blog';
         data.title = data.fetched?.headline;
         data.prefix = 'Dev Blog of Lani';
-        // eslint-disable-next-line -- featured_image exists
+
         data.hasImage = data?.fetched?.featured_image?.hasImage;
         break;
       }
@@ -324,7 +324,7 @@ function ImageGenTwo({
         }}
       />
 
-      {/* eslint-disable-next-line -- Image component can't be used here. */}
+      {}
       <img src={logoData} height={`20%`} style={{ position: 'absolute', right: 30, top: 30 }} />
 
       {dynamic ? (

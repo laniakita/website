@@ -20,11 +20,8 @@
     "next-env.d.ts",
     ".next/types/**/*.ts",
     ".contentlayer/generated",
-    ".eslintrc.js",
     "./**/*.ts",
     "./**/*.tsx",
-    "./**/*.mjs",
-    "./**/*.json"
   ],
   "exclude": ["node_modules", "public/sw.js"]
 }

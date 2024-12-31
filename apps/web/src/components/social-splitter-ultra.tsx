@@ -32,7 +32,7 @@ export default function SocialIconNavSplitterUltra({
             className={`${hxw} social-button ${animClass} ${textSize}`}
             style={{ animationDelay: `${0.5 + index / 10}s` }}
             target='_blank'
-            rel='noopener'
+            rel='noopener noreferrer'
             aria-label={`Follow Lani on ${item.linkName}`}
           >
             <span className={`${item.iconName} ${item.textSize}`} />

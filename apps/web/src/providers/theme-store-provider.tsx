@@ -1,5 +1,5 @@
 'use client';
-/* eslint-disable @typescript-eslint/no-unnecessary-condition -- this is how the docs set it up */
+
 import { type ReactNode, createContext, useRef, useContext } from 'react';
 import { useStore } from 'zustand';
 import { type DarkStore, createDarkStore } from '@/stores/theme-store';

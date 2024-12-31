@@ -14,7 +14,6 @@ export const globalMdxComponents = {
 };
 
 export default function GlobalMDXComponent(data: Post | Page | Category | Tag | Work) {
-  //eslint-disable-next-line -- ignore
   const MDXContent = getMDXComponent(data.body.code, {});
   return <MDXContent code={data.body.code} components={globalMdxComponents} />;
 }

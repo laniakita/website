@@ -4,7 +4,7 @@ import { PageCommon } from '@/app/(content)/(info)/page-common';
 import { descriptionHelper } from '@/lib/description-helper';
 
 const data = allPages.find((page) => page.url === '/about');
-/* eslint-disable @typescript-eslint/no-unnecessary-condition -- testing */
+
 const description = descriptionHelper(data?.body?.raw, data?.url, true);
 
 export const metadata: Metadata = {

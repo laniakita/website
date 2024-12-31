@@ -17,7 +17,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const params = await props.params;
   const data = allPages.find((credit) => credit.url.split('/').pop() === params.slug);
-  /* eslint-disable @typescript-eslint/no-unnecessary-condition -- testing */
+
   const description = descriptionHelper(data?.body?.raw, data?.url, true);
 
   const previousImages = (await parent).openGraph?.images ?? [];

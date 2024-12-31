@@ -1,6 +1,6 @@
-const catppuccin = require('@catppuccin/tailwindcss');
-const tailwindProse = require('@tailwindcss/typography');
-const { addDynamicIconSelectors } = require('@iconify/tailwind');
+import catppuccin from '@catppuccin/tailwindcss';
+import tailwindProse from '@tailwindcss/typography';
+import { addDynamicIconSelectors } from '@iconify/tailwind';
 
 const accent = 'ctp-mauve';
 const invertAccent = 'ctp-mauve';
@@ -8,7 +8,7 @@ const linkColor = 'ctp-mauve';
 const invertLinkColor = 'ctp-mauve';
 
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   content: ['./src/components/**/*.{js,ts,jsx,tsx,mdx}', './src/app/**/*.{js,ts,jsx,tsx,mdx}'],
   darkMode: 'selector',
   theme: {

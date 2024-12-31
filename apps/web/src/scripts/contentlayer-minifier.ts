@@ -4,7 +4,7 @@ import { allPosts, allPages, allCategories, allTags, allProjects } from 'content
 
 const allPostsRes = () => {
   return allPosts.map((doc) => {
-    // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars -- vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- vars
     const { body, html, ...content } = doc;
     return content;
   });
@@ -12,7 +12,7 @@ const allPostsRes = () => {
 
 const allPagesRes = () => {
   return allPages.map((doc) => {
-    // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars -- vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- vars
     const { body, ...content } = doc;
     return content;
   });
@@ -20,7 +20,7 @@ const allPagesRes = () => {
 
 const allCatsRes = () => {
   return allCategories.map((doc) => {
-    // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars -- vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- vars
     const { body, ...content } = doc;
     return content;
   });
@@ -28,7 +28,7 @@ const allCatsRes = () => {
 
 const allTagsRes = () => {
   return allTags.map((doc) => {
-    // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars -- vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- vars
     const { body, ...content } = doc;
     return content;
   });
