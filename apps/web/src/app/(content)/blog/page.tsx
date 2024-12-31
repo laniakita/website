@@ -3,6 +3,7 @@ import { compareDesc } from 'date-fns';
 import { allPages, allPosts } from 'contentlayer/generated';
 import Sidebar from '@/components/sidebar/main';
 import PostRollerV4 from './post-roller-v4';
+import Footer from '@/components/footer/footer';
 
 const data = allPages.find((page) => page.url === '/blog');
 
@@ -46,8 +47,17 @@ export default function BlogPage2() {
       <div className='hidden md:flex md:w-full md:max-w-xs lg:max-w-sm'>
         <Sidebar />
       </div>
-      <main className='simple-color-trans common-padding m-auto flex flex-col-reverse justify-center gap-4 bg-ctp-base md:flex-row md:gap-6 dark:bg-ctp-midnight'>
-        <PostRollerV4 posts={posts} />
+      <main className='simple-color-trans pt-common px-page-common m-auto flex flex-col-reverse justify-center gap-4 bg-ctp-base md:flex-row md:gap-6  dark:bg-ctp-midnight'>
+        <div className='flex flex-col gap-16'>
+          <PostRollerV4 posts={posts} />
+          <Footer
+            override
+            outsidePadding='pb-10 lg:pb-common px-8 md:px-0 lg:px-0'
+            insidePadding='p-0 md:p-0 lg:p-10'
+            linksContainerPadding='py-4 px-0'
+            iconContainerPadding='px-0'
+          />
+        </div>
         <div className='block md:hidden'>
           <Sidebar />
         </div>

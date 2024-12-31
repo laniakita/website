@@ -7,7 +7,7 @@ const MED_SCREEN = 768; // px
 
 const Z_FOLD_SCREEN = 344;
 const IPHONE_SE_SCREEN = 375;
-const PIXEL_SEVEN_SCREEN = 412;
+//const PIXEL_SEVEN_SCREEN = 412;
 const IPHONE_FOURTEEN_PRO_MAX = 430;
 const WEIRD_PHABLET = 500;
 const SMALL_SCREEN_MAX = 600;
@@ -208,10 +208,10 @@ export default function ToCMenu() {
         setShowMobileMenu(false);
       }
     },
-    [showMobileMenu],
+    [],
   );
 
-  const concatDynamic = (input: string | undefined) => {
+  const concatDynamic = useCallback((input: string | undefined) => {
     if (!input) return;
     if (!window.innerWidth) return;
 
@@ -248,13 +248,13 @@ export default function ToCMenu() {
     }
 
     return newInput.join('');
-  };
+  }, []);
 
   useEffect(() => {
     const headingsQuery = Array.from(document.querySelectorAll('h1, h2, h3, h4, h5, h6'));
 
     if (flatHeadings.length <= 0) {
-      setFlatHeadings(headingsQuery);
+      setFlatHeadings(headingsQuery as HTMLHeadingElement[]);
     }
     function handleResize() {
       const currTitle = flatHeadings.find((el) => el.id === activeId)?.innerText;
@@ -271,11 +271,11 @@ export default function ToCMenu() {
       document.removeEventListener('click', handleToCOffClick);
       //document.removeEventListener('resize', handleResize);
     };
-  }, [handleToCOffClick, concatDynamic, setFlatHeadings, flatHeadings]);
+  }, [handleToCOffClick, concatDynamic, setFlatHeadings, activeId, flatHeadings]);
 
   return (
     <>
-      <div className='simple-color-trans sticky top-16 hidden h-screen max-h-[calc(100vh-4rem)] w-full min-w-72 max-w-[24rem] items-start justify-center overflow-y-auto bg-ctp-base/20 py-10 text-slate-100 md:flex dark:bg-ctp-base/20'>
+      <div className='simple-color-trans sticky top-16 hidden h-screen max-h-[calc(100vh-4rem)] w-full min-w-72 max-w-sm items-start justify-center overflow-y-auto bg-ctp-base/20 py-10 text-slate-100 md:flex dark:bg-ctp-base/20'>
         <nav aria-label='Table of contents' className='w-full px-4'>
           <Headings tree={nestedHeadings} activeId={activeId} />
         </nav>
