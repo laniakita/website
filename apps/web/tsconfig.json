@@ -20,7 +20,7 @@
     "next-env.d.ts",
     ".next/types/**/*.ts",
     ".contentlayer/generated",
-    ".eslintrc.cjs",
+    ".eslintrc.js",
     "./**/*.ts",
     "./**/*.tsx",
     "./**/*.mjs",

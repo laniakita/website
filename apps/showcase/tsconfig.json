@@ -1,5 +1,5 @@
 {
-  "extends": "@website/typescript-config/nextjs.json",
+  "extends": "@website/typescript-config/nextjs",
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "esnext", "webworker"],
     "plugins": [
@@ -20,7 +20,7 @@
     "next-env.d.ts",
     ".next/types/**/*.ts",
     ".contentlayer/generated",
-    ".eslintrc.cjs",
+    ".eslintrc.js",
     "./**/*.ts",
     "./**/*.tsx",
     "./**/*.mjs",

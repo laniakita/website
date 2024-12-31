@@ -4,13 +4,15 @@ const project = resolve(process.cwd(), "tsconfig.json");
 
 module.exports = {
   extends: [
-    "@vercel/style-guide/eslint/node",
-    "@vercel/style-guide/eslint/typescript",
-    "@vercel/style-guide/eslint/browser",
-    "@vercel/style-guide/eslint/react",
-    "@vercel/style-guide/eslint/next",
-    "eslint-config-turbo",
-  ].map(require.resolve),
+    ...[
+      "@vercel/style-guide/eslint/node",
+      "@vercel/style-guide/eslint/typescript",
+      "@vercel/style-guide/eslint/browser",
+      "@vercel/style-guide/eslint/react",
+      "@vercel/style-guide/eslint/next",
+    ].map(require.resolve),
+    "turbo",
+  ],
   parserOptions: { project },
   globals: {
     React: true,
@@ -26,7 +28,7 @@ module.exports = {
       extensions: [".mjs", ".js", ".jsx", ".ts", ".tsx"],
     },
   },
-  ignorePatterns: [".next", "dist", "node_modules/"],
+  ignorePatterns: [".*.js", "node_modules/", "dist/", ".next/", ".open-next/"],
   rules: {
     "import/no-default-export": "off",
     "no-console": ["warn", { allow: ["warn", "error", "debug", "info"] }],

@@ -4,10 +4,10 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { compareDesc } from 'date-fns';
-import { descriptionHelper } from '@/lib/description-helper';
-import type { FeaturedImageR1 } from '@/lib/image-process';
 import { allPages, allWorks } from 'contentlayer/generated';
 import type { Work } from 'contentlayer/generated';
+import { descriptionHelper } from '@/lib/description-helper';
+import type { FeaturedImageR1 } from '@/lib/image-process';
 import GlobalMDXComponent from '@/components/mdx/global-mdx-components';
 import PostDate from '@/app/(content)/blog/[id]/[slug]/post-date';
 

@@ -3,8 +3,8 @@
 import { useMemo, useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import type { Mesh, ShaderMaterial } from 'three';
-import Common2DCanvas from '@/components/canvas/dom/common-2d-canvas';
 // @ts-expect-error -- using glsl loader for this
+import Common2DCanvas from '@/components/canvas/dom/common-2d-canvas';
 import vertex from './shader.vert';
 // @ts-expect-error -- using glsl loader for this
 import fragment from './shader.frag';

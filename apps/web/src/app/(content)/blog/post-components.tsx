@@ -1,11 +1,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { descriptionHelper } from '@/lib/description-helper';
 import { type Post } from 'contentlayer/generated';
+import { descriptionHelper } from '@/lib/description-helper';
 import type { FeaturedImageR1 } from '@/lib/image-process';
 import GlobalMDXRenderer from '@/components/mdx/global-mdx-renderer';
-import { CatTagRoller } from './cat-tag-roller';
 import PostDate from './[id]/[slug]/post-date';
+import { CatTagRoller } from './cat-tag-roller';
 
 export default function PostPreviewV4(post: Post) {
   const descriptionStr = descriptionHelper(post.body.raw, post.url)!;

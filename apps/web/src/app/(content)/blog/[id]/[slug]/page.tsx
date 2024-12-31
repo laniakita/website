@@ -9,9 +9,9 @@ import type { FeaturedImageR1 } from '@/lib/image-process';
 import { APP_URL } from '@/lib/constants';
 import GlobalMDXComponent from '@/components/mdx/global-mdx-components';
 import { catTagData } from '@/lib/cat-tag-data';
-import CommentsComponent from './comments';
-import { PostHeader2 } from './post-header-2';
 import ToCMenu from '@/components/toc-nav';
+import { PostHeader2 } from './post-header-2';
+import CommentsComponent from './comments';
 
 export function generateStaticParams() {
   const posts = allPosts.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
