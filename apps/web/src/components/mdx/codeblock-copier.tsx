@@ -150,6 +150,9 @@ function DefaultCodeBlock(props: React.DetailedHTMLProps<React.HTMLAttributes<HT
           } else if (preRef.current.childNodes[1].childNodes.length === 2) {
             setTopPos('top-5');
           }
+        } else if ((preRef.current.childNodes[1] as HTMLElement)?.offsetHeight < 100) {
+          console.log(preRef.current);
+          setTopPos('top-2');
         }
       }
     }
@@ -223,7 +226,7 @@ function ExpandableBlock(props: React.DetailedHTMLProps<React.HTMLAttributes<HTM
     if (codeHeight <= 0 && codeBlockRef.current.offsetHeight > codeHeight) {
       setCodeHeight(codeBlockRef.current.offsetHeight);
     }
-    if (codeHeight > 0) codeBlockRef.current.style.height =  `${codeHeight}px`;
+    if (codeHeight > 0) codeBlockRef.current.style.height = `${codeHeight}px`;
   }, [isExpanded, codeHeight]);
 
   const handleExpand = () => {
