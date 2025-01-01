@@ -9,7 +9,6 @@ import type { FeaturedImageR1 } from '@/lib/image-process';
 import { APP_URL } from '@/lib/constants';
 import GlobalMDXComponent from '@/components/mdx/global-mdx-components';
 import { catTagData } from '@/lib/cat-tag-data';
-import ToCMenu from '@/components/toc-nav';
 import { PostHeader2 } from './post-header-2';
 import CommentsComponent from './comments';
 
@@ -136,7 +135,7 @@ export default async function BlogPostPage(props: { params: Promise<{ id: string
         </div>
       </div>
 
-      <main className='motion-safe:simple-color-trans pb-common -mb-0.5 flex min-h-full w-full flex-col bg-ctp-base dark:bg-ctp-midnight'>
+      <main className='pb-common -mb-0.5 flex min-h-full w-full flex-col'>
         {/* flex box break prose */}
         <article id='content' className=''>
           <PostHeader2 {...post} />

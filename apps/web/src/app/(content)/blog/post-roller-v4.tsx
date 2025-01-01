@@ -1,13 +1,18 @@
 'use client';
 
-import { useId } from 'react';
 import { usePathname } from 'next/navigation';
 import type { Post } from 'contentlayer/generated';
 import { SubscribeBox } from '@/components/sidebar/main';
 import PostPreviewV4 from './post-components';
 
 export default function PostRollerV4({ posts }: { posts: Post[] }) {
-  const uniqueKey = useId();
+  const uniqueKey = (idx:number) => {
+
+    const num = Math.floor(Math.random() * 1000 + idx);
+
+    return `blog-post-${crypto.randomUUID()}-${num}-${idx}`;
+  }
+
   const pathname = usePathname();
 
   const isBlog = pathname === '/blog' && true;
@@ -19,7 +24,7 @@ export default function PostRollerV4({ posts }: { posts: Post[] }) {
           ? posts.map((post, idx) =>
               idx === 1 ? (
                 <div
-                  key={`subscribe-blog-post-${uniqueKey}-${Math.floor(Math.random() * 1000 + idx)}`}
+                  key={uniqueKey(idx)}
                   className='flex flex-col gap-4 md:gap-6'
                 >
                   <SubscribeBox mobile />
@@ -30,7 +35,7 @@ export default function PostRollerV4({ posts }: { posts: Post[] }) {
               ),
             )
           : posts.map((post, idx) => (
-              <PostPreviewV4 key={`blog-post-${uniqueKey}-${Math.floor(Math.random() * 1000 + idx)}`} {...post} />
+              <PostPreviewV4 key={uniqueKey(idx)} {...post} />
             ))}
       </div>
     </div>

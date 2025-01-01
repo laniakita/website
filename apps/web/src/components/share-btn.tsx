@@ -8,11 +8,14 @@ export default function ShareButton() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
+  const shareDivRef = useRef<HTMLDivElement>(null!);
+  const shareListRef = useRef<HTMLUListElement>(null!);
+
   const linkGen = useCallback(() => {
     const baseUrl = 'https://laniakita.com';
     const linkstr = `${baseUrl}${pathname}`;
     return linkstr;
-  }, []);
+  }, [pathname]);
   interface MinPageData {
     title: string;
     url: string;
@@ -72,9 +75,10 @@ export default function ShareButton() {
         className={`${isOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'} absolute -bottom-4 z-[1] size-0 border-[1rem] border-x-transparent border-b-ctp-surface0 border-t-transparent [transition:_opacity_0.3s]`}
       />
       <div
-        className={`${isOpen ? 'pointer-events-auto translate-y-[108%] opacity-100' : 'pointer-events-none opacity-0 [transform:_translateY(70%)]'} absolute bottom-0 z-[2] min-w-fit whitespace-nowrap rounded-md border border-ctp-surface0 bg-ctp-base p-1 font-mono shadow-lg [transition:_opacity_0.3s,_transform_0.8s] dark:shadow-ctp-pink/30`}
+        ref={shareDivRef}
+        className={`${isOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none h-0 opacity-0'} absolute bottom-0 z-[2] min-w-fit translate-y-[105%] overflow-hidden whitespace-nowrap rounded-md border border-ctp-overlay0 bg-ctp-base/90 font-mono shadow-lg backdrop-blur-md [transition:_opacity_0.5s,_transform_0.5s,_height_0.5s] dark:bg-ctp-base/50 dark:shadow-ctp-pink/30`}
       >
-        <ul className='space-y-2'>
+        <ul ref={shareListRef} className='space-y-1.5 p-1.5 pb-2'>
           <li>
             <button
               onClick={() => {
@@ -85,7 +89,7 @@ export default function ShareButton() {
                 }, 2000);
               }}
               type='button'
-              className='color-trans-quick flex flex-row items-center gap-[1ch] rounded border border-ctp-surface0 px-4 py-2 hover:bg-ctp-pink hover:text-ctp-base'
+              className='share-button hover:bg-ctp-pink hover:text-ctp-base'
             >
               <span className='icon-[ph--link] w-[2ch] text-xl' />
               <span>{isCopied ? 'copied!' : 'copy link'}</span>
@@ -93,7 +97,7 @@ export default function ShareButton() {
           </li>
           <li>
             <a
-              className='color-trans-quick flex w-full flex-row items-center gap-[1ch] rounded border border-ctp-surface0 px-4 py-2 text-ctp-text hover:bg-[#1185FE] hover:text-ctp-base'
+              className='share-button hover:bg-[#1185FE]'
               href={`https://bsky.app/intent/compose?text=${shareUnderChar(minPageData, true)}`}
               target='_blank'
               rel='noreferrer'
@@ -104,7 +108,7 @@ export default function ShareButton() {
           </li>
           <li>
             <a
-              className='color-trans-quick flex w-full flex-row items-center gap-[1ch] rounded border border-ctp-surface0 px-4 py-2 text-ctp-text hover:bg-black hover:text-ctp-base dark:hover:text-ctp-text'
+              className='share-button hover:bg-black'
               href={`https://x.com/intent/tweet?text=${shareUnderChar(minPageData, false)}`}
               target='_blank'
               rel='noreferrer'
@@ -115,13 +119,35 @@ export default function ShareButton() {
           </li>
           <li>
             <a
-              className='color-trans-quick flex w-full flex-row items-center gap-[1ch] rounded border border-ctp-surface0 px-4 py-2 text-ctp-text hover:bg-black hover:text-ctp-base dark:hover:text-ctp-text'
+              className='share-button hover:bg-[#0a66c2]'
+              href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(minPageData?.url ?? '')}`}
+              target='_blank'
+              rel='noreferrer'
+            >
+              <span className='icon-[fa6-brands--linkedin] w-[2ch] text-xl' />
+              <span>LinkedIn</span>
+            </a>
+          </li>
+          <li>
+            <a
+              className='share-button hover:bg-black'
               href={`https://www.threads.net/intent/post?text=${shareUnderChar(minPageData, false)}`}
               target='_blank'
               rel='noreferrer'
             >
               <span className='icon-[fa6-brands--threads] w-[2ch] text-xl' />
               <span>Threads</span>
+            </a>
+          </li>
+          <li>
+            <a
+              className='share-button hover:bg-[#ff6719]'
+              href={`https://substack.com/notes?action=compose&message=${encodeURIComponent(minPageData?.title ?? '')} ${encodeURIComponent(minPageData?.url ?? '')}`}
+              target='_blank'
+              rel='noreferrer'
+            >
+              <span className='icon-[simple-icons--substack] w-[2ch] text-xl' />
+              <span>Substack</span>
             </a>
           </li>
         </ul>
@@ -131,7 +157,11 @@ export default function ShareButton() {
         onClick={() => {
           if (!isOpen) {
             setIsOpen(true);
-          } else setIsOpen(false);
+            shareDivRef.current.style.height = shareListRef.current.offsetHeight + 'px';
+          } else {
+            setIsOpen(false);
+            shareDivRef.current.style.height = '0px';
+          }
         }}
         type='button'
         className='color-trans-quick z-10 flex flex-row items-center justify-center gap-2 rounded-full border border-ctp-mauve bg-ctp-mauve/10 px-8 py-2 font-mono font-black hover:border-ctp-flamingo hover:bg-ctp-pink hover:text-ctp-base'

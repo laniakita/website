@@ -12,7 +12,7 @@ export default function PostPreviewV4(post: Post) {
   const res = post.featured_image as FeaturedImageR1;
 
   return (
-    <div className='flex basis-full flex-col overflow-hidden rounded-md border border-ctp-surface0 dark:border-ctp-base'>
+    <div className='motion-safe:simple-color-trans flex basis-full flex-col overflow-hidden rounded-md border border-ctp-surface0 bg-ctp-base dark:border-ctp-base dark:bg-ctp-midnight'>
       {res.hasImage ? (
         <Link href={post.url}>
           <Image

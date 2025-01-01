@@ -56,7 +56,7 @@ export default function Works() {
   );
 
   return (
-    <main className='simple-color-trans common-padding bg-ctp-base dark:bg-ctp-midnight'>
+    <main className='common-padding'>
       <div className='flex flex-col items-center justify-center gap-4 md:gap-6'>
         <div className='flex w-full max-w-3xl flex-col gap-4 rounded-md border border-ctp-surface0 p-8 dark:border-ctp-base'>
           <div className=''>
@@ -86,7 +86,7 @@ function WorkPreview(data: Work) {
   const uKey = useId();
 
   return (
-    <div className='flex size-full basis-full flex-col overflow-hidden rounded-md border border-ctp-surface0 dark:border-ctp-base'>
+    <div className='motion-safe:simple-color-trans flex size-full basis-full flex-col overflow-hidden rounded-md border border-ctp-surface0 bg-ctp-base dark:border-ctp-base dark:bg-ctp-midnight'>
       {res.src ? (
         <Link href={`https://${data.domain}`} target='_blank' aria-disabled={!data.active}>
           <Image

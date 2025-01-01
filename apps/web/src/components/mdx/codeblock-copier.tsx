@@ -32,16 +32,82 @@ function CodeBlockAssemble(props: React.DetailedHTMLProps<React.HTMLAttributes<H
     setIsClient(true);
   }, []);
 
-  if ((props.children as ReactElement).type === 'code' && isClient) {
+  if ((props.children as ReactElement).type === 'code') {
     const inputBlock = props.children as PreCodeBlock;
+
     // string is a weird edge case here.
     if (inputBlock.props.children.length > 30 && typeof inputBlock.props.children !== 'string') {
-      return <ExpandableBlock {...props} />;
+      if (isClient) return <ExpandableBlock {...props} />;
+      return <CollapsedCodeBlock {...props} />;
     }
     return <DefaultCodeBlock {...props} />;
   }
 
   return <pre {...props} />;
+}
+
+function CollapsedCodeBlock(props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLPreElement>, HTMLPreElement>) {
+  // refs
+  const preRef = useRef<HTMLPreElement>(null!);
+  const btnRef = useRef<HTMLButtonElement>(null!);
+  const blockSerial = useId();
+  const blockId = `codeblock-${blockSerial}`;
+  const preId = `pre-${blockId}`;
+
+  const [isCopied, setIsCopied] = useState<boolean | null>(false);
+
+  const inputBlock = props.children as PreCodeBlock;
+
+  const collapsedBlock = {
+    ...inputBlock,
+    props: {
+      ...inputBlock.props,
+      children: inputBlock.props.children.slice(0, 15),
+    },
+  };
+
+  const handlePreScroll = (insideCollapsedBlock?: boolean, isExpanded?: boolean) => {
+    if (!insideCollapsedBlock || isExpanded === true) {
+      btnRef.current.style.pointerEvents = 'none';
+      btnRef.current.style.opacity = '0';
+      setTimeout(() => {
+        btnRef.current.style.pointerEvents = 'auto';
+        btnRef.current.style.opacity = '100%';
+      }, 500);
+    } else if (insideCollapsedBlock && !isExpanded) {
+      btnRef.current.style.opacity = '0';
+      setTimeout(() => {
+        btnRef.current.style.opacity = '20%';
+      }, 500);
+    }
+  };
+
+  // handle weird singleline blocks
+  //const preRef = useRef<HTMLPreElement>(null!);
+
+  return (
+    <div id={blockId} className='relative'>
+      <pre
+        id={preId}
+        ref={preRef}
+        onScroll={() => {
+          handlePreScroll();
+        }}
+        {...props}
+      >
+        <CopyBtn
+          preRef={preRef}
+          btnRef={btnRef}
+          setIsCopied={setIsCopied}
+          isExpanded={false}
+          topPos={'top-4'}
+          isCopied={isCopied}
+          special='pointer-events-auto'
+        />
+        {collapsedBlock}
+      </pre>
+    </div>
+  );
 }
 
 function DefaultCodeBlock(props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLPreElement>, HTMLPreElement>) {
@@ -157,7 +223,7 @@ function ExpandableBlock(props: React.DetailedHTMLProps<React.HTMLAttributes<HTM
     if (codeHeight <= 0 && codeBlockRef.current.offsetHeight > codeHeight) {
       setCodeHeight(codeBlockRef.current.offsetHeight);
     }
-    codeBlockRef.current.style.height = `${codeHeight}px`;
+    if (codeHeight > 0) codeBlockRef.current.style.height =  `${codeHeight}px`;
   }, [isExpanded, codeHeight]);
 
   const handleExpand = () => {

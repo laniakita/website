@@ -1,10 +1,9 @@
 'use client';
-import { useId } from 'react';
 import Link from 'next/link';
 import type { Category, Tag } from 'contentlayer/generated';
 
 export default function EzRoller({ array, title }: { array: Category[] | Tag[]; title: string }) {
-  const uniqueKey = useId();
+  const uniqueKey = crypto.randomUUID();
   return (
     <>
       <h4 className='font-black'>{title}</h4>

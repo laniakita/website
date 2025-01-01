@@ -1,11 +1,10 @@
-import { Suspense, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import Footer from '@/components/footer/footer';
 import ToCMenu from '@/components/toc-nav';
 
 export default function ContentLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <Suspense>
-      <div className='flex size-full flex-col md:flex-row'>
+       <div className='flex size-full flex-col md:flex-row'>
         <ToCMenu />
         <div className='flex max-w-7xl flex-col md:m-auto md:min-w-40'>
           {children}
@@ -17,6 +16,5 @@ export default function ContentLayout({ children }: Readonly<{ children: ReactNo
           />
         </div>
       </div>
-    </Suspense>
   );
 }

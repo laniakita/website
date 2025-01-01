@@ -1,5 +1,5 @@
 'use client';
-import { Suspense, useCallback, useEffect, useId, useRef, useState } from 'react';
+import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import * as darklogo from '@/app/laniakita-logo-transparent-darkmode.svg';
@@ -157,11 +157,17 @@ interface SimpleIcon extends SocialNavIcon {
 }
 
 function SimpleSocials({ arr }: { arr: SimpleIcon[] }) {
-  const uKey = useId();
+   const uniqueKey = (idx:number) => {
+
+    const num = Math.floor(Math.random() * 1000 + idx);
+
+    return `social-icon-nav-${crypto.randomUUID()}-${num}-${idx}`;
+  }
+
   return (
     <>
       {arr.map((icon, idx: number) => (
-        <p key={`nav-social-icon-${uKey}-${Math.floor(Math.random() * 1000 + idx)}`} className=''>
+        <p key={uniqueKey(idx)} className=''>
           <Link
             target='_blank'
             aria-label={`Follow Lani on ${icon.linkName}`}

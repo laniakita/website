@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { useId } from 'react';
 
 export interface SocialIconNavProps {
   boxItems: SocialNavIcon[];
@@ -15,13 +14,21 @@ export interface SocialNavIcon {
 }
 
 export default function SocialIconNav({ boxItems, hxw }: SocialIconNavProps) {
-  const uKey = useId();
+  const uniqueKey = (idx:number) => {
+
+    const num = Math.floor(Math.random() * 1000 + idx);
+
+    return `social-icon-og-${crypto.randomUUID()}-${num}-${idx}`;
+  }
+
+
+
   return (
     <div className='flex flex-wrap items-center justify-center gap-2'>
       {boxItems.map((item, idx) => (
         <Link
           rel={item.title.toLowerCase() === 'mastodon' ? 'me' : ''}
-          key={`social-icon-one-${uKey}-${Math.floor(Math.random() * 1000 * idx)}`}
+          key={uniqueKey(idx)}
           href={item.url}
           className={`${hxw} social-button`}
           target='_blank'
