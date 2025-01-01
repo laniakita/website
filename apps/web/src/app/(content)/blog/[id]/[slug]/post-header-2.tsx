@@ -11,17 +11,18 @@ export function PostHeader2(post: Post) {
   return (
     <>
       <div className='pt-post-page flex w-full flex-col items-center justify-center gap-2 px-10 pb-6 md:pb-10'>
-        <Link
-          href={'/blog'}
-          className='link-color-trans group left-0 mb-4 flex flex-row items-center gap-x-[1ch] self-start font-mono text-ctp-overlay0 hover:text-ctp-text lg:mb-6'
-        >
-          <span className='icon-[ph--arrow-fat-lines-left] pointer-events-none w-[2ch] text-2xl' />{' '}
-          <span className='pointer-events-none'>
-            <span>return to:</span>{' '}
-            <span className='link-color-trans text-ctp-mauve/50 group-hover:text-ctp-pink group-hover:underline'>{`/blog`}</span>
-          </span>
-        </Link>
-
+        <div className='w-full max-w-3xl'>
+          <Link
+            href={'/blog'}
+            className='link-color-trans group -ml-1.5 mb-4 flex w-fit flex-row items-center gap-x-[1ch] self-start font-mono text-ctp-subtext0 hover:font-bold hover:text-ctp-text lg:mb-6 dark:text-ctp-overlay0'
+          >
+            <span className='icon-[ph--arrow-fat-lines-left] pointer-events-none w-[2ch] text-2xl' />{' '}
+            <span className='pointer-events-none'>
+              <span>return to:</span>{' '}
+              <span className='link-color-trans text-ctp-mauve/80 group-hover:text-ctp-pink group-hover:underline'>{`/blog`}</span>
+            </span>
+          </Link>
+        </div>
         <div className='w-full max-w-3xl font-mono'>
           <CatTagRoller cats={post.categories} tags={post.tags} />
         </div>

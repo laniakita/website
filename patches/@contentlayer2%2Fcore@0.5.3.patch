@@ -1,0 +1,14 @@
+diff --git a/package.json b/package.json
+index 36e3214630505866cfdffd92189a112a40358d12..57c5c33b83e7bcbe1447e6ce53028447a38352e0 100644
+--- a/package.json
++++ b/package.json
+@@ -53,5 +53,8 @@
+     "@types/source-map-support": "^0.5.6",
+     "markdown-wasm": "^1.2.0"
+   },
++  "patchedDependencies": {
++    "mdx-bundler@10.0.3": "patches/mdx-bundler@10.0.3.patch"
++  },
+   "license": "MIT"
+ }
+\ No newline at end of file

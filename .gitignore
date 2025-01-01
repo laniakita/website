@@ -25,10 +25,12 @@ dist
 dist-ssr
 server/dist
 public/dist
+**/public/feed.xml
 **/public/tests
 **/public/assets/images
-**/public/sw.js
-**/public/feed.xml
+# Serwist
+**/public/sw*
+**/public/swe-worker*
 
 # wrangler / @cloudflare/next-on-pages
 .wrangler

@@ -1,0 +1,14 @@
+diff --git a/package.json b/package.json
+index e207b915a45d783b4d1b8d7ed841075378e92c8f..fa1a9eb94ebcc7c3c098013776a2589de893013b 100644
+--- a/package.json
++++ b/package.json
+@@ -54,6 +54,9 @@
+     "typescript": "^5.5.0",
+     "webpack": "^5.88.1"
+   },
++  "patchedDependencies": {
++    "@contentlayer2/core@0.5.3": "patches/@contentlayer2%2Fcore@0.5.3.patch"
++  },
+   "author": "schickling",
+   "homepage": "https://github.com/contentlayerdev/contentlayer",
+   "license": "MIT",

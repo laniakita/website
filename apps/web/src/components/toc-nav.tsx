@@ -63,7 +63,7 @@ const useHeadingsDataPre = () => {
       setFlatHeadings(headingEls as HTMLHeadingElement[]);
     }
   }, [flatHeadings, setFlatHeadings]);
-  return nestedHeadings
+  return nestedHeadings;
 };
 
 const useHeadingsData = () => {
@@ -133,9 +133,7 @@ function HeadingNode({ node, activeId }: { node: HeadingNode; activeId: string }
 function Headings({ tree, activeId }: { tree: HeadingNode[]; activeId: string }) {
   return (
     <ul className='list-none leading-relaxed'>
-      {tree?.map((heading) => (
-        <HeadingNode key={heading.id} node={heading} activeId={activeId} />
-      ))}
+      {tree?.map((heading) => <HeadingNode key={heading.id} node={heading} activeId={activeId} />)}
     </ul>
   );
 }
@@ -373,25 +371,31 @@ export default function ToCMenu() {
     <>
       {isMobile ? (
         <>
-          <div className='motion-safe:simple-color-trans sticky top-16 z-30 flex h-12 w-full flex-row items-center gap-4 overflow-x-hidden border-b border-ctp-surface0 bg-ctp-base/50 px-6 backdrop-blur-sm md:hidden dark:bg-ctp-midnight/50'>
-            <button
-              className={`link-color-trans ${showMobileMenu ? 'font-bold text-ctp-text underline' : ''} -m-1.5 flex items-center whitespace-pre font-mono text-sm text-ctp-subtext0 hover:font-bold hover:text-ctp-text hover:underline`}
-              onClick={() => {
-                setShowMobileMenu(!showMobileMenu);
-              }}
-            >
-              <span
-                className={`${showMobileMenu ? '[transform:_rotate(90deg)_translate3d(-0.1rem,-0.2ch,0px)]' : '[transform:_translate3d(0.0rem,0.0ch,0px)]'} icon-[ph--caret-right-bold] pointer-events-none mr-[0.5ch] w-[2ch] text-xl [transition:_transform_0.3s]`}
-              />
-              On this page
-            </button>
+          <div
+            className={`motion-safe:simple-color-trans sticky top-16 z-30 flex w-full flex-row items-center md:hidden ${showMobileMenu ? 'bg-ctp-base/90 dark:bg-ctp-midnight/80' : 'bg-ctp-base/80 dark:bg-ctp-midnight/50'}`}
+          >
+            <div className='relative flex size-full h-12 flex-row items-center gap-4 px-6'>
+              <div className='pointer-events-none absolute inset-0 h-[200%] [backdrop-filter:_blur(8px)_brightness(95%)_saturate(160%)] [mask-image:_linear-gradient(to_bottom,_black_0%_50%,_transparent_50%_100%)]' />
+              <div className='pointer-events-none absolute inset-0 h-full bg-ctp-base/10 [backdrop-filter:_blur(8px)_brightness(140%)_saturate(120%)] [background:_hsl(0deg_0%_100%_/_0.1)] [mask-image:_linear-gradient(to_bottom,_black_0_3px,_transparent_3px)] [transform:_translateY(100%)]' />
+              <button
+                className={`link-color-trans ${showMobileMenu ? 'font-bold text-ctp-text underline' : ''} z-40 -m-1.5 flex items-center whitespace-pre font-mono text-sm text-ctp-subtext0 hover:font-bold hover:text-ctp-text hover:underline`}
+                onClick={() => {
+                  setShowMobileMenu(!showMobileMenu);
+                }}
+              >
+                <span
+                  className={`${showMobileMenu ? '[transform:_rotate(90deg)_translate3d(-0.1rem,-0.2ch,0px)]' : '[transform:_translate3d(0.0rem,0.0ch,0px)]'} icon-[ph--caret-right-bold] pointer-events-none mr-[0.5ch] w-[2ch] text-xl [transition:_transform_0.3s]`}
+                />
+                On this page
+              </button>
 
-            <p className='flex flex-row items-center gap-[1ch] overflow-x-hidden whitespace-pre font-mono text-sm'>
-              <span className='icon-[ph--caret-double-right-bold] min-w-[2ch] text-xl text-ctp-subtext0' />
-              <span className='font-bold'>
-                <ConcatTitle headings={flatHeadings} activeId={activeId} />
-              </span>
-            </p>
+              <p className='z-40 flex flex-row items-center gap-[1ch] overflow-x-hidden whitespace-pre font-mono text-sm'>
+                <span className='icon-[ph--caret-double-right-bold] min-w-[2ch] text-xl text-ctp-subtext0' />
+                <span className='font-bold'>
+                  <ConcatTitle headings={flatHeadings} activeId={activeId} />
+                </span>
+              </p>
+            </div>
           </div>
 
           <div
@@ -407,7 +411,7 @@ export default function ToCMenu() {
           </div>
         </>
       ) : (
-        <div className='motion-safe:simple-color-trans sticky top-16 hidden h-screen max-h-[calc(100vh-4rem)] w-full min-w-72 max-w-sm items-start justify-center overflow-y-auto bg-ctp-base/20 py-10 text-slate-100 md:flex dark:bg-ctp-base/20'>
+        <div className='motion-safe:simple-color-trans sticky top-16 hidden h-screen max-h-[calc(100vh-4rem)] w-full min-w-72 max-w-sm items-start justify-center overflow-y-auto bg-ctp-base/20 py-10 text-slate-100 shadow-xl md:flex dark:bg-ctp-base/20'>
           <nav aria-label='Table of contents' className='w-full px-4'>
             <Headings tree={nestedHeadings ?? []} activeId={activeId} />
           </nav>

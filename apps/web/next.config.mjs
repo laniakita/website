@@ -1,4 +1,4 @@
-import { PHASE_DEVELOPMENT_SERVER, PHASE_PRODUCTION_BUILD } from 'next/constants.js';
+import { PHASE_PRODUCTION_BUILD } from 'next/constants.js';
 import { RESUME_LINK, SHOWCASE_URL } from './src/lib/constants-js.mjs';
 
 /** @type {import('next').NextConfig} */
@@ -54,13 +54,18 @@ const nextConfig = {
   async redirects() {
     return [
       {
+        source: '/feed.xml',
+        destination: '/atom.xml',
+        permanent: true,
+      },
+      {
         source: '/blog/posts/:slug*',
         destination: '/blog/:slug*',
         permanent: true,
       },
       {
-        source: '/feed.xml',
-        destination: '/atom.xml',
+        source: '/blog/438e83f7/how-i-built-my-own-cms',
+        destination: `/blog/438e83f7/how-i-built-my-own-cms-complete`,
         permanent: true,
       },
       {
@@ -71,6 +76,11 @@ const nextConfig = {
       {
         source: '/blog/tags/c6857539/full-stack',
         destination: '/tags/full-stack',
+        permanent: true,
+      },
+      {
+        source: '/projects/bot-clicker',
+        destination: `${SHOWCASE_URL}/projects/bot-clicker`,
         permanent: true,
       },
       {
@@ -89,13 +99,8 @@ const nextConfig = {
         permanent: true,
       },
       {
-        source: '/projects/bot-clicker',
-        destination: `${SHOWCASE_URL}/projects/bot-clicker`,
-        permanent: true,
-      },
-      {
-        source: '/blog/438e83f7/how-i-built-my-own-cms',
-        destination: `/blog/438e83f7/how-i-built-my-own-cms-complete`,
+        source: '/lani-akita_resume-november-2024.pdf',
+        destination: RESUME_LINK,
         permanent: true,
       },
     ];
@@ -105,7 +110,7 @@ const nextConfig = {
 const nextConfigFunction = async (phase, { defaultConfig }) => {
   const plugins = [];
 
-  if (phase === PHASE_DEVELOPMENT_SERVER || phase === PHASE_PRODUCTION_BUILD) {
+  if (phase === PHASE_PRODUCTION_BUILD) {
     const withSerwist = (await import('@serwist/next')).default({
       swSrc: 'src/app/sw.ts',
       swDest: 'public/sw.js',

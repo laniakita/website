@@ -7,7 +7,6 @@
     "@date-fns/utc": "2.1.0",
     "@giscus/react": "^3.0.0",
     "@react-three/fiber": "^9.0.0-rc.1",
-    "@serwist/next": "^9.0.10",
     "@vercel/functions": "^1.4.2",
     "date-fns": "4.1.0",
     "lodash": "^4.17.21",
@@ -35,6 +34,7 @@
     "@iconify/tailwind": "^1.1.3",
     "@mdx-js/mdx": "^3.0.1",
     "@next/bundle-analyzer": "15.0.0-rc.1",
+    "@serwist/next": "^9.0.11",
     "@shikijs/rehype": "^1.16.2",
     "@shikijs/twoslash": "^1.16.2",
     "@tailwindcss/typography": "^0.5.15",
@@ -66,7 +66,7 @@
     "rehype-mdx-import-media": "^1.2.0",
     "rehype-slug": "^6.0.0",
     "remark-gfm": "^4.0.0",
-    "serwist": "^9.0.10",
+    "serwist": "^9.0.11",
     "tailwindcss": "^3.4.10",
     "typescript": "^5.7.2"
   },
@@ -82,5 +82,8 @@
     "start": "next start",
     "test": "bun test",
     "test:watch": "bun test --watch"
+  },
+  "patchedDependencies": {
+    "next-contentlayer2@0.5.3": "patches/next-contentlayer2@0.5.3.patch"
   }
 }

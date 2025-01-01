@@ -60,26 +60,63 @@ export default function NavBar() {
   return (
     <nav className=''>
       <Suspense>
-        {/* mobile menu container */}
-        <div
-          className={`${clicked.stateVal === 'open' ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'} fixed left-0 top-16 z-40 flex h-[calc(100dvh-3.9rem)] max-h-[calc(100dvh-3.9rem)] w-full flex-col justify-start bg-black/40 [perspective:_5px] [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:_opacity_0.3s,] lg:bottom-0`}
-        >
-          {/* menu box */}
+        <div className='relative'>
+          {/* mobile menu container */}
           <div
-            ref={dropNavRef}
-            className={`${clicked.stateVal === 'open' ? 'opacity-100 [transform:translate3d(0%,0%,0px)]' : 'opacity-0 [transform:translate3d(0%,-100%,-0.01rem)]'} max-h-[calc(100dvh-3.9rem)] w-full overflow-y-auto rounded-b-2xl border-b border-ctp-pink bg-ctp-base/90 backdrop-blur-md [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:transform_0.5s,_opacity_0.3s,_background-color_0.8s] lg:hidden dark:border-ctp-sky dark:bg-ctp-midnight/90`}
+            className={`${clicked.stateVal === 'open' ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'} fixed left-0 top-16 z-40 flex h-[calc(100dvh-3.9rem)] max-h-[calc(100dvh-3.9rem)] w-full flex-col justify-start bg-black/40 [perspective:_5px] [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:_opacity_0.3s,] lg:bottom-0`}
           >
-            <div className='flex size-full flex-col gap-3 p-10'>
+            {/* menu box */}
+            <div
+              ref={dropNavRef}
+              className={`${clicked.stateVal === 'open' ? 'opacity-100 [transform:translate3d(0%,0%,0px)]' : 'opacity-0 [transform:translate3d(0%,-100%,-0.01rem)]'} max-h-[calc(100dvh-3.9rem)] w-full overflow-y-auto rounded-b-2xl border-b border-ctp-pink bg-ctp-base/90 backdrop-blur-md [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:transform_0.5s,_opacity_0.3s,_background-color_0.8s] lg:hidden dark:border-ctp-sky dark:bg-ctp-midnight/90`}
+            >
+              <div className='flex size-full flex-col gap-3 p-10'>
+                {pagesArr.map((page) => (
+                  <LinkPlus
+                    href={handleRef(page)}
+                    key={page}
+                    className='nav-item text-xl'
+                    onClick={() => {
+                      if (page !== 'Atom/RSS') {
+                        setClicked({ ...clicked, stateVal: 'closed' });
+                      }
+                    }}
+                    target={page === 'Atom/RSS' ? '_blank' : undefined}
+                    type={page === 'Atom/RSS' ? 'application/atom+xml' : undefined}
+                  >
+                    <span className='whitespace-nowrap'>{page === 'Atom/RSS' ? page : page.toLowerCase()}</span>
+                  </LinkPlus>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </Suspense>
+
+      <div
+        className={`motion-safe:simple-color-trans fixed inset-x-0 top-0 z-50 ${clicked.stateVal === 'open' ? 'bg-ctp-base/90 dark:bg-ctp-midnight/80' : 'bg-ctp-base/70 dark:bg-ctp-midnight/40'} `}
+      >
+        <div
+          className={`relative flex h-16 w-full items-center justify-between px-6 text-xl shadow-lg [transition:_opacity_0.8s] dark:border-ctp-surface0`}
+        >
+          {/* */}
+          <div className='pointer-events-none absolute inset-0 h-[200%] [backdrop-filter:_blur(8px)_brightness(95%)_saturate(160%)] [mask-image:_linear-gradient(to_bottom,_black_0%_50%,_transparent_50%_100%)]' />
+          <div className='pointer-events-none absolute inset-0 h-full [backdrop-filter:_blur(8px)_brightness(140%)_saturate(120%)] [background:_hsl(0deg_0%_100%_/_0.1)] [mask-image:_linear-gradient(to_bottom,_black_0_3px,_transparent_3px)] [transform:_translateY(100%)]' />
+
+          <div className='z-[51] flex flex-row-reverse items-center justify-center gap-1 lg:flex-row'>
+            <LinkPlus href='/' className='nav-logo relative flex size-full w-16 items-center justify-center'>
+              <Image
+                src={logo}
+                alt="Logo of Lani's Initial. Click to go home."
+                className='absolute mb-px h-11 object-contain'
+              />
+            </LinkPlus>
+            <div className='hidden lg:flex lg:flex-row lg:items-center lg:justify-center lg:gap-4'>
               {pagesArr.map((page) => (
                 <LinkPlus
-                  href={handleRef(page)}
                   key={page}
-                  className='nav-item text-xl'
-                  onClick={() => {
-                    if (page !== 'Atom/RSS') {
-                      setClicked({ ...clicked, stateVal: 'closed' });
-                    }
-                  }}
+                  href={handleRef(page)}
+                  className='nav-item'
                   target={page === 'Atom/RSS' ? '_blank' : undefined}
                   type={page === 'Atom/RSS' ? 'application/atom+xml' : undefined}
                 >
@@ -87,65 +124,38 @@ export default function NavBar() {
                 </LinkPlus>
               ))}
             </div>
-          </div>
-        </div>
-      </Suspense>
 
-      <div
-        className={`motion-safe:simple-color-trans fixed inset-x-0 top-0 z-50 flex h-16 w-full items-center justify-between border-b border-ctp-base px-6 text-xl shadow-lg backdrop-blur-md [transition:_opacity_0.8s] dark:border-ctp-surface0 ${clicked.stateVal === 'open' ? 'bg-ctp-base/90 dark:bg-ctp-midnight/80' : 'bg-ctp-base/80 dark:bg-ctp-midnight/70'}`}
-      >
-        <div className='flex flex-row-reverse items-center justify-center gap-1 lg:flex-row'>
-          <LinkPlus href='/' className='nav-logo relative flex size-full w-16 items-center justify-center'>
-            <Image
-              src={logo}
-              alt="Logo of Lani's Initial. Click to go home."
-              className='absolute mb-px h-11 object-contain'
-            />
-          </LinkPlus>
-          <div className='hidden lg:flex lg:flex-row lg:items-center lg:justify-center lg:gap-4'>
-            {pagesArr.map((page) => (
-              <LinkPlus
-                key={page}
-                href={handleRef(page)}
-                className='nav-item'
-                target={page === 'Atom/RSS' ? '_blank' : undefined}
-                type={page === 'Atom/RSS' ? 'application/atom+xml' : undefined}
+            <div className='visible z-[51] flex flex-row-reverse items-center lg:hidden'>
+              <button
+                type='button'
+                onClick={() => {
+                  if (clicked.stateVal === 'closed') {
+                    setClicked({ ...clicked, stateVal: 'open' });
+                  }
+                }}
+                className='visible rounded-md lg:hidden'
+                aria-label={`${clicked.stateVal === 'open' ? 'close' : 'open'} mobile navigation menu.`}
               >
-                <span className='whitespace-nowrap'>{page === 'Atom/RSS' ? page : page.toLowerCase()}</span>
-              </LinkPlus>
-            ))}
+                <span className='flex size-fit flex-col items-center justify-center gap-1'>
+                  <span
+                    className={`${clicked.stateVal === 'open' ? 'translate-y-1 rotate-[-40deg]' : ''} h-0.5 w-6 bg-ctp-text motion-safe:[transition:transform_0.3s]`}
+                  />
+                  <span
+                    className={`${clicked.stateVal === 'open' ? 'opacity-0' : ''} h-0.5 w-6 bg-ctp-text motion-safe:[transition:opacity_0.3s]`}
+                  />
+                  <span
+                    className={`${clicked.stateVal === 'open' ? '-translate-y-2 rotate-[40deg]' : ''} h-0.5 w-6 bg-ctp-text motion-safe:[transition:transform_0.3s]`}
+                  />
+                </span>
+              </button>
+            </div>
           </div>
 
-          <div className='visible flex flex-row-reverse items-center lg:hidden'>
-            <button
-              type='button'
-              onClick={() => {
-                if (clicked.stateVal === 'closed') {
-                  setClicked({ ...clicked, stateVal: 'open' });
-                }
-              }}
-              className='visible rounded-md lg:hidden'
-              aria-label={`${clicked.stateVal === 'open' ? 'close' : 'open'} mobile navigation menu.`}
-            >
-              <span className='flex size-fit flex-col items-center justify-center gap-1'>
-                <span
-                  className={`${clicked.stateVal === 'open' ? 'translate-y-1 rotate-[-40deg]' : ''} h-0.5 w-6 bg-ctp-text motion-safe:[transition:transform_0.3s]`}
-                />
-                <span
-                  className={`${clicked.stateVal === 'open' ? 'opacity-0' : ''} h-0.5 w-6 bg-ctp-text motion-safe:[transition:opacity_0.3s]`}
-                />
-                <span
-                  className={`${clicked.stateVal === 'open' ? '-translate-y-2 rotate-[40deg]' : ''} h-0.5 w-6 bg-ctp-text motion-safe:[transition:transform_0.3s]`}
-                />
-              </span>
-            </button>
+          <div className='z-[51] flex flex-row items-center justify-center gap-2'>
+            <SimpleSocials arr={socialItems3} />
+            <span className='px-1 font-thin text-ctp-subtext1/80'>|</span>
+            <DarkModeSwitch />
           </div>
-        </div>
-
-        <div className='flex flex-row items-center justify-center gap-2'>
-          <SimpleSocials arr={socialItems3} />
-          <span className='px-1 font-thin text-ctp-subtext1/80'>|</span>
-          <DarkModeSwitch />
         </div>
       </div>
     </nav>
@@ -157,12 +167,11 @@ interface SimpleIcon extends SocialNavIcon {
 }
 
 function SimpleSocials({ arr }: { arr: SimpleIcon[] }) {
-   const uniqueKey = (idx:number) => {
-
+  const uniqueKey = (idx: number) => {
     const num = Math.floor(Math.random() * 1000 + idx);
 
     return `social-icon-nav-${crypto.randomUUID()}-${num}-${idx}`;
-  }
+  };
 
   return (
     <>

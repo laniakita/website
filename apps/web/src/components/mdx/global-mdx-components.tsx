@@ -4,6 +4,7 @@ import type { Category, Page, Post, Tag, Work } from 'contentlayer/generated';
 import BlogImageBlurServer from './img-blur-server';
 import { Paragraph } from './paragraph';
 import { getMDXComponent } from './mdx-bundler-components';
+//import { useMDXComponent } from 'next-contentlayer2/hooks'
 import CodeBlockCopier from './codeblock-copier';
 
 export const globalMdxComponents = {
