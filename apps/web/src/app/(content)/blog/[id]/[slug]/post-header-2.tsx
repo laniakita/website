@@ -28,11 +28,11 @@ export function PostHeader2(post: Post) {
         </div>
         <h1
           id={post.url.split('/').pop()}
-          className='w-full max-w-3xl text-3xl font-black supports-[text-wrap:balance]:text-balance md:text-4xl'
+          className='w-full max-w-3xl text-3xl font-black supports-[text-wrap:balance]:text-balance md:text-4xl lg:text-5xl'
         >
           {post.headline}
         </h1>
-        <h2 className='w-full max-w-3xl text-2xl font-light supports-[text-wrap:balance]:text-balance md:text-3xl'>
+        <h2 className='w-full max-w-3xl text-2-75xl font-light supports-[text-wrap:balance]:text-balance md:text-3xl lg:text-4xl'>
           {post.subheadline}
         </h2>
 
@@ -69,13 +69,13 @@ export function PostHeader2(post: Post) {
             <p className='-mb-2 -mt-6 flex w-full flex-col items-center justify-center px-10 font-mono text-sm font-thin [font-style:_normal]'>
               <span className='w-full max-w-3xl'>{(post.featured_image as FeaturedImageR1).altText}</span>
             </p>
-            <figcaption className='flex w-full items-center justify-center px-10 text-xl font-bold italic leading-tight md:text-2xl'>
+            <figcaption className='flex w-full items-center justify-center px-10 text-2xl font-bold italic leading-tight md:text-2-25xl'>
               <span className='max-w-3xl'>{(post.featured_image as FeaturedImageR1).caption}</span>
             </figcaption>
           </figure>
         ) : post.caption ? (
           <div>
-            <p className='flex w-full items-center justify-center px-10 text-xl font-bold italic leading-tight md:text-2xl'>
+            <p className='flex w-full items-center justify-center px-10 text-2xl font-bold italic md:text-2-25xl'>
               <span className='max-w-3xl'>{post.caption}</span>
             </p>
           </div>

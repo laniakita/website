@@ -6,12 +6,15 @@ import { Paragraph } from './paragraph';
 import { getMDXComponent } from './mdx-bundler-components';
 //import { useMDXComponent } from 'next-contentlayer2/hooks'
 import CodeBlockCopier from './codeblock-copier';
+import Footnotes, {SupAnchors} from './section-footnotes';
 
 export const globalMdxComponents = {
   p: Paragraph,
   img: BlogImageBlurServer,
   a: Link as unknown as FC,
   pre: CodeBlockCopier,
+  section: Footnotes,
+  sup: SupAnchors,
 };
 
 export default function GlobalMDXComponent(data: Post | Page | Category | Tag | Work) {

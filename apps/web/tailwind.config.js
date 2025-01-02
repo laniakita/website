@@ -17,6 +17,23 @@ export default {
         sans: ['var(--font-inter-tight)'],
         mono: ['var(--font-zeroxproto)'],
       },
+      fontSize: {
+        '2-75xl': ['1.78125rem', {
+          lineHeight: '2.1875rem'
+        }],
+        '2-5xl': ['1.6875rem', {
+          lineHeight: '2.125rem'
+        }],
+        '2-25xl': ['1.59375rem', {
+          lineHeight: '2.0625rem'
+        }],
+        '1-5xl': ['1.375rem',{
+          lineHeight: '1.875rem'
+        }],
+        '1-25xl': ['1.3125rem', {
+          lineHeight: '1.8125rem'
+        }]
+      },
 
       screens: {
         'narrow-phone': '300px',
@@ -96,6 +113,21 @@ export default {
             'del strong': {
               color: 'var(--tw-prose-del-strong)',
             },
+            '.sr-only':{
+              overflow: 'hidden',
+              clip: 'rect(0,0,0,0)',
+              border: 0,
+              margin: '-1px',
+              padding: 0,
+              width: '1px',
+              height: '1px'
+            },
+            '#footnote-label': {
+              overflow: 'hidden',
+              width: '100%',
+              height: '1px',
+              backgroundColor: 'var(--footnote-divider-line)'
+            },
             pre: {
               overflowX: 'auto',
             },
@@ -154,6 +186,7 @@ export default {
         },
         catppuccin: {
           css: {
+            '--footnote-divider-line': theme('colors.ctp-text.DEFAULT'),
             '--code-line-highlighted': theme('colors.ctp-surface0.DEFAULT'),
             '--code-line-highlight-indicator': theme('colors.ctp-sapphire.DEFAULT'),
             '--code-line-inserted': 'rgba(64, 160, 43, 0.2)',
