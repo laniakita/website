@@ -1,5 +1,6 @@
 'use client';
 
+import { useParams, usePathname, useRouter } from 'next/navigation';
 import { type Dispatch, type SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 const MED_SCREEN = 768; // px
@@ -111,15 +112,22 @@ const useHeadingsDataV0 = () => {
 
 function HeadingNode({ node, activeId }: { node: HeadingNode; activeId: string }) {
   //console.log('nodeid:', node.id, 'activeId:', activeId);
+  const router = useRouter();
+  const params = useParams();
+  const pathname = usePathname();
+  const pushHash = () => {
+    router.push(`${pathname}#${node.id}`)
+    console.log(`${pathname}#${node.id}`)
+  };
   return (
     <li key={node.id}>
       <p className='text-balance'>
-        <a
-          href={`#${node.id}`}
-          className={`text-balance font-mono text-sm leading-relaxed text-ctp-subtext0 hover:font-bold hover:text-ctp-text ${activeId === node.id ? 'font-bold text-ctp-text underline' : ''} md:max-w-xs md:break-words lg:max-w-sm lg:break-keep`}
+        <button
+          onClick={pushHash}
+          className={`text-balance text-left font-mono text-sm leading-relaxed text-ctp-subtext0 hover:font-bold hover:text-ctp-text ${activeId === node.id ? 'font-bold text-ctp-text underline' : ''} md:max-w-xs md:break-words lg:max-w-sm lg:break-keep`}
         >
           {node.title}
-        </a>
+        </button>
       </p>
       <ul className='list-none pl-[2ch]'>
         {node.children

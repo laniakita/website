@@ -75,17 +75,13 @@ function ExpandableFootNotesComponent(
   }*/
 
   const [sectionHeight, setSectionHeight] = useState(0);
-  //const [isReload, setIsReload] = useState<Reload>({hash: null});
   const { expanded, expandFootnotes } = useFootnotesStore((state) => state);
   const [internalExpanded, setInternalExpanded] = useState(expanded);
-  const [isDone, setDone] = useState(false);
-
   const sectionRef = useRef<HTMLElement>(null!);
   const oListRef = useRef<HTMLOListElement>(null!);
   const liRef = useRef<HTMLLIElement>(null!);
   const [liOffset, setLiOffset] = useState(0);
   const [stopped, setStopped] = useState(false);
-  const [runCount, setRunCount] = useState(0);
 
   const handleExpand = useCallback(() => {
     // get expanded height;
@@ -99,30 +95,46 @@ function ExpandableFootNotesComponent(
     }, 2000);
   }, []);
 
-  /*
-
-  }*/
-
-  /* interesting idea, but not great in practice.
-  const handleReloadScroll = useCallback((currHash: string) => {
-    setTimeout(() => {
-      const noteQ = document.getElementById(currHash.substring(1))?.getBoundingClientRect();
-      console.log(document.getElementById(currHash.substring(1)));
-      if (noteQ) {
-        const remOffset = window.innerWidth && (window.innerWidth < 768 ? 6 : 8)
-        const offSetY = noteQ.y - remToPx(remOffset);
-        console.log(window.screenY - offSetY);
-        if (window.screenY - offSetY < -500) {
-          window.scrollTo({left:noteQ.x, top:offSetY, behavior: 'smooth'});
-        }
-      }
-    }, 2000)
-  }, []) */
-
   const [fnHash, setFnHash] = useState<string | null>(null);
   const params = useParams();
 
-  const handleHash = useCallback((currHash: string) => {
+  /*const handleHash = useCallback((currHash: string) => {
+    const re = /(?:user-content-fn)/;
+    const nullRe = /(?:user-content-fnref)/;
+    // if the below is true we can assume the curr url is a link to a footnote
+    if (currHash.match(re) && !currHash.match(nullRe)) {
+      setFnHash(currHash)
+    } else {
+      setFnHash(null)
+    }
+  }, [params]);
+  */
+
+  useEffect(() => {
+
+    const handleHash = (currHash: string) => {
+      const re = /(?:user-content-fn)/;
+      const nullRe = /(?:user-content-fnref)/;
+      // if the below is true we can assume the curr url is a link to a footnote
+      if (currHash.match(re) && !currHash.match(nullRe)) {
+        setFnHash(currHash)
+        if ('scrollRestoration' in window.history) {
+          console.log('found scroll restore point: setting manual')
+          window.history.scrollRestoration = 'manual'
+        }
+      } else {
+        setFnHash(null)
+        if ('scrollRestoration' in window.history) {
+          console.log('found scroll restore point (non fnhash): setting auto')
+          window.history.scrollRestoration = 'auto'
+        }
+      }
+    }
+    if (window.location.hash) handleHash(window.location.hash);
+
+  }, [params])
+
+    const handleHash = useCallback((currHash: string) => {
     const re = /(?:user-content-fn)/;
     const nullRe = /(?:user-content-fnref)/;
     // if the below is true we can assume the curr url is a link to a footnote
