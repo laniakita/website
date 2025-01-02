@@ -1,30 +1,21 @@
 'use client'
 import { useFootnotesStore } from "@/providers/footnotes-store-provider";
+import { setWith } from "lodash";
+import Link, { LinkProps } from "next/link";
 import { useParams } from "next/navigation";
-import { AnchorHTMLAttributes, DetailedHTMLProps, HTMLAttributes, MouseEvent, ReactElement, useCallback, useEffect, useRef, useState } from "react";
+import { off } from "node:process";
+import { AnchorHTMLAttributes, DetailedHTMLProps, HTMLAttributes, LiHTMLAttributes, MouseEvent, ReactElement, useCallback, useEffect, useRef, useState } from "react";
 
 export default function Footnotes(
   props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>,
 ) {
   const [isClient, setIsClient] = useState(false);
-  const [fnHash, setFnHash] = useState<string | null>(null);
-  const params = useParams();
 
-  const handleHash = useCallback((currHash: string) => {
-    const re = /(?:user-content-fn)/;
-    const nullRe = /(?:user-content-fnref)/;
-    // if the below is true we can assume the curr url is a link to a footnote
-    if (currHash.match(re) && !currHash.match(nullRe)) {
-      setFnHash(currHash)
-    } else {
-      setFnHash(null)
-    }
-  }, []);
 
   useEffect(() => {
     if (!isClient) setIsClient(true);
-    if (window.location.hash) handleHash(window.location.hash);
-  }, [params, isClient, handleHash]);
+    //if (window.location.hash) handleHash(window.location.hash);
+  }, [isClient]);
 
   // get the footnotes ordered list
   if (props.className === 'footnotes') {
@@ -33,9 +24,7 @@ export default function Footnotes(
       if (tryList?.type === 'ol') {
         const orderedList = (props.children as ReactElement[])[2] as unknown as ReactElement<HTMLAttributes<HTMLOListElement>>;
         if ((orderedList?.props?.children as ReactElement[]).length > 30) {
-          if (fnHash === null) {
-            return isClient ? <ExpandableFootNotesComponent {...props} /> : <CollapsedFootNotesComponent {...props} />
-          }
+          return isClient ? <ExpandableFootNotesComponent {...props} /> : <CollapsedFootNotesComponent {...props} />
         }
       }
     }
@@ -64,6 +53,11 @@ function CollapsedFootNotesComponent(
 
 }
 
+const remToPx = (input: number) => {
+  const baseFontSize = Number(window.getComputedStyle(document.body)?.getPropertyValue('font-size')?.match(/\d+/)?.[0]);
+  return baseFontSize ? (input * baseFontSize) : 0
+}
+
 function ExpandableFootNotesComponent(
   props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>,
 ) {
@@ -72,6 +66,8 @@ function ExpandableFootNotesComponent(
   const currList = ((props.children as ReactElement[])[2] as unknown as ReactElement<HTMLAttributes<HTMLOListElement>>)?.props?.children as ReactElement<HTMLLIElement>[];
 
   const newList = currList.slice(0, 30);
+  const PT_SCROLL_MOBILE = 8; // rem
+  const PT_SCROLL_TABLET = 6;
 
   /*
   interface Reload {
@@ -81,9 +77,15 @@ function ExpandableFootNotesComponent(
   const [sectionHeight, setSectionHeight] = useState(0);
   //const [isReload, setIsReload] = useState<Reload>({hash: null});
   const { expanded, expandFootnotes } = useFootnotesStore((state) => state);
+  const [internalExpanded, setInternalExpanded] = useState(expanded);
+  const [isDone, setDone] = useState(false);
 
   const sectionRef = useRef<HTMLElement>(null!);
   const oListRef = useRef<HTMLOListElement>(null!);
+  const liRef = useRef<HTMLLIElement>(null!);
+  const [liOffset, setLiOffset] = useState(0);
+  const [stopped, setStopped] = useState(false);
+  const [runCount, setRunCount] = useState(0);
 
   const handleExpand = useCallback(() => {
     // get expanded height;
@@ -92,12 +94,13 @@ function ExpandableFootNotesComponent(
       //console.log('await getting height');
       setSectionHeight(oListRef.current.offsetHeight);
     }, 5);
+    setTimeout(() => {
+      setInternalExpanded(true);
+    }, 2000);
   }, []);
 
   /*
-  const remToPx = (input: number) => {
-    const baseFontSize = Number(window.getComputedStyle(document.body)?.getPropertyValue('font-size')?.match(/\d+/)?.[0]);
-    return baseFontSize ? (input * baseFontSize) : 0
+
   }*/
 
   /* interesting idea, but not great in practice.
@@ -116,47 +119,102 @@ function ExpandableFootNotesComponent(
     }, 2000)
   }, []) */
 
+  const [fnHash, setFnHash] = useState<string | null>(null);
+  const params = useParams();
+
+  const handleHash = useCallback((currHash: string) => {
+    const re = /(?:user-content-fn)/;
+    const nullRe = /(?:user-content-fnref)/;
+    // if the below is true we can assume the curr url is a link to a footnote
+    if (currHash.match(re) && !currHash.match(nullRe)) {
+      setFnHash(currHash)
+    } else {
+      setFnHash(null)
+    }
+  }, []);
+
+
+  useEffect(() => {
+    if (window.location.hash) handleHash(window.location.hash);
+
+    if (fnHash !== null) {
+      const offSets = window.innerWidth < 768 ? remToPx(PT_SCROLL_MOBILE) : remToPx(PT_SCROLL_TABLET);
+
+      if (!expanded && !stopped) {
+        console.log(fnHash);
+        window.scrollTo(0, window.scrollY); // necessary to stop the scroll
+        expandFootnotes();
+        if ('scrollRestoration' in window.history) {
+          console.log('found scroll restore point: setting manual')
+          window.history.scrollRestoration = 'manual'
+        }
+        //window.scrollTo(0, window.scrollY);
+        console.log('expanded from useEffect');
+      }
+      if (expanded && !stopped && liOffset !== document.getElementById(fnHash.substring(1))?.getClientRects()?.[0]?.top) {
+        console.log('phase 2')
+        const liQ = document.getElementById(fnHash.substring(1));
+        const scrollY = liQ?.getClientRects()?.[0]?.top
+        setLiOffset(scrollY ?? 0);
+        console.log('scrollY', scrollY);
+      };
+
+      if (liOffset === document.getElementById(fnHash.substring(1))?.getClientRects()?.[0]?.top) {
+        setStopped(true);
+        console.log('phase 3: stopped', liOffset);
+      }
+
+      if (stopped) {
+        console.log('phase 4: scroll to li', liOffset);
+        setTimeout(() => { window.scrollTo(0, liOffset - offSets) }, 20);
+        let secondScroll = 0;
+        setTimeout(() => {
+          console.log('scroll more', document.getElementById(fnHash.substring(1))?.getClientRects()?.[0]?.top)
+          secondScroll = document.getElementById(fnHash.substring(1))?.getClientRects()?.[0]?.top ?? 0;
+        }, 850);
+        setTimeout(() => {
+          console.log(secondScroll, offSets)
+          if (secondScroll > offSets) {
+            console.log('should scroll more');
+            setTimeout(() => { window.scrollBy(0, secondScroll - offSets) }, 20);
+          }
+        }, 860);
+      }
+
+    } else {
+      window.history.scrollRestoration = 'auto';
+    }
+  }, [
+    expandFootnotes,
+    expanded,
+    fnHash,
+    handleHash,
+    liOffset,
+    stopped
+  ]);
+
+
   useEffect(() => {
     if (sectionHeight <= 0 && sectionRef.current.offsetHeight > sectionHeight) {
       setSectionHeight(sectionRef.current.offsetHeight);
     }
+
     if (sectionHeight > 0) sectionRef.current.style.height = `${sectionHeight}px`;
 
-    /*
-    if (!expanded) {
-      // check if this is a page reload
-      const currHash = window.location.hash
-      const re = /(?:user-content-fn)/;
-      const nullRe = /(?:user-content-fnref)/;
-      // if the below is true we can assume the curr url is a link to a footnote
-      if (currHash.match(re) && !currHash.match(nullRe)) {
-        // just expand the footnotes, by the time the browser catches up, it'll scroll automatically.
-        expandFootnotes();
-      }
-    }*/
 
-    if (expanded) {
+    if (expanded && !internalExpanded) {
       handleExpand();
     }
 
+    if (internalExpanded) {
+      sectionRef.current.style.height = "100%";
+    }
 
-    /*
-    if (expanded && isReload.hash === null) {
-      handleExpand();
-    }*/
+  }, [sectionHeight, handleExpand, expanded, expandFootnotes, internalExpanded]);
 
-    /*
-
-    /*
-    if (expanded && isReload?.hash !== null) {
-      handleReloadScroll(isReload.hash);
-      setIsReload({hash: null})
-    }*/
-
-  }, [sectionHeight, handleExpand, expanded, expandFootnotes]);
 
   return (
-    <section ref={sectionRef} {...props} className={`${props.className} relative [transition:_height_0.8s]`} >
+    <section ref={sectionRef} {...props} className={`${props.className} relative [transition:_height_0.8s_ease-out]`} >
       {h2}
       <div className="pointer-events-none absolute inset-0">
         <div
@@ -172,11 +230,11 @@ function ExpandableFootNotesComponent(
           </button>
         </div>
       </div>
-      <ol ref={oListRef}>
+      <ol ref={oListRef} className=''>
         {expanded
           ?
           currList.map((item) => (
-            item.props ? <li {...item.props} key={crypto.randomUUID()} /> : ''
+            item.props ? <li ref={liRef} {...item.props as unknown as LiHTMLAttributes<HTMLLIElement>} key={crypto.randomUUID()} /> : ''
           ))
           : newList}
       </ol>
@@ -193,17 +251,24 @@ export function SupAnchors(
 
   const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
     if (e && !expanded) expandFootnotes();
+    const target = e.target as HTMLAnchorElement
+    setTimeout(() => {
+      console.log(target.hash)
+      const tQ = document.getElementById(target.hash.substring(1));
+      const scrollY = tQ?.getClientRects()[0]?.top;
+      const scrollOffsets = window.innerWidth < 768 ? 8 : 6;
+      if (scrollY) window.scrollBy(0, scrollY - remToPx(scrollOffsets));
+    }, 50)
   }
 
 
-  //console.log(props);
   if (typeof props.children !== 'string') {
     const anchor = props.children as ReactElement<HTMLAnchorElement>;
     if ('data-footnote-ref' in anchor.props && anchor.props['data-footnote-ref']) {
       return (
         <sup {...props}>
-          {/* eslint-disable-next-line -- included as props */}
-          <a onClick={(e) => handleClick(e)}  {...anchor.props as unknown as DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>} />
+          {}
+          <Link onClick={(e) => handleClick(e)}  {...anchor.props as unknown as LinkProps} scroll={false} />
         </sup>
       )
     }
