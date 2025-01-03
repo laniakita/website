@@ -113,7 +113,7 @@ const useHeadingsDataV0 = () => {
 function HeadingNode({ node, activeId }: { node: HeadingNode; activeId: string }) {
   //console.log('nodeid:', node.id, 'activeId:', activeId);
   const router = useRouter();
-  const params = useParams();
+  //const params = useParams();
   const pathname = usePathname();
   const pushHash = () => {
     router.push(`${pathname}#${node.id}`)

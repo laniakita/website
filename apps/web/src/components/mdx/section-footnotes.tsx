@@ -1,10 +1,11 @@
 'use client'
 import { useFootnotesStore } from "@/providers/footnotes-store-provider";
-import { setWith } from "lodash";
 import Link, { LinkProps } from "next/link";
-import { useParams } from "next/navigation";
-import { off } from "node:process";
-import { AnchorHTMLAttributes, DetailedHTMLProps, HTMLAttributes, LiHTMLAttributes, MouseEvent, ReactElement, useCallback, useEffect, useRef, useState } from "react";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { HTMLAttributes, LiHTMLAttributes, MouseEvent, ReactElement, useCallback, useEffect, useRef, useState } from "react";
+
+const PT_SCROLL_MOBILE = 8; // rem
+const PT_SCROLL_TABLET = 6;
 
 export default function Footnotes(
   props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>,
@@ -14,7 +15,6 @@ export default function Footnotes(
 
   useEffect(() => {
     if (!isClient) setIsClient(true);
-    //if (window.location.hash) handleHash(window.location.hash);
   }, [isClient]);
 
   // get the footnotes ordered list
@@ -58,6 +58,8 @@ const remToPx = (input: number) => {
   return baseFontSize ? (input * baseFontSize) : 0
 }
 
+const offSets = window.innerWidth < 768 ? remToPx(PT_SCROLL_MOBILE) : remToPx(PT_SCROLL_TABLET);
+
 function ExpandableFootNotesComponent(
   props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>,
 ) {
@@ -66,10 +68,7 @@ function ExpandableFootNotesComponent(
   const currList = ((props.children as ReactElement[])[2] as unknown as ReactElement<HTMLAttributes<HTMLOListElement>>)?.props?.children as ReactElement<HTMLLIElement>[];
 
   const newList = currList.slice(0, 30);
-  const PT_SCROLL_MOBILE = 8; // rem
-  const PT_SCROLL_TABLET = 6;
-
-  /*
+    /*
   interface Reload {
     hash: string | null;
   }*/
@@ -80,8 +79,7 @@ function ExpandableFootNotesComponent(
   const sectionRef = useRef<HTMLElement>(null!);
   const oListRef = useRef<HTMLOListElement>(null!);
   const liRef = useRef<HTMLLIElement>(null!);
-  const [liOffset, setLiOffset] = useState(0);
-  const [stopped, setStopped] = useState(false);
+  const params = useSearchParams();
 
   const handleExpand = useCallback(() => {
     // get expanded height;
@@ -95,115 +93,56 @@ function ExpandableFootNotesComponent(
     }, 2000);
   }, []);
 
-  const [fnHash, setFnHash] = useState<string | null>(null);
-  const params = useParams();
 
-  /*const handleHash = useCallback((currHash: string) => {
+  const handleHash = useCallback((currHash: string) => {
     const re = /(?:user-content-fn)/;
     const nullRe = /(?:user-content-fnref)/;
     // if the below is true we can assume the curr url is a link to a footnote
     if (currHash.match(re) && !currHash.match(nullRe)) {
-      setFnHash(currHash)
-    } else {
-      setFnHash(null)
-    }
-  }, [params]);
-  */
+      //setFnHash(currHash)
+      console.log('hash is fnHash')
 
-  useEffect(() => {
-
-    const handleHash = (currHash: string) => {
-      const re = /(?:user-content-fn)/;
-      const nullRe = /(?:user-content-fnref)/;
-      // if the below is true we can assume the curr url is a link to a footnote
-      if (currHash.match(re) && !currHash.match(nullRe)) {
-        setFnHash(currHash)
-        if ('scrollRestoration' in window.history) {
-          console.log('found scroll restore point: setting manual')
+      if ('scrollRestoration' in window.history) {
+        console.log('found scroll restore point:', window.history.scrollRestoration)
+        if (window.history.scrollRestoration !== 'manual') {
           window.history.scrollRestoration = 'manual'
-        }
-      } else {
-        setFnHash(null)
-        if ('scrollRestoration' in window.history) {
-          console.log('found scroll restore point (non fnhash): setting auto')
-          window.history.scrollRestoration = 'auto'
+          console.log('set to manual');
         }
       }
-    }
-    if (window.location.hash) handleHash(window.location.hash);
 
-  }, [params])
-
-    const handleHash = useCallback((currHash: string) => {
-    const re = /(?:user-content-fn)/;
-    const nullRe = /(?:user-content-fnref)/;
-    // if the below is true we can assume the curr url is a link to a footnote
-    if (currHash.match(re) && !currHash.match(nullRe)) {
-      setFnHash(currHash)
-    } else {
-      setFnHash(null)
-    }
-  }, []);
-
-
-  useEffect(() => {
-    if (window.location.hash) handleHash(window.location.hash);
-
-    if (fnHash !== null) {
-      const offSets = window.innerWidth < 768 ? remToPx(PT_SCROLL_MOBILE) : remToPx(PT_SCROLL_TABLET);
-
-      if (!expanded && !stopped) {
-        console.log(fnHash);
-        window.scrollTo(0, window.scrollY); // necessary to stop the scroll
+      if (!expanded) {
         expandFootnotes();
-        if ('scrollRestoration' in window.history) {
-          console.log('found scroll restore point: setting manual')
-          window.history.scrollRestoration = 'manual'
-        }
-        //window.scrollTo(0, window.scrollY);
-        console.log('expanded from useEffect');
-      }
-      if (expanded && !stopped && liOffset !== document.getElementById(fnHash.substring(1))?.getClientRects()?.[0]?.top) {
-        console.log('phase 2')
-        const liQ = document.getElementById(fnHash.substring(1));
-        const scrollY = liQ?.getClientRects()?.[0]?.top
-        setLiOffset(scrollY ?? 0);
-        console.log('scrollY', scrollY);
-      };
 
-      if (liOffset === document.getElementById(fnHash.substring(1))?.getClientRects()?.[0]?.top) {
-        setStopped(true);
-        console.log('phase 3: stopped', liOffset);
-      }
+        setTimeout(() => {
+          //console.log('liref', liRef?.current?.getClientRects()[0]?.y);
+          const altLiTop = document.getElementById(currHash.substring(1))?.getClientRects()[0]?.top;
+          console.log(altLiTop);
 
-      if (stopped) {
-        console.log('phase 4: scroll to li', liOffset);
-        setTimeout(() => { window.scrollTo(0, liOffset - offSets) }, 20);
-        let secondScroll = 0;
-        setTimeout(() => {
-          console.log('scroll more', document.getElementById(fnHash.substring(1))?.getClientRects()?.[0]?.top)
-          secondScroll = document.getElementById(fnHash.substring(1))?.getClientRects()?.[0]?.top ?? 0;
-        }, 850);
-        setTimeout(() => {
-          console.log(secondScroll, offSets)
-          if (secondScroll > offSets) {
-            console.log('should scroll more');
-            setTimeout(() => { window.scrollBy(0, secondScroll - offSets) }, 20);
+          if (altLiTop && altLiTop > 0) {
+            window.scrollTo(0, altLiTop - offSets)
           }
-        }, 860);
+        }, 801)
+
       }
 
     } else {
-      window.history.scrollRestoration = 'auto';
+      console.log(window.location.hash, 'is not fnhash');
+      if ('scrollRestoration' in window.history) {
+        console.log('found scroll restore point:', window.history.scrollRestoration)
+        if (window.history.scrollRestoration !== 'auto') {
+          window.history.scrollRestoration = 'auto';
+          console.log('restored to auto');
+        }
+      }
     }
-  }, [
-    expandFootnotes,
-    expanded,
-    fnHash,
-    handleHash,
-    liOffset,
-    stopped
-  ]);
+  }, [expandFootnotes, expanded]);
+
+
+  useEffect(() => {
+    console.log('running...');
+    if (window.location.hash) handleHash(window.location.hash);
+    console.log(params);
+  }, [params, handleHash]);
 
 
   useEffect(() => {
@@ -268,8 +207,7 @@ export function SupAnchors(
       console.log(target.hash)
       const tQ = document.getElementById(target.hash.substring(1));
       const scrollY = tQ?.getClientRects()[0]?.top;
-      const scrollOffsets = window.innerWidth < 768 ? 8 : 6;
-      if (scrollY) window.scrollBy(0, scrollY - remToPx(scrollOffsets));
+      if (scrollY) window.scrollBy(0, scrollY - offSets);
     }, 50)
   }
 
