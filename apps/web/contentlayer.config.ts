@@ -261,6 +261,7 @@ export default makeSource({
   contentDirPath: CONTENT_DIR,
   documentTypes: [Post, Category, Tag, Page, Project, Author, Work],
   mdx: {
+    
     remarkPlugins: [remarkGfm],
     rehypePlugins: [
       [rehypeHighlight, { languages: { ...common, nix } }],

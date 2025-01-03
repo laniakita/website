@@ -29,10 +29,6 @@
   "workspaces": [
     "packages/*",
     "apps/*"
-  ],
-  "patchedDependencies": {
-    "mdx-bundler@10.0.3": "patches/mdx-bundler@10.0.3.patch",
-    "@contentlayer2/core@0.5.3": "patches/@contentlayer2%2Fcore@0.5.3.patch",
-    "next-contentlayer2@0.5.3": "patches/next-contentlayer2@0.5.3.patch"
-  }
+  ]
+
 }

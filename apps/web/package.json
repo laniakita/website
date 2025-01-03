@@ -13,8 +13,8 @@
     "markdown-to-jsx": "^7.5.0",
     "next": "^15.1.3",
     "plaiceholder": "^3.0.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "react": "^19.0.0-rc.1",
+    "react-dom": "^19.0.0-rc.1",
     "rehype-highlight": "^7.0.0",
     "schema-dts": "^1.1.2",
     "server-only": "^0.0.1",
@@ -75,15 +75,12 @@
     "build": "next build",
     "copy-sharp": "bun run copy-sharp.ts",
     "build:open-next": "SHARP_VERSION=0.33.5 bun run open-next build",
-    "dev": "next dev --turbo",
+    "dev": "bun run prebuild && next dev --turbo",
     "lint": "eslint . --cache --fix",
     "prebuild": "NODE_ENV=production contentlayer2 build && bun run ./src/scripts/runner.ts",
     "pretty": "prettier . --write",
     "start": "next start",
     "test": "bun test",
     "test:watch": "bun test --watch"
-  },
-  "patchedDependencies": {
-    "next-contentlayer2@0.5.3": "patches/next-contentlayer2@0.5.3.patch"
   }
 }

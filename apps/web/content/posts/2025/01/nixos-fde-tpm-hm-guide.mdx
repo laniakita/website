@@ -27,6 +27,24 @@ altText: 'Background: a wireframe of a scenic mountain view, with water pooling 
 caption: 'Yes to love, yes to life, yes to staying in more! - Liz Lemon'
 ---
 
+**Happy New Year!** Yep, it's _that_ time of year again (cold). So, bundle up near the warmth of your computers exhaust, and bask in the glow of artificial light from it's connected display. 'Cause baby, it's time to start anew, with a clean install of NixOS.
+
+Now sure, perhaps you vowed this would be the year you'd stop distro-hopping; saving your SSD from near certain doom. But if that's the case, you _might just find_ NixOS to be your final hop ... Well, only one way to find out, right?
+
+>#### Note on versioning
+>
+> I wrote most of this article before NixOS 24.11 (Vicuña) was made stable. At the time I went through the install process for this write-up, NixOS 24.05 (Uakari) was loaded onto my USB. Currently, NixOS 25.05 (Warbler) is the latest Unstable release as of the time of publishing (1/2/2024).
+>
+>With that said, I'm currently unaware of any major differences in the install process between NixOS 24.05, 24.11, and 25.05.
+>
+>Additionally, when _differences_ do appear, the gcc compiler (or other compiler) used during `nixos-rebuild` will likely print out a warning message to the console explaining which deprecated (or soon to be deprecated) options you've used and what changes need to made to _correct_ the configuration you're trying build—well, theoretically at least.
+>
+>As such, I hope this guide is able to serve you well! Hopefully into the future too.
+
+
+
+## Introduction
+
 After taking the time to setup a fresh install of one of my favorite distros, I felt it was a good idea to post a write up about this somewhat extensive process.
 
 As well, I based this guide pretty heavily off of what I’ve found on the internet, which means there are likely better guides than this one out there. Still yet, this is probably the only Full Disk Encryption (FDE) guide you'll find that ties in how to enable secure boot, to then enable the enrollment/re-enrollment of your LUKS decryption keys into your motherboards TPM slots. Also, the bonus feature briefly examines how to configure Home Manager via the `flake.nix` we'll be setting up today, so that's gotta be worth some brownie points, right? ;3

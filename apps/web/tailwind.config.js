@@ -86,6 +86,12 @@ export default {
           css: {
             'blockquote p:first-of-type::before': false,
             'blockquote p:first-of-type::after': false,
+            'blockquote': {
+              fontStyle: '',
+              backgroundColor: 'var(--tw-prose-quotes-bg)',
+              paddingTop: '1rem',
+              paddingBottom: '1rem'
+            },
             'h1 a': {
               fontWeight: 900,
             },
@@ -206,6 +212,7 @@ export default {
             '--tw-prose-bullets': theme(`colors.ctp-text.DEFAULT`),
             '--tw-prose-hr': theme(`colors.${accent}.DEFAULT`),
             '--tw-prose-quotes': theme('colors.ctp-text.DEFAULT'),
+            '--tw-prose-quotes-bg': theme('colors.ctp-base.DEFAULT'),
             '--tw-prose-quote-borders': theme(`colors.${accent}.DEFAULT`),
             '--tw-prose-captions': theme('colors.ctp-text.DEFAULT'),
             '--tw-prose-code': theme('colors.ctp-text.DEFAULT'),

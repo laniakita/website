@@ -2,6 +2,7 @@
 
 import { usePathname, useRouter } from 'next/navigation';
 import { type Dispatch, type SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useLiveReload } from './mdx/useLiveReload';
 
 const MED_SCREEN = 768; // px
 
@@ -94,7 +95,7 @@ function HeadingNode({ node, activeId }: { node: HeadingNode; activeId: string }
   const pathname = usePathname();
   const pushHash = () => {
     router.push(`${pathname}#${node.id}`)
-    console.log(`${pathname}#${node.id}`)
+    //console.log(`${pathname}#${node.id}`)
   };
   return (
     <li key={node.id}>
@@ -229,6 +230,7 @@ const concatHeadingUtil = (heading: string) => {
     concat = 33;
   } else if (window.innerWidth <= MED_SCREEN) {
     concat = 45;
+    ;
   }
 
   if (heading.length > concat) {
@@ -398,7 +400,7 @@ export default function ToCMenu() {
       ) : (
         <div className='motion-safe:simple-color-trans sticky top-16 hidden h-screen max-h-[calc(100vh-4rem)] w-full min-w-72 max-w-sm items-start justify-center overflow-y-auto bg-ctp-base/20 py-10 text-slate-100 shadow-xl md:flex dark:bg-ctp-base/20'>
           <nav aria-label='Table of contents' className='w-full px-4'>
-            <Headings tree={nestedHeadings ?? []} activeId={activeId} />
+            <Headings tree= {nestedHeadings ?? []} activeId={activeId} />
           </nav>
         </div>
       )}
