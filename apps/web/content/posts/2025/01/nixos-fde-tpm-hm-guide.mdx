@@ -20,7 +20,7 @@ keywords:
   - NixOS Home Manager Flake Guide
 author: lani
 headline: 'NixOS Full Disk Encryption + Secure Boot + TPM Auto-Unlock - A Guide'
-subheadline: 'Bonus feature: Setting up Home Manager'
+subheadline: 'Bonus feature: Intro to Home Manager'
 imageSrc: ../../../assets/images/open-oc/2025/nixos_fde_tpm_guide.png
 altText: 'Background: a wireframe of a scenic mountain view, with water pooling into a pond at the left. Foreground: Directly in the center, sits the NixOS logo, a plus sign, a lock icon, a plus sign, and a motherboard icon, all imposed upon a transluscent, teal rectangle.'
 
@@ -40,7 +40,6 @@ Now sure, perhaps you vowed this would be the year you'd stop distro-hopping; sa
 >Additionally, when _differences_ do appear, the gcc compiler (or other compiler) used during `nixos-rebuild` will likely print out a warning message to the console explaining which deprecated (or soon to be deprecated) options you've used and what changes need to made to _correct_ the configuration you're trying build—well, theoretically at least.
 >
 >As such, I hope this guide is able to serve you well! Hopefully into the future too.
-
 
 
 ## Introduction
@@ -104,7 +103,7 @@ If that results in an error:
 
 - `RTNETLINK answers: Operation not possible due to RF-kill`
 
-Proceed to [RF-kill Unblocking](#rf-kill-unblocking), otherwise skip to [Getting Connected with `wpa_supplicant`](#connecting-to-a-network-with-wpa-supplicant).
+Proceed to [RF-kill Unblocking](#rf-kill-unblocking), otherwise skip to [Getting Connected with `wpa_supplicant`](#getting-connected-with-wpa_supplicant).
 
 ##### RF-kill Unblocking
 
@@ -1370,7 +1369,7 @@ This is rather straight forward just run `$ luksCryptenroller` (you'll immediate
 
 > Fun fact, if all your LUKS devices share the same passphrase, `systemd-cryptenroll` seems to just know to re-use it, rather than prompting you for it again. As to how that's possible ... well I have no idea. Perhaps `systemd-cryptenroll` stores the passphrase temporarily in memory, and makes a call to check if it still exists/validates on every enrollment, and if it does, uses it until it comes across a device the stored passphrase doesn't decrypt. That's just a best guess though, it's also entirely possible this _feature_ isn't purposeful, and might actually be a bug.
 
-## Part 03: Home Manager (Abridged)
+## Part 03: Configuring Home Manager (Abridged)
 
 `home-manager` is a very extensive utility for configuring the user (rather than the global/system) environment on a Nix/NixOS machine. It's far too much to talk about in detail here, so I'll leave you with the official [Home Manager Manual](https://nix-community.github.io/home-manager/), a very handy tool: [Home Manager Option Search](https://home-manager-options.extranix.com/), and finally the [nix-community/home-manager/issues](https://github.com/nix-community/home-manager/issues) page for when things go awry (It doesn't happen that often, but I'll admit weird bugs do happen on occasion).
 

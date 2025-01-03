@@ -141,7 +141,6 @@ function DefaultCodeBlock(props: React.DetailedHTMLProps<React.HTMLAttributes<HT
   const [topPos, setTopPos] = useState('top-4');
 
   useEffect(() => {
-    console.log();
     if (preRef.current.childNodes.length == 2 && preRef.current.childNodes[1]?.childNodes) {
       if (preRef.current.childNodes[1].childNodes.length <= 3) {
         if (preRef.current.childNodes[1].childNodes[0]?.nodeName === 'DIV') {
@@ -152,6 +151,12 @@ function DefaultCodeBlock(props: React.DetailedHTMLProps<React.HTMLAttributes<HT
           }
         } else if ((preRef.current.childNodes[1] as HTMLElement)?.offsetHeight < 100) {
           console.log(preRef.current);
+          setTopPos('top-2');
+        }
+      } else {
+        console.log(preRef.current);
+        console.log(preRef.current.getClientRects());
+        if ((preRef.current.getClientRects()?.[0]?.height ?? 0) < 100) {
           setTopPos('top-2');
         }
       }
@@ -314,9 +319,11 @@ function CopyBtn({
     }, 2000);
   };
   return (
-    <div className={`absolute inset-x-0 flex w-full flex-row items-center justify-end ${topPos ?? ''} gap-4 pr-4`}>
+    <div
+      className={`pointer-events-none absolute inset-x-0 flex w-full flex-row items-center justify-end ${topPos ?? ''} gap-4 pr-4`}
+    >
       <span
-        className={`pointer-events-none flex rounded-full border border-ctp-base p-1 px-4 font-mono font-bold opacity-0 backdrop-blur-md [transition:_opacity_0.3s] ${isCopied ? 'pointer-events-auto border-ctp-green bg-ctp-green/20 text-ctp-green opacity-100 hover:border-ctp-green hover:bg-ctp-green/20 hover:text-ctp-green' : isCopied === null ? 'pointer-events-auto border-ctp-red bg-ctp-red/20 text-ctp-red opacity-100 hover:border-ctp-red hover:bg-ctp-red/20 hover:text-ctp-red' : ''} text-xs md:text-base`}
+        className={`pointer-events-none flex min-w-2 rounded-full border border-ctp-base p-1 px-4 font-mono font-bold opacity-0 backdrop-blur-md [transition:_opacity_0.3s] ${isCopied ? 'pointer-events-auto border-ctp-green bg-ctp-green/20 text-ctp-green opacity-100 hover:border-ctp-green hover:bg-ctp-green/20 hover:text-ctp-green' : isCopied === null ? 'pointer-events-auto border-ctp-red bg-ctp-red/20 text-ctp-red opacity-100 hover:border-ctp-red hover:bg-ctp-red/20 hover:text-ctp-red' : ''} text-xs md:text-base`}
       >
         {isCopied ? 'Copied to clipboard!' : isCopied === null ? 'Error: Copying failed.' : ''}
       </span>
