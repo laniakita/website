@@ -1,7 +1,7 @@
 'use client'
 import { useFootnotesStore } from "@/providers/footnotes-store-provider";
 import Link, { LinkProps } from "next/link";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { HTMLAttributes, LiHTMLAttributes, MouseEvent, ReactElement, useCallback, useEffect, useRef, useState } from "react";
 
 const PT_SCROLL_MOBILE = 8; // rem
@@ -64,15 +64,9 @@ function ExpandableFootNotesComponent(
   props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>,
 ) {
   const h2 = (props.children as ReactElement[])[0] as ReactElement<HTMLHeadingElement>;
-
   const currList = ((props.children as ReactElement[])[2] as unknown as ReactElement<HTMLAttributes<HTMLOListElement>>)?.props?.children as ReactElement<HTMLLIElement>[];
-
   const newList = currList.slice(0, 30);
-    /*
-  interface Reload {
-    hash: string | null;
-  }*/
-
+  
   const [sectionHeight, setSectionHeight] = useState(0);
   const { expanded, expandFootnotes } = useFootnotesStore((state) => state);
   const [internalExpanded, setInternalExpanded] = useState(expanded);
@@ -210,7 +204,6 @@ export function SupAnchors(
       if (scrollY) window.scrollBy(0, scrollY - offSets);
     }, 50)
   }
-
 
   if (typeof props.children !== 'string') {
     const anchor = props.children as ReactElement<HTMLAnchorElement>;
