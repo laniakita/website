@@ -58,7 +58,10 @@ const remToPx = (input: number) => {
   return baseFontSize ? (input * baseFontSize) : 0
 }
 
-const offSets = window.innerWidth < 768 ? remToPx(PT_SCROLL_MOBILE) : remToPx(PT_SCROLL_TABLET);
+const offSets = () => {
+  if (!window) return 0;
+  return window.innerWidth < 768 ? remToPx(PT_SCROLL_MOBILE) : remToPx(PT_SCROLL_TABLET);
+}
 
 function ExpandableFootNotesComponent(
   props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>,
@@ -66,7 +69,7 @@ function ExpandableFootNotesComponent(
   const h2 = (props.children as ReactElement[])[0] as ReactElement<HTMLHeadingElement>;
   const currList = ((props.children as ReactElement[])[2] as unknown as ReactElement<HTMLAttributes<HTMLOListElement>>)?.props?.children as ReactElement<HTMLLIElement>[];
   const newList = currList.slice(0, 30);
-  
+
   const [sectionHeight, setSectionHeight] = useState(0);
   const { expanded, expandFootnotes } = useFootnotesStore((state) => state);
   const [internalExpanded, setInternalExpanded] = useState(expanded);
@@ -94,13 +97,13 @@ function ExpandableFootNotesComponent(
     // if the below is true we can assume the curr url is a link to a footnote
     if (currHash.match(re) && !currHash.match(nullRe)) {
       //setFnHash(currHash)
-      console.log('hash is fnHash')
+      //console.log('hash is fnHash')
 
       if ('scrollRestoration' in window.history) {
-        console.log('found scroll restore point:', window.history.scrollRestoration)
+        //console.log('found scroll restore point:', window.history.scrollRestoration)
         if (window.history.scrollRestoration !== 'manual') {
           window.history.scrollRestoration = 'manual'
-          console.log('set to manual');
+          //console.log('set to manual');
         }
       }
 
@@ -110,22 +113,22 @@ function ExpandableFootNotesComponent(
         setTimeout(() => {
           //console.log('liref', liRef?.current?.getClientRects()[0]?.y);
           const altLiTop = document.getElementById(currHash.substring(1))?.getClientRects()[0]?.top;
-          console.log(altLiTop);
+          //console.log(altLiTop);
 
           if (altLiTop && altLiTop > 0) {
-            window.scrollTo(0, altLiTop - offSets)
+            window.scrollTo(0, altLiTop - offSets())
           }
         }, 801)
 
       }
 
     } else {
-      console.log(window.location.hash, 'is not fnhash');
+      //console.log(window.location.hash, 'is not fnhash');
       if ('scrollRestoration' in window.history) {
-        console.log('found scroll restore point:', window.history.scrollRestoration)
+        //console.log('found scroll restore point:', window.history.scrollRestoration)
         if (window.history.scrollRestoration !== 'auto') {
           window.history.scrollRestoration = 'auto';
-          console.log('restored to auto');
+          //console.log('restored to auto');
         }
       }
     }
@@ -133,9 +136,9 @@ function ExpandableFootNotesComponent(
 
 
   useEffect(() => {
-    console.log('running...');
+    //console.log('running...');
     if (window.location.hash) handleHash(window.location.hash);
-    console.log(params);
+    //console.log(params);
   }, [params, handleHash]);
 
 
@@ -198,10 +201,10 @@ export function SupAnchors(
     if (e && !expanded) expandFootnotes();
     const target = e.target as HTMLAnchorElement
     setTimeout(() => {
-      console.log(target.hash)
+      //console.log(target.hash)
       const tQ = document.getElementById(target.hash.substring(1));
       const scrollY = tQ?.getClientRects()[0]?.top;
-      if (scrollY) window.scrollBy(0, scrollY - offSets);
+      if (scrollY) window.scrollBy(0, scrollY - offSets());
     }, 50)
   }
 
@@ -209,8 +212,7 @@ export function SupAnchors(
     const anchor = props.children as ReactElement<HTMLAnchorElement>;
     if ('data-footnote-ref' in anchor.props && anchor.props['data-footnote-ref']) {
       return (
-        <sup {...props}>
-          {}
+        <sup {...props} className="ml-[0.15ch] has-[+_sup]:after:[content:_',']"> 
           <Link onClick={(e) => handleClick(e)}  {...anchor.props as unknown as LinkProps} scroll={false} />
         </sup>
       )

@@ -1,6 +1,6 @@
 'use client';
 
-import { useParams, usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { type Dispatch, type SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 const MED_SCREEN = 768; // px
@@ -86,29 +86,6 @@ const useHeadingsData = () => {
 
   return { nestedHeadings };
 };
-/*
-const useHeadingsDataV0 = () => {
-  const [nestedHeadings, setNestedHeadings] = useState<HeadingNode[]>([]);
-
-  useEffect(() => {
-    const titleEl = document.querySelector('h1');
-    const titleNode: HeadingNode = {
-      id: titleEl?.id ?? '#',
-      level: 1,
-      title: titleEl?.innerText ?? '',
-      children: [],
-    };
-
-    // filtering by id length excises the sub-headline from the array
-    const headingEls = Array.from(document.querySelectorAll('h2, h3, h4, h5, h6')).filter((el) => el.id.length > 0);
-
-    const nested = getNestedHeadings(headingEls as HTMLHeadingElement[], 2);
-
-    setNestedHeadings([titleNode, ...nested]);
-  }, []);
-
-  return { nestedHeadings };
-};*/
 
 function HeadingNode({ node, activeId }: { node: HeadingNode; activeId: string }) {
   //console.log('nodeid:', node.id, 'activeId:', activeId);

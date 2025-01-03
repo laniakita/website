@@ -27,7 +27,7 @@ export default {
         '2-25xl': ['1.59375rem', {
           lineHeight: '2.0625rem'
         }],
-        '1-5xl': ['1.375rem',{
+        '1-5xl': ['1.375rem', {
           lineHeight: '1.875rem'
         }],
         '1-25xl': ['1.3125rem', {
@@ -113,7 +113,7 @@ export default {
             'del strong': {
               color: 'var(--tw-prose-del-strong)',
             },
-            '.sr-only':{
+            '.sr-only': {
               overflow: 'hidden',
               clip: 'rect(0,0,0,0)',
               border: 0,
