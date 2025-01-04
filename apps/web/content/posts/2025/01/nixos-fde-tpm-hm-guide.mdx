@@ -82,7 +82,7 @@ By the end of this article, my hope is that you’ll be able to:
 ### Prerequisites
 
 1. A machine with a UEFI motherboard
-2. A machine with a TPM2 chip (This is only needed for the "TPM Auto-unlock" part of the guide, which uses `tpm2-tss` to enable `systemd-cryptenroll` to enroll your LUKS keys into the TPM chip.[systemd-cryptenroll])
+2. A machine with a TPM2 chip (This is only needed for the "TPM Auto-unlock" part of the guide, which uses `tpm2-tss` to enable `systemd-cryptenroll` to enroll your LUKS keys into the TPM chip.[^systemd-cryptenroll])
 3. A bootable USB (4 GB minimum) with the [Minimal NixOS](https://nixos.org/download/#nixos-iso) ISO[^minimal-iso] loaded onto it
 
 ### Booting the installer
@@ -407,9 +407,7 @@ Command successful.
 
 #### Verifying the LUKS Device
 
-To verify the partition got encrypted, you can inspect the LUKS header using:
-
-- `# cryptsetup luksDump /dev/nvme0n1p2`
+To verify the partition got encrypted, you can inspect the LUKS header using: `# cryptsetup luksDump /dev/nvme0n1p2`
 
 Which will give an output similar to this:
 
@@ -425,19 +423,13 @@ label:          NIXLUKS
 
 The most important thing to note is the version number and your label. If it’s “2”, and your label looks right, then we’re all good to go.
 
-> As a best practice, you may want to backup the header sometime later. You can do so with the following command:
->
-> `# cryptsetup luksHeaderBackup /dev/nvme0n1p2 --header-backup-file /path/to/backup.dat`
+>As a best practice, you may want to backup the header sometime later. You can do so with the following command: `# cryptsetup luksHeaderBackup /dev/nvme0n1p2 --header-backup-file /path/to/backup.dat`
 
 #### Opening the LUKS Device
 
-Now, we’re going to open our encrypted LUKS partition and create a reference to it on `/dev/mapper/cryptroot`.
+Now, we’re going to open our encrypted LUKS partition and create a reference to it on `/dev/mapper/cryptroot` with: `# cryptsetup luksOpen /dev/nvme0n1p2 cryptroot`
 
-- `# cryptsetup luksOpen /dev/nvme0n1p2 cryptroot`
-
-You can then check our mapped partition exists with:
-
-- `ls /dev/mapper/cryptroot`.
+You can then check our mapped partition exists with: `ls /dev/mapper/cryptroot`.
 
 Note: This won't return anything really (because there's nothing in `cryptroot` yet), unless `cryptroot` doesn't exist.
 
@@ -463,51 +455,30 @@ We can create the swap LV on our root LVG (lvmroot) with the following command:
 
 - `# lvcreate -L24G lvmroot -n swap`
 
-> Note: How much swap space you may need varies. You might not even need it! So, please see this ~~stackoverflow~~ askubuntu thread for more info: [askubuntu.com/questions/49109/i-have-16gb-ram-do-i-need-32gb-swap](https://askubuntu.com/questions/49109/i-have-16gb-ram-do-i-need-32gb-swap). In my case, I’ve got 16 GB of ram on this laptop, and plan to use hibernate, so 16 \* 1.5 = 24 GB.
+>Note: How much swap space you may need varies. You might not even need it! So, please see this ~~stackoverflow~~ askubuntu thread for more info: [askubuntu.com/questions/49109/i-have-16gb-ram-do-i-need-32gb-swap](https://askubuntu.com/questions/49109/i-have-16gb-ram-do-i-need-32gb-swap). In my case, I’ve got 16 GB of ram on the laptop I'm using as the example for this guide, and plan to use hibernate, so 16 \* 1.5 = 24 GB.
 
 #### Create the `root` Logical Volume
 
-With the swap LV set, we can set the root LV to take up the rest of the available space:
-
-- `# lvcreate -l 100%FREE lvmroot -n root`
+With the swap LV set, we can set the root LV to take up the rest of the available space: `# lvcreate -l 100%FREE lvmroot -n root`
 
 ### Formatting
 
-This is a fairly standard procedure, the only deviation here is adding labels, which makes mounting the partitions much easier.
+This is a fairly standard procedure, the only thing of note here is adding labels, which makes mounting the partitions much easier.
 
-> Important! Your label names should be a maximum of 11 Bytes long for the boot partition, and a maximum of 16 Bytes long for every other partition. Ensure your labels are short and sweet!
+>YSK: The volume label string for the bootable, ESP partition (FAT32) has a maximum length of only 11 bytes[^fat-osdev-wiki]. Both the ext4 and Swap partitions have a maximum volume label length of 16 bytes. [^ext4-spec-global-structures-superblock-linux-kernel][^man-swaplabel].
 
-#### 1. Format the ESP partition
-
-- `# mkfs.fat -F 32 -n NIXBOOT /dev/nvme0n1p1`
-
-#### 2. Format the Root LV
-
-- `# mkfs.ext4 -L NIXROOT /dev/mapper/lvmroot-root`
-
-#### 3. Format the Swap LV (if you made one)
-
-- `# mkswap -L NIXSWAP /dev/mapper/lvmroot-swap`
+1. Format the ESP partition: `# mkfs.fat -F 32 -n NIXBOOT /dev/nvme0n1p1`
+2. Format the Root LV: `# mkfs.ext4 -L NIXROOT /dev/mapper/lvmroot-root`
+3. Format the Swap LV (if you made one): `# mkswap -L NIXSWAP /dev/mapper/lvmroot-swap`
 
 ### Mounting
 
 Then we can mount the formatted partitions like so.
 
-#### 1. Mount the Root LV
-
-- `# mount /dev/disk/by-label/NIXROOT /mnt`
-
-#### 2. Create the ESP Directory
-
-- `# mkdir /mnt/boot`
-
-#### 3. Mount the ESP
-
-- `# mount -o umask=0077 /dev/disk/by-label/NIXBOOT /mnt/boot`
-
-#### 4. Turn on Swap
-
-- `# swapon -L NIXSWAP`
+1. Mount the Root LV: `# mount /dev/disk/by-label/NIXROOT /mnt`
+2. Create the ESP Directory: `# mkdir /mnt/boot`
+3. Mount the ESP: `# mount -o umask=0077 /dev/disk/by-label/NIXBOOT /mnt/boot`
+4. Turn on Swap: `# swapon -L NIXSWAP`
 
 #### Verifying the Mounts
 
@@ -1710,3 +1681,9 @@ _PS, I'd love to hear your thoughts! Feel free to drop a comment below, or reach
 [^systemd-cryptenroll]: systemd-cryptenroll - ArchWiki [Internet]. [cited 2025 Jan 3]. Available from: [https://wiki.archlinux.org/title/Systemd-cryptenroll](https://wiki.archlinux.org/title/Systemd-cryptenroll)
 
 [^cryptsetup]: cryptsetup(8) - Linux man page [Internet]. [cited 2025 Jan 3]. Available from: [https://linux.die.net/man/8/cryptsetup](https://linux.die.net/man/8/cryptsetup)
+
+[^fat-osdev-wiki]: FAT - OSDev Wiki [Internet]. [cited 2025 Jan 3]. Available from: [https://wiki.osdev.org/FAT#FAT_32_2](https://wiki.osdev.org/FAT#FAT_32_2)
+
+[^ext4-spec-global-structures-superblock-linux-kernel]: Global Structures — The Linux Kernel documentation [Internet]. [cited 2025 Jan 3]. Available from: [https://docs.kernel.org/filesystems/ext4/globals.html#super-block](https://docs.kernel.org/filesystems/ext4/globals.html#super-block)
+
+[^man-swaplabel]: swaplabel(8) - Linux manual page [Internet]. [cited 2025 Jan 3]. Available from: [https://man7.org/linux/man-pages/man8/swaplabel.8.html](https://man7.org/linux/man-pages/man8/swaplabel.8.html)
