@@ -260,9 +260,15 @@ Device             Start        End   Sectors   Size Type
 ...
 ```
 
-Once we've found our disk, we'll pass it's location as an input into `fdisk` to perform the actual partitioning steps: `# fdisk /dev/your-disk-to-partition`
+Once we've found our disk, we'll pass it's location as an input into `fdisk` to perform the actual partitioning steps:
 
-In my case the command looks like: `# fdisk /dev/nvme0n1`
+```console noLineNumbers
+# fdisk /dev/your-disk-to-partition
+```
+
+In my case the command looks like: `# fdisk /dev/nvme0n1`.
+
+>Many of the commands featured in this guide refer to `/dev/nvme0n1` as an **example**. However, You might have _your_ drive of interest on `/dev/sda` for instance. So, to avoid any unnecessary heartache, please make sure the commands you're running are on the correct drive.
 
 #### Create a Empty GPT Table
 
@@ -385,7 +391,11 @@ nvme0n1      259:0    0  476.9G  0 disk
 
 ### Encrypting with LUKS
 
-We’ll be encrypting the LVM partition with LUKS (version 2). To do that, we just have to run the following command: `# cryptsetup -v -y --label=NIXLUKS luksFormat --type luks2 /dev/nvme0n1p2`.
+We’ll be encrypting the LVM partition with LUKS (version 2). To do that, we just have to run the following command:
+
+```console noLineNumbers
+# cryptsetup -v -y --label=NIXLUKS luksFormat --type luks2 /dev/nvme0n1p2
+```
 
 The `-v` flag ensures a verbose output, `-y` ensures it’ll ask us for our encryption password twice to confirm, the label flag is simply assigned to `NIXLUKS` but you can call it whatever you want. `luksFormat` actually encrypts our disk, and the `--type` flag set to `luks2`.[^cryptsetup] This is important because it's both newer, and a necessary requirement to use `systemd-cryptenroll`, which enables enrolling your LUKS keys into the TPM2.[^systemd-cryptenroll]
 
@@ -407,7 +417,11 @@ Command successful.
 
 #### Verifying the LUKS Device
 
-To verify the partition got encrypted, you can inspect the LUKS header using: `# cryptsetup luksDump /dev/nvme0n1p2`
+To verify the partition got encrypted, you can inspect the LUKS header using: 
+
+```console noLineNumbers
+# cryptsetup luksDump /dev/nvme0n1p2
+```
 
 Which will give an output similar to this:
 
@@ -423,15 +437,27 @@ label:          NIXLUKS
 
 The most important thing to note is the version number and your label. If it’s “2”, and your label looks right, then we’re all good to go.
 
->As a best practice, you may want to backup the header sometime later. You can do so with the following command: `# cryptsetup luksHeaderBackup /dev/nvme0n1p2 --header-backup-file /path/to/backup.dat`
+>As a best practice, you may want to backup the header sometime later. You can do so with the following command:
+>
+>```console noLineNumbers
+># cryptsetup luksHeaderBackup /dev/nvme0n1p2 --header-backup-file /path/to/backup.dat
+>```
 
 #### Opening the LUKS Device
 
-Now, we’re going to open our encrypted LUKS partition and create a reference to it on `/dev/mapper/cryptroot` with: `# cryptsetup luksOpen /dev/nvme0n1p2 cryptroot`
+Now, we’re going to open our encrypted LUKS partition and create a reference to it on `/dev/mapper/cryptroot` with:
 
-You can then check our mapped partition exists with: `ls /dev/mapper/cryptroot`.
+```console noLineNumbers
+# cryptsetup luksOpen /dev/nvme0n1p2 cryptroot`
+```
 
-Note: This won't return anything really (because there's nothing in `cryptroot` yet), unless `cryptroot` doesn't exist.
+You can then check our mapped partition exists with: 
+
+```console noLineNumbers
+ls /dev/mapper/cryptroot
+```
+
+This won't return anything really (because there's nothing in `cryptroot` yet), unless `cryptroot` doesn't exist.
 
 ```sh noLineNumbers
 [nixos@nixos:'']$ ls /dev/mapper/cryptroot
@@ -444,8 +470,13 @@ Note: This won't return anything really (because there's nothing in `cryptroot` 
 
 Before creating the root and swap (and other possible) logical volumes (LVs), we'll first need to create a Physical Volume on `cryptroot`, which can then be used to create a Logical Volume Group (LVG) named `lvmroot`.
 
-1. `# pvcreate /dev/mapper/cryptroot`
-2. `# vgcreate lvmroot /dev/mapper/cryptroot`
+```console noLineNumbers
+# pvcreate /dev/mapper/cryptroot
+```
+
+```console noLineNumbers
+# vgcreate lvmroot /dev/mapper/cryptroot
+```
 
 With that, we can create the _root_ LV and the _swap_ LV. You can of course create as many LVs as you want, such as a _home_ LV. However, for my purposes, I’m going to keep it simple.
 
@@ -453,13 +484,19 @@ With that, we can create the _root_ LV and the _swap_ LV. You can of course crea
 
 We can create the swap LV on our root LVG (lvmroot) with the following command:
 
-- `# lvcreate -L24G lvmroot -n swap`
+```console noLineNumbers
+# lvcreate -L24G lvmroot -n swap
+```
 
->Note: How much swap space you may need varies. You might not even need it! So, please see the linked ~~stackoverflow~~ askubuntu thread[^i-have-16gb-ram--do-i-need-32gb-swap] for more. In my case, I’ve got 16 GB of ram on the laptop I'm using as the example for this guide, and plan to use hibernate, so 16 \* 1.5 = 24 GB.
+>Note: How much swap space you may need varies. You might not even need it! So, please see the linked ~~stackoverflow~~ [askubuntu thread](https://askubuntu.com/questions/49109/i-have-16gb-ram-do-i-need-32gb-swap)[^i-have-16gb-ram--do-i-need-32gb-swap] for more. In my case, I’ve got 16 GB of ram on the laptop I'm using as the example for this guide, and plan to use hibernate, so 16 \* 1.5 = 24 GB.
 
 #### Create the `root` Logical Volume
 
-With the swap LV set, we can set the root LV to take up the rest of the available space: `# lvcreate -l 100%FREE lvmroot -n root`
+With the swap LV set, we can set the root LV to take up the rest of the available space
+
+```console noLineNumbers
+# lvcreate -l 100%FREE lvmroot -n root
+```
 
 ### Formatting
 
@@ -467,31 +504,59 @@ This is a fairly standard procedure, the only thing of note here is adding label
 
 >YSK: The volume label string for the bootable, ESP partition (FAT32) has a maximum length of only 11 bytes[^fat-osdev-wiki]. Both the ext4 and Swap partitions have a maximum volume label length of 16 bytes. [^ext4-spec-global-structures-superblock-linux-kernel][^man-swaplabel].
 
-1. Format the ESP partition:
-   - `# mkfs.fat -F 32 -n NIXBOOT /dev/nvme0n1p1`
-2. Format the Root LV:
-   - `# mkfs.ext4 -L NIXROOT /dev/mapper/lvmroot-root`
-3. Format the Swap LV (if you made one):
-   - `# mkswap -L NIXSWAP /dev/mapper/lvmroot-swap`
+Format the ESP partition:
+
+```console noLineNumbers
+# mkfs.fat -F 32 -n NIXBOOT /dev/nvme0n1p1
+```
+
+Format the Root LV:
+
+```console noLineNumbers
+# mkfs.ext4 -L NIXROOT /dev/mapper/lvmroot-root
+```
+
+Format the Swap LV (if you made one):
+
+```console noLineNumbers
+# mkswap -L NIXSWAP /dev/mapper/lvmroot-swap
+```
 
 ### Mounting
 
 Then we can mount the formatted partitions like so.
 
-1. Mount the Root LV: 
-   - `# mount /dev/disk/by-label/NIXROOT /mnt`
-2. Create the ESP Directory:
-   - `# mkdir /mnt/boot`
-3. Mount the ESP:
-   - `# mount -o umask=0077 /dev/disk/by-label/NIXBOOT /mnt/boot`
-4. Turn on Swap:
-   - `# swapon -L NIXSWAP`
+Mount the Root LV:
+
+```console noLineNumbers
+# mount /dev/disk/by-label/NIXROOT /mnt
+```
+
+Create the ESP Directory:
+
+```console noLineNumbers
+# mkdir /mnt/boot
+```
+
+Mount the ESP:
+
+```console noLineNumbers
+# mount -o umask=0077 /dev/disk/by-label/NIXBOOT /mnt/boot
+```
+
+Turn on Swap:
+
+```console noLineNumbers
+# swapon -L NIXSWAP
+```
 
 #### Verifying the Mounts
 
 To verify everything is in the right place, running:
 
-1. `# lsblk -o name,label,size,type,mountpoints /dev/nvme0n1`
+```console noLineNumbers
+# lsblk -o name,label,size,type,mountpoints /dev/nvme0n1
+```
 
 should result in output similar to this:
 
@@ -512,7 +577,9 @@ nvme0n1                     476.9G disk
 
 We’ll first generate a minimal configuration file. Then we’ll edit it to support our LUKS encrypted partitions.
 
-- `# nixos-generate-config --root /mnt`
+```console noLineNumbers
+# nixos-generate-config --root /mnt
+```
 
 then we can use Vim (or nano) prefixed with `sudo` to edit our generated config to mount our LUKS partition. If you forget to elevate your editor command, you won't be able to save your changes (don't ask me how I know that).
 
@@ -751,7 +818,9 @@ With our edits in place, we can save and exit the `hardware-configuration.nix` f
 
 To make our changes, we can use `vim` or `nano` again to load `configuration.nix` into an editing buffer:
 
-1. `# vim /mnt/etc/nixos/configuration.nix`
+```console noLineNumbers
+# vim /mnt/etc/nixos/configuration.nix
+```
 
 From there we'll, uncomment out network manager, we'll enable flakes, we'll update our time zone, add an account, and anything else we might need.
 
@@ -762,7 +831,7 @@ The following configures/enables what I believe to be the most important feature
 ###### Add a hostname
 
 ```nix
-networking.hostName = "my-nixos-machine"; # Define your hostname.`
+networking.hostName = "my-nixos-machine"; # Define your hostname.
 ```
 
 Your hostname will correlate with the host system defined in your `nixosConfiguration`. If you plan on sharing a single `flake.nix` between multiple NixOS machines, it's probably for the best you change this to something unique—well, unique amongst the machine's that have differing configurations.
@@ -770,7 +839,7 @@ Your hostname will correlate with the host system defined in your `nixosConfigur
 ###### Enable network manager
 
 ```nix
-networking.networkManager.enable = true;`
+networking.networkManager.enable = true;
 ```
 
 Network Manager is both the easiest and (unsurprisingly) the default networking tool for most Distros. It's also what I prefer using, but you might prefer `wpa_supplicant` instead.
@@ -1054,11 +1123,15 @@ And with that, we can finally proceed to the very much anticipated install comma
 
 This is it, moment of truth time. To begin, we’ll change directories to our `nixos` directory:
 
-- `$ cd /mnt/etc/nixos`
+```sh noLineNumbers
+$ cd /mnt/etc/nixos
+```
 
 Then we’ll update our flake. However, because the minimal NixOS install doesn't enable the `nix-command` nor `flakes`, we'll need to append these features as flags to actually perform this step:
 
-- `# nix --extra-experimental-features nix-command --extra-experimental-features flakes flake update`
+```console noLineNumbers
+# nix --extra-experimental-features nix-command --extra-experimental-features flakes flake update
+```
 
 If that presented no errors, your output should look something like this:
 
@@ -1071,7 +1144,9 @@ warning: creating lock file '/mnt/etc/nixos/flake.lock'
 
 With a clean `flake update`, that's the go-ahead to perform the magical install command.
 
-- `# nixos-install --root /mnt --no-root-passwd --flake /mnt/etc/nixos#nixos`
+```console noLineNumbers
+# nixos-install --root /mnt --no-root-passwd --flake /mnt/etc/nixos#nixos
+```
 
 Be warned though, this step could take a while (even assuming no compilation errors). As such, now's probably a good time to stretch your legs and get some fresh air. You've probably been sitting here reading this guide for a while now, so, maybe relax your eyes, and go enjoy a refreshment of some kind (a cup of tea, coffee, etc.). That way, if there are any unexpected errors (likely syntax, like a forgotten semi-colon), you'll at least be better prepared to deal with it...
 
@@ -1101,7 +1176,9 @@ Installation finished!
 
 **VERY IMPORTANT:** We still need to setup a password for our user account. We can do that like so:
 
-- `# nixos-enter --root /mnt -c “passwd mycoolusername”`
+```console noLineNumbers
+# nixos-enter --root /mnt -c “passwd mycoolusername”
+```
 
 Once that's all set, it's finally time to reboot. You can do that safely like so:
 
@@ -1311,7 +1388,9 @@ System:
 
 At the very beginning of this guide, I promised I’d show you how to auto decrypt your LUKS device with TPM2. So, to do that, we’re going to amend the `lanza.nix` module we created earlier, to both install `tpm2-tss` and to create a tiny script (`luks-helper`) to leverage a handy tool included in systemd,`systemd-cryptenroll`. The command our script calls on our LUKS device (NIXLUKS) looks something like this:
 
-`# systemd-cryptenroll --wipe-slot=tpm2 --tpm2-device=auto --tpm2-pcrs=0+7 /dev/disk/by-label/NIXLUKS`.
+```console noLineNumbers
+# systemd-cryptenroll --wipe-slot=tpm2 --tpm2-device=auto --tpm2-pcrs=0+7 /dev/disk/by-label/NIXLUKS
+```
 
 The flags on the command do the following:
 
@@ -1389,7 +1468,13 @@ Shells look best with monospaced fonts, especially _monospaced nerd-fonts_, so b
 ❯ sudo touch /etc/nixos/modules/fonts.nix
 ```
 
-And we'll bring it into an editor with `# vim /etc/nixos/modules/fonts.nix`, to create the following:
+And we'll bring it into an editor with:
+
+```console noLineNumbers
+# vim /etc/nixos/modules/fonts.nix
+```
+
+To create the following:
 
 ```nix
 # modules/fonts.nix
@@ -1429,7 +1514,13 @@ We can then import it into `configuration.nix` like so:
 }
 ```
 
-And with a single `# nixos-rebuild switch` we'll have all the fonts we need to continue.
+We can then build the new configuration like so:
+
+```console noLineNumbers
+# nixos-rebuild switch
+```
+
+And with single `# nixos-rebuild switch` we now have all the fonts we need to continue.
 
 ### Configuring Home Manager via `flake.nix`
 
@@ -1638,7 +1729,7 @@ With all the modules configured, it's time to run `# nixos-rebuild switch` and b
 
 Welcome to the end of a very long blog post. If you completed the above, you have earned a very well deserved break and celebration of your accomplishments today (or however long it took to get through this guide).
 
-What you've done is no small feat. In reaching the end of this guide, you've installed NixOS with Full Disk Encryption, enabled secure boot with `lanzaboote`, enabled auto decryption of your LUKS devices with `systemd-cryptenroller`, and finally configured a slick `zsh` shell with Starship Prompt, some plugins, and configured `git` and `gh`, ready to turn your `/etc/nixos` folder into a repo (please see: [nixos-and-flakes.thiscute.world/nixos-with-flakes/other-useful-tips#managing-the-configuration-with-git](https://nixos-and-flakes.thiscute.world/nixos-with-flakes/other-useful-tips#managing-the-configuration-with-git)[^other-useful-tips]). If you knew nothing about Nix when you first got here, well, I hope you were able to get the gist of it after reaching the end here.
+What you've done is no small feat. In reaching the end of this guide, you've installed NixOS with Full Disk Encryption, enabled secure boot with `lanzaboote`, enabled auto decryption of your LUKS devices with `systemd-cryptenroller`, and finally configured a slick `zsh` shell with Starship Prompt, some plugins, and configured `git` and `gh`, ready to turn your `/etc/nixos` folder into a repo[^other-useful-tips]. If you knew nothing about Nix when you first got here, well, I hope you were able to get the gist of it after reaching the end here, and picked up a few things along the way.
 
 I also hope that in being your guide on this journey through the major circles of Nix, that you were able to overcome some of the steep learning curve Nix/NixOS is infamously known for. If however, I failed to help with that, well, I guess I'll just have to update this post in accordance to your feedback.
 

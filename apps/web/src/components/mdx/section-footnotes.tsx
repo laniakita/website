@@ -194,7 +194,7 @@ function ExpandableFootNotesComponent(props: React.DetailedHTMLProps<React.HTMLA
                   className={`${item.props.className ?? ''} relative ${
                     liId === item.props.id
                       ? 'prose-footnotes-active'
-                      : ''
+                      : 'after:opacity-0'
                   }`}
                 />
               ) : (

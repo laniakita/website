@@ -101,8 +101,9 @@ function HeadingNode({ node, activeId }: { node: HeadingNode; activeId: string }
     <li key={node.id}>
       <p className='text-balance'>
         <button
+          aria-label={`Jump to ${node.title}`}
           onClick={pushHash}
-          className={`text-balance text-left font-mono text-sm leading-relaxed text-ctp-subtext0 hover:font-bold hover:text-ctp-text ${activeId === node.id ? 'font-bold text-ctp-text underline' : ''} md:max-w-xs md:break-words lg:max-w-sm lg:break-keep`}
+          className={`link-color-trans text-balance text-left font-mono text-sm leading-relaxed text-ctp-subtext0 hover:font-bold hover:text-ctp-text ${activeId === node.id ? 'font-bold text-ctp-text underline' : ''} md:max-w-xs md:break-words lg:max-w-sm lg:break-keep`}
         >
           {node.title}
         </button>

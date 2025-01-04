@@ -141,25 +141,12 @@ function DefaultCodeBlock(props: React.DetailedHTMLProps<React.HTMLAttributes<HT
   const [topPos, setTopPos] = useState('top-4');
 
   useEffect(() => {
-    if (preRef.current.childNodes.length == 2 && preRef.current.childNodes[1]?.childNodes) {
-      if (preRef.current.childNodes[1].childNodes.length <= 3) {
-        if (preRef.current.childNodes[1].childNodes[0]?.nodeName === 'DIV') {
-          if (preRef.current.childNodes[1].childNodes.length === 1) {
-            setTopPos('top-2');
-          } else if (preRef.current.childNodes[1].childNodes.length === 2) {
-            setTopPos('top-5');
-          }
-        } else if ((preRef.current.childNodes[1] as HTMLElement)?.offsetHeight < 100) {
-          //console.log(preRef.current);
-          setTopPos('top-2');
-        }
-      } else {
-        //console.log(preRef.current);
-        //console.log(preRef.current.getClientRects());
-        if ((preRef.current.getClientRects()?.[0]?.height ?? 0) < 100) {
-          setTopPos('top-2');
-        }
-      }
+    //console.log(preRef.current);
+    //console.log(preRef.current.getClientRects());
+    if ((preRef.current.getClientRects()?.[0]?.height ?? 0) < 70) {
+      setTopPos('top-2');
+    } else {
+      setTopPos('top-4')
     }
   }, []);
 

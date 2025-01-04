@@ -8,7 +8,7 @@
   /* mobile: h2:text-2-5xl h3:text-2xl h4:text-1-5xl h5:text-1-25xl h6:text-xl */
   /* md/tablet: h2:text-3xl h3:text-2-5xl h4:text-2xl h5:text-1-5xl h6:text-1-25xl */
   .prose-footnotes-active {
-    @apply after:pointer-events-none after:absolute after:-inset-y-2 after:-left-10 after:-right-4 after:rounded-lg after:border after:border-ctp-mauve after:bg-ctp-mauve/20
+    @apply after:pointer-events-none after:absolute after:-inset-y-2 after:-left-10 after:-right-4 after:rounded-lg after:border after:border-ctp-mauve after:bg-ctp-mauve/20 after:opacity-100 after:[transition:opacity_0.3s]
   }
   .prose-headings-mod {
     @apply prose-h2:text-2-5xl prose-h3:text-2xl prose-h4:text-1-5xl prose-h5:text-1-25xl prose-h6:text-xl md:prose-h2:text-3xl md:prose-h3:text-2-25xl md:prose-h4:text-2xl md:prose-h5:text-1-5xl md:prose-h6:text-1-25xl;
