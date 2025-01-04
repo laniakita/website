@@ -89,8 +89,13 @@ export default {
             'blockquote': {
               fontStyle: '',
               backgroundColor: 'var(--tw-prose-quotes-bg)',
-              paddingTop: '1rem',
-              paddingBottom: '1rem'
+              padding: '1.5rem 2rem 1.5rem 2rem',
+            },
+            'blockquote :is(p, h2, h3, h4, h5, h6)': {
+              paddingTop: 0,
+              paddingBottom: 0,
+              marginTop: 0,
+              marginBottom: 0,
             },
             'h1 a': {
               fontWeight: 900,

@@ -22,14 +22,14 @@ author: lani
 headline: 'NixOS Full Disk Encryption + Secure Boot + TPM Auto-Unlock - A Guide'
 subheadline: 'Bonus feature: Intro to Home Manager'
 imageSrc: ../../../assets/images/open-oc/2025/nixos_fde_tpm_guide.png
-altText: 'Background: a wireframe of a scenic mountain view, with water pooling into a pond at the left. Foreground: Directly in the center, sits the NixOS logo, a plus sign, a lock icon, a plus sign, and a motherboard icon, all imposed upon a transluscent, teal rectangle.'
+altText: 'Background: a wireframe of a scenic mountain view, with water pooling into a pond at the base. Foreground: Directly in the center, sits the NixOS logo, a plus sign, a lock icon, a plus sign, and a motherboard icon, all imposed upon a translucent, teal rectangle.'
 
 caption: 'Yes to love, yes to life, yes to staying in more! - Liz Lemon'
 ---
 
-**Happy New Year!** Yep, it's _that_ time of year again (cold). So, bundle up near the warmth of your computers exhaust, and bask in the glow of artificial light from it's connected display. 'Cause baby, it's time to start anew, with a clean install of NixOS.
+**Happy New Year!** Yep, it's _that_ time of year again (cold). So, bundle up near the warmth of your PCs exhaust fans, and bask in the glow of artificial light from it's connected display. Because, dear reader, it's time to start anew! And what better way to achieve that, than with a clean install of NixOS?
 
-Now sure, perhaps you vowed this would be the year you'd stop distro-hopping; saving your SSD from near certain doom. But if that's the case, you _might just find_ NixOS to be your final hop ... Well, only one way to find out, right?
+Now sure, perhaps you vowed this would be the year you'd stop distro-hopping; saving your SSD from near certain doom. But if that's the case, there's a good chance you _might just find_ NixOS to be that final hop you've been looking for ... Well, only one way to find out, right?
 
 >#### Note on versioning
 >
@@ -37,45 +37,69 @@ Now sure, perhaps you vowed this would be the year you'd stop distro-hopping; sa
 >
 >With that said, I'm currently unaware of any major differences in the install process between NixOS 24.05, 24.11, and 25.05.
 >
->Additionally, when _differences_ do appear, the gcc compiler (or other compiler) used during `nixos-rebuild` will likely print out a warning message to the console explaining which deprecated (or soon to be deprecated) options you've used and what changes need to made to _correct_ the configuration you're trying build—well, theoretically at least.
+>Additionally, when _differences_ do appear, the gcc compiler (or other compiler) used during `nixos-rebuild` will likely print out a warning message to the console explaining which deprecated (or soon to be deprecated) options you've used and what changes need to made to _correct_ the configuration you're trying to build—well, theoretically at least.
 >
 >As such, I hope this guide is able to serve you well! Hopefully into the future too.
 
-
 ## Introduction
 
-After taking the time to setup a fresh install of one of my favorite distros, I felt it was a good idea to post a write up about this somewhat extensive process.
+After taking the time to setup a fresh install of one of my favorite distros, I felt it was a good idea to post a write up about the somewhat extensive process to install it with Full Disk Encryption (FDE), enabling secure boot, and automatically unlocking the encrypted LUKS device via keys stored on the motherboard's TPM chip.
 
-As well, I based this guide pretty heavily off of what I’ve found on the internet, which means there are likely better guides than this one out there. Still yet, this is probably the only Full Disk Encryption (FDE) guide you'll find that ties in how to enable secure boot, to then enable the enrollment/re-enrollment of your LUKS decryption keys into your motherboards TPM slots. Also, the bonus feature briefly examines how to configure Home Manager via the `flake.nix` we'll be setting up today, so that's gotta be worth some brownie points, right? ;3
+Now, I should state that I didn't come up with this guide alone. This guide is an more of an amalgamation, based pretty heavily upon a lot of other guides and resource materials out there scattered across the net. As such, I encourage you to check out the reference materials [^full-disk-encryption---nixos-wiki][^installing-nixos-with-flakes-and-lvm-on-luks][^installing-nixos-with-full-disk-encryption][^a-modern-and-secure-desktop-setup---guides][^installation-of-nixos-with-encrypted-root][^how-to-install-nixos-with-full-disk-encryption-fde-using-luks2][^lanzaboote-docs-quick-start][^nixos-manual] I used, linked in the footnotes below.
 
-Hypothetical points aside, by the end of this article, my hope is that you’ll be able to:
+### What is NixOS?
 
-1. Install NixOS with Full Disk Encryption
-2. Install and use Lanzaboote to enable secure boot on your machine.
-3. Use `systemd-cryptenroll` to store your key on the TPM module
-4. Use `home-manager` to configure your shell and `git`/`gh`
+NixOS is a operating system (OS) based on Nix, a purely functional package management system. Nix (the package manager) treats packages like how values are treated in purely functional programming languages, like Haskell, and stores the resultant packages in the _Nix store_ (`/nix/store`). Such packages are built from _Nix Expressions_, via the functional `Nix` language.[^how-nix-works]
 
-## Part 00: Requirements
+In NixOS specifically, the whole OS is built by the Nix package manager, from a Nix expression that declares the entire system's configuration, typically in a `configuration.nix` file. Because everything is declared in a purely functional manner, a new configuration cannot overwrite previous configurations. This results in reliable, atomic upgrades, (which can be atomically rolled back) and reproducible system configurations.[^how-nix-works]
 
-1. A machine with a UEFI motherboard
-2. A machine with a TPM chip (**this guide assumes TPM2.** YMMV if you have a older TPM chip)
-3. A bootable USB (4 GB minimum) with the [Minimal NixOS](https://nixos.org/download/#nixos-iso) ISO loaded onto it
+>#### Non-FHS Compliance Warning
+>
+>The immediate implications of the _Nix store_ is that Nix, and by extension NixOS, are non Filesystem Hierarchy Standard (FHS) compliant. This creates many immediate benefits (listed above), but also some new challenges too, such as running precompiled binaries[^packaging-binaries].
+>
+>While there's workarounds[^nix-ld-a-clean-solution][^packaging-binaries] and escape hatches[^steam-nixos-wiki] for the latter, If this guide is how you experience NixOS for the first time, then I should warn you about it's most common pain point, before you sink some time into this project. As such, please consider if non-FHS compliance is a deal breaker for you, before wiping your SSD.
+
+### Who is the guide for?
+
+This guide is for anyone interested in using NixOS[^how-nix-works], in a relatively modern, secure fashion. Additionally, the level of technical knowledge in this guide, assumes some familiarity with Linux systems, at least to the point where one might feel comfortable enough to perform a manual install of Arch Linux according to the Arch Wiki's Installation Guide[^installation-guide-archwiki].
+
+While we won't be installing Arch today, we are going to be making heavy use of the command line and TUI based text editors as we perform a manual install of NixOS. I mention Arch, since many of the steps we'll be performing serve the same purpose, but we'll be performing them in a more _declarative_ sort of manner (as we'll see). If that's something you're up for, then this guide is written for you.
+
+On the other hand, if this is your first exposure to Linux or even Unix based operating systems, let alone NixOS, then I encourage you to consider _skimming_ through this guide, instead. That way, you can at least discover if anything I talk about today seems interesting to you, even if some steps might seem beyond your current comfort level of technical expertise. Because, who knows, you might just find you've been bitten by the 'Nix bug before you know it!
+
+### Goals of this Guide
+
+By the end of this article, my hope is that you’ll be able to:
+
+1. Install NixOS with Full Disk Encryption.
+2. Use a `flake.nix` to configure your NixOS system.
+3. Install and configure `Lanzaboote` to enable secure boot on your machine.
+4. Use `systemd-cryptenroll` to unlock your LUKS devices via your motherboard's TPM chip.
+5. Use `home-manager` to configure your shell and `git`/`gh`.
 
 ## Part 01: From Zero to NixOS
 
+### Prerequisites
+
+1. A machine with a UEFI motherboard
+2. A machine with a TPM2 chip (This is only needed for the "TPM Auto-unlock" part of the guide, which uses `tpm2-tss` to enable `systemd-cryptenroll` to enroll your LUKS keys into the TPM chip.[systemd-cryptenroll])
+3. A bootable USB (4 GB minimum) with the [Minimal NixOS](https://nixos.org/download/#nixos-iso) ISO[^minimal-iso] loaded onto it
+
 ### Booting the installer
 
-1. Repeatedly mash `F2` or whatever key let’s you into your system’s UEFI/Bios
-2. Disable secure boot (if enabled)
-3. Disable the CSM/Legacy Support (if enabled/applicable)
+1. Repeatedly mash `F2` or `F10` or `DEL` or whichever key let’s you into your system’s UEFI/Bios.
+2. Disable secure boot (if enabled).
+3. Disable the CSM/Legacy Support (if enabled/applicable).
    1. **WARNING: If this was enabled, any legacy hardware you might have (e.g., a GTX 660 with a VBIOS lacking UEFI support) will immediately become incompatible/stop working (until you re-enable CSM/Legacy Support). If you continue, you acknowledge that you're comfortable with removing/losing any incompatible hardware from your current system.**
 4. Move the NixOS USB to the highest boot priority (if applicable)
-5. Save your changes, and boot into your NixOS USB
-6. Once you've reached GRUB, feel free to either load the installer from the USB itself, or copy it to the RAM. You can also choose _"no modeset"_ if you're having issues (usually graphical) reaching the installer shell
+5. Save your changes, and boot into your NixOS USB.
+6. Once you've reached GRUB, feel free to either load the installer from the USB itself, or copy it to the RAM. You can also choose _"no modeset"_ if you're having issues (usually graphical) reaching the installer's `TTY`.
+
+> Note: It’s important that we install NixOS in UEFI mode, as we'll be enabling secure boot in [part 02](#part-02-secure-boot-with-lanzaboote). Most modern motherboards/hardware supports UEFI by default. Still yet, you might want to ensure that the Compatibility Support Module (CSM) is disabled if your motherboard UEFI/BIOS has that option.
 
 ### Connect to the Internet
 
-Before we proceed with the installation, it’s a good idea to make sure you can access the internet way before making any drastic changes (partitioning, formatting, etc.) that would affect your currently installed OS.
+Before we proceed with the installation, it’s probably a good idea to make sure you can access the internet way before making any drastic changes (partitioning, formatting, etc.) that would affect your currently installed OS.
 
 So, plug in an ethernet cable, or follow the steps below to setup WiFi, then try to ping a website: e.g., `ping google.com`. If you can see packets coming back, hit `ctrl+c` to stop the pinging, and you should be okay to continue.
 
@@ -139,7 +163,7 @@ Then running `ip link set wlp up` results in no error.
 
 ##### Getting Connected with `wpa_supplicant`
 
-With the WiFi adapter actually available, we can now continue (mostly) from the official NixOS manual for getting connected to the internet:
+With the WiFi adapter actually available, we can now continue (mostly) from the official NixOS manual[^nixos-manual] for getting connected to the internet:
 
 1.  `# systemctl start wpa_supplicant`
 2.  `wpa_cli`
@@ -207,15 +231,13 @@ Then all you have to do is run `quit` to return to the shell, and we can proceed
 
 ### Partitioning
 
-**WARNING: The following steps will result in DATA LOSS! Please back up anything important before proceeding!**
+>#### WARNING: The following steps will result in DATA LOSS
+>
+>Please make sure you backed up everything important before proceeding through this section!
 
 Now that we’re absolutely positive we can connect to the internet, we’re going to use `fdisk` to partition the drive we want to install NixOS on. Running the ensuing `fdisk` commands will create both a boot partition and a LVM partition. The LVM partition will hold both a root partition and a swap partition.
 
-> It’s important that we install NixOS in UEFI mode. Most modern motherboards/hardware supports UEFI by default. Still yet, you might want to ensure that the Compatibility Support Module (CSM) is disabled if your motherboard UEFI/BIOS has that option.
-
-We’ll use `fdisk` for this. So to find the disk to partition:
-
-- `# fdisk -l`
+We’ll use the `fdisk` CLI to perform the partitioning part of the process. But first, we can also use it to list our disks via `# fdisk -l`, so we can get the exact location of the disk we want to partition.
 
 ```sh noLineNumbers
 [nixos@nixos:'']$ sudo fdisk -l
@@ -238,11 +260,9 @@ Device             Start        End   Sectors   Size Type
 ...
 ```
 
-Then we’ll run `fdisk` on our disk:
-`# fdisk /dev/your-disk-to-partition`
+Once we've found our disk, we'll pass it's location as an input into `fdisk` to perform the actual partitioning steps: `# fdisk /dev/your-disk-to-partition`
 
-In my case the command looks like:
-`# fdisk /dev/nvme0n1`
+In my case the command looks like: `# fdisk /dev/nvme0n1`
 
 #### Create a Empty GPT Table
 
@@ -270,6 +290,8 @@ Disk identifier: 5213d2a2-a040-44c4-ba6a-02787812777e
 Command (m for help):
 ```
 
+>Note: Creating an empty partition table doesn't securely erase the data on your disk. If that's something you'd like to perform, perhaps ATA Security Erase[^secure-erase] might be something worth looking into.
+
 #### Create the EFI System Partition (ESP)
 
 We can then create the ESP like so:
@@ -280,10 +302,7 @@ We can then create the ESP like so:
 4. (last sector) +1G
 5. (remove signature if applicable) Y
 6. t (change partition type)
-
-> this partition should be selected by default, since it’s the only one
-
-8. (partition type) 1 (EFI)
+7. (partition type) 1 (EFI)
 
 ```sh noLineNumbers
 Command (m for help): n
@@ -351,8 +370,6 @@ Command (m for help):
 
 if it looks right, then we can save (`w`) our changes and exit!
 
-1. w
-
 Now, running `# lsblk` should look something like this:
 
 ```sh noLineNumbers
@@ -368,11 +385,9 @@ nvme0n1      259:0    0  476.9G  0 disk
 
 ### Encrypting with LUKS
 
-We’ll be encrypting the LVM partition with LUKS (version 2). To do that, we just have to run the following command:
+We’ll be encrypting the LVM partition with LUKS (version 2). To do that, we just have to run the following command: `# cryptsetup -v -y --label=NIXLUKS luksFormat --type luks2 /dev/nvme0n1p2`.
 
-- `# cryptsetup -v -y --label=NIXLUKS luksFormat --type luks2 /dev/nvme0n1p2`
-
-The `-v` flag ensures a verbose output, `-y` ensures it’ll ask us for our encryption password twice to confirm, the label flag is simply assigned to `NIXLUKS` but you can call it whatever you want. `luksFormat` actually encrypts our disk, and the `--type` flag set to `luks2` is both a newer LUKS version, and also enables us to decrypt the partition with our TPM module with `systemd-cryptenroll`.
+The `-v` flag ensures a verbose output, `-y` ensures it’ll ask us for our encryption password twice to confirm, the label flag is simply assigned to `NIXLUKS` but you can call it whatever you want. `luksFormat` actually encrypts our disk, and the `--type` flag set to `luks2`.[^cryptsetup] This is important because it's both newer, and a necessary requirement to use `systemd-cryptenroll`, which enables enrolling your LUKS keys into the TPM2.[^systemd-cryptenroll]
 
 ```sh noLineNumbers
 [nixos@nixos:'']$ sudo cryptsetup -v -y --label=NIXLUKS luksFormat --type luks2 /dev/nvme0n1p2
@@ -929,7 +944,7 @@ users.defaultUserShell = pkgs.zsh;
 
 If you've been hacking away at the command line on a Mac in the last decade, chances are you've become attached to using `zsh` instead of `bash`. In that case, the above will change the default shell (`bash`) to something that feels much more at home (`zsh`). For more see: [wiki.nixos.org/wiki/Zsh](https://wiki.nixos.org/wiki/Zsh).
 
-Alternatively, you can use [`fish`](https://wiki.nixos.org/wiki/Fish) or even [`nushell`](https://wiki.nixos.org/wiki/Nushell).\*\*\*\*
+Alternatively, you can use [`fish`](https://wiki.nixos.org/wiki/Fish) or even [`nushell`](https://wiki.nixos.org/wiki/Nushell).
 
 > As for custom prompts like [starship](https://starship.rs/) and plugins like [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting), we'll be using Home-Manager via the `flake.nix` in this guide to configure that.
 
@@ -1641,3 +1656,57 @@ I also hope that in being your guide on this journey through the major circles o
 In any event, I hope you learned something, and if you were ever a chronic distro hopper like I was, I hope NixOS brings you the same peace of mind it brought me, serving as the final distro following a very long journey of hops.
 
 _PS, I'd love to hear your thoughts! Feel free to drop a comment below, or reach out to me on social media to let me know what you thought of this article._
+
+[^installing-nixos-with-flakes-and-lvm-on-luks]: Cîmpianu D. Installing NixOS with Flakes and LVM on LUKS [Internet]. Jadarma’s Blog. 2024 [cited 2025 Jan 3]. Available from: [https://jadarma.github.io/blog/posts/2024/08/installing-nixos-with-flakes-and-lvm-on-luks/](https://jadarma.github.io/blog/posts/2024/08/installing-nixos-with-flakes-and-lvm-on-luks/)
+
+[^installing-nixos-with-full-disk-encryption]: Schulke M. Installing NixOS with Full Disk Encryption [Internet]. Gist. 2021 [cited 2025 Jan 3]. Available from: [https://gist.github.com/mara-schulke/43e2632ce73d94028f50f438037c1578](https://gist.github.com/mara-schulke/43e2632ce73d94028f50f438037c1578)
+
+[^full-disk-encryption---nixos-wiki]: Full Disk Encryption - NixOS Wiki [Internet]. NixOS Wiki. 2024 [cited 2025 Jan 3]. Available from: [https://wiki.nixos.org/wiki/Full_Disk_Encryption](https://wiki.nixos.org/wiki/Full_Disk_Encryption)
+
+[^a-modern-and-secure-desktop-setup---guides]: Kovari BB. A Modern and Secure Desktop Setup - Guides [Internet]. NixOS Discourse. 2024 [cited 2025 Jan 3]. Available from: [https://discourse.nixos.org/t/a-modern-and-secure-desktop-setup/41154](https://discourse.nixos.org/t/a-modern-and-secure-desktop-setup/41154)
+
+[^installation-of-nixos-with-encrypted-root]: Vermaat M. Installation of NixOS with encrypted root [Internet]. Gist. 2016 [cited 2025 Jan 3]. Available from: [https://gist.github.com/martijnvermaat/76f2e24d0239470dd71050358b4d5134](https://gist.github.com/martijnvermaat/76f2e24d0239470dd71050358b4d5134)
+
+[^how-to-install-nixos-with-full-disk-encryption-fde-using-luks2]: Hong SZ. How to Install NixOS With Full Disk Encryption (FDE) using LUKS2, Detached LUKS Header, and A Separate Boot Partition on an USB/MicroSD Card [Internet]. Shen’s Essays. 2021 [cited 2025 Jan 3]. Available from: [https://shen.hong.io/installing-nixos-with-encrypted-root-partition-and-seperate-boot-partition/](https://shen.hong.io/installing-nixos-with-encrypted-root-partition-and-seperate-boot-partition/)
+
+[^lanzaboote-docs-quick-start]: Stecklina J, Lahfa R, nikstur. lanzaboote/docs/QUICK_START [Internet]. GitHub. 2024 [cited 2025 Jan 3]. Available from: [https://github.com/nix-community/lanzaboote/blob/master/docs/QUICK_START.md](https://github.com/nix-community/lanzaboote/blob/master/docs/QUICK_START.md)
+
+[^nixos-and-flakes-book]: Yin R. NixOS & Flakes Book [Internet]. NixOS & Flakes Book. 2024 [cited 2025 Jan 3]. Available from: [https://nixos-and-flakes.thiscute.world/](https://nixos-and-flakes.thiscute.world/)
+
+[^how-nix-works]: NixOS contributors. How Nix Works | Nix & NixOS [Internet]. [cited 2025 Jan 3]. Available from: [https://nixos.org/guides/how-nix-works/](https://nixos.org/guides/how-nix-works/)
+
+[^minimal-iso]: Download | Nix & NixOS [Internet]. [cited 2025 Jan 3]. Available from: [https://nixos.org/download/#nixos-iso](https://nixos.org/download/#nixos-iso)
+
+[^nixos-manual]: NixOS contributors. NixOS Manual [Internet]. Nix & NixOS | Declarative builds and deployments. [cited 2025 Jan 3]. Available from: [https://nixos.org/manual/nixos/unstable/](https://nixos.org/manual/nixos/unstable/)
+
+[^secure-erase]: encryption - How to secure erase files and folders? - Information Security Stack Exchange [Internet]. [cited 2025 Jan 3]. Available from: [https://security.stackexchange.com/questions/175968/how-to-secure-erase-files-and-folders](https://security.stackexchange.com/questions/175968/how-to-secure-erase-files-and-folders)
+
+[^i-have-16gb-ram--do-i-need-32gb-swap]: Szelei T. I have 16GB RAM. Do I need 32GB swap? - Ask Ubuntu [Internet]. Ask Ubuntu. 2018 [cited 2025 Jan 3]. Available from: [https://askubuntu.com/questions/49109/i-have-16gb-ram-do-i-need-32gb-swap](https://askubuntu.com/questions/49109/i-have-16gb-ram-do-i-need-32gb-swap)
+
+[^modularize-your-nixos-configuration]: Yin R. Modularize Your NixOS Configuration [Internet]. NixOS & Flakes Book. 2024 [cited 2025 Jan 3]. Available from: [https://nixos-and-flakes.thiscute.world/nixos-with-flakes/modularize-the-configuration#modularize-your-nixos-configuration](https://nixos-and-flakes.thiscute.world/nixos-with-flakes/modularize-the-configuration#modularize-your-nixos-configuration)
+
+[^the-nix-way/dev-templates]: Perkins L. the-nix-way/dev-templates [Internet]. The Nix Way; 2024 [cited 2025 Jan 3]. Available from: [https://github.com/the-nix-way/dev-templates](https://github.com/the-nix-way/dev-templates)
+
+[^incident-xkcd]: Munroe R. Incident [Internet]. xkcd. [cited 2025 Jan 3]. Available from: [https://xkcd.com/838/](https://xkcd.com/838/)
+
+[^starship--cross--shell-prompt]: Starship: Cross-Shell Prompt [Internet]. [cited 2025 Jan 3]. Available from: [https://starship.rs/](https://starship.rs/)
+
+[^zsh-users/zsh-syntax-highlighting]: zsh-users/zsh-syntax-highlighting [Internet]. zsh-users; 2025 [cited 2025 Jan 3]. Available from: [https://github.com/zsh-users/zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting)
+
+[^home-manager-manual]: Home Manager Manual [Internet]. [cited 2025 Jan 3]. Available from: [https://nix-community.github.io/home-manager/](https://nix-community.github.io/home-manager/)
+
+[^home-manager---option-search]: Snel P. Home Manager - Option Search [Internet]. [cited 2025 Jan 3]. Available from: [https://home-manager-options.extranix.com/](https://home-manager-options.extranix.com/)
+
+[^issues---nix-community-home-manager]: Issues · nix-community/home-manager [Internet]. GitHub. [cited 2025 Jan 3]. Available from: [https://github.com/nix-community/home-manager](https://github.com/nix-community/home-manager)
+
+[^installation-guide-archwiki]: Installation guide - ArchWiki [Internet]. [cited 2025 Jan 3]. Available from: [https://wiki.archlinux.org/title/Installation_guide](https://wiki.archlinux.org/title/Installation_guide)
+
+[^packaging-binaries]: Packaging/Binaries - NixOS Wiki [Internet]. [cited 2025 Jan 3]. Available from: [https://wiki.nixos.org/wiki/Packaging/Binaries](https://wiki.nixos.org/wiki/Packaging/Binaries)
+
+[^nix-ld-a-clean-solution]: Thornhill JT and J. Nix-ld: A clean solution for issues with pre-compiled executables on NixOS [Internet]. 2022 [cited 2025 Jan 3]. Available from: [https://blog.thalheim.io/2022/12/31/nix-ld-a-clean-solution-for-issues-with-pre-compiled-executables-on-nixos/](https://blog.thalheim.io/2022/12/31/nix-ld-a-clean-solution-for-issues-with-pre-compiled-executables-on-nixos/)
+
+[^steam-nixos-wiki]: Steam - NixOS Wiki [Internet]. [cited 2025 Jan 3]. Available from: [https://wiki.nixos.org/wiki/Steam#FHS_environment_only](https://wiki.nixos.org/wiki/Steam#FHS_environment_only)
+
+[^systemd-cryptenroll]: systemd-cryptenroll - ArchWiki [Internet]. [cited 2025 Jan 3]. Available from: [https://wiki.archlinux.org/title/Systemd-cryptenroll](https://wiki.archlinux.org/title/Systemd-cryptenroll)
+
+[^cryptsetup]: cryptsetup(8) - Linux man page [Internet]. [cited 2025 Jan 3]. Available from: [https://linux.die.net/man/8/cryptsetup](https://linux.die.net/man/8/cryptsetup)
