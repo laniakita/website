@@ -150,12 +150,12 @@ function DefaultCodeBlock(props: React.DetailedHTMLProps<React.HTMLAttributes<HT
             setTopPos('top-5');
           }
         } else if ((preRef.current.childNodes[1] as HTMLElement)?.offsetHeight < 100) {
-          console.log(preRef.current);
+          //console.log(preRef.current);
           setTopPos('top-2');
         }
       } else {
-        console.log(preRef.current);
-        console.log(preRef.current.getClientRects());
+        //console.log(preRef.current);
+        //console.log(preRef.current.getClientRects());
         if ((preRef.current.getClientRects()?.[0]?.height ?? 0) < 100) {
           setTopPos('top-2');
         }

@@ -80,6 +80,8 @@ function ExpandableFootNotesComponent(props: React.DetailedHTMLProps<React.HTMLA
   const oListRef = useRef<HTMLOListElement>(null!);
   const liRef = useRef<HTMLLIElement>(null!);
   const params = useSearchParams();
+  const [activeLi, setActiveLi] = useState(false);
+  const [liId, setLiId] = useState<string | null>(null);
 
   const handleExpand = useCallback(() => {
     // get expanded height;
@@ -101,6 +103,7 @@ function ExpandableFootNotesComponent(props: React.DetailedHTMLProps<React.HTMLA
       if (currHash.match(re) && !currHash.match(nullRe)) {
         //setFnHash(currHash)
         //console.log('hash is fnHash')
+        setLiId(currHash.substring(1));
 
         if ('scrollRestoration' in window.history) {
           //console.log('found scroll restore point:', window.history.scrollRestoration)
@@ -112,7 +115,7 @@ function ExpandableFootNotesComponent(props: React.DetailedHTMLProps<React.HTMLA
 
         if (!expanded) {
           expandFootnotes();
-
+          setActiveLi(true);
           setTimeout(() => {
             //console.log('liref', liRef?.current?.getClientRects()[0]?.y);
             const altLiTop = document.getElementById(currHash.substring(1))?.getClientRects()[0]?.top;
@@ -122,7 +125,8 @@ function ExpandableFootNotesComponent(props: React.DetailedHTMLProps<React.HTMLA
               window.scrollTo(0, altLiTop - offSets());
             }
           }, 801);
-        }
+        } 
+
       } else {
         //console.log(window.location.hash, 'is not fnhash');
         if ('scrollRestoration' in window.history) {
@@ -132,6 +136,7 @@ function ExpandableFootNotesComponent(props: React.DetailedHTMLProps<React.HTMLA
             //console.log('restored to auto');
           }
         }
+        setLiId(null);
       }
     },
     [expandFootnotes, expanded],
@@ -183,9 +188,14 @@ function ExpandableFootNotesComponent(props: React.DetailedHTMLProps<React.HTMLA
           ? currList.map((item) =>
               item.props ? (
                 <li
-                  ref={liRef}
+                  key={item.props.id}
                   {...(item.props as unknown as LiHTMLAttributes<HTMLLIElement>)}
-                  key={crypto.randomUUID()}
+                  ref={liRef}
+                  className={`${item.props.className ?? ''} relative ${
+                    liId === item.props.id
+                      ? 'prose-footnotes-active'
+                      : ''
+                  }`}
                 />
               ) : (
                 ''
