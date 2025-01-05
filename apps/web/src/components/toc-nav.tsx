@@ -216,23 +216,23 @@ const concatHeadingUtil = (heading: string) => {
 
   // todo: figure out a math formula
   if (window.innerWidth <= Z_FOLD_SCREEN) {
-    concat = 12;
+    concat = 10;
   } else if (window.innerWidth <= 360) {
-    concat = 14;
+    concat = 12;
   } else if (window.innerWidth <= IPHONE_SE_SCREEN) {
-    concat = 15;
+    concat = 13;
   } else if (window.innerWidth <= 390) {
-    concat = 17;
+    concat = 15;
   } else if (window.innerWidth <= 414) {
-    concat = 20;
+    concat = 17;
   } else if (window.innerWidth <= IPHONE_THIRTEEN_PRO_MAX) {
-    concat = 21; 
+    concat = 19; 
   } else if (window.innerWidth <= IPHONE_FOURTEEN_PRO_MAX) {
-    concat = 22;
+    concat = 20;
   } else if (window.innerWidth <= WEIRD_PHABLET) {
-    concat = 28;
+    concat = 24;
   } else if (window.innerWidth <= SMALL_SCREEN_MAX) {
-    concat = 33;
+    concat = 28;
   } else if (window.innerWidth <= MED_SCREEN) {
     concat = 45;
   }
