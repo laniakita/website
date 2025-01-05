@@ -162,7 +162,7 @@ export default {
             'pre > code': {
               float: 'left',
               minWidth: '100%',
-              paddingRight: '4rem'
+              paddingRight: '4rem',
             },
             'div.code-line:empty': {
               /* it is necessary because there is no even eol character in div code-lines */

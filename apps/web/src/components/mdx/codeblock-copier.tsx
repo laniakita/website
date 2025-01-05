@@ -157,7 +157,7 @@ function DefaultCodeBlock(props: React.DetailedHTMLProps<React.HTMLAttributes<HT
       }
     }
   }, []);
-  
+
   return (
     <div id={blockId} className='relative'>
       <pre

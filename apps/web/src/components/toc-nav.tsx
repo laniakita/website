@@ -226,7 +226,7 @@ const concatHeadingUtil = (heading: string) => {
   } else if (window.innerWidth <= 414) {
     concat = 17;
   } else if (window.innerWidth <= IPHONE_THIRTEEN_PRO_MAX) {
-    concat = 19; 
+    concat = 19;
   } else if (window.innerWidth <= IPHONE_FOURTEEN_PRO_MAX) {
     concat = 20;
   } else if (window.innerWidth <= WEIRD_PHABLET) {
@@ -269,10 +269,10 @@ export default function ToCMenu() {
 
   const handleToCOffClick = useCallback((e: MouseEvent) => {
     e.stopPropagation();
-     
+
     if ((e.target as HTMLElement).id === 'show-hide-table-of-contents-button-mobile') {
       // do nothing
-    } else if ((dropToCRef?.current?.contains(e.target as Node)) && (e.target as Node)?.nodeName !== 'BUTTON') {
+    } else if (dropToCRef?.current?.contains(e.target as Node) && (e.target as Node)?.nodeName !== 'BUTTON') {
       // do nothing
     } else {
       setShowMobileMenu(false);
