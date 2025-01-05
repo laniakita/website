@@ -15,18 +15,19 @@ export function Paragraph(props: { children?: ReactNode }) {
       const nodeMap = Object.values(props.children as ReactElement[])?.map((node) => {
         if (typeof node === 'string') {
           //console.log(node);
-          const spanNode = <span key={crypto.randomUUID()} id={`span-${id}`}>{node}</span>;
+          const spanNode = (
+            <span key={crypto.randomUUID()} id={`span-${id}`}>
+              {node}
+            </span>
+          );
           return spanNode;
         }
         return node;
       });
 
-
-      return (
-        <p id={`paragraph-${id}`} key={crypto.randomUUID()} {...{children: nodeMap}} />
-      );
+      return <p id={`paragraph-${id}`} key={crypto.randomUUID()} {...{ children: nodeMap }} />;
     }
   }
 
-  return <p {...props}  />;
+  return <p {...props} />;
 }
