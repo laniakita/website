@@ -61,7 +61,7 @@ In NixOS specifically, the whole OS is built by the Nix package manager, from a 
 
 ### Who is the guide for?
 
-This guide is for anyone interested in using NixOS[^how-nix-works], in a relatively secure fashion, with _modern conveniences_ like using an onboard TPM2 chip to decrypt LUKS devices during boot up. Additionally, the level of technical knowledge in this guide, assumes a somewhat decent familiarity with Linux systems, at least to the point where one might feel comfortable enough to perform a manual install either of Arch Linux[^installation-guide-archwiki] or Gentoo[^gentoo-amd64-guide].
+This guide is for anyone interested in using NixOS[^how-nix-works], in a relatively secure fashion, with _modern conveniences_ like using an onboard TPM2 chip to decrypt LUKS devices during boot up. Additionally, the level of technical knowledge in this guide, assumes a somewhat decent familiarity with Linux systems, at least to the point where one might feel comfortable enough to perform a manual install of either Arch Linux[^installation-guide-archwiki] or Gentoo[^gentoo-amd64-guide].
 
 While we won't be installing Arch or Gentoo today, we are going to be making heavy use of the command line and TUI based text editors as we perform a manual install of NixOS. If that's something you're up for, then this guide is written for you.
 
@@ -1119,7 +1119,7 @@ We can define a minimal `flake.nix` like so:
 }
 ```
 
-> I'm using `nixos-unstable` in this guide instead of the stable `nixos-24.11` for a few reasons. One is that `home-manager:master` tracks `nixos-unstable`. Two is that the nature of Nix makes rollbacks incredibly easy, and significantly cuts down the risk of using `nixos-unstable`. Finally, while the `nixos-unstable` _channel_ is occasionally true to it's namesake, it's not _quite_ as unstable or as bleeding-edge as something like Arch Linux. That's is due to the somewhat significant amount of automated build testing any given commit into `nixpkgs:master` needs to go through before being released as the latest `nixos-unstable` build/channel update.[^nix-channels]
+> I'm using `nixos-unstable` in this guide instead of the stable `nixos-24.11` for a few reasons. One is that `home-manager:master` tracks `nixos-unstable`. Two is that the nature of Nix makes rollbacks incredibly easy, and significantly cuts down the risk of using `nixos-unstable`. Finally, while the `nixos-unstable` _channel_ is occasionally true to it's namesake, it's not _quite_ as unstable or as bleeding-edge as something like Arch Linux. That's due to the somewhat significant amount of automated build testing any given commit into `nixpkgs:master` needs to go through before being released as the latest `nixos-unstable` build/channel update.[^nix-channels]
 
 And with that, we can finally proceed to the very much anticipated install command.
 
