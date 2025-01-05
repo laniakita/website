@@ -5,14 +5,14 @@ import InfoBox from './info-box';
 import { SocialIconNav2 } from './social-icon-nav-client';
 
 export const socialItems3 = [
-  {
+  /*{
     title: 'Mastodon',
     url: 'https://hachyderm.io/@lani',
     iconName: 'icon-[fa6-brands--mastodon]',
     linkName: 'Mastodon!',
     textSize: 'text-4xl',
     textSizeAlt: 'text-3xl',
-  },
+  }, */
   {
     title: 'Bluesky',
     url: 'https://bsky.app/profile/laniakita.com',
@@ -40,18 +40,18 @@ export const socialItems2 = [
     textSize: 'text-3xl md:text-4xl',
   },
   {
-    title: 'Mastodon',
-    url: 'https://hachyderm.io/@lani',
-    iconName: 'icon-[fa6-brands--mastodon]',
-    linkName: 'Mastodon!',
-    textSize: 'text-3xl md:text-4xl',
-  },
-  {
     title: 'Bluesky',
     url: 'https://bsky.app/profile/laniakita.com',
     iconName: 'icon-[fa6-brands--bluesky]',
     linkName: 'Bluesky!',
     textSize: 'text-2xl md:text-3xl',
+  },
+  {
+    title: 'Mastodon',
+    url: 'https://hachyderm.io/@lani',
+    iconName: 'icon-[fa6-brands--mastodon]',
+    linkName: 'Mastodon!',
+    textSize: 'text-3xl md:text-4xl',
   },
   {
     title: 'Instagram',

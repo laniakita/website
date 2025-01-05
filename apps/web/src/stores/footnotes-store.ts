@@ -19,6 +19,6 @@ export const createFootnotesStore = (initState: FootnotesState = defaultInitStat
     ...initState,
     expandFootnotes: () => {
       set((state) => ({ expanded: (state.expanded = true) }));
-    }
+    },
   }));
 };

@@ -6,7 +6,7 @@ import { Paragraph } from './paragraph';
 import { getMDXComponent } from './mdx-bundler-components';
 //import { useMDXComponent } from 'next-contentlayer2/hooks';
 import CodeBlockCopier from './codeblock-copier';
-import Footnotes, {SupAnchors} from './section-footnotes';
+import Footnotes, { SupAnchors } from './section-footnotes';
 import Anchors from './anchor-tags';
 
 export const globalMdxComponents = {

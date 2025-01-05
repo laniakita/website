@@ -10,20 +10,22 @@ export function Paragraph(props: { children?: ReactNode }) {
     }
 
     if ((props.children as ReactElement[]).length > 2) {
-    const nodeMap = Object.values((props.children as ReactElement[]))?.map((node) => {
-      if (typeof node === 'string') {
-        //console.log(node);
-        const spanNode = <span>{node}</span>
-        return spanNode;
-      }
-      return node;
-    });
-    
-    return <p {...props} key={crypto.randomUUID()}>{nodeMap}</p>
-    } 
+      const nodeMap = Object.values(props.children as ReactElement[])?.map((node) => {
+        if (typeof node === 'string') {
+          //console.log(node);
+          const spanNode = <span>{node}</span>;
+          return spanNode;
+        }
+        return node;
+      });
+
+      return (
+        <p {...props} key={crypto.randomUUID()}>
+          {nodeMap}
+        </p>
+      );
+    }
   }
 
-  return (
-    <p {...props} key={crypto.randomUUID()} />
-  );
+  return <p {...props} key={crypto.randomUUID()} />;
 }

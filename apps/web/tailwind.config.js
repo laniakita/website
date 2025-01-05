@@ -18,21 +18,36 @@ export default {
         mono: ['var(--font-zeroxproto)'],
       },
       fontSize: {
-        '2-75xl': ['1.78125rem', {
-          lineHeight: '2.1875rem'
-        }],
-        '2-5xl': ['1.6875rem', {
-          lineHeight: '2.125rem'
-        }],
-        '2-25xl': ['1.59375rem', {
-          lineHeight: '2.0625rem'
-        }],
-        '1-5xl': ['1.375rem', {
-          lineHeight: '1.875rem'
-        }],
-        '1-25xl': ['1.3125rem', {
-          lineHeight: '1.8125rem'
-        }]
+        '2-75xl': [
+          '1.78125rem',
+          {
+            lineHeight: '2.1875rem',
+          },
+        ],
+        '2-5xl': [
+          '1.6875rem',
+          {
+            lineHeight: '2.125rem',
+          },
+        ],
+        '2-25xl': [
+          '1.59375rem',
+          {
+            lineHeight: '2.0625rem',
+          },
+        ],
+        '1-5xl': [
+          '1.375rem',
+          {
+            lineHeight: '1.875rem',
+          },
+        ],
+        '1-25xl': [
+          '1.3125rem',
+          {
+            lineHeight: '1.8125rem',
+          },
+        ],
       },
 
       screens: {
@@ -86,7 +101,7 @@ export default {
           css: {
             'blockquote p:first-of-type::before': false,
             'blockquote p:first-of-type::after': false,
-            'blockquote': {
+            blockquote: {
               fontStyle: '',
               backgroundColor: 'var(--tw-prose-quotes-bg)',
               padding: '1.5rem 2rem 1.5rem 2rem',
@@ -131,13 +146,15 @@ export default {
               margin: '-1px',
               padding: 0,
               width: '1px',
-              height: '1px'
+              height: '1px',
             },
             '#footnote-label': {
               overflow: 'hidden',
               width: '100%',
               height: '1px',
-              backgroundColor: 'var(--footnote-divider-line)'
+              marginTop: '3rem',
+              marginBottom: '3rem',
+              backgroundColor: 'var(--footnote-divider-line)',
             },
             pre: {
               overflowX: 'auto',

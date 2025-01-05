@@ -146,7 +146,7 @@ function DefaultCodeBlock(props: React.DetailedHTMLProps<React.HTMLAttributes<HT
     if ((preRef.current.getClientRects()?.[0]?.height ?? 0) < 70) {
       setTopPos('top-2');
     } else {
-      setTopPos('top-4')
+      setTopPos('top-4');
     }
   }, []);
 

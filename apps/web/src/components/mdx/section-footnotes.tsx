@@ -47,7 +47,7 @@ function CollapsedFootNotesComponent(props: React.DetailedHTMLProps<React.HTMLAt
   const currList = ((props.children as ReactElement[])[2] as unknown as ReactElement<HTMLAttributes<HTMLOListElement>>)
     ?.props?.children as ReactElement<HTMLLIElement>[];
 
-  const newList = currList.slice(0, 30);
+  const newList = currList.slice(0, 15);
 
   return (
     <section {...props}>
@@ -71,16 +71,16 @@ function ExpandableFootNotesComponent(props: React.DetailedHTMLProps<React.HTMLA
   const h2 = (props.children as ReactElement[])[0] as ReactElement<HTMLHeadingElement>;
   const currList = ((props.children as ReactElement[])[2] as unknown as ReactElement<HTMLAttributes<HTMLOListElement>>)
     ?.props?.children as ReactElement<HTMLLIElement>[];
-  const newList = currList.slice(0, 30);
+  const newList = currList.slice(0, 15);
 
   const [sectionHeight, setSectionHeight] = useState(0);
   const { expanded, expandFootnotes } = useFootnotesStore((state) => state);
   const [internalExpanded, setInternalExpanded] = useState(expanded);
+  const [expandedFromButton, setExpandedFromButton] = useState(false);
   const sectionRef = useRef<HTMLElement>(null!);
   const oListRef = useRef<HTMLOListElement>(null!);
   const liRef = useRef<HTMLLIElement>(null!);
   const params = useSearchParams();
-  const [activeLi, setActiveLi] = useState(false);
   const [liId, setLiId] = useState<string | null>(null);
 
   const handleExpand = useCallback(() => {
@@ -92,7 +92,7 @@ function ExpandableFootNotesComponent(props: React.DetailedHTMLProps<React.HTMLA
     }, 5);
     setTimeout(() => {
       setInternalExpanded(true);
-    }, 20);
+    }, 2000);
   }, []);
 
   const handleHash = useCallback(
@@ -115,7 +115,6 @@ function ExpandableFootNotesComponent(props: React.DetailedHTMLProps<React.HTMLA
 
         if (!expanded) {
           expandFootnotes();
-          setActiveLi(true);
           setTimeout(() => {
             //console.log('liref', liRef?.current?.getClientRects()[0]?.y);
             const altLiTop = document.getElementById(currHash.substring(1))?.getClientRects()[0]?.top;
@@ -125,8 +124,7 @@ function ExpandableFootNotesComponent(props: React.DetailedHTMLProps<React.HTMLA
               window.scrollTo(0, altLiTop - offSets());
             }
           }, 801);
-        } 
-
+        }
       } else {
         //console.log(window.location.hash, 'is not fnhash');
         if ('scrollRestoration' in window.history) {
@@ -166,14 +164,19 @@ function ExpandableFootNotesComponent(props: React.DetailedHTMLProps<React.HTMLA
 
   // todo: remove css transition animation, when expanded from an <sup /> link
   return (
-    <section ref={sectionRef} {...props} className={`${props.className} relative [transition:_height_0.8s_ease-out]`}>
+    <section
+      ref={sectionRef}
+      {...props}
+      className={`${props.className} relative ${expandedFromButton ? '[transition:_height_0.8s_ease-out]' : expanded ? 'h-full' : ''}`}
+    >
       {h2}
       <div className='pointer-events-none absolute inset-0'>
         <div
-          className={`absolute ${expanded ? 'hidden' : ''} inset-x-0 bottom-0 flex size-full max-h-[50%] items-center justify-center overflow-x-auto rounded-b-lg bg-ctp-base/20 bg-gradient-to-b from-transparent to-ctp-base text-center text-ctp-overlay0 dark:bg-ctp-midnight/20 dark:to-ctp-midnight`}
+          className={`absolute ${expanded ? 'hidden' : ''} inset-x-0 bottom-0 z-10 flex size-full max-h-[50%] items-center justify-center overflow-x-auto rounded-b-lg bg-ctp-base/20 bg-gradient-to-b from-transparent to-ctp-base text-center text-ctp-overlay0 dark:bg-ctp-midnight/20 dark:to-ctp-midnight`}
         >
           <button
             onClick={() => {
+              setExpandedFromButton(true);
               expandFootnotes();
             }}
             className='pointer-events-auto flex w-fit flex-row items-center gap-[1ch] rounded-lg border border-ctp-mauve bg-ctp-mauve/10 p-4 font-mono text-sm text-ctp-mauve shadow-lg backdrop-blur-sm [transition:_color_0.3s,_border_0.3s,_box-shadow_0.3s,_backdrop-filter_0.3s,_background_0.3s] hover:border-ctp-pink hover:bg-ctp-pink/10 hover:text-ctp-pink hover:shadow-xl hover:backdrop-blur'
@@ -192,9 +195,7 @@ function ExpandableFootNotesComponent(props: React.DetailedHTMLProps<React.HTMLA
                   {...(item.props as unknown as LiHTMLAttributes<HTMLLIElement>)}
                   ref={liRef}
                   className={`${item.props.className ?? ''} relative ${
-                    liId === item.props.id
-                      ? 'prose-footnotes-active'
-                      : 'after:opacity-0'
+                    liId === item.props.id ? 'prose-footnotes-active' : 'after:opacity-0'
                   }`}
                 />
               ) : (

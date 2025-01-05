@@ -34,15 +34,14 @@ export const metadata: Metadata = {
 };
 
 function SocialIconNav3({ boxItems }: SocialIconNavProps) {
-   const uniqueKey = (idx:number) => {
-
+  const uniqueKey = (idx: number) => {
     const num = Math.floor(Math.random() * 1000 + idx);
 
     return `social-icon-home-${crypto.randomUUID()}-${num}-${idx}`;
-  }
+  };
 
   return (
-    <div className='flex grid-cols-none flex-row items-center gap-2 md:grid md:grid-cols-3 md:gap-x-1 md:gap-y-0 lg:flex lg:gap-2'>
+    <div className='flex grid-cols-none flex-row items-center gap-2 md:grid md:grid-cols-3 md:gap-x-1 md:gap-y-0 xl:flex xl:gap-2'>
       {boxItems.map((item, idx) => (
         <Link
           key={uniqueKey(idx)}

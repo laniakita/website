@@ -40,9 +40,7 @@ export default function Footer({
     <footer
       className={`${hiddenPaths.includes(pathname) ? 'hidden' : 'block'} ${isWeirdPath(pathname, override) ? 'hidden' : ''} relative w-full`}
     >
-      <div
-        className={`relative flex w-full flex-col items-center justify-center overflow-hidden ${extra}`}
-      >
+      <div className={`relative flex w-full flex-col items-center justify-center overflow-hidden ${extra}`}>
         {/* contents container that givs the blurry bg + the pattern */}
         <div className='flex size-full flex-col backdrop-blur-2xl'>
           {/* <FooterSubscribe /> */}

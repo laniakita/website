@@ -12,6 +12,7 @@ const MAIN_PAGES_ARR = new Map([
 export const MAIN_PAGES = Object.fromEntries(MAIN_PAGES_ARR);
 
 export const SOCIALS_NAVBAR = [
+  /*
   {
     title: 'Mastodon',
     url: 'https://hachyderm.io/@lani',
@@ -20,6 +21,7 @@ export const SOCIALS_NAVBAR = [
     textSize: 'text-4xl',
     textSizeAlt: 'text-3xl',
   },
+  */
   {
     title: 'Bluesky',
     url: 'https://bsky.app/profile/laniakita.com',
@@ -47,18 +49,18 @@ export const SOCIALS_FULL = [
     textSize: 'text-3xl md:text-4xl min-h-[2rem] min-w-[2rem]',
   },
   {
-    title: 'Mastodon',
-    url: 'https://hachyderm.io/@lani',
-    iconName: 'icon-[fa6-brands--mastodon]',
-    linkName: 'Mastodon!',
-    textSize: 'text-3xl md:text-4xl min-h-[2rem] min-w-[2rem]',
-  },
-  {
     title: 'Bluesky',
     url: 'https://bsky.app/profile/laniakita.com',
     iconName: 'icon-[fa6-brands--bluesky]',
     linkName: 'Bluesky!',
     textSize: 'text-2xl md:text-3xl min-h-[2rem] min-w-[2rem]',
+  },
+  {
+    title: 'Mastodon',
+    url: 'https://hachyderm.io/@lani',
+    iconName: 'icon-[fa6-brands--mastodon]',
+    linkName: 'Mastodon!',
+    textSize: 'text-3xl md:text-4xl min-h-[2rem] min-w-[2rem]',
   },
   {
     title: 'Instagram',

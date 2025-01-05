@@ -1,6 +1,6 @@
 id: 124f4e19-a4e1-4f6d-85c7-a84ada73b3a5
 date: 2024-12-20T20:38:33Z
-title: Butterfly Signal 
+title: Butterfly Signal
 tech:
   - TypeScript
   - Rust
@@ -14,4 +14,3 @@ altText: Butterfly Signal's default image imposed on a gray radial gradient (dar
 description: A browser extension to help you discover websites on Bluesky/AtProto.
 embedded: false
 foreignUrl: https://github.com/laniakita/butterfly-signal
-

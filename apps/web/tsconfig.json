@@ -14,7 +14,7 @@
       "contentlayer/generated": ["./.contentlayer/generated"],
       "versionVault/compiled": ["./.versionvault/compiled/latest.json"]
     },
-    "allowSyntheticDefaultImports" : true,
+    "allowSyntheticDefaultImports": true,
     "types": ["@serwist/next/typings", "bun", "node"],
     "resolveJsonModule": true
   },

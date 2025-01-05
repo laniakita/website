@@ -3,6 +3,6 @@
     @apply color-trans-2 flex items-center justify-center rounded border border-ctp-surface0 text-ctp-text shadow-none hover:bg-ctp-mauve hover:text-ctp-base hover:shadow-none hover:shadow-ctp-mauve/30 dark:border-ctp-base;
   }
   .share-button {
-    @apply color-trans-quick flex w-full flex-row items-center gap-[1ch] rounded border border-ctp-overlay0 px-4 py-2 text-ctp-subtext0 hover:text-ctp-base dark:hover:text-ctp-text 
+    @apply color-trans-quick flex w-full flex-row items-center gap-[1ch] rounded border border-ctp-overlay0 px-4 py-2 text-ctp-subtext0 hover:text-ctp-base dark:hover:text-ctp-text;
   }
 }

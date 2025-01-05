@@ -29,17 +29,17 @@ caption: 'Yes to love, yes to life, yes to staying in more! - Liz Lemon'
 
 **Happy New Year!** Yep, it's _that_ time of year again (cold). So, bundle up near the warmth of your PCs exhaust fans, and bask in the glow of artificial light from it's connected display. Because, dear reader, it's time to start anew! And what better way to achieve that, than with a clean install of NixOS?
 
-Now sure, perhaps you vowed this would be the year you'd stop distro-hopping; saving your SSD from near certain doom. But if that's the case, there's a good chance you _might just find_ NixOS to be that final hop you've been looking for ... Well, only one way to find out, right?
+Sure, perhaps you vowed this would be the year you'd stop distrohopping[^distrohopper], saving your SSD from near certain doom. But if that's the case, there's a good chance you _might just find_ NixOS to be that final hop you've been looking for ... Well, only one way to find out, right?
 
->#### Note on versioning
+> #### Note on versioning
 >
 > I wrote most of this article before NixOS 24.11 (Vicuña) was made stable. At the time I went through the install process for this write-up, NixOS 24.05 (Uakari) was loaded onto my USB. Currently, NixOS 25.05 (Warbler) is the latest Unstable release as of the time of publishing (1/2/2024).
 >
->With that said, I'm currently unaware of any major differences in the install process between NixOS 24.05, 24.11, and 25.05.
+> With that said, I'm currently unaware of any major differences in the install process between NixOS 24.05, 24.11, and 25.05.
 >
->Additionally, when _differences_ do appear, the gcc compiler (or other compiler) used during `nixos-rebuild` will likely print out a warning message to the console explaining which deprecated (or soon to be deprecated) options you've used and what changes need to made to _correct_ the configuration you're trying to build—well, theoretically at least.
+> Additionally, when _differences_ do appear, the gcc compiler (or other compiler) used during `nixos-rebuild` will likely print out a warning message to the console explaining which deprecated (or soon to be deprecated) options you've used and what changes need to made to _correct_ the configuration you're trying to build—well, theoretically at least.
 >
->As such, I hope this guide is able to serve you well! Hopefully into the future too.
+> As such, I hope this guide is able to serve you well! Hopefully into the future too.
 
 ## Introduction
 
@@ -53,11 +53,11 @@ NixOS is a operating system (OS) based on Nix, a purely functional package manag
 
 In NixOS specifically, the whole OS is built by the Nix package manager, from a Nix expression that declares the entire system's configuration, typically in a `configuration.nix` file. Because everything is declared in a purely functional manner, a new configuration cannot overwrite previous configurations. This results in reliable, atomic upgrades, (which can be atomically rolled back) and reproducible system configurations.[^how-nix-works]
 
->#### Non-FHS Compliance Warning
+> #### Non-FHS Compliance Warning
 >
->The immediate implications of the _Nix store_ is that Nix, and by extension NixOS, are non Filesystem Hierarchy Standard (FHS) compliant. This creates many immediate benefits (listed above), but also some new challenges too, such as running precompiled binaries[^nixos-wiki--packaging-binaries].
+> The immediate implications of the _Nix store_ is that Nix, and by extension NixOS, are non Filesystem Hierarchy Standard (FHS) compliant. This creates many immediate benefits (listed above), but also some new challenges too, such as running precompiled binaries[^nixos-wiki--packaging-binaries].
 >
->While there's workarounds[^nix-ld-a-clean-solution][^nixos-wiki--packaging-binaries] and escape hatches[^nixos-wiki--steam] for the latter, If this guide is how you experience NixOS for the first time, then I should warn you about it's most common pain point, before you sink some time into this project. As such, please consider if non-FHS compliance is a deal breaker for you, before wiping your SSD.
+> While there's workarounds[^nix-ld-a-clean-solution][^nixos-wiki--packaging-binaries] and escape hatches[^nixos-wiki--steam] for the latter, If this guide is how you experience NixOS for the first time, then I should warn you about it's most common pain point, before you sink some time into this project. As such, please consider if non-FHS compliance is a deal breaker for you, before wiping your SSD.
 
 ### Who is the guide for?
 
@@ -78,6 +78,8 @@ By the end of this article, my hope is that you’ll be able to:
 5. Use `home-manager` to configure your shell and `git`/`gh`.
 
 ## Part 01: From Zero to NixOS
+
+> **WARNING: Lani Akita and laniakita.com (collectively, "I"), offers this informational article without warranty or support.** You are hereby warned that I bear no responsibility for what happens to your device if you follow any of the suggestions, commands, or steps in this article. I am not responsible for any unintended consequences, damages, losses, or any other unfortunate events as a result of you following this article. **You are required to do your due diligence before running ANY command, suggestion, or step offered in this article.** If you disagree with any of the above, do not read, perform, or follow any of the steps, suggestions, or discussions in this article any further. Thank you.
 
 ### Prerequisites
 
@@ -121,11 +123,15 @@ First, make sure your wireless network adapter is actually enabled. You can see 
 
 If your WiFi adapter is _DOWN_ like mine (wlp) just run:
 
-- `# ip link set <your-interface> up`
+```console noLineNumbers
+# ip link set <your-interface> up
+```
 
 If that results in an error:
 
-- `RTNETLINK answers: Operation not possible due to RF-kill`
+```console noLineNumbers
+RTNETLINK answers: Operation not possible due to RF-kill
+```
 
 Proceed to [RF-kill Unblocking](#rf-kill-unblocking), otherwise skip to [Getting Connected with `wpa_supplicant`](#getting-connected-with-wpa_supplicant).
 
@@ -163,12 +169,13 @@ Then running `ip link set wlp up` results in no error.
 
 ##### Getting Connected with `wpa_supplicant`
 
-With the WiFi adapter actually available, we can now continue (mostly) from the official NixOS manual[^nixos-manual] for getting connected to the internet:
+With the WiFi adapter actually available, we can now continue (mostly) from the official NixOS manual[^nixos-manual] for getting connected to the internet run:
 
-1.  `# systemctl start wpa_supplicant`
-2.  `wpa_cli`
+```console noLineNumbers
+# systemctl start wpa_supplicant
+```
 
-Then scan for networks:
+Then bring up the CLI with: `wpa_cli`. From there, you can scan for networks:
 
 ```sh noLineNumbers
 > scan
@@ -211,7 +218,7 @@ OK
 OK
 ```
 
-if everything went okay after the last command, you’ll something like:
+If everything went okay after the last command, you’ll something like:
 
 ```sh noLineNumbers
 ...
@@ -231,9 +238,9 @@ Then all you have to do is run `quit` to return to the shell, and we can proceed
 
 ### Partitioning
 
->#### WARNING: The following steps will result in DATA LOSS
+> #### WARNING: The following steps will result in DATA LOSS
 >
->Please make sure you backed up everything important before proceeding through this section!
+> Please make sure you backed up everything important before proceeding through this section!
 
 Now that we’re absolutely positive we can connect to the internet, we’re going to use `fdisk` to partition the drive we want to install NixOS on. Running the ensuing `fdisk` commands will create both a boot partition and a LVM partition. The LVM partition will hold both a root partition and a swap partition.
 
@@ -268,7 +275,7 @@ Once we've found our disk, we'll pass it's location as an input into `fdisk` to 
 
 In my case the command looks like: `# fdisk /dev/nvme0n1`.
 
->Many of the commands featured in this guide refer to `/dev/nvme0n1` as an **example**. However, You might have _your_ drive of interest on `/dev/sda` for instance. So, to avoid any unnecessary heartache, please make sure the commands you're running are on the correct drive.
+> Many of the commands featured in this guide refer to `/dev/nvme0n1` as an **example**. However, You might have _your_ drive to partition on `/dev/sda` for instance. So, to avoid any unnecessary heartache, please make sure the commands you're running are on the drive you actually want to partition.
 
 #### Create a Empty GPT Table
 
@@ -296,19 +303,19 @@ Disk identifier: 5213d2a2-a040-44c4-ba6a-02787812777e
 Command (m for help):
 ```
 
->Note: Creating an empty partition table doesn't securely erase the data on your disk. If that's something you'd like to perform, perhaps ATA Security Erase[^secure-erase] might be something worth looking into.
+> Note: Creating an empty partition table doesn't securely erase the data on your disk. If that's something you'd like to perform, perhaps ATA Security Erase[^secure-erase] might be something worth looking into.
 
 #### Create the EFI System Partition (ESP)
 
 We can then create the ESP like so:
 
-1. n
-2. (partition number; default) enter
-3. (first sector: default) enter
-4. (last sector) +1G
-5. (remove signature if applicable) Y
-6. t (change partition type)
-7. (partition type) 1 (EFI)
+1. `n`
+2. (partition number; default) `enter`
+3. (first sector: default) `enter`
+4. (last sector) `+1G`
+5. (remove signature if applicable) `Y`
+6. `t` (change partition type)
+7. (partition type or alias) `1` (EFI)
 
 ```sh noLineNumbers
 Command (m for help): n
@@ -328,14 +335,14 @@ Command (m for help):
 
 Next, we’ll add our LVM partition:
 
-1. n
-2. (partition number: default) enter
-3. (first sector: default) enter
-4. (last sector: default) enter
-5. (remove signature if applicable) Y
-6. t (change partition type)
-7. (partition number: (1, 2, default 2)) enter
-8. (partition type) 44 (Linux LVM)
+1. `n`
+2. (partition number: default) `enter`
+3. (first sector: default) `enter`
+4. (last sector: default) `enter`
+5. (remove signature if applicable) `Y`
+6. `t` (change partition type)
+7. (partition number: (1, 2, default 2)) `enter`
+8. (partition type or alias:) `44` (Linux LVM)
 
 ```sh noLineNumbers
 Command (m for help): n
@@ -417,7 +424,7 @@ Command successful.
 
 #### Verifying the LUKS Device
 
-To verify the partition got encrypted, you can inspect the LUKS header using: 
+To verify the partition got encrypted, you can inspect the LUKS header using:
 
 ```console noLineNumbers
 # cryptsetup luksDump /dev/nvme0n1p2
@@ -437,25 +444,21 @@ label:          NIXLUKS
 
 The most important thing to note is the version number and your label. If it’s “2”, and your label looks right, then we’re all good to go.
 
->As a best practice, you may want to backup the header sometime later. You can do so with the following command:
+> As a best practice, you may want to backup the header sometime later. You can do so with the following command:
 >
->```console noLineNumbers
-># cryptsetup luksHeaderBackup /dev/nvme0n1p2 --header-backup-file /path/to/backup.dat
->```
+> ```console noLineNumbers
+> # cryptsetup luksHeaderBackup /dev/nvme0n1p2 --header-backup-file /path/to/backup.dat
+> ```
 
 #### Opening the LUKS Device
 
 Now, we’re going to open our encrypted LUKS partition and create a reference to it on `/dev/mapper/cryptroot` with:
 
 ```console noLineNumbers
-# cryptsetup luksOpen /dev/nvme0n1p2 cryptroot`
+# cryptsetup luksOpen /dev/nvme0n1p2 cryptroot
 ```
 
-You can then check our mapped partition exists with: 
-
-```console noLineNumbers
-ls /dev/mapper/cryptroot
-```
+You can then check our mapped partition exists with: `ls /dev/mapper/cryptroot`
 
 This won't return anything really (because there's nothing in `cryptroot` yet), unless `cryptroot` doesn't exist.
 
@@ -488,11 +491,11 @@ We can create the swap LV on our root LVG (lvmroot) with the following command:
 # lvcreate -L24G lvmroot -n swap
 ```
 
->Note: How much swap space you may need varies. You might not even need it! So, please see the linked ~~stackoverflow~~ [askubuntu thread](https://askubuntu.com/questions/49109/i-have-16gb-ram-do-i-need-32gb-swap)[^i-have-16gb-ram--do-i-need-32gb-swap] for more. In my case, I’ve got 16 GB of ram on the laptop I'm using as the example for this guide, and plan to use hibernate, so 16 \* 1.5 = 24 GB.
+> Note: How much swap space you may need varies. You might not even need it! So, please see the linked ~~stackoverflow~~ [askubuntu thread](https://askubuntu.com/questions/49109/i-have-16gb-ram-do-i-need-32gb-swap)[^i-have-16gb-ram--do-i-need-32gb-swap] for more. In my case, I’ve got 16 GB of ram on the laptop I'm using as the example for this guide, and plan to use hibernate, so 16 \* 1.5 = 24 GB.
 
 #### Create the `root` Logical Volume
 
-With the swap LV set, we can set the root LV to take up the rest of the available space
+With the swap LV set, we can set the root LV to take up the rest of the available space:
 
 ```console noLineNumbers
 # lvcreate -l 100%FREE lvmroot -n root
@@ -502,53 +505,53 @@ With the swap LV set, we can set the root LV to take up the rest of the availabl
 
 This is a fairly standard procedure, the only thing of note here is adding labels, which makes mounting the partitions much easier.
 
->YSK: The volume label string for the bootable, ESP partition (FAT32) has a maximum length of only 11 bytes[^fat-osdev-wiki]. Both the ext4 and Swap partitions have a maximum volume label length of 16 bytes. [^ext4-spec-global-structures-superblock-linux-kernel][^man-swaplabel].
+> YSK: The volume label string for the bootable, ESP partition (FAT32) has a maximum length of only 11 bytes[^fat-osdev-wiki]. Both the ext4 and Swap partitions have a maximum volume label length of 16 bytes. [^ext4-spec-global-structures-superblock-linux-kernel][^man-swaplabel].
 
-Format the ESP partition:
+1. Format the ESP partition:
 
-```console noLineNumbers
-# mkfs.fat -F 32 -n NIXBOOT /dev/nvme0n1p1
-```
+   ```console noLineNumbers
+   # mkfs.fat -F 32 -n NIXBOOT /dev/nvme0n1p1
+   ```
 
-Format the Root LV:
+2. Format the Root LV:
 
-```console noLineNumbers
-# mkfs.ext4 -L NIXROOT /dev/mapper/lvmroot-root
-```
+   ```console noLineNumbers
+   # mkfs.ext4 -L NIXROOT /dev/mapper/lvmroot-root
+   ```
 
-Format the Swap LV (if you made one):
+3. Format the Swap LV (if you made one):
 
-```console noLineNumbers
-# mkswap -L NIXSWAP /dev/mapper/lvmroot-swap
-```
+   ```console noLineNumbers
+   # mkswap -L NIXSWAP /dev/mapper/lvmroot-swap
+   ```
 
 ### Mounting
 
 Then we can mount the formatted partitions like so.
 
-Mount the Root LV:
+1. Mount the Root LV:
 
-```console noLineNumbers
-# mount /dev/disk/by-label/NIXROOT /mnt
-```
+   ```console noLineNumbers
+   # mount /dev/disk/by-label/NIXROOT /mnt
+   ```
 
-Create the ESP Directory:
+2. Create the ESP Directory:
 
-```console noLineNumbers
-# mkdir /mnt/boot
-```
+   ```console noLineNumbers
+   # mkdir /mnt/boot
+   ```
 
-Mount the ESP:
+3. Mount the ESP:
 
-```console noLineNumbers
-# mount -o umask=0077 /dev/disk/by-label/NIXBOOT /mnt/boot
-```
+   ```console noLineNumbers
+   # mount -o umask=0077 /dev/disk/by-label/NIXBOOT /mnt/boot
+   ```
 
-Turn on Swap:
+4. Turn on Swap:
 
-```console noLineNumbers
-# swapon -L NIXSWAP
-```
+   ```console noLineNumbers
+   # swapon -L NIXSWAP
+   ```
 
 #### Verifying the Mounts
 
@@ -581,9 +584,11 @@ We’ll first generate a minimal configuration file. Then we’ll edit it to sup
 # nixos-generate-config --root /mnt
 ```
 
-then we can use Vim (or nano) prefixed with `sudo` to edit our generated config to mount our LUKS partition. If you forget to elevate your editor command, you won't be able to save your changes (don't ask me how I know that).
+then we can use Vim (or nano) prefixed with `sudo` to edit our generated config to mount our LUKS partition. If you forget to elevate your editor command, you won't be able to save your changes—_don't ask me how I know that._
 
-- `# vim /mnt/etc/nixos/hardware-configuration`
+```console noLineNumbers
+# vim /mnt/etc/nixos/hardware-configuration
+```
 
 #### `hardware-configuration.nix`
 
@@ -948,7 +953,7 @@ services.xserver = {
 };
 ```
 
-Most importantly, please remember that life's too short to get into bitter arguments about DEs and WMs and display protocols. So, try them all, and use the one you like the most. NixOS, by its nature, makes DE/WM hopping incredibly easy.
+> The nice thing about NixOS is that you're not stuck with a DE or WM. If you want to try something else, just edit your config to accomodate whichever thing you want, run `# nixos-rebuild switch` and you'll have a totally new desktop experience!
 
 ###### Enable PipeWire (sound)
 
@@ -1102,7 +1107,7 @@ We can define a minimal `flake.nix` like so:
 
 ```nix
 {
-  description: "A minimal flake.nix for a NixOS machine"
+  description = "A minimal flake.nix for a NixOS machine";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   }:
@@ -1124,7 +1129,7 @@ And with that, we can finally proceed to the very much anticipated install comma
 This is it, moment of truth time. To begin, we’ll change directories to our `nixos` directory:
 
 ```sh noLineNumbers
-$ cd /mnt/etc/nixos
+cd /mnt/etc/nixos
 ```
 
 Then we’ll update our flake. However, because the minimal NixOS install doesn't enable the `nix-command` nor `flakes`, we'll need to append these features as flags to actually perform this step:
@@ -1180,10 +1185,10 @@ Installation finished!
 # nixos-enter --root /mnt -c “passwd mycoolusername”
 ```
 
-Once that's all set, it's finally time to reboot. You can do that safely like so:
+Once that's all set, it's finally time to reboot. You can do that safely[^installing-nixos-with-flakes-and-lvm-on-luks] like so:
 
-```sh noLineNumbers
-sudo umount -R /mnt sudo swapoff -L NIXOS_SWAP sudo vgchange -a n lvmroot sudo cryptsetup close /dev/mapper/cryptroot reboot
+```console noLineNumbers
+# umount -R /mnt sudo swapoff -L NIXOS_SWAP sudo vgchange -a n lvmroot sudo cryptsetup close /dev/mapper/cryptroot reboot
 ```
 
 Or dangerously via a simple: `$ reboot`
@@ -1209,7 +1214,7 @@ At this point you can either continue configuring/tweaking your new NixOS machin
 
 `Lanzaboote` is a wonderful project that I’ve been happily using on my NixOS machines for about a year now without a single issue. Still yet, it’s always a good idea to back up any important data before setting it up (like, your Windows BitLocker Recovery Keys, in case you're securely dual booting), and especially before updating `Lanzaboote` to the latest release.
 
-In any event, we’ll be following along with the quick start guide [nix-community/lanzaboote/blob/master/docs/QUICK_START.md](https://github.com/nix-community/lanzaboote/blob/master/docs/QUICK_START.md)[^lanzaboote-docs-quick-start] for this section.
+In any event, we’ll be following along with the quick start guide [lanzaboote/docs/QUICK_START](https://github.com/nix-community/lanzaboote/blob/master/docs/QUICK_START.md)[^lanzaboote-docs-quick-start] for this section.
 
 **PLEASE BE ADVISED: THE QUICK START GUIDE LINKED ABOVE WILL PROVIDE YOU WITH FAR MORE ACCURATE/CURRENT INSTRUCTIONS THAN WHAT'S SHOWN HERE FOR THIS ARTICLE. THE FOLLOWING SECTIONS ABOUT LANZABOOTE SHOULD BE REGARDED AS SUGGESTIONS/COMMENTARY FOR EDUCATIONAL PURPOSES ONLY, RATHER THAN AS A TRUE INSTRUCTION MANUAL.**
 
@@ -1236,7 +1241,7 @@ If the firmware is `UEFI` and the current boot loader is `systemd-boot` we can c
 
 ### Generate the Keys
 
-We’ll need to use `sbctl` for this. You can add it to your system packages like so:
+We’ll need to use `sbctl` for this. You _could_ add it to your system packages like so:
 
 ```nix
 {pkgs, ...}:
@@ -1248,7 +1253,7 @@ We’ll need to use `sbctl` for this. You can add it to your system packages lik
 }
 ```
 
-Alternatively, you probably want to just run it from an ephemeral nix shell via `$ nix-shell -p sbctl` (we're going to declare this package in a module, as we'll see).
+However, we want to just run it from an ephemeral nix shell via `$ nix-shell -p sbctl` (we're going to declare this package in a module, as we'll see).
 
 Either way, once you have `sbctl` just run `# sbctl create-keys` like so:
 
@@ -1264,9 +1269,9 @@ Secure boot keys created!
 
 The following is how I personally like to modularize my own NixOS flake based configuration. What we'll do is amend our minimal flake from earlier, adding `lanzaboote` as an input, and we'll enable it by adding it to our hosts module array. We're also going to create a directory in our `/etc/nixos` folder, called `modules` that will contain a module I'm calling `lanza.nix`. This is what the flake should look like:
 
-```nix
+```nix {5,6,7,8,10,16,17}
 {
-  description: "A minimal flake.nix for a SecureBoot-enabled NixOS machine"
+  description = "A minimal flake.nix for a SecureBoot-enabled NixOS machine";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     lanzaboote = {
@@ -1282,7 +1287,7 @@ The following is how I personally like to modularize my own NixOS flake based co
          ./configuration.nix
          lanzaboote.nixosModules.lanzaboote
          ./modules/lanza.nix
-     ];
+        ];
       };
     };
   };
@@ -1464,8 +1469,8 @@ As such, I'm going to very briefly walk you through configuring `home-manager` v
 
 Shells look best with monospaced fonts, especially _monospaced nerd-fonts_, so before we get ahead of ourselves, let's create a `fonts.nix` in the systemwide space.
 
-```sh noLineNumbers
-❯ sudo touch /etc/nixos/modules/fonts.nix
+```console noLineNumbers
+# touch /etc/nixos/modules/fonts.nix
 ```
 
 And we'll bring it into an editor with:
@@ -1488,7 +1493,7 @@ To create the following:
       noto-fonts
       noto-fonts-emoji-blob-bin
       noto-fonts-cjk-sans
-      nerd-fonts._0xproto
+      nerd-fonts._0xproto # personal fav monospaced font. However, you can use whatever monospaced nerd font you'd like.
       nerd-fonts.symbols-only
     ];
   };
@@ -1524,11 +1529,11 @@ And with single `# nixos-rebuild switch` we now have all the fonts we need to co
 
 ### Configuring Home Manager via `flake.nix`
 
-This is rather straight forward (it's one of the neat things about flakes!), just like we added `lanzaboote`, we'll add `home-manager` as an input, and configure it as a module.
+This is rather straight forward (it's one of the neat things about flakes!), just like we added `lanzaboote`, we'll add `home-manager` as an input, and configure it as a module[^home-manager-manual-flakes-nixos-module].
 
-```nix
+```nix {9,10,11,12,14,18,19,20,25,26,27,28,29,30,31}
 {
-  description: "A minimal flake.nix for a SecureBoot-enabled NixOS machine, with Home Manager"
+  description = "A minimal flake.nix for a SecureBoot-enabled NixOS machine, with Home Manager";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     lanzaboote = {
@@ -1545,20 +1550,20 @@ This is rather straight forward (it's one of the neat things about flakes!), jus
       my-nixos-machine = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux"; # Assumes a standard x86 CPU
         specialArgs = {
-       inherit inputs;
+          inherit inputs; # this passes down the inputs
         };
         modules = [
-       ./configuration.nix
-       lanzaboote.nixosModules.lanzaboote
-       ./modules/lanza.nix
-       home-manager.nixosModules.home-manager
+          ./configuration.nix
+          lanzaboote.nixosModules.lanzaboote
+          ./modules/lanza.nix
+          home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.mycoolusername = import ./home;
-            home-manager.extraSpecialArgs = inputs;
+            home-manager.extraSpecialArgs = inputs; # from the passed down input, we can pass these as args to `home.nix`
           }
-     ];
+        ];
       };
     };
   };
@@ -1727,15 +1732,19 @@ With all the modules configured, it's time to run `# nixos-rebuild switch` and b
 
 ## Discussion
 
-Welcome to the end of a very long blog post. If you completed the above, you have earned a very well deserved break and celebration of your accomplishments today (or however long it took to get through this guide).
+Welcome to the end of a very long ~~blog post~~ _guide_. If you completed the above, you have earned a very well deserved break and celebration of your accomplishments today (or however long it took to get through this guide).
 
 What you've done is no small feat. In reaching the end of this guide, you've installed NixOS with Full Disk Encryption, enabled secure boot with `lanzaboote`, enabled auto decryption of your LUKS devices with `systemd-cryptenroller`, and finally configured a slick `zsh` shell with Starship Prompt, some plugins, and configured `git` and `gh`, ready to turn your `/etc/nixos` folder into a repo[^other-useful-tips]. If you knew nothing about Nix when you first got here, well, I hope you were able to get the gist of it after reaching the end here, and picked up a few things along the way.
 
 I also hope that in being your guide on this journey through the major circles of Nix, that you were able to overcome some of the steep learning curve Nix/NixOS is infamously known for. If however, I failed to help with that, well, I guess I'll just have to update this post in accordance to your feedback.
 
-In any event, I hope you learned something, and if you were ever a chronic distro hopper like I was, I hope NixOS brings you the same peace of mind it brought me, serving as the final distro following a very long journey of hops.
+In any event, I hope you learned something, and if you were ever a chronic distrohopper[^distrohopper] like I was, I hope NixOS brings you the same peace of mind it brought me, serving as the final distro following a very long series of hops.
 
-_PS, I'd love to hear your thoughts! Feel free to drop a comment below, or reach out to me on social media to let me know what you thought of this article._
+> Final note: Eventually, you'll want to clean out old _Nix generations_ (created after each `# nixos-rebuild switch`) since they can really start piling up, monopolozing diskspace. You can do so (mildly dangerously) with `# nix-collect-garbage -d` to delete _all_ old generations of profiles. Or, for a much safer garbage collection, you can run `# nix-collect-garbage --delete-older-than <time_period>` to remove things older than, say, 30 days, using `30d` as the time period. [^nix-collect-garbage].
+>
+> The former garbage collection command can also become **_très dangereaux_**, if your last config and current config are both broken in a way that you can no longer access the `TTY`, since all possible escape hatches (working generations) would be removed. This is probably one of the only ways you can truly _brick_ a NixOS install.
+
+_PS, I'd love to hear your thoughts! Feel free to drop a comment below, or reach out to me on social media to let me know what you thought of this guide._
 
 [^installing-nixos-with-flakes-and-lvm-on-luks]: Cîmpianu D. Installing NixOS with Flakes and LVM on LUKS [Internet]. Jadarma’s Blog. 2024 [cited 2025 Jan 3]. Available from: [https://jadarma.github.io/blog/posts/2024/08/installing-nixos-with-flakes-and-lvm-on-luks/](https://jadarma.github.io/blog/posts/2024/08/installing-nixos-with-flakes-and-lvm-on-luks/)
 
@@ -1774,6 +1783,8 @@ _PS, I'd love to hear your thoughts! Feel free to drop a comment below, or reach
 [^starship--cross--shell-prompt]: Starship: Cross-Shell Prompt [Internet]. [cited 2025 Jan 3]. Available from: [https://starship.rs/](https://starship.rs/)
 
 [^zsh-users-zsh-syntax-highlighting]: zsh-users/zsh-syntax-highlighting [Internet]. zsh-users; 2025 [cited 2025 Jan 3]. Available from: [https://github.com/zsh-users/zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting)
+
+[^home-manager-manual-flakes-nixos-module]: Nix Flakes: NixOS module - Home Manager Manual [Internet]. [cited 2025 Jan 3]. Available from: [https://nix-community.github.io/home-manager/index.xhtml#sec-flakes-nixos-module](https://nix-community.github.io/home-manager/index.xhtml#sec-flakes-nixos-module)
 
 [^home-manager-manual]: Home Manager Manual [Internet]. [cited 2025 Jan 3]. Available from: [https://nix-community.github.io/home-manager/](https://nix-community.github.io/home-manager/)
 
@@ -1818,3 +1829,7 @@ _PS, I'd love to hear your thoughts! Feel free to drop a comment below, or reach
 [^nixos-wiki--fish]: fish - NixOS Wiki [Internet]. [cited 2025 Jan 3]. Available from: [https://wiki.nixos.org/wiki/Fish](https://wiki.nixos.org/wiki/Fish)
 
 [^nixos-wiki--nushell]: Nushell - NixOS Wiki [Internet]. [cited 2025 Jan 3]. Available from: [https://wiki.nixos.org/wiki/Nushell](https://wiki.nixos.org/wiki/Nushell)
+
+[^distrohopper]: Urban Dictionary: distrohopper [Internet]. Urban Dictionary. [cited 2025 Jan 4]. Available from: [https://www.urbandictionary.com/define.php?term=distrohopper](https://www.urbandictionary.com/define.php?term=distrohopper)
+
+[^nix-collect-garbage]: nix-collect-garbage - Nix Reference Manual [Internet]. [cited 2025 Jan 4]. Available from: [https://nix.dev/manual/nix/2.25/command-ref/nix-collect-garbage.html](https://nix.dev/manual/nix/2.25/command-ref/nix-collect-garbage.html)

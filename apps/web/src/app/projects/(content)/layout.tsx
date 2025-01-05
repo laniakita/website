@@ -10,9 +10,7 @@ export default function ContentLayout({ children }: Readonly<{ children: ReactNo
       <DarkStoreProvider>
         <NavBar />
       </DarkStoreProvider>
-      <FootnotesStoreProvider>
-        {children}
-      </FootnotesStoreProvider>
+      <FootnotesStoreProvider>{children}</FootnotesStoreProvider>
       <DarkStoreProvider>
         <Footer />
       </DarkStoreProvider>

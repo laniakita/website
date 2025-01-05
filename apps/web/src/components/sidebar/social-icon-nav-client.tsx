@@ -4,18 +4,15 @@ import Link from 'next/link';
 import { type SocialIconNavProps } from '../social-icon';
 
 export function SocialIconNav2({ boxItems }: SocialIconNavProps) {
-  const uniqueKey = (idx:number) => {
-
+  const uniqueKey = (idx: number) => {
     const num = Math.floor(Math.random() * 1000 + idx);
 
     return `social-icon-two-${crypto.randomUUID()}-${num}-${idx}`;
-  }
-
+  };
 
   return (
     <div className='grid grid-cols-3 gap-2'>
       {boxItems.map((item, idx) => (
-
         <Link
           key={uniqueKey(idx)}
           rel={item.title.toLowerCase() === 'mastodon' ? 'me' : ''}

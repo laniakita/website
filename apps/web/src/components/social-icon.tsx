@@ -14,14 +14,11 @@ export interface SocialNavIcon {
 }
 
 export default function SocialIconNav({ boxItems, hxw }: SocialIconNavProps) {
-  const uniqueKey = (idx:number) => {
-
+  const uniqueKey = (idx: number) => {
     const num = Math.floor(Math.random() * 1000 + idx);
 
     return `social-icon-og-${crypto.randomUUID()}-${num}-${idx}`;
-  }
-
-
+  };
 
   return (
     <div className='flex flex-wrap items-center justify-center gap-2'>
