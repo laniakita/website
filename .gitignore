@@ -31,6 +31,7 @@ public/dist
 # Serwist
 **/public/sw*
 **/public/swe-worker*
+certificates/
 
 # wrangler / @cloudflare/next-on-pages
 .wrangler
