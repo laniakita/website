@@ -11,7 +11,6 @@ import GlobalMDXComponent from '@/components/mdx/global-mdx-components';
 import { catTagData } from '@/lib/cat-tag-data';
 import { PostHeader2 } from './post-header-2';
 import CommentsComponent from './comments';
-import { useLiveReload } from 'next-contentlayer2/hooks';
 
 export function generateStaticParams() {
   const posts = allPosts.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));

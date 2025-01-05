@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter } from 'next/navigation';
 import { type Dispatch, type SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useLiveReload } from './mdx/useLiveReload';
+//import { useLiveReload } from './mdx/useLiveReload';
 
 const MED_SCREEN = 768; // px
 
