@@ -3,7 +3,7 @@
     @apply prose-code:before:hidden prose-code:after:hidden prose-pre:rounded-xl prose-pre:border prose-pre:border-ctp-surface0 [&:where(:not(pre)>code)]:prose-code:break-words [&:where(:not(pre)>code)]:prose-code:rounded-md [&:where(:not(pre)>code)]:prose-code:border [&:where(:not(pre)>code)]:prose-code:border-ctp-surface0 [&:where(:not(pre)>code)]:prose-code:bg-ctp-base [&:where(:not(pre)>code)]:prose-code:px-1 [&:where(:not(pre)>code)]:prose-code:py-0.5;
   }
   .prose-text-pretty {
-    @apply prose-headings:text-balance prose-headings:font-black prose-a:break-words prose-blockquote:space-y-4 prose-blockquote:rounded-lg prose-blockquote:border-l-8 prose-blockquote:bg-ctp-crust prose-blockquote:shadow-lg prose-p:supports-[text-wrap:pretty]:text-pretty;
+    @apply prose-headings:text-balance prose-headings:font-black prose-a:break-words prose-blockquote:space-y-4 prose-blockquote:rounded-lg prose-blockquote:border-l-8 prose-blockquote:bg-ctp-crust prose-blockquote:shadow-lg prose-p:supports-[text-wrap:pretty]:text-pretty prose-em:pr-[0.1ch]; 
   }
   /* mobile: h2:text-2-5xl h3:text-2xl h4:text-1-5xl h5:text-1-25xl h6:text-xl */
   /* md/tablet: h2:text-3xl h3:text-2-5xl h4:text-2xl h5:text-1-5xl h6:text-1-25xl */

@@ -16,12 +16,6 @@
     "types": ["@serwist/next/typings", "bun", "node"],
     "resolveJsonModule": true
   },
-  "include": [
-    "next-env.d.ts",
-    ".next/types/**/*.ts",
-    ".contentlayer/generated",
-    "./**/*.ts",
-    "./**/*.tsx",
-  ],
+  "include": ["next-env.d.ts", ".next/types/**/*.ts", ".contentlayer/generated", "./**/*.ts", "./**/*.tsx"],
   "exclude": ["node_modules", "public/sw.js"]
 }

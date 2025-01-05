@@ -1,7 +1,7 @@
 ---
 id: d1fa986f-813e-4ff0-9342-db842c5d4a76
 type: Post
-date: 2025-01-03T03:20:07Z
+date: 2025-01-05T01:49:15Z
 categories:
   - slug: linux
   - slug: security
@@ -19,7 +19,7 @@ keywords:
   - NixOS FDE Flake
   - NixOS Home Manager Flake Guide
 author: lani
-headline: 'NixOS Full Disk Encryption + Secure Boot + TPM Auto-Unlock - A Guide'
+headline: 'How to Install NixOS with Full Disk Encryption + Secure Boot + Unlock LUKS via TPM2'
 subheadline: 'Bonus feature: Intro to Home Manager'
 imageSrc: ../../../assets/images/open-oc/2025/nixos_fde_tpm_guide.png
 altText: 'Background: a wireframe of a scenic mountain view, with water pooling into a pond at the base. Foreground: Directly in the center, sits the NixOS logo, a plus sign, a lock icon, a plus sign, and a motherboard icon, all imposed upon a translucent, teal rectangle.'
@@ -27,13 +27,13 @@ altText: 'Background: a wireframe of a scenic mountain view, with water pooling 
 caption: 'Yes to love, yes to life, yes to staying in more! - Liz Lemon'
 ---
 
-**Happy New Year!** Yep, it's _that_ time of year again (cold). So, bundle up near the warmth of your PCs exhaust fans, and bask in the glow of artificial light from it's connected display. Because, dear reader, it's time to start anew! And what better way to achieve that, than with a clean install of NixOS?
+**Happy New Year!** Yep, it's _that_ time of year again. A time of new beginnings, cleaned slates, and Winter weather (in the Northern Hemisphere). So, bundle up near the warmth of your PCs exhaust fans, and bask in the glow of artificial light from it's connected display. Because, dear reader, it's time to start anew! And what better way to achieve that, than with a clean install of NixOS?
 
 Sure, perhaps you vowed this would be the year you'd stop distrohopping[^distrohopper], saving your SSD from near certain doom. But if that's the case, there's a good chance you _might just find_ NixOS to be that final hop you've been looking for ... Well, only one way to find out, right?
 
 > #### Note on versioning
 >
-> I wrote most of this article before NixOS 24.11 (Vicuña) was made stable. At the time I went through the install process for this write-up, NixOS 24.05 (Uakari) was loaded onto my USB. Currently, NixOS 25.05 (Warbler) is the latest Unstable release as of the time of publishing (1/2/2024).
+> I wrote most of this article before NixOS 24.11 (Vicuña) was made stable. At the time I went through the install process for this write-up, NixOS 24.05 (Uakari) was loaded onto my USB. Currently, NixOS 25.05 (Warbler) is the latest Unstable release as of the time of publishing (1/5/2024).
 >
 > With that said, I'm currently unaware of any major differences in the install process between NixOS 24.05, 24.11, and 25.05.
 >
@@ -43,7 +43,7 @@ Sure, perhaps you vowed this would be the year you'd stop distrohopping[^distroh
 
 ## Introduction
 
-After taking the time to setup a fresh install of one of my favorite distros, I felt it was a good idea to post a write up about the somewhat extensive process to install it with Full Disk Encryption (FDE), enabling secure boot, and automatically unlocking the encrypted LUKS device via keys stored on the motherboard's TPM chip.
+After taking some time to setup a fresh install of one of my favorite distros, I felt it was a good idea to post a write up about the somewhat extensive process on installing NixOS with Full Disk Encryption (FDE),  enabling secure boot, and _automagically_ unlocking the encrypted LUKS device(s) during the boot process with keys enrolled into the motherboard's TPM2 chip.
 
 Now, I should state that I didn't come up with this guide alone. This guide is an more of an amalgamation, based pretty heavily upon a lot of other guides and resource materials out there scattered across the net. As such, I encourage you to check out the reference materials [^full-disk-encryption---nixos-wiki][^installing-nixos-with-flakes-and-lvm-on-luks][^installing-nixos-with-full-disk-encryption][^a-modern-and-secure-desktop-setup---guides][^installation-of-nixos-with-encrypted-root][^how-to-install-nixos-with-full-disk-encryption-fde-using-luks2][^lanzaboote-docs-quick-start][^nixos-manual] I used, linked in the footnotes below.
 
@@ -84,7 +84,7 @@ By the end of this article, my hope is that you’ll be able to:
 ### Prerequisites
 
 1. A machine with a UEFI motherboard
-2. A machine with a TPM2 chip (This is only needed for the "TPM Auto-unlock" part of the guide, which uses `tpm2-tss` to enable `systemd-cryptenroll` to enroll your LUKS keys into the TPM chip.[^systemd-cryptenroll])
+2. A machine with a TPM2 chip (This is only needed for the _Unlock LUKS via TPM2_ part of the guide, which uses `tpm2-tss` to enable `systemd-cryptenroll` to enroll your LUKS keys into the TPM chip.[^systemd-cryptenroll])
 3. A bootable USB (4 GB minimum) with the Minimal NixOS ISO[^minimal-iso] loaded onto it
 
 ### Booting the installer
@@ -1389,7 +1389,7 @@ System:
   Boot into FW: supported
 ```
 
-## Part 2.5: Unlocking LUKS with the TPM using `systemd-cryptenroll`
+## Part 2.5: Unlocking LUKS with TPM2 using `systemd-cryptenroll`
 
 At the very beginning of this guide, I promised I’d show you how to auto decrypt your LUKS device with TPM2. So, to do that, we’re going to amend the `lanza.nix` module we created earlier, to both install `tpm2-tss` and to create a tiny script (`luks-helper`) to leverage a handy tool included in systemd,`systemd-cryptenroll`. The command our script calls on our LUKS device (NIXLUKS) looks something like this:
 
@@ -1397,11 +1397,11 @@ At the very beginning of this guide, I promised I’d show you how to auto decry
 # systemd-cryptenroll --wipe-slot=tpm2 --tpm2-device=auto --tpm2-pcrs=0+7 /dev/disk/by-label/NIXLUKS
 ```
 
-The flags on the command do the following:
+According to the man pages for `systemd-cryptenroll`[^man-systemd-cryptenroll], the flags on the command do the following:
 
 - `--wipe-slot=tpm2` clears out any previous keys bound to the slot.
-- `--tpm2-device=auto` automatically grabs the default TPM2 chip (found on your motherboard)
-- `--tpm2-pcrs=0+7` can be useful when binding multiple keys/devices. It separates the Platform Configuration Registers the keys bind to by 7 (default).
+- `--tpm2-device=auto` automatically grabs the default TPM2 chip (usually found on your motherboard).
+- `--tpm2-pcrs=0+7` binds the keys to Platform Configuration Registers 0 (platform-code, i.e., system firmware) and 7 (secure-boot-policy, i.e., the secure boot _state_; changes when enabled/disabled, or firmware certificates changes).
 
 ```nix
 {pkgs, lib, ... }:
@@ -1736,11 +1736,11 @@ Welcome to the end of a very long ~~blog post~~ _guide_. If you completed the ab
 
 What you've done is no small feat. In reaching the end of this guide, you've installed NixOS with Full Disk Encryption, enabled secure boot with `lanzaboote`, enabled auto decryption of your LUKS devices with `systemd-cryptenroller`, and finally configured a slick `zsh` shell with Starship Prompt, some plugins, and configured `git` and `gh`, ready to turn your `/etc/nixos` folder into a repo[^other-useful-tips]. If you knew nothing about Nix when you first got here, well, I hope you were able to get the gist of it after reaching the end here, and picked up a few things along the way.
 
-I also hope that in being your guide on this journey through the major circles of Nix, that you were able to overcome some of the steep learning curve Nix/NixOS is infamously known for. If however, I failed to help with that, well, I guess I'll just have to update this post in accordance to your feedback.
+I also hope that in being your guide on this journey through the major circles of Nix, that you were able to overcome some of the steep learning curve Nix/NixOS is infamously known for. If however, I failed to help with that... Welp, I guess I'll just have to update this post in accordance to your feedback, won't I?
 
 In any event, I hope you learned something, and if you were ever a chronic distrohopper[^distrohopper] like I was, I hope NixOS brings you the same peace of mind it brought me, serving as the final distro following a very long series of hops.
 
-> Final note: Eventually, you'll want to clean out old _Nix generations_ (created after each `# nixos-rebuild switch`) since they can really start piling up, monopolozing diskspace. You can do so (mildly dangerously) with `# nix-collect-garbage -d` to delete _all_ old generations of profiles. Or, for a much safer garbage collection, you can run `# nix-collect-garbage --delete-older-than <time_period>` to remove things older than, say, 30 days, using `30d` as the time period. [^nix-collect-garbage].
+> Final note: Eventually, you'll want to clean out old _Nix generations_ (created after each `# nixos-rebuild switch`) since they can really start piling up, monopolozing diskspace. You can do so (mildly dangerously) with `# nix-collect-garbage -d` to delete _all_ old generations of profiles. Or, for a much safer garbage collection, you can run `# nix-collect-garbage --delete-older-than <time_period>` to remove things older than, say, 30 days, using `30d` as the time period. [^nix-collect-garbage]
 >
 > The former garbage collection command can also become **_très dangereaux_**, if your last config and current config are both broken in a way that you can no longer access the `TTY`, since all possible escape hatches (working generations) would be removed. This is probably one of the only ways you can truly _brick_ a NixOS install.
 
@@ -1833,3 +1833,5 @@ _PS, I'd love to hear your thoughts! Feel free to drop a comment below, or reach
 [^distrohopper]: Urban Dictionary: distrohopper [Internet]. Urban Dictionary. [cited 2025 Jan 4]. Available from: [https://www.urbandictionary.com/define.php?term=distrohopper](https://www.urbandictionary.com/define.php?term=distrohopper)
 
 [^nix-collect-garbage]: nix-collect-garbage - Nix Reference Manual [Internet]. [cited 2025 Jan 4]. Available from: [https://nix.dev/manual/nix/2.25/command-ref/nix-collect-garbage.html](https://nix.dev/manual/nix/2.25/command-ref/nix-collect-garbage.html)
+
+[^man-systemd-cryptenroll]: systemd-cryptenroll [Internet]. [cited 2025 Jan 4]. Available from: [https://www.freedesktop.org/software/systemd/man/latest/systemd-cryptenroll.html](https://www.freedesktop.org/software/systemd/man/latest/systemd-cryptenroll.html)

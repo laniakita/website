@@ -1,6 +1,8 @@
-import type { ReactElement, ReactNode } from 'react';
+import { useId, type ReactElement, type ReactNode } from 'react';
 
 export function Paragraph(props: { children?: ReactNode }) {
+  const id = useId();
+
   if (typeof props.children !== 'string') {
     if (
       typeof (props.children as ReactElement).type === 'function' ||
@@ -13,19 +15,18 @@ export function Paragraph(props: { children?: ReactNode }) {
       const nodeMap = Object.values(props.children as ReactElement[])?.map((node) => {
         if (typeof node === 'string') {
           //console.log(node);
-          const spanNode = <span>{node}</span>;
+          const spanNode = <span key={crypto.randomUUID()} id={`span-${id}`}>{node}</span>;
           return spanNode;
         }
         return node;
       });
 
+
       return (
-        <p {...props} key={crypto.randomUUID()}>
-          {nodeMap}
-        </p>
+        <p id={`paragraph-${id}`} key={crypto.randomUUID()} {...{children: nodeMap}} />
       );
     }
   }
 
-  return <p {...props} key={crypto.randomUUID()} />;
+  return <p {...props}  />;
 }
