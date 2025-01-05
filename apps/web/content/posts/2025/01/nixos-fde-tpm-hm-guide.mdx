@@ -49,7 +49,7 @@ Now, I should state that I didn't come up with this guide alone. This guide is m
 
 ### What is NixOS?
 
-NixOS is a operating system (OS) based on Nix, a purely functional package management system. Nix (the package manager) treats packages like how values are treated in purely functional programming languages, like Haskell, and stores the resultant packages in the _Nix store_ (`/nix/store`). Such packages are built from _Nix Expressions_, via the functional `Nix` language.[^how-nix-works]
+NixOS is a operating system (OS) based on Nix, a purely functional package management system. Nix (the package manager) treats packages like how values are treated in purely functional programming languages, like Haskell, and stores the resultant packages in the _Nix store_ (`/nix/store`). Such packages are built from _Nix Expressions_, written in the purely functional `Nix` language.[^how-nix-works]
 
 In NixOS specifically, the whole OS is built by the Nix package manager, from a Nix expression that declares the entire system's configuration, typically in a `configuration.nix` file. Because everything is declared in a purely functional manner, a new configuration cannot overwrite previous configurations. This results in reliable, atomic upgrades, (which can be atomically rolled back) and reproducible system configurations.[^how-nix-works]
 
