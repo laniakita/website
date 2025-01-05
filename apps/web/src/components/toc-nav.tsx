@@ -265,13 +265,8 @@ export default function ToCMenu() {
 
   const handleToCOffClick = useCallback((e: MouseEvent) => {
     e.stopPropagation();
-    if ((e.target as Node).nodeName === 'BUTTON') {
-      // do nothing
-    } else if (dropToCRef?.current?.contains(e.target as Node)) {
-      if ('href' in (e.target as HTMLAnchorElement).attributes) {
-        // assume link in menu
-        setShowMobileMenu(false);
-      }
+     
+    if ((e.target as HTMLElement).id === 'show-hide-table-of-contents-button-mobile') {
       // do nothing
     } else {
       setShowMobileMenu(false);
@@ -365,6 +360,7 @@ export default function ToCMenu() {
               <div className='pointer-events-none absolute inset-0 h-[200%] [backdrop-filter:_blur(8px)_brightness(95%)_saturate(160%)] [mask-image:_linear-gradient(to_bottom,_black_0%_50%,_transparent_50%_100%)]' />
               <div className='pointer-events-none absolute inset-0 h-full bg-ctp-base/10 [backdrop-filter:_blur(8px)_brightness(140%)_saturate(120%)] [background:_hsl(0deg_0%_100%_/_0.1)] [mask-image:_linear-gradient(to_bottom,_black_0_3px,_transparent_3px)] [transform:_translateY(100%)]' />
               <button
+                id={'show-hide-table-of-contents-button-mobile'}
                 className={`link-color-trans ${showMobileMenu ? 'font-bold text-ctp-text underline' : ''} z-40 -m-1.5 flex items-center whitespace-pre font-mono text-sm text-ctp-subtext0 hover:font-bold hover:text-ctp-text hover:underline`}
                 onClick={() => {
                   setShowMobileMenu(!showMobileMenu);
