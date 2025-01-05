@@ -92,7 +92,7 @@ function ExpandableFootNotesComponent(props: React.DetailedHTMLProps<React.HTMLA
     }, 5);
     setTimeout(() => {
       setInternalExpanded(true);
-    }, 2000);
+    }, 1000);
   }, []);
 
   const handleHash = useCallback(
@@ -121,9 +121,10 @@ function ExpandableFootNotesComponent(props: React.DetailedHTMLProps<React.HTMLA
             //console.log(altLiTop);
 
             if (altLiTop && altLiTop > 0) {
-              window.scrollTo(0, altLiTop - offSets());
+              const opts: ScrollToOptions = { left: 0, top: altLiTop - offSets(), behavior: 'smooth' };
+              window.scrollTo(opts);
             }
-          }, 801);
+          }, 200);
         }
       } else {
         //console.log(window.location.hash, 'is not fnhash');
@@ -153,14 +154,14 @@ function ExpandableFootNotesComponent(props: React.DetailedHTMLProps<React.HTMLA
 
     if (sectionHeight > 0) sectionRef.current.style.height = `${sectionHeight}px`;
 
-    if (expanded && !internalExpanded) {
+    if (expanded && !internalExpanded && expandedFromButton) {
       handleExpand();
     }
 
-    if (internalExpanded) {
+    if (internalExpanded || (expanded && !expandedFromButton)) {
       sectionRef.current.style.height = '100%';
     }
-  }, [sectionHeight, handleExpand, expanded, expandFootnotes, internalExpanded]);
+  }, [sectionHeight, handleExpand, expanded, expandFootnotes, internalExpanded, expandedFromButton]);
 
   // todo: remove css transition animation, when expanded from an <sup /> link
   return (

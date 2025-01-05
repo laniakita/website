@@ -11,20 +11,20 @@ export default function Anchors(
 ) {
   //console.log(props);
   if ('data-footnote-backref' in props) {
-    const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
-      const target = e.target as HTMLAnchorElement;
-      const tQ = document.getElementById(target?.hash?.substring(1));
-      const scrollY = tQ?.getClientRects()[0]?.top;
-      if (scrollY) {
-        const opts: ScrollToOptions = { left: 0, top: scrollY - offSets(), behavior: 'instant' };
-        window.scrollBy(opts);
-      } else {
-        setTimeout(() => {
-          handleClick(e);
-        }, 100);
-      }
-    };
-    return <Link {...(props as LinkProps)} onClick={(e) => handleClick(e)} scroll={false} />;
+    if ('href' in props && props.href !== undefined) {
+      const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
+        const target = e.target as HTMLAnchorElement;
+        const tQ = document.getElementById(props.href!.substring(1));
+        const scrollY = tQ?.getClientRects()[0]?.top;
+        if (scrollY) {
+          const opts: ScrollToOptions = { left: 0, top: scrollY - offSets(), behavior: 'instant' };
+          window.scrollBy(opts);
+        } else {
+          console.log('scroll failed:', target, e, tQ, scrollY);
+        }
+      };
+      return <Link {...(props as LinkProps)} onClick={(e) => handleClick(e)} scroll={false} />;
+    }
   }
 
   if (props.href) {
