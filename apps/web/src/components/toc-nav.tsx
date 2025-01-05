@@ -9,6 +9,7 @@ const MED_SCREEN = 768; // px
 const Z_FOLD_SCREEN = 344;
 const IPHONE_SE_SCREEN = 375;
 //const PIXEL_SEVEN_SCREEN = 412;
+const IPHONE_THIRTEEN_PRO_MAX = 428;
 const IPHONE_FOURTEEN_PRO_MAX = 430;
 const WEIRD_PHABLET = 500;
 const SMALL_SCREEN_MAX = 600;
@@ -213,6 +214,7 @@ const concatHeadingUtil = (heading: string) => {
 
   let concat = 0;
 
+  // todo: figure out a math formula
   if (window.innerWidth <= Z_FOLD_SCREEN) {
     concat = 12;
   } else if (window.innerWidth <= 360) {
@@ -223,6 +225,8 @@ const concatHeadingUtil = (heading: string) => {
     concat = 17;
   } else if (window.innerWidth <= 414) {
     concat = 20;
+  } else if (window.innerWidth <= IPHONE_THIRTEEN_PRO_MAX) {
+    concat = 21; 
   } else if (window.innerWidth <= IPHONE_FOURTEEN_PRO_MAX) {
     concat = 22;
   } else if (window.innerWidth <= WEIRD_PHABLET) {
