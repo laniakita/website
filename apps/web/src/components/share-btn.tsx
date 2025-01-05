@@ -16,6 +16,7 @@ export default function ShareButton() {
     const linkstr = `${baseUrl}${pathname}`;
     return linkstr;
   }, [pathname]);
+
   interface MinPageData {
     title: string;
     url: string;
@@ -29,6 +30,7 @@ export default function ShareButton() {
       // do nothing
     } else {
       setIsOpen(false);
+      shareDivRef.current.style.height = '0px';
     }
   }, []);
 

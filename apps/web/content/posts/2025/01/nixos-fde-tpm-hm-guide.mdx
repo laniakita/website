@@ -1,7 +1,7 @@
 ---
 id: d1fa986f-813e-4ff0-9342-db842c5d4a76
 type: Post
-date: 2025-01-05T01:49:15Z
+date: 2025-01-05T08:28:46Z
 categories:
   - slug: linux
   - slug: security
@@ -33,7 +33,7 @@ Sure, perhaps you vowed this would be the year you'd stop distrohopping[^distroh
 
 > #### Note on versioning
 >
-> I wrote most of this article before NixOS 24.11 (Vicuña) was made stable. At the time I went through the install process for this write-up, NixOS 24.05 (Uakari) was loaded onto my USB. Currently, NixOS 25.05 (Warbler) is the latest Unstable release as of the time of publishing (1/5/2024).
+> I wrote most of this article before NixOS 24.11 (Vicuña) was made stable. At the time I went through the install process for this write-up, NixOS 24.05 (Uakari) was loaded onto my USB. Currently, NixOS 25.05 (Warbler) is the latest Unstable release as of the time of publishing (1/4/2024).
 >
 > With that said, I'm currently unaware of any major differences in the install process between NixOS 24.05, 24.11, and 25.05.
 >
@@ -61,11 +61,11 @@ In NixOS specifically, the whole OS is built by the Nix package manager, from a 
 
 ### Who is the guide for?
 
-This guide is for anyone interested in using NixOS[^how-nix-works], in a relatively secure fashion, with _modern conveniences_ like using an onboard TPM2 chip to decrypt LUKS devices during boot up. Additionally, the level of technical knowledge in this guide, assumes some familiarity with Linux systems, at least to the point where one might feel comfortable enough to perform a manual install of Arch Linux according to the Arch Wiki's Installation Guide[^installation-guide-archwiki].
+This guide is for anyone interested in using NixOS[^how-nix-works], in a relatively secure fashion, with _modern conveniences_ like using an onboard TPM2 chip to decrypt LUKS devices during boot up. Additionally, the level of technical knowledge in this guide, assumes a somewhat decent familiarity with Linux systems, at least to the point where one might feel comfortable enough to perform a manual install either of Arch Linux[^installation-guide-archwiki] or Gentoo[^gentoo-amd64-guide].
 
-While we won't be installing Arch today, we are going to be making heavy use of the command line and TUI based text editors as we perform a manual install of NixOS. I mention Arch, since many of the steps we'll be performing serve the same purpose, but we'll be performing them in a more _declarative_ sort of manner (as we'll see). If that's something you're up for, then this guide is written for you.
+While we won't be installing Arch or Gentoo today, we are going to be making heavy use of the command line and TUI based text editors as we perform a manual install of NixOS. If that's something you're up for, then this guide is written for you.
 
-On the other hand, if this is your first exposure to Linux or even Unix based operating systems, let alone NixOS, then I encourage you to consider _skimming_ through this guide, instead. That way, you can at least discover if anything I talk about today seems interesting to you, even if some steps might seem beyond your current comfort level of technical expertise. Because, who knows, you might just find you've been bitten by the 'Nix bug before you know it!
+On the other hand, if this is your first exposure to Linux or even Unix based operating systems, let alone NixOS, then I encourage you to consider _skimming_ through this guide, instead of actually performing any of the steps contained within it. That way, you can at least discover if anything I talk about today seems interesting to you, even if it seems beyond your current comfort level of technical expertise. Because, who knows, you might just find you've been bitten by the 'Nix bug before you know it! Also, should that happen, I highly recommend trying a traditional Linux distro like [fedora workstation](https://fedoraproject.org/workstation/), just to get your feet wet, before diving headfirst into something that's far less user-friendly.
 
 ### Goals of this Guide
 
@@ -83,7 +83,7 @@ By the end of this article, my hope is that you’ll be able to:
 
 1. A machine with a UEFI motherboard
 2. A machine with a TPM2 chip (This is only needed for the _Unlock LUKS via TPM2_ part of the guide, which uses `tpm2-tss` to enable `systemd-cryptenroll` to enroll your LUKS keys into the TPM chip.[^systemd-cryptenroll])
-3. A bootable USB (4 GB minimum) with the Minimal NixOS ISO[^minimal-iso] loaded onto it
+3. A bootable USB (4 GB minimum) with the [Minimal NixOS ISO](https://nixos.org/download/#nixos-iso)[^minimal-iso] loaded onto it
 
 ### Booting the installer
 
@@ -631,7 +631,7 @@ Our generated config currently looks something like this:
   # with explicit per-interface declaration with `networking.interfaces.<interface>.useDHCP`.
   networking.useDHCP = lib.mkDefault true;
 
-  nixpkgs.hostPlatform = lib.mkDefault = "x86_64-linux";
+  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updatedMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }
 ```
@@ -688,7 +688,7 @@ This last change is optional, but I find it helpful for compatibility reasons:
   # with explicit per-interface declaration with `networking.interfaces.<interface>.useDHCP`.
   networking.useDHCP = lib.mkDefault true;
 
-  nixpkgs.hostPlatform = lib.mkDefault = "x86_64-linux";
+  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.enableAllFirmware = true; # Helps with compatibility
   hardware.cpu.intel.updatedMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }
@@ -814,7 +814,7 @@ With our edits in place, we can save and exit the `hardware-configuration.nix` f
   # Do NOT change this value unless you have manually inspected all the changes it would make to your configuration,
   # and migrated your data accordingly.
   #
-  $ For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
+  #For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
   system.stateVersion = "24.05"; # Did you read the comment?
 }
 ```
@@ -850,7 +850,7 @@ Network Manager is both the easiest and (unsurprisingly) the default networking 
 ###### Enable flakes
 
 ```nix
-nix.settings.experimental-features = [“nix-command” “flakes”];
+nix.settings.experimental-features = ["nix-command" "flakes"];
 ```
 
 Flakes are one of my most favorite things about Nix. They're incredibly versatile from setting up [modular, multi-machine configurations from a single `flake.nix`](https://nixos-and-flakes.thiscute.world/nixos-with-flakes/modularize-the-configuration#modularize-your-nixos-configuration)[^modularize-your-nixos-configuration] to creating reproducible [development environments](https://github.com/the-nix-way/dev-templates)[^the-nix-way-dev-templates]. In short, they're quite handy.
@@ -858,7 +858,7 @@ Flakes are one of my most favorite things about Nix. They're incredibly versatil
 ###### Update the time zone
 
 ```nix
-time.timeZone = “America/Los_Angeles”
+time.timeZone = "America/Los_Angeles"
 ```
 
 I believe it's also possible to update your time zone imperatively as well, if you're Desktop Environment (i.e., Gnome, Plasma, etc.) allows it. As such, setting it from `configuration.nix` will thus establish it as the "default" global/system time zone.
@@ -868,7 +868,7 @@ I believe it's also possible to update your time zone imperatively as well, if y
 ```nix
 users.users.mycoolusername = {
   isNormalUser = true;
-  extraGroups = [“wheel” “networkmanager”];
+  extraGroups = ["wheel" "networkmanager"];
 };
 ```
 
@@ -1034,7 +1034,7 @@ Alternatively, you can use [`fish`](https://wiki.nixos.org/wiki/Fish)[^nixos-wik
   time.timeZone = "America/Los_Angeles";
 
   # Enable Flakes
-  nix.settings.experimental-features = [“nix-command” “flakes”];
+  nix.settings.experimental-features = ["nix-command" "flakes"];
 
   # Enable the Gnome Desktop Environment
   services.xserver.enable = true;
@@ -1067,7 +1067,7 @@ Alternatively, you can use [`fish`](https://wiki.nixos.org/wiki/Fish)[^nixos-wik
   # Define a user account. Don't forget to set a password with ■passwd■.
   users.users.mycoolusername = {
     isNormalUser = true;
-    extraGroups = [“wheel” “networkmanager”];
+    extraGroups = ["wheel" "networkmanager"];
   };
 
   # Default shell => ZSH
@@ -1088,7 +1088,6 @@ Alternatively, you can use [`fish`](https://wiki.nixos.org/wiki/Fish)[^nixos-wik
 
   system.stateVersion = "24.05"; # Did you read the comment?
 }
-
 ```
 
 If you're happy with the above, we can move on to the best part, the `flake.nix`.
@@ -1108,7 +1107,7 @@ We can define a minimal `flake.nix` like so:
   description = "A minimal flake.nix for a NixOS machine";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-  }:
+  };
   outputs = {self, nixpkgs, ... }@inputs: {
     nixosConfigurations = {
       my-nixos-machine = nixpkgs.lib.nixosSystem {
@@ -1119,6 +1118,8 @@ We can define a minimal `flake.nix` like so:
   };
 }
 ```
+
+> I'm using `nixos-unstable` in this guide instead of the stable `nixos-24.11` for a few reasons. One is that `home-manager:master` tracks `nixos-unstable`. Two is that the nature of Nix makes rollbacks incredibly easy, and significantly cuts down the risk of using `nixos-unstable`. Finally, while the `nixos-unstable` _channel_ is occasionally true to it's namesake, it's not _quite_ as unstable or as bleeding-edge as something like Arch Linux. That's is due to the somewhat significant amount of automated build testing any given commit into `nixpkgs:master` needs to go through before being released as the latest `nixos-unstable` build/channel update.[^nix-channels]
 
 And with that, we can finally proceed to the very much anticipated install command.
 
@@ -1276,7 +1277,7 @@ The following is how I personally like to modularize my own NixOS flake based co
       url = "github:nix-community/lanzaboote/v0.4.1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-  }:
+  };
   outputs = {self, nixpkgs, lanzaboote, ... }@inputs: {
     nixosConfigurations = {
       my-nixos-machine = nixpkgs.lib.nixosSystem {
@@ -1319,7 +1320,7 @@ Then we can create something like this:
 
   boot.lanzaboote = {
     enable = true;
-    pkiBundle = "/etc/secureboot";
+    pkiBundle = "/var/lib/sbctl";
   };
 }
 ```
@@ -1389,7 +1390,7 @@ System:
 
 ## Part 2.5: Unlocking LUKS with TPM2 using `systemd-cryptenroll`
 
-At the very beginning of this guide, I promised I’d show you how to auto decrypt your LUKS device with TPM2. So, to do that, we’re going to amend the `lanza.nix` module we created earlier, to both install `tpm2-tss` and to create a tiny script (`luks-helper`) to leverage a handy tool included in systemd,`systemd-cryptenroll`. The command our script calls on our LUKS device (NIXLUKS) looks something like this:
+At the very beginning of this guide, I promised I’d show you how to auto decrypt your LUKS device with TPM2. So, to do that, we’re going to amend the `lanza.nix` module we created earlier, to both install `tpm2-tss` and to create a tiny script (`luksCryptenroller`) to leverage a handy tool included in systemd: `systemd-cryptenroll`. The command our script calls on our LUKS device (`NIXLUKS`) looks something like this:
 
 ```console noLineNumbers
 # systemd-cryptenroll --wipe-slot=tpm2 --tpm2-device=auto --tpm2-pcrs=0+7 /dev/disk/by-label/NIXLUKS
@@ -1401,7 +1402,9 @@ According to the man pages for `systemd-cryptenroll`[^man-systemd-cryptenroll], 
 - `--tpm2-device=auto` automatically grabs the default TPM2 chip (usually found on your motherboard).
 - `--tpm2-pcrs=0+7` binds the keys to Platform Configuration Registers 0 (platform-code, i.e., system firmware) and 7 (secure-boot-policy, i.e., the secure boot _state_; changes when enabled/disabled, or firmware certificates changes).
 
-```nix
+Then, we can implement said command into our `lanza.nix` module like this:
+
+```nix {2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,27,28,31,32}
 {pkgs, lib, ... }:
 let
   luksCryptenroller = pkgs.writeTextFile {
@@ -1428,11 +1431,11 @@ let
   };
 in
 {
-  environment.systemPackages = with [
+  environment.systemPackages = [
     luksCryptenroller
     # For debugging and troubleshooting Secure Boot.
     pkgs.sbctl
-    # For `systemd-cryptenroll`
+    # Needed to use the TPM2 chip with `systemd-cryptenroll`
     pkgs.tpm2-tss
   ];
 
@@ -1444,7 +1447,7 @@ in
 
   boot.lanzaboote = {
     enable = true;
-    pkiBundle = "/etc/secureboot";
+    pkiBundle = "/var/lib/sbctl";
   };
 }
 ```
@@ -1455,7 +1458,7 @@ I'll admit, not the prettiest (or the DRYest) `bash` script in the world, but _h
 
 This is rather straight forward just run `$ luksCryptenroller` (you'll immediately be prompted for your `superuser` password). Then just enter your passphrase for each LUKS device, in the order you declared them in.
 
-> Fun fact, if all your LUKS devices share the same passphrase, `systemd-cryptenroll` seems to just know to re-use it, rather than prompting you for it again. As to how that's possible ... well I have no idea. Perhaps `systemd-cryptenroll` stores the passphrase temporarily in memory, and makes a call to check if it still exists/validates on every enrollment, and if it does, uses it until it comes across a device the stored passphrase doesn't decrypt. That's just a best guess though, it's also entirely possible this _feature_ isn't purposeful, and might actually be a bug.
+> Fun fact, if all your LUKS devices share the same passphrase, `systemd-cryptenroll` seems to just know to re-use it, rather than prompting you for it again. As to how that's possible ... _well, I have no idea._ If by chance you happen to figure that out, I'd love to hear about it!
 
 ## Part 03: Configuring Home Manager (Abridged)
 
@@ -1502,7 +1505,7 @@ As you'll notice, this module enables a system wide `fontconfig` (we'll use home
 
 We can then import it into `configuration.nix` like so:
 
-```nix
+```nix {8,9}
 # configuration.nix
 { config, lib, pkgs, ... }:
 
@@ -1510,12 +1513,15 @@ We can then import it into `configuration.nix` like so:
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      # system modules
       ./modules/fonts.nix
     ];
 
   ...
 }
 ```
+
+> You could import this into the `flake.nix` module array as well, this just shows you that you can import it into your main `configuration.nix` file too. Inversely, you could move the `lanza.nix` module out of the `flake.nix` module array, and import it into the `configuration.nix` imports array instead as well.
 
 We can then build the new configuration like so:
 
@@ -1542,7 +1548,7 @@ This is rather straight forward (it's one of the neat things about flakes!), jus
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-  }:
+  };
   outputs = {self, nixpkgs, lanzaboote, home-manager, ... }@inputs: {
     nixosConfigurations = {
       my-nixos-machine = nixpkgs.lib.nixosSystem {
@@ -1645,7 +1651,7 @@ Another `default.nix` module, it'll import modules used primarily within the ter
 #### `home/modules/shell/zsh.nix`
 
 ```nix
-{config, ...}: {
+{config, pkgs, ...}: {
   home.packages = with pkgs; [
     pfetch-rs
   ];
@@ -1724,25 +1730,29 @@ The above is my personal Starship Prompt configuration, and I hope it serves you
 }
 ```
 
-#### Finishing Touches
+#### The Final Step: `nixos-rebuild switch`
 
-With all the modules configured, it's time to run `# nixos-rebuild switch` and bask in the triumph of having accomplished a LOT today, with a base Home Manager configuration as the cherry on top.
+With all the modules configured, it's time to run `# nixos-rebuild switch`, or `# nixos-rebuild boot` if you want to cut down on the misc Nix profile generations (only drawback is you have to reboot). If everything compiled successfully, it's now time to bask in the triumph of having accomplished a LOT today, complete with a base Home Manager configuration as icing on the cake.
+
+> Eventually, you'll want to clean out old _Nix generations_ (created after each `# nixos-rebuild switch`) since they can really start piling up, and monopololize your diskspace. You can do so (mildly dangerously) with `# nix-collect-garbage -d` to delete _all_ old generations of profiles. Or, for a much safer garbage collection, you can run `# nix-collect-garbage --delete-older-than <time_period>` to remove things older than, say, 30 days, using `30d` as the time period. [^nix-collect-garbage]
+>
+> The former garbage collection command can also become **_très dangereaux_**, if your last config and current config are both broken in a way that you can no longer access the `TTY`, since all possible escape hatches (working generations) would be removed. This is probably one of the only ways you can truly _brick_ a NixOS install.
 
 ## Discussion
 
 Welcome to the end of a very long ~~blog post~~ _guide_. If you completed the above, you have earned a very well deserved break and celebration of your accomplishments today (or however long it took to get through this guide).
 
-What you've done is no small feat. In reaching the end of this guide, you've installed NixOS with Full Disk Encryption, enabled secure boot with `lanzaboote`, enabled auto decryption of your LUKS devices with `systemd-cryptenroller`, and finally configured a slick `zsh` shell with Starship Prompt, some plugins, and configured `git` and `gh`, ready to turn your `/etc/nixos` folder into a repo[^other-useful-tips]. If you knew nothing about Nix when you first got here, well, I hope you were able to get the gist of it after reaching the end here, and picked up a few things along the way.
+What you've done is no small feat. In reaching the end of this guide, you've installed NixOS with Full Disk Encryption, enabled secure boot with `lanzaboote`, enabled your devices TPM2 chip to decrypt your LUKS devices during boot with `systemd-cryptenroller`, and finally configured a slick `zsh` shell with Starship Prompt, some plugins, and configured `git` and `gh`, ready to turn your `/etc/nixos` folder into a repo[^other-useful-tips]. _Pretty rad!_
+
+If you knew nothing about Nix when you first got here, well, I hope you were able to get the gist of it after reaching the end here, and picked up a few things along the way.
 
 I also hope that in being your guide on this journey through the major circles of Nix, that you were able to overcome some of the steep learning curve Nix/NixOS is infamously known for. If however, I failed to help with that... Welp, I guess I'll just have to update this post in accordance to your feedback, won't I?
 
 In any event, I hope you learned something, and if you were ever a chronic distrohopper[^distrohopper] like I was, I hope NixOS brings you the same peace of mind it brought me, serving as the final distro following a very long series of hops.
 
-> Final note: Eventually, you'll want to clean out old _Nix generations_ (created after each `# nixos-rebuild switch`) since they can really start piling up, monopolozing diskspace. You can do so (mildly dangerously) with `# nix-collect-garbage -d` to delete _all_ old generations of profiles. Or, for a much safer garbage collection, you can run `# nix-collect-garbage --delete-older-than <time_period>` to remove things older than, say, 30 days, using `30d` as the time period. [^nix-collect-garbage]
->
-> The former garbage collection command can also become **_très dangereaux_**, if your last config and current config are both broken in a way that you can no longer access the `TTY`, since all possible escape hatches (working generations) would be removed. This is probably one of the only ways you can truly _brick_ a NixOS install.
+Finally, It's just me writing/editing these articles, and they're _quite long._ As such, it's entirely possible I've _accidentally_ a word or semi-colon or two. Should you find any errors in this guide, I'd really appreciate it if you either left a comment below explaining what's wrong, [opened an issue](https://github.com/laniakita/website/issues/new) on this site's repo, or submitted a pull request to correct this article directly. Thank you.
 
-_PS, I'd love to hear your thoughts! Feel free to drop a comment below, or reach out to me on social media to let me know what you thought of this guide._
+_PS, I'd love to hear your thoughts! Feel free to drop a comment or question below, or reach out to me on social media to let me know what you thought of this article!_
 
 [^installing-nixos-with-flakes-and-lvm-on-luks]: Cîmpianu D. Installing NixOS with Flakes and LVM on LUKS [Internet]. Jadarma’s Blog. 2024 [cited 2025 Jan 3]. Available from: [https://jadarma.github.io/blog/posts/2024/08/installing-nixos-with-flakes-and-lvm-on-luks/](https://jadarma.github.io/blog/posts/2024/08/installing-nixos-with-flakes-and-lvm-on-luks/)
 
@@ -1833,3 +1843,7 @@ _PS, I'd love to hear your thoughts! Feel free to drop a comment below, or reach
 [^nix-collect-garbage]: nix-collect-garbage - Nix Reference Manual [Internet]. [cited 2025 Jan 4]. Available from: [https://nix.dev/manual/nix/2.25/command-ref/nix-collect-garbage.html](https://nix.dev/manual/nix/2.25/command-ref/nix-collect-garbage.html)
 
 [^man-systemd-cryptenroll]: systemd-cryptenroll [Internet]. [cited 2025 Jan 4]. Available from: [https://www.freedesktop.org/software/systemd/man/latest/systemd-cryptenroll.html](https://www.freedesktop.org/software/systemd/man/latest/systemd-cryptenroll.html)
+
+[^nix-channels]: Nix channels - NixOS Wiki [Internet]. [cited 2025 Jan 4]. Available from: [https://nixos.wiki/wiki/Nix_channels](https://nixos.wiki/wiki/Nix_channels)
+
+[^gentoo-amd64-guide]: Gentoo AMD64 Handbook - Gentoo wiki [Internet]. [cited 2025 Jan 4]. Available from: [https://wiki.gentoo.org/wiki/Handbook:AMD64](https://wiki.gentoo.org/wiki/Handbook:AMD64)
