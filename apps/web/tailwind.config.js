@@ -162,6 +162,7 @@ export default {
             'pre > code': {
               float: 'left',
               minWidth: '100%',
+              paddingRight: '4rem'
             },
             'div.code-line:empty': {
               /* it is necessary because there is no even eol character in div code-lines */
@@ -173,9 +174,9 @@ export default {
             },
             '.code-line': {
               paddingLeft: '12px',
-              paddingRight: '12px',
+              paddingRight: 'calc(4rem + 12px)',
               marginLeft: '-12px',
-              marginRight: '-12px',
+              marginRight: 'calc(-4rem - 12px)',
               borderLeft: '4px solid transparent' /* prepare for highlighted code-lines */,
             },
             '.code-line.inserted': {

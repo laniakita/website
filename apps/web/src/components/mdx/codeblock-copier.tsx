@@ -37,8 +37,10 @@ function CodeBlockAssemble(props: React.DetailedHTMLProps<React.HTMLAttributes<H
 
     // string is a weird edge case here.
     if (inputBlock.props.children.length > 30 && typeof inputBlock.props.children !== 'string') {
-      if (isClient) return <ExpandableBlock {...props} />;
-      return <CollapsedCodeBlock {...props} />;
+      if ('type' in inputBlock && (inputBlock.props.children[0] as ReactElement).type === 'div') {
+        if (isClient) return <ExpandableBlock {...props} />;
+        return <CollapsedCodeBlock {...props} />;
+      }
     }
     return <DefaultCodeBlock {...props} />;
   }
@@ -67,18 +69,20 @@ function CollapsedCodeBlock(props: React.DetailedHTMLProps<React.HTMLAttributes<
   };
 
   const handlePreScroll = (insideCollapsedBlock?: boolean, isExpanded?: boolean) => {
-    if (!insideCollapsedBlock || isExpanded === true) {
-      btnRef.current.style.pointerEvents = 'none';
-      btnRef.current.style.opacity = '0';
-      setTimeout(() => {
-        btnRef.current.style.pointerEvents = 'auto';
-        btnRef.current.style.opacity = '100%';
-      }, 500);
-    } else if (insideCollapsedBlock && !isExpanded) {
-      btnRef.current.style.opacity = '0';
-      setTimeout(() => {
-        btnRef.current.style.opacity = '20%';
-      }, 500);
+    if (btnRef?.current !== undefined) {
+      if (!insideCollapsedBlock || isExpanded === true) {
+        btnRef.current.style.pointerEvents = 'none';
+        btnRef.current.style.opacity = '0';
+        setTimeout(() => {
+          btnRef.current.style.pointerEvents = 'auto';
+          btnRef.current.style.opacity = '100%';
+        }, 500);
+      } else if (insideCollapsedBlock && !isExpanded) {
+        btnRef.current.style.opacity = '0';
+        setTimeout(() => {
+          btnRef.current.style.opacity = '20%';
+        }, 500);
+      }
     }
   };
 
@@ -121,35 +125,39 @@ function DefaultCodeBlock(props: React.DetailedHTMLProps<React.HTMLAttributes<HT
   const [isCopied, setIsCopied] = useState<boolean | null>(false);
 
   const handlePreScroll = (insideCollapsedBlock?: boolean, isExpanded?: boolean) => {
-    if (!insideCollapsedBlock || isExpanded === true) {
-      btnRef.current.style.pointerEvents = 'none';
-      btnRef.current.style.opacity = '0';
-      setTimeout(() => {
-        btnRef.current.style.pointerEvents = 'auto';
-        btnRef.current.style.opacity = '100%';
-      }, 500);
-    } else if (insideCollapsedBlock && !isExpanded) {
-      btnRef.current.style.opacity = '0';
-      setTimeout(() => {
-        btnRef.current.style.opacity = '20%';
-      }, 500);
+    if (btnRef?.current !== undefined) {
+      if (!insideCollapsedBlock || isExpanded === true) {
+        btnRef.current.style.pointerEvents = 'none';
+        btnRef.current.style.opacity = '0';
+        setTimeout(() => {
+          btnRef.current.style.pointerEvents = 'auto';
+          btnRef.current.style.opacity = '100%';
+        }, 500);
+      } else if (insideCollapsedBlock && !isExpanded) {
+        btnRef.current.style.opacity = '0';
+        setTimeout(() => {
+          btnRef.current.style.opacity = '20%';
+        }, 500);
+      }
     }
   };
 
   // handle weird singleline blocks
   //const preRef = useRef<HTMLPreElement>(null!);
-  const [topPos, setTopPos] = useState('top-4');
+  const [topPos, setTopPos] = useState('top-2');
 
   useEffect(() => {
     //console.log(preRef.current);
     //console.log(preRef.current.getClientRects());
-    if ((preRef.current.getClientRects()?.[0]?.height ?? 0) < 70) {
-      setTopPos('top-2');
-    } else {
-      setTopPos('top-4');
+    if (preRef?.current !== undefined) {
+      if ((preRef.current.getClientRects()?.[0]?.height ?? 0) < 70) {
+        setTopPos('top-2');
+      } else {
+        setTopPos('top-4');
+      }
     }
   }, []);
-
+  
   return (
     <div id={blockId} className='relative'>
       <pre
@@ -196,18 +204,20 @@ function ExpandableBlock(props: React.DetailedHTMLProps<React.HTMLAttributes<HTM
   };
 
   const handlePreScroll = (insideCollapsedBlock?: boolean, isExpanded?: boolean) => {
-    if (!insideCollapsedBlock || isExpanded === true) {
-      btnRef.current.style.pointerEvents = 'none';
-      btnRef.current.style.opacity = '0';
-      setTimeout(() => {
-        btnRef.current.style.pointerEvents = 'auto';
-        btnRef.current.style.opacity = '100%';
-      }, 500);
-    } else if (insideCollapsedBlock && !isExpanded) {
-      btnRef.current.style.opacity = '0';
-      setTimeout(() => {
-        btnRef.current.style.opacity = '20%';
-      }, 500);
+    if (btnRef?.current !== undefined) {
+      if (!insideCollapsedBlock || isExpanded === true) {
+        btnRef.current.style.pointerEvents = 'none';
+        btnRef.current.style.opacity = '0';
+        setTimeout(() => {
+          btnRef.current.style.pointerEvents = 'auto';
+          btnRef.current.style.opacity = '100%';
+        }, 500);
+      } else if (insideCollapsedBlock && !isExpanded) {
+        btnRef.current.style.opacity = '0';
+        setTimeout(() => {
+          btnRef.current.style.opacity = '20%';
+        }, 500);
+      }
     }
   };
 
@@ -318,7 +328,7 @@ function CopyBtn({
       <button
         ref={btnRef}
         onClick={handleCopyClick}
-        className={`${special} flex items-center justify-center rounded-lg border p-1 shadow-lg backdrop-blur-md [transition:_color_0.3s,_border_0.3s,_box-shadow_0.3s,_backdrop-filter_0.3s,_background_0.3s,_opacity_0.3s] hover:shadow-xl hover:backdrop-blur ${isExpanded == true && 'pointer-events-auto opacity-100'} ${isExpanded == false && isExpanded !== undefined && 'pointer-events-none opacity-20'} ${isCopied ? 'border-ctp-green/[.99] bg-ctp-green/[.20] text-ctp-green/[.99] hover:border-ctp-green hover:bg-ctp-green/20 hover:text-ctp-green' : isCopied === null ? 'border-ctp-red bg-ctp-red/20 text-ctp-red hover:border-ctp-red hover:bg-ctp-red/20 hover:text-ctp-red' : 'border-ctp-mauve bg-ctp-mauve/20 text-ctp-mauve hover:border-ctp-pink hover:bg-ctp-pink/10 hover:text-ctp-pink'}`}
+        className={`${special} flex items-center justify-center rounded-lg border p-1 shadow-lg backdrop-blur-sm [transition:_color_0.3s,_border_0.3s,_box-shadow_0.3s,_backdrop-filter_0.3s,_background_0.3s,_opacity_0.3s] hover:shadow-xl hover:backdrop-blur ${isExpanded == true && 'pointer-events-auto opacity-100'} ${isExpanded == false && isExpanded !== undefined && 'pointer-events-none opacity-20'} ${isCopied ? 'border-ctp-green/[.99] bg-ctp-green/[.20] text-ctp-green/[.99] hover:border-ctp-green hover:bg-ctp-green/20 hover:text-ctp-green' : isCopied === null ? 'border-ctp-red bg-ctp-red/20 text-ctp-red hover:border-ctp-red hover:bg-ctp-red/20 hover:text-ctp-red' : 'border-ctp-mauve bg-ctp-mauve/10 text-ctp-mauve hover:border-ctp-pink hover:bg-ctp-pink/10 hover:text-ctp-pink'}`}
       >
         <span
           className={`${isCopied ? 'icon-[ph--check-fat-duotone] text-ctp-green hover:text-ctp-green' : isCopied === null ? 'icon-[ph--x-circle-duotone] text-ctp-red hover:text-ctp-red' : 'icon-[ph--copy-duotone]'} size-6`}

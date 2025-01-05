@@ -272,6 +272,8 @@ export default function ToCMenu() {
      
     if ((e.target as HTMLElement).id === 'show-hide-table-of-contents-button-mobile') {
       // do nothing
+    } else if ((dropToCRef?.current?.contains(e.target as Node)) && (e.target as Node)?.nodeName !== 'BUTTON') {
+      // do nothing
     } else {
       setShowMobileMenu(false);
     }
