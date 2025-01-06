@@ -1,4 +1,4 @@
-import { useId, type ReactElement, type ReactNode } from 'react';
+import React, { useId, type ReactElement, type ReactNode } from 'react';
 
 export function Paragraph(props: { children?: ReactNode }) {
   const id = useId();
@@ -16,7 +16,7 @@ export function Paragraph(props: { children?: ReactNode }) {
         if (typeof node === 'string') {
           //console.log(node);
           const spanNode = (
-            <span key={crypto.randomUUID()} id={`span-${id}`}>
+            <span key={crypto.randomUUID()} id={`span-${id}-${crypto.randomUUID()}`}>
               {node}
             </span>
           );
@@ -24,10 +24,9 @@ export function Paragraph(props: { children?: ReactNode }) {
         }
         return node;
       });
-
-      return <p id={`paragraph-${id}`} key={crypto.randomUUID()} {...{ children: nodeMap }} />;
+      return <p key={crypto.randomUUID()} id={`paragraph-${id}`} {...{ children: nodeMap }} />;
     }
   }
 
-  return <p {...props} />;
+  return <p id={`paragraph-${id}`} {...props} />;
 }
