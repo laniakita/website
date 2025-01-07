@@ -29,7 +29,7 @@ keywords:
   - IaC
 author: lani
 slug: thoughts-on-rebuilding-my-personal-website
-headline: 'Thoughts on Rebuilding my Site, Next.js 14.2+, & SST'
+headline: 'Thoughts on Rebuilding my Website, Next.js 14.2+, & SST'
 subheadline: 'Bonus thoughts on React Three Fiber, & Zustand too'
 imageSrc: ../../../assets/images/oc/2024/08/sunset-no-14.2-by-lani-akita.png
 altText: Abstract art of a conical gradient. Next.js represented by darker colors on the left, Ion/SST represented by lighter colors on the right.
@@ -113,11 +113,7 @@ Now, I’d like to shift our focus back to the App router, away from all this gu
 
 Streaming is a pretty big benefit of server components, and I believe it can improve the user experience by quite a bit. The largest benefit to streaming, in my opinion, is summarized nicely in the [Next.js docs](https://nextjs.org/docs/app/building-your-application/routing/loading-ui-and-streaming#streaming-with-suspense):
 
-<details open>
-
-Streaming is particularly beneficial when you want to prevent long data requests from blocking the page from rendering as it can reduce the Time To First Byte (TTFB) and First Contentful Paint (FCP). It also helps improve Time to Interactive (TTI), especially on slower devices.
-
-</details>
+>Streaming is particularly beneficial when you want to prevent long data requests from blocking the page from rendering as it can reduce the Time To First Byte (TTFB) and First Contentful Paint (FCP). It also helps improve Time to Interactive (TTI), especially on slower devices.
 
 I should mention however, that streaming isn’t a configuration constant, or a special component like the App router’s instant fallback [loading UI](https://nextjs.org/docs/app/api-reference/file-conventions/loading) feature. Streaming is instead, a server-side rendering pattern that can be implemented on SSR pages _only_.
 
@@ -171,7 +167,9 @@ For those reasons, I’m quite pleased with the suite of metadata tools Next.js 
 
 Admittedly, I’ve not had a chance to play with the [Server Actions API](https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations) too much aside from experiments with handling a user’s theme preference via cookies.
 
-<details open>
+<details>
+
+<summary>Note: Handling theme prefs via cookies</summary>
 
 Speaking of, there’s a really wonderful [article by Mandaline](https://www.mandalinedev.com/articles/color-themes-next-js) that talks about how to do exactly that. I happened to stumble across it in this [Next.js discussion thread](https://github.com/vercel/next.js/discussions/53063) that summarizes the approaches to implementing a theme toggle on the latest versions of Next.js.
 
@@ -193,9 +191,9 @@ export const runtime = ‘edge’ // ‘nodejs’ (default) | ‘edge’
 
 Now that I think about it, Next.js might be the only framework I’ve worked with that offers such a deep level of control over page rendering. I think the reason for this is that other frameworks (SvelteKit, Remix, Astro, etc.) have made SSR a first class (& sometimes only) citizen. Granted adapters exist for SvelteKit (adapter-static), but it’s sorta an all or nothing decision, isn’t it?
 
-<details open>
+<details>
 
-#### Note on Astro
+<summary>Note: Astro</summary>
 
 Apparently they’ve been doing [Hybrid rendering since 2.0](https://astro.build/blog/hybrid-rendering/). While the level of control isn’t as deep as Next’s, it’s more than good enough. I'm appreciative.
 
@@ -328,11 +326,11 @@ I believe the below is still an [open issue](https://github.com/sst/ion/issues/5
 
 ~~Beyond simple migrations,~~ There’s ~~also~~ a few features/behaviors that seem to be missing documentation. Notably, the guide on [using Cloudflare as a custom domain provider](https://ion.sst.dev/docs/custom-domains/#cloudflare) fails to mention that in addition to the `CLOUDFLARE_API_TOKEN`, it’s really important to set the `CLOUDFLARE_DEFAULT_ACCOUNT_ID` variable too. Without the latter var set, you’ll likely find `sst deploy` breaks, resulting in a vague set of error messages from the Go compiler.
 
-<details open>
+<aside>
 
 Honestly, I think it’s rad the `sst` CLI uses Go, even if this is how I learned that fact.
 
-</details>
+</aside>
 
 ### Transforms (Lambda Layer)
 
@@ -434,6 +432,10 @@ I've set it up in my `turbo.json` so it runs immediately after `SHARP_VERSION=0.
 
 ~~However, in trying to replicate [this guide from the old docs](https://docs.sst.dev/constructs/AstroSite#using-an-image-processing-layer-like-sharp), (whilst converting things as best I could to account for Pulumi’s aws-classic provider, inline with [their docs](https://www.pulumi.com/registry/packages/aws/api-docs/lambda/layerversion/)), I found things would deploy, but I never received any sort of error message, nor did it create the Lambda Layer. This was very confusing to me.~~
 
+<details>
+
+<summary>Deprecated code snippet 1</summary>
+
 ```ts
  transform: {
     server: (args) => {
@@ -452,9 +454,15 @@ I've set it up in my `turbo.json` so it runs immediately after `SHARP_VERSION=0.
   },
 ```
 
+</details>
+
 ~~> IIRC, In addition to defining the layer like this, I’m fairly certain I tried a dot notation access of the output ARN string, but that didn’t work either.~~
 
 ~~I later came across [this probably relevant issue](https://github.com/sst/ion/issues/422), (which thankfully appears to be [fixed](https://github.com/sst/ion/pull/423) now), but I eventually gave up and just defined it manually in the end, setting the `transform.server.layers` to the generated ARN.~~
+
+<details>
+
+<summary>Deprecated code snippet 2</summary>
 
 ```ts
  transform: {
@@ -468,6 +476,8 @@ I've set it up in my `turbo.json` so it runs immediately after `SHARP_VERSION=0.
     },
   },
 ```
+
+</details>
 
 ### AWS SSO Integration
 
@@ -545,11 +555,11 @@ Although, that solution is quite traditional, it worked for my purposes however,
 
 Created by the [Poimandres dev collective](https://pmnd.rs/) (Pmndrs)—the same collective behind React Three Fiber & the React Three ecosystem—[Zustand](https://zustand-demo.pmnd.rs/) is a featherweight alternative to [React Redux](https://react-redux.js.org/), and I love the little state-management solution dearly.
 
-<details open>
+<aside>
 
-How could you not!? It’s got a cute bear as a mascot!.
+How could you not!? It’s got a cute bear as a mascot!
 
-</details>
+</aside>
 
 It’s incredibly minimal (feeling more like an extension of React’s Context API), which makes learning it, and integrating it rather painless.
 

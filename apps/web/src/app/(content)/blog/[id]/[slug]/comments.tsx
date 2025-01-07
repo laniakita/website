@@ -12,7 +12,7 @@ export default function CommentsComponent() {
     return 'https://giscus.catppuccin.com/themes/latte.css';
   };
   return (
-    <div className='size-full p-10'>
+    <div className='size-full p-6'>
       <div className='mx-auto size-full max-w-3xl'>
         <Giscus
           id='comment'

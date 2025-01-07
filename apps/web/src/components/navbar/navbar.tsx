@@ -100,8 +100,8 @@ export default function NavBar() {
           className={`relative flex h-16 w-full items-center justify-between px-6 text-xl shadow-lg [transition:_opacity_0.8s] dark:border-ctp-surface0`}
         >
           {/* */}
-          <div className='pointer-events-none absolute inset-0 h-[200%] [backdrop-filter:_blur(8px)_brightness(95%)_saturate(160%)] [mask-image:_linear-gradient(to_bottom,_black_0%_50%,_transparent_50%_100%)]' />
-          <div className='pointer-events-none absolute inset-0 h-full [backdrop-filter:_blur(8px)_brightness(140%)_saturate(120%)] [background:_hsl(0deg_0%_100%_/_0.1)] [mask-image:_linear-gradient(to_bottom,_black_0_3px,_transparent_3px)] [transform:_translateY(100%)]' />
+          <div className='nav-glassy-bg' />
+          <div className='nav-glassy-edge' />
 
           <div className='z-[51] flex flex-row-reverse items-center justify-center gap-1 lg:flex-row'>
             <LinkPlus href='/' className='nav-logo relative flex size-full w-16 items-center justify-center'>

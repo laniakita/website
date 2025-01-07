@@ -64,7 +64,9 @@ The first issue was that, ephemeral storage in static functions makes SQLite imp
 
 So, in thinking about the future, and not wanting to limit my project pre-emptively, a DBaaS seemed my only viable option. However, by the time I'd actually realized that, I'd already written my Drizzle ORM[^41] statements for SQLite, and I wasn't in the mood for converting them into a different SQL format. So, of Drizzle's SQLite compatible drivers[^42], I wound up using Turso.
 
-<details open>
+<details>
+
+<summary>Choosing Turso over Cloudflare's D1</summary>
 
 I suppose I could’ve used Cloudflare’s D1[^43], instead of Turso, but the moose mascot was so gosh darn cute! Couple that with the fact they have a wonderfully generous free tier[^44], how could I say no?!
 
@@ -367,7 +369,9 @@ Then, with another script, I just pushed all the data to the SQLite database on 
 
 Once all the data was loaded, I simply fetched it using `drizzle`’s query builder (mostly, some calls were proper `select` statements), and I took advantage of using the React `cache`[^73] hook built into Next.js to memoize those DB calls.
 
-<details open>
+<details>
+
+<summary>Prepping for ISR</summary>
 
 There wasn’t a real point to doing so, seeing as I never implemented ISR, so the post page data never really went stale. Still, I figured in the event I did implement it, it’d come in handy. Well, at least I know how it works now.
 
@@ -1578,7 +1582,9 @@ const matterProcessor = async ({
 
 Then we go through the rest of the function. Essentially, we're walking through several different cases, and injecting/retrieving/copying data in a recursive fashion.
 
-<details open>
+<details>
+
+<summary>Performance vs Readability</summary>
 
 A `switch` statement could've worked here, but I decided against it for some reason. I think it's because I prioritized readability over the marginal performance gain of a `switch`.
 
@@ -2414,7 +2420,9 @@ export const insertPosts = async (data: Posts): Promise<void> => {
 
 One thing you'll probably notice, is that I'm assembling a temporary object within each insertion function (respective of the given table, e.g., `authors`), from what already exists in the database. By running this comparison, I'm ensuring that only new content is inserted into the database, or content that needs to be updated. As such, this drastically reduces the number of rows that need to be written.
 
-<details open>
+<details>
+
+<summary>Turso limits</summary>
 
 Turso **_only_** gives 25 million row additions per month for free, so I decided it was important to keep as much of that 25 million as possible. You know, just in case.
 

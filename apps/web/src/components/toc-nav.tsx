@@ -205,34 +205,34 @@ const getFlatHeadings = () => {
   return headingsQuery ?? [];
 };
 
-const concatHeadingUtil = (heading: string) => {
+const concatHeadingUtil = (heading: string, innerWidth: number) => {
   if (!heading) return;
-  if (!window.innerWidth) return;
-
+  if (!innerWidth) return;
+  
   const concatHeading = heading.split('');
 
   let concat = 0;
 
   // todo: figure out a math formula
-  if (window.innerWidth <= Z_FOLD_SCREEN) {
+  if (innerWidth <= Z_FOLD_SCREEN) {
     concat = 10;
-  } else if (window.innerWidth <= 360) {
+  } else if (innerWidth <= 360) {
     concat = 12;
-  } else if (window.innerWidth <= IPHONE_SE_SCREEN) {
+  } else if (innerWidth <= IPHONE_SE_SCREEN) {
     concat = 13;
-  } else if (window.innerWidth <= 390) {
+  } else if (innerWidth <= 390) {
     concat = 15;
-  } else if (window.innerWidth <= 414) {
+  } else if (innerWidth <= 414) {
     concat = 17;
-  } else if (window.innerWidth <= IPHONE_THIRTEEN_PRO_MAX) {
+  } else if (innerWidth <= IPHONE_THIRTEEN_PRO_MAX) {
     concat = 19;
-  } else if (window.innerWidth <= IPHONE_FOURTEEN_PRO_MAX) {
+  } else if (innerWidth <= IPHONE_FOURTEEN_PRO_MAX) {
     concat = 20;
-  } else if (window.innerWidth <= WEIRD_PHABLET) {
+  } else if (innerWidth <= WEIRD_PHABLET) {
     concat = 24;
-  } else if (window.innerWidth <= SMALL_SCREEN_MAX) {
+  } else if (innerWidth <= SMALL_SCREEN_MAX) {
     concat = 28;
-  } else if (window.innerWidth <= MED_SCREEN) {
+  } else if (innerWidth <= MED_SCREEN) {
     concat = 45;
   }
 
@@ -247,9 +247,9 @@ const concatHeadingUtil = (heading: string) => {
   return concatHeading.join('');
 };
 
-function ConcatTitle({ activeId, headings }: { activeId: string; headings: HTMLHeadingElement[] }) {
+function ConcatTitle({ activeId, headings, innerWidth }: { activeId: string; headings: HTMLHeadingElement[], innerWidth: number }) {
   const activeHeading = headings?.find((heading) => heading.id === activeId)?.innerText;
-  const concat = useMemo(() => concatHeadingUtil(activeHeading ?? ''), [activeHeading]);
+  const concat = useMemo(() => concatHeadingUtil(activeHeading ?? '', innerWidth), [activeHeading, innerWidth]);
   return <>{concat}</>;
 }
 
@@ -278,50 +278,10 @@ export default function ToCMenu() {
     }
   }, []);
 
-  const concatDynamic = useCallback((input: string | undefined) => {
-    if (!input) return;
-    if (!window.innerWidth) return;
-
-    const newInput = input.split('');
-
-    let concat = 0;
-
-    if (window.innerWidth <= Z_FOLD_SCREEN) {
-      concat = 12;
-    } else if (window.innerWidth <= 360) {
-      concat = 14;
-    } else if (window.innerWidth <= IPHONE_SE_SCREEN) {
-      concat = 15;
-    } else if (window.innerWidth <= 390) {
-      concat = 17;
-    } else if (window.innerWidth <= 414) {
-      concat = 20;
-    } else if (window.innerWidth <= IPHONE_FOURTEEN_PRO_MAX) {
-      concat = 22;
-    } else if (window.innerWidth <= WEIRD_PHABLET) {
-      concat = 28;
-    } else if (window.innerWidth <= SMALL_SCREEN_MAX) {
-      concat = 33;
-    } else if (window.innerWidth <= MED_SCREEN) {
-      concat = 45;
-    }
-
-    if (input.length > concat) {
-      while (newInput.length > concat) {
-        // concat
-        newInput.pop();
-      }
-      newInput.splice(-1, 1, '...');
-    }
-
-    return newInput.join('');
-  }, []);
-
   useEffect(() => {
     // grab headings on mount
     if (flatHeadings.length <= 0) {
       const headingsQuery = getFlatHeadings();
-
       setFlatHeadings(headingsQuery as HTMLHeadingElement[]);
     }
 
@@ -336,23 +296,18 @@ export default function ToCMenu() {
 
     if (width !== 0 && width < MED_SCREEN) {
       setIsMobile(true);
-      //const currTitle = flatHeadings.find((el) => el.id === activeId)?.innerText;
-      //const concatRes = concatDynamic(currTitle);
-      //setConcatTitle(concatRes ?? '');
     } else {
       setIsMobile(false);
     }
 
-    //window.addEventListener('resize', handleResize);
     document.addEventListener('click', handleToCOffClick);
     window.addEventListener('resize', handleResize);
 
     return () => {
       document.removeEventListener('click', handleToCOffClick);
-      document.removeEventListener('resize', handleResize);
-      //document.removeEventListener('resize', handleResize);
+      window.removeEventListener('resize', handleResize);
     };
-  }, [handleToCOffClick, concatDynamic, setFlatHeadings, activeId, flatHeadings, width]);
+  }, [handleToCOffClick, setFlatHeadings, activeId, flatHeadings, width]);
 
   return (
     <>
@@ -362,8 +317,8 @@ export default function ToCMenu() {
             className={`motion-safe:simple-color-trans z-30 flex w-full flex-row items-center md:hidden ${showMobileMenu ? 'bg-ctp-base/90 dark:bg-ctp-midnight/80' : 'bg-ctp-base/80 dark:bg-ctp-midnight/50'}`}
           >
             <div className='relative z-[35] flex size-full h-12 flex-row items-center gap-4 px-6'>
-              <div className='pointer-events-none absolute inset-0 h-[200%] [backdrop-filter:_blur(8px)_brightness(95%)_saturate(160%)] [mask-image:_linear-gradient(to_bottom,_black_0%_50%,_transparent_50%_100%)]' />
-              <div className='pointer-events-none absolute inset-0 h-full bg-ctp-base/10 [backdrop-filter:_blur(8px)_brightness(140%)_saturate(120%)] [background:_hsl(0deg_0%_100%_/_0.1)] [mask-image:_linear-gradient(to_bottom,_black_0_3px,_transparent_3px)] [transform:_translateY(100%)]' />
+              <div className='nav-glassy-bg' />
+              <div className='nav-glassy-edge' />
               <button
                 id={'show-hide-table-of-contents-button-mobile'}
                 className={`link-color-trans ${showMobileMenu ? 'text-ctp-pink underline' : ''} z-40 -m-1.5 flex items-center whitespace-pre font-mono text-sm text-ctp-subtext0 hover:text-ctp-pink hover:underline`}
@@ -380,7 +335,7 @@ export default function ToCMenu() {
               <p className='z-40 flex flex-row items-center gap-[1ch] overflow-x-hidden whitespace-pre font-mono text-sm'>
                 <span className='icon-[ph--caret-double-right-bold] min-w-[2ch] text-xl text-ctp-subtext0' />
                 <span className='font-bold'>
-                  <ConcatTitle headings={flatHeadings} activeId={activeId} />
+                  <ConcatTitle headings={flatHeadings} activeId={activeId} innerWidth={width} />
                 </span>
               </p>
             </div>

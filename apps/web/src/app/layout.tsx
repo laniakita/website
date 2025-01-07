@@ -23,7 +23,7 @@ const inter_tight = Inter_Tight({
 });
 
 const zeroxproto = localFont({
-  src: './0xProtoNerdFont-Regular.woff2',
+  src: './0xProtoNerdFontPropo-Regular.ttf',
   display: 'swap',
   variable: '--font-zeroxproto',
 });

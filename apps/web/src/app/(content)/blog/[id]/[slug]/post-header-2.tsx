@@ -27,22 +27,23 @@ export function PostHeader2(post: Post) {
       </div>
       */}
       <header className='pt-post-page z-0'>
-        <div className='flex w-full flex-col items-center justify-center gap-2 px-6 pb-6 md:pb-10'>
+        <div className='flex w-full flex-col items-center justify-center gap-1 px-6 pb-6 md:pb-10'>
           <div className='w-full max-w-4xl'>
             <CatTagRoller cats={post.categories} tags={post.tags} />
           </div>
+
           <h1
             id={post.url.split('/').pop()}
-            className='w-full max-w-4xl text-2-5xl font-black supports-[text-wrap:balance]:text-balance md:text-4xl lg:text-5xl'
+            className='w-full max-w-4xl text-2xl font-black leading-tight supports-[text-wrap:balance]:text-balance md:text-4xl lg:text-5xl'
           >
             {post.headline}
           </h1>
 
-          <h2 className='w-full max-w-4xl text-2xl font-light supports-[text-wrap:balance]:text-balance md:text-3xl lg:text-4xl'>
+          <h2 className='w-full max-w-4xl text-xl font-light leading-tight supports-[text-wrap:balance]:text-balance md:text-3xl lg:text-4xl'>
             {post.subheadline}
           </h2>
 
-          <div className='flex w-full max-w-4xl flex-wrap items-center gap-x-2 text-sm font-light'>
+          <div className='flex w-full max-w-4xl flex-wrap items-center gap-x-2 text-xs'>
             <p>
               By{' '}
               <Link href='/about' className='font-semibold capitalize'>
@@ -71,12 +72,12 @@ export function PostHeader2(post: Post) {
           {/* bg image + title */}
 
           {(post.featured_image as FeaturedImageR1).hasImage ? (
-            <figure className='relative flex size-full flex-col items-center justify-center gap-10'>
+            <figure className='relative flex size-full flex-col items-center justify-center gap-6'>
               <HeroBlur2 {...post} />
-              <p className='-mb-2 -mt-6 flex w-full flex-col items-center justify-center px-6 font-mono text-sm font-thin [font-style:_normal]'>
+              <p className='-mt-4 flex w-full flex-col items-center justify-center px-6 text-xs font-light'>
                 <span className='w-full max-w-4xl'>{(post.featured_image as FeaturedImageR1).altText}</span>
               </p>
-              <figcaption className='flex w-full items-center justify-center px-6 text-2xl font-bold italic leading-tight md:text-2-25xl'>
+              <figcaption className='flex w-full items-center justify-center px-6 text-lg font-black italic leading-tight md:text-2-25xl'>
                 <span className='max-w-4xl'>{(post.featured_image as FeaturedImageR1).caption}</span>
               </figcaption>
             </figure>
@@ -91,7 +92,7 @@ export function PostHeader2(post: Post) {
           )}
 
           <div className='flex size-full w-full items-center justify-center px-6'>
-            <div className='mt-10 w-full max-w-4xl rounded bg-ctp-text py-px' />
+            <div className='mt-6 w-full max-w-4xl rounded bg-ctp-text py-px lg:mt-10' />
           </div>
         </div>
       </header>

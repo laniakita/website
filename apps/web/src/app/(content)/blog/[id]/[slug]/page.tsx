@@ -155,7 +155,7 @@ export default async function BlogPostPage(props: { params: Promise<{ id: string
             </div>
           </div>
         </article>
-        {/* <CommentsComponent /> */}
+        <CommentsComponent />
       </main>
     </>
   );
