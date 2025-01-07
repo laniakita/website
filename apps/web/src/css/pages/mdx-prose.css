@@ -1,5 +1,5 @@
 @layer components {
-  aside {
+  details {
     @apply space-y-6 p-6 rounded-lg border border-ctp-blue bg-ctp-blue/10 shadow-lg my-10;
   }
   .prose-code-pretty {
@@ -20,7 +20,7 @@
     @apply prose-ol:leading-tight prose-ul:leading-tight;
   }
   .prose-protocol-omega {
-    @apply prose-code-pretty prose-text-pretty prose-headings-mod prose-lists-pretty prose prose-catppuccin max-w-3xl dark:prose-invert;
+    @apply prose-code-pretty prose-text-pretty prose-headings-mod prose-lists-pretty prose prose-catppuccin dark:prose-invert;
   }
 
   .prose-protocol-omega-old {

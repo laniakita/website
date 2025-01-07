@@ -149,8 +149,8 @@ export default async function BlogPostPage(props: { params: Promise<{ id: string
         {/* flex box break prose */}
         <article id='content' className='' itemScope itemType='http://schema.org/BlogPosting' itemID={`${process.env.NEXT_PUBLIC_DEPLOYED_URL ? process.env.NEXT_PUBLIC_DEPLOYED_URL : APP_URL}${post.url}`}>
           <PostHeader2 {...post} />
-          <div className='w-full px-10'>
-            <div className='prose-protocol-omega mx-auto'>
+          <div className='w-full px-6'>
+            <div className='prose-protocol-omega mx-auto max-w-4xl'>
               <GlobalMDXComponent {...post} />
             </div>
           </div>

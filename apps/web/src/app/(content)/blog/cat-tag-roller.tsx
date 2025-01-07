@@ -13,16 +13,16 @@ export function CatTagRoller({ cats, tags }: { cats?: string[] | undefined; tags
 
   return (
     <Suspense>
-      <div className='flex w-fit flex-wrap'>
+      <div className='flex w-fit flex-wrap text-sm font-semibold'>
         {comboArr.map((combo, idx) => (
-          <p key={uniqueKey(idx)} className='font-mono'>
+          <p key={uniqueKey(idx)} className=''>
             <Link href={`/${combo?._raw.flattenedPath}`}>
-              <span className='font-bold'>{`${combo?.type === 'Tag' ? '#' : ''}${combo?.title}`}</span>
+              <span className=''>{`${combo?.type === 'Tag' ? '#' : ''}${combo?.title}`}</span>
             </Link>
             {comboArr[idx]?.type === 'Category' && comboArr[idx + 1]?.type === 'Tag' ? (
-              <span className='px-[1ch]'>|</span>
+              <span className='px-2 font-light'>|</span>
             ) : (
-              idx < comboArr.length - 1 && <span className='pr-[1ch]'>,</span>
+              idx < comboArr.length - 1 && <span className='pr-[0.5ch]'>,</span>
             )}
           </p>
         ))}

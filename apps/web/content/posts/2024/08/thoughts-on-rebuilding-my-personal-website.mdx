@@ -29,22 +29,22 @@ keywords:
   - IaC
 author: lani
 slug: thoughts-on-rebuilding-my-personal-website
-headline: 'Thoughts on Rebuilding my Website, Next.js 14.2+, & SST [UPDATED]'
+headline: 'Thoughts on Rebuilding my Site, Next.js 14.2+, & SST'
 subheadline: 'Bonus thoughts on React Three Fiber, & Zustand too'
 imageSrc: ../../../assets/images/oc/2024/08/sunset-no-14.2-by-lani-akita.png
 altText: Abstract art of a conical gradient. Next.js represented by darker colors on the left, Ion/SST represented by lighter colors on the right.
 caption: The totality is not, as it were, a mere heap, but the whole is something besides the parts; there is a cause. - Aristotle
 ---
 
-<aside>
+<details open>
 
-**Updated: <time dateTime="2024-09-03T23:46:58.000Z">September 3rd, 2024</time>**
+<summary>September update</summary>
 
 Ion is now stable as SST v3! I've gone ahead and updated some stale parts of this article.
 
 I've also since learned more about how Open Next works, and how SST deploys the bundle created by Open Next. You'll see ~~strikethroughs~~ around my old statements.
 
-</aside>
+</details>
 
 This article was a long time coming, it's also quite long. In some respects, this might feel like an article created from a few separate articles I stitched together, and perhaps it is. However, I felt it was important to talk about the primary technologies I used in developing/deploying this site, because they're all pretty tightly integrated.
 
@@ -75,15 +75,15 @@ While the latter condition was solved by simply setting this site up in a monore
 
 Likewise, it also meant learning a subfield of programming that I was once wholly intimidated by, graphics. In effect, I used [Three.js](https://threejs.org/), [React Three Fiber](https://docs.pmnd.rs/react-three-fiber/getting-started/introduction), and even some [GLSL](<https://www.khronos.org/opengl/wiki/Core_Language_(GLSL)>) to add some fun WebGL-flare. This can be seen in the shader on the landing page, and also [this mini-game](/projects/bot-clicker) that almost became such a page. I also happened to stumble upon [Zustand](https://zustand-demo.pmnd.rs/), a lightweight state management system for React, which integrated with the latter very well.
 
-<aside>
+<details open>
 
-**Updated: <time dateTime="2024-09-03T23:46:58.000Z">September 3rd, 2024</time>**
+<summary>September update</summary>
 
 I'm now using [`timlrx/Contentlayer2`](https://github.com/timlrx/contentlayer2) to handle the data layer. My bespoke solution was fun, but `contentlayer2` was a lot more practical. I'll be writing about it in an upcoming blog post. But, I'll still walk through the below in that article too, since creating your own content backend is quite a project.
 
 Likewise, I'm using it's integrated version of `mdx-bundler`, which is convenient in that it performs the `esbuild` step before `next build`. That means if I felt like it, these posts could be server rendered at the edge. That's pretty cool.
 
-</aside>
+</details>
 
 ~~Furthermore, I even abandoned the various headless CMSes I’ve grown comfortable with over the years, in favor of something I can call my own. In effect, I wrote a prebuild script to assemble my _data layer_ which takes advantage of [Bun](https://bun.sh/)’s speedy [File I/O API](https://bun.sh/docs/api/file-io) to find and process MDX files with [gray-matter](https://github.com/jonschlinkert/gray-matter)—and any contained featured images with [plaiceholder](https://plaiceholder.co/docs)—saving the resultant array of objects into a SQLite-ish ([libSQL](https://github.com/tursodatabase/libsql)) database on [Turso](https://turso.tech/) via [Drizzle ORM](https://orm.drizzle.team/) statements. I then fetch that data inside a server component to render it out in various ways, such as with [`mdx-bundler`](https://github.com/kentcdodds/mdx-bundler).~~
 
@@ -113,11 +113,11 @@ Now, I’d like to shift our focus back to the App router, away from all this gu
 
 Streaming is a pretty big benefit of server components, and I believe it can improve the user experience by quite a bit. The largest benefit to streaming, in my opinion, is summarized nicely in the [Next.js docs](https://nextjs.org/docs/app/building-your-application/routing/loading-ui-and-streaming#streaming-with-suspense):
 
-<aside>
+<details open>
 
 Streaming is particularly beneficial when you want to prevent long data requests from blocking the page from rendering as it can reduce the Time To First Byte (TTFB) and First Contentful Paint (FCP). It also helps improve Time to Interactive (TTI), especially on slower devices.
 
-</aside>
+</details>
 
 I should mention however, that streaming isn’t a configuration constant, or a special component like the App router’s instant fallback [loading UI](https://nextjs.org/docs/app/api-reference/file-conventions/loading) feature. Streaming is instead, a server-side rendering pattern that can be implemented on SSR pages _only_.
 
@@ -131,15 +131,15 @@ Overall, I'm quite satisfied in my decision to use the App router as my page rou
 
 ### Metadata & Metadata Accessories
 
-<aside>
+<details open>
 
-**Updated: <time dateTime="2024-09-03T23:46:58.000Z">September 3rd, 2024</time>**
+<summary>September update</summary>
 
 In addition to the below, I've implemented `next/og` on an API endpoint / route handler to generate OpenGraph/Twitter images on demand. You'll notice these blog posts get the featured image if you share it, while blog posts without an image will resemble the images generated for a page like [credits/bot-clicker](/credits/bot-clicker). I'd originally intended to take advantage of the edge runtime for this, but the data I needed didn't seem to be making it into the generated `Lambda@edge` bundle. So, these generate dynamically from a standard `Lambda` running the standard `node.js` runtime instead. You can see how I'm doing this here: [laniakita/website](https://github.com/laniakita/website/blob/master/apps/web/src/app/opengraph/%5B...path%5D/route.tsx)
 
 This was quite a feat. It even led to me writing my own custom `middleware.ts` file. So, I'll try to write a blog post for this later.
 
-</aside>
+</details>
 
 With Meta having developed and maintained React, and React having not-so-subtly championed Next.js as the premier framework for React (at least for the bleeding edge branch), then, you might deduce that Next.js would be great at generating and working with metadata. But is that true? Yes, yes it is.
 
@@ -171,13 +171,13 @@ For those reasons, I’m quite pleased with the suite of metadata tools Next.js 
 
 Admittedly, I’ve not had a chance to play with the [Server Actions API](https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations) too much aside from experiments with handling a user’s theme preference via cookies.
 
-<aside>
+<details open>
 
 Speaking of, there’s a really wonderful [article by Mandaline](https://www.mandalinedev.com/articles/color-themes-next-js) that talks about how to do exactly that. I happened to stumble across it in this [Next.js discussion thread](https://github.com/vercel/next.js/discussions/53063) that summarizes the approaches to implementing a theme toggle on the latest versions of Next.js.
 
 My solution was ultimately more traditional (why yes, I did just apply `suppressHydrationWarning` on the root `<HTML />` element. _Thank you for noticing!_ >.\<), but handling it via cookies is quite a neat approach too (I can’t remember why I chose against it. Perhaps it had something to do with SSG?).
 
-</aside>
+</details>
 
 Aside, I should state my surprise to learn that native server side form handling didn’t really exist in Next.js until relatively recently with React 19. I say that because SvelteKit’s had this feature for a long while now (see: [_form actions_](https://kit.svelte.dev/docs/form-actions)). Granted, Next.js has had the option of creating a custom API endpoint for forms submitted client side for a long while too (see: [Next.js 14 announcement post that talks about this](https://nextjs.org/blog/next-14#forms-and-mutations)), which I suppose gives you the same functionality. What’s really changed is that React, and by extension Next.js, offers a native API to handle this, which simplifies the process; a much welcome addition.
 
@@ -193,13 +193,13 @@ export const runtime = ‘edge’ // ‘nodejs’ (default) | ‘edge’
 
 Now that I think about it, Next.js might be the only framework I’ve worked with that offers such a deep level of control over page rendering. I think the reason for this is that other frameworks (SvelteKit, Remix, Astro, etc.) have made SSR a first class (& sometimes only) citizen. Granted adapters exist for SvelteKit (adapter-static), but it’s sorta an all or nothing decision, isn’t it?
 
-<aside>
+<details open>
 
 #### Note on Astro
 
 Apparently they’ve been doing [Hybrid rendering since 2.0](https://astro.build/blog/hybrid-rendering/). While the level of control isn’t as deep as Next’s, it’s more than good enough. I'm appreciative.
 
-</aside>
+</details>
 
 Aside, I find this quite a nifty feature of Next.js that is also pretty much unparalleled in other frameworks. I really appreciate the fact that I can render posts like this statically, and if I added it, I could render a _user dashboard_ dynamically on request on the edge runtime, served at the edge. I could do all of that without it being an _all or nothing_ decision. That’s just awesome!
 
@@ -271,9 +271,9 @@ The latter is because [Node.js is thankfully available in a Lambda function](htt
 
 Runtimes aside, the only thing I got snagged on with OpenNext was the fact that `sharp` (needed for `plaiceholder`) isn’t included in the final build.
 
-**Updated: <time dateTime="2024-09-03T23:46:58.000Z">September 3rd, 2024</time>**
+<details open>
 
-<aside>
+<summary>September update</summary>
 
 Sharp is **always** excised from the Open Next bundle. The best way to re-add it is to simply install it into server bundle before deploying it. There's two ways of doing it.
 
@@ -282,7 +282,7 @@ Sharp is **always** excised from the Open Next bundle. The best way to re-add it
 
 Since you'll need to do this on every compilation/deploy, you'll probably want to write a script to perform one of the methods above during the build process. You can see how I'm doing thing via the source code repo for this site ([laniakita/website](https://github.com/laniakita/website/tree/master/apps/web)) for an example, or you can jump down to [Transforms (Lambda Layers)](#transforms-lambda-layer).
 
-</aside>
+</details>
 
 ~~Despite the fact I [included it as a dependency](https://open-next.js.org/v2/common_issues/bundle_size#sharp), `plaiceholder` just couldn’t find `sharp`.~~
 
@@ -300,45 +300,45 @@ Granted, the SST [console](https://console.sst.dev) is a little slow (though tha
 
 ## Things I'd Appreciate in the Upcoming Stable Release of Ion/SST
 
-<aside>
+<details open>
 
-**Updated: <time dateTime="2024-09-03T23:46:58.000Z">September 3rd, 2024</time>**
+<summary>September update</summary>
 
 **Ion is now stable as SST v3!**
 
 I've gone ahead and struck through what's no longer an issue. I'm extremely grateful to the SST team for all their hardwork.
 
-</aside>
+</details>
 
 Ion is an utterly amazing tool in my full stack toolbox. ~~**It’s also in beta**, so~~ There’s also ~~expectedly~~ some sharp edges. As such, the following sections run through some of the things I felt could use a bit of polish. As well, there are notes about some things that might help you/your team if you’re looking to work with this super rad, but undoubtedly bleeding-edge tool, too.
 
-~~**_Note: Ion is still in beta (as of 7/21/24), and isn’t stable yet. By the time it is, it’ll just be called SST v3. So, if you’re reading this from the future, it’s entirely likely that everything I’m about to be salty about has been fixed. Reader discretion is advised._**~~
+~~**_Note: Ion is still in beta (as of <time dateTime='2024-07-21T07:37:41.000Z'>7/21/24</time>), and isn’t stable yet. By the time it is, it’ll just be called SST v3. So, if you’re reading this from the future, it’s entirely likely that everything I’m about to be salty about has been fixed. Reader discretion is advised._**~~
 
 ### Docs
 
 ~~The Ion docs are still a work in progress (as is Ion itself), so I really can’t fault the SST team too much here. However, it would be nice if some of the examples/guides from the old V2 docs could be migrated/converted over to the Ion docs site. For example, the [_configuring AWS section_](https://docs.sst.dev/setting-up-aws) from the old docs could probably be dropped into the Ion docs without too much editing.~~
 
-<aside>
+<details open>
 
-**Updated: <time dateTime="2024-09-03T23:46:58.000Z">September 3rd, 2024</time>**
+<summary>September update</summary>
 
 I believe the below is still an [open issue](https://github.com/sst/ion/issues/520). However, I've not tried to deploy without setting the `CLOUDFLARE_DEFAULT_ACCOUNT_ID` since I've encountered this issue.
 
-</aside>
+</details>
 
 ~~Beyond simple migrations,~~ There’s ~~also~~ a few features/behaviors that seem to be missing documentation. Notably, the guide on [using Cloudflare as a custom domain provider](https://ion.sst.dev/docs/custom-domains/#cloudflare) fails to mention that in addition to the `CLOUDFLARE_API_TOKEN`, it’s really important to set the `CLOUDFLARE_DEFAULT_ACCOUNT_ID` variable too. Without the latter var set, you’ll likely find `sst deploy` breaks, resulting in a vague set of error messages from the Go compiler.
 
-<aside>
+<details open>
 
 Honestly, I think it’s rad the `sst` CLI uses Go, even if this is how I learned that fact.
 
-</aside>
+</details>
 
 ### Transforms (Lambda Layer)
 
-<aside>
+<details open>
 
-**Updated: <time dateTime="2024-09-03T23:46:58.000Z">September 3rd, 2024</time>**
+<summary>September update</summary>
 
 I'm no longer using Lamda layers to handle sharp. Currently I just run a script to copy it from my root `node_modules/` into the bundle. This is primarily a workaround to the fact that I've not figured out how to just run `npm install --arch=x64 --platform=linux --libc=glibc --prefix='.open-next/server-functions/default' sharp` in my monorepo, without getting caught up in a registry timeout / 404 error for the local packages that don't exist in the `npm` registry. Likewise, `bun` doesn't support `npm`'s `--prefix` flag.
 
@@ -426,7 +426,7 @@ I've set it up in my `turbo.json` so it runs immediately after `SHARP_VERSION=0.
 }
 ```
 
-</aside>
+</details>
 
 ~~For whatever reasons, I just couldn’t replicate the functionality of the old SST v2 transforms (a couple of months ago), to declaratively define and create a Lambda Layer from my `sst.config.ts` / project repo. What I could do is link an existing (imperatively created) Lambda layer, but I couldn’t figure out how to create it from the config itself.~~
 
@@ -471,13 +471,13 @@ I've set it up in my `turbo.json` so it runs immediately after `SHARP_VERSION=0.
 
 ### AWS SSO Integration
 
-<aside>
+<details open>
 
-**Updated: <time dateTime="2024-09-03T23:46:58.000Z">September 3rd, 2024</time>**
+<summary>September update</summary>
 
 This has been fixed. I'm very happy.
 
-</aside>
+</details>
 
 ~~This I think is still an [open issue](https://github.com/sst/ion/issues/284), that will probably get fixed eventually, but it’s something I should point out anyway (at least if you’re running into issues). Because, theoretically, you should be able to configure the SSO profile directly in the `sst.config.ts`, [like so](https://docs.sst.dev/setting-up-aws#configure-sst).~~
 
@@ -485,13 +485,13 @@ This has been fixed. I'm very happy.
 
 ### Nix Compatibility
 
-<aside>
+<details open>
 
-**Updated: <time dateTime="2024-09-03T23:46:58.000Z">September 3rd, 2024</time>**
+<summary>September update</summary>
 
 This is still technically an issue, but I've since realized you can just run `sst` from the package manager, i.e., `bun run sst $COMMAND`. However, since I already went through the effort, I've continued to just run it from a distrobox container.
 
-</aside>
+</details>
 
 I’ll admit, I’m a fairly niche user, but Nix compatibility would be hella cool. While there’s actually [an open PR in the nixpkgs repo](https://github.com/NixOS/nixpkgs/pull/300478) to add `sst` to nixpkgs, due to the nature of the `sst` CLI, compatibility with Nix is a little clunky. However, there’s [an open issue in the Ion repo](https://github.com/sst/ion/issues/143) discussing a possible solution that could be implemented on SST’s end to make it _just work_ with Nix, so perhaps `sst` will be fully compatible with Nix one day.
 
@@ -545,11 +545,11 @@ Although, that solution is quite traditional, it worked for my purposes however,
 
 Created by the [Poimandres dev collective](https://pmnd.rs/) (Pmndrs)—the same collective behind React Three Fiber & the React Three ecosystem—[Zustand](https://zustand-demo.pmnd.rs/) is a featherweight alternative to [React Redux](https://react-redux.js.org/), and I love the little state-management solution dearly.
 
-<aside>
+<details open>
 
 How could you not!? It’s got a cute bear as a mascot!.
 
-</aside>
+</details>
 
 It’s incredibly minimal (feeling more like an extension of React’s Context API), which makes learning it, and integrating it rather painless.
 
@@ -567,7 +567,7 @@ Overall, I’m thrilled by the existence of Zustand, especially having gotten us
 
 ### Overall Thoughts on Next.js
 
-Next.js 14 is the current major version of Next.js, having released close to a year ago (10/26/23), with the latest minor update (non-canary) just this past week (14.2.5). Now, having last used Next.js when it was at version 11?, developing with Next 14 has admittedly been quite the learning experience. Even so, I’m overall quite satisfied with how everything turned out.
+Next.js 14 is the current major version of Next.js, having released close to a year ago (<time dateTime='2023-10-26T02:00:00.000Z'>10/26/23</time>), with the latest minor update (non-canary) just this past week (14.2.5). Now, having last used Next.js when it was at version 11?, developing with Next 14 has admittedly been quite the learning experience. Even so, I’m overall quite satisfied with how everything turned out.
 
 Granted, the most common complaint you’ll find about Next.js is usually in reference to the cognitive load it puts on developers—a result of its breadth of features, customizability, and the level of control you have over its various APIs (caching, routing, rendering, etc.)—and I don’t disagree with that assessment. Next.js has a lot of moving parts, ergo it’s a lot to learn. Additionally, it really didn’t help that googling the various Next.js APIs and clicking on what pops up will typically take you to the old Pages router version instead of the newer App router alternative/equivalent API. The latter is a little better nowadays, but still not perfect (guess Vercel’s SEO game was just too good).
 
@@ -595,4 +595,4 @@ In addition, there's a whole slew of neat tools and technologies contained in th
 
 Overall, I couldn't be happier with how this site came out, and I'm excited to see how both it and I, will evolve over time.
 
-Finally, this long-form article ~~is going to be~~ was published before I ~~I’ve~~ integrated a commenting system. So, if you have questions, or want to share your thoughts on this piece, or would like to submit corrections, please leave a comment below. ~~send them to lani@laniakita.com. Alternatively, you could create an issue on this site’s git repo [here](https://github.com/laniakita/website/issues/new/choose). Either way,~~ I’d love to hear your thoughts, and I appreciate (constructive) feedback, thank you.
+Finally, this long-form article ~~is going to be~~ was published before I ~~I’ve~~ integrated a commenting system. So, if you have questions, or want to share your thoughts on this piece, or would like to submit corrections, please leave a comment below. ~~send them to lani@laniakita.com. Alternatively, you could create an issue on this site’s git repo [here](https://github.com/laniakita/website/issues/new/choose). Either way,~~ I’d love to hear your thoughts, and I appreciate (constructive) feedback, thank you.n
