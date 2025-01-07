@@ -31,15 +31,19 @@ caption: 'Yes to love, yes to life, yes to staying in more! - Liz Lemon'
 
 Sure, perhaps you vowed this would be the year you'd stop distrohopping[^distrohopper], saving your SSD from near certain doom. But if that's the case, there's a good chance you _might just find_ NixOS to be that final hop you've been looking for ... Well, only one way to find out, right?
 
-> #### Note on versioning
->
-> I wrote most of this article before NixOS 24.11 (Vicuña) was made stable. At the time I went through the install process for this write-up, NixOS 24.05 (Uakari) was loaded onto my USB. Currently, NixOS 25.05 (Warbler) is the latest Unstable release as of the time of publishing (1/4/2024).
->
-> With that said, I'm currently unaware of any major differences in the install process between NixOS 24.05, 24.11, and 25.05.
->
-> Additionally, when _differences_ do appear, the gcc compiler (or other compiler) used during `nixos-rebuild` will likely print out a warning message to the console explaining which deprecated (or soon to be deprecated) options you've used and what changes need to be made to _correct_ the configuration you're trying to build—well, theoretically at least.
->
-> As such, I hope this guide is able to serve you well! Hopefully into the future too.
+<aside>
+
+#### Note on versioning
+
+I wrote most of this article before NixOS 24.11 (Vicuña) was made stable. At the time I went through the install process for this write-up, NixOS 24.05 (Uakari) was loaded onto my USB. Currently, NixOS 25.05 (Warbler) is the latest Unstable release as of the time of publishing (1/4/2024).
+
+With that said, I'm currently unaware of any major differences in the install process between NixOS 24.05, 24.11, and 25.05.
+
+Additionally, when _differences_ do appear, the gcc compiler (or other compiler) used during `nixos-rebuild` will likely print out a warning message to the console explaining which deprecated (or soon to be deprecated) options you've used and what changes need to be made to _correct_ the configuration you're trying to build—well, theoretically at least.
+
+As such, I hope this guide is able to serve you well! Hopefully into the future too.
+
+</aside>
 
 ## Introduction
 
@@ -53,11 +57,15 @@ NixOS is a operating system (OS) based on Nix, a purely functional package manag
 
 In NixOS specifically, the whole OS is built by the Nix package manager, from a Nix expression that declares the entire system's configuration, typically in a `configuration.nix` file. Because everything is declared in a purely functional manner, a new configuration cannot overwrite previous configurations. This results in reliable, atomic upgrades, (which can be atomically rolled back) and reproducible system configurations.[^how-nix-works]
 
-> #### Non-FHS Compliance Warning
->
-> The immediate implications of the _Nix store_ is that Nix, and by extension NixOS, are non Filesystem Hierarchy Standard (FHS) compliant. This creates many immediate benefits (listed above), but also some new challenges too, such as running precompiled binaries[^nixos-wiki--packaging-binaries].
->
-> While there's workarounds[^nix-ld-a-clean-solution][^nixos-wiki--packaging-binaries] and escape hatches[^nixos-wiki--steam] for the latter, If this guide is how you experience NixOS for the first time, then I should warn you about it's most common pain point, before you sink some time into this project. As such, please consider if non-FHS compliance is a deal breaker for you, before wiping your SSD.
+<aside>
+
+#### Non-FHS Compliance Warning
+
+The immediate implications of the _Nix store_ is that Nix, and by extension NixOS, are non Filesystem Hierarchy Standard (FHS) compliant. This creates many immediate benefits (listed above), but also some new challenges too, such as running precompiled binaries[^nixos-wiki--packaging-binaries].
+
+While there's workarounds[^nix-ld-a-clean-solution][^nixos-wiki--packaging-binaries] and escape hatches[^nixos-wiki--steam] for the latter, If this guide is how you experience NixOS for the first time, then I should warn you about it's most common pain point, before you sink some time into this project. As such, please consider if non-FHS compliance is a deal breaker for you, before wiping your SSD.
+
+</aside>
 
 ### Who is the guide for?
 
@@ -95,7 +103,11 @@ By the end of this article, my hope is that you’ll be able to:
 5. Save your changes, and boot into your NixOS USB.
 6. Once you've reached GRUB, feel free to either load the installer from the USB itself, or copy it to the RAM. You can also choose _"no modeset"_ if you're having issues (usually graphical) reaching the installer's `TTY`.
 
-> Note: It’s important that we install NixOS in UEFI mode, as we'll be enabling secure boot in [part 02](#part-02-secure-boot-with-lanzaboote). Most modern motherboards/hardware supports UEFI by default. Still yet, you might want to ensure that the Compatibility Support Module (CSM) is disabled if your motherboard UEFI/BIOS has that option.
+<aside>
+
+Note: It’s important that we install NixOS in UEFI mode, as we'll be enabling secure boot in [part 02](#part-02-secure-boot-with-lanzaboote). Most modern motherboards/hardware supports UEFI by default. Still yet, you might want to ensure that the Compatibility Support Module (CSM) is disabled if your motherboard UEFI/BIOS has that option.
+
+</aside>
 
 ### Connect to the Internet
 
@@ -236,9 +248,13 @@ Then all you have to do is run `quit` to return to the shell, and we can proceed
 
 ### Partitioning
 
-> #### WARNING: The following steps will result in DATA LOSS
->
-> Please make sure you backed up everything important before proceeding through this section!
+<aside>
+
+#### WARNING: The following steps will result in DATA LOSS
+
+Please make sure you backed up everything important before proceeding through this section!
+
+</aside>
 
 Now that we’re absolutely positive we can connect to the internet, we’re going to use `fdisk` to partition the drive we want to install NixOS on. Running the ensuing `fdisk` commands will create both a boot partition and a LVM partition. The LVM partition will hold both a root partition and a swap partition.
 
@@ -301,7 +317,11 @@ Disk identifier: 5213d2a2-a040-44c4-ba6a-02787812777e
 Command (m for help):
 ```
 
-> Note: Creating an empty partition table doesn't securely erase the data on your disk. If that's something you'd like to perform, perhaps ATA Security Erase[^secure-erase] might be something worth looking into.
+<aside>
+
+Note: Creating an empty partition table doesn't securely erase the data on your disk. If that's something you'd like to perform, perhaps ATA Security Erase[^secure-erase] might be something worth looking into.
+
+</aside>
 
 #### Create the EFI System Partition (ESP)
 
@@ -442,11 +462,15 @@ label:          NIXLUKS
 
 The most important thing to note is the version number and your label. If it’s “2”, and your label looks right, then we’re all good to go.
 
-> As a best practice, you may want to backup the header sometime later. You can do so with the following command:
->
-> ```console noLineNumbers
-> # cryptsetup luksHeaderBackup /dev/nvme0n1p2 --header-backup-file /path/to/backup.dat
-> ```
+<aside>
+
+As a best practice, you'll probably want to backup the LUKS header sometime later.[^backup-luks-header] You can do so with the following command:
+
+```console noLineNumbers
+# cryptsetup luksHeaderBackup /dev/nvme0n1p2 --header-backup-file /path/to/backup.dat
+```
+
+</aside>
 
 #### Opening the LUKS Device
 
@@ -489,7 +513,11 @@ We can create the swap LV on our root LVG (lvmroot) with the following command:
 # lvcreate -L24G lvmroot -n swap
 ```
 
-> Note: How much swap space you may need varies. You might not even need it! So, please see the linked ~~stackoverflow~~ [askubuntu thread](https://askubuntu.com/questions/49109/i-have-16gb-ram-do-i-need-32gb-swap)[^i-have-16gb-ram--do-i-need-32gb-swap] for more. In my case, I’ve got 16 GB of ram on the laptop I'm using as the example for this guide, and plan to use hibernate, so 16 \* 1.5 = 24 GB.
+<aside>
+
+Note: How much swap space you may need varies. You might not even need it! So, please see the linked ~~stackoverflow~~ [askubuntu thread](https://askubuntu.com/questions/49109/i-have-16gb-ram-do-i-need-32gb-swap)[^i-have-16gb-ram--do-i-need-32gb-swap] for more. In my case, I’ve got 16 GB of ram on the laptop I'm using as the example for this guide, and plan to use hibernate, so 16 \* 1.5 = 24 GB.
+
+</aside>
 
 #### Create the `root` Logical Volume
 
@@ -503,7 +531,11 @@ With the swap LV set, we can set the root LV to take up the rest of the availabl
 
 This is a fairly standard procedure, the only thing of note here is adding labels, which makes mounting the partitions much easier.
 
-> YSK: The volume label string for the bootable, ESP partition (FAT32) has a maximum length of only 11 bytes[^fat-osdev-wiki]. Both the ext4 and Swap partitions have a maximum volume label length of 16 bytes. [^ext4-spec-global-structures-superblock-linux-kernel][^man-swaplabel].
+<aside>
+
+YSK: The volume label string for the bootable, ESP partition (FAT32) has a maximum length of only 11 bytes[^fat-osdev-wiki]. Both the ext4 and Swap partitions have a maximum volume label length of 16 bytes. [^ext4-spec-global-structures-superblock-linux-kernel][^man-swaplabel].
+
+</aside>
 
 1. Format the ESP partition:
 
@@ -696,9 +728,13 @@ This last change is optional, but I find it helpful for compatibility reasons:
 
 With our edits in place, we can save and exit the `hardware-configuration.nix` file and move on to `configuration.nix`.
 
-> ##### Thoughts on the _ominous warnings_
->
-> In all likelihood, this is the only time you'll ever run `nixos-generate-config`, so feel free to make edits to `hardware-configuration.nix`. Just be aware that running `nixos-generate-config` again, will undo all the changes you've made to it.
+<aside>
+
+##### Thoughts on the _ominous warnings_
+
+In all likelihood, this is the only time you'll ever run `nixos-generate-config`, so feel free to make edits to `hardware-configuration.nix`. Just be aware that running `nixos-generate-config` again, will undo all the changes you've made to it.
+
+</aside>
 
 #### `configuration.nix`
 
@@ -876,7 +912,11 @@ users.users.mycoolusername = {
 
 Adding your user to the `networkmanager` group, while possibly optional, helps to ensure your user has the right permissions to use/configure `networkmanager`.
 
-> If you're wondering about the user password, that's something we'll configure at the very end, just before rebooting.
+<aside>
+
+If you're wondering about the user password, that's something we'll configure at the very end, just before rebooting.
+
+</aside>
 
 ###### Enable unfree packages (optional)
 
@@ -951,7 +991,11 @@ services.xserver = {
 };
 ```
 
-> The nice thing about NixOS is that you're not stuck with a DE or WM. If you want to try something else, just edit your config to accomodate whichever thing you want, run `# nixos-rebuild switch` and you'll have a totally new desktop experience!
+<aside>
+
+The nice thing about NixOS is that you're not stuck with a DE or WM. If you want to try something else, just edit your config to accomodate whichever thing you want, run `# nixos-rebuild switch` and you'll have a totally new desktop experience!
+
+</aside>
 
 ###### Enable PipeWire (sound)
 
@@ -1010,7 +1054,11 @@ If you've been hacking away at the command line on a Mac in the last decade, cha
 
 Alternatively, you can use [`fish`](https://wiki.nixos.org/wiki/Fish)[^nixos-wiki--fish] or even [`nushell`](https://wiki.nixos.org/wiki/Nushell)[^nixos-wiki--nushell].
 
-> As for custom prompts like [starship](https://starship.rs/)[^starship--cross--shell-prompt] and plugins like [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting)[^zsh-users-zsh-syntax-highlighting], we'll be using Home-Manager via the `flake.nix` in this guide to configure that.
+<aside>
+
+As for custom prompts like [starship](https://starship.rs/)[^starship--cross--shell-prompt] and plugins like [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting)[^zsh-users-zsh-syntax-highlighting], we'll be using Home-Manager via the `flake.nix` in this guide to configure that.
+
+</aside>
 
 ##### Example `configuration.nix`
 
@@ -1098,7 +1146,11 @@ Alright, we're nearly at the finish line. The final piece of the (installation) 
 
 The `flake.nix` is where you'll be able to add additional modules as inputs, such as `home-manager` and `lanzaboote`.
 
-> I'll be honest, Nix flakes are far more versatile/feature-packed than I've let on. I **highly recommend** giving [ryan4yin's](https://github.com/ryan4yin) [NixOS & Flakes Book](https://nixos-and-flakes.thiscute.world/preface)[^nixos-and-flakes-book] a read sometime.
+<aside>
+
+I'll be honest, Nix flakes are far more versatile/feature-packed than I've let on. I **highly recommend** giving [ryan4yin's](https://github.com/ryan4yin) [NixOS & Flakes Book](https://nixos-and-flakes.thiscute.world/preface)[^nixos-and-flakes-book] a read sometime.
+
+</aside>
 
 We can define a minimal `flake.nix` like so:
 
@@ -1119,7 +1171,11 @@ We can define a minimal `flake.nix` like so:
 }
 ```
 
-> I'm using `nixos-unstable` in this guide instead of the stable `nixos-24.11` for a few reasons. One is that `home-manager:master` tracks `nixos-unstable`. Two is that the nature of Nix makes rollbacks incredibly easy, and significantly cuts down the risk of using `nixos-unstable`. Finally, while the `nixos-unstable` _channel_ is occasionally true to it's namesake, it's not _quite_ as unstable or as bleeding-edge as something like Arch Linux. That's due to the somewhat significant amount of automated build testing any given commit into `nixpkgs:master` needs to go through before being released as the latest `nixos-unstable` build/channel update.[^nix-channels]
+<aside>
+
+I'm using `nixos-unstable` in this guide instead of the stable `nixos-24.11` for a few reasons. One is that `home-manager:master` tracks `nixos-unstable`. Two is that the nature of Nix makes rollbacks incredibly easy, and significantly cuts down the risk of using `nixos-unstable`. Finally, while the `nixos-unstable` _channel_ is occasionally true to it's namesake, it's not _quite_ as unstable or as bleeding-edge as something like Arch Linux. That's due to the somewhat significant amount of automated build testing any given commit into `nixpkgs:master` needs to go through before being released as the latest `nixos-unstable` build/channel update.[^nix-channels]
+
+</aside>
 
 And with that, we can finally proceed to the very much anticipated install command.
 
@@ -1136,6 +1192,16 @@ Then we’ll update our flake. However, because the minimal NixOS install doesn'
 ```console noLineNumbers
 # nix --extra-experimental-features nix-command --extra-experimental-features flakes flake update
 ```
+
+<aside>
+
+##### Aside: Updating Your System `flake.nix`
+
+Once NixOS is actually installed (and the `nix-command` and `flakes` features are both enabled), you can update your system `flake.nix` simply by running `# nix flake update`. Doing so will update the `nixpkgs` input to the latest git commit for whichever channel you've configured (in our case that's `nixos-unstable`). However, simply updating the flake doesn't update the system itself. You still have to build an updated system configuration (and switch to it) by running `# nixos-rebuild switch`.
+
+Note: If you encounter a `flake.nix` in userspace, you typically don't have to elevate the command.
+
+</aside>
 
 If that presented no errors, your output should look something like this:
 
@@ -1325,7 +1391,11 @@ Then we can create something like this:
 }
 ```
 
-> Note: If you previously declared `pkgs.sbctl` in your `configuration.nix`, now might be a good time to remove it from your `configuration.nix` and redeclare it here.
+<aside>
+
+Note: If you previously declared `pkgs.sbctl` in your `configuration.nix`, now might be a good time to remove it from your `configuration.nix` and redeclare it here.
+
+</aside>
 
 ### Enable Lanzaboote
 
@@ -1353,7 +1423,11 @@ if you followed the beginning of this guide, secure boot is currently disabled. 
 
 My Lenovo laptop has this _setup mode_, and if you happen to have it as well, simply turn it on and proceed to the next step.
 
-> Note: on my Lenovo laptop, when I enable setup mode, it disables secure boot simultaneously. So, make sure to re-enable it either before you leave the UEFI/BIOS, or after enrolling the keys.
+<aside>
+
+Note: on my Lenovo laptop, when I enable setup mode, it disables secure boot simultaneously. So, make sure to re-enable it either before you leave the UEFI/BIOS, or after enrolling the keys.
+
+</aside>
 
 However, if you, like me, also happen to have a machine with an ASUS motherboard, then we’ll have to take some extra steps.
 
@@ -1734,9 +1808,13 @@ The above is my personal Starship Prompt configuration, and I hope it serves you
 
 With all the modules configured, it's time to run `# nixos-rebuild switch`, or `# nixos-rebuild boot` if you want to cut down on the misc Nix profile generations (only drawback is you have to reboot). If everything compiled successfully, it's now time to bask in the triumph of having accomplished a LOT today, complete with a base Home Manager configuration as icing on the cake.
 
-> Eventually, you'll want to clean out old _Nix generations_ (created after each `# nixos-rebuild switch`) since they can really start piling up, and monopololize your diskspace. You can do so (mildly dangerously) with `# nix-collect-garbage -d` to delete _all_ old generations of profiles. Or, for a much safer garbage collection, you can run `# nix-collect-garbage --delete-older-than <time_period>` to remove things older than, say, 30 days, using `30d` as the time period. [^nix-collect-garbage]
->
-> The former garbage collection command can also become **_très dangereaux_**, if your last config and current config are both broken in a way that you can no longer access the `TTY`, since all possible escape hatches (working generations) would be removed. This is probably one of the only ways you can truly _brick_ a NixOS install.
+<aside>
+
+Eventually, you'll want to clean out old _Nix generations_ (created after each `# nixos-rebuild switch`) since they can really start piling up, and monopololize your diskspace. You can do so (mildly dangerously) with `# nix-collect-garbage -d` to delete _all_ old generations of profiles. Or, for a much safer garbage collection, you can run `# nix-collect-garbage --delete-older-than <time_period>` to remove things older than, say, 30 days, using `30d` as the time period. [^nix-collect-garbage]
+
+The former garbage collection command can also become **_très dangereaux_**, if your last config and current config are both broken in a way that you can no longer access the `TTY`, since all possible escape hatches (working generations) would be removed. This is probably one of the only ways you can truly _brick_ a NixOS install.
+
+</aside>
 
 ## Discussion
 
@@ -1847,3 +1925,5 @@ _PS, I'd love to hear your thoughts! Feel free to drop a comment or question bel
 [^nix-channels]: Nix channels - NixOS Wiki [Internet]. [cited 2025 Jan 4]. Available from: [https://nixos.wiki/wiki/Nix_channels](https://nixos.wiki/wiki/Nix_channels)
 
 [^gentoo-amd64-guide]: Gentoo AMD64 Handbook - Gentoo wiki [Internet]. [cited 2025 Jan 4]. Available from: [https://wiki.gentoo.org/wiki/Handbook:AMD64](https://wiki.gentoo.org/wiki/Handbook:AMD64)
+
+[^backup-luks-header]: Upgrading and backing up your LUKS header - Infrastructure and Application Security [Internet]. [cited 2025 Jan 4]. Available from: [https://krvtz.net/posts/upgrading-and-backing-up-your-luks-header.html](https://krvtz.net/posts/upgrading-and-backing-up-your-luks-header.html)

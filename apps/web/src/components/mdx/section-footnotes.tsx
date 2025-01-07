@@ -227,8 +227,9 @@ export function SupAnchors(props: React.DetailedHTMLProps<React.HTMLAttributes<H
     const anchor = props.children as ReactElement<HTMLAnchorElement>;
     if (anchor.props) {
       if ('data-footnote-ref' in anchor.props && anchor.props['data-footnote-ref']) {
+        // className="ml-[0.15ch] has-[+_sup]:after:[content:_',']"
         return (
-          <sup {...props} className="ml-[0.15ch] has-[+_sup]:after:[content:_',']">
+          <sup {...props}>
             <Link onClick={(e) => handleClick(e)} {...(anchor.props as unknown as LinkProps)} scroll={false} />
           </sup>
         );

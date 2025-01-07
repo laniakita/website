@@ -35,7 +35,7 @@ const nextConfig = {
 
     return config;
   },
-
+  /*
   experimental: {
     turbo: {
       rules: {
@@ -49,7 +49,7 @@ const nextConfig = {
         },
       },
     },
-  },
+  },*/
 
   async redirects() {
     return [

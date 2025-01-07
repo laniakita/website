@@ -99,14 +99,15 @@ export default {
       typography: ({ theme }) => ({
         DEFAULT: {
           css: {
-            'blockquote p:first-of-type::before': false,
+            /*'blockquote p:first-of-type::before': false,
             'blockquote p:first-of-type::after': false,
             blockquote: {
               fontStyle: '',
               backgroundColor: 'var(--tw-prose-quotes-bg)',
               padding: '1.5rem 2rem 1.5rem 2rem',
             },
-            'blockquote :is(p, h2, h3, h4, h5, h6)': {
+            */
+            'aside :is( h2, h3, h4, h5, h6)': {
               paddingTop: 0,
               paddingBottom: 0,
               marginTop: 0,
