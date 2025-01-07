@@ -4,8 +4,8 @@ import { type Post } from 'contentlayer/generated';
 import { descriptionHelper } from '@/lib/description-helper';
 import type { FeaturedImageR1 } from '@/lib/image-process';
 import GlobalMDXRenderer from '@/components/mdx/global-mdx-renderer';
-import PostDate from './[id]/[slug]/post-date';
 import { CatTagRoller } from './cat-tag-roller';
+import LocalDate from './local-date';
 
 export default function PostPreviewV4(post: Post) {
   const descriptionStr = descriptionHelper(post.body.raw, post.url)!;
@@ -35,12 +35,12 @@ export default function PostPreviewV4(post: Post) {
             {post.updated ? (
               <div className='flex flex-wrap gap-x-2 font-mono'>
                 <p className='flex w-fit flex-wrap gap-x-2 rounded-full font-mono'>
-                  <strong>Updated:</strong> <PostDate date={post.updated} />
+                  <strong>Updated:</strong> <LocalDate date={post.updated} />
                 </p>
               </div>
             ) : (
               <p className='flex w-fit flex-wrap gap-x-2 rounded-full font-mono'>
-                <PostDate date={post.date} />
+                <LocalDate date={post.date} />
               </p>
             )}
           </div>

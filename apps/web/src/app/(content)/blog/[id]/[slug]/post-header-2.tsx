@@ -4,7 +4,7 @@ import type { FeaturedImageR1 } from '@/lib/image-process';
 import ShareButton from '@/components/share-btn';
 import { CatTagRoller } from '../../cat-tag-roller';
 import { HeroBlur2 } from './hero-blur-2';
-import PostDate from './post-date';
+import LocalDate from '../../local-date';
 
 export function PostHeader2(post: Post) {
   const authorName = allAuthors.find((author) => author.url === `/authors/${post.author}`)?.name;
@@ -52,11 +52,11 @@ export function PostHeader2(post: Post) {
             {post.updated ? (
               <p className='flex flex-wrap gap-x-2'>
                 <span className='font-semibold'>Updated:</span>
-                <PostDate date={post.updated} />
+                <LocalDate date={post.updated} />
               </p>
             ) : (
               <p>
-                <PostDate date={post.date} />
+                <LocalDate date={post.date} />
               </p>
             )}
           </div>

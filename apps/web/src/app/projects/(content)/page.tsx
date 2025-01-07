@@ -11,8 +11,8 @@ import { descriptionHelper } from '@/lib/description-helper';
 import type { FeaturedImageR1 } from '@/lib/image-process';
 import GlobalMDXComponent from '@/components/mdx/global-mdx-components';
 import GlobalMDXRenderer from '@/components/mdx/global-mdx-renderer';
-import PostDate from '@/app/(content)/blog/[id]/[slug]/post-date';
 import { APP_URL, SHOWCASE_URL } from '@/lib/constants';
+import LocalDate from '@/app/(content)/blog/local-date';
 
 const pageData = allPages.find((page) => page.url === '/projects');
 const description = descriptionHelper(pageData?.body.raw, pageData?.url, true);
@@ -139,16 +139,16 @@ function ProjectPreview(data: Project) {
             {data.updated ? (
               <div className='flex flex-wrap gap-x-2 font-mono'>
                 <p className='flex w-fit flex-wrap gap-x-2 rounded-full font-mono'>
-                  <strong>Released:</strong> <PostDate date={data.date} />
+                  <strong>Released:</strong> <LocalDate date={data.date} />
                 </p>
                 <span className=''>|</span>
                 <p className='flex w-fit flex-wrap gap-x-2 rounded-full font-mono'>
-                  <strong>Updated:</strong> <PostDate date={data.updated} />
+                  <strong>Updated:</strong> <LocalDate date={data.updated} />
                 </p>
               </div>
             ) : (
               <p className='flex w-fit flex-wrap gap-x-2 rounded-full font-mono'>
-                <strong>Released:</strong> <PostDate date={data.date} />
+                <strong>Released:</strong> <LocalDate date={data.date} />
               </p>
             )}
           </div>

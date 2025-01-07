@@ -9,7 +9,7 @@ import type { Work } from 'contentlayer/generated';
 import { descriptionHelper } from '@/lib/description-helper';
 import type { FeaturedImageR1 } from '@/lib/image-process';
 import GlobalMDXComponent from '@/components/mdx/global-mdx-components';
-import PostDate from '@/app/(content)/blog/[id]/[slug]/post-date';
+import LocalDate from '../blog/local-date';
 
 const pageData = allPages.find((page) => page.url === '/work');
 const description = descriptionHelper(pageData?.body.raw, pageData?.url, true);
@@ -123,16 +123,16 @@ function WorkPreview(data: Work) {
             {data.endDate ? (
               <div className='flex flex-wrap gap-x-2 font-mono'>
                 <p className='flex w-fit flex-wrap gap-x-2 rounded-full font-mono'>
-                  <strong>From:</strong> <PostDate date={data.startDate} />
+                  <strong>From:</strong> <LocalDate date={data.startDate} />
                 </p>
                 <span className=''>|</span>
                 <p className='flex w-fit flex-wrap gap-x-2 rounded-full font-mono'>
-                  <strong>To:</strong> <PostDate date={data.endDate} />
+                  <strong>To:</strong> <LocalDate date={data.endDate} />
                 </p>
               </div>
             ) : (
               <p className='flex w-fit flex-wrap gap-x-2 rounded-full font-mono'>
-                <PostDate date={data.startDate} /> - Present
+                <LocalDate date={data.startDate} /> - Present
               </p>
             )}
           </div>
