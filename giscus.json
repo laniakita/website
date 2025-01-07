@@ -3,6 +3,9 @@
     "https://laniakita.com",
     "https://dev.laniakita.com"
   ],
-  "originsRegex": ["http://localhost:[0-9]+"],
+  "originsRegex": [
+    "http://localhost:[0-9]+",
+    "https://localhost:[0-9]+"
+  ],
   "defaultCommentOrder": "newest"
 }

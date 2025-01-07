@@ -11,13 +11,13 @@ export default function LocalDate({ date, tag }: { date: Date | string; tag?: bo
     setLocalTime(getLocalTime);
     
   }, [date]);
-
+  
   return (
     <>
       {tag ? (
         <span suppressHydrationWarning>{localTime}</span>
       ) : (
-        <time itemProp='datePublished' dateTime={localTime} suppressHydrationWarning>
+        <time itemProp='uploadDate' dateTime={new Date(date).toISOString()} >
           {localTime}
         </time>
       )}

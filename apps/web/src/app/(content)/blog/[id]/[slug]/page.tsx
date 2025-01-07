@@ -112,14 +112,25 @@ export default async function BlogPostPage(props: { params: Promise<{ id: string
   const jsonLd: WithContext<BlogPosting> = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
-    name: post.headline,
+    headline: post.headline,
+    alternativeHeadline: post.subheadline ?? undefined,
     url: `${process.env.NEXT_PUBLIC_DEPLOYED_URL ? process.env.NEXT_PUBLIC_DEPLOYED_URL : APP_URL}${post.url}`,
     description: descriptionHelper(post.body.raw, post.url, true),
     author: 'Lani Akita',
     editor: 'Lani Akita',
-    dateCreated: post.date,
-    datePublished: post.date,
-    dateModified: post.updated ?? post.date,
+    dateCreated: new Date(post.date).toISOString(),
+    datePublished: new Date(post.date).toISOString(),
+    dateModified: post.updated ? new Date(post.updated).toISOString() : undefined,
+    image: [
+      {
+        '@type': 'ImageObject',
+        url: `${APP_URL}${(post.featured_image as FeaturedImageR1).src}`,
+        caption: `${(post.featured_image as FeaturedImageR1).caption}`,
+        height: `${(post.featured_image as FeaturedImageR1).height}`,
+        width: `${(post.featured_image as FeaturedImageR1).width}`,
+        description: `${(post.featured_image as FeaturedImageR1).altText}`,
+      }
+    ],
     thumbnailUrl: `${APP_URL}/opengraph/blog/${params.id}/${params.slug}?twitter=true`,
     keywords: post.keywords ?? (catTagArr as string[]),
     countryOfOrigin: 'United States',
@@ -136,7 +147,7 @@ export default async function BlogPostPage(props: { params: Promise<{ id: string
 
       <main className='pb-common -mb-0.5 flex min-h-full w-full flex-col'>
         {/* flex box break prose */}
-        <article id='content' className=''>
+        <article id='content' className='' itemScope itemType='http://schema.org/BlogPosting' itemID={`${process.env.NEXT_PUBLIC_DEPLOYED_URL ? process.env.NEXT_PUBLIC_DEPLOYED_URL : APP_URL}${post.url}`}>
           <PostHeader2 {...post} />
           <div className='w-full px-10'>
             <div className='prose-protocol-omega mx-auto'>
@@ -144,7 +155,7 @@ export default async function BlogPostPage(props: { params: Promise<{ id: string
             </div>
           </div>
         </article>
-        <CommentsComponent />
+        {/* <CommentsComponent /> */}
       </main>
     </>
   );

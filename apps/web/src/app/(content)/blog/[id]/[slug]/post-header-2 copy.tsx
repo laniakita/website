@@ -28,23 +28,25 @@ export function PostHeader2(post: Post) {
       */}
       <header className='pt-post-page z-0'>
         <div className='flex w-full flex-col items-center justify-center gap-2 px-10 pb-6 md:pb-10'>
+
           <div className='w-full max-w-3xl font-mono'>
             <CatTagRoller cats={post.categories} tags={post.tags} />
           </div>
           <h1
+            itemProp='headline'
             id={post.url.split('/').pop()}
             className='w-full max-w-3xl text-3xl font-black supports-[text-wrap:balance]:text-balance md:text-4xl lg:text-5xl'
           >
             {post.headline}
           </h1>
-
-          <h2 className='w-full max-w-3xl text-2-75xl font-light supports-[text-wrap:balance]:text-balance md:text-3xl lg:text-4xl'>
+          
+          <h2 itemProp='alternativeHeadline' className='w-full max-w-3xl text-2-75xl font-light supports-[text-wrap:balance]:text-balance md:text-3xl lg:text-4xl'>
             {post.subheadline}
           </h2>
 
           <div className='flex w-full max-w-3xl flex-wrap items-center gap-x-2 font-mono'>
-            <p>
-              <Link href='/about' className='font-semibold capitalize'>
+            <p itemProp='author' itemScope itemType='http://schema.org/Person'>
+              <Link href='/about' className='font-semibold capitalize' itemProp='name'>
                 {authorName ?? 'Lani'}
               </Link>
             </p>
