@@ -66,7 +66,11 @@ The first issue was that, ephemeral storage in static functions makes SQLite imp
 
 So, in thinking about the future, and not wanting to limit my project pre-emptively, a DBaaS seemed my only viable option. However, by the time I'd actually realized that, I'd already written my Drizzle ORM[^41] statements for SQLite, and I wasn't in the mood for converting them into a different SQL format. So, of Drizzle's SQLite compatible drivers[^42], I wound up using Turso.
 
-> I suppose I could’ve used Cloudflare’s D1[^43], instead of Turso, but the moose mascot was so gosh darn cute! Couple that with the fact they have a wonderfully generous free tier[^44], how could I say no?!
+<aside>
+
+I suppose I could’ve used Cloudflare’s D1[^43], instead of Turso, but the moose mascot was so gosh darn cute! Couple that with the fact they have a wonderfully generous free tier[^44], how could I say no?!
+
+</aside>
 
 ## Setup
 
@@ -365,7 +369,11 @@ Then, with another script, I just pushed all the data to the SQLite database on 
 
 Once all the data was loaded, I simply fetched it using `drizzle`’s query builder (mostly, some calls were proper `select` statements), and I took advantage of using the React `cache`[^73] hook built into Next.js to memoize those DB calls.
 
-> There wasn’t a real point to doing so, seeing as I never implemented ISR, so the post page data never really went stale. Still, I figured in the event I did implement it, it’d come in handy. Well, at least I know how it works now.
+<aside>
+
+There wasn’t a real point to doing so, seeing as I never implemented ISR, so the post page data never really went stale. Still, I figured in the event I did implement it, it’d come in handy. Well, at least I know how it works now.
+
+</aside>
 
 ### Rendering Data
 
@@ -380,8 +388,6 @@ Alright, the very first thing to do, was to ingest the files that actually had t
 One thing to note, is that this is the raw script I was previously using, complete with `eslint` ignore directives, suggestions, and the comments I left for myself, to help explain to myself what’s going on.
 
 Now, I did think about cleaning the script up, but I felt it was better to show you exactly what I was using right up until the switch to `contentlayer2`. Why? Perhaps for posterity, or perhaps I just find the code I wrote a while ago interesting due to its now foreign nature to myself.
-
-> I mean really, what was Lani from months ago thinking? Why all the function expressions? I guess she really hated hoisted functions. Or, maybe she just really liked the A E S T H E T I C of ES6 arrow functions.
 
 ```typescript
 // fetch-mdx.ts
@@ -496,7 +502,7 @@ interface ImageUtilProps {
   imageKey: string;
   debug?: boolean;
 }
-// todo: write test
+
 const newimageEmbedPath = async ({
   fmatter,
   mdxPath,
@@ -563,7 +569,6 @@ const newimageEmbedPath = async ({
   }
 };
 
-// todo: write test
 const imgMetaPlusBlurryPlaiceHolders = async ({ fmatter, mdxPath, imageKey, debug }: ImageUtilProps) => {
   if (imageKey && imageKey in fmatter) {
     debug && console.log(`using ${fmatter[imageKey] as string} to generate img data + blurs`);
@@ -586,7 +591,6 @@ const imgMetaPlusBlurryPlaiceHolders = async ({ fmatter, mdxPath, imageKey, debu
   }
 };
 
-// todo: write test
 const comboImageProcessing = async ({ fmatter, mdxPath, imageKey, publicPath, debug }: ImageUtilProps) => {
   if (imageKey && imageKey in fmatter) {
     // need to do this first (the other function seems to mutate something)
@@ -608,7 +612,6 @@ interface InjectionPointProps {
   debug?: boolean;
 }
 
-// todo: write test
 const getInjectionPoint = ({ fileArr, strOfInterest, precisionPoint, debug }: InjectionPointProps) => {
   const getPoint = fileArr.map((strLine, index): number | undefined => {
     // we're going to look for the first "---" of the front matter
@@ -638,7 +641,6 @@ interface InjectionProps {
   debug?: boolean;
 }
 
-// todo: write test
 const injectUUID = async ({ rawFile, absFilePath, debug }: InjectionProps) => {
   const uuid = crypto.randomUUID();
   const fileArr = rawFile.split('\n');
@@ -665,7 +667,6 @@ const injectUUID = async ({ rawFile, absFilePath, debug }: InjectionProps) => {
   return newMatter;
 };
 
-// todo: write test
 const injectSlug = async ({ rawFile, absFilePath, debug }: InjectionProps) => {
   const fileArr = rawFile.split('\n');
 
@@ -694,7 +695,7 @@ const injectSlug = async ({ rawFile, absFilePath, debug }: InjectionProps) => {
   return newMatter;
 };
 
-// todo: write test
+
 const comboInject = async ({ rawFile, absFilePath, debug }: InjectionProps) => {
   const uuid = crypto.randomUUID();
   const fileArr = rawFile.split('\n');
@@ -730,7 +731,7 @@ const comboInject = async ({ rawFile, absFilePath, debug }: InjectionProps) => {
   return newMatter;
 };
 
-// todo: write test
+
 const updateSlug = async ({ rawFile, absFilePath, debug }: InjectionProps) => {
   const fileArr = rawFile.split('\n');
 
@@ -770,7 +771,7 @@ interface MatterProcessorProps {
   debug?: boolean;
 }
 
-// todo: write test
+
 const matterProcessor = async ({
   frontMatter,
   absFilePath,
@@ -883,7 +884,7 @@ interface BatchFetchFrontMatterProps extends ConfigProps {
   priorityConfig?: Record<string, number>;
 }
 
-// todo: write test
+
 /*
  * @example batchFetchFrontMatter([pathsArr])
  * () => [{front matter post0}, ..., {front matter postN}]
@@ -1403,7 +1404,7 @@ interface MatterProcessorProps {
   debug?: boolean;
 }
 
-// todo: write test
+
 const matterProcessor = async ({
   frontMatter,
   absFilePath,
@@ -1579,7 +1580,11 @@ const matterProcessor = async ({
 
 Then we go through the rest of the function. Essentially, we're walking through several different cases, and injecting/retrieving/copying data in a recursive fashion.
 
-> A `switch` statement could've worked here, but I decided against it for some reason. I think it's because I prioritized readability over the marginal performance gain of a `switch`.
+<aside>
+
+A `switch` statement could've worked here, but I decided against it for some reason. I think it's because I prioritized readability over the marginal performance gain of a `switch`.
+
+</aside>
 
 case_0: If there's no `id` or `slug` in the frontmatter, it injects them using `comboInject()` and as long as the result isn't undefined, it recursively calls the `matterProcessor()` function, using the `commonConfig` object and the freshly created front matter, aptly labled `newMatter`. Once that's done, it uses `Bun.file` to read the updated `.mdx` file, and assigns it to the returned `rawStr` key.
 
@@ -1659,7 +1664,6 @@ interface InjectionPointProps {
   debug?: boolean;
 }
 
-// todo: write test
 const getInjectionPoint = ({ fileArr, strOfInterest, precisionPoint, debug }: InjectionPointProps) => {
   const getPoint = fileArr.map((strLine, index): number | undefined => {
     // we're going to look for the first "---" of the front matter
@@ -2412,7 +2416,11 @@ export const insertPosts = async (data: Posts): Promise<void> => {
 
 One thing you'll probably notice, is that I'm assembling a temporary object within each insertion function (respective of the given table, e.g., `authors`), from what already exists in the database. By running this comparison, I'm ensuring that only new content is inserted into the database, or content that needs to be updated. As such, this drastically reduces the number of rows that need to be written.
 
-> Turso **_only_** gives 25 million row additions per month for free, so I decided it was important to keep as much of that 25 million as possible. You know, just in case.
+<aside>
+
+Turso **_only_** gives 25 million row additions per month for free, so I decided it was important to keep as much of that 25 million as possible. You know, just in case.
+
+</aside>
 
 Another thing you might notice is that I've commented out the `maindb` that's imported from `@/lib/db/bun-db`. That database, is the local one that relied on Bun's native SQLite driver. But, for the reasons I went over earlier, I wound up using Turso instead.
 

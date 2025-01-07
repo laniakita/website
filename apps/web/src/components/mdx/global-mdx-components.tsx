@@ -1,6 +1,5 @@
 //import type { FC } from 'react';
 //import Link from 'next/link';
-'use client'
 import type { Category, Page, Post, Tag, Work } from 'contentlayer/generated';
 import BlogImageBlurServer from './img-blur-server';
 import { Paragraph } from './paragraph';

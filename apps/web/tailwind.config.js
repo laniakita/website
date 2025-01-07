@@ -99,8 +99,9 @@ export default {
       typography: ({ theme }) => ({
         DEFAULT: {
           css: {
-            /*'blockquote p:first-of-type::before': false,
+            'blockquote p:first-of-type::before': false,
             'blockquote p:first-of-type::after': false,
+            /*
             blockquote: {
               fontStyle: '',
               backgroundColor: 'var(--tw-prose-quotes-bg)',
@@ -212,12 +213,14 @@ export default {
             '--tw-prose-del-strong': 'var(--tw-prose-invert-del-strong)',
             '--code-line-inserted': 'var(--invert-code-line-inserted)',
             '--code-line-deleted': 'var(--invert-code-line-deleted)',
+            '--code-line-highlighted': 'var(--code-line-invert-highlighted)',
           },
         },
         catppuccin: {
           css: {
             '--footnote-divider-line': theme('colors.ctp-text.DEFAULT'),
-            '--code-line-highlighted': theme('colors.ctp-surface0.DEFAULT'),
+            '--code-line-highlighted': theme('colors.ctp-mantle.DEFAULT'),
+            '--code-line-invert-highlighted': theme('colors.ctp-surface0.DEFAULT'),
             '--code-line-highlight-indicator': theme('colors.ctp-sapphire.DEFAULT'),
             '--code-line-inserted': 'rgba(64, 160, 43, 0.2)',
             '--invert-code-line-inserted': 'rgba(166, 227, 161, 0.2)',
