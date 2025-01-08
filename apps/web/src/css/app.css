@@ -10,7 +10,7 @@
 @import './components/searchButton.css';
 @import './components/preLoadButton.css';
 @import './components/sidebar.css';
-@import './pages/mdx-prose.css';
+@import './components/mdx-prose.css';
 @import './pages/home.css';
 @import 'tailwindcss/utilities';
 @import './utilities/slider.css';

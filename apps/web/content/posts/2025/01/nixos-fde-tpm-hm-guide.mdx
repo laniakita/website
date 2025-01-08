@@ -31,9 +31,9 @@ caption: 'Yes to love, yes to life, yes to staying in more! - Liz Lemon'
 
 Sure, perhaps you vowed this would be the year you'd stop distrohopping[^distrohopper], saving your SSD from near certain doom. But if that's the case, there's a good chance you _might just find_ NixOS to be that final hop you've been looking for ... Well, only one way to find out, right?
 
-<details open>
+<details>
 
-#### Note on versioning
+<summary>[INFO]: On future NixOS versions</summary>
 
 I wrote most of this article before NixOS 24.11 (Vicuña) was made stable. At the time I went through the install process for this write-up, NixOS 24.05 (Uakari) was loaded onto my USB. Currently, NixOS 25.05 (Warbler) is the latest Unstable release as of the time of publishing (1/4/2024).
 
@@ -57,9 +57,9 @@ NixOS is a operating system (OS) based on Nix, a purely functional package manag
 
 In NixOS specifically, the whole OS is built by the Nix package manager, from a Nix expression that declares the entire system's configuration, typically in a `configuration.nix` file. Because everything is declared in a purely functional manner, a new configuration cannot overwrite previous configurations. This results in reliable, atomic upgrades, (which can be atomically rolled back) and reproducible system configurations.[^how-nix-works]
 
-<details open>
+<details details-warn="true">
 
-#### Non-FHS Compliance Warning
+<summary>[WARN]: Non-FHS Compliance</summary>
 
 The immediate implications of the _Nix store_ is that Nix, and by extension NixOS, are non Filesystem Hierarchy Standard (FHS) compliant. This creates many immediate benefits (listed above), but also some new challenges too, such as running precompiled binaries[^nixos-wiki--packaging-binaries].
 
@@ -103,9 +103,11 @@ By the end of this article, my hope is that you’ll be able to:
 5. Save your changes, and boot into your NixOS USB.
 6. Once you've reached GRUB, feel free to either load the installer from the USB itself, or copy it to the RAM. You can also choose _"no modeset"_ if you're having issues (usually graphical) reaching the installer's `TTY`.
 
-<details open>
+<details details-critical="true">
 
-Note: It’s important that we install NixOS in UEFI mode, as we'll be enabling secure boot in [part 02](#part-02-secure-boot-with-lanzaboote). Most modern motherboards/hardware supports UEFI by default. Still yet, you might want to ensure that the Compatibility Support Module (CSM) is disabled if your motherboard UEFI/BIOS has that option.
+<summary>[CRITICAL]: Secure boot requires UEFI!</summary>
+
+Installing NixOS in UEFI mode is critical to enabling secure boot in [part 02](#part-02-secure-boot-with-lanzaboote). Most modern motherboards/hardware supports UEFI by default. Still yet, you might want to ensure that the Compatibility Support Module (CSM) is disabled if your motherboard UEFI/BIOS has that option.
 
 </details>
 
@@ -143,9 +145,11 @@ If that results in an error:
 RTNETLINK answers: Operation not possible due to RF-kill
 ```
 
-Proceed to [RF-kill Unblocking](#rf-kill-unblocking), otherwise skip to [Getting Connected with `wpa_supplicant`](#getting-connected-with-wpa_supplicant).
+Please see the note on RF-kill Unblocking below, otherwise skip to [Getting Connected with `wpa_supplicant`](#getting-connected-with-wpa_supplicant).
 
-##### RF-kill Unblocking
+<details>
+
+<summary>[INFO]: RF-kill Unblocking</summary>
 
 First, run `rfkill` to investigate what interface is blocked.
 
@@ -176,6 +180,8 @@ Then running `ip link set wlp up` results in no error.
 
 [nixos@nixos:'']$ _
 ```
+
+</details>
 
 ##### Getting Connected with `wpa_supplicant`
 
@@ -248,11 +254,11 @@ Then all you have to do is run `quit` to return to the shell, and we can proceed
 
 ### Partitioning
 
-<details open>
+<details open details-critical="true">
 
-#### WARNING: The following steps will result in DATA LOSS
+<summary>[CRITICAL]: Partitioning will result in DATA LOSS!</summary>
 
-Please make sure you backed up everything important before proceeding through this section!
+Please make sure to have backed up anything and everything that is important to you, before proceeding through this section!
 
 </details>
 
@@ -289,7 +295,9 @@ Once we've found our disk, we'll pass it's location as an input into `fdisk` to 
 
 In my case the command looks like: `# fdisk /dev/nvme0n1`.
 
-<details open>
+<details details-critical="true">
+
+<summary>[CRITICAL]: Be sure _your commands_ reference _your drive to partition!_</summary>
 
 Many of the commands featured in this guide refer to `/dev/nvme0n1` as an **example**. However, You might have _your_ drive to partition on `/dev/sda` for instance. So, to avoid any unnecessary heartache, please make sure the commands you're running are on the drive you actually want to partition.
 
@@ -321,9 +329,11 @@ Disk identifier: 5213d2a2-a040-44c4-ba6a-02787812777e
 Command (m for help):
 ```
 
-<details open>
+<details details-warn="true">
 
-Note: Creating an empty partition table doesn't securely erase the data on your disk. If that's something you'd like to perform, perhaps ATA Security Erase[^secure-erase] might be something worth looking into.
+<summary>[WARN]: Empty partition table !== Secure erase</summary>
+
+Creating an empty partition table doesn't securely erase the data on your disk. If that's something you'd like to perform, perhaps ATA Security Erase[^secure-erase] might be something worth looking into.
 
 </details>
 
@@ -420,6 +430,14 @@ nvme0n1      259:0    0  476.9G  0 disk
 
 ### Encrypting with LUKS
 
+<details details-critical="true">
+
+<summary>[CRITICAL]: `luksFormat` will cause DATA LOSS!</summary>
+
+Assuming you skipped the partitioning step, please make sure to have backed up anything and everything that is important to you, before proceeding through this section!
+
+</details>
+
 We’ll be encrypting the LVM partition with LUKS (version 2). To do that, we just have to run the following command:
 
 ```console noLineNumbers
@@ -466,9 +484,11 @@ label:          NIXLUKS
 
 The most important thing to note is the version number and your label. If it’s “2”, and your label looks right, then we’re all good to go.
 
-<details open>
+<details details-warn="true">
 
-As a best practice, you'll probably want to backup the LUKS header sometime later.[^backup-luks-header] You can do so with the following command:
+<summary>[WARN]: Back up your LUKS header!</summary>
+
+As a best practice, you probably should backup the LUKS header sometime later.[^backup-luks-header] You can do so with the following command:
 
 ```console noLineNumbers
 # cryptsetup luksHeaderBackup /dev/nvme0n1p2 --header-backup-file /path/to/backup.dat
@@ -517,9 +537,11 @@ We can create the swap LV on our root LVG (lvmroot) with the following command:
 # lvcreate -L24G lvmroot -n swap
 ```
 
-<details open>
+<details>
 
-Note: How much swap space you may need varies. You might not even need it! So, please see the linked ~~stackoverflow~~ [askubuntu thread](https://askubuntu.com/questions/49109/i-have-16gb-ram-do-i-need-32gb-swap)[^i-have-16gb-ram--do-i-need-32gb-swap] for more. In my case, I’ve got 16 GB of ram on the laptop I'm using as the example for this guide, and plan to use hibernate, so 16 \* 1.5 = 24 GB.
+<summary>[INFO]: `swap` space depends on the usecase</summary>
+
+How much `swap` space you need is usecase dependent. In some cases, it might not even be needed at all! As such, please see the linked ~~stackoverflow~~ [askubuntu thread](https://askubuntu.com/questions/49109/i-have-16gb-ram-do-i-need-32gb-swap)[^i-have-16gb-ram--do-i-need-32gb-swap] for more. For my own usecase, I’ve got 16 GB of ram on the laptop I'm using as the ~~test subject~~ _example_ for this guide, and plan to use hibernate, so 16 \* 1.5 = 24 GB.
 
 </details>
 
@@ -537,7 +559,9 @@ This is a fairly standard procedure, the only thing of note here is adding label
 
 <details open>
 
-YSK: The volume label string for the bootable, ESP partition (FAT32) has a maximum length of only 11 bytes[^fat-osdev-wiki]. Both the ext4 and Swap partitions have a maximum volume label length of 16 bytes. [^ext4-spec-global-structures-superblock-linux-kernel][^man-swaplabel].
+<summary>[INFO]: Volume labels have a max length</summary>
+
+The volume label string for the bootable, ESP partition (FAT32) has a maximum length of only 11 bytes[^fat-osdev-wiki]. Both the ext4 and Swap partitions have a maximum volume label length of 16 bytes. [^ext4-spec-global-structures-superblock-linux-kernel][^man-swaplabel].
 
 </details>
 
