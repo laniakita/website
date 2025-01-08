@@ -539,9 +539,9 @@ We can create the swap LV on our root LVG (lvmroot) with the following command:
 
 <details>
 
-<summary>[INFO]: `swap` space depends on the usecase</summary>
+<summary>[INFO]: `swap` space depends on the use case</summary>
 
-How much `swap` space you need is usecase dependent. In some cases, it might not even be needed at all! As such, please see the linked ~~stackoverflow~~ [askubuntu thread](https://askubuntu.com/questions/49109/i-have-16gb-ram-do-i-need-32gb-swap)[^i-have-16gb-ram--do-i-need-32gb-swap] for more. For my own usecase, I’ve got 16 GB of ram on the laptop I'm using as the ~~test subject~~ _example_ for this guide, and plan to use hibernate, so 16 \* 1.5 = 24 GB.
+How much `swap` space you need is use case dependent. In some cases, it might not even be needed at all! As such, please see the linked ~~stackoverflow~~ [askubuntu thread](https://askubuntu.com/questions/49109/i-have-16gb-ram-do-i-need-32gb-swap)[^i-have-16gb-ram--do-i-need-32gb-swap] for more. For my own usecase, I’ve got 16 GB of ram on the laptop I'm using as the ~~test subject~~ _example_ for this guide, and plan to use hibernate, so 16 \* 1.5 = 24 GB.
 
 </details>
 
@@ -557,9 +557,9 @@ With the swap LV set, we can set the root LV to take up the rest of the availabl
 
 This is a fairly standard procedure, the only thing of note here is adding labels, which makes mounting the partitions much easier.
 
-<details open>
+<details>
 
-<summary>[INFO]: Volume labels have a max length</summary>
+<summary>[INFO]: A volume label's max length == 11 || 16 bytes</summary>
 
 The volume label string for the bootable, ESP partition (FAT32) has a maximum length of only 11 bytes[^fat-osdev-wiki]. Both the ext4 and Swap partitions have a maximum volume label length of 16 bytes. [^ext4-spec-global-structures-superblock-linux-kernel][^man-swaplabel].
 
@@ -756,9 +756,9 @@ This last change is optional, but I find it helpful for compatibility reasons:
 
 With our edits in place, we can save and exit the `hardware-configuration.nix` file and move on to `configuration.nix`.
 
-<details open>
+<details>
 
-##### Thoughts on the _ominous warnings_
+<summary>[INFO]: Thoughts on the _ominous warnings_</summary>
 
 In all likelihood, this is the only time you'll ever run `nixos-generate-config`, so feel free to make edits to `hardware-configuration.nix`. Just be aware that running `nixos-generate-config` again, will undo all the changes you've made to it.
 
@@ -940,7 +940,9 @@ users.users.mycoolusername = {
 
 Adding your user to the `networkmanager` group, while possibly optional, helps to ensure your user has the right permissions to use/configure `networkmanager`.
 
-<details open>
+<details>
+
+<summary>[INFO]: _Dude, Where's my password?_</summary>
 
 If you're wondering about the user password, that's something we'll configure at the very end, just before rebooting.
 
@@ -1019,9 +1021,11 @@ services.xserver = {
 };
 ```
 
-<details open>
+<details>
 
-The nice thing about NixOS is that you're not stuck with a DE or WM. If you want to try something else, just edit your config to accomodate whichever thing you want, run `# nixos-rebuild switch` and you'll have a totally new desktop experience!
+<summary>[INFO]: NixOS makes It's painless to try out a new DE/WM</summary>
+
+The nice thing about NixOS is that you're not stuck with a DE or WM. If you want to try something else, edit your config to accomodate whichever thing you want, run `# nixos-rebuild switch`, and you'll have a totally new desktop experience!
 
 </details>
 
@@ -1082,9 +1086,11 @@ If you've been hacking away at the command line on a Mac in the last decade, cha
 
 Alternatively, you can use [`fish`](https://wiki.nixos.org/wiki/Fish)[^nixos-wiki--fish] or even [`nushell`](https://wiki.nixos.org/wiki/Nushell)[^nixos-wiki--nushell].
 
-<details open>
+<details>
 
-As for custom prompts like [starship](https://starship.rs/)[^starship--cross--shell-prompt] and plugins like [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting)[^zsh-users-zsh-syntax-highlighting], we'll be using Home-Manager via the `flake.nix` in this guide to configure that.
+<summary>[INFO]: Customizing the shell</summary>
+
+As for custom prompts like [starship](https://starship.rs/)[^starship--cross--shell-prompt] and plugins like [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting)[^zsh-users-zsh-syntax-highlighting], we'll be using Home-Manager via the `flake.nix` in this guide [later](#part-03-configuring-home-manager-abridged) to configure that.
 
 </details>
 
@@ -1174,7 +1180,9 @@ Alright, we're nearly at the finish line. The final piece of the (installation) 
 
 The `flake.nix` is where you'll be able to add additional modules as inputs, such as `home-manager` and `lanzaboote`.
 
-<details open>
+<details>
+
+<summary>[INFO]: Flakes are _cool._</summary>
 
 I'll be honest, Nix flakes are far more versatile/feature-packed than I've let on. I **highly recommend** giving [ryan4yin's](https://github.com/ryan4yin) [NixOS & Flakes Book](https://nixos-and-flakes.thiscute.world/preface)[^nixos-and-flakes-book] a read sometime.
 
@@ -1199,9 +1207,11 @@ We can define a minimal `flake.nix` like so:
 }
 ```
 
-<details open>
+<details>
 
-I'm using `nixos-unstable` in this guide instead of the stable `nixos-24.11` for a few reasons. One is that `home-manager:master` tracks `nixos-unstable`. Two is that the nature of Nix makes rollbacks incredibly easy, and significantly cuts down the risk of using `nixos-unstable`. Finally, while the `nixos-unstable` _channel_ is occasionally true to it's namesake, it's not _quite_ as unstable or as bleeding-edge as something like Arch Linux. That's due to the somewhat significant amount of automated build testing any given commit into `nixpkgs:master` needs to go through before being released as the latest `nixos-unstable` build/channel update.[^nix-channels]
+<summary>[INFO]: _Why `nixos-unstable`? Isn't it unstable?_</summary>
+
+I'm using `nixos-unstable` in this guide instead of the stable `nixos-24.11` for a few reasons. One is that `home-manager:master` tracks `nixos-unstable`. Two is that the nature of Nix makes rollbacks incredibly easy, and significantly cuts down the risk of using `nixos-unstable`. Finally, while the `nixos-unstable` _channel_ is occasionally true to it's namesake, it's not as unstable or as bleeding-edge as something like Arch Linux. That's due to the somewhat significant amount of automated build testing any given commit into `nixpkgs:master` needs to go through before being released as the latest `nixos-unstable` build/channel update.[^nix-channels]
 
 </details>
 
@@ -1221,9 +1231,9 @@ Then we’ll update our flake. However, because the minimal NixOS install doesn'
 # nix --extra-experimental-features nix-command --extra-experimental-features flakes flake update
 ```
 
-<details open>
+<details>
 
-##### Aside: Updating Your System `flake.nix`
+<summary>Updating Your System with a `flake.nix`</summary>
 
 Once NixOS is actually installed (and the `nix-command` and `flakes` features are both enabled), you can update your system `flake.nix` simply by running `# nix flake update`. Doing so will update the `nixpkgs` input to the latest git commit for whichever channel you've configured (in our case that's `nixos-unstable`). However, simply updating the flake doesn't update the system itself. You still have to build an updated system configuration (and switch to it) by running `# nixos-rebuild switch`.
 
@@ -1239,6 +1249,33 @@ warning: creating lock file '/mnt/etc/nixos/flake.lock'
 
 [nixos@nixos:/mnt/etc/nixos]$
 ```
+
+<details>
+
+<summary>[INFO]: On `flake.lock`, & overriding `flake.nix` inputs </summary>
+
+If you're familiar with modern package managers for dev tooling (e.g., Cargo, NPM, yarn, Bun, etc), then you (conceptually) already understand what `flake.lock` does and _why_.
+
+For everyone else, a `flake.lock` _locks_ the commit hashes of your flakes' configured inputs, by writing it into the `flake.lock` file. In practice, this means you can alter your system configuration (i.e., configure a new option, add a new package, etc.), without having to upgrade your entire system/installed packages, even way into the future (assuming the features you're changing/adding existed in said _locked_ input commit hash).
+
+The above is possible because `nixos-rebuild <switch|reboot>` will use the commit hashes of the inputs configured in the `flake.nix` found in the `flake.lock` file. In our case, following the prior `nix flake update`, running `nixos-rebuild switch` will use the commit hashes of our input (`NixOS/nixpkgs/nixos-unstable`) found in the newly created `flake.lock`, and generate a fresh system profile from it. This also means that if you share your `flake.nix` and `flake.lock` to a different machine, it _should_ reproduce the exact same system configuration upon `nixos-rebuild switch` (so long as you don't run `nix flake update` and alter the `flake.lock`).
+
+Note: You can override/lock an input's commit hash in your `flake.nix`. In fact, it's sometimes necessary. For example, I once locked my `nixpkgs` to commit [`5633bcff0c61`](https://github.com/NixOS/nixpkgs/commit/5633bcff0c61)  because a package I wanted to use in later `nixos-unstable` builds was a bit too _unstable_ (at least for a week or two).
+
+```diff
+{
+  inputs = {
+-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
++    nixpkgs.url = "github:NixOS/nixpkgs/5633bcff0c61";
+  };
+}
+```
+
+hint_01: It's somewhat unsafe, but totally possible to use PRs to `NixOS/nixpkgs` before they're merged following the same technique/idea.
+
+hint_02: You can find the status and commit hashes of the latest builds of all the different Nix channels at [status.nixos.org](https://status.nixos.org/). The build status and corresponding commits of `nixos-unstable` specifically, can be found at [https://hydra.nixos.org/job/nixos/trunk-combined/tested#tabs-status](https://hydra.nixos.org/job/nixos/trunk-combined/tested#tabs-status).
+
+</details>
 
 With a clean `flake update`, that's the go-ahead to perform the magical install command.
 
@@ -1421,7 +1458,9 @@ Then we can create something like this:
 
 <details open>
 
-Note: If you previously declared `pkgs.sbctl` in your `configuration.nix`, now might be a good time to remove it from your `configuration.nix` and redeclare it here.
+<summary>[INFO]: If you previously declared `pkgs.sbctl` in your `configuration.nix` ...</summary>
+
+Now might be a good time to remove it from your `configuration.nix` and redeclare it here.
 
 </details>
 
@@ -1443,7 +1482,6 @@ If the output looks clean, we can enable secure boot.
 
 > _"It is expected that the files ending with `bzImage.efi` are **not** signed."_ - _The QUICK_START guide for Lanzaboote_
 
-
 ### Enabling Secure Boot
 
 if you followed the beginning of this guide, secure boot is currently disabled. What we’re going to do now is turn it back on, but with _setup mode_ enabled.
@@ -1452,19 +1490,27 @@ if you followed the beginning of this guide, secure boot is currently disabled. 
 
 My Lenovo laptop has this _setup mode_, and if you happen to have it as well, simply turn it on and proceed to the next step.
 
-<details open>
+<details>
 
-Note: on my Lenovo laptop, when I enable setup mode, it disables secure boot simultaneously. So, make sure to re-enable it either before you leave the UEFI/BIOS, or after enrolling the keys.
+<summary>[INFO]: Lenovo's _setup mode_ can be quircky</summary>
+
+On my particular Lenovo laptop, when I enable setup mode, it disables secure boot simultaneously. So, make sure to re-enable it either before you leave the UEFI/BIOS, or after enrolling the keys.
 
 </details>
 
-However, if you, like me, also happen to have a machine with an ASUS motherboard, then we’ll have to take some extra steps.
+<details>
+
+<summary>[INFO]: Manually replicating _setup mode_ in ASUS' UEFI</summary>
+
+If you, like me, also happen to have a machine with an ASUS motherboard, then we’ll have to take some extra steps.
 
 1. Enable secure boot
 2. Install factory default keys (if they’re empty)
 3. Delete every key **except the Forbidden Signature Database (dbx)**
-4. This is typically the key at the bottom of the list
-5. Save changes and reboot
+   - This is typically the key at the bottom of the list
+4. Save changes and reboot
+
+</details>
 
 ### Enroll the Keys
 
@@ -1561,7 +1607,9 @@ I'll admit, not the prettiest (or the DRYest) `bash` script in the world, but _h
 
 This is rather straight forward just run `$ luksCryptenroller` (you'll immediately be prompted for your `superuser` password). Then just enter your passphrase for each LUKS device, in the order you declared them in.
 
-<details open>
+<details>
+
+<summary>[INFO]: Emergent properties of a ~~reused~~ _shared_ LUKS passphrase</summary>
 
 Fun fact, if all your LUKS devices share the same passphrase, `systemd-cryptenroll` seems to just know to re-use it, rather than prompting you for it again. As to how that's possible ... _well, I have no idea._ If by chance you happen to figure that out, I'd love to hear about it!
 
@@ -1608,7 +1656,7 @@ To create the following:
 }
 ```
 
-As you'll notice, this module enables a system wide `fontconfig` (we'll use home-manager to enable the user space one), and several common font packages, along with my favorite monospaced font (0xProto) packaged as a nerd-font.
+As you'll notice, this module enables a system wide `fontconfig` (you could also use home-manager to enable a user space one), and several common font packages, along with my favorite monospaced font (0xProto) packaged as a nerd-font.
 
 We can then import it into `configuration.nix` like so:
 
@@ -1628,9 +1676,13 @@ We can then import it into `configuration.nix` like so:
 }
 ```
 
-<details open>
+<details>
 
-You could import this into the `flake.nix` module array as well, this just shows you that you can import it into your main `configuration.nix` file too. Inversely, you could move the `lanza.nix` module out of the `flake.nix` module array, and import it into the `configuration.nix` imports array instead as well.
+<summary>[INFO]: On _where_ to import modules within a `flake.nix`</summary>
+
+You could import the above into the `flake.nix` module array as well, the snippet above just demonstrates that you can import it into your main `configuration.nix` file too. Inversely, you could move the `lanza.nix` module out of the `flake.nix` module array, and import it into the `configuration.nix` imports array instead as well.
+
+This is possible because nested modules will ultimately wind up in the `flake.nix` module array anyway, so long as the _parent_ modules (i.e., `configuration.nix`) containing such nested _child_ modules (`fonts.nix`) are declared there.
 
 </details>
 
@@ -1845,7 +1897,9 @@ The above is my personal Starship Prompt configuration, and I hope it serves you
 
 With all the modules configured, it's time to run `# nixos-rebuild switch`, or `# nixos-rebuild boot` if you want to cut down on the misc Nix profile generations (only drawback is you have to reboot). If everything compiled successfully, it's now time to bask in the triumph of having accomplished a LOT today, complete with a base Home Manager configuration as icing on the cake.
 
-<details open>
+<details>
+
+<summary>[INFO]: Cleaning up old Nix generations</summary>
 
 Eventually, you'll want to clean out old _Nix generations_ (created after each `# nixos-rebuild switch`) since they can really start piling up, and monopololize your diskspace. You can do so (mildly dangerously) with `# nix-collect-garbage -d` to delete _all_ old generations of profiles. Or, for a much safer garbage collection, you can run `# nix-collect-garbage --delete-older-than <time_period>` to remove things older than, say, 30 days, using `30d` as the time period. [^nix-collect-garbage]
 

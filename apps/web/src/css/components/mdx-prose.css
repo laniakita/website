@@ -7,7 +7,7 @@
   }
   
   [details-warn] {
-    @apply unified-style border-ctp-yellow bg-ctp-yellow/10 dark:bg-ctp-yellow/5 text-ctp-yellow;
+    @apply unified-style border-ctp-peach bg-ctp-peach/5 text-ctp-peach;
   }
 
   [details-critical] {

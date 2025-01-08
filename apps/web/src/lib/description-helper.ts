@@ -1,8 +1,9 @@
 export const descriptionHelper = (rawStr: string | undefined, postSlug?: string | undefined, justDescr?: boolean) => {
   if (!rawStr) return;
 
-  // keep track of whether we're in an aside tag or not.
-  let asideFlag = false;
+  // keep track of whether we're in an aside || details element or not.
+  let asideOrDetailsFlag = false;
+  //let detailsFlag = false;
 
   const findDescr = rawStr
     .split('\n')
@@ -13,15 +14,17 @@ export const descriptionHelper = (rawStr: string | undefined, postSlug?: string 
       //console.log(paraFound);
       if (paraFound) {
         // if we've found an aside, we can just keep returning undefined until we find the end of the aside tag.
-        if (strPara === '<aside>') {
-          asideFlag = true;
+        const reDetailsOpen = /<details\b/;
+        const reDetailsClosed = /<\/details>/;
+        if (strPara === '<aside>' || reDetailsOpen.test(strPara) ) {
+          asideOrDetailsFlag = true;
           return undefined;
         }
-        if (strPara === '</aside>') {
-          asideFlag = false;
+        if (strPara === '</aside>' || reDetailsClosed.test(strPara)) {
+          asideOrDetailsFlag = false;
           return undefined;
         }
-        if (asideFlag) {
+        if (asideOrDetailsFlag) {
           return undefined;
         }
         //console.log(strPara);
