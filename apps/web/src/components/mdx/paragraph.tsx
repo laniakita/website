@@ -13,7 +13,6 @@ export function Paragraph(props: { children?: ReactNode }) {
 
     if ((props.children as ReactElement[]).length > 2) {
       const nodeMap = Object.values(props.children as ReactElement[])?.map((node) => {
-
         if (typeof node !== 'string') {
           if ('children' in (node.props as ReactElement)) {
             //console.log(node)

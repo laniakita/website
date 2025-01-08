@@ -113,7 +113,7 @@ Now, I’d like to shift our focus back to the App router, away from all this gu
 
 Streaming is a pretty big benefit of server components, and I believe it can improve the user experience by quite a bit. The largest benefit to streaming, in my opinion, is summarized nicely in the [Next.js docs](https://nextjs.org/docs/app/building-your-application/routing/loading-ui-and-streaming#streaming-with-suspense):
 
->Streaming is particularly beneficial when you want to prevent long data requests from blocking the page from rendering as it can reduce the Time To First Byte (TTFB) and First Contentful Paint (FCP). It also helps improve Time to Interactive (TTI), especially on slower devices.
+> Streaming is particularly beneficial when you want to prevent long data requests from blocking the page from rendering as it can reduce the Time To First Byte (TTFB) and First Contentful Paint (FCP). It also helps improve Time to Interactive (TTI), especially on slower devices.
 
 I should mention however, that streaming isn’t a configuration constant, or a special component like the App router’s instant fallback [loading UI](https://nextjs.org/docs/app/api-reference/file-conventions/loading) feature. Streaming is instead, a server-side rendering pattern that can be implemented on SSR pages _only_.
 

@@ -129,7 +129,7 @@ export default async function BlogPostPage(props: { params: Promise<{ id: string
         height: `${(post.featured_image as FeaturedImageR1).height}`,
         width: `${(post.featured_image as FeaturedImageR1).width}`,
         description: `${(post.featured_image as FeaturedImageR1).altText}`,
-      }
+      },
     ],
     thumbnailUrl: `${APP_URL}/opengraph/blog/${params.id}/${params.slug}?twitter=true`,
     keywords: post.keywords ?? (catTagArr as string[]),
@@ -147,7 +147,13 @@ export default async function BlogPostPage(props: { params: Promise<{ id: string
 
       <main className='pb-common -mb-0.5 flex min-h-full w-full flex-col'>
         {/* flex box break prose */}
-        <article id='content' className='' itemScope itemType='http://schema.org/BlogPosting' itemID={`${process.env.NEXT_PUBLIC_DEPLOYED_URL ? process.env.NEXT_PUBLIC_DEPLOYED_URL : APP_URL}${post.url}`}>
+        <article
+          id='content'
+          className=''
+          itemScope
+          itemType='http://schema.org/BlogPosting'
+          itemID={`${process.env.NEXT_PUBLIC_DEPLOYED_URL ? process.env.NEXT_PUBLIC_DEPLOYED_URL : APP_URL}${post.url}`}
+        >
           <PostHeader2 {...post} />
           <div className='w-full px-6'>
             <div className='prose-protocol-omega mx-auto max-w-4xl'>

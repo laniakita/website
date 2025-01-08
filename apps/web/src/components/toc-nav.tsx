@@ -208,7 +208,7 @@ const getFlatHeadings = () => {
 const concatHeadingUtil = (heading: string, innerWidth: number) => {
   if (!heading) return;
   if (!innerWidth) return;
-  
+
   const concatHeading = heading.split('');
 
   let concat = 0;
@@ -247,7 +247,15 @@ const concatHeadingUtil = (heading: string, innerWidth: number) => {
   return concatHeading.join('');
 };
 
-function ConcatTitle({ activeId, headings, innerWidth }: { activeId: string; headings: HTMLHeadingElement[], innerWidth: number }) {
+function ConcatTitle({
+  activeId,
+  headings,
+  innerWidth,
+}: {
+  activeId: string;
+  headings: HTMLHeadingElement[];
+  innerWidth: number;
+}) {
   const activeHeading = headings?.find((heading) => heading.id === activeId)?.innerText;
   const concat = useMemo(() => concatHeadingUtil(activeHeading ?? '', innerWidth), [activeHeading, innerWidth]);
   return <>{concat}</>;

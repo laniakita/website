@@ -3,7 +3,6 @@ import Footer from '@/components/footer/footer';
 import ToCMenu from '@/components/toc-nav';
 
 export default function ContentLayout({ children }: Readonly<{ children: ReactNode }>) {
-
   return (
     <div className='flex size-full flex-col md:flex-row'>
       <ToCMenu />

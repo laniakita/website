@@ -1,19 +1,19 @@
 @layer components {
   .unified-style {
-    @apply my-10 space-y-6 rounded-lg border p-6 shadow-lg;
+    @apply my-10 space-y-6 rounded-lg border p-6 font-mono text-sm shadow-lg;
   }
   .unified-info-style {
-    @apply unified-style border-ctp-blue bg-ctp-blue/10;
+    @apply unified-style border-ctp-blue bg-ctp-blue/10 dark:bg-ctp-blue/5;
   }
-  
+
   [details-warn] {
     @apply unified-style border-ctp-peach bg-ctp-peach/5 text-ctp-peach;
   }
 
   [details-critical] {
-    @apply unified-style border-ctp-red bg-ctp-red/10 dark:bg-ctp-red/5 text-ctp-red;
+    @apply unified-style border-ctp-red bg-ctp-red/10 text-ctp-red dark:bg-ctp-red/5;
   }
-  
+
   details {
     @apply unified-info-style;
   }

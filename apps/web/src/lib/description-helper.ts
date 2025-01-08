@@ -16,7 +16,7 @@ export const descriptionHelper = (rawStr: string | undefined, postSlug?: string 
         // if we've found an aside, we can just keep returning undefined until we find the end of the aside tag.
         const reDetailsOpen = /<details\b/;
         const reDetailsClosed = /<\/details>/;
-        if (strPara === '<aside>' || reDetailsOpen.test(strPara) ) {
+        if (strPara === '<aside>' || reDetailsOpen.test(strPara)) {
           asideOrDetailsFlag = true;
           return undefined;
         }
