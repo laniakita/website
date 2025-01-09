@@ -118,7 +118,7 @@ export function CopyrightTag() {
   const currentYear = getDate.getFullYear(); //2024 bby
   return (
     <div className='text-xs'>
-      <p className='text-balance text-center'>© {currentYear} Lani Akita. All Rights Reserved.</p>
+      <p className='text-balance text-center'>© 2024-{currentYear} Lani Akita. All Rights Reserved.</p>
     </div>
   );
 }

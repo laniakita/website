@@ -77,7 +77,7 @@ export const SOCIALS_FULL = [
     textSize: 'text-2xl md:text-3xl min-h-[2rem] min-w-[2rem]',
   },
   {
-    title: 'RSS',
+    title: 'Atom/RSS',
     url: '/atom.xml',
     iconName: 'icon-[ph--rss-bold]',
     linkName: 'you feed reader!',
