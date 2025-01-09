@@ -27,30 +27,25 @@ export function PostHeader2(post: Post) {
       </div>
       */}
       <header className='pt-post-page z-0'>
-        <div className='flex w-full flex-col items-center justify-center gap-1 px-6 pb-6 md:pb-10'>
-          <div className='w-full max-w-4xl'>
+        <div className='flex w-full flex-col items-center justify-center gap-2 px-6 pb-6 lg:pb-10'>
+          <div className='w-full max-w-4xl font-mono'>
             <CatTagRoller cats={post.categories} tags={post.tags} />
           </div>
 
-          <h1
-            id={post.url.split('/').pop()}
-            className='w-full max-w-4xl text-2xl font-black leading-tight supports-[text-wrap:balance]:text-balance md:text-4xl lg:text-5xl'
-          >
+          <h1 id={post.url.split('/').pop()} className='post-headline'>
             {post.headline}
           </h1>
 
-          <h2 className='w-full max-w-4xl text-xl font-light leading-tight supports-[text-wrap:balance]:text-balance md:text-3xl lg:text-4xl'>
-            {post.subheadline}
-          </h2>
+          <h2 className='post-subheadline'>{post.subheadline}</h2>
 
-          <div className='flex w-full max-w-4xl flex-wrap items-center gap-x-2 text-xs'>
+          <div className='flex w-full max-w-4xl flex-wrap items-center gap-x-[0.5ch] font-mono text-xs lg:text-sm'>
             <p>
               By{' '}
               <Link href='/about' className='font-semibold capitalize'>
                 {authorName ?? 'Lani'}
               </Link>
             </p>
-            <span className=''>|</span>
+            <span className='font-light'>|</span>
             {post.updated ? (
               <p itemProp='dateModified' itemScope itemType='http://schema.org/Date' className='flex flex-wrap gap-x-2'>
                 <span>Updated:</span>
@@ -63,7 +58,7 @@ export function PostHeader2(post: Post) {
             )}
           </div>
 
-          <div className='flex w-full max-w-4xl items-center justify-start pt-3 md:pt-7'>
+          <div className='flex w-full max-w-4xl items-center justify-start pt-3 lg:pt-7'>
             <ShareButton />
           </div>
         </div>
@@ -74,16 +69,16 @@ export function PostHeader2(post: Post) {
           {(post.featured_image as FeaturedImageR1).hasImage ? (
             <figure className='relative flex size-full flex-col items-center justify-center gap-6'>
               <HeroBlur2 {...post} />
-              <p className='-mt-4 flex w-full flex-col items-center justify-center px-6 text-xs font-light'>
+              <p className='header-alt-text'>
                 <span className='w-full max-w-4xl'>{(post.featured_image as FeaturedImageR1).altText}</span>
               </p>
-              <figcaption className='flex w-full items-center justify-center px-6 text-lg font-black italic leading-tight md:text-2-25xl'>
+              <figcaption className='header-caption'>
                 <span className='max-w-4xl'>{(post.featured_image as FeaturedImageR1).caption}</span>
               </figcaption>
             </figure>
           ) : post.caption ? (
             <div>
-              <p className='flex w-full items-center justify-center px-6 text-2xl font-bold italic md:text-2-25xl'>
+              <p className='header-caption'>
                 <span className='max-w-4xl'>{post.caption}</span>
               </p>
             </div>

@@ -63,13 +63,6 @@ export const SOCIALS_FULL = [
     textSize: 'text-3xl md:text-4xl min-h-[2rem] min-w-[2rem]',
   },
   {
-    title: 'Instagram',
-    url: 'https://instagram.com/laniakita',
-    iconName: 'icon-[fa6-brands--instagram]',
-    linkName: 'Instagram!',
-    textSize: 'text-3xl md:text-4xl min-h-[2rem] min-w-[2rem]',
-  },
-  {
     title: 'Linkedin',
     url: 'https://linkedin.com/in/laniakita',
     iconName: 'icon-[fa6-brands--linkedin]',
@@ -81,6 +74,13 @@ export const SOCIALS_FULL = [
     url: 'https://patreon.com/Lani_Akita',
     iconName: 'icon-[fa6-brands--patreon]',
     linkName: 'Patreon!',
+    textSize: 'text-2xl md:text-3xl min-h-[2rem] min-w-[2rem]',
+  },
+  {
+    title: 'RSS',
+    url: '/atom.xml',
+    iconName: 'icon-[ph--rss-bold]',
+    linkName: 'you feed reader!',
     textSize: 'text-2xl md:text-3xl min-h-[2rem] min-w-[2rem]',
   },
 ];

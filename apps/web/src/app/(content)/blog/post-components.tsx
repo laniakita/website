@@ -46,12 +46,12 @@ export default function PostPreviewV4(post: Post) {
           </div>
 
           <div>
-            <h2 className='w-fit text-balance text-3xl font-black'>
+            <h2 className='post-preview-headline w-fit'>
               <Link href={post.url} className='text-ctp-text'>
                 {post.headline}
               </Link>
             </h2>
-            <h3 className='text-balance text-2xl font-light'>{post.subheadline}</h3>
+            <h3 className='post-preview-subheadline'>{post.subheadline}</h3>
           </div>
         </div>
         <div className='h-px w-full rounded bg-ctp-surface0' />

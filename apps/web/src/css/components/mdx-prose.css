@@ -46,7 +46,9 @@
   /* mobile: h2:text-xl h3:text-lg h4:text-lg h5:text-lg h6:text-lg */
   /* md/tablet: h2:text-3xl h3:text-2-5xl h4:text-2xl h5:text-1-5xl h6:text-1-25xl */
   .prose-headings-mod {
-    @apply prose-headings:align-baseline prose-headings:font-black prose-h2:text-xl prose-h3:text-lg prose-h4:text-lg prose-h4:font-bold prose-h5:text-lg prose-h5:font-semibold prose-h6:text-lg prose-h6:font-medium md:prose-h2:text-3xl md:prose-h3:text-2-25xl md:prose-h4:text-2xl md:prose-h5:text-1-5xl md:prose-h6:text-1-25xl;
+    @apply prose-headings:align-baseline prose-headings:font-black prose-h2:text-xl prose-h3:text-lg prose-h4:text-lg prose-h4:font-bold prose-h5:text-lg prose-h5:font-semibold prose-h6:text-lg prose-h6:font-medium 
+    
+    lg:prose-h2:text-2xl lg:prose-h3:text-xl lg:prose-h4:text-xl lg:prose-h5:text-xl lg:prose-h6:text-lg;
   }
   .prose-text-pretty {
     @apply prose-headings-mod prose-a:break-words prose-em:mr-[0.2ch] prose-p:supports-[text-wrap:pretty]:text-pretty;

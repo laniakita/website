@@ -54,13 +54,6 @@ export const socialItems2 = [
     textSize: 'text-3xl md:text-4xl',
   },
   {
-    title: 'Instagram',
-    url: 'https://instagram.com/laniakita',
-    iconName: 'icon-[fa6-brands--instagram]',
-    linkName: 'Instagram!',
-    textSize: 'text-3xl md:text-4xl',
-  },
-  {
     title: 'Linkedin',
     url: 'https://linkedin.com/in/laniakita',
     iconName: 'icon-[fa6-brands--linkedin]',

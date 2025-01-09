@@ -1,0 +1,15 @@
+@layer components {
+  .post-headline {
+    @apply w-full max-w-4xl text-2xl font-black supports-[text-wrap:balance]:text-balance leading-7 lg:leading-9 lg:text-3xl;
+  }
+  .post-subheadline {
+    @apply w-full max-w-4xl text-xl font-light leading-tight supports-[text-wrap:balance]:text-balance lg:text-2xl -mt-2;
+  }
+  .header-alt-text {
+    @apply -mt-4 flex w-full flex-col items-center justify-center px-6 text-xs font-light lg:text-sm lg:-mt-3;
+  }
+  .header-caption {
+    @apply flex w-full items-center justify-center px-6 text-lg font-black italic leading-tight lg:text-xl;
+  }
+
+}
