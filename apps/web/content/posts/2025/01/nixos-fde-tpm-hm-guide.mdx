@@ -49,7 +49,7 @@ As such, I hope this guide is able to serve you well! Hopefully into the future 
 
 After taking some time to setup a fresh install of one of my favorite distros, I felt it was a good idea to post a write up about the somewhat extensive process on installing NixOS with Full Disk Encryption (FDE), enabling secure boot, and _automagically_ unlocking the encrypted LUKS device(s) during the boot process with keys enrolled into the motherboard's TPM2 chip.
 
-Now, I should state that I didn't come up with this guide alone. This guide is more of an amalgamation, based pretty heavily upon a lot of other guides and resource materials out there scattered across the net. As such, I encourage you to check out the reference materials [^full-disk-encryption---nixos-wiki][^installing-nixos-with-flakes-and-lvm-on-luks][^installing-nixos-with-full-disk-encryption][^a-modern-and-secure-desktop-setup---guides][^installation-of-nixos-with-encrypted-root][^how-to-install-nixos-with-full-disk-encryption-fde-using-luks2][^lanzaboote-docs-quick-start][^nixos-manual] I used, linked in the footnotes below.
+Now, I should state that I didn't come up with this guide alone. This guide is more of an amalgamation, based pretty heavily upon a lot of other guides and resource materials out there scattered across the net. As such, I encourage you to check out the reference materials[^full-disk-encryption---nixos-wiki][^installing-nixos-with-flakes-and-lvm-on-luks][^installing-nixos-with-full-disk-encryption][^a-modern-and-secure-desktop-setup---guides][^installation-of-nixos-with-encrypted-root][^how-to-install-nixos-with-full-disk-encryption-fde-using-luks2][^lanzaboote-docs-quick-start][^nixos-manual] I used, linked in the footnotes below.
 
 ### What is NixOS?
 
@@ -1908,6 +1908,8 @@ With all the modules configured, it's time to run `# nixos-rebuild switch`, or `
 Eventually, you'll want to clean out old _Nix generations_ (created after each `# nixos-rebuild switch`) since they can really start piling up, and monopololize your diskspace. You can do so (mildly dangerously) with `# nix-collect-garbage -d` to delete _all_ old generations of profiles. Or, for a much safer garbage collection, you can run `# nix-collect-garbage --delete-older-than <time_period>` to remove things older than, say, 30 days, using `30d` as the time period. [^nix-collect-garbage]
 
 The former garbage collection command can also become `très dangereaux`, if your last config and current config are both broken in a way that you can no longer access the `TTY`, since all possible escape hatches (working generations) would be removed. This is probably one of the only ways you can truly _brick_ a NixOS install.
+
+In the event of such a _bricked_ install, you can use the USB with the Minimal NixOS ISO you used earlier to attempt a repair. Once booted, just mount your drives, run `luksOpen` to unlock them, edit the borked config files, then follow the instructions on the NixOS Wiki page for [Change root](https://wiki.nixos.org/wiki/Change_root) to run `nixos-enter`, so you can run `nixos-rebuild switch`.
 
 </details>
 

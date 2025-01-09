@@ -8,6 +8,7 @@ import rehypeHighlight from 'rehype-highlight';
 import rehypeHighlightLines from 'rehype-highlight-code-lines';
 import { imageProcessor, FeaturedImageR1 } from './src/lib/image-process';
 import jsxToHtml from './src/lib/mdx-html';
+import rehypeMultiRefs from '@/utils/rehype-multi-refs/lib';
 
 const CONTENT_DIR = 'content';
 
@@ -273,6 +274,7 @@ export default makeSource({
       ],
       rehypeMdxImportMedia,
       rehypeSlug,
+      rehypeMultiRefs,
     ],
     resolveCwd: 'relative',
     esbuildOptions(options) {
