@@ -29,7 +29,7 @@
     @apply !font-black !text-inherit;
   }
 
-  :where(details p, details summary) code  {
+  :where(details p, details summary, details ul li, aside p) code  {
     @apply !border-none !bg-inherit !font-black !italic !text-sm !text-inherit;
   }
 
@@ -37,7 +37,7 @@
     @apply unified-info-style;
   }
   .prose-code-pretty {
-    @apply [&:where(:not(details_p,_details_summary,_h1,_h2,_h3,_h4,_h5,_h6)>code)]:prose-code:before:hidden [&:where(:not(details_p,_details_summary,_h1,_h2,_h3,_h4,_h5,_h6)>code)]:prose-code:after:hidden prose-pre:rounded-xl prose-pre:border prose-pre:border-ctp-surface0 [&:where(:not(pre)>code)]:prose-code:break-words [&:where(:not(pre)>code)]:prose-code:rounded-md [&:where(:not(pre)>code)]:prose-code:border [&:where(:not(pre)>code)]:prose-code:border-ctp-surface0 [&:where(:not(pre)>code)]:prose-code:bg-ctp-base [&:where(:not(pre)>code)]:prose-code:px-1 [&:where(:not(pre)>code)]:prose-code:py-0.5;
+    @apply [&:where(:not(details_p,_details_summary,_details_ul_li,_aside_p,_h1,_h2,_h3,_h4,_h5,_h6)>code)]:prose-code:before:hidden [&:where(:not(details_p,_details_summary,_details_ul_li,_aside_p,_h1,_h2,_h3,_h4,_h5,_h6)>code)]:prose-code:after:hidden prose-pre:rounded-xl prose-pre:border prose-pre:border-ctp-surface0 [&:where(:not(pre)>code)]:prose-code:break-words [&:where(:not(pre)>code)]:prose-code:rounded-md [&:where(:not(pre)>code)]:prose-code:border [&:where(:not(pre)>code)]:prose-code:border-ctp-surface0 [&:where(:not(pre)>code)]:prose-code:bg-ctp-base [&:where(:not(pre)>code)]:prose-code:px-1 [&:where(:not(pre)>code)]:prose-code:py-0.5;
  
   }
   :where(h1, h2, h3, h4, h5, h6) code {

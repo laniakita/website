@@ -156,7 +156,7 @@ export default async function BlogPostPage(props: { params: Promise<{ id: string
         >
           <PostHeader2 {...post} />
           <div className='w-full px-6'>
-            <div className='prose-protocol-omega mx-auto max-w-4xl'>
+            <div className='prose-protocol-omega mx-auto max-w-4xl lg:max-w-3xl'>
               <GlobalMDXComponent {...post} />
             </div>
           </div>
