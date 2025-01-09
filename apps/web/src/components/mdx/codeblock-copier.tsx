@@ -14,10 +14,9 @@ import React, {
 export default function CodeBlockCopier(
   props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLPreElement>, HTMLPreElement>,
 ) {
+
   return (
-    <Suspense>
-      <CodeBlockAssemble {...props} />
-    </Suspense>
+    <CodeBlockAssemble {...props} />
   );
 }
 interface PreCodeBlock extends ReactElement {
@@ -159,26 +158,28 @@ function DefaultCodeBlock(props: React.DetailedHTMLProps<React.HTMLAttributes<HT
   }, []);
 
   return (
-    <div id={blockId} className='relative'>
-      <pre
-        id={preId}
-        ref={preRef}
-        onScroll={() => {
-          handlePreScroll();
-        }}
-        {...props}
-      >
-        <CopyBtn
-          preRef={preRef}
-          btnRef={btnRef}
-          setIsCopied={setIsCopied}
-          topPos={topPos}
-          isCopied={isCopied}
-          special='pointer-events-auto'
-        />
-        {props.children}
-      </pre>
-    </div>
+    <>
+      <div id={blockId} className='relative'>
+        <pre
+          id={preId}
+          ref={preRef}
+          onScroll={() => {
+            handlePreScroll();
+          }}
+          {...props}
+        >
+          <CopyBtn
+            preRef={preRef}
+            btnRef={btnRef}
+            setIsCopied={setIsCopied}
+            topPos={topPos}
+            isCopied={isCopied}
+            special='pointer-events-auto'
+          />
+          {props.children}
+        </pre>
+      </div>
+    </>
   );
 }
 

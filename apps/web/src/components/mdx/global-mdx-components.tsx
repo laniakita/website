@@ -5,15 +5,16 @@ import BlogImageBlurServer from './img-blur-server';
 import { Paragraph } from './paragraph';
 import { getMDXComponent } from './mdx-bundler-components';
 //import { useMDXComponent } from 'next-contentlayer2/hooks';
-import CodeBlockCopier from './codeblock-copier';
+//import CodeBlockCopier from './codeblock-copier';
 import Footnotes, { SupAnchors } from './section-footnotes';
 import Anchors from './anchor-tags';
+import PreCodeV2 from './codeblock-v2';
 
 export const globalMdxComponents = {
   p: Paragraph,
   img: BlogImageBlurServer,
   a: Anchors,
-  pre: CodeBlockCopier,
+  pre: PreCodeV2,
   section: Footnotes,
   sup: SupAnchors,
 };
