@@ -326,6 +326,7 @@ function CopyBtn({
       </span>
 
       <button
+        aria-label="Copy codeblock to clipboard"
         ref={btnRef}
         onClick={handleCopyClick}
         className={`${special} flex items-center justify-center rounded-lg border p-1 shadow-lg backdrop-blur-sm [transition:_color_0.3s,_border_0.3s,_box-shadow_0.3s,_backdrop-filter_0.3s,_background_0.3s,_opacity_0.3s] hover:shadow-xl hover:backdrop-blur ${isExpanded == true && 'pointer-events-auto opacity-100'} ${isExpanded == false && isExpanded !== undefined && 'pointer-events-none opacity-20'} ${isCopied ? 'border-ctp-green/[.99] bg-ctp-green/[.20] text-ctp-green/[.99] hover:border-ctp-green hover:bg-ctp-green/20 hover:text-ctp-green' : isCopied === null ? 'border-ctp-red bg-ctp-red/20 text-ctp-red hover:border-ctp-red hover:bg-ctp-red/20 hover:text-ctp-red' : 'border-ctp-mauve bg-ctp-mauve/10 text-ctp-mauve hover:border-ctp-pink hover:bg-ctp-pink/10 hover:text-ctp-pink'}`}

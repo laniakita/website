@@ -16,6 +16,7 @@ export default {
       fontFamily: {
         sans: ['var(--font-inter-tight)'],
         mono: ['var(--font-zeroxproto)'],
+        'mono-display': ['var(--font-zeroxproto-bold)'],
       },
       fontSize: {
         '2-75xl': [

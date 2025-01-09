@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { type Dispatch, type SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
@@ -89,24 +90,18 @@ const useHeadingsData = () => {
 };
 
 function HeadingNode({ node, activeId }: { node: HeadingNode; activeId: string }) {
-  //console.log('nodeid:', node.id, 'activeId:', activeId);
-  const router = useRouter();
-  //const params = useParams();
   const pathname = usePathname();
-  const pushHash = () => {
-    router.push(`${pathname}#${node.id}`);
-    //console.log(`${pathname}#${node.id}`)
-  };
+
   return (
     <li key={node.id}>
       <p className='text-balance'>
-        <button
+        <Link
           aria-label={`Jump to ${node.title}`}
-          onClick={pushHash}
-          className={`link-color-trans text-balance text-left font-mono text-sm leading-relaxed text-ctp-subtext0 hover:text-ctp-text hover:underline ${activeId === node.id ? 'text-ctp-text underline' : ''} md:max-w-xs md:break-words lg:max-w-sm lg:break-keep`}
+          href={`${pathname}#${node.id}`}
+          className={`link-color-trans text-balance text-left font-mono text-sm font-semibold leading-relaxed hover:text-ctp-text hover:underline ${activeId === node.id ? 'text-ctp-text underline' : 'text-ctp-subtext0'} md:max-w-xs md:break-words lg:max-w-sm lg:break-keep`}
         >
           {node.title}
-        </button>
+        </Link>
       </p>
       <ul className='list-none pl-[2ch]'>
         {node.children

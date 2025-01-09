@@ -28,6 +28,12 @@ const zeroxproto = localFont({
   variable: '--font-zeroxproto',
 });
 
+const zeroxprotoBold = localFont({
+  src: './0xProtoNerdFontPropo-Bold.ttf',
+  display: 'swap',
+  variable: '--font-zeroxproto-bold',
+});
+
 export const metadata: Metadata = {
   metadataBase: new URL(APP_URL),
   applicationName: APP_NAME,
@@ -70,7 +76,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <html lang='en-US' dir='ltr' className={`${inter_tight.variable} ${zeroxproto.variable}`} suppressHydrationWarning>
+    <html lang='en-US' dir='ltr' className={`${inter_tight.variable} ${zeroxproto.variable} ${zeroxprotoBold.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeGetter }} />
       </head>
