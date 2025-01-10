@@ -31,7 +31,7 @@
         packages = with pkgs; [
           awscli2
           bun
-          nodejs_20
+          nodejs_22
           zsh
           turso-cli
         ];
