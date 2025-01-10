@@ -35,6 +35,9 @@ const nextConfig = {
 
     return config;
   },
+  
+  // needed for open-next build
+  output: 'standalone',
 
   experimental: {
     turbo: {

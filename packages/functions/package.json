@@ -5,7 +5,7 @@
     "@aws-sdk/client-cloudfront": "^3.645.0",
     "@aws-sdk/client-cloudwatch": "^3.645.0",
     "@aws-sdk/client-sns": "^3.645.0",
-    "sst": "^3.2.38"
+    "sst": "^3.5.5"
   },
   "devDependencies": {
     "@website/typescript-config": "workspace:*",

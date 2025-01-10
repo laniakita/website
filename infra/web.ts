@@ -1,6 +1,9 @@
 export const web = new sst.aws.Nextjs("Web", {
   path: "apps/web",
-  buildCommand: "turbo copy-sharp",
+  buildCommand: "turbo build:open-next",
+  server: {
+    runtime: "nodejs22.x"
+  },
   environment: {
     NEXT_PUBLIC_DEPLOYED_URL:
       $app.stage === "production"

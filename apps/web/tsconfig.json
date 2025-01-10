@@ -23,8 +23,7 @@
     ".next/types/**/*.ts",
     ".contentlayer/generated",
     "./**/*.ts",
-    "./**/*.tsx",
-    "next.config.mjs"
+    "./**/*.tsx"
   ],
   "exclude": ["node_modules", "public/sw.js"]
 }

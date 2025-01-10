@@ -33,6 +33,9 @@ const nextConfig = {
   },
   */
 
+  // needed for open-next build
+  output: 'standalone',
+
   swcMinify: true,
 
   async redirects() {
