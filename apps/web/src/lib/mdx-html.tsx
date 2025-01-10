@@ -1,4 +1,4 @@
-'use server'
+'use server';
 import React, { ReactElement, ReactNode } from 'react';
 import * as _jsx_runtime from 'react/jsx-runtime';
 import * as _jsx_dev_runtime from 'react/jsx-dev-runtime';
@@ -27,12 +27,7 @@ export const resMdx = async (mdxStr: string, contentDir: string, folderPath: str
     cwd: folder,
     mdxOptions(options: Options) {
       options.remarkPlugins = [...(options.remarkPlugins ?? []), remarkGfm];
-      options.rehypePlugins = [
-        ...(options.rehypePlugins ?? []),
-        rehypeMdxImportMedia,
-        rehypeSlug,
-        rehypeMultiRefs
-      ];
+      options.rehypePlugins = [...(options.rehypePlugins ?? []), rehypeMdxImportMedia, rehypeSlug, rehypeMultiRefs];
       return options;
     },
     esbuildOptions: (options) => {
@@ -58,18 +53,18 @@ function Paragraph(props: { children?: ReactNode }) {
   return <p {...props} />;
 }
 
-function EzMdx({ mdxCode }: { mdxCode: string; }) {
+function EzMdx({ mdxCode }: { mdxCode: string }) {
   const mdxComponents = { p: Paragraph };
   const Component = getMDXComponent(mdxCode, {});
   return <Component code={mdxCode} components={mdxComponents} />;
 }
 
 async function jsxToHtml(markdown: string, contentDir: string, folderPath: string) {
-  'use server'
+  'use server';
   const ReactDomServer = (await import('react-dom/server')).default;
-  const mdxCode = await resMdx(markdown, contentDir, folderPath)
+  const mdxCode = await resMdx(markdown, contentDir, folderPath);
   const component = <EzMdx mdxCode={mdxCode.code} />;
-  const res =  ReactDomServer.renderToStaticMarkup(component);
+  const res = ReactDomServer.renderToStaticMarkup(component);
   return res;
 }
 

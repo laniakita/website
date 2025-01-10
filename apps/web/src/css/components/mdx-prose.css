@@ -3,7 +3,7 @@
     @apply text-sm;
   }
   .unified-style {
-    @apply unified-text block my-6 space-y-6 rounded-lg border p-6 font-mono shadow-lg;
+    @apply unified-text my-6 block space-y-6 rounded-lg border p-6 font-mono shadow-lg;
   }
   .unified-info-style {
     @apply unified-style border-ctp-blue bg-ctp-blue/10 dark:border-ctp-sky dark:bg-ctp-sky/5 dark:text-ctp-sky;
