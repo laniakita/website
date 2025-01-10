@@ -1,14 +1,11 @@
-//import type { FC } from 'react';
-//import Link from 'next/link';
 import type { Category, Page, Post, Tag, Work } from 'contentlayer/generated';
 import BlogImageBlurServer from './img-blur-server';
 import { Paragraph } from './paragraph';
 import { getMDXComponent } from './mdx-bundler-components';
 //import { useMDXComponent } from 'next-contentlayer2/hooks';
-//import CodeBlockCopier from './codeblock-copier';
 import Footnotes, { SupAnchors } from './section-footnotes';
 import Anchors from './anchor-tags';
-import PreCodeV2 from './codeblock-v2';
+import PreCodeV2 from './pre-code/codeblock-v2';
 
 export const globalMdxComponents = {
   p: Paragraph,
