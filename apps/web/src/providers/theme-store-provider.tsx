@@ -13,8 +13,7 @@ export interface DarkStoreProviderProps {
 }
 
 export function DarkStoreProvider({ children }: DarkStoreProviderProps) {
-  //@ts-expect-error -- won't build without it being empty.
-  const darkStoreRef = useRef<DarkStoreApi>();
+  const darkStoreRef = useRef<DarkStoreApi>(null!);
 
   if (!darkStoreRef.current) {
     darkStoreRef.current = createDarkStore();

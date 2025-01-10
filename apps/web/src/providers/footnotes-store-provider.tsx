@@ -13,8 +13,7 @@ export interface FootnotesStoreProviderProps {
 }
 
 export function FootnotesStoreProvider({ children }: FootnotesStoreProviderProps) {
-  //@ts-expect-error -- won't build without it being empty.
-  const footnotesStoreRef = useRef<FootnotesStoreApi>();
+  const footnotesStoreRef = useRef<FootnotesStoreApi>(null!);
 
   if (!footnotesStoreRef.current) {
     footnotesStoreRef.current = createFootnotesStore();

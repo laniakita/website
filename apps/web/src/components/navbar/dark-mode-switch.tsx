@@ -32,8 +32,6 @@ export default function DarkModeSwitch() {
     const nextDark = !dark;
     if (nextDark) {
       themeDark();
-    } else {
-      themeLight();
     }
     localStorage.setItem('isDark', JSON.stringify(nextDark));
     handleThemePref();
