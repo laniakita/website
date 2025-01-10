@@ -1,7 +1,6 @@
 'use client';
 import React, {
   type ReactElement,
-  Suspense,
   useEffect,
   useId,
   useRef,

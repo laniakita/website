@@ -8,4 +8,27 @@
       opacity: 1;
     }
   }
+
+  @property --wipe-position {
+    syntax: "<percentage>";
+    inherits: false;
+    initial-value: 100%;
+  }
+
+  .wipe-fade-in {
+    --wipe-position: 100%;
+    --gradient-length: 20%;
+    -webkit-mask-image: linear-gradient(
+      to top,
+      transparent var(--wipe-position),
+      black calc(var(--wipe-position) + var(--gradient-length)),
+      black
+    );
+
+    transition: --wipe-position 3s cubic-bezier(0.37, 0, 0.63, 1);
+  }
+
+  .wipe-fade-in[aria-expanded='true'] {
+    --wipe-position: calc(-1 * var(--gradient-length));
+  }
 }

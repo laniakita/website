@@ -20,7 +20,7 @@ export default function Anchors(
           const opts: ScrollToOptions = { left: 0, top: scrollY - offSets(), behavior: 'instant' };
           window.scrollBy(opts);
         } else {
-          console.log('scroll failed:', target, e, tQ, scrollY);
+          console.error("scroll failed (this shouldn't happen):", target, e, tQ, scrollY);
         }
       };
       return <Link {...(props as LinkProps)} onClick={(e) => handleClick(e)} scroll={false} />;

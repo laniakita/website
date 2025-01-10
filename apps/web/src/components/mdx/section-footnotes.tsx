@@ -18,13 +18,20 @@ export const PT_SCROLL_TABLET = 6;
 
 export default function Footnotes(props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>) {
   const [isClient, setIsClient] = useState(false);
+  const [isJavaScriptEnabled, setIsJavaScriptEnabled] = useState(false);
 
   useEffect(() => {
+    try {
+      eval(';'); // This line will throw an error if JavaScript is disabled
+      setIsJavaScriptEnabled(true);
+    } catch {
+      // No need to set state here, it's already false by default
+    }
     if (!isClient) setIsClient(true);
   }, [isClient]);
 
   // get the footnotes ordered list
-  if (props.className === 'footnotes') {
+  if (props.className === 'footnotes' && isJavaScriptEnabled) {
     if ((props.children as HTMLElement[]).length >= 2) {
       const tryList = (props.children as ReactElement[])[2];
       if (tryList?.type === 'ol') {
@@ -38,7 +45,7 @@ export default function Footnotes(props: React.DetailedHTMLProps<React.HTMLAttri
     }
   }
 
-  return <section {...props} />;
+  return  <section {...props} />;
 }
 
 function CollapsedFootNotesComponent(props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>) {
@@ -173,7 +180,7 @@ function ExpandableFootNotesComponent(props: React.DetailedHTMLProps<React.HTMLA
       {h2}
       <div className='pointer-events-none absolute inset-0'>
         <div
-          className={`absolute ${expanded ? 'hidden' : ''} inset-x-0 bottom-0 z-10 flex size-full max-h-[50%] items-center justify-center overflow-x-auto rounded-b-lg bg-ctp-base/20 bg-gradient-to-b from-transparent to-ctp-base text-center text-ctp-overlay0 dark:bg-ctp-midnight/20 dark:to-ctp-midnight`}
+          className={`absolute ${expanded ? 'hidden' : ''} inset-x-0 bottom-0 z-10 flex size-full max-h-[80%] items-center justify-center overflow-x-auto rounded-b-lg bg-ctp-base/20 bg-gradient-to-b from-transparent to-ctp-base text-center text-ctp-overlay0 dark:bg-ctp-midnight/20 dark:to-ctp-midnight`}
         >
           <button
             onClick={() => {
@@ -190,19 +197,18 @@ function ExpandableFootNotesComponent(props: React.DetailedHTMLProps<React.HTMLA
       <ol ref={oListRef} className=''>
         {expanded
           ? currList.map((item) =>
-              item.props ? (
-                <li
-                  key={item.props.id}
-                  {...(item.props as unknown as LiHTMLAttributes<HTMLLIElement>)}
-                  ref={liRef}
-                  className={`${item.props.className ?? ''} relative ${
-                    liId === item.props.id ? 'prose-footnotes-active' : 'after:opacity-0'
+            item.props ? (
+              <li
+                key={item.props.id}
+                {...(item.props as unknown as LiHTMLAttributes<HTMLLIElement>)}
+                ref={liRef}
+                className={`${item.props.className ?? ''} relative ${liId === item.props.id ? 'prose-footnotes-active' : 'after:opacity-0'
                   }`}
-                />
-              ) : (
-                ''
-              ),
-            )
+              />
+            ) : (
+              ''
+            ),
+          )
           : newList}
       </ol>
     </section>

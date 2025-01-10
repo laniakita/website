@@ -74,11 +74,11 @@ export default function ShareButton() {
   return (
     <div ref={shareBtnRef} className='relative flex flex-col items-center justify-center'>
       <span
-        className={`${isOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'} absolute -bottom-4 z-[1] size-0 border-[1rem] border-x-transparent border-b-ctp-surface0 border-t-transparent [transition:_opacity_0.3s]`}
+        className={`${isOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'} absolute -bottom-4 z-[1] size-0 border-[1rem] border-x-transparent border-b-ctp-surface0 border-t-transparent motion-safe:[transition:_opacity_0.3s]`}
       />
       <div
         ref={shareDivRef}
-        className={`${isOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none h-0 opacity-0'} absolute bottom-0 z-[2] min-w-fit translate-y-[105%] overflow-hidden whitespace-nowrap rounded-md border border-ctp-overlay0 bg-ctp-base/90 font-mono shadow-lg backdrop-blur-md [transition:_opacity_0.5s,_transform_0.5s,_height_0.5s] dark:bg-ctp-base/50 dark:shadow-ctp-pink/30`}
+        className={`${isOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none h-0 opacity-0'} absolute bottom-0 z-[2] min-w-fit translate-y-[105%] overflow-hidden whitespace-nowrap rounded-md border border-ctp-overlay0 bg-ctp-base/90 font-mono shadow-lg backdrop-blur-md motion-safe:[transition:_opacity_0.5s,_transform_0.5s,_height_0.5s] dark:bg-ctp-base/50 dark:shadow-ctp-pink/30`}
       >
         <ul ref={shareListRef} className='space-y-1.5 p-1.5 pb-2'>
           <li>

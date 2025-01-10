@@ -18,6 +18,7 @@ export const globalMdxComponents = {
   section: Footnotes,
   sup: SupAnchors,
 };
+
 /*
   export default function GlobalMDXComponent(data: Post | Page | Category | Tag | Work) {
     const MDXContent = useMDXComponent(data.body.code);
