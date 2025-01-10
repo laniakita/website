@@ -5,26 +5,22 @@ import { allTags, allPosts, allCategories } from 'contentlayer/generated';
 import type { Tag, Category } from 'contentlayer/generated';
 import type { FeaturedImageR1 } from '@/lib/image-process';
 import { APP_URL, BLOG_DESCR } from '@/lib/constants';
-// opts
+import { postHtml } from '@/lib/mdx-html-wrapper';
+
+
+export const dynamic = 'force-static';
+
 const xmlOpts = {
   header: true,
   indent: '  ',
 };
 
-export const dynamic = 'force-static';
-
-export function GET() {
+export async function GET() {
   const NEXTJS_VERSION = versionVault.versions.dependencies.next;
   const posts = allPosts.sort((a, b) => compareDesc(new Date(a.updated ?? a.date), new Date(b.updated ?? b.date)));
   const buildDate = new Date(
     posts.length >= 1 && posts[0] !== undefined ? (posts[0].updated ?? posts[0]?.date) : '',
   ).toISOString();
-  /*
-  const headersList = headers();
-  const host = headersList.get('host');
-  const protocol = process.env.NODE_ENV === 'production' ? 'https://' : 'http://';
-  const HOST_URL = `${protocol}${host}`;
-  */
 
   const HOST_URL = APP_URL;
 
@@ -50,7 +46,7 @@ export function GET() {
     return res;
   };
 
-  const postEntry = posts.map((post) => {
+  const postEntry = await Promise.all(posts.map(async (post) => {
     const cats =
       post.categories &&
       (
@@ -87,6 +83,8 @@ export function GET() {
             <figcaption>${post.caption ?? post.subheadline ?? post.headline}</figcaption>
           </figure>
         `;
+    
+    const postData = await postHtml(post);
 
     const res = [
       {
@@ -116,11 +114,11 @@ export function GET() {
         _attrs: {
           type: 'html',
         },
-        _content: `<![CDATA[${imgEmbed} ${post.html}]]>`,
+        _content: `<![CDATA[${imgEmbed} ${postData}]]>`,
       },
     ];
     return { entry: res };
-  });
+  }));
 
   const atomFeed = {
     _name: 'feed',

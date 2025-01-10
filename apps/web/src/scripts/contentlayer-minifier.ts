@@ -5,7 +5,7 @@ import { allPosts, allPages, allCategories, allTags, allProjects } from 'content
 const allPostsRes = () => {
   return allPosts.map((doc) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars -- vars
-    const { body, html, ...content } = doc;
+    const { body, ...content } = doc;
     return content;
   });
 };

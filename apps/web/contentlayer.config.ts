@@ -10,7 +10,7 @@ import { imageProcessor, FeaturedImageR1 } from './src/lib/image-process';
 import jsxToHtml from './src/lib/mdx-html';
 import rehypeMultiRefs from '@/utils/rehype-multi-refs/lib';
 
-const CONTENT_DIR = 'content';
+export const CONTENT_DIR = 'content';
 
 export const Work = defineDocumentType(() => ({
   name: 'Work',
@@ -219,13 +219,6 @@ export const Post = defineDocumentType(() => ({
     caption: { type: 'string', required: false },
   },
   computedFields: {
-    html: {
-      type: 'string',
-      resolve: (post) => {
-        const renderedMdx = jsxToHtml(post.body.code);
-        return renderedMdx;
-      },
-    },
     url: {
       type: 'string',
       resolve: (post) => `/blog/${post.id.split('-').shift()}/${post._raw.flattenedPath.split('/').pop()}`,
