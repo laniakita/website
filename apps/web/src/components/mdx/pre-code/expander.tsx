@@ -1,7 +1,7 @@
-'use client'
-import { DetailedHTMLProps, HTMLAttributes, useEffect, useId, useRef, useState } from "react";
-import CopyBtn, { handlePreScroll } from "./copy-button";
-import { codeCollapser } from "./util";
+'use client';
+import { DetailedHTMLProps, HTMLAttributes, useEffect, useId, useRef, useState } from 'react';
+import CopyBtn, { handlePreScroll } from './copy-button';
+import { codeCollapser } from './util';
 
 export default function ExpandableBlock(props: DetailedHTMLProps<HTMLAttributes<HTMLPreElement>, HTMLPreElement>) {
   const collapsedBlock = codeCollapser(props);
@@ -25,7 +25,7 @@ export default function ExpandableBlock(props: DetailedHTMLProps<HTMLAttributes<
     } catch {
       // No need to set state here, it's already false by default
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (!isJavaScriptEnabled) return;
@@ -64,7 +64,11 @@ export default function ExpandableBlock(props: DetailedHTMLProps<HTMLAttributes<
   };
 
   return (
-    <figure ref={codeBlockRef} id={blockId} className={`relative my-6 overflow-y-hidden motion-safe:[transition:_height_0.8s_ease]`}>
+    <figure
+      ref={codeBlockRef}
+      id={blockId}
+      className={`relative my-6 overflow-y-hidden motion-safe:[transition:_height_0.8s_ease]`}
+    >
       {initExpanded ? (
         <CopyBtn
           preRef={preRef}
@@ -76,7 +80,10 @@ export default function ExpandableBlock(props: DetailedHTMLProps<HTMLAttributes<
           isExpanded={isExpanded}
         />
       ) : (
-        <div id={overlayId} className={`${isJavaScriptEnabled ? 'block' : 'hidden'} pointer-events-none absolute inset-0`}>
+        <div
+          id={overlayId}
+          className={`${isJavaScriptEnabled ? 'block' : 'hidden'} pointer-events-none absolute inset-0`}
+        >
           <CopyBtn
             preRef={preRef}
             btnRef={btnRef}
@@ -99,9 +106,10 @@ export default function ExpandableBlock(props: DetailedHTMLProps<HTMLAttributes<
               {`</> show code`}
             </button>
           </div>
-        </div>)}
-      {isJavaScriptEnabled ?
-        (<pre
+        </div>
+      )}
+      {isJavaScriptEnabled ? (
+        <pre
           ref={preRef}
           id={preId}
           onScroll={() => {
@@ -109,12 +117,10 @@ export default function ExpandableBlock(props: DetailedHTMLProps<HTMLAttributes<
           }}
           className='my-0'
           {...{ ...props, children: isExpanded ? props.children : collapsedBlock }}
-        />) : (
-          <pre
-            {...props}
-          />
-        )
-      }
+        />
+      ) : (
+        <pre {...props} />
+      )}
     </figure>
   );
 }

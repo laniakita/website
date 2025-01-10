@@ -13,7 +13,12 @@ export default function rehypeMultiRefs() {
             modChildren.unshift(childNode);
 
             const nextChildNode = node.children[i - 1]; // next is prev. cuz, we're going in reverse
-            if (childNode?.type === 'element' && childNode?.tagName === 'sup' && nextChildNode?.type === 'element' && nextChildNode?.tagName === 'sup') {
+            if (
+              childNode?.type === 'element' &&
+              childNode?.tagName === 'sup' &&
+              nextChildNode?.type === 'element' &&
+              nextChildNode?.tagName === 'sup'
+            ) {
               const supCommaSpacer = {
                 type: 'element',
                 tagName: 'sup',
@@ -22,16 +27,16 @@ export default function rehypeMultiRefs() {
                   {
                     type: 'text',
                     value: ', ',
-                  }
-                ]
+                  },
+                ],
               } satisfies ElementContent;
-              modChildren.unshift(supCommaSpacer)
+              modChildren.unshift(supCommaSpacer);
             }
           }
 
           node.children = modChildren;
         }
       }
-    })
-  }
+    });
+  };
 }

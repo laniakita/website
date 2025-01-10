@@ -45,7 +45,7 @@ export default function Footnotes(props: React.DetailedHTMLProps<React.HTMLAttri
     }
   }
 
-  return  <section {...props} />;
+  return <section {...props} />;
 }
 
 function CollapsedFootNotesComponent(props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>) {
@@ -197,18 +197,19 @@ function ExpandableFootNotesComponent(props: React.DetailedHTMLProps<React.HTMLA
       <ol ref={oListRef} className=''>
         {expanded
           ? currList.map((item) =>
-            item.props ? (
-              <li
-                key={item.props.id}
-                {...(item.props as unknown as LiHTMLAttributes<HTMLLIElement>)}
-                ref={liRef}
-                className={`${item.props.className ?? ''} relative ${liId === item.props.id ? 'prose-footnotes-active' : 'after:opacity-0'
+              item.props ? (
+                <li
+                  key={item.props.id}
+                  {...(item.props as unknown as LiHTMLAttributes<HTMLLIElement>)}
+                  ref={liRef}
+                  className={`${item.props.className ?? ''} relative ${
+                    liId === item.props.id ? 'prose-footnotes-active' : 'after:opacity-0'
                   }`}
-              />
-            ) : (
-              ''
-            ),
-          )
+                />
+              ) : (
+                ''
+              ),
+            )
           : newList}
       </ol>
     </section>

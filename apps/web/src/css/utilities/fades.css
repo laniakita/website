@@ -10,7 +10,7 @@
   }
 
   @property --wipe-position {
-    syntax: "<percentage>";
+    syntax: '<percentage>';
     inherits: false;
     initial-value: 100%;
   }

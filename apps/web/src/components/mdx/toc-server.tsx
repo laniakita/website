@@ -1,5 +1,5 @@
-import ToCMenu from "../toc-nav";
+import ToCMenu from '../toc-nav';
 
-export default function ToCServer () {
-  return <ToCMenu />
+export default function ToCServer() {
+  return <ToCMenu />;
 }

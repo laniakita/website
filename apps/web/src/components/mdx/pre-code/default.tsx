@@ -1,6 +1,6 @@
-'use client'
-import { DetailedHTMLProps, HTMLAttributes, useEffect, useId, useRef, useState } from "react";
-import CopyBtn, { handlePreScroll } from "./copy-button";
+'use client';
+import { DetailedHTMLProps, HTMLAttributes, useEffect, useId, useRef, useState } from 'react';
+import CopyBtn, { handlePreScroll } from './copy-button';
 
 export default function DefaultCodeBlock(props: DetailedHTMLProps<HTMLAttributes<HTMLPreElement>, HTMLPreElement>) {
   const preRef = useRef<HTMLPreElement>(null!);
