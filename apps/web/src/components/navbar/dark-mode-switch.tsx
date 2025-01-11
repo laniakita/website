@@ -7,7 +7,7 @@ export default function DarkModeSwitch() {
   const { dark, themeDark, themeLight } = useDarkStore((state) => state);
   const switchId = useId();
 
-  const DEBUG = false;
+  const DEBUG = true;
 
   const handleThemeDark = useCallback(() => {
     if (DEBUG) console.log('handling themeDark => dark_curr:', localStorage?.getItem('isDark'));
@@ -41,24 +41,18 @@ export default function DarkModeSwitch() {
   useEffect(() => {
     // init (we don't need to handle themes, just set the store var)
     if (DEBUG) console.log('trying to set initial theme based on local theme pref');
-    if (localStorage.getItem('isDark') === 'true' && document?.documentElement?.classList?.contains('dark')) {
+    if (localStorage.getItem('isDark') === 'true') {
       themeDark();
       if (DEBUG) console.log('found pref => dark theme initialized successfully');
-    } else if (localStorage.getItem('isDark') === 'false' && !document?.documentElement?.classList?.contains('dark')) {
+    } else if (localStorage.getItem('isDark') === 'false') {
       themeLight();
       if (DEBUG) console.log('found pref => light theme initialized successfully');
-    } else if (
-      !window.matchMedia('(prefers-color-scheme: dark)').matches &&
-      !document?.documentElement?.classList?.contains('dark')
-    ) {
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      themeDark();
+      if (DEBUG) console.log('OS pref => dark theme initialized successfully');
+    } else {
       themeLight();
       if (DEBUG) console.log('OS pref => light theme initialized successfully');
-    } else if (
-      window.matchMedia('(prefers-color-scheme: dark)').matches &&
-      document?.documentElement?.classList?.contains('dark')
-    ) {
-      if (DEBUG) console.log('OS pref => dark theme initialized successfully');
-      themeDark();
     }
     // theme switch is set to dark by default so we probably don't need to handle it, but who knows.
   }, [themeDark, themeLight, DEBUG]);
@@ -69,9 +63,7 @@ export default function DarkModeSwitch() {
     const handleOSPref = () => {
       if (DEBUG) console.log('updating theme based on OS preference');
       // remove localStorage pref (if it exists)
-      if (localStorage.getItem('isDark')) {
-        localStorage.removeItem('isDark');
-      }
+      localStorage.removeItem('isDark');
       // set theme store + handle theme class/color-scheme
       if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
         themeDark();
