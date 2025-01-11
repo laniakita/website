@@ -7,7 +7,9 @@ export default function ContentLayout({ children }: Readonly<{ children: ReactNo
   return (
     <>
       <NavBar />
-      <FootnotesStoreProvider>{children}</FootnotesStoreProvider>
+      <FootnotesStoreProvider>
+        {children}
+      </FootnotesStoreProvider>
       <Footer />
     </>
   );
