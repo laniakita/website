@@ -58,7 +58,9 @@ export default function DarkModeSwitch() {
       document?.documentElement?.classList?.contains('dark')
     ) {
       if (DEBUG) console.log('OS pref => dark theme initialized successfully');
-    } // theme switch is set to dark by default so we don't need to handle it.
+      themeDark();
+    }
+    // theme switch is set to dark by default so we probably don't need to handle it, but who knows.
   }, [themeDark, themeLight, DEBUG]);
 
   // this useEffect handles the OS theme preference + removing localStorage pref

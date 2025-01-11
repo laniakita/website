@@ -13,7 +13,6 @@ import {
   APP_THEME_COLOR,
 } from '@/lib/constants';
 import { DarkStoreProvider } from '@/providers/theme-store-provider';
-import { preinit } from 'react-dom';
 
 const inter_tight = Inter_Tight({
   subsets: ['latin'],
@@ -68,16 +67,6 @@ export const viewport: Viewport = {
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
-  /*
-  const preloadThemeScript = () => {
-    const themeScript = document.createElement('script');
-    themeScript.src = '/dist/theme-getter.js';
-    themeScript.async = false;
-    document.head.appendChild(themeScript);
-  }*/
-
-  //preinit("/dist/theme-getter.js", {as: "script"});
-
   return (
     <html
       lang='en-US'
