@@ -1,6 +1,9 @@
 import { PHASE_DEVELOPMENT_SERVER, PHASE_PRODUCTION_BUILD } from 'next/constants.js';
 import { MAIN_SITE_URL } from './src/lib/constants-js.mjs';
 import path from 'node:path';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
+const __dirname = path.dirname(__filename); // get the name of the directory
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
