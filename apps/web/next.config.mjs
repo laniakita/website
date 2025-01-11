@@ -1,5 +1,6 @@
 import { PHASE_PRODUCTION_BUILD } from 'next/constants.js';
 import { RESUME_LINK, SHOWCASE_URL } from './src/lib/constants-js.mjs';
+import path from 'node:path';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -38,6 +39,7 @@ const nextConfig = {
 
   // needed for open-next build
   output: 'standalone',
+  outputFileTracingRoot: path.join(__dirname, '../../'),
 
   experimental: {
     turbo: {

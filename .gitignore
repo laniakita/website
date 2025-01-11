@@ -45,9 +45,10 @@ secrets.env
 # contentlayer
 .contentlayer
 
-# contentlayermini
+# patched contentlayer outputs
 contentlayermini
 .contentlayermini
+.contentlayerplushtml
 
 # eslint
 .eslintcache

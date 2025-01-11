@@ -1,4 +1,3 @@
-'use server';
 import { Post } from 'contentlayer/generated';
 import jsxToHtml from './mdx-html';
 
