@@ -10,7 +10,10 @@ const invertLinkColor = 'ctp-mauve';
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./src/components/**/*.{js,ts,jsx,tsx,mdx}', './src/app/**/*.{js,ts,jsx,tsx,mdx}'],
-  darkMode: 'selector',
+  darkMode: [
+    'variant',
+    ['@media (prefers-color-scheme: dark) { &:where(:not([color-scheme="light"]) }', '&:where(.dark *)'],
+  ],
   theme: {
     extend: {
       fontFamily: {

@@ -7,9 +7,7 @@ export default function ProjectsContentLayout({ children }: Readonly<{ children:
   return (
     <>
       <NavBar />
-      <FootnotesStoreProvider>
-        {children}
-      </FootnotesStoreProvider>
+      <FootnotesStoreProvider>{children}</FootnotesStoreProvider>
       <Footer />
     </>
   );

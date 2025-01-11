@@ -1,6 +1,10 @@
 import { type ReactNode } from 'react';
 import Footer from '@/components/footer/footer';
-import ToCMenu from '@/components/toc-nav';
+import dynamic from 'next/dynamic'
+
+const ToCMenu = dynamic(() => import('@/components/toc-nav'), {
+  loading: () => <nav className='sticky top-16 min-h-12 border-b-2 border-ctp-overlay0' />,
+})
 
 export default function PostPageLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
