@@ -15,5 +15,6 @@ drizzle/meta/*
 .vercel/*
 .wrangler/*
 .contentlayermini/*
+.contentlayerplushtml/*
 sst-env.d.ts
 .turbo/*

@@ -1,6 +1,6 @@
 /** @jsxImportSource react */
-import type { ReactElement, DetailedHTMLProps,  HTMLProps } from 'react';
-import * as ReactDomServer from 'react-dom/server'
+import type { ReactElement, DetailedHTMLProps, HTMLProps } from 'react';
+import * as ReactDomServer from 'react-dom/server';
 import { resMdx } from './utils';
 import { getMDXComponent } from '@/components/mdx/mdx-bundler-components';
 
@@ -13,7 +13,7 @@ function Paragraph(props: DetailedHTMLProps<HTMLProps<HTMLParagraphElement>, HTM
 
 function EzMdx({ mdxCode }: { mdxCode: string }) {
   const mdxComponents = { p: Paragraph };
-  const Component = getMDXComponent(mdxCode, {})
+  const Component = getMDXComponent(mdxCode, {});
   return <Component code={mdxCode} components={mdxComponents} />;
 }
 

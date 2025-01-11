@@ -21,7 +21,7 @@ export async function GET() {
   const allPostData = await readFile(join(process.cwd(), '.contentlayerplushtml/generated/Post/index.json'), {
     encoding: 'utf8',
   });
-  
+
   interface PostPlus extends Post {
     html: string;
   }
@@ -34,7 +34,6 @@ export async function GET() {
   ).toISOString();
 
   const HOST_URL = APP_URL;
-
 
   const catTagRoller = (catsTagArr: Category[] | Tag[]) => {
     const res = catsTagArr.map((catTagX) => {
@@ -63,9 +62,7 @@ export async function GET() {
       post.categories &&
       (
         (post.categories as unknown as { slug: string }[]).map((cat) => {
-          const category = allCategories.find(
-            (categoryX) => categoryX._raw.flattenedPath === `categories/${cat.slug}`,
-          );
+          const category = allCategories.find((categoryX) => categoryX._raw.flattenedPath === `categories/${cat.slug}`);
 
           return category;
         }) as Category[]

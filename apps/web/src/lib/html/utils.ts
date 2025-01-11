@@ -6,7 +6,6 @@ import rehypeMultiRefs from '@/utils/rehype-multi-refs/lib';
 import rehypeMdxImportMedia from 'rehype-mdx-import-media';
 import rehypeSlug from 'rehype-slug';
 
-
 export const resMdx = async (mdxStr: string, contentDir: string, folderPath: string) => {
   const folder = path.resolve(process.cwd(), contentDir, folderPath);
   const processed = await bundleMDX({
@@ -32,5 +31,3 @@ export const resMdx = async (mdxStr: string, contentDir: string, folderPath: str
   const { code, frontmatter } = processed;
   return { code, frontmatter };
 };
-
-

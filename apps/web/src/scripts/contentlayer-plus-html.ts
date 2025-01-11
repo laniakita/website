@@ -3,12 +3,13 @@ import { mkdir } from 'node:fs/promises';
 import { allPosts } from 'contentlayer/generated';
 import { postHtml } from '@/lib/html/mdx-html-wrapper';
 
-const allPostsRes = await Promise.all(allPosts.map(async (doc) => {
-  console.log(`trying to turn ${doc.headline} into html`)
-  const html = await postHtml(doc);
-  return {...doc, html}
-}));
-
+const allPostsRes = await Promise.all(
+  allPosts.map(async (doc) => {
+    console.log(`trying to turn ${doc.headline} into html`);
+    const html = await postHtml(doc);
+    return { ...doc, html };
+  }),
+);
 
 export const writeWithHtmlContent = async () => {
   const t0 = performance.now();
@@ -30,7 +31,6 @@ export const writeWithHtmlContent = async () => {
     const tDelta = `${t1 - t0} ms`;
 
     console.info(`[SUCCESS]: wrote ${allPosts.length} posts with HTML to ${postDir}/${mainOut} in ${tDelta}`);
-
   } catch (err) {
     console.error(err);
   }
