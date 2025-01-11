@@ -1,4 +1,5 @@
 const themeGetterFunc = (): void => {
+  //console.log('running theme getter')
   if (document && localStorage) {
     const isDarkLocal = localStorage.getItem('isDark');
     if (isDarkLocal === 'true') {
@@ -17,4 +18,5 @@ const themeGetterFunc = (): void => {
   }
 };
 
-export const themeGetter = `(${themeGetterFunc})()`;
+// load side-effect
+themeGetterFunc();

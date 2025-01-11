@@ -1,4 +1,3 @@
-import { PHASE_PRODUCTION_BUILD } from 'next/constants.js';
 import { RESUME_LINK, SHOWCASE_URL } from './src/lib/constants-js.mjs';
 import path from 'node:path';
 import { fileURLToPath } from 'url';
@@ -116,21 +115,19 @@ const nextConfig = {
   },
 };
 
-const nextConfigFunction = async (phase, { defaultConfig }) => {
+const nextConfigFunction = async ({ defaultConfig }) => {
   const plugins = [];
 
-  if (phase === PHASE_PRODUCTION_BUILD) {
-    const withSerwist = (await import('@serwist/next')).default({
-      swSrc: 'src/app/sw.ts',
-      swDest: 'public/sw.js',
-      maximumFileSizeToCacheInBytes: 7864000,
-    });
-    plugins.push(withSerwist);
+  const withSerwist = (await import('@serwist/next')).default({
+    swSrc: 'src/app/sw.ts',
+    swDest: 'public/sw.js',
+    maximumFileSizeToCacheInBytes: 7864000,
+  });
+  plugins.push(withSerwist);
 
-    // ignore webpack cache warnings (see: https://github.com/contentlayerdev/contentlayer/issues/313)
-    const withContentLayer = (await import('next-contentlayer2')).withContentlayer;
-    plugins.push(withContentLayer);
-  }
+  // ignore webpack cache warnings (see: https://github.com/contentlayerdev/contentlayer/issues/313)
+  const withContentLayer = (await import('next-contentlayer2')).withContentlayer;
+  plugins.push(withContentLayer);
 
   const withBundleAnalyzer = (await import('@next/bundle-analyzer')).default({
     enabled: process.env.ANALYZE === 'true',

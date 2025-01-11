@@ -4,7 +4,6 @@ import localFont from 'next/font/local';
 import type { ReactNode } from 'react';
 import '@catppuccin/highlightjs/css/catppuccin-variables.rgb.css';
 import '@/css/app.css';
-import { themeGetter } from '@/lib/theme-getter';
 import {
   APP_URL,
   APP_NAME,
@@ -14,6 +13,7 @@ import {
   APP_THEME_COLOR,
 } from '@/lib/constants';
 import { DarkStoreProvider } from '@/providers/theme-store-provider';
+import { preinit } from 'react-dom';
 
 const inter_tight = Inter_Tight({
   subsets: ['latin'],
@@ -68,13 +68,31 @@ export const viewport: Viewport = {
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
+  /*
+  const preloadThemeScript = () => {
+    const themeScript = document.createElement('script');
+    themeScript.src = '/dist/theme-getter.js';
+    themeScript.async = false;
+    document.head.appendChild(themeScript);
+  }*/
+
+  //preinit("/dist/theme-getter.js", {as: "script"});
+
   return (
-    <html lang='en-US' dir='ltr' className={`${inter_tight.variable} ${zeroxproto.variable}`} suppressHydrationWarning>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: themeGetter }} />
-      </head>
+    <html
+      lang='en-US'
+      dir='ltr'
+      // eslint-disable-next-line tailwindcss/no-custom-classname -- necessary
+      className={`${inter_tight.variable} ${zeroxproto.variable} dark`}
+      suppressHydrationWarning
+    >
       <DarkStoreProvider>
-        <body className={inter_tight.className}>{children}</body>
+        <body className={inter_tight.className} suppressHydrationWarning>
+          {/* eslint-disable @next/next/no-sync-scripts -- necessary */
+          /* @ts-expect-error -- fetchPriority exists */}
+          <script src='/dist/theme-getter.js' fetchPriority='high' />
+          {children}
+        </body>
       </DarkStoreProvider>
     </html>
   );
