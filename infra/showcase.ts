@@ -1,6 +1,9 @@
 export const showcase = new sst.aws.Nextjs("Showcase", {
   path: "apps/showcase",
   buildCommand: "turbo build:open-next",
+  server: {
+    runtime: "nodejs22.x"
+  },
   environment: {
     NEXT_PUBLIC_DEPLOYED_URL:
       $app.stage === "production"
