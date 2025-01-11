@@ -4,9 +4,22 @@ import CopyBtn, { handlePreScroll } from './copy-button';
 import { codeCollapser } from './util';
 
 export default function ExpandableBlock(props: DetailedHTMLProps<HTMLAttributes<HTMLPreElement>, HTMLPreElement>) {
+  const [isJavaScriptEnabled, setIsJavaScriptEnabled] = useState(false);
+
+  useEffect(() => {
+    try {
+      eval(';'); // This line will throw an error if JavaScript is disabled
+      setIsJavaScriptEnabled(true);
+    } catch {
+      // No need to set state here, it's already false by default
+    }
+  }, []);
+
+  return isJavaScriptEnabled ? <ExpandableBlockComponent {...props} /> : <pre {...props} />;
+}
+function ExpandableBlockComponent(props: DetailedHTMLProps<HTMLAttributes<HTMLPreElement>, HTMLPreElement>) {
   const collapsedBlock = codeCollapser(props);
   const initExpanded = collapsedBlock == undefined ? true : false;
-  const [isJavaScriptEnabled, setIsJavaScriptEnabled] = useState(false);
   const [isCopied, setIsCopied] = useState<boolean | null>(false);
   const [isExpanded, setIsExpanded] = useState(initExpanded);
   const [codeHeight, setCodeHeight] = useState(0);
@@ -18,18 +31,8 @@ export default function ExpandableBlock(props: DetailedHTMLProps<HTMLAttributes<
   const preId = `expandable-codesnippet${blockSerial}`;
   const overlayId = `expandable-codesnippet-overlay${blockSerial}`;
   const [topPos, setTopPos] = useState('top-2');
-  useEffect(() => {
-    try {
-      eval(';'); // This line will throw an error if JavaScript is disabled
-      setIsJavaScriptEnabled(true);
-    } catch {
-      // No need to set state here, it's already false by default
-    }
-  }, []);
 
   useEffect(() => {
-    if (!isJavaScriptEnabled) return;
-
     //console.log(preRef.current);
     //console.log(preRef.current.getClientRects());
     if (preRef?.current !== undefined) {
@@ -39,18 +42,17 @@ export default function ExpandableBlock(props: DetailedHTMLProps<HTMLAttributes<
         setTopPos('top-4');
       }
     }
-  }, [isJavaScriptEnabled]);
+  }, []);
 
   useEffect(() => {
     // init codeHeight
-    if (!isJavaScriptEnabled) return;
     if (!initExpanded) {
       if (codeHeight <= 0 && codeBlockRef.current.offsetHeight > codeHeight) {
         setCodeHeight(codeBlockRef.current.offsetHeight);
       }
       if (codeHeight > 0) codeBlockRef.current.style.height = `${codeHeight}px`;
     }
-  }, [isExpanded, codeHeight, initExpanded, isJavaScriptEnabled]);
+  }, [isExpanded, codeHeight, initExpanded]);
 
   const handleExpand = () => {
     setIsExpanded(true);
@@ -76,14 +78,11 @@ export default function ExpandableBlock(props: DetailedHTMLProps<HTMLAttributes<
           setIsCopied={setIsCopied}
           topPos={topPos}
           isCopied={isCopied}
-          special={`${isJavaScriptEnabled ? 'block' : 'hidden'} pointer-events-none`}
+          special={`pointer-events-none`}
           isExpanded={isExpanded}
         />
       ) : (
-        <div
-          id={overlayId}
-          className={`${isJavaScriptEnabled ? 'block' : 'hidden'} pointer-events-none absolute inset-0`}
-        >
+        <div id={overlayId} className={`pointer-events-none absolute inset-0`}>
           <CopyBtn
             preRef={preRef}
             btnRef={btnRef}
@@ -108,19 +107,15 @@ export default function ExpandableBlock(props: DetailedHTMLProps<HTMLAttributes<
           </div>
         </div>
       )}
-      {isJavaScriptEnabled ? (
-        <pre
-          ref={preRef}
-          id={preId}
-          onScroll={() => {
-            handlePreScroll(btnRef, true, isExpanded);
-          }}
-          className='my-0'
-          {...{ ...props, children: isExpanded ? props.children : collapsedBlock }}
-        />
-      ) : (
-        <pre {...props} />
-      )}
+      <pre
+        ref={preRef}
+        id={preId}
+        onScroll={() => {
+          handlePreScroll(btnRef, true, isExpanded);
+        }}
+        className='my-0'
+        {...{ ...props, children: isExpanded ? props.children : collapsedBlock }}
+      />
     </figure>
   );
 }

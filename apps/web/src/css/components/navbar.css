@@ -7,6 +7,10 @@
     @apply w-min font-mono text-base font-semibold capitalize text-ctp-subtext1;
   }
 
+  .force-repaint {
+    @apply scale-0;
+  }
+
   .nav-glassy-bg {
     @apply pointer-events-none absolute inset-0 h-[200%] [backdrop-filter:_blur(8px)_brightness(95%)_saturate(160%)] [mask-image:_linear-gradient(to_bottom,_black_0%_50%,_transparent_50%_100%)];
   }

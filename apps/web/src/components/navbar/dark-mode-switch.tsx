@@ -7,6 +7,25 @@ export default function DarkModeSwitch() {
   const { dark, themeDark, themeLight } = useDarkStore((state) => state);
   const switchId = useId();
 
+  const repaintMasks = () => {
+    if (!window) return;
+    //const mainNav = document.getElementById('main-nav');
+    //const maskEdge = document.getElementById('nav-mask-edge');
+    //maskBg?.classList.add('force-repaint');
+    //maskEdge?.classList.add('force-repaint');
+    //mainNav?.classList.add('force-repaint');
+    //window.scrollBy(0, 10);
+    //window.scrollBy(0, -1);
+    setTimeout(() => {
+      //mainNav?.classList.remove('force-repaint');
+      //maskBg?.classList.remove('force-repaint');
+      //maskEdge?.classList.remove('force-repaint');
+    }, 50);
+    setTimeout(() => {
+      //console.log(mainNav);
+    }, 55);
+  };
+
   const handleThemePref = useCallback(() => {
     const isDarkLocal = localStorage.getItem('isDark');
     if (isDarkLocal === 'true') {
@@ -37,6 +56,7 @@ export default function DarkModeSwitch() {
     }
     localStorage.setItem('isDark', JSON.stringify(nextDark));
     handleThemePref();
+    repaintMasks();
   };
 
   useEffect(() => {

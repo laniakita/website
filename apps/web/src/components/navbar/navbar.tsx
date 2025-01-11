@@ -1,5 +1,5 @@
 'use client';
-import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import * as darklogo from '@/app/laniakita-logo-transparent-darkmode.svg';
@@ -58,50 +58,47 @@ export default function NavBar() {
   const logo = dark ? darklogo : lightlogo;
 
   return (
-    <nav className=''>
-      <Suspense>
-        <div className='relative'>
-          {/* mobile menu container */}
+    <nav id='main-nav'>
+      <div className='relative'>
+        {/* mobile menu container */}
+        <div
+          className={`${clicked.stateVal === 'open' ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'} fixed left-0 top-16 z-40 flex h-[calc(100dvh-3.9rem)] max-h-[calc(100dvh-3.9rem)] w-full flex-col justify-start bg-black/40 [perspective:_5px] [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:_opacity_0.3s,] lg:bottom-0`}
+        >
+          {/* menu box */}
           <div
-            className={`${clicked.stateVal === 'open' ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'} fixed left-0 top-16 z-40 flex h-[calc(100dvh-3.9rem)] max-h-[calc(100dvh-3.9rem)] w-full flex-col justify-start bg-black/40 [perspective:_5px] [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:_opacity_0.3s,] lg:bottom-0`}
+            ref={dropNavRef}
+            className={`${clicked.stateVal === 'open' ? 'opacity-100 [transform:translate3d(0%,0%,0px)]' : 'opacity-0 [transform:translate3d(0%,-100%,-0.01rem)]'} max-h-[calc(100dvh-3.9rem)] w-full overflow-y-auto rounded-b-2xl border-b border-ctp-pink bg-ctp-base/90 backdrop-blur-md [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:transform_0.5s,_opacity_0.3s,_background-color_0.8s] lg:hidden dark:border-ctp-sky dark:bg-ctp-midnight/90`}
           >
-            {/* menu box */}
-            <div
-              ref={dropNavRef}
-              className={`${clicked.stateVal === 'open' ? 'opacity-100 [transform:translate3d(0%,0%,0px)]' : 'opacity-0 [transform:translate3d(0%,-100%,-0.01rem)]'} max-h-[calc(100dvh-3.9rem)] w-full overflow-y-auto rounded-b-2xl border-b border-ctp-pink bg-ctp-base/90 backdrop-blur-md [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:transform_0.5s,_opacity_0.3s,_background-color_0.8s] lg:hidden dark:border-ctp-sky dark:bg-ctp-midnight/90`}
-            >
-              <div className='flex size-full flex-col gap-3 p-10'>
-                {pagesArr.map((page) => (
-                  <LinkPlus
-                    href={handleRef(page)}
-                    key={page}
-                    className='nav-item text-xl'
-                    onClick={() => {
-                      if (page !== 'Atom/RSS') {
-                        setClicked({ ...clicked, stateVal: 'closed' });
-                      }
-                    }}
-                    target={page === 'Atom/RSS' ? '_blank' : undefined}
-                    type={page === 'Atom/RSS' ? 'application/atom+xml' : undefined}
-                  >
-                    <span className='whitespace-nowrap'>{page === 'Atom/RSS' ? page : page.toLowerCase()}</span>
-                  </LinkPlus>
-                ))}
-              </div>
+            <div className='flex size-full flex-col gap-3 p-10'>
+              {pagesArr.map((page) => (
+                <LinkPlus
+                  href={handleRef(page)}
+                  key={page}
+                  className='nav-item text-xl'
+                  onClick={() => {
+                    if (page !== 'Atom/RSS') {
+                      setClicked({ ...clicked, stateVal: 'closed' });
+                    }
+                  }}
+                  target={page === 'Atom/RSS' ? '_blank' : undefined}
+                  type={page === 'Atom/RSS' ? 'application/atom+xml' : undefined}
+                >
+                  <span className='whitespace-nowrap'>{page === 'Atom/RSS' ? page : page.toLowerCase()}</span>
+                </LinkPlus>
+              ))}
             </div>
           </div>
         </div>
-      </Suspense>
+      </div>
 
       <div
-        className={`motion-safe:simple-color-trans fixed inset-x-0 top-0 z-50 ${clicked.stateVal === 'open' ? 'bg-ctp-base/90 dark:bg-ctp-midnight/80' : 'bg-ctp-base/70 dark:bg-ctp-midnight/40'} `}
+        className={`fixed inset-x-0 top-0 z-50 ${clicked.stateVal === 'open' ? 'bg-ctp-base/90 dark:bg-ctp-midnight/80' : 'bg-ctp-base/70 dark:bg-ctp-midnight/40'} `}
       >
         <div
           className={`relative flex h-16 w-full items-center justify-between px-6 text-xl shadow-lg [transition:_opacity_0.8s] dark:border-ctp-surface0`}
         >
-          {/* */}
-          <div className='nav-glassy-bg' />
-          <div className='nav-glassy-edge' />
+          <div id='nav-mask-bg' className='nav-glassy-bg' />
+          <div id='nav-mask-edge' className='nav-glassy-edge' />
 
           <div className='z-[51] flex flex-row-reverse items-center justify-center gap-1 lg:flex-row'>
             <LinkPlus href='/' className='nav-logo relative flex size-full w-16 items-center justify-center'>
@@ -111,7 +108,7 @@ export default function NavBar() {
                 className='absolute mb-px h-11 object-contain'
               />
             </LinkPlus>
-            <div className='hidden lg:flex lg:flex-row lg:items-center lg:justify-center lg:gap-4'>
+            <ul className='hidden lg:flex lg:flex-row lg:items-center lg:justify-center lg:gap-4'>
               {pagesArr.map((page) => (
                 <LinkPlus
                   key={page}
@@ -123,7 +120,7 @@ export default function NavBar() {
                   <span className='whitespace-nowrap'>{page === 'Atom/RSS' ? page : page.toLowerCase()}</span>
                 </LinkPlus>
               ))}
-            </div>
+            </ul>
 
             <div className='visible z-[51] flex flex-row-reverse items-center lg:hidden'>
               <button
