@@ -336,7 +336,7 @@ export default function ToCMenu() {
     <>
       <nav className='sticky top-16 z-20 md:hidden'>
         <div
-          className={`motion-safe:simple-color-trans z-30 flex w-full flex-row items-center md:hidden ${showMobileMenu ? 'bg-ctp-base/90 dark:bg-ctp-midnight/80' : 'bg-ctp-base/80 dark:bg-ctp-midnight/50'}`}
+          className={`z-30 flex w-full flex-row items-center md:hidden ${showMobileMenu ? 'bg-ctp-base/90 dark:bg-ctp-midnight/80' : 'bg-ctp-base/80 dark:bg-ctp-midnight/50'}`}
         >
           <div className='relative z-[35] flex size-full h-12 flex-row items-center gap-4 px-6'>
             <div className='nav-glassy-bg' />
