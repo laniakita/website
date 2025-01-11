@@ -67,7 +67,7 @@ export const viewport: Viewport = {
   themeColor: APP_THEME_COLOR,
 };
 
-export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang='en-US' dir='ltr' className={`${inter_tight.variable} ${zeroxproto.variable}`} suppressHydrationWarning>
       <head>

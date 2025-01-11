@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import Footer from '@/components/footer/footer';
 import ToCMenu from '@/components/toc-nav';
 
-export default function PostPageLayout({ children }: Readonly<{ children: ReactNode }>) {
+export default function PostPageLayout({ children }: { children: ReactNode }) {
   return (
     <div className='flex size-full flex-col md:flex-row'>
       <ToCMenu />
