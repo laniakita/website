@@ -7,7 +7,7 @@ export default function DarkModeSwitch() {
   const { dark, themeDark, themeLight } = useDarkStore((state) => state);
   const switchId = useId();
 
-  const DEBUG = true;
+  const DEBUG = false;
 
   const handleThemeDark = useCallback(() => {
     if (DEBUG) console.log('handling themeDark => dark_curr:', localStorage?.getItem('isDark'));
@@ -46,16 +46,18 @@ export default function DarkModeSwitch() {
       if (DEBUG) console.log('found pref => dark theme initialized successfully');
     } else if (localStorage.getItem('isDark') === 'false') {
       themeLight();
+      handleThemeLight(); // safari bugs
       if (DEBUG) console.log('found pref => light theme initialized successfully');
     } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
       themeDark();
       if (DEBUG) console.log('OS pref => dark theme initialized successfully');
     } else {
       themeLight();
+      handleThemeLight(); // safari bugs
       if (DEBUG) console.log('OS pref => light theme initialized successfully');
     }
     // theme switch is set to dark by default so we probably don't need to handle it, but who knows.
-  }, [themeDark, themeLight, DEBUG]);
+  }, [themeDark, themeLight, handleThemeLight, DEBUG]);
 
   // this useEffect handles the OS theme preference + removing localStorage pref
   useEffect(() => {
