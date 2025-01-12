@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter_Tight } from 'next/font/google';
 import localFont from 'next/font/local';
-import type { ReactNode } from 'react';
+import { Suspense, type ReactNode } from 'react';
 import '@catppuccin/highlightjs/css/catppuccin-variables.rgb.css';
 import '@/css/app.css';
 import {
@@ -66,6 +66,17 @@ export const viewport: Viewport = {
   themeColor: APP_THEME_COLOR,
 };
 
+function LoadingSpinner() {
+  return (
+    <div className='flex size-full min-h-screen items-center justify-center bg-ctp-base dark:bg-ctp-midnight'>
+      <div role='status'>
+        <span className='icon-[eos-icons--bubble-loading] size-12 fill-ctp-text md:size-20' />
+        <span className='sr-only'>Loading...</span>
+      </div>
+    </div>
+  );
+}
+
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html
@@ -80,7 +91,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           {/* eslint-disable @next/next/no-sync-scripts -- necessary */
           /* @ts-expect-error -- fetchPriority exists */}
           <script src='/dist/theme-getter.js' fetchPriority='high' />
-          {children}
+          <Suspense fallback={<LoadingSpinner />}>{children}</Suspense>
         </body>
       </DarkStoreProvider>
     </html>
