@@ -70,7 +70,7 @@ const useHeadingsDataPre = () => {
       const headingEls = Array.from(document.querySelectorAll('h2, h3, h4, h5, h6')).filter((el) => el.id.length > 0);
       setFlatHeadings(headingEls as HTMLHeadingElement[]);
     }
-  }, [flatHeadings, setFlatHeadings, shouldRun]);
+  }, [shouldRun]);
   return nestedHeadings;
 };
 
@@ -354,7 +354,7 @@ export default function ToCMenu() {
       document.removeEventListener('click', handleToCOffClick);
       window.removeEventListener('resize', handleResize);
     };
-  }, [handleToCOffClick, setFlatHeadings, activeId, flatHeadings, width]);
+  }, [flatHeadings.length, handleToCOffClick, width]);
 
   return (
     <>
