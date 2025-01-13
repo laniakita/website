@@ -276,7 +276,6 @@ export default function ToCMenu() {
   const [width, setWidth] = useState(0);
   const [flatHeadings, setFlatHeadings] = useState<HTMLHeadingElement[]>([]);
   const { nestedHeadings } = useHeadingsData();
-  const [ready, setReady] = useState(false);
   useIntersectionObserver(setActiveId, activeId);
   //console.log('currently active should be:', activeId);
   const [hasAnimated, setHasAnimated] = useState(false);
@@ -299,12 +298,6 @@ export default function ToCMenu() {
     if (flatHeadings.length <= 0) {
       const headingsQuery = getFlatHeadings();
       setFlatHeadings(headingsQuery as HTMLHeadingElement[]);
-    }
-
-    if (!ready && flatHeadings) {
-      setTimeout(() => {
-        setReady(true);
-      }, 10);
     }
 
     function handleResize() {
@@ -330,64 +323,69 @@ export default function ToCMenu() {
       document.removeEventListener('click', handleToCOffClick);
       window.removeEventListener('resize', handleResize);
     };
-  }, [handleToCOffClick, setFlatHeadings, activeId, flatHeadings, width, ready]);
+  }, [handleToCOffClick, setFlatHeadings, activeId, flatHeadings, width]);
 
   return (
     <>
       <nav className='sticky top-16 z-20 md:hidden'>
-        <div
-          className={`z-30 flex w-full flex-row items-center md:hidden ${showMobileMenu ? 'bg-ctp-base/90 dark:bg-ctp-midnight/80' : 'bg-ctp-base/80 dark:bg-ctp-midnight/50'}`}
-        >
-          <div className='relative z-[35] flex size-full h-12 flex-row items-center gap-4 px-6'>
-            <div className='nav-glassy-bg' />
-            <div className='nav-glassy-edge' />
-            <button
-              id={'show-hide-table-of-contents-button-mobile'}
-              className={`link-color-trans ${showMobileMenu ? 'text-ctp-pink underline' : ''} z-40 -m-1.5 flex items-center whitespace-pre font-mono text-sm text-ctp-subtext0 hover:text-ctp-pink hover:underline`}
-              onClick={() => {
-                setShowMobileMenu(!showMobileMenu);
-                setTimeout(() => {
-                  setHasAnimated(true);
-                }, 3050);
-              }}
+        {nestedHeadings && (
+          <>
+            <div
+              className={`z-30 flex w-full flex-row items-center md:hidden ${showMobileMenu ? 'bg-ctp-base/90 dark:bg-ctp-midnight/80' : 'bg-ctp-base/80 dark:bg-ctp-midnight/50'}`}
             >
-              <span
-                className={`${showMobileMenu ? '[transform:_rotate(90deg)_translate3d(-0.1rem,-0.2ch,0px)]' : '[transform:_translate3d(-0.1rem,0.0ch,0px)]'} icon-[ph--caret-right-bold] pointer-events-none mr-[0.5ch] w-[2ch] text-xl [transition:_transform_0.3s]`}
-              />
-              On this page
-            </button>
+              <div className='relative z-[35] flex size-full h-12 flex-row items-center gap-4 px-6'>
+                <div className='nav-glassy-bg' />
+                <div className='nav-glassy-edge' />
+                <button
+                  id={'show-hide-table-of-contents-button-mobile'}
+                  className={`link-color-trans ${showMobileMenu ? 'text-ctp-pink underline' : ''} z-40 -m-1.5 flex items-center whitespace-pre font-mono text-sm text-ctp-subtext0 hover:text-ctp-pink hover:underline`}
+                  onClick={() => {
+                    setShowMobileMenu(!showMobileMenu);
+                    setTimeout(() => {
+                      setHasAnimated(true);
+                    }, 3050);
+                  }}
+                >
+                  <span
+                    className={`${showMobileMenu ? '[transform:_rotate(90deg)_translate3d(-0.1rem,-0.2ch,0px)]' : '[transform:_translate3d(-0.1rem,0.0ch,0px)]'} icon-[ph--caret-right-bold] pointer-events-none mr-[0.5ch] w-[2ch] text-xl [transition:_transform_0.3s]`}
+                  />
+                  On this page
+                </button>
 
-            <p className='z-40 flex flex-row items-center gap-[1ch] overflow-x-hidden whitespace-pre font-mono text-sm'>
-              <span className='icon-[ph--caret-double-right-bold] min-w-[2ch] text-xl text-ctp-subtext0' />
-              <span className='font-bold'>
-                <ConcatTitle headings={flatHeadings} activeId={activeId} innerWidth={width} />
-              </span>
-            </p>
-          </div>
-        </div>
+                <p className='z-40 flex flex-row items-center gap-[1ch] overflow-x-hidden whitespace-pre font-mono text-sm'>
+                  <span className='icon-[ph--caret-double-right-bold] min-w-[2ch] text-xl text-ctp-subtext0' />
+                  <span className='font-bold'>
+                    <ConcatTitle headings={flatHeadings} activeId={activeId} innerWidth={width} />
+                  </span>
+                </p>
+              </div>
+            </div>
 
-        <div
-          className={`${showMobileMenu ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'} fixed inset-x-0 bottom-0 top-28 z-20 flex size-full h-[calc(100dvh-3.9rem)] max-h-[calc(100dvh-7rem)] w-full flex-col justify-start bg-black/40 [perspective:_5px] [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:_opacity_0.3s,] md:top-[3.8rem] md:max-h-[calc(100dvh-3.8rem)] lg:bottom-0`}
-        >
-          <div
-            aria-label='Table of contents'
-            ref={dropToCRef}
-            className={`${showMobileMenu ? 'opacity-100 [transform:translate3d(0%,0%,0px)]' : 'pointer-events-none opacity-0 [transform:translate3d(0%,-100%,-0.01rem)]'} inset-x-0 bottom-0 top-28 z-20 max-h-[calc(100vh-7rem)] w-full overflow-auto rounded-b-2xl border-b border-ctp-pink bg-ctp-base/90 px-6 py-10 backdrop-blur-md [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:transform_0.8s,_opacity_0.5s,_background-color_0.8s] md:hidden dark:border-ctp-sky dark:bg-ctp-midnight/90`}
-          >
-            <Headings
-              tree={nestedHeadings ?? []}
-              activeId={activeId}
-              ariaExpanded={showMobileMenu}
-              hasAnimated={hasAnimated}
-            />
-          </div>
-        </div>
+            <div
+              className={`${showMobileMenu ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'} fixed inset-x-0 bottom-0 top-28 z-20 flex size-full h-[calc(100dvh-3.9rem)] max-h-[calc(100dvh-7rem)] w-full flex-col justify-start bg-black/40 [perspective:_5px] [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:_opacity_0.3s,] md:top-[3.8rem] md:max-h-[calc(100dvh-3.8rem)] lg:bottom-0`}
+            >
+              <div
+                aria-label='Table of contents'
+                ref={dropToCRef}
+                className={`${showMobileMenu ? 'opacity-100 [transform:translate3d(0%,0%,0px)]' : 'pointer-events-none opacity-0 [transform:translate3d(0%,-100%,-0.01rem)]'} inset-x-0 bottom-0 top-28 z-20 max-h-[calc(100vh-7rem)] w-full overflow-auto rounded-b-2xl border-b border-ctp-pink bg-ctp-base/90 px-6 py-10 backdrop-blur-md [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:transform_0.8s,_opacity_0.5s,_background-color_0.8s] md:hidden dark:border-ctp-sky dark:bg-ctp-midnight/90`}
+              >
+                <Headings
+                  tree={nestedHeadings}
+                  activeId={activeId}
+                  ariaExpanded={showMobileMenu}
+                  hasAnimated={hasAnimated}
+                />
+              </div>
+            </div>
+          </>)}
       </nav>
 
       <nav className='motion-safe:simple-color-trans sticky top-16 hidden h-screen max-h-[calc(100vh-4rem)] w-full min-w-72 max-w-sm items-start justify-center overflow-y-auto bg-ctp-base/20 py-10 text-slate-100 shadow-xl md:flex dark:bg-ctp-base/20'>
-        <div aria-label='Table of contents' className='w-full px-4'>
-          <Headings tree={nestedHeadings ?? []} activeId={activeId} ariaExpanded={ready} />
-        </div>
+        {nestedHeadings && (
+          <div aria-label='Table of contents' className='w-full px-4'>
+            <Headings tree={nestedHeadings ?? []} activeId={activeId} ariaExpanded={nestedHeadings ? true : false} />
+          </div>
+        )}
       </nav>
     </>
   );
