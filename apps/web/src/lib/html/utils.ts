@@ -13,7 +13,12 @@ export const resMdx = async (mdxStr: string, contentDir: string, folderPath: str
     cwd: folder,
     mdxOptions(options: Options) {
       options.remarkPlugins = [...(options.remarkPlugins ?? []), remarkGfm];
-      options.rehypePlugins = [...(options.rehypePlugins ?? []), rehypeMdxImportMedia, rehypeSlug, rehypeFnCitationSpacer];
+      options.rehypePlugins = [
+        ...(options.rehypePlugins ?? []),
+        rehypeMdxImportMedia,
+        rehypeSlug,
+        rehypeFnCitationSpacer,
+      ];
       return options;
     },
     esbuildOptions: (options) => {
