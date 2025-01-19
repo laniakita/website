@@ -7,7 +7,7 @@ import { common } from 'lowlight';
 import rehypeHighlight from 'rehype-highlight';
 import rehypeHighlightLines from 'rehype-highlight-code-lines';
 import { imageProcessor, FeaturedImageR1 } from './src/lib/image-process';
-import rehypeMultiRefs from '@/utils/rehype-multi-refs/lib';
+import rehypeFnCitationSpacer from 'rehype-fn-citation-spacer'
 
 export const CONTENT_DIR = 'content';
 
@@ -266,7 +266,7 @@ export default makeSource({
       ],
       rehypeMdxImportMedia,
       rehypeSlug,
-      rehypeMultiRefs,
+      rehypeFnCitationSpacer
     ],
     resolveCwd: 'relative',
     esbuildOptions(options) {
