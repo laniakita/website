@@ -78,7 +78,7 @@ export default function ShareButton() {
       />
       <div
         ref={shareDivRef}
-        className={`${isOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none h-0 opacity-0'} absolute bottom-0 z-[2] min-w-fit translate-y-[105%] overflow-hidden whitespace-nowrap rounded-md border border-ctp-overlay0 bg-ctp-base/90 font-mono shadow-lg backdrop-blur-md motion-safe:[transition:_opacity_0.5s,_transform_0.5s,_height_0.5s] dark:bg-ctp-base/50 dark:shadow-ctp-pink/30`}
+        className={`${isOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none h-0 opacity-0'} absolute bottom-0 z-[2] min-w-fit translate-y-[103%] overflow-hidden whitespace-nowrap rounded-md border border-ctp-overlay0 bg-ctp-base/90 font-mono shadow-lg backdrop-blur-md motion-safe:[transition:_opacity_0.5s,_transform_0.5s,_height_0.5s] dark:bg-ctp-base/50 dark:shadow-ctp-pink/30`}
       >
         <ul ref={shareListRef} className='space-y-1.5 p-1.5 pb-2'>
           <li>
@@ -110,17 +110,6 @@ export default function ShareButton() {
           </li>
           <li>
             <a
-              className='share-button hover:bg-black'
-              href={`https://x.com/intent/tweet?text=${shareUnderChar(minPageData, false)}`}
-              target='_blank'
-              rel='noreferrer'
-            >
-              <span className='icon-[fa6-brands--x-twitter] w-[2ch] text-xl' />
-              <span>X/Twitter</span>
-            </a>
-          </li>
-          <li>
-            <a
               className='share-button hover:bg-[#0a66c2]'
               href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(minPageData?.url ?? '')}`}
               target='_blank'
@@ -128,17 +117,6 @@ export default function ShareButton() {
             >
               <span className='icon-[fa6-brands--linkedin] w-[2ch] text-xl' />
               <span>LinkedIn</span>
-            </a>
-          </li>
-          <li>
-            <a
-              className='share-button hover:bg-black'
-              href={`https://www.threads.net/intent/post?text=${shareUnderChar(minPageData, false)}`}
-              target='_blank'
-              rel='noreferrer'
-            >
-              <span className='icon-[fa6-brands--threads] w-[2ch] text-xl' />
-              <span>Threads</span>
             </a>
           </li>
           <li>
