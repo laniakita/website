@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { escape } from 'lodash';
+import { MinPageData, shareToMastodon, shareUnderChar } from './utils';
 
 export default function ShareButton() {
   const pathname = usePathname();
@@ -17,10 +17,7 @@ export default function ShareButton() {
     return linkstr;
   }, [pathname]);
 
-  interface MinPageData {
-    title: string;
-    url: string;
-  }
+
   const [minPageData, setMinPageData] = useState<MinPageData>();
   const shareBtnRef = useRef<HTMLDivElement>(null!);
 
@@ -33,28 +30,6 @@ export default function ShareButton() {
       shareDivRef.current.style.height = '0px';
     }
   }, []);
-
-  const shareUnderChar = (minPageData: MinPageData | undefined, isBsky?: boolean, debug?: boolean) => {
-    if (!minPageData) return;
-    // bsky truncates URLs to 46 chars? (https://www.reddit.com/r/BlueskySocial/comments/1he9ljo/comment/m250brt/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button)
-    // twitter truncates to 23 chars (https://developer.x.com/en/docs/counting-characters);
-    // mastodon truncates to 23 chars too (https://docs.joinmastodon.org/api/guidelines/#links)
-    const urlLen = isBsky ? 46 : 23;
-    const titleLen = minPageData?.title.length;
-
-    // the "+1" is the space between the title and url
-
-    if (urlLen + titleLen + 1 > 300 || debug) {
-      // concat title to fit url (-3 is to account for the "...")
-      // todo verify math
-      const titleSlice = minPageData?.title.slice(0, titleLen - urlLen - 3).split('');
-      titleSlice?.push('...');
-      const titleTrunc = titleSlice.join('');
-      //console.log(titleTrunc)
-      return escape(`${titleTrunc} ${minPageData?.url}`);
-    }
-    return `${encodeURIComponent(minPageData?.title)} ${encodeURIComponent(minPageData?.url)}`;
-  };
 
   useEffect(() => {
     const titleQ = document.querySelector('h1');
@@ -78,7 +53,7 @@ export default function ShareButton() {
       />
       <div
         ref={shareDivRef}
-        className={`${isOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none h-0 opacity-0'} absolute bottom-0 z-[2] min-w-fit translate-y-[103%] overflow-hidden whitespace-nowrap rounded-md border border-ctp-overlay0 bg-ctp-base/90 font-mono shadow-lg backdrop-blur-md motion-safe:[transition:_opacity_0.5s,_transform_0.5s,_height_0.5s] dark:bg-ctp-base/50 dark:shadow-ctp-pink/30`}
+        className={`${isOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none h-0 opacity-0'} absolute bottom-0 z-[2] min-w-fit translate-y-[104%] overflow-hidden whitespace-nowrap rounded-md border border-ctp-overlay0 bg-ctp-base/90 font-mono shadow-lg backdrop-blur-md motion-safe:[transition:_opacity_0.5s,_transform_0.5s,_height_0.5s] dark:bg-ctp-base/50 dark:shadow-ctp-pink/30`}
       >
         <ul ref={shareListRef} className='space-y-1.5 p-1.5 pb-2'>
           <li>
@@ -107,6 +82,16 @@ export default function ShareButton() {
               <span className='icon-[fa6-brands--bluesky] w-[2ch] text-xl' />
               <span>Bluesky</span>
             </a>
+          </li>
+          <li>
+            <button
+              className='share-button hover:bg-[#ff6719]'
+              onClick={(e) => shareToMastodon(e)}
+              rel='noreferrer'
+            >
+              <span className='icon-[fa6-brands--mastodon] w-[2ch] text-xl' />
+              <span>Mastodon</span>
+            </button>
           </li>
           <li>
             <a

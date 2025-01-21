@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { allAuthors, type Post } from 'contentlayer/generated';
 import type { FeaturedImageR1 } from '@/lib/image-process';
-import ShareButton from '@/components/share-btn';
+import ShareButton from '@/components/share-btn/share-btn';
 import { CatTagRoller } from '../../cat-tag-roller';
 import { HeroBlur2 } from './hero-blur-2';
 import LocalDate from '../../local-date';
