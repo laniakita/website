@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { type Dispatch, type SetStateAction, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { THEME_SWITCH_REGEX, TOC_NAV_ID } from './nav-constants';
+import { NAV_MAIN_ID, THEME_SWITCH_REGEX, TOC_NAV_ID } from './nav-constants';
 
 const MED_SCREEN = 768; // px
 
@@ -297,15 +297,19 @@ export default function ToCMenu() {
   //console.log('currently active should be:', activeId);
   const [hasAnimated, setHasAnimated] = useState(false);
   const dropToCRef = useRef<HTMLDivElement>(null!);
-
+  const mainToCRef = useRef<HTMLElement>(null!);
+  
   const handleToCOffClick = useCallback((e: MouseEvent) => {
     e.stopPropagation();
+    const navbar = document.getElementById(NAV_MAIN_ID);
 
     if ((e.target as HTMLElement).id === 'show-hide-table-of-contents-button-mobile') {
       // do nothing
     } else if (dropToCRef?.current?.contains(e.target as Node) && (e.target as Node)?.nodeName !== 'A') {
       // do nothing
-    } else if ('id' in (e.target as Node) && (e.target as HTMLButtonElement).id.match(THEME_SWITCH_REGEX)) {
+    } else if (mainToCRef?.current?.contains(e.target as Node) && (e.target as Node)?.nodeName !== 'A') {
+      // do nothing
+    } else if (navbar?.contains(e.target as Node)) {
       // do nothing
     } else {
       setShowMobileMenu(false);
@@ -361,7 +365,7 @@ export default function ToCMenu() {
 
   return (
     <>
-      <nav id={TOC_NAV_ID} className='sticky top-16 z-20 md:hidden'>
+      <nav ref={mainToCRef} id={TOC_NAV_ID} className='sticky top-16 z-20 md:hidden'>
         <div
           className={`z-30 flex w-full flex-row items-center md:hidden ${showMobileMenu ? 'bg-ctp-base/90 dark:bg-ctp-midnight/80' : 'bg-ctp-base/80 dark:bg-ctp-midnight/50'}`}
         >
