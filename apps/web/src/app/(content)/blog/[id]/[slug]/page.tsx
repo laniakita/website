@@ -3,7 +3,6 @@ import type { Metadata, ResolvingMetadata } from 'next';
 import type { BlogPosting, WithContext } from 'schema-dts';
 import { compareDesc } from 'date-fns';
 import { allAuthors, allPosts } from 'contentlayer/generated';
-import ReadingBar from '@/components/reading-bar';
 import { descriptionHelper } from '@/lib/description-helper';
 import type { FeaturedImageR1 } from '@/lib/image-process';
 import { APP_URL } from '@/lib/constants';
@@ -139,12 +138,6 @@ export default async function BlogPostPage(props: { params: Promise<{ id: string
   return (
     <>
       <script type='application/ld+json' dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <div>
-        <div className='fixed left-0 top-[6.95rem] z-30 w-full md:top-[3.95rem] md:z-50'>
-          <ReadingBar />
-        </div>
-      </div>
-
       <main className='pb-common -mb-0.5 flex min-h-full w-full flex-col'>
         {/* flex box break prose */}
         <article

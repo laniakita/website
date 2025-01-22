@@ -1,6 +1,5 @@
 import { notFound } from 'next/navigation';
 import { allPages, type Page } from 'contentlayer/generated';
-import ReadingBar from '@/components/reading-bar';
 import GlobalMDXComponent from '@/components/mdx/global-mdx-components';
 
 export function PageCommon({ slug, prefix }: { slug: string; prefix?: string }) {
@@ -17,22 +16,14 @@ export function PageCommon({ slug, prefix }: { slug: string; prefix?: string }) 
 
 function Inside(data: Page) {
   return (
-    <>
-      <div>
-        <div className='fixed left-0 top-[3.8rem] z-50 w-full'>
-          <ReadingBar />
-        </div>
-      </div>
-
-      <main className='py-common-info-page'>
-        <article id='content' className='flex size-full flex-col items-center justify-center'>
-          <div className='padding-post flex min-h-full items-center justify-center'>
-            <div className='prose-protocol-omega max-w-3xl px-0'>
-              <GlobalMDXComponent {...data} />
-            </div>
+    <main className='py-common-info-page'>
+      <article id='content' className='flex size-full flex-col items-center justify-center'>
+        <div className='padding-post flex min-h-full items-center justify-center'>
+          <div className='prose-protocol-omega max-w-3xl px-0'>
+            <GlobalMDXComponent {...data} />
           </div>
-        </article>
-      </main>
-    </>
+        </div>
+      </article>
+    </main>
   );
 }

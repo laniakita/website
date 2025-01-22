@@ -13,6 +13,7 @@ import {
   APP_THEME_COLOR,
 } from '@/lib/constants';
 import { DarkStoreProvider } from '@/providers/theme-store-provider';
+import { NavScrollViewStoreProvider } from '@/providers/nav-scroll-view-store-provider';
 
 const inter_tight = Inter_Tight({
   subsets: ['latin'],
@@ -87,12 +88,14 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       suppressHydrationWarning
     >
       <DarkStoreProvider>
-        <body className={inter_tight.className} suppressHydrationWarning>
-          {/* eslint-disable @next/next/no-sync-scripts -- necessary */
-          /* @ts-expect-error -- fetchPriority exists */}
-          <script src='/dist/theme-getter.js' fetchPriority='high' />
-          <Suspense fallback={<LoadingSpinner />}>{children}</Suspense>
-        </body>
+        <NavScrollViewStoreProvider>
+          <body className={inter_tight.className} suppressHydrationWarning>
+            {/* eslint-disable @next/next/no-sync-scripts -- necessary */
+            /* @ts-expect-error -- fetchPriority exists */}
+            <script src='/dist/theme-getter.js' fetchPriority='high' />
+            <Suspense fallback={<LoadingSpinner />}>{children}</Suspense>
+          </body>
+        </NavScrollViewStoreProvider>
       </DarkStoreProvider>
     </html>
   );

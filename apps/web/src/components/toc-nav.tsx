@@ -3,7 +3,8 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { type Dispatch, type SetStateAction, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { NAV_MAIN_ID, THEME_SWITCH_REGEX, TOC_NAV_ID } from './nav-constants';
+import { NAV_MAIN_ID, TOC_NAV_ID } from './nav-constants';
+import { useNavScrollViewStore } from '@/providers/nav-scroll-view-store-provider';
 
 const MED_SCREEN = 768; // px
 
@@ -298,7 +299,8 @@ export default function ToCMenu() {
   const [hasAnimated, setHasAnimated] = useState(false);
   const dropToCRef = useRef<HTMLDivElement>(null!);
   const mainToCRef = useRef<HTMLElement>(null!);
-  
+  const { inView } = useNavScrollViewStore((state) => state);
+
   const handleToCOffClick = useCallback((e: MouseEvent) => {
     e.stopPropagation();
     const navbar = document.getElementById(NAV_MAIN_ID);
@@ -307,7 +309,11 @@ export default function ToCMenu() {
       // do nothing
     } else if (dropToCRef?.current?.contains(e.target as Node) && (e.target as Node)?.nodeName !== 'A') {
       // do nothing
-    } else if (mainToCRef?.current?.contains(e.target as Node) && (e.target as Node)?.nodeName !== 'A') {
+    } else if (
+      mainToCRef?.current?.contains(e.target as Node) &&
+      (e.target as Node)?.nodeName !== 'A' &&
+      (e.target as HTMLElement).id !== 'toc-offclick-bg'
+    ) {
       // do nothing
     } else if (navbar?.contains(e.target as Node)) {
       // do nothing
@@ -365,7 +371,11 @@ export default function ToCMenu() {
 
   return (
     <>
-      <nav ref={mainToCRef} id={TOC_NAV_ID} className='sticky top-16 z-20 md:hidden'>
+      <nav
+        ref={mainToCRef}
+        id={TOC_NAV_ID}
+        className={`sticky top-16 z-20 md:hidden ${inView ? 'translate-y-0' : '-translate-y-16'} motion-safe:[transition:_transform_0.38s]`}
+      >
         <div
           className={`z-30 flex w-full flex-row items-center md:hidden ${showMobileMenu ? 'bg-ctp-base/90 dark:bg-ctp-midnight/80' : 'bg-ctp-base/80 dark:bg-ctp-midnight/50'}`}
         >
@@ -373,7 +383,9 @@ export default function ToCMenu() {
             <div className='nav-glassy-bg' />
             <div className='nav-glassy-edge' />
             <button
-              id={'show-hide-table-of-contents-button-mobile'}
+              id={
+                'show-hide-tabrEvent {isTrusted: true, pointerId: 51, width: 1, height: 1, pressure: 0, …}le-of-contents-button-mobile'
+              }
               className={`link-color-trans ${showMobileMenu ? 'text-ctp-pink underline' : ''} z-40 -m-1.5 flex items-center whitespace-pre font-mono text-sm text-ctp-subtext0 hover:text-ctp-pink hover:underline`}
               onClick={() => {
                 setShowMobileMenu(!showMobileMenu);
@@ -398,7 +410,9 @@ export default function ToCMenu() {
         </div>
 
         <div
-          className={`${showMobileMenu ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'} fixed inset-x-0 bottom-0 top-28 z-20 flex size-full h-[calc(100dvh-3.9rem)] max-h-[calc(100dvh-7rem)] w-full flex-col justify-start bg-black/40 [perspective:_5px] [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:_opacity_0.3s,] md:top-[3.8rem] md:max-h-[calc(100dvh-3.8rem)] lg:bottom-0`}
+          id='toc-offclick-bg'
+          aria-hidden={!showMobileMenu}
+          className={`${showMobileMenu ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'} fixed inset-x-0 bottom-0 top-12 z-20 size-full h-dvh w-full flex-col justify-start bg-black/40 [perspective:_5px] [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:_opacity_0.3s,]`}
         >
           <div
             aria-label='Table of contents'

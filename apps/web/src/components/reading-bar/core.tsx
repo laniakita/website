@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-export default function ReadingBar() {
+export default function ReadingBarCore() {
   const [width, setWidth] = useState(0);
   const scrollHeight = () => {
     const content = document.getElementById('content');
@@ -13,7 +13,6 @@ export default function ReadingBar() {
     const percent = (ScrollTop / (ScrollHeight - el.clientHeight)) * 100;
     setWidth(percent);
   };
-
   useEffect(() => {
     window.addEventListener('scroll', scrollHeight);
     return () => {
