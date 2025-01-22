@@ -4,8 +4,7 @@ import NoiseShader01 from '@/app/projects/(three)/shaders/noise/01/noise';
 import { type SocialIconNavProps } from '@/components/social-icon';
 import { RESUME_LINK } from '@/lib/constants';
 import { socialItems2 } from '@/components/sidebar/main';
-import NavBar from '@/components/navbar/navbar';
-import Footer from '@/components/footer/footer';
+import Navbar from '@/components/navbar/wrapped';import Footer from '@/components/footer/footer';
 
 export const metadata: Metadata = {
   openGraph: {
@@ -61,7 +60,7 @@ function SocialIconNav3({ boxItems }: SocialIconNavProps) {
 export default function Home() {
   return (
     <>
-      <NavBar />
+      <Navbar />
       <main className='relative flex h-dvh min-h-[40rem] w-full items-end justify-center md:min-h-[22rem]'>
         <div className='absolute inset-0'>
           <NoiseShader01 />

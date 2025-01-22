@@ -18,7 +18,7 @@ interface Clicked {
   stateVal: string;
 }
 
-export default function NavBar() {
+export default function NavbarCore() {
   const { dark } = useDarkStore((state) => state);
   const pagesArr = ['Blog', 'About', 'Work', 'Projects', 'Atom/RSS', 'Résumé', 'Contact'];
   const [clicked, setClicked] = useState<Clicked>({

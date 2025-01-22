@@ -2,16 +2,13 @@
 import { Suspense } from 'react';
 import Link from 'next/link';
 import { DarkStoreProvider } from '@/providers/theme-store-provider';
-import NavBar from '@/components/navbar/navbar';
-import Footer from '@/components/footer/footer';
+import Navbar from '@/components/navbar/wrapped';import Footer from '@/components/footer/footer';
 import NoiseShader01 from './projects/(three)/shaders/noise/01/noise';
 
 export default function NotFound() {
   return (
     <Suspense>
-      <DarkStoreProvider>
-        <NavBar />
-      </DarkStoreProvider>
+      <Navbar />
 
       <main className='simple-color-trans relative flex size-full h-screen min-h-96 items-center justify-center bg-ctp-base dark:bg-ctp-midnight'>
         <div className='absolute inset-0 z-0'>
