@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { MinPageData, shareUnderChar } from './utils';
 import { DEFAULT_INSTANCE, MastodonBtn, MastodonPrompt } from './mastodon';
-import { THEME_SWITCH_REGEX } from '../nav-constants';
+import { NAV_MAIN_ID, TOC_NAV_ID } from '../nav-constants';
 
 export default function ShareButton() {
   const pathname = usePathname();
@@ -24,19 +24,23 @@ export default function ShareButton() {
     return linkstr;
   }, [pathname]);
 
-
   const [minPageData, setMinPageData] = useState<MinPageData>();
   const shareBtnRef = useRef<HTMLDivElement>(null!);
-
 
   const handleShareOffClick = useCallback((e: MouseEvent) => {
     e.stopPropagation();
     console.log(e);
+
+    const navbar = document.getElementById(NAV_MAIN_ID);
+    const toc = document.getElementById(TOC_NAV_ID);
+
     if (shareBtnRef?.current?.contains(e.target as Node)) {
       // do nothing
     } else if (mastodonPromptRef?.current?.contains(e.target as Node)) {
       // do nothing
-    } else if ('id' in (e.target as Node) && (e.target as HTMLButtonElement).id.match(THEME_SWITCH_REGEX)) {
+    } else if (navbar?.contains(e.target as Node)) {
+      // do nothing
+    } else if (toc?.contains(e.target as Node)) {
       // do nothing
     } else {
       setIsOpen(false);
@@ -45,13 +49,13 @@ export default function ShareButton() {
     }
   }, []);
 
-  // init instance val 
+  // init instance val
   useEffect(() => {
     const cachedInstance = localStorage.getItem('mastodon-instance');
     if (cachedInstance && cachedInstance.length > 0) {
-      setInstanceInput(cachedInstance)
+      setInstanceInput(cachedInstance);
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     const titleQ = document.querySelector('h1');
@@ -62,9 +66,6 @@ export default function ShareButton() {
       });
     }
 
-
-
-
     document.addEventListener('click', handleShareOffClick);
     return () => {
       document.removeEventListener('click', handleShareOffClick);
@@ -73,7 +74,14 @@ export default function ShareButton() {
 
   return (
     <>
-      {showMastodonForm && <MastodonPrompt setShowMastodonForm={setShowMastodonForm} instanceInput={instanceInput} setInstanceInput={setInstanceInput} promptRef={mastodonPromptRef} />}
+      {showMastodonForm && (
+        <MastodonPrompt
+          setShowMastodonForm={setShowMastodonForm}
+          instanceInput={instanceInput}
+          setInstanceInput={setInstanceInput}
+          promptRef={mastodonPromptRef}
+        />
+      )}
       <div ref={shareBtnRef} className='relative flex flex-col items-center justify-center'>
         <span
           className={`${isOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'} absolute -bottom-4 z-[1] size-0 border-[1rem] border-x-transparent border-b-ctp-surface0 border-t-transparent motion-safe:[transition:_opacity_0.3s]`}

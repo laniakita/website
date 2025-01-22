@@ -28,11 +28,17 @@ export default function NavBar() {
   const handleNavOffClick = useCallback(
     (e: MouseEvent) => {
       e.stopPropagation();
-      if ((e.target as Node).nodeName === 'BUTTON' && (e.target as HTMLButtonElement).id !== NAV_MAIN_MOBILE_MENU_IO_ID ) {
+      if (
+        (e.target as Node).nodeName === 'BUTTON' &&
+        (e.target as HTMLButtonElement).id !== NAV_MAIN_MOBILE_MENU_IO_ID
+      ) {
         // do nothing
       } else if (dropNavRef.current.contains(e.target as Node)) {
         // do nothing
-      } else if (navBarRef.current.contains(e.target as Node) && (e.target as HTMLButtonElement).id !== NAV_MAIN_MOBILE_MENU_IO_ID ) {
+      } else if (
+        navBarRef.current.contains(e.target as Node) &&
+        (e.target as HTMLButtonElement).id !== NAV_MAIN_MOBILE_MENU_IO_ID
+      ) {
         // do nothing
       } else {
         setClicked({ ...clicked, stateVal: 'closed' });

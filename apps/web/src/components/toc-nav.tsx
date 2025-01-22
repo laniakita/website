@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { type Dispatch, type SetStateAction, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { THEME_SWITCH_REGEX } from './nav-constants';
+import { THEME_SWITCH_REGEX, TOC_NAV_ID } from './nav-constants';
 
 const MED_SCREEN = 768; // px
 
@@ -361,7 +361,7 @@ export default function ToCMenu() {
 
   return (
     <>
-      <nav className='sticky top-16 z-20 md:hidden'>
+      <nav id={TOC_NAV_ID} className='sticky top-16 z-20 md:hidden'>
         <div
           className={`z-30 flex w-full flex-row items-center md:hidden ${showMobileMenu ? 'bg-ctp-base/90 dark:bg-ctp-midnight/80' : 'bg-ctp-base/80 dark:bg-ctp-midnight/50'}`}
         >

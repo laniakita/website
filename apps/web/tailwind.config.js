@@ -93,6 +93,7 @@ export default {
       animation: {
         'fade-in': 'fade-in 0.8s ease 1s forwards',
         'fade-in-up': 'fade-in-up 0.2s ease 1s forwards',
+        'fade-in-up-2': 'fade-in-up 0.5s ease forwards',
         'fade-in-down': 'fade-in-down 1s ease 1s forwards',
         marquee: 'marquee 5s linear infinite',
         upDog: 'upDog 1.5s ease 1s forwards',

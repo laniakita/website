@@ -26,5 +26,3 @@ export const shareUnderChar = (minPageData: MinPageData | undefined, isBsky?: bo
   }
   return `${encodeURIComponent(minPageData?.title)} ${encodeURIComponent(minPageData?.url)}`;
 };
-
-

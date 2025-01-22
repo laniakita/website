@@ -1,6 +1,8 @@
-export const THEME_SWITCH_REGEX = /darkmode-button/
-export const NAV_MAIN_MOBILE_CONTAINER_ID = "nav-main-mobile-container"
-export const NAV_MAIN_MOBILE_MENU_IO_ID = "nav-main-mobile-menu-button"
+export const THEME_SWITCH_REGEX = /darkmode-button/;
+export const NAV_MAIN_MOBILE_CONTAINER_ID = 'nav-main-mobile-container';
+export const NAV_MAIN_MOBILE_MENU_IO_ID = 'nav-main-mobile-menu-button';
+export const NAV_MAIN_ID = 'main-nav';
+export const TOC_NAV_ID = 'toc-nav-container';
 
 const MAIN_PAGES_ARR = new Map([
   ['home', '/'],
