@@ -5,4 +5,7 @@
   .share-button {
     @apply motion-safe:color-trans-quick flex w-full flex-row items-center gap-[1ch] rounded border border-ctp-overlay0 px-4 py-2 text-ctp-subtext0 hover:text-ctp-base dark:hover:text-ctp-text;
   }
+  .instance-share-button {
+    @apply motion-safe:color-trans-2-quick absolute inset-y-2 right-2 rounded-full border bg-ctp-blue/20 hover:bg-ctp-sky/20 dark:hover:bg-ctp-sky/40 border-ctp-blue hover:border-ctp-sky hover:text-ctp-sky px-4 font-mono hover:shadow-lg hover:shadow-ctp-sky/30 text-ctp-blue
+  }
 }

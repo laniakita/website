@@ -10,6 +10,7 @@ import { type SocialNavIcon } from '../social-icon';
 import { socialItems3 } from '../sidebar/main';
 import DarkModeSwitch from './dark-mode-switch';
 import LinkPlus from './link-plus';
+import { NAV_MAIN_MOBILE_CONTAINER_ID, NAV_MAIN_MOBILE_MENU_IO_ID } from '../nav-constants';
 
 interface Clicked {
   stateVal: string;
@@ -22,13 +23,16 @@ export default function NavBar() {
     stateVal: 'closed',
   });
   const dropNavRef = useRef<HTMLDivElement>(null!);
+  const navBarRef = useRef<HTMLDivElement>(null!);
 
   const handleNavOffClick = useCallback(
     (e: MouseEvent) => {
       e.stopPropagation();
-      if ((e.target as Node).nodeName === 'BUTTON') {
+      if ((e.target as Node).nodeName === 'BUTTON' && (e.target as HTMLButtonElement).id !== NAV_MAIN_MOBILE_MENU_IO_ID ) {
         // do nothing
       } else if (dropNavRef.current.contains(e.target as Node)) {
+        // do nothing
+      } else if (navBarRef.current.contains(e.target as Node) && (e.target as HTMLButtonElement).id !== NAV_MAIN_MOBILE_MENU_IO_ID ) {
         // do nothing
       } else {
         setClicked({ ...clicked, stateVal: 'closed' });
@@ -66,6 +70,7 @@ export default function NavBar() {
         >
           {/* menu box */}
           <div
+            id={NAV_MAIN_MOBILE_CONTAINER_ID}
             ref={dropNavRef}
             className={`${clicked.stateVal === 'open' ? 'opacity-100 [transform:translate3d(0%,0%,0px)]' : 'opacity-0 [transform:translate3d(0%,-100%,-0.01rem)]'} max-h-[calc(100dvh-3.9rem)] w-full overflow-y-auto rounded-b-2xl border-b border-ctp-pink bg-ctp-base/90 backdrop-blur-md [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:transform_0.5s,_opacity_0.3s,_background-color_0.8s] lg:hidden dark:border-ctp-sky dark:bg-ctp-midnight/90`}
           >
@@ -92,6 +97,7 @@ export default function NavBar() {
       </div>
 
       <div
+        ref={navBarRef}
         className={`fixed inset-x-0 top-0 z-50 ${clicked.stateVal === 'open' ? 'bg-ctp-base/90 dark:bg-ctp-midnight/80' : 'bg-ctp-base/70 dark:bg-ctp-midnight/40'} `}
       >
         <div
@@ -124,6 +130,7 @@ export default function NavBar() {
 
             <div className='visible z-[51] flex flex-row-reverse items-center lg:hidden'>
               <button
+                id={NAV_MAIN_MOBILE_MENU_IO_ID}
                 type='button'
                 onClick={() => {
                   if (clicked.stateVal === 'closed') {
@@ -133,7 +140,7 @@ export default function NavBar() {
                 className='visible rounded-md lg:hidden'
                 aria-label={`${clicked.stateVal === 'open' ? 'close' : 'open'} mobile navigation menu.`}
               >
-                <span className='flex size-fit flex-col items-center justify-center gap-1'>
+                <span className='pointer-events-none flex size-fit flex-col items-center justify-center gap-1'>
                   <span
                     className={`${clicked.stateVal === 'open' ? 'translate-y-1 rotate-[-40deg]' : ''} h-0.5 w-6 bg-ctp-text motion-safe:[transition:transform_0.3s]`}
                   />

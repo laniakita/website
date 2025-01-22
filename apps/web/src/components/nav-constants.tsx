@@ -1,3 +1,7 @@
+export const THEME_SWITCH_REGEX = /darkmode-button/
+export const NAV_MAIN_MOBILE_CONTAINER_ID = "nav-main-mobile-container"
+export const NAV_MAIN_MOBILE_MENU_IO_ID = "nav-main-mobile-menu-button"
+
 const MAIN_PAGES_ARR = new Map([
   ['home', '/'],
   ['blog', '/blog'],

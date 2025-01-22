@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { type Dispatch, type SetStateAction, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { THEME_SWITCH_REGEX } from './nav-constants';
 
 const MED_SCREEN = 768; // px
 
@@ -303,6 +304,8 @@ export default function ToCMenu() {
     if ((e.target as HTMLElement).id === 'show-hide-table-of-contents-button-mobile') {
       // do nothing
     } else if (dropToCRef?.current?.contains(e.target as Node) && (e.target as Node)?.nodeName !== 'A') {
+      // do nothing
+    } else if ('id' in (e.target as Node) && (e.target as HTMLButtonElement).id.match(THEME_SWITCH_REGEX)) {
       // do nothing
     } else {
       setShowMobileMenu(false);

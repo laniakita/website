@@ -1,9 +1,9 @@
 import { escape } from 'lodash';
 
 export interface MinPageData {
-    title: string;
-    url: string;
-  }
+  title: string;
+  url: string;
+}
 
 export const shareUnderChar = (minPageData: MinPageData | undefined, isBsky?: boolean, debug?: boolean) => {
   if (!minPageData) return;
@@ -27,6 +27,4 @@ export const shareUnderChar = (minPageData: MinPageData | undefined, isBsky?: bo
   return `${encodeURIComponent(minPageData?.title)} ${encodeURIComponent(minPageData?.url)}`;
 };
 
-export const shareToMastodon(e: MouseEvent) {
-  
-}
+
