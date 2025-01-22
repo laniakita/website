@@ -11,7 +11,7 @@ import { socialItems3 } from '../sidebar/main';
 import DarkModeSwitch from './dark-mode-switch';
 import LinkPlus from './link-plus';
 import { NAV_MAIN_MOBILE_CONTAINER_ID, NAV_MAIN_MOBILE_MENU_IO_ID } from '../nav-constants';
-import { SCREEN_MD } from '@/lib/screen-constants';
+import { SCREEN_LG, SCREEN_MD } from '@/lib/screen-constants';
 import { useNavScrollViewStore } from '@/providers/nav-scroll-view-store-provider';
 
 interface Clicked {
@@ -27,6 +27,7 @@ export default function NavBar() {
   const dropNavRef = useRef<HTMLDivElement>(null!);
   const navBarRef = useRef<HTMLDivElement>(null!);
   const { inView, setNavInView, setNavNotInView } = useNavScrollViewStore((state) => state);
+
 
   const handleNavOffClick = useCallback(
     (e: MouseEvent) => {
@@ -50,20 +51,26 @@ export default function NavBar() {
     [clicked],
   );
 
+
+
   useEffect(() => {
     let lastScrollTop = 0;
     const handleScroll = () => {
-      if (window.innerWidth >= SCREEN_MD) return;
       if (clicked.stateVal === 'open') return;
       const currScrollTop = window.scrollY;
-      if (currScrollTop > lastScrollTop) {
-        // scrolling down => slide navbar up
-        setNavNotInView();
-      } else if (currScrollTop < lastScrollTop) {
-        // scrolling up => slide navbar down
+
+      if (window.innerWidth <= SCREEN_MD) {
+        if (currScrollTop > lastScrollTop) {
+          // scrolling down => slide navbar up
+          setNavNotInView();
+        } else if (currScrollTop < lastScrollTop) {
+          // scrolling up => slide navbar down
+          setNavInView();
+        }
+        lastScrollTop = currScrollTop <= 0 ? 0 : currScrollTop;
+      } else if (window.innerWidth >= SCREEN_MD) {
         setNavInView();
       }
-      lastScrollTop = currScrollTop <= 0 ? 0 : currScrollTop;
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -126,7 +133,7 @@ export default function NavBar() {
           </div>
         </div>
       </div>
-
+    
       <div
         ref={navBarRef}
         className={`fixed inset-x-0 top-0 z-50 ${clicked.stateVal === 'open' ? 'bg-ctp-base/90 dark:bg-ctp-midnight/80' : 'bg-ctp-base/70 dark:bg-ctp-midnight/40'} ${inView ? 'translate-y-0' : '-translate-y-full'} motion-safe:[transition:_transform_0.38s]`}
@@ -185,6 +192,8 @@ export default function NavBar() {
               </button>
             </div>
           </div>
+          
+
 
           <div className='z-[51] flex flex-row items-center justify-center gap-2'>
             <SimpleSocials arr={socialItems3} />
@@ -193,7 +202,7 @@ export default function NavBar() {
           </div>
         </div>
       </div>
-    </nav>
+    </nav >
   );
 }
 

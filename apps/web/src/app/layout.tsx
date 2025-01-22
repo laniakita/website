@@ -14,6 +14,7 @@ import {
 } from '@/lib/constants';
 import { DarkStoreProvider } from '@/providers/theme-store-provider';
 import { NavScrollViewStoreProvider } from '@/providers/nav-scroll-view-store-provider';
+import { ToCViewStoreProvider } from '@/providers/toc-view-store-provider';
 
 const inter_tight = Inter_Tight({
   subsets: ['latin'],

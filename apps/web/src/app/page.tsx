@@ -62,7 +62,7 @@ export default function Home() {
   return (
     <>
       <NavBar />
-      <main className='relative flex h-screen min-h-[40rem] w-full items-end justify-center md:min-h-[22rem]'>
+      <main className='relative flex h-dvh min-h-[40rem] w-full items-end justify-center md:min-h-[22rem]'>
         <div className='absolute inset-0'>
           <NoiseShader01 />
         </div>
