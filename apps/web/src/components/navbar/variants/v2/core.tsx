@@ -103,7 +103,7 @@ export default function NavbarV2Core() {
 
 
       <ul className='z-[51] flex flex-row items-center gap-2'>
-        <li className='flex items-center justify-center'>
+        <li aria-hidden={!tocInView} className={`flex items-center justify-center ${tocInView ? 'w-0 opacity-0' : 'w-full opacity-100'} motion-safe:[transition:_opacity_0.38s_ease,_width_0.38s_ease]`}>
           <button onClick={setToCInView} className='icon-[ph--sidebar-simple-fill] text-3xl' />
         </li>
         <li>

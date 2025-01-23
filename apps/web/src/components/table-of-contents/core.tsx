@@ -435,9 +435,10 @@ export default function ToCMenuCore() {
         </div>
       </nav>
 
-      <div className={`${tocInView ? 'w-96' : 'w-0'} sticky top-0 max-h-dvh overflow-x-hidden [transition:_width_0.8s]`}>
+      <div className={`${tocInView ? 'w-96 min-w-96' : 'w-0 min-w-0'} sticky top-0 max-h-max overflow-x-hidden [transition:_width_0.8s,_min-width_0.8s]`}>
 
-        <nav className={`motion-safe:simple-color-trans relative hidden max-h-dvh w-96 items-center justify-start gap-10 overflow-y-auto bg-ctp-base/20 pb-10 text-slate-100 shadow-xl md:flex md:flex-col dark:bg-ctp-base/20`}>
+        <nav className={`motion-safe:simple-color-trans relative hidden max-h-dvh min-w-96 items-center justify-start gap-10  overflow-y-auto bg-ctp-base/20 pb-10 text-slate-100 shadow-xl md:flex md:flex-col dark:bg-ctp-base/20`}>
+
           <div className='sticky top-0 z-10 flex min-h-16 w-full flex-row items-center justify-start px-4 text-ctp-text'>
             <div id='nav-mask-bg' className='nav-glassy-bg' />
             <div id='nav-mask-edge' className='nav-glassy-edge' />
