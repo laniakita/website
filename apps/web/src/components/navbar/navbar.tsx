@@ -136,7 +136,7 @@ export default function NavbarCore() {
     
       <div
         ref={navBarRef}
-        className={`fixed inset-x-0 top-0 z-50 ${clicked.stateVal === 'open' ? 'bg-ctp-base/90 dark:bg-ctp-midnight/80' : 'bg-ctp-base/70 dark:bg-ctp-midnight/40'} ${inView ? 'translate-y-0' : '-translate-y-full'} motion-safe:[transition:_transform_0.38s]`}
+        className={`inset-x-0 top-0 z-50 ${clicked.stateVal === 'open' ? 'bg-ctp-base/90 dark:bg-ctp-midnight/80' : 'bg-ctp-base/70 dark:bg-ctp-midnight/40'} ${inView ? 'translate-y-0' : '-translate-y-full'} motion-safe:[transition:_transform_0.38s]`}
       >
         <div
           className={`relative flex h-16 w-full items-center justify-between px-6 text-xl shadow-lg [transition:_opacity_0.8s] dark:border-ctp-surface0`}

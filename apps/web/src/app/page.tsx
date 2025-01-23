@@ -4,7 +4,8 @@ import NoiseShader01 from '@/app/projects/(three)/shaders/noise/01/noise';
 import { type SocialIconNavProps } from '@/components/social-icon';
 import { RESUME_LINK } from '@/lib/constants';
 import { socialItems2 } from '@/components/sidebar/main';
-import Navbar from '@/components/navbar/wrapped';import Footer from '@/components/footer/footer';
+import Navbar from '@/components/navbar/variants/v2/core';
+import Footer from '@/components/footer/footer';
 
 export const metadata: Metadata = {
   openGraph: {

@@ -3,7 +3,7 @@
 import Giscus from '@giscus/react';
 import { useDarkStore } from '@/providers/theme-store-provider';
 
-export default function CommentsComponent() {
+export default function CommentsComponentCore() {
   const { dark } = useDarkStore((state) => state);
   const themePref = () => {
     if (dark) {

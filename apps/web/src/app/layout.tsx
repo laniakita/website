@@ -12,9 +12,7 @@ import {
   APP_TITLE_TEMPLATE,
   APP_THEME_COLOR,
 } from '@/lib/constants';
-import { DarkStoreProvider } from '@/providers/theme-store-provider';
-import { NavScrollViewStoreProvider } from '@/providers/nav-scroll-view-store-provider';
-import { ToCViewStoreProvider } from '@/providers/toc-view-store-provider';
+import ZustandWrappersCore from '@/components/wrappers/main';
 
 const inter_tight = Inter_Tight({
   subsets: ['latin'],
@@ -88,16 +86,16 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       className={`${inter_tight.variable} ${zeroxproto.variable} dark`}
       suppressHydrationWarning
     >
-      <DarkStoreProvider>
-        <NavScrollViewStoreProvider>
-          <body className={inter_tight.className} suppressHydrationWarning>
-            {/* eslint-disable @next/next/no-sync-scripts -- necessary */
+      <body className={inter_tight.className} suppressHydrationWarning>
+        {/* eslint-disable @next/next/no-sync-scripts -- necessary */
             /* @ts-expect-error -- fetchPriority exists */}
-            <script src='/dist/theme-getter.js' fetchPriority='high' />
-            <Suspense fallback={<LoadingSpinner />}>{children}</Suspense>
-          </body>
-        </NavScrollViewStoreProvider>
-      </DarkStoreProvider>
+        <script src='/dist/theme-getter.js' fetchPriority='high' />
+        <Suspense fallback={<LoadingSpinner />}>
+          <ZustandWrappersCore>
+            {children}
+          </ZustandWrappersCore>
+        </Suspense>
+      </body>
     </html>
   );
 }

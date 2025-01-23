@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { type Dispatch, type SetStateAction, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { NAV_MAIN_ID, TOC_NAV_ID } from './nav-constants';
+import { NAV_MAIN_ID, TOC_NAV_ID } from '@/components/nav-constants';
 import { useNavScrollViewStore } from '@/providers/nav-scroll-view-store-provider';
 import { useToCViewStore } from '@/providers/toc-view-store-provider';
 
@@ -286,7 +286,7 @@ function ConcatTitle({
   return <>{concat}</>;
 }
 
-export default function ToCMenu() {
+export default function ToCMenuCore() {
   const [activeId, setActiveId] = useState('');
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   //const [isMobile, setIsMobile] = useState(false);
@@ -302,7 +302,7 @@ export default function ToCMenu() {
   const dropToCRef = useRef<HTMLDivElement>(null!);
   const mainToCRef = useRef<HTMLElement>(null!);
   const { inView } = useNavScrollViewStore((state) => state);
-  const {tocInView, setToCInView, setToCNotInView} = useToCViewStore((state) => state)
+  const { tocInView, setToCInView, setToCNotInView } = useToCViewStore((state) => state)
 
   const handleToCOffClick = useCallback((e: MouseEvent) => {
     e.stopPropagation();
@@ -435,18 +435,19 @@ export default function ToCMenu() {
         </div>
       </nav>
 
-      <nav className='motion-safe:simple-color-trans sticky top-0 hidden h-dvh w-full min-w-72 max-w-sm items-center justify-start gap-10 overflow-y-auto bg-ctp-base/20 pb-10 text-slate-100 shadow-xl md:flex md:flex-col dark:bg-ctp-base/20'>
-        <div className='sticky top-0 z-10 flex min-h-16 w-full flex-row items-center justify-start px-4 text-ctp-text'>
-          <div id='nav-mask-bg' className='nav-glassy-bg' />
-          <div id='nav-mask-edge' className='nav-glassy-edge' />
-          <button className='icon-[ph--sidebar-simple-fill] text-3xl' />
+      <div className={`${tocInView ? 'w-96' : 'w-0'} sticky top-0 max-h-dvh overflow-x-hidden [transition:_width_0.8s]`}>
 
-        </div>
-
-        <div aria-label='Table of contents' className='w-full px-4'>
-          {shouldRun && <Headings tree={readyHeadings} activeId={activeId} ariaExpanded={isReady} />}
-        </div>
-      </nav>
+        <nav className={`motion-safe:simple-color-trans relative hidden max-h-dvh w-96 items-center justify-start gap-10 overflow-y-auto bg-ctp-base/20 pb-10 text-slate-100 shadow-xl md:flex md:flex-col dark:bg-ctp-base/20`}>
+          <div className='sticky top-0 z-10 flex min-h-16 w-full flex-row items-center justify-start px-4 text-ctp-text'>
+            <div id='nav-mask-bg' className='nav-glassy-bg' />
+            <div id='nav-mask-edge' className='nav-glassy-edge' />
+            <button onClick={() => setToCNotInView()} className='icon-[ph--sidebar-simple-fill] text-3xl' />
+          </div>
+          <div aria-label='Table of contents' className='w-full px-4'>
+            {shouldRun && <Headings tree={readyHeadings} activeId={activeId} ariaExpanded={isReady} />}
+          </div>
+        </nav>
+      </div>
     </>
   );
 }
