@@ -91,7 +91,6 @@ export default function NavbarV2Core() {
     const handleScroll = () => {
       if (hamburgerOpen) return;
       if (!isPost) return;
-      if (tocInView) return;
       if (performance.now() - tocLastSeen < 800) return;
 
       const currScrollTop = window.scrollY;
