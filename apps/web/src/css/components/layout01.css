@@ -6,16 +6,19 @@
     @apply px-2 md:px-6;
   }
   .py-common-info-page {
-    @apply py-24 md:py-28 lg:py-36;
+    @apply py-12;
   }
   .pt-post-page {
-    @apply pt-24 md:pt-28 lg:pt-36;
+    @apply pt-24 md:pt-12;
+  }
+  .pt-blog {
+    @apply pt-4 md:pt-12;
   }
   .pt-common {
-    @apply pt-20 md:pt-24 lg:pt-36;
+    @apply pt-12;
   }
   .pb-common {
-    @apply pb-10 md:pb-24;
+    @apply pb-12;
   }
   .common-padding {
     @apply pt-common px-page-common pb-common;

@@ -11,7 +11,7 @@ import { socialItems3 } from '../sidebar/main';
 import DarkModeSwitch from './dark-mode-switch';
 import LinkPlus from './link-plus';
 import { NAV_MAIN_MOBILE_CONTAINER_ID, NAV_MAIN_MOBILE_MENU_IO_ID } from '../nav-constants';
-import { SCREEN_LG, SCREEN_MD } from '@/lib/screen-constants';
+import { SCREEN_MD } from '@/lib/screen-constants';
 import { useNavScrollViewStore } from '@/providers/nav-scroll-view-store-provider';
 
 interface Clicked {
@@ -27,7 +27,6 @@ export default function NavbarCore() {
   const dropNavRef = useRef<HTMLDivElement>(null!);
   const navBarRef = useRef<HTMLDivElement>(null!);
   const { inView, setNavInView, setNavNotInView } = useNavScrollViewStore((state) => state);
-
 
   const handleNavOffClick = useCallback(
     (e: MouseEvent) => {
@@ -50,8 +49,6 @@ export default function NavbarCore() {
     },
     [clicked],
   );
-
-
 
   useEffect(() => {
     let lastScrollTop = 0;
@@ -133,7 +130,7 @@ export default function NavbarCore() {
           </div>
         </div>
       </div>
-    
+
       <div
         ref={navBarRef}
         className={`inset-x-0 top-0 z-50 ${clicked.stateVal === 'open' ? 'bg-ctp-base/90 dark:bg-ctp-midnight/80' : 'bg-ctp-base/70 dark:bg-ctp-midnight/40'} ${inView ? 'translate-y-0' : '-translate-y-full'} motion-safe:[transition:_transform_0.38s]`}
@@ -192,8 +189,6 @@ export default function NavbarCore() {
               </button>
             </div>
           </div>
-          
-
 
           <div className='z-[51] flex flex-row items-center justify-center gap-2'>
             <SimpleSocials arr={socialItems3} />
@@ -202,7 +197,7 @@ export default function NavbarCore() {
           </div>
         </div>
       </div>
-    </nav >
+    </nav>
   );
 }
 

@@ -29,7 +29,6 @@ export default function ShareButton() {
 
   const handleShareOffClick = useCallback((e: MouseEvent) => {
     e.stopPropagation();
-    console.log(e);
 
     const navbar = document.getElementById(NAV_MAIN_ID);
     const toc = document.getElementById(TOC_NAV_ID);

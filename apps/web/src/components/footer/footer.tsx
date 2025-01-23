@@ -7,6 +7,7 @@ import { FooterBox, FooterBoxSpecial } from './footer-box';
 export default function Footer({
   extra,
   override,
+  overrideBlog,
   outsidePadding,
   insidePadding,
   iconContainerPadding,
@@ -14,6 +15,7 @@ export default function Footer({
 }: {
   extra?: string;
   override?: boolean;
+  overrideBlog?: boolean;
   outsidePadding?: string;
   insidePadding?: string;
   iconContainerPadding?: string;
@@ -49,11 +51,11 @@ export default function Footer({
           >
             {/* content container */}
             <div
-              className={`relative w-full space-y-8 ${insidePadding ? insidePadding : 'p-6 md:p-10'} ${override ? 'lg:max-w-3xl lg:rounded-md lg:border lg:border-ctp-surface0 dark:lg:border-ctp-base' : 'md:max-w-3xl md:rounded-md md:border md:border-ctp-surface0 dark:md:border-ctp-base'} `}
+              className={`relative w-full space-y-8 ${insidePadding ? insidePadding : 'p-6 md:p-10'} ${override ? 'md:max-w-2xl lg:rounded-md lg:border lg:border-ctp-surface0 dark:lg:border-ctp-base' : 'md:max-w-3xl md:rounded-md md:border md:border-ctp-surface0 dark:md:border-ctp-base'} ${overrideBlog && 'md:max-w-3xl'} `}
             >
               {/* logo + search + social_buttons + +copyright + links */}
               <div
-                className={`flex w-full flex-col items-center justify-center gap-2 ${override ? 'lg:flex-row lg:gap-14' : 'md:flex-row md:gap-14'}`}
+                className={`flex w-full flex-col items-center justify-center gap-2 ${override ? 'lg:flex-row lg:gap-14' : 'md:flex-row md:gap-14'} `}
               >
                 <div
                   className={`flex w-full ${iconContainerPadding ? iconContainerPadding : 'px-4'} ${override ? 'lg:hidden' : 'md:hidden'}`}

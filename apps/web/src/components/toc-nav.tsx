@@ -5,7 +5,6 @@ import { usePathname } from 'next/navigation';
 import { type Dispatch, type SetStateAction, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { NAV_MAIN_ID, TOC_NAV_ID } from './nav-constants';
 import { useNavScrollViewStore } from '@/providers/nav-scroll-view-store-provider';
-import { useToCViewStore } from '@/providers/toc-view-store-provider';
 
 const MED_SCREEN = 768; // px
 
@@ -295,14 +294,12 @@ export default function ToCMenu() {
   const { nestedHeadings } = useHeadingsData();
   const [readyHeadings, setReadyHeadings] = useState<HeadingNode[]>([]);
   const [isReady, setIsReady] = useState(false);
-  const [showToC, hideToC] = useState(true);
   useIntersectionObserver(setActiveId, activeId);
   //console.log('currently active should be:', activeId);
   const [hasAnimated, setHasAnimated] = useState(false);
   const dropToCRef = useRef<HTMLDivElement>(null!);
   const mainToCRef = useRef<HTMLElement>(null!);
   const { inView } = useNavScrollViewStore((state) => state);
-  const {tocInView, setToCInView, setToCNotInView} = useToCViewStore((state) => state)
 
   const handleToCOffClick = useCallback((e: MouseEvent) => {
     e.stopPropagation();
@@ -422,7 +419,6 @@ export default function ToCMenu() {
             ref={dropToCRef}
             className={`${showMobileMenu ? 'opacity-100 [transform:translate3d(0%,0%,0px)]' : 'pointer-events-none opacity-0 [transform:translate3d(0%,-100%,-0.01rem)]'} inset-x-0 bottom-0 top-28 z-20 max-h-[calc(100vh-7rem)] w-full overflow-auto rounded-b-2xl border-b border-ctp-pink bg-ctp-base/90 px-6 py-10 backdrop-blur-md [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:transform_0.8s,_opacity_0.5s,_background-color_0.8s] md:hidden dark:border-ctp-sky dark:bg-ctp-midnight/90`}
           >
-
             {shouldRun && (
               <Headings
                 tree={readyHeadings}
@@ -440,7 +436,6 @@ export default function ToCMenu() {
           <div id='nav-mask-bg' className='nav-glassy-bg' />
           <div id='nav-mask-edge' className='nav-glassy-edge' />
           <button className='icon-[ph--sidebar-simple-fill] text-3xl' />
-
         </div>
 
         <div aria-label='Table of contents' className='w-full px-4'>

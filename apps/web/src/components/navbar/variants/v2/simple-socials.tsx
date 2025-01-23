@@ -1,5 +1,5 @@
-import { SocialNavIcon } from "@/components/social-icon";
-import Link from "next/link";
+import { SocialNavIcon } from '@/components/social-icon';
+import Link from 'next/link';
 
 export interface SimpleIcon extends SocialNavIcon {
   textSizeAlt: string;
@@ -7,7 +7,7 @@ export interface SimpleIcon extends SocialNavIcon {
 
 export default function SimpleSocials({ arr }: { arr: SimpleIcon[] }) {
   return (
-    <ul className="flex flex-row items-center justify-center gap-2">
+    <ul className='flex flex-row items-center justify-center gap-2'>
       {arr.map((icon) => (
         <li key={crypto.randomUUID()}>
           <Link

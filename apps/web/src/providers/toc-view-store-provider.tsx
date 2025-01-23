@@ -18,11 +18,7 @@ export function ToCViewStoreProvider({ children }: ToCViewStoreProviderProps) {
   if (!tocViewStoreRef.current) {
     tocViewStoreRef.current = createToCViewStore();
   }
-  return (
-    <ToCViewStoreContext.Provider value={tocViewStoreRef.current}>
-      {children}
-    </ToCViewStoreContext.Provider>
-  );
+  return <ToCViewStoreContext.Provider value={tocViewStoreRef.current}>{children}</ToCViewStoreContext.Provider>;
 }
 
 export const useToCViewStore = <T,>(selector: (store: ToCViewStore) => T): T => {

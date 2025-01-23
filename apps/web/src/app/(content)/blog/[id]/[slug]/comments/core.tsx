@@ -12,8 +12,8 @@ export default function CommentsComponentCore() {
     return 'https://giscus.catppuccin.com/themes/latte.css';
   };
   return (
-    <div className='size-full p-6'>
-      <div className='mx-auto size-full max-w-3xl'>
+    <div className='p-6'>
+      <div className='mx-auto size-full max-w-3xl md:max-w-2xl'>
         <Giscus
           id='comment'
           repo='laniakita/website'

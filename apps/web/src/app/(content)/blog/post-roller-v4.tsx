@@ -22,12 +22,12 @@ export default function PostRollerV4({ posts }: { posts: Post[] }) {
         {isBlog
           ? posts.map((post, idx) =>
               idx === 1 ? (
-                <div key={uniqueKey(idx)} className='flex flex-col gap-4 md:gap-6'>
+                <div key={crypto.randomUUID()} className='flex flex-col gap-4 md:gap-6'>
                   <SubscribeBox mobile />
                   <PostPreviewV4 {...post} />
                 </div>
               ) : (
-                <PostPreviewV4 key={`blog-post-${uniqueKey}-${Math.floor(Math.random() * 1000 + idx)}`} {...post} />
+                <PostPreviewV4 key={crypto.randomUUID()} {...post} />
               ),
             )
           : posts.map((post, idx) => <PostPreviewV4 key={uniqueKey(idx)} {...post} />)}

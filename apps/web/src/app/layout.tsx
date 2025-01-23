@@ -88,12 +88,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     >
       <body className={inter_tight.className} suppressHydrationWarning>
         {/* eslint-disable @next/next/no-sync-scripts -- necessary */
-            /* @ts-expect-error -- fetchPriority exists */}
+        /* @ts-expect-error -- fetchPriority exists */}
         <script src='/dist/theme-getter.js' fetchPriority='high' />
         <Suspense fallback={<LoadingSpinner />}>
-          <ZustandWrappersCore>
-            {children}
-          </ZustandWrappersCore>
+          <ZustandWrappersCore>{children}</ZustandWrappersCore>
         </Suspense>
       </body>
     </html>

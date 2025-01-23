@@ -132,17 +132,23 @@ function Headings({
   activeId,
   ariaExpanded,
   hasAnimated,
+  notMobile,
 }: {
   tree: HeadingNode[];
   activeId: string;
   ariaExpanded: boolean;
   hasAnimated?: boolean;
+  notMobile?: boolean;
 }) {
   return (
     <Suspense>
       <menu
         aria-expanded={ariaExpanded}
-        className={`${!hasAnimated ? 'motion-safe:wipe-fade-in' : ''} list-none leading-relaxed`}
+        className={
+          notMobile
+            ? `${!hasAnimated && localStorage.getItem('toc-state-pref') !== 'closed' ? 'motion-safe:wipe-fade-in' : ''} list-none leading-relaxed`
+            : `${!hasAnimated ? 'motion-safe:wipe-fade-in' : ''} list-none leading-relaxed`
+        }
       >
         {tree?.map((heading) => <HeadingNode key={heading.id} node={heading} activeId={activeId} />)}
       </menu>
@@ -295,14 +301,13 @@ export default function ToCMenuCore() {
   const { nestedHeadings } = useHeadingsData();
   const [readyHeadings, setReadyHeadings] = useState<HeadingNode[]>([]);
   const [isReady, setIsReady] = useState(false);
-  const [showToC, hideToC] = useState(true);
   useIntersectionObserver(setActiveId, activeId);
   //console.log('currently active should be:', activeId);
   const [hasAnimated, setHasAnimated] = useState(false);
   const dropToCRef = useRef<HTMLDivElement>(null!);
   const mainToCRef = useRef<HTMLElement>(null!);
   const { inView } = useNavScrollViewStore((state) => state);
-  const { tocInView, setToCInView, setToCNotInView } = useToCViewStore((state) => state)
+  const { tocInView, setToCNotInView } = useToCViewStore((state) => state);
 
   const handleToCOffClick = useCallback((e: MouseEvent) => {
     e.stopPropagation();
@@ -380,7 +385,7 @@ export default function ToCMenuCore() {
         className={`sticky top-16 z-20 md:hidden ${inView ? 'translate-y-0' : '-translate-y-16'} motion-safe:[transition:_transform_0.38s]`}
       >
         <div
-          className={`z-30 flex w-full flex-row items-center md:hidden ${showMobileMenu ? 'bg-ctp-base/90 dark:bg-ctp-midnight/80' : 'bg-ctp-base/80 dark:bg-ctp-midnight/50'}`}
+          className={`absolute z-30 flex w-full flex-row items-center md:hidden ${showMobileMenu ? 'bg-ctp-base/90 dark:bg-ctp-midnight/80' : 'bg-ctp-base/80 dark:bg-ctp-midnight/50'}`}
         >
           <div className='relative z-[35] flex size-full h-12 flex-row items-center gap-4 px-6'>
             <div className='nav-glassy-bg' />
@@ -415,14 +420,13 @@ export default function ToCMenuCore() {
         <div
           id='toc-offclick-bg'
           aria-hidden={!showMobileMenu}
-          className={`${showMobileMenu ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'} fixed inset-x-0 bottom-0 top-12 z-20 size-full h-dvh w-full flex-col justify-start bg-black/40 [perspective:_5px] [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:_opacity_0.3s,]`}
+          className={`${showMobileMenu ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'} absolute inset-x-0 bottom-0 top-12 z-20 size-full h-dvh w-full flex-col justify-start bg-black/40 [perspective:_5px] [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:_opacity_0.3s,]`}
         >
           <div
             aria-label='Table of contents'
             ref={dropToCRef}
             className={`${showMobileMenu ? 'opacity-100 [transform:translate3d(0%,0%,0px)]' : 'pointer-events-none opacity-0 [transform:translate3d(0%,-100%,-0.01rem)]'} inset-x-0 bottom-0 top-28 z-20 max-h-[calc(100vh-7rem)] w-full overflow-auto rounded-b-2xl border-b border-ctp-pink bg-ctp-base/90 px-6 py-10 backdrop-blur-md [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:transform_0.8s,_opacity_0.5s,_background-color_0.8s] md:hidden dark:border-ctp-sky dark:bg-ctp-midnight/90`}
           >
-
             {shouldRun && (
               <Headings
                 tree={readyHeadings}
@@ -435,17 +439,26 @@ export default function ToCMenuCore() {
         </div>
       </nav>
 
-      <div className={`${tocInView ? 'w-96 min-w-96' : 'w-0 min-w-0'} sticky top-0 max-h-max overflow-x-hidden [transition:_width_0.8s,_min-width_0.8s]`}>
-
-        <nav className={`motion-safe:simple-color-trans relative hidden max-h-dvh min-w-96 items-center justify-start gap-10  overflow-y-auto bg-ctp-base/20 pb-10 text-slate-100 shadow-xl md:flex md:flex-col dark:bg-ctp-base/20`}>
-
+      <div
+        aria-hidden={!tocInView}
+        className={`${tocInView ? 'md:w-80 md:min-w-80 lg:w-96 lg:min-w-96' : 'w-0 min-w-0'} sticky top-0 hidden h-full overflow-x-hidden shadow-xl [transition:_width_0.8s,_min-width_0.8s] md:block`}
+      >
+        <nav
+          className={`motion-safe:simple-color-trans relative flex max-h-dvh min-h-dvh min-w-0 flex-col items-center justify-start gap-12 overflow-y-auto bg-ctp-crust pb-12 text-slate-100 md:min-w-80 lg:min-w-96 dark:bg-ctp-base/20`}
+        >
           <div className='sticky top-0 z-10 flex min-h-16 w-full flex-row items-center justify-start px-4 text-ctp-text'>
             <div id='nav-mask-bg' className='nav-glassy-bg' />
             <div id='nav-mask-edge' className='nav-glassy-edge' />
-            <button onClick={() => setToCNotInView()} className='icon-[ph--sidebar-simple-fill] text-3xl' />
+            <button
+              onClick={() => {
+                setToCNotInView();
+                localStorage.setItem('toc-state-pref', 'closed');
+              }}
+              className='icon-[ph--sidebar-simple-fill] text-3xl'
+            />
           </div>
-          <div aria-label='Table of contents' className='w-full px-4'>
-            {shouldRun && <Headings tree={readyHeadings} activeId={activeId} ariaExpanded={isReady} />}
+          <div aria-label='Table of contents' className='w-full px-6'>
+            {shouldRun && <Headings tree={readyHeadings} activeId={activeId} ariaExpanded={isReady} notMobile />}
           </div>
         </nav>
       </div>
