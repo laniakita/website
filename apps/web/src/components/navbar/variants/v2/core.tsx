@@ -8,7 +8,7 @@ import { useDarkStore } from '@/providers/theme-store-provider';
 import { RESUME_LINK } from '@/lib/constants';
 import DarkModeSwitch from '@/components/navbar/dark-mode-switch';
 import LinkPlus from '@/components/navbar/link-plus';
-import { NAV_MAIN_MOBILE_CONTAINER_ID, NAV_MAIN_MOBILE_MENU_IO_ID } from '@/components/nav-constants';
+import { NAV_MAIN_ID, NAV_MAIN_MOBILE_CONTAINER_ID, NAV_MAIN_MOBILE_MENU_IO_ID } from '@/components/nav-constants';
 import { useNavScrollViewStore } from '@/providers/nav-scroll-view-store-provider';
 import SimpleSocials from './simple-socials';
 import { simpleSocialItems } from './data';
@@ -40,13 +40,15 @@ export default function NavbarV2Core() {
 
   const handleNavOffClick = useCallback((e: MouseEvent) => {
     e.stopPropagation();
+
     if ((e.target as Node).nodeName === 'BUTTON') {
       // do nothing
     } else if (dropNavRef?.current?.contains(e.target as Node)) {
       // do nothing
     } else if (
       navBarRef?.current?.contains(e.target as Node) &&
-      (e.target as HTMLButtonElement).id !== NAV_MAIN_MOBILE_MENU_IO_ID
+      (e.target as HTMLButtonElement).id !== NAV_MAIN_MOBILE_MENU_IO_ID &&
+      (e.target as HTMLDivElement).id !== 'mobile-nav-offclick-bg'
     ) {
       // do nothing
     } else {
@@ -122,6 +124,8 @@ export default function NavbarV2Core() {
   return (
     <>
       <nav
+        id={NAV_MAIN_ID}
+        ref={navBarRef}
         className={`sticky top-0 z-50 flex h-16 flex-row items-center justify-between px-6 ${inView ? 'translate-y-0' : '-translate-y-full'} bg-ctp-base/80 motion-safe:[transition:_transform_0.38s] dark:bg-ctp-midnight/50`}
       >
         <div id='nav-mask-bg' className='nav-glassy-bg' />
@@ -224,6 +228,7 @@ function MobileDropdown({ hamburgerOpen, setHamburgerOpen, dropNavRef }: MobileD
     <div aria-hidden={!hamburgerOpen} className={`absolute inset-0 z-50 flex`}>
       {/* mobile menu container */}
       <div
+        id='mobile-nav-offclick-bg'
         className={`${hamburgerOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'} absolute inset-0 top-16 z-40 flex h-dvh max-h-[calc(100dvh-4rem)] flex-col justify-start bg-black/40 [perspective:_5px] [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:_opacity_0.3s,]`}
       >
         {/* menu box */}
