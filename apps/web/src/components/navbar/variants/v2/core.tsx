@@ -66,7 +66,7 @@ export default function NavbarV2Core() {
     }
 
     const handleChange = () => {
-      console.log('setting toc via pref:', localStorage.getItem('toc-state-pref'));
+      //console.log('setting toc via pref:', localStorage.getItem('toc-state-pref'));
       if (localStorage.getItem('toc-state-pref') === 'open') {
         setToCInView();
       } else if (localStorage.getItem('toc-state-pref') === 'closed') {
@@ -85,12 +85,16 @@ export default function NavbarV2Core() {
     }
   }, [setIsPost, pathname, setToCNotInView]);
 
+
   useEffect(() => {
     let lastScrollTop = 0;
     const scrollBuffer = 10;
     const handleScroll = () => {
       if (hamburgerOpen) return;
-      if (!isPost) return;
+      if (!isPost) {
+        setNavInView();
+        return
+      }
       if (performance.now() - tocLastSeen < 800) return;
 
       const currScrollTop = window.scrollY;
