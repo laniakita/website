@@ -60,7 +60,7 @@ export default function NavbarV2Core() {
 
   useEffect(() => {
     if (tocInView) {
-      // do nothing since we want the last time toc was seen (triggered by tocInView)
+      setToCLastSeen(performance.now());
     } else {
       setToCLastSeen(performance.now());
     }
@@ -157,7 +157,7 @@ export default function NavbarV2Core() {
           </li>
 
           {pagesArr.map((page) => (
-            <li key={crypto.randomUUID()} className={`hidden ${tocInView ? 'xl:block' : 'lg:block'}`}>
+            <li key={crypto.randomUUID()} className={`hidden ${tocInView && isPost ? 'xl:block' : 'lg:block'}`}>
               <LinkPlus
                 href={handleRef(page)}
                 className='nav-item'
@@ -174,11 +174,13 @@ export default function NavbarV2Core() {
           <SimpleSocials arr={simpleSocialItems} />
           <span className='px-1 font-thin text-ctp-subtext1/80'>|</span>
           <DarkModeSwitch />
-          <span className={`px-1 font-thin text-ctp-subtext1/80 ${tocInView ? 'xl:hidden' : 'lg:hidden'}`}>|</span>
-          <HamburgerToggle {...{ hamburgerOpen, setHamburgerOpen, tocInView }} />
+          <span className={`px-1 font-thin text-ctp-subtext1/80 ${tocInView && isPost ? 'xl:hidden' : 'lg:hidden'}`}>
+            |
+          </span>
+          <HamburgerToggle {...{ hamburgerOpen, setHamburgerOpen, tocInView, isPost }} />
         </div>
 
-        <MobileDropdown {...{ hamburgerOpen, setHamburgerOpen, dropNavRef, tocInView }} />
+        <MobileDropdown {...{ hamburgerOpen, setHamburgerOpen, dropNavRef, tocInView, isPost }} />
       </nav>
     </>
   );
@@ -188,11 +190,12 @@ interface HamburgerToggleProps {
   hamburgerOpen: boolean;
   setHamburgerOpen: Dispatch<SetStateAction<boolean>>;
   tocInView: boolean;
+  isPost: boolean;
 }
 
-function HamburgerToggle({ hamburgerOpen, setHamburgerOpen, tocInView }: HamburgerToggleProps) {
+function HamburgerToggle({ hamburgerOpen, setHamburgerOpen, tocInView, isPost }: HamburgerToggleProps) {
   return (
-    <div className={`z-[51] flex flex-row-reverse items-center ${tocInView ? 'xl:hidden' : 'lg:hidden'}`}>
+    <div className={`z-[51] flex flex-row-reverse items-center ${tocInView && isPost ? 'xl:hidden' : 'lg:hidden'}`}>
       <button
         id={NAV_MAIN_MOBILE_MENU_IO_ID}
         type='button'
