@@ -85,7 +85,6 @@ export default function NavbarV2Core() {
     }
   }, [setIsPost, pathname, setToCNotInView]);
 
-
   useEffect(() => {
     let lastScrollTop = 0;
     const scrollBuffer = 10;
@@ -93,7 +92,7 @@ export default function NavbarV2Core() {
       if (hamburgerOpen) return;
       if (!isPost) {
         setNavInView();
-        return
+        return;
       }
       if (performance.now() - tocLastSeen < 800) return;
 
