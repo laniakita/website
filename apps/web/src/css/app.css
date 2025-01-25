@@ -13,6 +13,7 @@
 @import './components/post-preview.css';
 @import './components/post-header.css';
 @import './components/mdx-prose.css';
+@import './components/pseudo-code.css';
 @import './pages/home.css';
 @import 'tailwindcss/utilities';
 @import './utilities/slider.css';

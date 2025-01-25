@@ -89,14 +89,23 @@ export default {
           '0%': { transform: 'translateY(140%)' },
           '100%': { transform: 'translateY(0%)' },
         },
+        'test-iv': {
+          '0%': {
+            transform: 'scale(1)',
+          },
+          '100%': {
+            transform: 'scale(1)',
+          },
+        }
       },
       animation: {
-        'fade-in': 'fade-in 0.8s ease 1s forwards',
+        'fade-in': 'fade-in 0.8s ease forwards',
         'fade-in-up': 'fade-in-up 0.2s ease 1s forwards',
         'fade-in-up-2': 'fade-in-up 0.5s ease forwards',
         'fade-in-down': 'fade-in-down 1s ease 1s forwards',
         marquee: 'marquee 5s linear infinite',
         upDog: 'upDog 1.5s ease 1s forwards',
+        'test-iv': 'test-iv 8s ease forwards'
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
