@@ -1,12 +1,14 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import NoiseShader01 from '@/app/projects/(three)/shaders/noise/01/noise';
-import { type SocialIconNavProps } from '@/components/social-icon';
-import { RESUME_LINK } from '@/lib/constants';
-import { socialItems2 } from '@/components/sidebar/main';
 import Navbar from '@/components/navbar/variants/v2/core';
 import Footer from '@/components/footer/footer';
-import Markdown from 'markdown-to-jsx';
+import { resMdxMinimal } from '@/lib/mdx-utils';
+import { getMDXComponent } from '@/components/mdx/mdx-bundler-components';
+import { allPosts } from 'contentlayer/generated';
+import PostPreviewV4 from '../(content)/blog/post-components';
+import MiniPostRoller from './mini-postroller';
+import { MiniMDXComponent } from '@/components/mdx/global-mdx-components';
+import { MiniWorkRoller } from './mini-server-roller';
 
 export const metadata: Metadata = {
   openGraph: {
@@ -34,24 +36,9 @@ export const metadata: Metadata = {
   },
 };
 
-
-function PsuedoArrayMarkup({ arr, lastKey, horizontal }: { arr: string[]; lastKey?: boolean; horizontal?: boolean }) {
-  return (
-    <span className={`inline-flex ${horizontal ? 'flex-wrap' : 'flex-col'}`}>
-      {`[`}
-      {arr.map((item, idx) => (
-        <span key={crypto.randomUUID()}>
-          <strong className={`landing-hero-string ${horizontal ? 'px-[1ch]' : 'pl-[2ch]'}`}>{`"${item}"`}</strong>{idx < arr.length - 1 && <span className={`${horizontal ? 'ml-[-1ch]' : ''} `}>,</span>}
-        </span>
-      ))}
-      {`]${!lastKey && ','}`}
-    </span>
-  )
-}
-
 function Hero() {
   return (
-    <div className='relative -mt-16 flex h-[40rem] w-full items-center justify-center '>
+    <div className='relative -mt-16 flex h-[40rem] w-full items-center justify-center overflow-hidden'>
       <div className='absolute inset-0 z-0'>
         <NoiseShader01 />
       </div>
@@ -60,7 +47,7 @@ function Hero() {
           <h1 className='font-mono text-3xl text-ctp-text md:text-4xl'>{`<`}<strong className='font-black text-ctp-sky dark:text-ctp-blue'>LaniAkita</strong>{` />`}</h1>
           <span className='my-6 h-[2px] w-full rounded bg-ctp-text dark:bg-ctp-text' />
           <h2 className='mb-2 text-2xl font-bold md:text-3xl'>Full Stack Developer</h2>
-          <h3 className='text-pretty font-mono font-semibold text-ctp-green md:text-lg'><em>&quot;Specializing in Bleeding-edge Web Technologies&quot;</em></h3>
+          <h3 className='text-pretty font-mono font-semibold text-ctp-green md:text-lg'><em>&quot;Specialist in Bleeding-edge Web Technologies&quot;</em></h3>
         </div>
       </div>
     </div>
@@ -69,43 +56,115 @@ function Hero() {
 
 // because I've been _building, breaking, learning, fixing, deploying, optimizing, refactoring, testing, integrating, re-deploying,_ web applications since I was about 12, I've become quite familar with the entire _stack_. Back-end, Front-end, Infra, you name it, I've probably thought a lot about it.
 // From architecting the backend infra, to creating Back-end APIs designed to deploy at the Edge, to using frontend libraries like React (or Svelte) to deliver polished, _stateful_, blazing fast frontends for a full-stack Next.js (or SvelteKit) application, to deploying on said infra, I'm there.`;
+//which makes an upcoming graphics engine like <a href="https://discourse.threejs.org/t/shade-webgpu-graphics/66969" target="_blank" rel="noopener">Shade</a> even possible, bringing the graphical fidelity of Unreal to the browser.
+//The latter is a sucessor to <a href="https://registry.khronos.org/webgl/specs/latest/2.0/" target="_blank" rel="noopener">WebGL</a>, having been designed from the ground up to expose the full capabilities of available physical GPU hardware (see: <a href="" target="_blank" rel="noopener">W3C's draft on WebGPU</a>) from the get-go.
+//If you're someone looking to build a high-performance, next-generation web application, I'd love to talk. Consider sending an email to: me@laniakita.com, or messaging me on Bluesky: [@laniakita.com](https://bsky.app/profile/laniakita.com).
 
 
+function MDXComponent({ code }: { code: string; }) {
+  const MDXContent = getMDXComponent(code, {});
+  return <MDXContent code={code} />;
+}
 
-function Summary() {
+async function Summary() {
   const summaryMd = `
   ## Hello, I'm Lani
 
-  My name is Lani Akita, and I'm a Full Stack Developer from Honolulu, Hawai'i. I'm someone whose dedicated herself to building (and now writing about) stuff for the Internet. 
+  Hi! My name is Lani Akita, and I'm a Full Stack Developer from Honolulu, Hawai'i. I'm someone whose dedicated herself to building (and [writing about](/blog)) stuff for the Internet. 
+  
+  In practice, that means I'm sometimes creating, deploying, and or maintaining websites for Clients. Other times, I'm creating, publishing, and or maintaining open-source libraries/software for myself and others to use. Either way, I typically work (& think) across the entire stack to accomplish such things.
 
-  What that means, is that sometimes I'm creating, deploying, and or maintaining websites for Clients. Other times, I'm creating, publishing, and or maintaining open-source libraries/software for myself and others across the Net to use. Either way, I'm working (& thinking) across the entire stack to accomplish _that_.
-  `
+  As well, I'm someone whose deeply passionate about the future of the Web. I'm obsessed with bleeding-edge tools and technologies that enables web developers like me to redefine _what_ a website can be. Technologies that push beyond the limits of what ought to be possible to run from a web browser, such as <a href="https://www.w3.org/TR/webgpu/" target="_blank" rel="noopener">WebGPU</a>, and <a href="https://webassembly.github.io/spec/core/intro/introduction.html" target="_blank" rel="noopener">WebAssembly</a>.
+  `;
+
+  const profileObj = '```typescript\nconst laniAkitaSummary = {\n  id: 0o7734,\n  role: "Full Stack Developer",\n  main_programming_langs: ["TypeScript", "Rust", "Python"],\n  main_frameworks: ["Next.js", "SvelteKit"],\n  main_ui_libraries: ["React", "Svelte"],\n  main_frontend_tools: ["tailwindcss", "Three.js"],\n  main_backend_tools: ["Bun", "Node.js", "Drizzle ORM", "Postgres", "SQLite"],\n  professional_interests: ["Accessibility", "Scalability", "Reproducibility", "IaC", "WebAssembly", "WebGL", "WebGPU", "NixOS"],\n  main_devops_tools: ["SST", "Pulumi", "Podman", "Docker", "K8s"],\n  hobbies: ["Reading", "Writing", "Philosophizing", "Painting", "Drawing", "Gaming", "Gardening"],\n  education: [{\n    degree: "BSc in Biological Sciences",\n    school: "University of California, Santa Barbara",\n    timeframe: { from: 2016, to: 2020 }\n  }]\n};\n```';
+
+  const summaryRes = await resMdxMinimal(summaryMd);
+  const profileRes = await resMdxMinimal(profileObj);
+
   return (
-    <div>
-      <div className='px-6 pb-10'>
-        <div className='prose-protocol-omega'>
-          {/* eslint-disable-next-line react/no-children-prop -- this is expected
-            @ts-expect-error -- types issue? */}
-          <Markdown children={summaryMd} />
+    <section className='w-full px-6'>
+      <div className='mx-auto md:flex md:max-w-5xl md:flex-row md:items-center md:justify-center md:gap-10'>
+        <div className='prose-protocol-omega mx-auto md:w-1/2' >
+          <MDXComponent code={summaryRes.code} />
+        </div>
+        <div className='prose-protocol-omega mx-auto md:w-1/2'>
+          <figure>
+            <MDXComponent code={profileRes.code} />
+            <figcaption><strong>Fig. 01</strong>: Myself summarized as a JS object. The <em>snake_case</em> implies compatibility with a database, perhaps suggesting this object might be inserted into some database&apos;s table.</figcaption>
+          </figure>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 
-const main_langs = ['TypeScript', 'Rust', 'Python'];
-const main_toolset = ['Next.js', 'React', 'Svelte', 'Bun', 'Node.js'];
-const interests = ['Accessibility', 'Scalability', 'IaC', 'WebAssembly', 'WebGL'];
+async function LatestPostsSection() {
+  const blogSec = `
+  ## Latest From the Blog
+  
+  When I get the chance, I like to indulge in writing words, instead of code. Though, I'll admit most of my published endeavors into the _written word_ often contain quite a bit of \`code\` snippets anyways (it is a dev blog after all). You can find more articles like the below on my [blog](/blog).
+  `;
+
+  const blogRes = await resMdxMinimal(blogSec);
+
+  return (
+    <section className="flex flex-col">
+      <div className="px-6 shadow-xl">
+        <div className='mx-auto w-full max-w-5xl pb-6'>
+          <div className='prose-protocol-omega -mt-6 w-1/2' >
+            <MiniMDXComponent code={blogRes.code} />
+          </div>
+        </div>
+      </div>
+      <div className='flex w-full flex-row gap-6 overflow-x-auto bg-ctp-crust/70 px-6 py-10'>
+        <MiniPostRoller />
+      </div>
+    </section>
+  )
+}
+
+async function ClientWorksSection() {
+  const blogSec = `
+  ## Client Works
+  
+  When I get the chance, I like to indulge in writing words, instead of code. Though, I'll admit most of my published endeavors into the _written word_ often contain quite a bit of \`code\` snippets anyways (it is a dev blog after all). You can find more articles like the below on my [blog](/blog).
+  `;
+
+  const blogRes = await resMdxMinimal(blogSec);
+
+  return (
+    <section className="flex flex-col">
+      <div className="px-6">
+        <div className='mx-auto w-full max-w-5xl pb-6'>
+          <div className='prose-protocol-omega -mt-6 w-1/2' >
+            <MiniMDXComponent code={blogRes.code} />
+          </div>
+        </div>
+      </div>
+      <div className='mx-auto max-w-5xl'>
+        <div className='flex w-full flex-row gap-6'>
+          <MiniWorkRoller />
+        </div>
+      </div>
+    </section>
+  )
+}
+
+
 
 export default function HomeV2() {
-
-
-
   return (
     <>
       <Navbar />
       <Hero />
-      <Summary />
+      <main className='m-auto overflow-hidden'>
+        <article>
+          <Summary />
+          <ClientWorksSection />
+          <LatestPostsSection />
+        </article>
+      </main>
       <Footer />
     </>
   );

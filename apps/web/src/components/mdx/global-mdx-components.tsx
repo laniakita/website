@@ -28,3 +28,10 @@ export default function GlobalMDXComponent(data: Post | Page | Category | Tag | 
   const MDXContent = getMDXComponent(data.body.code, {});
   return <MDXContent code={data.body.code} components={globalMdxComponents} />;
 }
+
+export function MiniMDXComponent({ code }: { code: string; }) {
+  const MDXContent = getMDXComponent(code, {});
+  return <MDXContent code={code} />;
+}
+
+
