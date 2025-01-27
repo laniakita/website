@@ -3,7 +3,7 @@ import { Inter_Tight } from 'next/font/google';
 import localFont from 'next/font/local';
 import { Suspense, type ReactNode } from 'react';
 import '@catppuccin/highlightjs/css/catppuccin-variables.rgb.css';
-import '@/css/app.css';
+import '@/app.css';
 import {
   APP_URL,
   APP_NAME,
