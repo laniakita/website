@@ -63,7 +63,7 @@
     "postcss": "^8.4.45",
     "postcss-import": "^16.1.0",
     "prettier": "^3.3.3",
-    "prettier-plugin-tailwindcss": "0.6.8",
+    "prettier-plugin-tailwindcss": "0.6.11",
     "raw-loader": "^4.0.2",
     "rehype-fn-citation-spacer": "^1.0.1",
     "rehype-highlight": "^7.0.1",
