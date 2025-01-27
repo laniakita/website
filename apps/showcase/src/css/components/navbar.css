@@ -1,9 +1,0 @@
-@layer components {
-  .nav-logo {
-    @apply text-2xl font-black text-ctp-text hover:no-underline aria-[current]:text-ctp-mauve;
-  }
-
-  .nav-item {
-    @apply w-min font-mono text-base font-semibold capitalize text-ctp-subtext1;
-  }
-}
