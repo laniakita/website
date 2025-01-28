@@ -3,7 +3,7 @@ import { Inter_Tight } from 'next/font/google';
 import localFont from 'next/font/local';
 import { Suspense, type ReactNode } from 'react';
 import '@catppuccin/highlightjs/css/catppuccin-variables.rgb.css';
-import '@/app.css';
+import '@/css/app.css';
 import {
   APP_URL,
   APP_NAME,
@@ -82,11 +82,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html
       lang='en-US'
       dir='ltr'
-      // eslint-disable-next-line tailwindcss/no-custom-classname -- necessary
       className={`${inter_tight.variable} ${zeroxproto.variable} dark`}
       suppressHydrationWarning
     >
-      <body className={inter_tight.className} suppressHydrationWarning>
+      <body
+        className={`${inter_tight.className} ctp-latte m-0 min-h-dvh scroll-pt-32 bg-ctp-base p-0 text-ctp-text [box-sizing:border-box] dark:ctp-mocha motion-safe:[scroll-behavior:_smooth] md:scroll-pt-24 dark:bg-ctp-midnight`}
+        suppressHydrationWarning
+      >
         {/* eslint-disable @next/next/no-sync-scripts -- necessary */
         /* @ts-expect-error -- fetchPriority exists */}
         <script src='/dist/theme-getter.js' fetchPriority='high' />

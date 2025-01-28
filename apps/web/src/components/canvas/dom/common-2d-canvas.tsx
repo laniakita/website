@@ -51,15 +51,3 @@ export default function Common2DCanvas({ children, ...props }: { children: Reado
     </div>
   );
 }
-
-/* possibly useful resizing algs
- *
- * 01:
- * // resizing code based on Greg Rauhöft solution https://github.com/pmndrs/react-three-fiber/discussions/2867
- * const frustum = 100;
- * const aspectRatio = size.height / size.width
- * const horizontal = aspectRatio < 1 ? frustum / aspectRatio : frustum;
- * const vertical = aspectRatio < 1 ? frustum : frustum * aspectRatio;
- *
- * return <OrthographicCamera makeDefault position={[0,0,10]} zoom={frustum} left={-horizontal} right={horizontal} top={vertical} bottom={-vertical}  manual />
- * */
