@@ -1,8 +1,7 @@
-@layer components {
-  .landing-hero-prop {
-    @apply md:text-lg text-ctp-text inline-flex gap-[1ch] font-mono font-semibold text-pretty;
-  }
-  .landing-hero-string {
-    @apply text-sm md:text-base font-black text-ctp-green;
-  }
+@utility landing-hero-prop {
+  @apply md:text-lg text-ctp-text inline-flex gap-[1ch] font-mono font-semibold text-pretty;
+}
+
+@utility landing-hero-string {
+  @apply text-sm md:text-base font-black text-ctp-green;
 }
