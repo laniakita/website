@@ -43,11 +43,17 @@ function Hero() {
         <NoiseShader01 />
       </div>
       <div className='p-2'>
-        <div className='color-trans-quick z-10 flex max-w-[25rem] animate-fade-in flex-col rounded-lg border border-ctp-base bg-ctp-base/80 p-10 opacity-0 backdrop-blur-xl dark:border-ctp-text dark:bg-ctp-base/50'>
-          <h1 className='font-mono text-3xl text-ctp-text md:text-4xl'>{`<`}<strong className='font-black text-ctp-sky dark:text-ctp-blue'>LaniAkita</strong>{` />`}</h1>
+        <div className='z-10 flex max-w-[25rem] animate-fade-in flex-col rounded-lg border border-ctp-base bg-ctp-base/80 p-10 opacity-0 backdrop-blur-xl color-trans-quick dark:border-ctp-text dark:bg-ctp-base/50'>
+          <h1 className='font-mono text-3xl text-ctp-text md:text-4xl'>
+            {`<`}
+            <strong className='font-black text-ctp-sky dark:text-ctp-blue'>LaniAkita</strong>
+            {` />`}
+          </h1>
           <span className='my-6 h-[2px] w-full rounded bg-ctp-text dark:bg-ctp-text' />
           <h2 className='mb-2 text-2xl font-bold md:text-3xl'>Full Stack Developer</h2>
-          <h3 className='text-pretty font-mono font-semibold text-ctp-green md:text-lg'><em>&quot;Specialist in Bleeding-edge Web Technologies&quot;</em></h3>
+          <h3 className='font-mono font-semibold text-pretty text-ctp-green md:text-lg'>
+            <em>&quot;Specialist in Bleeding-edge Web Technologies&quot;</em>
+          </h3>
         </div>
       </div>
     </div>
@@ -60,8 +66,7 @@ function Hero() {
 //The latter is a sucessor to <a href="https://registry.khronos.org/webgl/specs/latest/2.0/" target="_blank" rel="noopener">WebGL</a>, having been designed from the ground up to expose the full capabilities of available physical GPU hardware (see: <a href="" target="_blank" rel="noopener">W3C's draft on WebGPU</a>) from the get-go.
 //If you're someone looking to build a high-performance, next-generation web application, I'd love to talk. Consider sending an email to: me@laniakita.com, or messaging me on Bluesky: [@laniakita.com](https://bsky.app/profile/laniakita.com).
 
-
-function MDXComponent({ code }: { code: string; }) {
+function MDXComponent({ code }: { code: string }) {
   const MDXContent = getMDXComponent(code, {});
   return <MDXContent code={code} />;
 }
@@ -77,7 +82,8 @@ async function Summary() {
   As well, I'm someone whose deeply passionate about the future of the Web. I'm obsessed with bleeding-edge tools and technologies that enables web developers like me to redefine _what_ a website can be. Technologies that push beyond the limits of what ought to be possible to run from a web browser, such as <a href="https://www.w3.org/TR/webgpu/" target="_blank" rel="noopener">WebGPU</a>, and <a href="https://webassembly.github.io/spec/core/intro/introduction.html" target="_blank" rel="noopener">WebAssembly</a>.
   `;
 
-  const profileObj = '```typescript\nconst laniAkitaSummary = {\n  id: 0o7734,\n  role: "Full Stack Developer",\n  main_programming_langs: ["TypeScript", "Rust", "Python"],\n  main_frameworks: ["Next.js", "SvelteKit"],\n  main_ui_libraries: ["React", "Svelte"],\n  main_frontend_tools: ["tailwindcss", "Three.js"],\n  main_backend_tools: ["Bun", "Node.js", "Drizzle ORM", "Postgres", "SQLite"],\n  professional_interests: ["Accessibility", "Scalability", "Reproducibility", "IaC", "WebAssembly", "WebGL", "WebGPU", "NixOS"],\n  main_devops_tools: ["SST", "Pulumi", "Podman", "Docker", "K8s"],\n  hobbies: ["Reading", "Writing", "Philosophizing", "Painting", "Drawing", "Gaming", "Gardening"],\n  education: [{\n    degree: "BSc in Biological Sciences",\n    school: "University of California, Santa Barbara",\n    timeframe: { from: 2016, to: 2020 }\n  }]\n};\n```';
+  const profileObj =
+    '```typescript\nconst laniAkitaSummary = {\n  id: 0o7734,\n  role: "Full Stack Developer",\n  main_programming_langs: ["TypeScript", "Rust", "Python"],\n  main_frameworks: ["Next.js", "SvelteKit"],\n  main_ui_libraries: ["React", "Svelte"],\n  main_frontend_tools: ["tailwindcss", "Three.js"],\n  main_backend_tools: ["Bun", "Node.js", "Drizzle ORM", "Postgres", "SQLite"],\n  professional_interests: ["Accessibility", "Scalability", "Reproducibility", "IaC", "WebAssembly", "WebGL", "WebGPU", "NixOS"],\n  main_devops_tools: ["SST", "Pulumi", "Podman", "Docker", "K8s"],\n  hobbies: ["Reading", "Writing", "Philosophizing", "Painting", "Drawing", "Gaming", "Gardening"],\n  education: [{\n    degree: "BSc in Biological Sciences",\n    school: "University of California, Santa Barbara",\n    timeframe: { from: 2016, to: 2020 }\n  }]\n};\n```';
 
   const summaryRes = await resMdxMinimal(summaryMd);
   const profileRes = await resMdxMinimal(profileObj);
@@ -85,13 +91,16 @@ async function Summary() {
   return (
     <section className='w-full px-6'>
       <div className='mx-auto md:flex md:max-w-5xl md:flex-row md:items-center md:justify-center md:gap-10'>
-        <div className='prose-protocol-omega mx-auto md:w-1/2' >
+        <div className='prose-protocol-omega mx-auto md:w-1/2'>
           <MDXComponent code={summaryRes.code} />
         </div>
         <div className='prose-protocol-omega mx-auto md:w-1/2'>
           <figure>
             <MDXComponent code={profileRes.code} />
-            <figcaption><strong>Fig. 01</strong>: Myself summarized as a JS object. The <em>snake_case</em> implies compatibility with a database, perhaps suggesting this object might be inserted into some database&apos;s table.</figcaption>
+            <figcaption>
+              <strong>Fig. 01</strong>: Myself summarized as a JS object. The <em>snake_case</em> implies compatibility
+              with a database, perhaps suggesting this object might be inserted into some database&apos;s table.
+            </figcaption>
           </figure>
         </div>
       </div>
@@ -109,10 +118,10 @@ async function LatestPostsSection() {
   const blogRes = await resMdxMinimal(blogSec);
 
   return (
-    <section className="flex flex-col">
-      <div className="px-6 shadow-xl">
+    <section className='flex flex-col'>
+      <div className='px-6 shadow-xl'>
         <div className='mx-auto w-full max-w-5xl pb-6'>
-          <div className='prose-protocol-omega -mt-6 w-1/2' >
+          <div className='prose-protocol-omega -mt-6 w-1/2'>
             <MiniMDXComponent code={blogRes.code} />
           </div>
         </div>
@@ -121,7 +130,7 @@ async function LatestPostsSection() {
         <MiniPostRoller />
       </div>
     </section>
-  )
+  );
 }
 
 async function ClientWorksSection() {
@@ -134,10 +143,10 @@ async function ClientWorksSection() {
   const blogRes = await resMdxMinimal(blogSec);
 
   return (
-    <section className="flex flex-col">
-      <div className="px-6">
+    <section className='flex flex-col'>
+      <div className='px-6'>
         <div className='mx-auto w-full max-w-5xl pb-6'>
-          <div className='prose-protocol-omega -mt-6 w-1/2' >
+          <div className='prose-protocol-omega -mt-6 w-1/2'>
             <MiniMDXComponent code={blogRes.code} />
           </div>
         </div>
@@ -148,10 +157,8 @@ async function ClientWorksSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }
-
-
 
 export default function HomeV2() {
   return (
@@ -169,7 +176,6 @@ export default function HomeV2() {
     </>
   );
 }
-
 
 /*            <p className='landing-hero-prop'>role: <strong className='landing-hero-string'>&quot;Full Stack Developer&quot;<span className='landing-hero-prop'>,</span></strong></p>
 

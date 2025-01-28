@@ -1,7 +1,7 @@
 export default function LoadingSpinner({ overrides }: { overrides?: string }) {
   return (
     <div className={`flex size-full flex-col items-center justify-center ${overrides}`}>
-      <svg className='-ml-1 mr-3 size-5 animate-spin text-ctp-text' fill='none' viewBox='0 0 24 24'>
+      <svg className='mr-3 -ml-1 size-5 animate-spin text-ctp-text' fill='none' viewBox='0 0 24 24'>
         <circle className='opacity-25' cx='12' cy='12' r='10' stroke='currentColor' strokeWidth='4' />
         <path
           className='opacity-75'

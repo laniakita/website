@@ -12,14 +12,14 @@ export default function Footer({ extra }: { extra?: string }) {
   return (
     <footer className={`${pathname === '/' ? 'hidden' : 'block'} relative w-full`}>
       <div
-        className={`simple-color-trans relative flex w-full flex-col items-center justify-center overflow-hidden bg-ctp-base dark:bg-ctp-midnight ${extra}`}
+        className={`simple-color-trans bg-ctp-base dark:bg-ctp-midnight relative flex w-full flex-col items-center justify-center overflow-hidden ${extra}`}
       >
         {/* contents container that givs the blurry bg + the pattern */}
         <div className='flex size-full flex-col backdrop-blur-2xl'>
           {/* <FooterSubscribe /> */}
           <div className='flex flex-col items-center justify-center gap-4 pb-16 md:pb-36 md:pt-20 lg:pb-40 lg:pt-20'>
             {/* content container */}
-            <div className='w-full space-y-8 p-10 md:w-fit md:rounded-md md:border md:border-ctp-surface0 dark:md:border-ctp-base'>
+            <div className='md:border-ctp-surface0 dark:md:border-ctp-base w-full space-y-8 p-10 md:w-fit md:rounded-md md:border'>
               {/* logo + search + social_buttons + +copyright + links */}
               <div className='flex w-full flex-col items-center justify-center gap-2 md:gap-10'>
                 <div className='w-full px-4 md:px-0'>
@@ -38,7 +38,7 @@ export default function Footer({ extra }: { extra?: string }) {
 
 function FooterNavLinks() {
   return (
-    <div className='grid w-full grid-cols-1 gap-4 p-4 narrow-phone:grid-cols-2 md:p-0'>
+    <div className='narrow-phone:grid-cols-2 grid w-full grid-cols-1 gap-4 p-4 md:p-0'>
       <FooterBox title='navigation' navItems={navItems2} />
       <FooterBoxSpecial title='socials' navItems={socialItems2} />
     </div>

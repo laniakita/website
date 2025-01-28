@@ -113,7 +113,7 @@ function HeadingNode({ node, activeId }: { node: HeadingNode; activeId: string }
         <Link
           aria-label={`Jump to ${node.title}`}
           href={`${pathname}#${node.id}`}
-          className={`link-color-trans text-balance text-left font-mono text-sm font-semibold leading-relaxed hover:text-ctp-text hover:underline ${activeId === node.id ? 'text-ctp-text underline' : 'text-ctp-subtext0'} md:max-w-xs md:break-words lg:max-w-sm lg:break-keep`}
+          className={`text-left font-mono text-sm leading-relaxed font-semibold text-balance link-color-trans hover:text-ctp-text hover:underline ${activeId === node.id ? 'text-ctp-text underline' : 'text-ctp-subtext0'} md:max-w-xs md:break-words lg:max-w-sm lg:break-keep`}
         >
           {node.title}
         </Link>
@@ -394,7 +394,7 @@ export default function ToCMenuCore() {
               id={
                 'show-hide-tabrEvent {isTrusted: true, pointerId: 51, width: 1, height: 1, pressure: 0, …}le-of-contents-button-mobile'
               }
-              className={`link-color-trans ${showMobileMenu ? 'text-ctp-pink underline' : ''} z-40 -m-1.5 flex items-center whitespace-pre font-mono text-sm text-ctp-subtext0 hover:text-ctp-pink hover:underline`}
+              className={`link-color-trans ${showMobileMenu ? 'text-ctp-pink underline' : ''} z-40 -m-1.5 flex items-center font-mono text-sm whitespace-pre text-ctp-subtext0 hover:text-ctp-pink hover:underline`}
               onClick={() => {
                 setShowMobileMenu(!showMobileMenu);
                 setTimeout(() => {
@@ -403,12 +403,12 @@ export default function ToCMenuCore() {
               }}
             >
               <span
-                className={`${showMobileMenu ? '[transform:_rotate(90deg)_translate3d(-0.1rem,-0.2ch,0px)]' : '[transform:_translate3d(-0.1rem,0.0ch,0px)]'} icon-[ph--caret-right-bold] pointer-events-none mr-[0.5ch] w-[2ch] text-xl [transition:_transform_0.3s]`}
+                className={`${showMobileMenu ? '[transform:_rotate(90deg)_translate3d(-0.1rem,-0.2ch,0px)]' : '[transform:_translate3d(-0.1rem,0.0ch,0px)]'} pointer-events-none mr-[0.5ch] icon-[ph--caret-right-bold] w-[2ch] text-xl [transition:_transform_0.3s]`}
               />
               On this page
             </button>
 
-            <p className='z-40 flex flex-row items-center gap-[1ch] overflow-x-hidden whitespace-pre font-mono text-sm'>
+            <p className='z-40 flex flex-row items-center gap-[1ch] overflow-x-hidden font-mono text-sm whitespace-pre'>
               <span className='icon-[ph--caret-double-right-bold] min-w-[2ch] text-xl text-ctp-subtext0' />
               <span className='font-bold'>
                 {shouldRun && <ConcatTitle headings={flatHeadings} activeId={activeId} innerWidth={width} />}
@@ -420,12 +420,12 @@ export default function ToCMenuCore() {
         <div
           id='toc-offclick-bg'
           aria-hidden={!showMobileMenu}
-          className={`${showMobileMenu ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'} absolute inset-x-0 bottom-0 top-12 z-20 size-full flex-col justify-start bg-black/40 [perspective:_5px] [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:_opacity_0.3s,]`}
+          className={`${showMobileMenu ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'} absolute inset-x-0 top-12 bottom-0 z-20 size-full flex-col justify-start bg-black/40 [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] [perspective:_5px] motion-safe:[transition:_opacity_0.3s,]`}
         >
           <div
             aria-label='Table of contents'
             ref={dropToCRef}
-            className={`${showMobileMenu ? 'opacity-100 [transform:translate3d(0%,0%,0px)]' : 'pointer-events-none opacity-0 [transform:translate3d(0%,-100%,-0.01rem)]'} inset-x-0 bottom-0 top-28 z-20 max-h-[calc(100dvh-7rem)] w-full overflow-auto rounded-b-2xl border-b border-ctp-pink bg-ctp-base/90 px-6 py-10 backdrop-blur-md [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:transform_0.8s,_opacity_0.5s,_background-color_0.8s] md:hidden dark:border-ctp-sky dark:bg-ctp-midnight/90`}
+            className={`${showMobileMenu ? '[transform:translate3d(0%,0%,0px)] opacity-100' : 'pointer-events-none [transform:translate3d(0%,-100%,-0.01rem)] opacity-0'} inset-x-0 top-28 bottom-0 z-20 max-h-[calc(100dvh-7rem)] w-full overflow-auto rounded-b-2xl border-b border-ctp-pink bg-ctp-base/90 px-6 py-10 backdrop-blur-md [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:transform_0.8s,_opacity_0.5s,_background-color_0.8s] md:hidden dark:border-ctp-sky dark:bg-ctp-midnight/90`}
           >
             {shouldRun && (
               <Headings
@@ -444,7 +444,7 @@ export default function ToCMenuCore() {
         className={`${tocInView ? 'md:w-80 md:min-w-80 lg:w-96 lg:min-w-96' : 'w-0 min-w-0'} sticky top-0 hidden h-full overflow-x-hidden shadow-xl [transition:_width_0.8s,_min-width_0.8s] md:block`}
       >
         <nav
-          className={`motion-safe:simple-color-trans relative flex max-h-dvh min-h-dvh min-w-0 flex-col items-center justify-start gap-12 overflow-y-auto bg-ctp-crust pb-12 text-slate-100 md:min-w-80 lg:min-w-96 dark:bg-ctp-base/20`}
+          className={`relative flex max-h-dvh min-h-dvh min-w-0 flex-col items-center justify-start gap-12 overflow-y-auto bg-ctp-crust pb-12 text-slate-100 motion-safe:simple-color-trans md:min-w-80 lg:min-w-96 dark:bg-ctp-base/20`}
         >
           <div className='sticky top-0 z-10 flex min-h-16 w-full flex-row items-center justify-start px-4 text-ctp-text'>
             <div id='nav-mask-bg' className='nav-glassy-bg' />

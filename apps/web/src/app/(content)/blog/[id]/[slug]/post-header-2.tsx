@@ -26,7 +26,7 @@ export function PostHeader2(post: Post) {
         </div>
       </div>
       */}
-      <header className='pt-post-page z-0'>
+      <header className='z-0 pt-post-page'>
         <div className='flex w-full flex-col items-center justify-center gap-2 px-6 pb-6 lg:pb-10'>
           <div className='w-full max-w-3xl font-mono md:max-w-2xl'>
             <CatTagRoller cats={post.categories} tags={post.tags} />

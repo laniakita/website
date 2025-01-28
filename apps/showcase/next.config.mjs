@@ -64,7 +64,6 @@ const nextConfigFunction = async (phase, { defaultConfig }) => {
       swDest: 'public/sw.js',
     });
     plugins.push(withSerwist);
-
   }
   // ignore webpack cache warnings (see: https://github.com/contentlayerdev/contentlayer/issues/313)
   const withContentLayer = (await import('next-contentlayer2')).withContentlayer;

@@ -6,7 +6,7 @@ const BotClickerScene = dynamic(() => import('@/app/projects/bot-clicker/scene-m
   ssr: false,
   loading: () => (
     <div className='absolute top-0 flex size-full items-center justify-center lg:max-h-dvh'>
-      <svg className='-ml-1 mr-3 size-9 text-ctp-text motion-safe:animate-spin' fill='none' viewBox='0 0 24 24'>
+      <svg className='text-ctp-text -ml-1 mr-3 size-9 motion-safe:animate-spin' fill='none' viewBox='0 0 24 24'>
         <circle className='stroke-ctp-mauve opacity-25' cx='12' cy='12' r='10' strokeWidth='4' />
         <path
           className='fill-ctp-mauve opacity-75'

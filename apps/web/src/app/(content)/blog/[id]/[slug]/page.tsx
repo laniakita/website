@@ -138,7 +138,7 @@ export default async function BlogPostPage(props: { params: Promise<{ id: string
   return (
     <>
       <script type='application/ld+json' dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <main className='pb-common -mb-0.5 flex min-h-full w-full flex-col'>
+      <main className='-mb-0.5 flex min-h-full w-full flex-col pb-common'>
         {/* flex box break prose */}
         <article
           id='content'

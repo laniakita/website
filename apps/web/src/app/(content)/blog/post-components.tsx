@@ -13,7 +13,7 @@ export default function PostPreviewV4(post: Post) {
   const res = post.featured_image as FeaturedImageR1;
 
   return (
-    <div className='motion-safe:simple-color-trans flex basis-full flex-col overflow-hidden rounded-md border border-ctp-surface0 bg-ctp-base dark:border-ctp-base dark:bg-ctp-midnight'>
+    <div className='flex basis-full flex-col overflow-hidden rounded-md border border-ctp-surface0 bg-ctp-base motion-safe:simple-color-trans dark:border-ctp-base dark:bg-ctp-midnight'>
       {res.hasImage ? (
         <Link href={post.url}>
           <Image
@@ -47,7 +47,7 @@ export default function PostPreviewV4(post: Post) {
           </div>
 
           <div>
-            <h2 className='post-preview-headline w-fit'>
+            <h2 className='w-fit post-preview-headline'>
               <Link href={post.url} className='text-ctp-text'>
                 {post.headline}
               </Link>
@@ -67,7 +67,7 @@ export default function PostPreviewV4(post: Post) {
 }
 
 interface HomePostPreviewProps extends HTMLAttributes<HTMLDivElement> {
-  post: Post
+  post: Post;
   parentExtraClass?: string;
 }
 
@@ -77,7 +77,10 @@ export function HomePostPreview(props: HomePostPreviewProps) {
   const res = post.featured_image as FeaturedImageR1;
 
   return (
-    <div {...props} className={`motion-safe:simple-color-trans flex min-w-96 basis-full flex-col overflow-hidden rounded-md border border-ctp-surface0 bg-ctp-base dark:border-ctp-base dark:bg-ctp-midnight ${props.parentExtraClass}`} >
+    <div
+      {...props}
+      className={`flex min-w-96 basis-full flex-col overflow-hidden rounded-md border border-ctp-surface0 bg-ctp-base motion-safe:simple-color-trans dark:border-ctp-base dark:bg-ctp-midnight ${props.parentExtraClass}`}
+    >
       {res.hasImage ? (
         <Link href={post.url}>
           <Image
@@ -111,7 +114,7 @@ export function HomePostPreview(props: HomePostPreviewProps) {
           </div>
 
           <div>
-            <h2 className='post-preview-headline w-fit'>
+            <h2 className='w-fit post-preview-headline'>
               <Link href={post.url} className='text-ctp-text'>
                 {post.headline}
               </Link>

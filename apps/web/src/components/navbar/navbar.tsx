@@ -101,13 +101,13 @@ export default function NavbarCore() {
       <div className='relative'>
         {/* mobile menu container */}
         <div
-          className={`${clicked.stateVal === 'open' ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'} fixed left-0 top-16 z-40 flex h-[calc(100dvh-3.9rem)] max-h-[calc(100dvh-3.9rem)] w-full flex-col justify-start bg-black/40 [perspective:_5px] [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:_opacity_0.3s,] lg:bottom-0`}
+          className={`${clicked.stateVal === 'open' ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'} fixed top-16 left-0 z-40 flex h-[calc(100dvh-3.9rem)] max-h-[calc(100dvh-3.9rem)] w-full flex-col justify-start bg-black/40 [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] [perspective:_5px] motion-safe:[transition:_opacity_0.3s,] lg:bottom-0`}
         >
           {/* menu box */}
           <div
             id={NAV_MAIN_MOBILE_CONTAINER_ID}
             ref={dropNavRef}
-            className={`${clicked.stateVal === 'open' ? 'opacity-100 [transform:translate3d(0%,0%,0px)]' : 'opacity-0 [transform:translate3d(0%,-100%,-0.01rem)]'} max-h-[calc(100dvh-3.9rem)] w-full overflow-y-auto rounded-b-2xl border-b border-ctp-pink bg-ctp-base/90 backdrop-blur-md [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:transform_0.5s,_opacity_0.3s,_background-color_0.8s] lg:hidden dark:border-ctp-sky dark:bg-ctp-midnight/90`}
+            className={`${clicked.stateVal === 'open' ? '[transform:translate3d(0%,0%,0px)] opacity-100' : '[transform:translate3d(0%,-100%,-0.01rem)] opacity-0'} max-h-[calc(100dvh-3.9rem)] w-full overflow-y-auto rounded-b-2xl border-b border-ctp-pink bg-ctp-base/90 backdrop-blur-md [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:transform_0.5s,_opacity_0.3s,_background-color_0.8s] lg:hidden dark:border-ctp-sky dark:bg-ctp-midnight/90`}
           >
             <div className='flex size-full flex-col gap-3 p-10'>
               {pagesArr.map((page) => (
@@ -142,7 +142,7 @@ export default function NavbarCore() {
           <div id='nav-mask-edge' className='nav-glassy-edge' />
 
           <div className='z-[51] flex flex-row-reverse items-center justify-center gap-1 lg:flex-row'>
-            <LinkPlus href='/' className='nav-logo relative flex size-full w-16 items-center justify-center'>
+            <LinkPlus href='/' className='relative flex size-full w-16 items-center justify-center nav-logo'>
               <Image
                 src={logo}
                 alt="Logo of Lani's Initial. Click to go home."

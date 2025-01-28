@@ -18,7 +18,7 @@ function Inside(data: Page) {
   return (
     <main className='py-common-info-page'>
       <article id='content' className='flex size-full flex-col items-center justify-center'>
-        <div className='padding-post flex min-h-full items-center justify-center'>
+        <div className='flex min-h-full items-center justify-center padding-post'>
           <div className='prose-protocol-omega max-w-3xl px-0'>
             <GlobalMDXComponent {...data} />
           </div>
