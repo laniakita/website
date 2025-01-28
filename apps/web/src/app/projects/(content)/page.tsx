@@ -107,7 +107,7 @@ function ProjectPreview(data: Project) {
   }
 
   return (
-    <div className='motion-safe:simple-color-trans flex size-full basis-full flex-col overflow-hidden rounded-md border border-ctp-surface0 bg-ctp-base dark:border-ctp-base dark:bg-ctp-midnight'>
+    <div className='flex size-full basis-full flex-col overflow-hidden rounded-md border border-ctp-surface0 bg-ctp-base motion-safe:simple-color-trans dark:border-ctp-base dark:bg-ctp-midnight'>
       {res.src ? (
         <Link href={projectLink()} target='_blank'>
           <Image
@@ -126,11 +126,11 @@ function ProjectPreview(data: Project) {
       )}
       <div className='flex flex-col gap-4 p-8 lg:p-10'>
         <div className='flex flex-col gap-2'>
-          <h2 className='w-fit text-balance text-3xl font-black'>
+          <h2 className='w-fit text-3xl font-black text-balance'>
             <Link href={projectLink()} target='_blank' className='text-ctp-text'>
               <span className='relative'>
                 {data.title}
-                <span className='icon-[ph--arrow-up-right-bold] absolute bottom-1 ml-px text-xl' />
+                <span className='absolute bottom-1 ml-px icon-[ph--arrow-up-right-bold] text-xl' />
               </span>
             </Link>
           </h2>

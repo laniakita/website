@@ -19,7 +19,7 @@ export default function InfoBox({
 
   return (
     <div className=''>
-      <div className='sidebar-box simple-color-trans relative flex min-w-full flex-col gap-6 bg-ctp-base dark:bg-ctp-midnight'>
+      <div className='relative flex sidebar-box min-w-full flex-col gap-6 bg-ctp-base simple-color-trans dark:bg-ctp-midnight'>
         {isActiveTab === 'info' && (
           <div className='prose-protocol-omega p-6 pt-[4.5rem] prose-p:my-0'>
             <GlobalMDXRenderer>{blogInfo}</GlobalMDXRenderer>
@@ -27,7 +27,7 @@ export default function InfoBox({
         )}
 
         {isActiveTab === 'meta' && (
-          <div className='flex flex-col gap-2 px-6 pb-6 pt-[4.5rem]'>
+          <div className='flex flex-col gap-2 px-6 pt-[4.5rem] pb-6'>
             <div>
               <EzRoller title='Categories' array={categories} />
             </div>
@@ -45,7 +45,7 @@ export default function InfoBox({
                 onClick={() => {
                   setIsActiveTab('info');
                 }}
-                className={`tab-btn relative ${isActiveTab === 'info' ? 'tab-btn-active' : ''}`}
+                className={`relative tab-btn ${isActiveTab === 'info' ? 'tab-btn-active' : ''}`}
               >
                 <TabInner title='info' icon='icon-[ph--info]' active={isActiveTab === 'info'} />
               </button>
@@ -54,7 +54,7 @@ export default function InfoBox({
                 onClick={() => {
                   setIsActiveTab('meta');
                 }}
-                className={`tab-btn relative ${isActiveTab === 'meta' ? 'tab-btn-active' : ''}`}
+                className={`relative tab-btn ${isActiveTab === 'meta' ? 'tab-btn-active' : ''}`}
               >
                 <TabInner title='meta' icon='icon-[ph--tag]' active={isActiveTab === 'meta'} />
               </button>
@@ -84,10 +84,10 @@ function SmoothTab({ active }: { active: boolean }) {
   return (
     <>
       <span
-        className={`${active ? 'block' : 'hidden'} simple-color-trans absolute -left-4 bottom-0 size-4 [background:radial-gradient(circle_at_25%_25%,_#acb0be,_#acb0be_72%,_#dce0e8_5%,_#dce0e8_100%)] dark:[background:radial-gradient(circle_at_25%_25%,_#11111b,_#11111b_72%,_#1e1e2e_5%,_#1e1e2e_100%)]`}
+        className={`${active ? 'block' : 'hidden'} absolute bottom-0 -left-4 size-4 [background:radial-gradient(circle_at_25%_25%,_#acb0be,_#acb0be_72%,_#dce0e8_5%,_#dce0e8_100%)] simple-color-trans dark:[background:radial-gradient(circle_at_25%_25%,_#11111b,_#11111b_72%,_#1e1e2e_5%,_#1e1e2e_100%)]`}
       />
       <span
-        className={`${active ? 'block' : 'hidden'} simple-color-trans absolute -right-4 bottom-0 size-4 [background:radial-gradient(circle_at_75%_25%,_#acb0be,_#acb0be_72%,_#dce0e8_5%,_#dce0e8_100%)] dark:[background:radial-gradient(circle_at_75%_25%,_#11111b,_#11111b_72%,_#1e1e2e_5%,_#1e1e2e_100%)]`}
+        className={`${active ? 'block' : 'hidden'} absolute -right-4 bottom-0 size-4 [background:radial-gradient(circle_at_75%_25%,_#acb0be,_#acb0be_72%,_#dce0e8_5%,_#dce0e8_100%)] simple-color-trans dark:[background:radial-gradient(circle_at_75%_25%,_#11111b,_#11111b_72%,_#1e1e2e_5%,_#1e1e2e_100%)]`}
       />
     </>
   );

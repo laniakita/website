@@ -81,7 +81,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang='en-US' dir='ltr' className={`${inter_tight.variable} ${zeroxproto.variable} `} suppressHydrationWarning>
       <body
-        className={`${inter_tight.className} m-0 min-h-dvh scroll-pt-32 bg-ctp-base p-0 text-ctp-text [box-sizing:border-box] motion-safe:[scroll-behavior:_smooth] md:scroll-pt-24 dark:bg-ctp-midnight`}
+        className={`${inter_tight.className} m-0 [box-sizing:border-box] min-h-dvh scroll-pt-32 bg-ctp-base p-0 text-ctp-text motion-safe:[scroll-behavior:_smooth] md:scroll-pt-24 dark:bg-ctp-midnight`}
         suppressHydrationWarning
       >
         {/* eslint-disable @next/next/no-sync-scripts -- necessary */

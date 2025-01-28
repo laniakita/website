@@ -47,7 +47,7 @@ export default function Footer({
         <div className='flex size-full flex-col backdrop-blur-2xl'>
           {/* <FooterSubscribe /> */}
           <div
-            className={`flex flex-col items-center justify-center gap-4 ${outsidePadding ? outsidePadding : 'md:pb-common md:px-6'} `}
+            className={`flex flex-col items-center justify-center gap-4 ${outsidePadding ? outsidePadding : 'md:px-6 md:pb-common'} `}
           >
             {/* content container */}
             <div
@@ -120,7 +120,7 @@ export function CopyrightTag() {
   const currentYear = getDate.getFullYear(); //2024 bby
   return (
     <div className='text-xs'>
-      <p className='text-balance text-center'>© 2024-{currentYear} Lani Akita. All Rights Reserved.</p>
+      <p className='text-center text-balance'>© 2024-{currentYear} Lani Akita. All Rights Reserved.</p>
     </div>
   );
 }

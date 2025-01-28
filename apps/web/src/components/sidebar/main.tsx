@@ -96,7 +96,7 @@ export default function Sidebar() {
 export function SocialBox({ mobile }: { mobile?: boolean }) {
   return (
     <div
-      className={`${mobile ? 'block md:hidden' : 'hidden md:block'} simple-color-trans w-full rounded-md border border-ctp-surface0 bg-ctp-base p-6 dark:border-ctp-base dark:bg-ctp-midnight`}
+      className={`${mobile ? 'block md:hidden' : 'hidden md:block'} w-full rounded-md border border-ctp-surface0 bg-ctp-base p-6 simple-color-trans dark:border-ctp-base dark:bg-ctp-midnight`}
     >
       <SocialIconNav2 boxItems={SOCIALS_FULL} />
     </div>
@@ -106,16 +106,16 @@ export function SocialBox({ mobile }: { mobile?: boolean }) {
 export function SubscribeBox({ mobile }: { mobile?: boolean }) {
   return (
     <div
-      className={`sidebar-box ${mobile ? 'flex md:hidden' : 'hidden md:flex md:w-full'} simple-color-trans min-w-full flex-col gap-4 bg-ctp-base p-6 dark:bg-ctp-midnight`}
+      className={`sidebar-box ${mobile ? 'flex md:hidden' : 'hidden md:flex md:w-full'} min-w-full flex-col gap-4 bg-ctp-base p-6 simple-color-trans dark:bg-ctp-midnight`}
     >
-      <h4 className='flex-wrap text-balance text-3xl font-black'>Articles delivered right to your feed reader.</h4>
+      <h4 className='flex-wrap text-3xl font-black text-balance'>Articles delivered right to your feed reader.</h4>
       <Link
         target='_blank'
         href='/atom.xml'
         type='application/atom+xml'
         className='font-mono font-bold text-ctp-base hover:text-ctp-base hover:no-underline'
       >
-        <p className='color-trans-quick flex w-full flex-row items-center justify-center gap-[1ch] rounded bg-ctp-mauve px-4 py-2 hover:bg-ctp-pink'>
+        <p className='flex w-full flex-row items-center justify-center gap-[1ch] rounded bg-ctp-mauve px-4 py-2 color-trans-quick hover:bg-ctp-pink'>
           <span>subscribe</span>
           <span>|</span>
           <span className='flex flex-row items-center'>

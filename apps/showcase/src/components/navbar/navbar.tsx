@@ -66,7 +66,7 @@ export default function NavBar() {
           {/* menu box */}
           <div
             ref={dropNavRef}
-            className={`${clicked.stateVal === 'open' ? 'opacity-100 [transform:translate3d(0%,0%,0px)]' : 'opacity-0 [transform:translate3d(0%,-100%,-0.01rem)]'} max-h-[calc(100dvh-3.9rem)] w-full overflow-y-auto rounded-b-2xl border-b border-ctp-pink bg-ctp-base/90 backdrop-blur-md [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:transform_0.5s,_opacity_0.3s,_background-color_0.8s] lg:hidden dark:border-ctp-sky dark:bg-ctp-midnight/90`}
+            className={`${clicked.stateVal === 'open' ? 'opacity-100 [transform:translate3d(0%,0%,0px)]' : 'opacity-0 [transform:translate3d(0%,-100%,-0.01rem)]'} border-ctp-pink bg-ctp-base/90 dark:border-ctp-sky dark:bg-ctp-midnight/90 max-h-[calc(100dvh-3.9rem)] w-full overflow-y-auto rounded-b-2xl border-b backdrop-blur-md [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:transform_0.5s,_opacity_0.3s,_background-color_0.8s] lg:hidden`}
           >
             <div className='flex size-full flex-col gap-3 p-10'>
               {mainNavArr.map((page) => (
@@ -89,7 +89,7 @@ export default function NavBar() {
       </Suspense>
 
       <div
-        className={`motion-safe:simple-color-trans fixed inset-x-0 top-0 z-50 flex h-16 w-full items-center justify-between border-b border-ctp-base px-6 text-xl shadow-lg backdrop-blur-md [transition:_opacity_0.8s] dark:border-ctp-surface0 ${clicked.stateVal === 'open' ? 'bg-ctp-base/90 dark:bg-ctp-midnight/80' : 'bg-ctp-base/80 dark:bg-ctp-midnight/70'}`}
+        className={`motion-safe:simple-color-trans border-ctp-base dark:border-ctp-surface0 fixed inset-x-0 top-0 z-50 flex h-16 w-full items-center justify-between border-b px-6 text-xl shadow-lg backdrop-blur-md [transition:_opacity_0.8s] ${clicked.stateVal === 'open' ? 'bg-ctp-base/90 dark:bg-ctp-midnight/80' : 'bg-ctp-base/80 dark:bg-ctp-midnight/70'}`}
       >
         <div className='flex flex-row-reverse items-center justify-center gap-1 lg:flex-row'>
           <LinkPlus href={MAIN_SITE_URL} className='nav-logo relative flex size-full w-16 items-center justify-center'>
@@ -124,13 +124,13 @@ export default function NavBar() {
             >
               <span className='flex size-fit flex-col items-center justify-center gap-1'>
                 <span
-                  className={`${clicked.stateVal === 'open' ? 'translate-y-1 rotate-[-40deg]' : ''} h-0.5 w-6 bg-ctp-text motion-safe:[transition:transform_0.3s]`}
+                  className={`${clicked.stateVal === 'open' ? 'translate-y-1 rotate-[-40deg]' : ''} bg-ctp-text h-0.5 w-6 motion-safe:[transition:transform_0.3s]`}
                 />
                 <span
-                  className={`${clicked.stateVal === 'open' ? 'opacity-0' : ''} h-0.5 w-6 bg-ctp-text motion-safe:[transition:opacity_0.3s]`}
+                  className={`${clicked.stateVal === 'open' ? 'opacity-0' : ''} bg-ctp-text h-0.5 w-6 motion-safe:[transition:opacity_0.3s]`}
                 />
                 <span
-                  className={`${clicked.stateVal === 'open' ? '-translate-y-2 rotate-[40deg]' : ''} h-0.5 w-6 bg-ctp-text motion-safe:[transition:transform_0.3s]`}
+                  className={`${clicked.stateVal === 'open' ? '-translate-y-2 rotate-[40deg]' : ''} bg-ctp-text h-0.5 w-6 motion-safe:[transition:transform_0.3s]`}
                 />
               </span>
             </button>
@@ -156,7 +156,7 @@ function SimpleSocials({ arr }: { arr: SocialNavIcon[] }) {
             target='_blank'
             aria-label={`Follow Lani on ${icon.linkName}`}
             href={icon.url}
-            className='flex items-center justify-center text-3xl text-ctp-subtext1/80 dark:hover:text-ctp-pink'
+            className='text-ctp-subtext1/80 dark:hover:text-ctp-pink flex items-center justify-center text-3xl'
           >
             <span className={`${icon.iconName} text-3xl`} />
           </Link>

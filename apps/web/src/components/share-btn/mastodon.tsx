@@ -60,9 +60,9 @@ export function MastodonPrompt({
       >
         <button
           onClick={() => setShowMastodonForm(false)}
-          className='motion-safe:color-trans-2-quick group absolute -right-2 -top-2 flex items-center justify-center rounded-full border border-ctp-overlay0 bg-ctp-base text-ctp-text shadow-lg hover:bg-ctp-red hover:text-ctp-base hover:shadow-lg hover:shadow-ctp-red/30 active:bg-ctp-red active:text-ctp-base active:shadow-lg active:shadow-ctp-red/30 md:-right-4 md:-top-4'
+          className='group absolute -top-2 -right-2 flex items-center justify-center rounded-full border border-ctp-overlay0 bg-ctp-base text-ctp-text shadow-lg hover:bg-ctp-red hover:text-ctp-base hover:shadow-lg hover:shadow-ctp-red/30 active:bg-ctp-red active:text-ctp-base active:shadow-lg active:shadow-ctp-red/30 motion-safe:color-trans-2-quick md:-top-4 md:-right-4'
         >
-          <span className='icon-[ph--x-circle] pointer-events-none z-[21] size-[3ch] shadow-lg md:size-[4ch]' />
+          <span className='pointer-events-none z-[21] icon-[ph--x-circle] size-[3ch] shadow-lg md:size-[4ch]' />
         </button>
         <form action={(e) => ShareToMastodon(e, setShowMastodonForm)} className='flex flex-col gap-4'>
           <label htmlFor='mastodon-instance' className='font-mono font-semibold'>

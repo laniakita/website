@@ -1,10 +1,5 @@
 @import 'tailwindcss';
 @plugin "@iconify/tailwind4";
-/*
-@plugin "@catppuccin/tailwindcss" {
-  prefix: 'ctp';
-} */
-
 @plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -189,7 +184,7 @@
   }
 
   a {
-    @apply link-color-trans text-ctp-mauve hover:text-ctp-pink hover:underline aria-[current]:text-ctp-pink aria-[current]:underline;
+    @apply text-ctp-mauve link-color-trans hover:text-ctp-pink hover:underline aria-[current]:text-ctp-pink aria-[current]:underline;
   }
 
   @media (prefers-reduced-motion) {
@@ -230,7 +225,7 @@
   }
 
   :where(details p, details summary, details ul li, aside p) code {
-    @apply !border-none !bg-inherit !text-sm !font-black !italic !text-inherit;
+    @apply !border-none !bg-inherit !text-sm !font-black !text-inherit !italic;
   }
 
   aside {
@@ -447,7 +442,7 @@
 
 @layer components {
   .footer-nav-item {
-    @apply text-base capitalize text-ctp-subtext1 aria-[current]:text-ctp-pink aria-[current]:underline;
+    @apply text-base text-ctp-subtext1 capitalize aria-[current]:text-ctp-pink aria-[current]:underline;
   }
 
   .layout01 {
@@ -578,7 +573,7 @@
   @apply pb-12;
 }
 @utility common-padding {
-  @apply pt-common px-page-common pb-common;
+  @apply px-page-common pt-common pb-common;
 }
 @utility padding-post {
   @apply px-10;
@@ -588,7 +583,7 @@
   @apply text-sm;
 }
 @utility unified-style {
-  @apply unified-text my-6 block space-y-6 rounded-lg border p-6 font-mono shadow-lg;
+  @apply my-6 block space-y-6 rounded-lg border p-6 font-mono unified-text shadow-lg;
 }
 @utility unified-info-style {
   @apply unified-style border-ctp-blue bg-ctp-blue/10 dark:border-ctp-sky dark:bg-ctp-sky/5 dark:text-ctp-sky;
@@ -718,26 +713,26 @@
 }
 
 @utility prose-code-pretty {
-  @apply prose-pre:rounded-xl prose-pre:border prose-pre:border-ctp-surface0 [&:where(:not(details_p,_details_summary,_details_ul_li,_aside_p,_h1,_h2,_h3,_h4,_h5,_h6)>code)]:prose-code:before:hidden [&:where(:not(details_p,_details_summary,_details_ul_li,_aside_p,_h1,_h2,_h3,_h4,_h5,_h6)>code)]:prose-code:after:hidden [&:where(:not(pre)>code)]:prose-code:break-words [&:where(:not(pre)>code)]:prose-code:rounded-md [&:where(:not(pre)>code)]:prose-code:border [&:where(:not(pre)>code)]:prose-code:border-ctp-surface0 [&:where(:not(pre)>code)]:prose-code:bg-ctp-base [&:where(:not(pre)>code)]:prose-code:px-1 [&:where(:not(pre)>code)]:prose-code:py-0.5;
+  @apply prose-pre:rounded-xl prose-pre:border prose-pre:border-ctp-surface0 [&:where(:not(details_p,_details_summary,_details_ul_li,_aside_p,_h1,_h2,_h3,_h4,_h5,_h6)>code)]:prose-code:before:hidden [&:where(:not(details_p,_details_summary,_details_ul_li,_aside_p,_h1,_h2,_h3,_h4,_h5,_h6)>code)]:prose-code:after:hidden [&:where(:not(pre)>code)]:prose-code:rounded-md [&:where(:not(pre)>code)]:prose-code:border [&:where(:not(pre)>code)]:prose-code:border-ctp-surface0 [&:where(:not(pre)>code)]:prose-code:bg-ctp-base [&:where(:not(pre)>code)]:prose-code:px-1 [&:where(:not(pre)>code)]:prose-code:py-0.5 [&:where(:not(pre)>code)]:prose-code:break-words;
 }
 
 @utility prose-headings-mod {
-  @apply prose-headings:align-baseline prose-headings:font-black prose-h2:text-xl prose-h3:text-lg prose-h4:text-lg prose-h4:font-bold prose-h5:text-lg prose-h5:font-semibold prose-h6:text-lg prose-h6:font-medium lg:prose-h2:text-2xl lg:prose-h3:text-xl lg:prose-h4:text-xl lg:prose-h5:text-xl lg:prose-h6:text-lg;
+  @apply prose-headings:align-baseline prose-headings:font-black prose-h2:text-xl lg:prose-h2:text-2xl prose-h3:text-lg lg:prose-h3:text-xl prose-h4:text-lg prose-h4:font-bold lg:prose-h4:text-xl prose-h5:text-lg prose-h5:font-semibold lg:prose-h5:text-xl prose-h6:text-lg prose-h6:font-medium lg:prose-h6:text-lg;
 }
 
 @utility prose-text-pretty {
-  @apply prose-headings-mod prose-a:break-words prose-em:mr-[0.2ch] prose-p:supports-[text-wrap:pretty]:text-pretty;
+  @apply prose-headings-mod prose-p:supports-[text-wrap:pretty]:text-pretty prose-a:break-words prose-em:mr-[0.2ch];
 }
 
 @utility prose-footnotes-active {
-  @apply after:pointer-events-none after:absolute after:-inset-y-2 after:-left-10 after:-right-4 after:rounded-lg after:border after:border-ctp-mauve after:bg-ctp-mauve/20 after:opacity-100 after:[transition:opacity_0.3s];
+  @apply after:pointer-events-none after:absolute after:-inset-y-2 after:-right-4 after:-left-10 after:rounded-lg after:border after:border-ctp-mauve after:bg-ctp-mauve/20 after:opacity-100 after:[transition:opacity_0.3s];
 }
 @utility prose-lists-pretty {
   @apply prose-ol:leading-tight prose-ul:leading-tight;
 }
 
 @utility prose-protocol-omega {
-  @apply prose-code-pretty prose-text-pretty prose-lists-pretty prose prose-catppuccin dark:prose-invert;
+  @apply prose prose-text-pretty prose-code-pretty prose-lists-pretty prose-catppuccin dark:prose-invert;
 }
 
 /* navbar */
@@ -747,7 +742,7 @@
 }
 
 @utility nav-item {
-  @apply w-min font-mono text-base font-semibold capitalize text-ctp-subtext1;
+  @apply w-min font-mono text-base font-semibold text-ctp-subtext1 capitalize;
 }
 
 @utility force-repaint {
@@ -759,29 +754,29 @@
 }
 
 @utility nav-glassy-edge {
-  @apply pointer-events-none absolute inset-0 h-full bg-ctp-base/30 [backdrop-filter:_blur(8px)_brightness(110%)_saturate(120%)] [mask-image:_linear-gradient(to_bottom,_black_0_3px,_transparent_3px)] [transform:_translateY(100%)] dark:[backdrop-filter:_blur(8px)_brightness(140%)_saturate(120%)];
+  @apply pointer-events-none absolute inset-0 h-full [transform:_translateY(100%)] bg-ctp-base/30 [backdrop-filter:_blur(8px)_brightness(110%)_saturate(120%)] [mask-image:_linear-gradient(to_bottom,_black_0_3px,_transparent_3px)] dark:[backdrop-filter:_blur(8px)_brightness(140%)_saturate(120%)];
 }
 
 /* post-header */
 @utility post-headline {
-  @apply w-full max-w-4xl text-2xl font-black leading-7 supports-[text-wrap:balance]:text-balance md:max-w-2xl lg:text-3xl lg:leading-9;
+  @apply w-full max-w-4xl text-2xl leading-7 font-black supports-[text-wrap:balance]:text-balance md:max-w-2xl lg:text-3xl lg:leading-9;
 }
 @utility post-subheadline {
-  @apply -mt-2 w-full max-w-4xl text-xl font-light leading-tight supports-[text-wrap:balance]:text-balance md:max-w-2xl lg:text-2xl;
+  @apply -mt-2 w-full max-w-4xl text-xl leading-tight font-light supports-[text-wrap:balance]:text-balance md:max-w-2xl lg:text-2xl;
 }
 @utility header-alt-text {
   @apply -mt-4 flex w-full flex-col items-center justify-center px-6 text-xs font-light lg:-mt-3 lg:text-sm;
 }
 @utility header-caption {
-  @apply flex w-full items-center justify-center px-6 text-lg font-black italic leading-tight lg:text-xl;
+  @apply flex w-full items-center justify-center px-6 text-lg leading-tight font-black italic lg:text-xl;
 }
 
 /* post-preview */
 @utility post-preview-headline {
-  @apply text-balance text-2xl font-black leading-7 lg:text-3xl lg:leading-9;
+  @apply text-2xl leading-7 font-black text-balance lg:text-3xl lg:leading-9;
 }
 @utility post-preview-subheadline {
-  @apply text-balance text-xl font-light leading-tight lg:text-2xl;
+  @apply text-xl leading-tight font-light text-balance lg:text-2xl;
 }
 
 /* sidebar */
@@ -795,7 +790,7 @@
   @apply bg-ctp-crust dark:bg-ctp-base;
 }
 @utility tab-btn-hover {
-  @apply color-trans-quick absolute inset-0 z-10 mx-2 mb-1.5 mt-px rounded-xl hover:bg-ctp-pink/80 dark:hover:bg-ctp-pink/60;
+  @apply absolute inset-0 z-10 mx-2 mt-px mb-1.5 rounded-xl color-trans-quick hover:bg-ctp-pink/80 dark:hover:bg-ctp-pink/60;
 }
 @utility tab-btn-text {
   @apply pointer-events-none z-20 flex flex-row items-center gap-[1ch] font-semibold text-ctp-text;
@@ -803,24 +798,24 @@
 
 /* social-button */
 @utility social-button {
-  @apply color-trans-2 flex items-center justify-center rounded border border-ctp-surface0 text-ctp-text shadow-none hover:bg-ctp-mauve hover:text-ctp-base hover:shadow-none hover:shadow-ctp-mauve/30 dark:border-ctp-base;
+  @apply flex items-center justify-center rounded border border-ctp-surface0 text-ctp-text shadow-none color-trans-2 hover:bg-ctp-mauve hover:text-ctp-base hover:shadow-none hover:shadow-ctp-mauve/30 dark:border-ctp-base;
 }
 @utility share-button {
-  @apply motion-safe:color-trans-quick flex w-full flex-row items-center gap-[1ch] rounded border border-ctp-overlay0 px-4 py-2 text-ctp-subtext0 hover:text-ctp-base dark:hover:text-ctp-text;
+  @apply flex w-full flex-row items-center gap-[1ch] rounded border border-ctp-overlay0 px-4 py-2 text-ctp-subtext0 hover:text-ctp-base motion-safe:color-trans-quick dark:hover:text-ctp-text;
 }
 @utility instance-share-button {
-  @apply motion-safe:color-trans-2-quick absolute inset-y-2 right-2 rounded-full border border-ctp-blue bg-ctp-blue/20 px-4 font-mono text-ctp-blue hover:border-ctp-sky hover:bg-ctp-sky/20 hover:text-ctp-sky hover:shadow-lg hover:shadow-ctp-sky/30 active:border-ctp-sky active:text-ctp-sky active:shadow-lg active:shadow-ctp-sky/30 dark:hover:bg-ctp-sky/40;
+  @apply absolute inset-y-2 right-2 rounded-full border border-ctp-blue bg-ctp-blue/20 px-4 font-mono text-ctp-blue hover:border-ctp-sky hover:bg-ctp-sky/20 hover:text-ctp-sky hover:shadow-lg hover:shadow-ctp-sky/30 active:border-ctp-sky active:text-ctp-sky active:shadow-lg active:shadow-ctp-sky/30 motion-safe:color-trans-2-quick dark:hover:bg-ctp-sky/40;
 }
 
 /* home */
 @utility home-btn-standard {
-  @apply color-trans-quick rounded border border-ctp-mauve bg-ctp-base/70 p-2 text-center font-mono text-lg text-ctp-mauve backdrop-blur-md hover:border-ctp-flamingo hover:bg-ctp-pink hover:text-ctp-base hover:no-underline;
+  @apply rounded border border-ctp-mauve bg-ctp-base/70 p-2 text-center font-mono text-lg text-ctp-mauve backdrop-blur-md color-trans-quick hover:border-ctp-flamingo hover:bg-ctp-pink hover:text-ctp-base hover:no-underline;
 }
 @utility home-btn-extra {
   @apply home-btn-standard bg-ctp-mauve/20;
 }
 @utility home-btn-2 {
-  @apply flex w-full items-center justify-center rounded border border-ctp-text/40 px-4 py-2 font-mono text-base font-bold lowercase text-ctp-text [transition:_background-color_0.38s,_color_0.38s,_border_0.38s] hover:border-ctp-pink hover:bg-ctp-pink/40 hover:text-ctp-base hover:no-underline md:w-fit md:whitespace-nowrap md:border-ctp-surface1 dark:hover:text-ctp-pink;
+  @apply flex w-full items-center justify-center rounded border border-ctp-text/40 px-4 py-2 font-mono text-base font-bold text-ctp-text lowercase [transition:_background-color_0.38s,_color_0.38s,_border_0.38s] hover:border-ctp-pink hover:bg-ctp-pink/40 hover:text-ctp-base hover:no-underline md:w-fit md:border-ctp-surface1 md:whitespace-nowrap dark:hover:text-ctp-pink;
 }
 @utility home-btn-2-extra {
   @apply home-btn-2 border-ctp-sapphire bg-ctp-sapphire/20 text-ctp-sapphire hover:border-ctp-sky hover:bg-ctp-sky/40 hover:text-ctp-base dark:hover:text-ctp-sky;

@@ -27,7 +27,7 @@ export function FooterBox(Props: FooterBoxProps) {
         <div className='flex flex-col space-y-2 text-2xl'>
           {navItems.map((item) =>
             item === 'login' || item === 'subscribe' ? (
-              <p key={navItems.indexOf(item)} className='capitalize text-ctp-surface0'>
+              <p key={navItems.indexOf(item)} className='text-ctp-surface0 capitalize'>
                 {item}
               </p>
             ) : (

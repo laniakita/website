@@ -6,9 +6,9 @@ export default function FooterSubscribe() {
         <h3 className='text-2xl font-light'>
           Subscribe to the newsletter to get posts, announcements, & more, right to your inbox.
         </h3>
-        <div className='simple-color-trans flex w-full flex-row items-center justify-between overflow-x-hidden rounded-lg border border-ctp-surface0 bg-ctp-mantle p-2 text-2xl font-thin shadow-inner'>
+        <div className='flex w-full flex-row items-center justify-between overflow-x-hidden rounded-lg border border-ctp-surface0 bg-ctp-mantle p-2 text-2xl font-thin shadow-inner simple-color-trans'>
           <p className='break-all'>urEmail@address.com</p>
-          <div className='color-trans-2 flex items-center justify-center rounded-xl border border-ctp-surface0 p-2 text-3xl hover:bg-ctp-mauve hover:text-ctp-base hover:shadow-xl hover:shadow-ctp-mauve/30'>
+          <div className='flex items-center justify-center rounded-xl border border-ctp-surface0 p-2 text-3xl color-trans-2 hover:bg-ctp-mauve hover:text-ctp-base hover:shadow-xl hover:shadow-ctp-mauve/30'>
             <span className='icon-[ph--arrow-circle-right-fill]' />
           </div>
         </div>

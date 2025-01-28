@@ -189,7 +189,7 @@ function ExpandableFootNotesComponent(props: React.DetailedHTMLProps<React.HTMLA
             }}
             className='pointer-events-auto flex w-fit flex-row items-center gap-[1ch] rounded-lg border border-ctp-mauve bg-ctp-mauve/10 p-4 font-mono text-sm text-ctp-mauve shadow-lg backdrop-blur-sm [transition:_color_0.3s,_border_0.3s,_box-shadow_0.3s,_backdrop-filter_0.3s,_background_0.3s] hover:border-ctp-pink hover:bg-ctp-pink/10 hover:text-ctp-pink hover:shadow-xl hover:backdrop-blur'
           >
-            <span className='icon-[ph--note-fill] pointer-events-none w-[2ch] text-2xl' />
+            <span className='pointer-events-none icon-[ph--note-fill] w-[2ch] text-2xl' />
             <span className='pointer-events-none'>show references</span>
           </button>
         </div>

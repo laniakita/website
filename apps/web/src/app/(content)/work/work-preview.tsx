@@ -1,18 +1,17 @@
-import { FeaturedImageR1 } from "@/lib/image-process";
-import { Work } from "contentlayer/generated";
-import Image from "next/image";
-import Link from "next/link";
-import { useId } from "react";
-import LocalDate from "../blog/local-date";
-import GlobalMDXComponent from "@/components/mdx/global-mdx-components";
-
+import { FeaturedImageR1 } from '@/lib/image-process';
+import { Work } from 'contentlayer/generated';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useId } from 'react';
+import LocalDate from '../blog/local-date';
+import GlobalMDXComponent from '@/components/mdx/global-mdx-components';
 
 export function WorkPreview(data: Work) {
   const res = data.featured_image as FeaturedImageR1;
   const uKey = useId();
 
   return (
-    <div className='motion-safe:simple-color-trans flex size-full basis-full flex-col overflow-hidden rounded-md border border-ctp-surface0 bg-ctp-base dark:border-ctp-base dark:bg-ctp-midnight'>
+    <div className='flex size-full basis-full flex-col overflow-hidden rounded-md border border-ctp-surface0 bg-ctp-base motion-safe:simple-color-trans dark:border-ctp-base dark:bg-ctp-midnight'>
       {res.src ? (
         <Link href={`https://${data.domain}`} target='_blank' aria-disabled={!data.active}>
           <Image
@@ -31,7 +30,7 @@ export function WorkPreview(data: Work) {
       )}
       <div className='flex flex-col gap-4 p-8 lg:p-10'>
         <div className='flex flex-col gap-2'>
-          <h2 className='w-fit text-balance text-3xl font-black'>
+          <h2 className='w-fit text-3xl font-black text-balance'>
             <Link
               href={`https://${data.domain}`}
               target='_blank'
@@ -40,7 +39,7 @@ export function WorkPreview(data: Work) {
             >
               <span className='relative'>
                 {data.title}
-                <span className='icon-[ph--arrow-up-right-bold] absolute bottom-1 ml-px text-xl' />
+                <span className='absolute bottom-1 ml-px icon-[ph--arrow-up-right-bold] text-xl' />
               </span>
             </Link>
           </h2>
