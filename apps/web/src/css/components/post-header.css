@@ -1,0 +1,14 @@
+@layer components {
+  .post-headline {
+    @apply w-full max-w-4xl text-2xl font-black leading-7 supports-[text-wrap:balance]:text-balance md:max-w-2xl lg:text-3xl lg:leading-9;
+  }
+  .post-subheadline {
+    @apply -mt-2 w-full max-w-4xl text-xl font-light leading-tight supports-[text-wrap:balance]:text-balance md:max-w-2xl lg:text-2xl;
+  }
+  .header-alt-text {
+    @apply -mt-4 flex w-full flex-col items-center justify-center px-6 text-xs font-light lg:-mt-3 lg:text-sm;
+  }
+  .header-caption {
+    @apply flex w-full items-center justify-center px-6 text-lg font-black italic leading-tight lg:text-xl;
+  }
+}

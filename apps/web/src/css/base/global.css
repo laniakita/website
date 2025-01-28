@@ -1,0 +1,22 @@
+@layer base {
+  *,
+  *:before,
+  *:after {
+    box-sizing: inherit;
+  }
+
+  html,
+  body,
+  #root {
+    @apply ctp-latte m-0 min-h-dvh scroll-pt-32 bg-ctp-base p-0 text-ctp-text [box-sizing:border-box] dark:ctp-mocha motion-safe:[scroll-behavior:_smooth] md:scroll-pt-24 dark:bg-ctp-midnight;
+  }
+
+  a {
+    @apply link-color-trans text-ctp-mauve hover:text-ctp-pink hover:underline aria-[current]:text-ctp-pink aria-[current]:underline;
+  }
+
+  canvas {
+    opacity: 0;
+    @apply animate-fade-in;
+  }
+}
