@@ -1,6 +1,7 @@
 @import 'tailwindcss';
-@plugin "./iconify.ts";
+@plugin "@iconify/tailwind4";
 @plugin "@catppuccin/tailwindcss";
+@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -31,7 +32,7 @@
   --color-ctp-base: rgba(var(--ctp-base));
   --color-ctp-mantle: rgba(var(--ctp-mantle));
   --color-ctp-crust: rgba(var(--ctp-crust));
-  --color-ctp-midnight: #07070D;
+  --color-ctp-midnight: #07070d;
 }
 
 @theme {
@@ -54,7 +55,7 @@
     100% {
       opacity: 1;
     }
-  };
+  }
   @keyframes fade-in-up {
     0% {
       opacity: 0;
@@ -64,7 +65,7 @@
       opacity: 1;
       transform: translate3d(0rem;0rem, 0rem);
     }
-  };
+  }
   @keyframes fade-in-down {
     0% {
       opacity: 0;
@@ -74,7 +75,7 @@
       opacity: 1;
       transform: translate3d(0rem, 0rem, 0rem);
     }
-  };
+  }
   @keyframes marquee {
     0% {
       transform: translate(0, 0);
@@ -82,7 +83,7 @@
     100% {
       transform: translate(-100%, 0);
     }
-  };
+  }
   @keyframes upDog {
     0% {
       transform: translateY(140%);
@@ -90,7 +91,7 @@
     100% {
       transform: translateY(0%);
     }
-  };
+  }
   @keyframes test-iv {
     0% {
       transform: scale(1);
@@ -98,7 +99,7 @@
     100% {
       transform: scale(1);
     }
-  };
+  }
 }
 
 @layer base {
@@ -129,6 +130,100 @@
     .s-slider button[aria-checked='true']::before {
       transition: all 0s;
     }
+  }
+
+  [details-warn] {
+    @apply unified-style border-ctp-peach bg-ctp-peach/5 dark:border-ctp-yellow dark:bg-ctp-yellow/5 dark:text-ctp-yellow;
+  }
+
+  [details-critical] {
+    @apply unified-style border-ctp-red bg-ctp-red/10 dark:bg-ctp-red/5 dark:text-ctp-red;
+  }
+
+  details {
+    @apply unified-info-style;
+  }
+
+  details > summary {
+    @apply font-mono font-black;
+  }
+
+  :where(details p) strong {
+    @apply !font-black !text-inherit;
+  }
+
+  :where(details p, details summary, details ul li, aside p) code {
+    @apply !border-none !bg-inherit !text-sm !font-black !italic !text-inherit;
+  }
+
+  aside {
+    @apply unified-info-style;
+  }
+  .sr-only {
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+    margin: -1px;
+    padding: 0;
+    width: 1px;
+    height: 1px;
+  }
+  #footnote-label {
+    overflow: hidden;
+    width: 100%;
+    height: 1px;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+    background-color: var(--footnote-divider-line);
+  }
+
+  div.code-line:empty {
+    /* it is necessary because there is no even eol character in div code-lines 
+    height: 15.5938px calculated height
+    */
+  }
+  span.code-line {
+    min-width: 100%;
+    display: inline-block;
+  }
+  .code-line {
+    padding-left: 12px;
+    padding-right: calc(4rem + 12px);
+    margin-left: -12px;
+    margin-right: calc(-4rem - 12px);
+    border-left: 4px solid transparent /* prepare for highlighted code-lines */;
+  }
+  .code-line.inserted {
+    background-color: var(--code-line-inserted) /* inserted code-line (+) color */;
+  }
+  .code-line.deleted {
+    background-color: var(--code-line-deleted) /* deleted code-line (-) color */;
+  }
+  .highlighted-code-line {
+    background-color: var(--code-line-highlighted);
+    border-left: 4px solid var(--code-line-highlight-indicator);
+  }
+  .numbered-code-line::before {
+    content: attr(data-line-number);
+    margin-left: -8px;
+    margin-right: 16px;
+    padding-right: 1ch;
+    padding-left: 3ch /* Note: assumes codeblock < 1000 lines */;
+    border-right: 0.05rem solid var(--code-line-border);
+    width: 1rem;
+    color: var(--code-line-number);
+    display: inline-flex;
+    justify-content: end;
+  }
+}
+
+@layer components {
+  .footer-nav-item {
+    @apply text-base capitalize text-ctp-subtext1 aria-[current]:text-ctp-pink aria-[current]:underline;
+  }
+
+  .layout01 {
+    @apply pt-[4rem];
   }
 }
 
@@ -234,4 +329,163 @@
       transform 0.3s,
       background-color 1s;
   }
+}
+
+@utility px-page-common {
+  @apply px-2 md:px-6;
+}
+@utility py-common-info-page {
+  @apply py-12;
+}
+@utility pt-post-page {
+  @apply pt-24 md:pt-12;
+}
+@utility pt-blog {
+  @apply pt-4 md:pt-12;
+}
+@utility pt-common {
+  @apply pt-12;
+}
+@utility pb-common {
+  @apply pb-12;
+}
+@utility common-padding {
+  @apply pt-common px-page-common pb-common;
+}
+@utility padding-post {
+  @apply px-10;
+}
+
+@utility unified-text {
+  @apply text-sm;
+}
+@utility unified-style {
+  @apply unified-text my-6 block space-y-6 rounded-lg border p-6 font-mono shadow-lg;
+}
+@utility unified-info-style {
+  @apply unified-style border-ctp-blue bg-ctp-blue/10 dark:border-ctp-sky dark:bg-ctp-sky/5 dark:text-ctp-sky;
+}
+
+@utility prose {
+
+  blockquote {
+    p:first-of-type::before {
+      display: none;
+    }
+    p:first-of-type::after {
+      display: none;
+    }
+  }
+  aside {
+    :is(h2, h3, h4, h5, h6) {
+      padding-top: 0;
+      padding-bottom: 0;
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
+  h1 {
+    a {
+      font-weight: 900;
+    }
+  }
+  h2 {
+    a {
+      font-weight: 900;
+    }
+  }
+  h3 {
+    a {
+      font-weight: 900;
+    }
+  }
+  h4 {
+    a {
+      font-weight: 900;
+    }
+  }
+  h5 {
+    a {
+      font-weight: 900;
+    }
+  }
+  del {
+    color: var(--tw-prose-del);
+    a {
+      color: var(--tw-prose-del-links);
+    }
+    code {
+      color: var(--tw-prose-del-code);
+    }
+    strong {
+      color: var(--tw-prose-del-strong);
+    }
+  }
+
+  pre {
+    overflow-x: auto;
+  }
+  pre > code {
+    float: left;
+    min-width: 100%;
+    padding-right: 4rem;
+  }
+}
+
+@utility prose-invert {
+  --tw-prose-del: var(--tw-prose-invert-del);
+  --tw-prose-del-links: var(--tw-prose-invert-del-links);
+  --tw-prose-del-code: var(--tw-prose-invert-del-code);
+  --tw-prose-del-strong: var(--tw-prose-invert-del-strong);
+  --code-line-inserted: var(--invert-code-line-inserted);
+  --code-line-deleted: var(--invert-code-line-deleted);
+  --code-line-highlighted: var(--code-line-invert-highlighted);
+}
+
+@utility prose-catppuccin {
+  --footnote-divider-line: var(colors.ctp-text.DEFAULT),
+  --code-line-highlighted: var(colors.ctp-mantle.DEFAULT),
+  --code-line-invert-highlighted: var(colors.ctp-surface0.DEFAULT),
+  --code-line-highlight-indicator: var(colors.ctp-sapphire.DEFAULT),
+  --code-line-inserted: rgba(64, 160, 43, 0.2),
+  --invert-code-line-inserted: rgba(166, 227, 161, 0.2),
+  --code-line-deleted: rgba(210, 15, 57, 0.2),
+  --invert-code-line-deleted: rgba(243, 139, 168, 0.2),
+  --code-line-border: var(colors.ctp-overlay0.DEFAULT),
+  --code-line-number: var(colors.ctp-overlay0.DEFAULT),
+  --tw-prose-del: var(colors.ctp-overlay0.DEFAULT),
+  --tw-prose-invert-del: var(colors.ctp-overlay0.DEFAULT),
+  --tw-prose-body: var(`colors.ctp-text.DEFAULT`),
+  --tw-prose-headings: var(colors.ctp-text.DEFAULT),
+  --tw-prose-lead: var(colors.ctp-text.DEFAULT),
+  --tw-prose-links: var(`colors.ctp-mauve.DEFAULT`),
+  --tw-prose-bold: var(colors.ctp-text.DEFAULT),
+  --tw-prose-counters: var(colors.ctp-text.DEFAULT),
+  --tw-prose-bullets: var(`colors.ctp-text.DEFAULT`),
+  --tw-prose-hr: var(`colors.ctp-mauve.DEFAULT`),
+  --tw-prose-quotes: var(colors.ctp-text.DEFAULT),
+  --tw-prose-quotes-bg: var(colors.ctp-base.DEFAULT),
+  --tw-prose-quote-borders: var(`colors.ctp-mauve.DEFAULT`),
+  --tw-prose-captions: var(colors.ctp-text.DEFAULT),
+  --tw-prose-code: var(colors.ctp-text.DEFAULT),
+  --tw-prose-pre-code: var(colors.ctp-text.DEFAULT),
+  --tw-prose-pre-bg: var(colors.ctp-base.DEFAULT),
+  --tw-prose-th-borders: var(`colors.ctp-mauve.DEFAULT`),
+  --tw-prose-td-borders: var(`colors.ctp-mauve.DEFAULT`),
+  --tw-prose-invert-body: var(colors.ctp-text.DEFAULT),
+  --tw-prose-invert-headings: var(colors.ctp-text.DEFAULT),
+  --tw-prose-invert-lead: var(colors.ctp-text.DEFAULT),
+  --tw-prose-invert-links: var(`colors.ctp-mauve.DEFAULT`),
+  --tw-prose-invert-bold: var(colors.ctp-text.DEFAULT),
+  --tw-prose-invert-counters: var(colors.ctp-text.DEFAULT),
+  --tw-prose-invert-bullets: var(colors.ctp-text.DEFAULT),
+  --tw-prose-invert-hr: var(colors.ctp-text.DEFAULT),
+  --tw-prose-invert-quotes: var(colors.ctp-text.DEFAULT),
+  --tw-prose-invert-quote-borders: var(`colors.ctp-mauve.DEFAULT`),
+  --tw-prose-invert-captions: var(colors.ctp-text.DEFAULT),
+  --tw-prose-invert-code: var(colors.ctp-text.DEFAULT),
+  --tw-prose-invert-pre-code: var(colors.ctp-text.DEFAULT),
+  --tw-prose-invert-pre-bg: var(colors.ctp-base.DEFAULT),
+  --tw-prose-invert-th-borders: var(`colors.ctp-mauve.DEFAULT`),
+  --tw-prose-invert-td-borders: var(`colors.ctp-mauve.DEFAULT`),
 }
