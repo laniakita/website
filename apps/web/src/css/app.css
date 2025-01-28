@@ -1,41 +1,107 @@
 @import 'tailwindcss';
 @plugin "@iconify/tailwind4";
-@plugin "@catppuccin/tailwindcss";
+/*
+@plugin "@catppuccin/tailwindcss" {
+  prefix: 'ctp';
+} */
+
 @plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme inline {
-  --color-ctp-rosewater: rgba(var(--ctp-rosewater));
-  --color-ctp-flamingo: rgba(var(--ctp-flamingo));
-  --color-ctp-pink: rgba(var(--ctp-pink));
-  --color-ctp-mauve: rgba(var(--ctp-mauve));
-  --color-ctp-red: rgba(var(--ctp-red));
-  --color-ctp-maroon: rgba(var(--ctp-maroon));
-  --color-ctp-peach: rgba(var(--ctp-peach));
-  --color-ctp-yellow: rgba(var(--ctp-yellow));
-  --color-ctp-green: rgba(var(--ctp-green));
-  --color-ctp-teal: rgba(var(--ctp-teal));
-  --color-ctp-sky: rgba(var(--ctp-sky));
-  --color-ctp-sapphire: rgba(var(--ctp-sapphire));
-  --color-ctp-blue: rgba(var(--ctp-blue));
-  --color-ctp-lavender: rgba(var(--ctp-lavender));
-  --color-ctp-text: rgba(var(--ctp-text));
-  --color-ctp-subtext1: rgba(var(--ctp-subtext1));
-  --color-ctp-subtext0: rgba(var(--ctp-subtext0));
-  --color-ctp-overlay2: rgba(var(--ctp-overlay2));
-  --color-ctp-overlay1: rgba(var(--ctp-overlay1));
-  --color-ctp-overlay0: rgba(var(--ctp-overlay0));
-  --color-ctp-surface2: rgba(var(--ctp-surface2));
-  --color-ctp-surface1: rgba(var(--ctp-surface1));
-  --color-ctp-surface0: rgba(var(--ctp-surface0));
-  --color-ctp-base: rgba(var(--ctp-base));
-  --color-ctp-mantle: rgba(var(--ctp-mantle));
-  --color-ctp-crust: rgba(var(--ctp-crust));
+  --color-ctp-rosewater: light-dark(rgba(var(--color-ctp-latte-rosewater)), rgba(var(--color-ctp-mocha-rosewater)));
+  --color-ctp-flamingo: light-dark(rgba(var(--color-ctp-latte-flamingo)), rgba(var(--color-ctp-mocha-flamingo)));
+  --color-ctp-pink: light-dark(rgba(var(--color-ctp-latte-pink)), rgba(var(--color-ctp-mocha-pink)));
+  --color-ctp-mauve: light-dark(rgba(var(--color-ctp-latte-mauve)), rgba(var(--color-ctp-mocha-mauve)));
+  --color-ctp-red: light-dark(rgba(var(--color-ctp-latte-red)), rgba(var(--color-ctp-mocha-red)));
+  --color-ctp-maroon: light-dark(rgba(var(--color-ctp-latte-maroon)), rgba(var(--color-ctp-mocha-maroon)));
+  --color-ctp-peach: light-dark(rgba(var(--color-ctp-latte-peach)), rgba(var(--color-ctp-mocha-peach)));
+  --color-ctp-yellow: light-dark(rgba(var(--color-ctp-latte-yellow)), rgba(var(--color-ctp-mocha-yellow)));
+  --color-ctp-green: light-dark(rgba(var(--color-ctp-latte-green)), rgba(var(--color-ctp-mocha-green)));
+  --color-ctp-teal: light-dark(rgba(var(--color-ctp-latte-teal)), rgba(var(--color-ctp-mocha-teal)));
+  --color-ctp-sky: light-dark(rgba(var(--color-ctp-latte-sky)), rgba(var(--color-ctp-mocha-sky)));
+  --color-ctp-sapphire: light-dark(rgba(var(--color-ctp-latte-sapphire)), rgba(var(--color-ctp-mocha-sapphire)));
+  --color-ctp-blue: light-dark(rgba(var(--color-ctp-latte-blue)), rgba(var(--color-ctp-mocha-blue)));
+  --color-ctp-lavender: light-dark(rgba(var(--color-ctp-latte-lavender)), rgba(var(--color-ctp-mocha-lavender)));
+  --color-ctp-text: light-dark(rgba(var(--color-ctp-latte-text)), rgba(var(--color-ctp-mocha-text)));
+  --color-ctp-subtext1: light-dark(rgba(var(--color-ctp-latte-subtext1)), rgba(var(--color-ctp-mocha-subtext1)));
+  --color-ctp-subtext0: light-dark(rgba(var(--color-ctp-latte-subtext0)), rgba(var(--color-ctp-mocha-subtext0)));
+  --color-ctp-overlay2: light-dark(rgba(var(--color-ctp-latte-overlay2)), rgba(var(--color-ctp-mocha-overlay2)));
+  --color-ctp-overlay1: light-dark(rgba(var(--color-ctp-latte-overlay1)), rgba(var(--color-ctp-mocha-overlay1)));
+  --color-ctp-overlay0: light-dark(rgba(var(--color-ctp-latte-overlay0)), rgba(var(--color-ctp-mocha-overlay0)));
+  --color-ctp-surface2: light-dark(rgba(var(--color-ctp-latte-surface2)), rgba(var(--color-ctp-mocha-surface2)));
+  --color-ctp-surface1: light-dark(rgba(var(--color-ctp-latte-surface1)), rgba(var(--color-ctp-mocha-surface1)));
+  --color-ctp-surface0: light-dark(rgba(var(--color-ctp-latte-surface0)), rgba(var(--color-ctp-mocha-surface0)));
+  --color-ctp-base: light-dark(rgba(var(--color-ctp-latte-base)), rgba(var(--color-ctp-mocha-base)));
+  --color-ctp-mantle: light-dark(rgba(var(--color-ctp-latte-mantle)), rgba(var(--color-ctp-mocha-mantle)));
+  --color-ctp-crust: light-dark(rgba(var(--color-ctp-latte-crust)), rgba(var(--color-ctp-mocha-crust)));
   --color-ctp-midnight: #07070d;
 }
 
 @theme {
+  /* catppuccin */
+  --color-ctp-latte-rosewater: 220, 138, 120;
+  --color-ctp-latte-flamingo: 221, 120, 120;
+  --color-ctp-latte-pink: 234, 118, 203;
+  --color-ctp-latte-mauve: 136, 57, 239;
+  --color-ctp-latte-red: 210, 15, 57;
+  --color-ctp-latte-maroon: 230, 69, 83;
+  --color-ctp-latte-peach: 254, 100, 11;
+  --color-ctp-latte-yellow: 223, 142, 29;
+  --color-ctp-latte-green: 64, 160, 43;
+  --color-ctp-latte-teal: 23, 146, 153;
+  --color-ctp-latte-sky: 4, 165, 229;
+  --color-ctp-latte-sapphire: 32, 159, 181;
+  --color-ctp-latte-blue: 30, 102, 245;
+  --color-ctp-latte-lavender: 114, 135, 253;
+  --color-ctp-latte-text: 76, 79, 105;
+  --color-ctp-latte-subtext1: 92, 95, 119;
+  --color-ctp-latte-subtext0: 108, 111, 133;
+  --color-ctp-latte-overlay2: 124, 127, 147;
+  --color-ctp-latte-overlay1: 140, 143, 161;
+  --color-ctp-latte-overlay0: 156, 160, 176;
+  --color-ctp-latte-surface2: 172, 176, 190;
+  --color-ctp-latte-surface1: 188, 192, 204;
+  --color-ctp-latte-surface0: 204, 208, 218;
+  --color-ctp-latte-base: 239, 241, 245;
+  --color-ctp-latte-mantle: 230, 233, 239;
+  --color-ctp-latte-crust: 220, 224, 232;
+
+  --color-ctp-mocha-rosewater: 245, 224, 220;
+  --color-ctp-mocha-flamingo: 242, 205, 205;
+  --color-ctp-mocha-pink: 245, 194, 231;
+  --color-ctp-mocha-mauve: 203, 166, 247;
+  --color-ctp-mocha-red: 243, 139, 168;
+  --color-ctp-mocha-maroon: 235, 160, 172;
+  --color-ctp-mocha-peach: 250, 179, 135;
+  --color-ctp-mocha-yellow: 249, 226, 175;
+  --color-ctp-mocha-green: 166, 227, 161;
+  --color-ctp-mocha-teal: 148, 226, 213;
+  --color-ctp-mocha-sky: 137, 220, 235;
+  --color-ctp-mocha-sapphire: 116, 199, 236;
+  --color-ctp-mocha-blue: 137, 180, 250;
+  --color-ctp-mocha-lavender: 180, 190, 254;
+  --color-ctp-mocha-text: 205, 214, 244;
+  --color-ctp-mocha-subtext1: 186, 194, 222;
+  --color-ctp-mocha-subtext0: 166, 173, 200;
+  --color-ctp-mocha-overlay2: 147, 153, 178;
+  --color-ctp-mocha-overlay1: 127, 132, 156;
+  --color-ctp-mocha-overlay0: 108, 112, 134;
+  --color-ctp-mocha-surface2: 88, 91, 112;
+  --color-ctp-mocha-surface1: 69, 71, 90;
+  --color-ctp-mocha-surface0: 49, 50, 68;
+  --color-ctp-mocha-base: 30, 30, 46;
+  --color-ctp-mocha-mantle: 24, 24, 37;
+  --color-ctp-mocha-crust: 17, 17, 27;
+  /* globals */
+  --breakpoint-narrow-phone: 300px;
+  --breakpoint-small-phone: 350px;
+  --breakpoint-phone: 385px;
+  --breakpoint-phablet: 412px;
+  --breakpoint-beeg-phablet: 430px;
+  --breakpoint-fold: 500px;
+  --breakpoint-not-tablet: 600px;
   --font-sans: var(--font-inter-tight), ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
     'Segoe UI Symbol', 'Noto Color Emoji';
   --font-mono: var(--font-zeroxproto), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
@@ -132,6 +198,8 @@
     }
   }
 
+  /* mdx-prose */
+
   [details-warn] {
     @apply unified-style border-ctp-peach bg-ctp-peach/5 dark:border-ctp-yellow dark:bg-ctp-yellow/5 dark:text-ctp-yellow;
   }
@@ -176,6 +244,155 @@
     margin-bottom: 3rem;
     background-color: var(--footnote-divider-line);
   }
+  :where(h1, h2, h3, h4, h5, h6) code {
+    @apply !border-none !bg-inherit !py-0 !font-black !text-inherit !shadow-none;
+  }
+
+  /* highlight js */
+  code .hljs {
+    color: var(--color-ctp-text);
+    background: var(--color-ctp-base);
+  }
+  code .hljs-keyword {
+    color: var(--color-ctp-mauve);
+  }
+  code .hljs-built_in {
+    color: var(--color-ctp-red);
+  }
+  code .hljs-type {
+    color: var(--color-ctp-yellow);
+  }
+  code .hljs-literal {
+    color: var(--color-ctp-peach);
+  }
+  code .hljs-number {
+    color: var(--color-ctp-peach);
+  }
+  code .hljs-operator {
+    color: var(--color-ctp-sky);
+  }
+  code .hljs-punctuation {
+    color: var(--color-ctp-subtext1);
+  }
+  code .hljs-property {
+    color: var(--color-ctp-teal);
+  }
+  code .hljs-regexp {
+    color: var(--color-ctp-pink);
+  }
+  code .hljs-string {
+    color: var(--color-ctp-green);
+  }
+  code .hljs-char.escape_ {
+    color: var(--color-ctp-green);
+  }
+  code .hljs-subst {
+    color: var(--color-ctp-subtext0);
+  }
+  code .hljs-symbol {
+    color: var(--color-ctp-flamingo);
+  }
+  code .hljs-variable {
+    color: var(--color-ctp-mauve);
+  }
+  code .hljs-variable.language_ {
+    color: var(--color-ctp-mauve);
+  }
+  code .hljs-variable.constant_ {
+    color: var(--color-ctp-peach);
+  }
+  code .hljs-title {
+    color: var(--color-ctp-blue);
+  }
+  code .hljs-title.class_ {
+    color: var(--color-ctp-yellow);
+  }
+  code .hljs-title.function_ {
+    color: var(--color-ctp-blue);
+  }
+  code .hljs-params {
+    color: var(--color-ctp-text);
+  }
+  code .hljs-comment {
+    color: var(--color-ctp-overlay2);
+  }
+  code .hljs-doctag {
+    color: var(--color-ctp-red);
+  }
+  code .hljs-meta {
+    color: var(--color-ctp-peach);
+  }
+  code .hljs-section {
+    color: var(--color-ctp-blue);
+  }
+  code .hljs-tag {
+    color: var(--color-ctp-teal);
+  }
+  code .hljs-name {
+    color: var(--color-ctp-mauve);
+  }
+  code .hljs-attr {
+    color: var(--color-ctp-blue);
+  }
+  code .hljs-attribute {
+    color: var(--color-ctp-green);
+  }
+  code .hljs-bullet {
+    color: var(--color-ctp-teal);
+  }
+  code .hljs-code {
+    color: var(--color-ctp-green);
+  }
+  code .hljs-emphasis {
+    color: var(--color-ctp-red);
+    font-style: italic;
+  }
+  code .hljs-strong {
+    color: var(--color-ctp-red);
+    font-weight: bold;
+  }
+  code .hljs-formula {
+    color: var(--color-ctp-teal);
+  }
+  code .hljs-link {
+    color: var(--color-ctp-sapphire);
+    font-style: italic;
+  }
+  code .hljs-quote {
+    color: var(--color-ctp-green);
+    font-style: italic;
+  }
+  code .hljs-selector-tag {
+    color: var(--color-ctp-yellow);
+  }
+  code .hljs-selector-id {
+    color: var(--color-ctp-blue);
+  }
+  code .hljs-selector-class {
+    color: var(--color-ctp-teal);
+  }
+  code .hljs-selector-attr {
+    color: var(--color-ctp-mauve);
+  }
+  code .hljs-selector-pseudo {
+    color: var(--color-ctp-teal);
+  }
+  code .hljs-template-tag {
+    color: var(--color-ctp-flamingo);
+  }
+  code .hljs-template-variable {
+    color: var(--color-ctp-flamingo);
+  }
+  code .hljs-addition {
+    color: var(--color-ctp-green);
+    @apply bg-ctp-green/0;
+  }
+  code .hljs-deletion {
+    color: var(--color-ctp-red);
+    @apply bg-ctp-red/0;
+  }
+
+  /* rehype-code-line */
 
   div.code-line:empty {
     /* it is necessary because there is no even eol character in div code-lines 
@@ -367,7 +584,6 @@
 }
 
 @utility prose {
-
   blockquote {
     p:first-of-type::before {
       display: none;
@@ -443,49 +659,72 @@
 }
 
 @utility prose-catppuccin {
-  --footnote-divider-line: var(colors.ctp-text.DEFAULT),
-  --code-line-highlighted: var(colors.ctp-mantle.DEFAULT),
-  --code-line-invert-highlighted: var(colors.ctp-surface0.DEFAULT),
-  --code-line-highlight-indicator: var(colors.ctp-sapphire.DEFAULT),
-  --code-line-inserted: rgba(64, 160, 43, 0.2),
-  --invert-code-line-inserted: rgba(166, 227, 161, 0.2),
-  --code-line-deleted: rgba(210, 15, 57, 0.2),
-  --invert-code-line-deleted: rgba(243, 139, 168, 0.2),
-  --code-line-border: var(colors.ctp-overlay0.DEFAULT),
-  --code-line-number: var(colors.ctp-overlay0.DEFAULT),
-  --tw-prose-del: var(colors.ctp-overlay0.DEFAULT),
-  --tw-prose-invert-del: var(colors.ctp-overlay0.DEFAULT),
-  --tw-prose-body: var(`colors.ctp-text.DEFAULT`),
-  --tw-prose-headings: var(colors.ctp-text.DEFAULT),
-  --tw-prose-lead: var(colors.ctp-text.DEFAULT),
-  --tw-prose-links: var(`colors.ctp-mauve.DEFAULT`),
-  --tw-prose-bold: var(colors.ctp-text.DEFAULT),
-  --tw-prose-counters: var(colors.ctp-text.DEFAULT),
-  --tw-prose-bullets: var(`colors.ctp-text.DEFAULT`),
-  --tw-prose-hr: var(`colors.ctp-mauve.DEFAULT`),
-  --tw-prose-quotes: var(colors.ctp-text.DEFAULT),
-  --tw-prose-quotes-bg: var(colors.ctp-base.DEFAULT),
-  --tw-prose-quote-borders: var(`colors.ctp-mauve.DEFAULT`),
-  --tw-prose-captions: var(colors.ctp-text.DEFAULT),
-  --tw-prose-code: var(colors.ctp-text.DEFAULT),
-  --tw-prose-pre-code: var(colors.ctp-text.DEFAULT),
-  --tw-prose-pre-bg: var(colors.ctp-base.DEFAULT),
-  --tw-prose-th-borders: var(`colors.ctp-mauve.DEFAULT`),
-  --tw-prose-td-borders: var(`colors.ctp-mauve.DEFAULT`),
-  --tw-prose-invert-body: var(colors.ctp-text.DEFAULT),
-  --tw-prose-invert-headings: var(colors.ctp-text.DEFAULT),
-  --tw-prose-invert-lead: var(colors.ctp-text.DEFAULT),
-  --tw-prose-invert-links: var(`colors.ctp-mauve.DEFAULT`),
-  --tw-prose-invert-bold: var(colors.ctp-text.DEFAULT),
-  --tw-prose-invert-counters: var(colors.ctp-text.DEFAULT),
-  --tw-prose-invert-bullets: var(colors.ctp-text.DEFAULT),
-  --tw-prose-invert-hr: var(colors.ctp-text.DEFAULT),
-  --tw-prose-invert-quotes: var(colors.ctp-text.DEFAULT),
-  --tw-prose-invert-quote-borders: var(`colors.ctp-mauve.DEFAULT`),
-  --tw-prose-invert-captions: var(colors.ctp-text.DEFAULT),
-  --tw-prose-invert-code: var(colors.ctp-text.DEFAULT),
-  --tw-prose-invert-pre-code: var(colors.ctp-text.DEFAULT),
-  --tw-prose-invert-pre-bg: var(colors.ctp-base.DEFAULT),
-  --tw-prose-invert-th-borders: var(`colors.ctp-mauve.DEFAULT`),
-  --tw-prose-invert-td-borders: var(`colors.ctp-mauve.DEFAULT`),
+  --footnote-divider-line: var(--color-ctp-text);
+  --code-line-highlighted: var(--color-ctp-mantle);
+  --code-line-invert-highlighted: var(--color-ctp-surface0);
+  --code-line-highlight-indicator: var(--color-ctp-sapphire);
+  --code-line-inserted: rgba(64, 160, 43, 0.2);
+  --invert-code-line-inserted: rgba(166, 227, 161, 0.2);
+  --code-line-deleted: rgba(210, 15, 57, 0.2);
+  --invert-code-line-deleted: rgba(243, 139, 168, 0.2);
+  --code-line-border: var(--color-ctp-overlay0);
+  --code-line-number: var(--color-ctp-overlay0);
+  --tw-prose-del: var(--color-ctp-overlay0);
+  --tw-prose-invert-del: var(--color-ctp-overlay0);
+  --tw-prose-body: var(--color-ctp-text);
+  --tw-prose-headings: var(--color-ctp-text);
+  --tw-prose-lead: var(--color-ctp-text);
+  --tw-prose-links: var(--color-ctp-mauve);
+  --tw-prose-bold: var(--color-ctp-text);
+  --tw-prose-counters: var(--color-ctp-text);
+  --tw-prose-bullets: var(--color-ctp-text);
+  --tw-prose-hr: var(--color-ctp-mauve);
+  --tw-prose-quotes: var(--color-ctp-text);
+  --tw-prose-quotes-bg: var(--color-ctp-base);
+  --tw-prose-quote-borders: var(--color-ctp-mauve);
+  --tw-prose-captions: var(--color-ctp-text);
+  --tw-prose-code: var(--color-ctp-text);
+  --tw-prose-pre-code: var(--color-ctp-text);
+  --tw-prose-pre-bg: var(--color-ctp-base);
+  --tw-prose-th-borders: var(--color-ctp-mauve);
+  --tw-prose-td-borders: var(--color-ctp-mauve);
+  --tw-prose-invert-body: var(--color-ctp-text);
+  --tw-prose-invert-headings: var(--color-ctp-text);
+  --tw-prose-invert-lead: var(--color-ctp-text);
+  --tw-prose-invert-links: var(--color-ctp-mauve);
+  --tw-prose-invert-bold: var(--color-ctp-text);
+  --tw-prose-invert-counters: var(--color-ctp-text);
+  --tw-prose-invert-bullets: var(--color-ctp-text);
+  --tw-prose-invert-hr: var(--color-ctp-text);
+  --tw-prose-invert-quotes: var(--color-ctp-text);
+  --tw-prose-invert-quote-borders: var(--color-ctp-mauve);
+  --tw-prose-invert-captions: var(--color-ctp-text);
+  --tw-prose-invert-code: var(--color-ctp-text);
+  --tw-prose-invert-pre-code: var(--color-ctp-text);
+  --tw-prose-invert-pre-bg: var(--color-ctp-base);
+  --tw-prose-invert-th-borders: var(--color-ctp-mauve);
+  --tw-prose-invert-td-borders: var(--color-ctp-mauve);
+}
+
+@utility prose-code-pretty {
+  @apply prose-pre:rounded-xl prose-pre:border prose-pre:border-ctp-surface0 [&:where(:not(details_p,_details_summary,_details_ul_li,_aside_p,_h1,_h2,_h3,_h4,_h5,_h6)>code)]:prose-code:before:hidden [&:where(:not(details_p,_details_summary,_details_ul_li,_aside_p,_h1,_h2,_h3,_h4,_h5,_h6)>code)]:prose-code:after:hidden [&:where(:not(pre)>code)]:prose-code:break-words [&:where(:not(pre)>code)]:prose-code:rounded-md [&:where(:not(pre)>code)]:prose-code:border [&:where(:not(pre)>code)]:prose-code:border-ctp-surface0 [&:where(:not(pre)>code)]:prose-code:bg-ctp-base [&:where(:not(pre)>code)]:prose-code:px-1 [&:where(:not(pre)>code)]:prose-code:py-0.5;
+}
+
+@utility prose-headings-mod {
+  @apply prose-headings:align-baseline prose-headings:font-black prose-h2:text-xl prose-h3:text-lg prose-h4:text-lg prose-h4:font-bold prose-h5:text-lg prose-h5:font-semibold prose-h6:text-lg prose-h6:font-medium lg:prose-h2:text-2xl lg:prose-h3:text-xl lg:prose-h4:text-xl lg:prose-h5:text-xl lg:prose-h6:text-lg;
+}
+
+@utility prose-text-pretty {
+  @apply prose-headings-mod prose-a:break-words prose-em:mr-[0.2ch] prose-p:supports-[text-wrap:pretty]:text-pretty;
+}
+
+@utility prose-footnotes-active {
+  @apply after:pointer-events-none after:absolute after:-inset-y-2 after:-left-10 after:-right-4 after:rounded-lg after:border after:border-ctp-mauve after:bg-ctp-mauve/20 after:opacity-100 after:[transition:opacity_0.3s];
+}
+@utility prose-lists-pretty {
+  @apply prose-ol:leading-tight prose-ul:leading-tight;
+}
+
+@utility prose-protocol-omega {
+  @apply prose-code-pretty prose-text-pretty prose-lists-pretty prose prose-catppuccin dark:prose-invert;
 }
