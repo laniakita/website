@@ -1,35 +1,37 @@
-@layer utilities {
-  .link-color-trans {
-    transition: color 0.38s;
-  }
-
-  .color-trans-quick {
-    transition:
-      color 0.38s,
-      background-color 0.38s;
-  }
-
-  .simple-color-trans {
-    transition:
-      background 0.7s,
-      background-image 0.7s,
-      background-color 0.7s,
-      border 0.5s;
-  }
-
-  .color-trans-2 {
-    transition:
-      background-color 0.7s,
-      border 0.5s,
-      color 0.5s,
-      box-shadow 0.5s;
-  }
+@utility link-color-trans {
+  transition: color 0.38s;
 
   @media (prefers-reduced-motion) {
-    .link-color-trans,
-    .simple-color-trans,
-    .color-trans-2 {
-      transition: all 0s;
-    }
+    transition: all 0s;
+  }
+}
+
+@utility color-trans-quick {
+  transition:
+    color 0.38s,
+    background-color 0.38s;
+}
+
+@utility simple-color-trans {
+  transition:
+    background 0.7s,
+    background-image 0.7s,
+    background-color 0.7s,
+    border 0.5s;
+
+  @media (prefers-reduced-motion) {
+    transition: all 0s;
+  }
+}
+
+@utility color-trans-2 {
+  transition:
+    background-color 0.7s,
+    border 0.5s,
+    color 0.5s,
+    box-shadow 0.5s;
+
+  @media (prefers-reduced-motion) {
+    transition: all 0s;
   }
 }
