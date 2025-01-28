@@ -1,4 +1,5 @@
-@import "@tailwindcss";
+@import "tailwindcss";
+@plugin "./iconify.ts";
 @plugin "@catppuccin/tailwindcss"; 
 
 @theme inline {

@@ -13,7 +13,7 @@ import {
   APP_THEME_COLOR,
 } from '@/lib/constants';
 import { DarkStoreProvider } from '@/providers/theme-store-provider';
-import '@/app.css';
+import '@/css/app.css';
 
 const inter_tight = Inter_Tight({
   subsets: ['latin'],

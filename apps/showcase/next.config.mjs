@@ -58,17 +58,17 @@ const nextConfig = {
 const nextConfigFunction = async (phase, { defaultConfig }) => {
   const plugins = [];
 
-  if (phase === PHASE_DEVELOPMENT_SERVER || phase === PHASE_PRODUCTION_BUILD) {
+  if (phase === PHASE_PRODUCTION_BUILD) {
     const withSerwist = (await import('@serwist/next')).default({
       swSrc: 'src/app/sw.ts',
       swDest: 'public/sw.js',
     });
     plugins.push(withSerwist);
 
-    // ignore webpack cache warnings (see: https://github.com/contentlayerdev/contentlayer/issues/313)
-    const withContentLayer = (await import('next-contentlayer2')).withContentlayer;
-    plugins.push(withContentLayer);
   }
+  // ignore webpack cache warnings (see: https://github.com/contentlayerdev/contentlayer/issues/313)
+  const withContentLayer = (await import('next-contentlayer2')).withContentlayer;
+  plugins.push(withContentLayer);
 
   const withBundleAnalyzer = (await import('@next/bundle-analyzer')).default({
     enabled: process.env.ANALYZE === 'true',
