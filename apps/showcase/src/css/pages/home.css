@@ -1,0 +1,14 @@
+@layer components {
+  .home-btn-standard {
+    @apply color-trans-quick rounded border border-ctp-mauve bg-ctp-base/70 p-2 text-center font-mono text-lg text-ctp-mauve backdrop-blur-md hover:border-ctp-flamingo hover:bg-ctp-pink hover:text-ctp-base hover:no-underline;
+  }
+  .home-btn-extra {
+    @apply home-btn-standard bg-ctp-mauve/20;
+  }
+  .home-btn-2 {
+    @apply flex w-full items-center justify-center rounded border border-ctp-text/40 px-4 py-2 font-mono text-base font-bold lowercase text-ctp-text [transition:_background-color_0.38s,_color_0.38s,_border_0.38s] hover:border-ctp-pink hover:bg-ctp-pink/40 hover:text-ctp-base hover:no-underline md:w-fit md:whitespace-nowrap md:border-ctp-surface1 dark:hover:text-ctp-pink;
+  }
+  .home-btn-2-extra {
+    @apply home-btn-2 border-ctp-sapphire bg-ctp-sapphire/20 text-ctp-sapphire hover:border-ctp-sky hover:bg-ctp-sky/40 hover:text-ctp-base dark:hover:text-ctp-sky;
+  }
+}
