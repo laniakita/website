@@ -1,7 +1,0 @@
-@utility post-preview-headline {
-  @apply text-balance text-2xl font-black leading-7 lg:text-3xl lg:leading-9;
-}
-
-@utility post-preview-subheadline {
-  @apply text-balance text-xl font-light leading-tight lg:text-2xl;
-}
