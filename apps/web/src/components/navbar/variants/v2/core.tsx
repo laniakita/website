@@ -150,7 +150,7 @@ export default function NavbarV2Core() {
           )}
 
           <li className='max-w-max'>
-            <Link href='/' className='nav-logo relative flex size-full w-16 items-center justify-center'>
+            <Link href='/' className='relative flex size-full w-16 items-center justify-center nav-logo'>
               <Image
                 src={logo}
                 alt="Logo of Lani's Initial. Click to go home."
@@ -210,13 +210,13 @@ function HamburgerToggle({ hamburgerOpen, setHamburgerOpen, tocInView, isPost }:
       >
         <span className='pointer-events-none flex size-fit flex-col items-center justify-center gap-1'>
           <span
-            className={`${hamburgerOpen ? 'translate-y-1 rotate-[-40deg]' : ''} h-0.5 w-6 bg-ctp-text motion-safe:[transition:transform_0.3s]`}
+            className={`${hamburgerOpen ? 'translate-y-1 rotate-[-40deg]' : ''} h-0.5 w-6 bg-ctp-text motion-safe:transition-transform`}
           />
           <span
-            className={`${hamburgerOpen ? 'opacity-0' : ''} h-0.5 w-6 bg-ctp-text motion-safe:[transition:opacity_0.3s]`}
+            className={`${hamburgerOpen ? 'opacity-0' : ''} h-0.5 w-6 bg-ctp-text duration-300 motion-safe:transition-opacity`}
           />
           <span
-            className={`${hamburgerOpen ? '-translate-y-2 rotate-[40deg]' : ''} h-0.5 w-6 bg-ctp-text motion-safe:[transition:transform_0.3s]`}
+            className={`${hamburgerOpen ? '-translate-y-2 rotate-[40deg]' : ''} h-0.5 w-6 bg-ctp-text motion-safe:transition-transform`}
           />
         </span>
       </button>
@@ -234,13 +234,13 @@ function MobileDropdown({ hamburgerOpen, setHamburgerOpen, dropNavRef }: MobileD
       {/* mobile menu container */}
       <div
         id='mobile-nav-offclick-bg'
-        className={`${hamburgerOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'} absolute inset-0 top-16 z-40 flex h-dvh max-h-[calc(100dvh-4rem)] flex-col justify-start bg-black/40 [perspective:_5px] [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:_opacity_0.3s,]`}
+        className={`${hamburgerOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'} absolute inset-0 top-16 z-40 flex h-dvh max-h-[calc(100dvh-4rem)] flex-col justify-start bg-black/40 [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] [perspective:_5px] motion-safe:[transition:_opacity_0.3s,]`}
       >
         {/* menu box */}
         <div
           id={NAV_MAIN_MOBILE_CONTAINER_ID}
           ref={dropNavRef}
-          className={`${hamburgerOpen ? 'opacity-100 [transform:translate3d(0%,0%,0px)]' : 'opacity-0 [transform:translate3d(0%,-100%,-0.01rem)]'} max-h-[calc(100dvh-4rem)] w-full overflow-y-auto rounded-b-2xl border-b border-ctp-pink bg-ctp-base/90 backdrop-blur-md [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:transform_0.5s,_opacity_0.3s,_background-color_0.8s] dark:border-ctp-sky dark:bg-ctp-midnight/90`}
+          className={`${hamburgerOpen ? '[transform:translate3d(0%,0%,0px)] opacity-100' : '[transform:translate3d(0%,-100%,-0.01rem)] opacity-0'} max-h-[calc(100dvh-4rem)] w-full overflow-y-auto rounded-b-2xl border-b border-ctp-pink bg-ctp-base/90 backdrop-blur-md [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:transform_0.5s,_opacity_0.3s,_background-color_0.8s] dark:border-ctp-sky dark:bg-ctp-midnight/90`}
         >
           <menu className='flex flex-col gap-3 p-10'>
             {pagesArr.map((page) => (

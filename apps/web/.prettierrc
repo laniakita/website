@@ -14,5 +14,6 @@
   "tabWidth": 2,
   "trailingComma": "all",
   "useTabs": false,
-  "plugins": ["prettier-plugin-tailwindcss"]
+  "plugins": ["prettier-plugin-tailwindcss"],
+  "tailwindStylesheet": "./src/css/app.css"
 }
