@@ -592,10 +592,10 @@
 @utility prose {
   blockquote {
     p:first-of-type::before {
-      display: none;
+      display: hidden;
     }
     p:first-of-type::after {
-      display: none;
+      display: hidden;
     }
   }
   aside {

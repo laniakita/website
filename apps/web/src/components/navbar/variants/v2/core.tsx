@@ -128,7 +128,7 @@ export default function NavbarV2Core() {
       <nav
         id={NAV_MAIN_ID}
         ref={navBarRef}
-        className={`sticky top-0 z-50 flex h-16 flex-row items-center justify-between px-6 ${inView ? 'translate-y-0' : '-translate-y-full'} bg-ctp-base/80 motion-safe:[transition:_transform_0.38s] dark:bg-ctp-midnight/50`}
+        className={`sticky top-0 z-50 flex h-16 flex-row items-center justify-between px-6 ${inView ? 'translate-y-0' : '-translate-y-full'} bg-ctp-base/80 motion-safe:transition-transform duration-300 dark:bg-ctp-midnight/50`}
       >
         <div id='nav-mask-bg' className='nav-glassy-bg' />
         <div id='nav-mask-edge' className='nav-glassy-edge' />
@@ -137,7 +137,7 @@ export default function NavbarV2Core() {
           {isPost && (
             <li
               aria-hidden={!tocInView}
-              className={`hidden items-center justify-center md:flex ${tocInView ? 'w-0 opacity-0' : 'w-full opacity-100'} motion-safe:[transition:_opacity_0.38s_ease,_width_0.38s_ease]`}
+              className={`hidden items-center justify-center md:flex ${tocInView ? 'w-0 opacity-0' : 'w-full opacity-100'} motion-safe:transition-[opacity_0.38s_ease,_width_0.38s_ease]`}
             >
               <button
                 onClick={() => {
@@ -234,7 +234,7 @@ function MobileDropdown({ hamburgerOpen, setHamburgerOpen, dropNavRef }: MobileD
       {/* mobile menu container */}
       <div
         id='mobile-nav-offclick-bg'
-        className={`${hamburgerOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'} absolute inset-0 top-16 z-40 flex h-dvh max-h-[calc(100dvh-4rem)] flex-col justify-start bg-black/40 [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] [perspective:_5px] motion-safe:[transition:_opacity_0.3s,]`}
+        className={`${hamburgerOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'} absolute inset-0 top-16 z-40 flex h-dvh max-h-[calc(100dvh-4rem)] flex-col justify-start bg-black/40 [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] perspective-[5px] motion-safe:transition-opacity duration-300`}
       >
         {/* menu box */}
         <div
