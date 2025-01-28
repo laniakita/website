@@ -1,3 +1,0 @@
-@utility social-button {
-  @apply color-trans-2 flex items-center justify-center rounded border border-ctp-surface0 text-ctp-text shadow-none hover:bg-ctp-mauve hover:text-ctp-base hover:shadow-none hover:shadow-ctp-mauve/30 dark:border-ctp-base;
-}
