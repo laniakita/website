@@ -1,0 +1,5 @@
+@layer components {
+  .footer-nav-item {
+    @apply text-base capitalize text-ctp-subtext1 aria-[current]:text-ctp-pink aria-[current]:underline;
+  }
+}
