@@ -391,6 +391,10 @@ One thing to note, is that this is the raw script I was previously using, comple
 
 Now, I did think about cleaning the script up, but I felt it was better to show you exactly what I was using right up until the switch to `contentlayer2`. Why? Perhaps for posterity, or perhaps I just find the code I wrote a while ago interesting due to its now foreign nature to myself.
 
+<details>
+
+<summary>[INFO]: `fetch-mdx.ts`</summary>
+
 ```typescript
 // fetch-mdx.ts
 
@@ -944,6 +948,8 @@ export const batchFetchMain = async (fetchConfig: BatchFetchMain) => {
 };
 ```
 
+</details>
+
 Alright, there’s a lot going on here. Let's start with the main function, and work our way through it, shall we?
 
 ### The Main Function: `batchFetchMain()`
@@ -1394,6 +1400,10 @@ const batchFetchFrontMatter = async ({
 
 In brief, the posts get assigned a UUID and a slug as needed. Then, if they have a featured image, they get copied over to the public folder and a blurry `srcset` image gets generated and stored as a `base64` string into the in-memory data object, along with the image dimensions. Finally, all that data generated during this step, gets returned as an array of objects.
 
+<details>
+
+<summary>[INFO]: `matterProcessor()`</summary>
+
 ```typescript
 interface MatterProcessorProps {
   frontMatter: Record<string, unknown>;
@@ -1511,6 +1521,8 @@ const matterProcessor = async ({
   return { ...frontMatter, priority, localKey: mdxPath, rawStr: rawFile };
 };
 ```
+
+</details>
 
 Let's chew through this one as well, shall we? First, we're defining a configuration type for this that looks like this:
 

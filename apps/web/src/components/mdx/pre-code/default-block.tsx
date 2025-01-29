@@ -1,27 +1,13 @@
 'use client';
 import { DetailedHTMLProps, HTMLAttributes, useEffect, useId, useRef, useState } from 'react';
-import CopyBtn, { handlePreScroll, handlePreScrollDefault } from './copy-button';
+import CopyBtn, { handlePreScrollDefault } from './copy-button';
 
 export default function DefaultBlock(props: DetailedHTMLProps<HTMLAttributes<HTMLPreElement>, HTMLPreElement>) {
-  const [isJavaScriptEnabled, setIsJavaScriptEnabled] = useState(false);
-
-  useEffect(() => {
-    try {
-      eval(';'); // This line will throw an error if JavaScript is disabled
-      setIsJavaScriptEnabled(true);
-    } catch {
-      // No need to set state here, it's already false by default
-    }
-  }, []);
-
-  return isJavaScriptEnabled ? <DefaultBlockComponent {...props} /> : <pre {...props} />;
-}
-function DefaultBlockComponent(props: DetailedHTMLProps<HTMLAttributes<HTMLPreElement>, HTMLPreElement>) {
   const [isCopied, setIsCopied] = useState<boolean | null>(false);
   const preRef = useRef<HTMLPreElement>(null!);
   const btnRef = useRef<HTMLButtonElement>(null!);
   const blockSerial = useId();
-  const preId = `expandable-codesnippet${blockSerial}`;
+  const preId = `codesnippet${blockSerial}`;
   const [topPos, setTopPos] = useState('top-2');
 
   useEffect(() => {
@@ -35,7 +21,7 @@ function DefaultBlockComponent(props: DetailedHTMLProps<HTMLAttributes<HTMLPreEl
   }, []);
 
   return (
-    <div className='relative'>
+    <div className='relative my-[calc(24em/14)]'>
       <CopyBtn
         preRef={preRef}
         btnRef={btnRef}
@@ -51,7 +37,9 @@ function DefaultBlockComponent(props: DetailedHTMLProps<HTMLAttributes<HTMLPreEl
           handlePreScrollDefault(btnRef);
         }}
         {...props}
-      />
+        className='my-0'
+      >
+      </pre>
     </div>
   );
 }
