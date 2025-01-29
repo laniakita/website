@@ -782,7 +782,7 @@ In all likelihood, this is the only time you'll ever run `nixos-generate-config`
 
 #### `configuration.nix`
 
-`configuration.nix` is where you'll want to configure everything else about your machine (e.g., hostname, user accounts, networking, window managers, programs, etc.). As such, we'll want to make some edits from the minimal configuration to something a lot more useable. Because, as it stands, the generated `configuration.nix` has most of what we need commented out:
+`configuration.nix` is where you'll want to configure everything else about your machine (e.g., hostname, user accounts, networking, window managers, programs, etc.). As such, we'll want to make some edits from the minimal configuration to something a lot more useable. Because, as it stands, the generated `configuration.nix` has most of what we need commented out (see: the code snippet below for more details).
 
 <details>
 
@@ -1118,6 +1118,10 @@ As for custom prompts like [starship](https://starship.rs/)[^starship--cross--sh
 
 ##### Example `configuration.nix`
 
+<details>
+
+<summary>[INFO]: `configuration.nix` Example</summary>
+
 ```nix
 { config, lib, pkgs, ... }:
 
@@ -1193,6 +1197,8 @@ As for custom prompts like [starship](https://starship.rs/)[^starship--cross--sh
   system.stateVersion = "24.05"; # Did you read the comment?
 }
 ```
+
+</details>
 
 If you're happy with the above, we can move on to the best part, the `flake.nix`.
 

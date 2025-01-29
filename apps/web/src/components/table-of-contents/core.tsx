@@ -2,7 +2,18 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { type Dispatch, type SetStateAction, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  DetailedHTMLProps,
+  type Dispatch,
+  HTMLAttributes,
+  type SetStateAction,
+  Suspense,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { NAV_MAIN_ID, TOC_NAV_ID } from '@/components/nav-constants';
 import { useNavScrollViewStore } from '@/providers/nav-scroll-view-store-provider';
 import { useToCViewStore } from '@/providers/toc-view-store-provider';
@@ -16,6 +27,14 @@ const IPHONE_THIRTEEN_PRO_MAX = 428;
 const IPHONE_FOURTEEN_PRO_MAX = 430;
 const WEIRD_PHABLET = 500;
 const SMALL_SCREEN_MAX = 600;
+
+const MD_TOC_WIDTH = 'md:w-80'
+const MD_MIN_TOC_WIDTH = 'md:min-w-80'
+const MD_MAX_TOC_WIDTH = 'md:max-w-80'
+const LG_TOC_WIDTH = 'lg:w-96'
+const LG_MIN_TOC_WIDTH = 'lg:min-w-96'
+const LG_MAX_TOC_WIDTH = 'lg:max-w-96'
+
 
 // inspired by Emma Goto React ToC: https://www.emgoto.com/react-table-of-contents
 
@@ -104,23 +123,28 @@ const useHeadingsData = () => {
   return { nestedHeadings };
 };
 
-function HeadingNode({ node, activeId }: { node: HeadingNode; activeId: string }) {
+function HeadingNode({ node, activeId, marginLeft }: { node: HeadingNode; activeId: string; marginLeft?: number }) {
   const pathname = usePathname();
+  const pRef = useRef<HTMLParagraphElement>(null!);
 
   return (
     <li key={node.id}>
-      <p className='text-balance'>
-        <Link
-          aria-label={`Jump to ${node.title}`}
-          href={`${pathname}#${node.id}`}
-          className={`text-left font-mono text-sm leading-relaxed font-semibold text-balance link-color-trans hover:text-ctp-text hover:underline ${activeId === node.id ? 'text-ctp-text underline' : 'text-ctp-subtext0'} md:max-w-xs md:break-words lg:max-w-sm lg:break-keep`}
-        >
-          {node.title}
-        </Link>
+      <p ref={pRef} className={`border-b border-ctp-overlay0/20 py-1 text-balance w-full ${LG_MAX_TOC_WIDTH} ${MD_MAX_TOC_WIDTH}`}>
+        <span className={`inline-block ${LG_MAX_TOC_WIDTH} ${MD_MAX_TOC_WIDTH}`} style={{paddingLeft: `${marginLeft ?? 2}ch`}}>
+          <Link
+            aria-label={`Jump to ${node.title}`}
+            href={`${pathname}#${node.id}`}
+            className={`text-left font-mono text-sm leading-relaxed font-semibold text-balance link-color-trans hover:text-ctp-text hover:underline ${activeId === node.id ? 'text-ctp-text underline' : 'text-ctp-subtext0'} break-words max-w-max`}
+          >
+            {node.title}
+          </Link>
+        </span>
       </p>
-      <ul className='list-none pl-[2ch]'>
+      <ul className='list-none'>
         {node.children
-          ? node.children.map((childNode) => <HeadingNode key={childNode.id} node={childNode} activeId={activeId} />)
+          ? node.children.map((childNode, idx) => (
+              <HeadingNode key={childNode.id} node={childNode} activeId={activeId} marginLeft={2 * node.level} />
+            ))
           : null}
       </ul>
     </li>
@@ -425,7 +449,7 @@ export default function ToCMenuCore() {
           <div
             aria-label='Table of contents'
             ref={dropToCRef}
-            className={`${showMobileMenu ? '[transform:translate3d(0%,0%,0px)] opacity-100' : 'pointer-events-none [transform:translate3d(0%,-100%,-0.01rem)] opacity-0'} inset-x-0 top-28 bottom-0 z-20 max-h-[calc(100dvh-7rem)] w-full overflow-auto rounded-b-2xl border-b border-ctp-pink bg-ctp-base/90 px-6 py-10 backdrop-blur-md [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:transform_0.8s,_opacity_0.5s,_background-color_0.8s] md:hidden dark:border-ctp-sky dark:bg-ctp-midnight/90`}
+            className={`${showMobileMenu ? '[transform:translate3d(0%,0%,0px)] opacity-100' : 'pointer-events-none [transform:translate3d(0%,-100%,-0.01rem)] opacity-0'} inset-x-0 top-28 bottom-0 z-20 max-h-[calc(100dvh-7rem)] w-full overflow-auto rounded-b-2xl border-b border-ctp-pink bg-ctp-base/90 py-10 backdrop-blur-md [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:transform_0.8s,_opacity_0.5s,_background-color_0.8s] md:hidden dark:border-ctp-sky dark:bg-ctp-midnight/90`}
           >
             {shouldRun && (
               <Headings
@@ -457,7 +481,7 @@ export default function ToCMenuCore() {
               className='icon-[ph--sidebar-simple-fill] text-3xl'
             />
           </div>
-          <div aria-label='Table of contents' className='w-full px-6'>
+          <div aria-label='Table of contents' className='w-full'>
             {shouldRun && <Headings tree={readyHeadings} activeId={activeId} ariaExpanded={isReady} notMobile />}
           </div>
         </nav>

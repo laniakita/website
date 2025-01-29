@@ -223,10 +223,12 @@
     &[details-critical='true'] {
       @apply border-ctp-red bg-ctp-red/10 dark:bg-ctp-red/5 dark:text-ctp-red;
     }
+    & > div > pre > code {
+      @apply !text-sm;
+    }
     :where(p, ul li, summary):not(pre) > code {
       @apply !border-none !bg-inherit !font-black !text-inherit !italic !text-sm;
     }
-
     @apply my-[calc(32em/20)] block rounded-lg border border-ctp-blue bg-ctp-blue/10 p-6 font-mono text-sm shadow-lg dark:border-ctp-sky dark:bg-ctp-sky/5 dark:text-ctp-sky;
   }
 /*
