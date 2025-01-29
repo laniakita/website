@@ -3,9 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
-  DetailedHTMLProps,
   type Dispatch,
-  HTMLAttributes,
   type SetStateAction,
   Suspense,
   useCallback,
@@ -28,13 +26,12 @@ const IPHONE_FOURTEEN_PRO_MAX = 430;
 const WEIRD_PHABLET = 500;
 const SMALL_SCREEN_MAX = 600;
 
-const MD_TOC_WIDTH = 'md:w-80'
-const MD_MIN_TOC_WIDTH = 'md:min-w-80'
-const MD_MAX_TOC_WIDTH = 'md:max-w-80'
-const LG_TOC_WIDTH = 'lg:w-96'
-const LG_MIN_TOC_WIDTH = 'lg:min-w-96'
-const LG_MAX_TOC_WIDTH = 'lg:max-w-96'
-
+//const MD_TOC_WIDTH = 'md:w-80';
+//const MD_MIN_TOC_WIDTH = 'md:min-w-80';
+const MD_MAX_TOC_WIDTH = 'md:max-w-80';
+//const LG_TOC_WIDTH = 'lg:w-96';
+//const LG_MIN_TOC_WIDTH = 'lg:min-w-96';
+const LG_MAX_TOC_WIDTH = 'lg:max-w-96';
 
 // inspired by Emma Goto React ToC: https://www.emgoto.com/react-table-of-contents
 
@@ -77,7 +74,7 @@ const getNestedHeadings = (headings: HTMLHeadingElement[], level: number): Headi
   return nestedTree;
 };
 
-const useHeadingsDataPre = () => {
+const useHeadingsData = () => {
   const [flatHeadings, setFlatHeadings] = useState<HTMLHeadingElement[]>();
   const nestedHeadings = useMemo(() => getNestedHeadings(flatHeadings ?? [], 2), [flatHeadings]);
   const [shouldRun, setShouldRun] = useState(false);
@@ -93,9 +90,10 @@ const useHeadingsDataPre = () => {
       setFlatHeadings(headingEls as HTMLHeadingElement[]);
     }
   }, [shouldRun]);
-  return nestedHeadings;
+  return { nestedHeadings };
 };
 
+/*
 const useHeadingsData = () => {
   const nested = useHeadingsDataPre();
 
@@ -105,7 +103,6 @@ const useHeadingsData = () => {
   useEffect(() => {
     setShouldRun(true);
   }, []);
-
   useEffect(() => {
     if (shouldRun) {
       const titleEl = document.querySelector('h1');
@@ -116,30 +113,32 @@ const useHeadingsData = () => {
         children: [],
       };
 
-      setNestedHeadings([titleNode, ...nested]);
+      setNestedHeadings(nested);
     }
   }, [nested, shouldRun]);
-
   return { nestedHeadings };
-};
+}; */
 
 function HeadingNode({ node, activeId, marginLeft }: { node: HeadingNode; activeId: string; marginLeft?: number }) {
   const pathname = usePathname();
-  const pRef = useRef<HTMLParagraphElement>(null!);
 
   return (
     <li key={node.id}>
-      <p ref={pRef} className={`border-b border-ctp-overlay0/20 py-1 text-balance w-full ${LG_MAX_TOC_WIDTH} ${MD_MAX_TOC_WIDTH}`}>
-        <span className={`inline-block ${LG_MAX_TOC_WIDTH} ${MD_MAX_TOC_WIDTH}`} style={{paddingLeft: `${marginLeft ?? 2}ch`}}>
-          <Link
-            aria-label={`Jump to ${node.title}`}
-            href={`${pathname}#${node.id}`}
-            className={`text-left font-mono text-sm leading-relaxed font-semibold text-balance link-color-trans hover:text-ctp-text hover:underline ${activeId === node.id ? 'text-ctp-text underline' : 'text-ctp-subtext0'} break-words max-w-max`}
+      <Link
+        aria-label={`Jump to ${node.title}`}
+        href={`${pathname}#${node.id}`}
+        className={`group font-mono text-sm leading-relaxed font-semibold text-balance link-color-trans hover:text-ctp-text hover:underline ${activeId === node.id ? 'text-ctp-text underline' : 'text-ctp-subtext0'} break-words`}
+      >
+        <p className={`w-full border-b border-ctp-overlay0/20 py-1 text-balance group-hover:bg-ctp-blue/20 ${activeId===node.id? 'bg-ctp-blue/20' : ''} color-trans-2-quick`}>
+          <span
+            className={`inline-block pr-[2ch] ${MD_MAX_TOC_WIDTH} ${LG_MAX_TOC_WIDTH}`}
+            style={{ paddingLeft: `${marginLeft ?? 2}ch` }}
           >
             {node.title}
-          </Link>
-        </span>
-      </p>
+          </span>
+        </p>
+      </Link>
+
       <ul className='list-none'>
         {node.children
           ? node.children.map((childNode, idx) => (
@@ -465,7 +464,7 @@ export default function ToCMenuCore() {
 
       <div
         aria-hidden={!tocInView}
-        className={`${tocInView ? 'md:w-80 md:min-w-80 lg:w-96 lg:min-w-96' : 'w-0 min-w-0'} sticky top-0 hidden h-full overflow-x-hidden shadow-xl [transition:_width_0.8s,_min-width_0.8s] md:block`}
+        className={`${tocInView ? 'md:w-80 md:min-w-[21rem] lg:w-96 lg:min-w-96' : 'w-0 min-w-0'} } sticky top-0 hidden h-full overflow-x-hidden shadow-xl [transition:_width_0.8s,_min-width_0.8s] md:block`}
       >
         <nav
           className={`relative flex max-h-dvh min-h-dvh min-w-0 flex-col items-center justify-start gap-12 overflow-y-auto bg-ctp-crust pb-12 text-slate-100 motion-safe:simple-color-trans md:min-w-80 lg:min-w-96 dark:bg-ctp-base/20`}
@@ -481,7 +480,7 @@ export default function ToCMenuCore() {
               className='icon-[ph--sidebar-simple-fill] text-3xl'
             />
           </div>
-          <div aria-label='Table of contents' className='w-full'>
+          <div aria-label='Table of contents' className={``}>
             {shouldRun && <Headings tree={readyHeadings} activeId={activeId} ariaExpanded={isReady} notMobile />}
           </div>
         </nav>

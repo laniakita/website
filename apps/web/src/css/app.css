@@ -179,6 +179,18 @@
     box-sizing: inherit;
   }
 
+  html {
+    min-height: 100dvh;
+    box-sizing: border-box;
+    margin: 0;
+    scroll-padding-top: calc(var(--spacing)*32);
+    background-color: light-dark(var(--color-ctp-base), var(--color-ctp-midnight));
+    color: var(--color-ctp-text);
+    @media (width >= 48rem) {
+      scroll-padding-top: calc(var(--spacing)*24);
+    };
+  }
+
   canvas {
     @apply animate-fade-in;
   }

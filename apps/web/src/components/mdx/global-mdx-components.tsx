@@ -10,10 +10,7 @@ import PreCodeV2 from './pre-code/codeblock-v2';
 export const globalMdxComponents = {
   p: Paragraph,
   img: BlogImageBlurServer,
-  a: Anchors,
   pre: PreCodeV2,
-  section: Footnotes,
-  sup: SupAnchors,
 };
 
 /*
