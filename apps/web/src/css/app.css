@@ -187,6 +187,10 @@
     @apply text-ctp-mauve link-color-trans hover:text-ctp-pink hover:underline aria-[current]:text-ctp-pink aria-[current]:underline;
   }
 
+  button {
+    cursor: pointer;
+  }
+
   @media (prefers-reduced-motion) {
     .link-color-trans,
     .simple-color-trans,
@@ -203,34 +207,42 @@
   }
 
   /* mdx-prose */
-
-  [details-warn] {
-    @apply unified-style border-ctp-peach bg-ctp-peach/5 dark:border-ctp-yellow dark:bg-ctp-yellow/5 dark:text-ctp-yellow;
-  }
-
-  [details-critical] {
-    @apply unified-style border-ctp-red bg-ctp-red/10 dark:bg-ctp-red/5 dark:text-ctp-red;
-  }
-
   details {
-    @apply unified-info-style;
-  }
+    & > summary {
+      @apply my-auto font-mono font-black;
+    }
+    & > p {
+      & > strong {
+        @apply !font-black !text-inherit;
+      }
+      @apply pb-0;
+    }
+    &[details-warn='true'] {
+      @apply border-ctp-peach bg-ctp-peach/5 dark:border-ctp-yellow dark:bg-ctp-yellow/5 dark:text-ctp-yellow;
+    }
+    &[details-critical='true'] {
+      @apply border-ctp-red bg-ctp-red/10 dark:bg-ctp-red/5 dark:text-ctp-red;
+    }
+    :where(p, ul li, summary):not(pre) > code {
+      @apply !border-none !bg-inherit !font-black !text-inherit !italic !text-sm;
+    }
 
-  details > summary {
-    @apply font-mono font-black;
+    @apply my-[calc(32em/20)] block rounded-lg border border-ctp-blue bg-ctp-blue/10 p-6 font-mono text-sm shadow-lg dark:border-ctp-sky dark:bg-ctp-sky/5 dark:text-ctp-sky;
   }
-
-  :where(details p) strong {
-    @apply !font-black !text-inherit;
+/*
+  :where(details p, details summary, details ul li, aside p) {
+    &:not(pre > code) code {
+      @apply !border-none !bg-inherit !text-sm !font-black !text-inherit !italic;
+    }
+    &:is(pre) > code {
+      @apply text-base;
+    }
   }
-
-  :where(details p, details summary, details ul li, aside p) code {
-    @apply !border-none !bg-inherit !text-sm !font-black !text-inherit !italic;
-  }
-
+*/
   aside {
-    @apply unified-info-style;
+    @apply rounded-lg border border-ctp-blue bg-ctp-blue/10 p-6 font-mono text-sm shadow-lg dark:border-ctp-sky dark:bg-ctp-sky/5 dark:text-ctp-sky;
   }
+
   .sr-only {
     overflow: hidden;
     clip: rect(0, 0, 0, 0);
@@ -240,6 +252,7 @@
     width: 1px;
     height: 1px;
   }
+
   #footnote-label {
     overflow: hidden;
     width: 100%;
@@ -248,6 +261,7 @@
     margin-bottom: 3rem;
     background-color: var(--footnote-divider-line);
   }
+
   :where(h1, h2, h3, h4, h5, h6) code {
     @apply !border-none !bg-inherit !py-0 !font-black !text-inherit !shadow-none;
   }
@@ -579,16 +593,6 @@
   @apply px-10;
 }
 
-@utility unified-text {
-  @apply text-sm;
-}
-@utility unified-style {
-  @apply my-6 block space-y-6 rounded-lg border p-6 font-mono unified-text shadow-lg;
-}
-@utility unified-info-style {
-  @apply unified-style border-ctp-blue bg-ctp-blue/10 dark:border-ctp-sky dark:bg-ctp-sky/5 dark:text-ctp-sky;
-}
-
 @utility prose {
   blockquote {
     p:first-of-type::before {
@@ -646,11 +650,23 @@
 
   pre {
     overflow-x: auto;
+    border: 1px solid var(--color-ctp-surface0);
+    border-radius: var(--radius-lg);
   }
   pre > code {
     float: left;
     min-width: 100%;
     padding-right: 4rem;
+  }
+
+  :where(:not(details p, details summary, details ul li, aside p, h1, h2, h3, h4, h5, h6, pre) > code) {
+    &::before {
+      display: none;
+    }
+    &::after {
+      display: none;
+    }
+    @apply rounded-sm border border-ctp-surface0 bg-ctp-crust px-1 py-0.5 break-words dark:bg-ctp-base;
   }
 }
 
@@ -712,12 +728,12 @@
   --tw-prose-invert-td-borders: var(--color-ctp-mauve);
 }
 
-@utility prose-code-pretty {
-  @apply prose-pre:rounded-xl prose-pre:border prose-pre:border-ctp-surface0 [&:where(:not(details_p,_details_summary,_details_ul_li,_aside_p,_h1,_h2,_h3,_h4,_h5,_h6)>code)]:prose-code:before:hidden [&:where(:not(details_p,_details_summary,_details_ul_li,_aside_p,_h1,_h2,_h3,_h4,_h5,_h6)>code)]:prose-code:after:hidden [&:where(:not(pre)>code)]:prose-code:rounded-md [&:where(:not(pre)>code)]:prose-code:border [&:where(:not(pre)>code)]:prose-code:border-ctp-surface0 [&:where(:not(pre)>code)]:prose-code:bg-ctp-base [&:where(:not(pre)>code)]:prose-code:px-1 [&:where(:not(pre)>code)]:prose-code:py-0.5 [&:where(:not(pre)>code)]:prose-code:break-words;
+@utility prose-code-pretty-2 {
+  @apply prose-code:bg-orange-300;
 }
 
 @utility prose-headings-mod {
-  @apply prose-headings:align-baseline prose-headings:font-black prose-h2:text-xl lg:prose-h2:text-2xl prose-h3:text-lg lg:prose-h3:text-xl prose-h4:text-lg prose-h4:font-bold lg:prose-h4:text-xl prose-h5:text-lg prose-h5:font-semibold lg:prose-h5:text-xl prose-h6:text-lg prose-h6:font-medium lg:prose-h6:text-lg;
+  @apply prose-headings:align-baseline prose-headings:font-black prose-h2:text-xl lg:prose-h2:text-2xl prose-h3:text-lg lg:prose-h3:text-xl prose-h4:text-lg prose-h4:font-bold lg:prose-h4:text-xl prose-h5:text-lg prose-h5:font-semibold lg:prose-h5:text-xl prose-h6:text-lg prose-h6:font-medium lg:prose-h6:text-lg break-words;
 }
 
 @utility prose-text-pretty {
@@ -727,14 +743,12 @@
 @utility prose-footnotes-active {
   @apply after:pointer-events-none after:absolute after:-inset-y-2 after:-right-4 after:-left-10 after:rounded-lg after:border after:border-ctp-mauve after:bg-ctp-mauve/20 after:opacity-100 after:[transition:opacity_0.3s];
 }
-@utility prose-lists-pretty {
-  @apply prose-ol:leading-tight prose-ul:leading-tight;
-}
 
-@utility prose-protocol-omega {
-  @apply prose prose-text-pretty prose-code-pretty prose-lists-pretty prose-catppuccin dark:prose-invert;
+@layer components {
+  .prose-protocol-omega {
+    @apply prose prose-text-pretty prose-catppuccin dark:prose-invert;
+  }
 }
-
 /* navbar */
 
 @utility nav-logo {

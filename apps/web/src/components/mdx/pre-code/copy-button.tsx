@@ -1,5 +1,16 @@
 import { useId, type Dispatch, type RefObject, type SetStateAction } from 'react';
 
+export const handlePreScrollDefault = (
+  btnRef: RefObject<HTMLButtonElement>,
+) => {
+  if (btnRef?.current !== undefined) {
+    btnRef.current.style.opacity = '0';
+    setTimeout(() => {
+      btnRef.current.style.opacity = '100%';
+    }, 500);
+  }
+};
+
 export const handlePreScroll = (
   btnRef: RefObject<HTMLButtonElement>,
   insideCollapsedBlock?: boolean,
