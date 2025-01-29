@@ -784,6 +784,10 @@ In all likelihood, this is the only time you'll ever run `nixos-generate-config`
 
 `configuration.nix` is where you'll want to configure everything else about your machine (e.g., hostname, user accounts, networking, window managers, programs, etc.). As such, we'll want to make some edits from the minimal configuration to something a lot more useable. Because, as it stands, the generated `configuration.nix` has most of what we need commented out:
 
+<details>
+
+<summary>[INFO]: Default `configuration.nix`</summary>
+
 ```nix
 # Edit this configuration file to define what should be installed on
 # your system. Help is available in the configuration.nix(5) man page, on
@@ -898,6 +902,8 @@ In all likelihood, this is the only time you'll ever run `nixos-generate-config`
   system.stateVersion = "24.05"; # Did you read the comment?
 }
 ```
+
+</details>
 
 To make our changes, we can use `vim` or `nano` again to load `configuration.nix` into an editing buffer:
 

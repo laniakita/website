@@ -1,9 +1,9 @@
 import { DetailedHTMLProps, HTMLAttributes, ReactElement } from 'react';
-import ExpandableBlock from './expander';
+import DefaultBlock from './default-block';
 
 export default function PreCodeV2(props: DetailedHTMLProps<HTMLAttributes<HTMLPreElement>, HTMLPreElement>) {
   if ((props.children as ReactElement)?.type === 'code') {
-    return <ExpandableBlock {...props} />;
+    return <DefaultBlock {...props} />;
   }
 
   return <pre {...props} />;
