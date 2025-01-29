@@ -2,14 +2,14 @@
   "name": "@website/functions",
   "version": "0.0.0",
   "dependencies": {
-    "@aws-sdk/client-cloudfront": "^3.645.0",
-    "@aws-sdk/client-cloudwatch": "^3.645.0",
-    "@aws-sdk/client-sns": "^3.645.0",
-    "sst": "^3.5.5"
+    "@aws-sdk/client-cloudfront": "^3.738.0",
+    "@aws-sdk/client-cloudwatch": "^3.738.0",
+    "@aws-sdk/client-sns": "^3.738.0",
+    "sst": "^3.6.27"
   },
   "devDependencies": {
     "@website/typescript-config": "workspace:*",
-    "@types/aws-lambda": "^8.10.145"
+    "@types/aws-lambda": "^8.10.147"
   },
   "exports": {
     ".": "./index.mjs"
