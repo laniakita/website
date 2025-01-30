@@ -1,17 +1,14 @@
 {
   "name": "website",
-  "devDependencies": {
-    "prettier": "^3.4.2",
-    "sharp": "^0.33.5",
-    "sst": "^3.6.27",
-    "syncpack": "^13.0.0",
-    "turbo": "^2.3.4"
-  },
+  "private": true,
   "engines": {
     "node": ">=20.17.0"
   },
   "packageManager": "bun@1.2.0",
-  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
@@ -20,14 +17,17 @@
     "test:watch": "turbo run test:watch",
     "sso": "aws sso login --sso-session=lani"
   },
+  "devDependencies": {
+    "prettier": "^3.4.2",
+    "sharp": "^0.33.5",
+    "sst": "^3.6.27",
+    "syncpack": "^13.0.0",
+    "turbo": "^2.3.4"
+  },
   "trustedDependencies": [
     "contentlayer2",
     "esbuild",
     "protobufjs",
     "sharp"
-  ],
-  "workspaces": [
-    "packages/*",
-    "apps/*"
   ]
 }
