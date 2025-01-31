@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import { type Dispatch, type SetStateAction, Suspense, useEffect, useId, useMemo, useRef, useState } from 'react';
+import { type Dispatch, type SetStateAction, Suspense, useEffect, useId, useMemo, useRef } from 'react';
 const MED_SCREEN = 768; // px
 
 const Z_FOLD_SCREEN = 344;
@@ -180,10 +180,9 @@ export const useIntersectionObserver = (setActiveId: Dispatch<SetStateAction<str
 export const concatHeadingUtil = (heading: string, innerWidth: number) => {
   if (!heading) return;
   if (!innerWidth) return;
-
-  const concatHeading = heading.split('');
-
   let concat = 0;
+  
+
 
   // todo: figure out a math formula
   if (innerWidth <= Z_FOLD_SCREEN) {
@@ -210,16 +209,60 @@ export const concatHeadingUtil = (heading: string, innerWidth: number) => {
     concat = 100;
   }
 
+  // utils
+  const re = /(?=>(?<innerText>[^<]+))/;
 
-  if (heading.length > concat) {
-    while (concatHeading.length > concat) {
-      // concat
-      concatHeading.pop();
-    }
-    concatHeading.splice(-1, 1, '...');
+  const spaceEscape = '&nbsp;'
+  const escapeSpaces = (text: string) => {
+    return text.split(' ').join(spaceEscape);
+  }
+  const escapeCounter = (text: string | null, escapeStr: string): number => {
+    if (!text) return 0;
+    const re = new RegExp(escapeStr, 'g');
+    return text.match(re)?.length ?? 0;
   }
 
-  return concatHeading.join('');
+  if (heading.length > concat) {
+    const found = heading.match(re);
+    const foundInnerText = found?.groups?.innerText
+    const headingWithEscapedHTML = foundInnerText ? heading.replace(foundInnerText, escapeSpaces(foundInnerText)) : heading;
+
+    let lastWord;
+    let lastHtmlWord: RegExpMatchArray | null = null;
+
+    const headingActualArr = headingWithEscapedHTML?.split(' ').map((word) => {
+      const found = word.match(re);
+      lastHtmlWord = found;
+      return found?.groups?.innerText ?? word
+    });
+
+    const headingActual = headingActualArr.join(' ');
+    const escapedLen = escapeCounter(headingActual, spaceEscape) * spaceEscape.length;
+    
+    while (headingActualArr.join(' ').length - escapedLen > concat) {
+      lastWord = headingActualArr.pop();
+    }
+    
+    if (lastWord) {
+      const finalWord = (headingArr: string[], spaceEscape: string, lastWord: string, lastHtmlWord: RegExpMatchArray | null) => {
+        const almostTitleLen = headingArr.join(' ').length;
+        const lastWordCopy = lastWord.replace(spaceEscape, ' ').split('');
+        while (almostTitleLen + lastWordCopy.length > concat) {
+          lastWordCopy.pop();
+        }
+        lastWordCopy.splice(-1, 1, '...');
+        return lastHtmlWord?.input?.replace(lastWord, lastWordCopy.join('')) ?? lastWordCopy.join('')
+      }
+      
+      headingActualArr.push(finalWord(headingActualArr, spaceEscape, lastWord, lastHtmlWord));
+      
+      return headingActualArr.join(' ').replace(spaceEscape, ' ');
+
+    }
+
+  }
+
+  return heading;
 };
 
 export type FlatHeadingNode = {
@@ -236,8 +279,10 @@ export function ConcatTitle({
   headings: FlatHeadingNode[];
   innerWidth: number;
 }) {
-  console.log(headings)
   const activeHeading = headings?.find((heading) => heading.id === activeId)?.title ?? headings[0]?.title;
   const concat = useMemo(() => concatHeadingUtil(activeHeading ?? '', innerWidth), [activeHeading, innerWidth]);
-  return <strong className='[&>code]:pretty-inline-code overflow-clip' dangerouslySetInnerHTML={{ __html: concat ?? '' }} />;
+  if (concat) {
+    return <strong className='[&>code]:pretty-inline-code overflow-clip' dangerouslySetInnerHTML={{ __html: concat }} />;
+  }
+  return <strong>{activeHeading}</strong>
 }

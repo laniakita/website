@@ -589,7 +589,7 @@
   @apply py-12;
 }
 @utility pt-post-page {
-  @apply pt-24 md:pt-12;
+  @apply pt-24;
 }
 @utility pt-blog {
   @apply pt-4 md:pt-12;
