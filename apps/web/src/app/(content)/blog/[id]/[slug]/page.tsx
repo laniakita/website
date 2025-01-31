@@ -139,14 +139,7 @@ export default async function BlogPostPage(props: { params: Promise<{ id: string
     <>
       <script type='application/ld+json' dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <main className='-mb-0.5 flex min-h-full w-full flex-col pb-common'>
-        {/* flex box break prose */}
-        <article
-          id='content'
-          className=''
-          itemScope
-          itemType='http://schema.org/BlogPosting'
-          itemID={`${process.env.NEXT_PUBLIC_DEPLOYED_URL ? process.env.NEXT_PUBLIC_DEPLOYED_URL : APP_URL}${post.url}`}
-        >
+        <article id='content'>
           <PostHeader2 {...post} />
           <div className='w-full px-6'>
             <div className='prose-protocol-omega mx-auto max-w-4xl md:max-w-2xl'>

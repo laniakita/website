@@ -10,22 +10,6 @@ export function PostHeader2(post: Post) {
   const authorName = allAuthors.find((author) => author.url === `/authors/${post.author}`)?.name;
   return (
     <>
-      {/*
-      <div className='pt-post-page flex w-full items-center justify-center px-6'>
-        <div className='w-full max-w-4xl'>
-          <Link
-            href={'/blog'}
-            className='link-color-trans group -ml-1.5 mb-4 flex w-fit flex-row items-center gap-x-[1ch] self-start font-mono text-ctp-subtext0 hover:font-bold hover:text-ctp-text lg:mb-6 dark:text-ctp-overlay0'
-          >
-            <span className='icon-[ph--arrow-fat-lines-left] pointer-events-none w-[2ch] text-2xl' />{' '}
-            <span className='pointer-events-none'>
-              <span>return to:</span>{' '}
-              <span className='link-color-trans text-ctp-mauve/80 group-hover:text-ctp-pink group-hover:underline'>{`/blog`}</span>
-            </span>
-          </Link>
-        </div>
-      </div>
-      */}
       <header className='z-0 pt-post-page'>
         <div className='flex w-full flex-col items-center justify-center gap-2 px-6 pb-6 lg:pb-10'>
           <div className='w-full max-w-3xl font-mono md:max-w-2xl'>
