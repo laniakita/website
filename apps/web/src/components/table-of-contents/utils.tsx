@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { type Dispatch, type SetStateAction, Suspense, useEffect, useId, useMemo, useRef, useState } from 'react';
 const MED_SCREEN = 768; // px
@@ -28,50 +27,6 @@ export interface HeadingNode {
   title: string;
   children: HeadingNode[];
 }
-
-export const getNestedHeadings = (headings: HTMLHeadingElement[], level: number): HeadingNode[] => {
-  const nestedTree: HeadingNode[] = [];
-  let currNode: HeadingNode = {
-    id: '',
-    level: 0,
-    title: '',
-    children: [],
-  };
-
-  while (headings.length > 0) {
-    const currHeading = headings[0]!;
-    const headingLevel = parseInt(currHeading.nodeName[1]!);
-    if (headingLevel === level) {
-      currNode = {
-        id: currHeading.id ?? '',
-        level: parseInt(currHeading.nodeName[1]!),
-        title: currHeading.innerText ?? '',
-        children: [],
-      };
-      nestedTree.push(currNode);
-      headings.shift();
-    } else if (headingLevel > level) {
-      if (currNode) {
-        currNode.children = getNestedHeadings(headings, headingLevel);
-      }
-    } else {
-      break;
-    }
-  }
-  return nestedTree;
-};
-
-export const useHeadingsData = () => {
-  const [flatHeadings, setFlatHeadings] = useState<HTMLHeadingElement[]>();
-  const nestedHeadings = useMemo(() => getNestedHeadings(flatHeadings ?? [], 2), [flatHeadings]);
-
-  useEffect(() => {
-    // filtering by id length excises the sub-headline from the array
-    const headingEls = Array.from(document.querySelectorAll('h2, h3, h4, h5, h6')).filter((el) => el.id.length > 0);
-    setFlatHeadings(headingEls as HTMLHeadingElement[]);
-  }, []);
-  return { nestedHeadings };
-};
 
 export function HeadingNode({
   node,
@@ -222,12 +177,6 @@ export const useIntersectionObserver = (setActiveId: Dispatch<SetStateAction<str
   }, [setActiveId, activeId]);
 };
 
-export const getFlatHeadings = () => {
-  if (!window) return;
-  const headingsQuery = Array.from(document.querySelectorAll('h1, h2, h3, h4, h5, h6'));
-  return headingsQuery ?? [];
-};
-
 export const concatHeadingUtil = (heading: string, innerWidth: number) => {
   if (!heading) return;
   if (!innerWidth) return;
@@ -257,7 +206,10 @@ export const concatHeadingUtil = (heading: string, innerWidth: number) => {
     concat = 28;
   } else if (innerWidth <= MED_SCREEN) {
     concat = 45;
+  } else {
+    concat = 100;
   }
+
 
   if (heading.length > concat) {
     while (concatHeading.length > concat) {
@@ -284,8 +236,8 @@ export function ConcatTitle({
   headings: FlatHeadingNode[];
   innerWidth: number;
 }) {
-  console.log(headings) 
-  const activeHeading = headings?.find((heading) => heading.id === activeId)?.title;
+  console.log(headings)
+  const activeHeading = headings?.find((heading) => heading.id === activeId)?.title ?? headings[0]?.title;
   const concat = useMemo(() => concatHeadingUtil(activeHeading ?? '', innerWidth), [activeHeading, innerWidth]);
-  return <>{concat}</>;
+  return <strong className='[&>code]:pretty-inline-code overflow-clip' dangerouslySetInnerHTML={{ __html: concat ?? '' }} />;
 }
