@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { type Dispatch, type SetStateAction, Suspense, useEffect, useMemo, useRef, useState } from 'react';
+import { type Dispatch, type SetStateAction, Suspense, useEffect, useId, useMemo, useRef, useState } from 'react';
 const MED_SCREEN = 768; // px
 
 const Z_FOLD_SCREEN = 344;
@@ -73,32 +73,6 @@ export const useHeadingsData = () => {
   return { nestedHeadings };
 };
 
-/*
-const useHeadingsData = () => {
-  const nested = useHeadingsDataPre();
-
-  const [nestedHeadings, setNestedHeadings] = useState<HeadingNode[]>();
-  const [shouldRun, setShouldRun] = useState(false);
-
-  useEffect(() => {
-    setShouldRun(true);
-  }, []);
-  useEffect(() => {
-    if (shouldRun) {
-      const titleEl = document.querySelector('h1');
-      const titleNode: HeadingNode = {
-        id: titleEl?.id ?? '#',
-        level: 1,
-        title: titleEl?.innerText ?? '',
-        children: [],
-      };
-
-      setNestedHeadings(nested);
-    }
-  }, [nested, shouldRun]);
-  return { nestedHeadings };
-}; */
-
 export function HeadingNode({
   node,
   activeId,
@@ -109,31 +83,36 @@ export function HeadingNode({
   marginLeft?: number;
 }) {
   const pathname = usePathname();
+  const id = useId();
+  const linkId = `toc-link${id}`
 
   return (
     <li key={node.id}>
-      <Link
-        aria-label={`Jump to ${node.title}`}
-        href={`${pathname}#${node.id}`}
-        className={`group font-mono text-sm leading-relaxed font-semibold text-balance link-color-trans hover:text-ctp-text hover:underline ${activeId === node.id ? 'text-ctp-text underline' : 'text-ctp-subtext0'} break-words`}
+
+      <p
+        className='group'
       >
-        <p
-          className={`w-full border-b border-ctp-overlay0/20 py-1 text-balance group-hover:bg-ctp-blue/20 ${activeId === node.id ? 'bg-ctp-blue/20' : ''} color-trans-2-quick`}
+        <a
+          id={linkId}
+          aria-label={`Jump to: ${node.title}`}
+          href={`${pathname}#${node.id}`}
+          className={`border-b border-ctp-overlay0/20 inline-block w-full py-1 group-hover:bg-ctp-blue/20 ${activeId === node.id ? 'bg-ctp-blue/20' : ''} transition-[background-color] duration-300`}
         >
           <span
-            className={`inline-block pr-[2ch] ${MD_MAX_TOC_WIDTH} ${LG_MAX_TOC_WIDTH}`}
+            aria-labelledby={linkId}
+            className={`w-full pointer-events-none inline-block pr-[2ch] [&>code]:pretty-inline-code font-mono text-sm leading-relaxed font-semibold text-balance group-hover:text-ctp-text group-hover:underline link-color-trans ${activeId === node.id ? 'text-ctp-text underline' : 'text-ctp-subtext0'} break-words ${MD_MAX_TOC_WIDTH} ${LG_MAX_TOC_WIDTH}`}
             style={{ paddingLeft: `${marginLeft ?? 2}ch` }}
-          >
-            {node.title}
-          </span>
-        </p>
-      </Link>
+            dangerouslySetInnerHTML={{ __html: node.title }}
+          />
+
+        </a>
+      </p>
 
       <ul className='list-none'>
         {node.children
-          ? node.children.map((childNode, idx) => (
-              <HeadingNode key={childNode.id} node={childNode} activeId={activeId} marginLeft={2 * node.level} />
-            ))
+          ? node.children.map((childNode) => (
+            <HeadingNode key={childNode.id} node={childNode} activeId={activeId} marginLeft={2 * node.level} />
+          ))
           : null}
       </ul>
     </li>
@@ -291,16 +270,22 @@ export const concatHeadingUtil = (heading: string, innerWidth: number) => {
   return concatHeading.join('');
 };
 
+export type FlatHeadingNode = {
+  id: string;
+  title: string;
+}
+
 export function ConcatTitle({
   activeId,
   headings,
   innerWidth,
 }: {
   activeId: string;
-  headings: HTMLHeadingElement[];
+  headings: FlatHeadingNode[];
   innerWidth: number;
 }) {
-  const activeHeading = headings?.find((heading) => heading.id === activeId)?.innerText;
+  console.log(headings) 
+  const activeHeading = headings?.find((heading) => heading.id === activeId)?.title;
   const concat = useMemo(() => concatHeadingUtil(activeHeading ?? '', innerWidth), [activeHeading, innerWidth]);
   return <>{concat}</>;
 }
