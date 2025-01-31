@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import { type Dispatch, type SetStateAction, Suspense, useEffect, useId, useMemo, useRef } from 'react';
+import { type Dispatch, type SetStateAction, Suspense, useEffect, useId, useMemo, useRef, useState } from 'react';
 const MED_SCREEN = 768; // px
 
 const Z_FOLD_SCREEN = 344;
@@ -177,12 +177,9 @@ export const useIntersectionObserver = (setActiveId: Dispatch<SetStateAction<str
   }, [setActiveId, activeId]);
 };
 
-export const concatHeadingUtil = (heading: string, innerWidth: number) => {
+export const concatHeadingUtil = (concat = 0, heading: string, innerWidth: number) => {
   if (!heading) return;
   if (!innerWidth) return;
-  let concat = 0;
-  
-
 
   // todo: figure out a math formula
   if (innerWidth <= Z_FOLD_SCREEN) {
@@ -238,11 +235,11 @@ export const concatHeadingUtil = (heading: string, innerWidth: number) => {
 
     const headingActual = headingActualArr.join(' ');
     const escapedLen = escapeCounter(headingActual, spaceEscape) * spaceEscape.length;
-    
+
     while (headingActualArr.join(' ').length - escapedLen > concat) {
       lastWord = headingActualArr.pop();
     }
-    
+
     if (lastWord) {
       const finalWord = (headingArr: string[], spaceEscape: string, lastWord: string, lastHtmlWord: RegExpMatchArray | null) => {
         const almostTitleLen = headingArr.join(' ').length;
@@ -253,9 +250,9 @@ export const concatHeadingUtil = (heading: string, innerWidth: number) => {
         lastWordCopy.splice(-1, 1, '...');
         return lastHtmlWord?.input?.replace(lastWord, lastWordCopy.join('')) ?? lastWordCopy.join('')
       }
-      
+
       headingActualArr.push(finalWord(headingActualArr, spaceEscape, lastWord, lastHtmlWord));
-      
+
       return headingActualArr.join(' ').replace(spaceEscape, ' ');
 
     }
@@ -280,9 +277,18 @@ export function ConcatTitle({
   innerWidth: number;
 }) {
   const activeHeading = headings?.find((heading) => heading.id === activeId)?.title ?? headings[0]?.title;
-  const concat = useMemo(() => concatHeadingUtil(activeHeading ?? '', innerWidth), [activeHeading, innerWidth]);
+  const [concatSize, setConcatSize] = useState(0);
+  const concatRef = useRef<HTMLElement>(null!);
+
+  useEffect(() => {
+    const box = concatRef?.current?.getClientRects();
+    console.log(innerWidth - (16*4));
+    console.log(box[0] && box[0]?.x + box[0]?.width);
+  }, [activeId, innerWidth])
+
+  const concat = useMemo(() => concatHeadingUtil(concatSize, activeHeading ?? '', innerWidth), [concatSize, activeHeading, innerWidth]);
   if (concat) {
-    return <strong className='[&>code]:pretty-inline-code overflow-clip' dangerouslySetInnerHTML={{ __html: concat }} />;
+    return <strong ref={concatRef} className='[&>code]:pretty-inline-code overflow-clip' dangerouslySetInnerHTML={{ __html: concat }} />;
   }
   return <strong>{activeHeading}</strong>
 }
