@@ -1,15 +1,27 @@
-import { Suspense, type ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import Footer from '@/components/footer/footer';
 import NavbarV2 from '@/components/navbar/variants/v2/core';
 import ToCMenuCore from '@/components/table-of-contents/core';
 import { allPosts } from 'contentlayer/generated';
 import jsxToHtml from './utils';
-import {JSDOM} from 'jsdom'
+import { JSDOM } from 'jsdom'
 
 type Params = Promise<{ id: string; slug: string }>;
 
+interface HeadingNode {
+  id: string;
+  level: number;
+  title: string;
+  children: HeadingNode[];
+}
+
+type FlatHeadingNode = {
+  id: string;
+  title: string;
+}
+
 export default async function PostPageLayout({ children, params }: { children: ReactNode; params: Params }) {
-  
+
   const { id, slug } = await params;
   const post = allPosts.find(
     (postX) =>
@@ -20,12 +32,59 @@ export default async function PostPageLayout({ children, params }: { children: R
 
   const postHtml = await jsxToHtml(post!.body.code);
   const doc = new JSDOM(`<!DOCTYPE html>${postHtml}</html>`);
-  const headings = Array.from(doc.window.document.querySelectorAll("h2, h3, h4, h5, h6")).filter((el) => el.id.length > 0);
-  console.dir(headings, {depth: null})
+  const headings = Array.from(doc.window.document.querySelectorAll("h2, h3, h4, h5, h6")).filter((el) => el.id.length > 0) as HTMLHeadingElement[];
+
+  const getNestedHeadings = (headings: HTMLHeadingElement[], level: number): HeadingNode[] => {
+    const nestedTree: HeadingNode[] = [];
+    let currNode: HeadingNode = {
+      id: '',
+      level: 0,
+      title: '',
+      children: [],
+    };
+
+    while (headings.length > 0) {
+      const currHeading = headings[0]!;
+      const headingLevel = parseInt(currHeading.nodeName[1]!);
+      if (headingLevel === level) {
+        currNode = {
+          id: currHeading.id ?? '',
+          level: parseInt(currHeading.nodeName[1]!),
+          title: currHeading.innerHTML ?? '',
+          children: [],
+        };
+        nestedTree.push(currNode);
+        headings.shift();
+      } else if (headingLevel > level) {
+        if (currNode) {
+          currNode.children = getNestedHeadings(headings, headingLevel);
+        }
+      } else {
+        break;
+      }
+    }
+    return nestedTree;
+  };
+  
+  const getFlatHeadings = (headings: HTMLHeadingElement[]): FlatHeadingNode[] => {
+    const headingsArr = [];
+
+    for (const heading of headings) {
+      const node = {
+        id: heading.id ?? '',
+        title: heading.innerHTML ?? ''
+      }
+      headingsArr.push(node);
+    }
+    return headingsArr
+  }; 
+  
+  const nestedHeadings = getNestedHeadings(Array.from(headings), 2);
+  const flatHeadings = getFlatHeadings(headings);
 
   return (
-    <div className='flex size-full max-w-[100vw] flex-col md:relative md:flex-row'>
-      <ToCMenuCore />
+    <div className='flex size-full max-w-[100vw] flex-col md:relative md:flex-row '>
+      <ToCMenuCore flatHeadings={JSON.stringify(flatHeadings)} nestedHeadings={JSON.stringify(nestedHeadings)} />
 
       <div className='size-full min-w-0'>
         <NavbarV2 />

@@ -479,13 +479,13 @@
 }
 
 @utility link-color-trans {
-  transition: color 0.38s;
+  transition: color 0.3s;
 }
 
 @utility color-trans-quick {
   transition:
-    color 0.38s,
-    background-color 0.38s;
+    color 0.3s,
+    background-color 0.3s;
 }
 
 @utility simple-color-trans {
@@ -506,10 +506,10 @@
 
 @utility color-trans-2-quick {
   transition:
-    background-color 0.38s,
-    border 0.38s,
-    color 0.38s,
-    box-shadow 0.38s;
+    background-color 0.3s,
+    border 0.3s,
+    color 0.3s,
+    box-shadow 0.3s;
 }
 
 @utility s-slider {
@@ -565,7 +565,7 @@
   button[aria-checked='true']:hover {
     border: 1px solid #fff;
     box-shadow: 0 0 8px #fff;
-    transition: all 0.38s;
+    transition: all 0.3s;
   }
 }
 
@@ -680,8 +680,12 @@
     &::after {
       display: none;
     }
-    @apply rounded-sm border border-ctp-surface0 bg-ctp-crust px-1 py-0.5 break-words dark:bg-ctp-base;
+    @apply pretty-inline-code;
   }
+}
+
+@utility pretty-inline-code {
+  @apply rounded-sm border border-ctp-surface0 bg-ctp-crust px-1 py-0.5 break-words dark:bg-ctp-base;
 }
 
 @utility prose-invert {
@@ -843,7 +847,7 @@
   @apply home-btn-standard bg-ctp-mauve/20;
 }
 @utility home-btn-2 {
-  @apply flex w-full items-center justify-center rounded border border-ctp-text/40 px-4 py-2 font-mono text-base font-bold text-ctp-text lowercase [transition:_background-color_0.38s,_color_0.38s,_border_0.38s] hover:border-ctp-pink hover:bg-ctp-pink/40 hover:text-ctp-base hover:no-underline md:w-fit md:border-ctp-surface1 md:whitespace-nowrap dark:hover:text-ctp-pink;
+  @apply flex w-full items-center justify-center rounded border border-ctp-text/40 px-4 py-2 font-mono text-base font-bold text-ctp-text lowercase [transition:_background-color_0.3s,_color_0.38s,_border_0.38s] hover:border-ctp-pink hover:bg-ctp-pink/40 hover:text-ctp-base hover:no-underline md:w-fit md:border-ctp-surface1 md:whitespace-nowrap dark:hover:text-ctp-pink;
 }
 @utility home-btn-2-extra {
   @apply home-btn-2 border-ctp-sapphire bg-ctp-sapphire/20 text-ctp-sapphire hover:border-ctp-sky hover:bg-ctp-sky/40 hover:text-ctp-base dark:hover:text-ctp-sky;

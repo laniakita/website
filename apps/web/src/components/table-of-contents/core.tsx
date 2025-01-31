@@ -2,22 +2,24 @@
 import { NAV_MAIN_ID, TOC_NAV_ID } from '@/components/nav-constants';
 import { useNavScrollViewStore } from '@/providers/nav-scroll-view-store-provider';
 import { useToCViewStore } from '@/providers/toc-view-store-provider';
-import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
-import { getFlatHeadings, HeadingNode, useHeadingsData, useIntersectionObserver } from './utils';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { getFlatHeadings, HeadingNode, useIntersectionObserver } from './utils';
 import dynamic from 'next/dynamic';
-import { allPosts } from 'contentlayer/generated';
-import { usePathname } from 'next/navigation';
 
 const Headings = dynamic(() => import('./utils').then((mod) => mod.Headings), { ssr: false });
 const ConcatTitle = dynamic(() => import('./utils').then((mod) => mod.ConcatTitle), { ssr: false });
 
-export default function ToCMenuCore() {
+type ToCMenuCoreProps = {
+  nestedHeadings: string;
+  flatHeadings: string;
+};
+
+export default function ToCMenuCore(props: ToCMenuCoreProps) {
   const [activeId, setActiveId] = useState('');
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   //const [isMobile, setIsMobile] = useState(false);
   const [width, setWidth] = useState(0);
   const [flatHeadings, setFlatHeadings] = useState<HTMLHeadingElement[]>([]);
-  const { nestedHeadings } = useHeadingsData();
   const [readyHeadings, setReadyHeadings] = useState<HeadingNode[]>([]);
   const [isReady, setIsReady] = useState(false);
   useIntersectionObserver(setActiveId, activeId);
@@ -31,7 +33,7 @@ export default function ToCMenuCore() {
   const handleToCOffClick = useCallback((e: MouseEvent) => {
     e.stopPropagation();
     const navbar = document.getElementById(NAV_MAIN_ID);
-
+   
     if ((e.target as HTMLElement).id === 'show-hide-table-of-contents-button-mobile') {
       // do nothing
     } else if (dropToCRef?.current?.contains(e.target as Node) && (e.target as Node)?.nodeName !== 'A') {
@@ -50,17 +52,18 @@ export default function ToCMenuCore() {
   }, []);
 
   useEffect(() => {
+    const nestedHeadings = JSON.parse(props.nestedHeadings);
     if (nestedHeadings && nestedHeadings?.length > 1) {
       setReadyHeadings(nestedHeadings);
       setIsReady(true);
     }
-  }, [nestedHeadings]);
+  }, [props.nestedHeadings]);
 
   useEffect(() => {
     // grab headings on mount
-    if (flatHeadings.length <= 0) {
-      const headingsQuery = getFlatHeadings();
-      setFlatHeadings(headingsQuery as HTMLHeadingElement[]);
+    const passedFlatHeadings = JSON.parse(props.flatHeadings);
+    if (passedFlatHeadings?.length > 1) {
+      setFlatHeadings(passedFlatHeadings);
     }
 
     function handleResize() {
@@ -86,7 +89,7 @@ export default function ToCMenuCore() {
       document.removeEventListener('click', handleToCOffClick);
       window.removeEventListener('resize', handleResize);
     };
-  }, [flatHeadings.length, handleToCOffClick, width]);
+  }, [props.flatHeadings, handleToCOffClick, width]);
 
   return (
     <>
