@@ -6,12 +6,14 @@ import { getMDXComponent } from './mdx-bundler-components';
 //import Footnotes, { SupAnchors } from '../.tmp/section-footnotes';
 import Anchors from './components/anchor-tags';
 import PreCodeV2 from './components/pre-code/codeblock-v2';
+import Section from './components/section/section';
 
 export const globalMdxComponents = {
   p: Paragraph,
   img: BlogImageBlurServer,
   pre: PreCodeV2,
-  a: Anchors
+  a: Anchors,
+  section: Section
 };
 
 /*
@@ -27,11 +29,10 @@ export default function GlobalMDXComponent(data: Post | Page | Category | Tag | 
   return <MDXContent code={data.body.code} components={globalMdxComponents} />;
 }
 
-export function UniversalMDXComponent({code}:{code: string}) {
+export function UniversalMDXComponent({ code }: { code: string }) {
   const MDXContent = getMDXComponent(code, {});
   return <MDXContent code={code} />;
 }
-
 
 export function MiniMDXComponent({ code }: { code: string }) {
   const MDXContent = getMDXComponent(code, {});

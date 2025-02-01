@@ -5,7 +5,7 @@ import Link from 'next/link';
 import * as darklogo from '@/app/laniakita-logo-transparent-darkmode.svg';
 import * as lightlogo from '@/app/laniakita-logo-transparent-lightmode.svg';
 import { useDarkStore } from '@/providers/theme-store-provider';
-import { RESUME_LINK } from '@/lib/constants';
+import { RESUME_LINK, TW_SPACING } from '@/lib/constants';
 import DarkModeSwitch from '@/components/navbar/dark-mode-switch';
 import LinkPlus from '@/components/navbar/link-plus';
 import { NAV_MAIN_ID, NAV_MAIN_MOBILE_CONTAINER_ID, NAV_MAIN_MOBILE_MENU_IO_ID } from '@/components/nav-constants';
@@ -128,7 +128,7 @@ export default function NavbarV2Core() {
       <nav
         id={NAV_MAIN_ID}
         ref={navBarRef}
-        className={`sticky top-0 z-50 flex h-16 flex-row items-center justify-between px-6 ${inView ? 'translate-y-0' : '-translate-y-full'} bg-ctp-base/80 motion-safe:transition-transform duration-300 dark:bg-ctp-midnight/50`}
+        className={`sticky top-0 z-50 flex h-16 flex-row items-center justify-between px-6 ${inView ? 'translate-y-0' : '-translate-y-full'} bg-ctp-base/80 duration-300 motion-safe:transition-transform dark:bg-ctp-midnight/50`}
       >
         <div id='nav-mask-bg' className='nav-glassy-bg' />
         <div id='nav-mask-edge' className='nav-glassy-edge' />
@@ -234,7 +234,7 @@ function MobileDropdown({ hamburgerOpen, setHamburgerOpen, dropNavRef }: MobileD
       {/* mobile menu container */}
       <div
         id='mobile-nav-offclick-bg'
-        className={`${hamburgerOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'} absolute inset-0 top-16 z-40 flex h-dvh max-h-[calc(100dvh-4rem)] flex-col justify-start bg-black/40 [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] perspective-[5px] motion-safe:transition-opacity duration-300`}
+        className={`${hamburgerOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'} absolute inset-0 top-16 z-40 flex h-dvh max-h-[calc(100dvh-4rem)] flex-col justify-start bg-black/40 duration-300 [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] perspective-[5px] motion-safe:transition-opacity`}
       >
         {/* menu box */}
         <div

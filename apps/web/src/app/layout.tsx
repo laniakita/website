@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter_Tight } from 'next/font/google';
 import localFont from 'next/font/local';
-import { Suspense, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 
 import '@/css/app.css';
 import {
@@ -68,16 +68,18 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang='en-US' dir='ltr' className={`${inter_tight.variable} ${zeroxproto.variable} `} suppressHydrationWarning>
+    <html
+      lang='en-US'
+      dir='ltr'
+      className={`${inter_tight.variable} ${zeroxproto.variable}`}
+      suppressHydrationWarning
+    >
       <head>
         {/* eslint-disable @next/next/no-sync-scripts -- necessary 
             @ts-expect-error -- fetchPriority exists */}
         <script src='/dist/theme-getter.js' fetchPriority='high' />
       </head>
-      <body
-        className={`${inter_tight.className} `}
-        suppressHydrationWarning
-      >
+      <body className={`${inter_tight.className} `} suppressHydrationWarning>
         <ZustandWrappersCore>{children}</ZustandWrappersCore>
       </body>
     </html>

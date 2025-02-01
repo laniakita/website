@@ -1,4 +1,4 @@
-import type { AnchorHTMLAttributes } from "react";
+import type { AnchorHTMLAttributes } from 'react';
 
 export default function Anchors(
   props: AnchorHTMLAttributes<HTMLAnchorElement> & {

@@ -66,7 +66,7 @@ export default function CopyBtn({
   return (
     <div
       id={`code-snippet-copy-button-overlay${getId}`}
-      className={`pointer-events-none absolute inset-x-0 inline-flex w-full flex-row items-center justify-end ${topPos ?? 'top-2'} gap-4 motion-safe:[transition:_top_0.3s] my-0`}
+      className={`pointer-events-none absolute inset-x-0 inline-flex w-full flex-row items-center justify-end ${topPos ?? 'top-2'} my-0 gap-4 motion-safe:[transition:_top_0.3s]`}
     >
       <span
         className={`pointer-events-none flex min-w-2 rounded-full border border-ctp-base p-1 px-4 font-mono font-bold opacity-0 backdrop-blur-md motion-safe:[transition:_opacity_0.3s] ${isCopied ? 'pointer-events-auto border-ctp-green bg-ctp-green/20 text-ctp-green opacity-100 hover:border-ctp-green hover:bg-ctp-green/20 hover:text-ctp-green' : isCopied === null ? 'pointer-events-auto border-ctp-red bg-ctp-red/20 text-ctp-red opacity-100 hover:border-ctp-red hover:bg-ctp-red/20 hover:text-ctp-red' : ''} text-xs md:text-base`}

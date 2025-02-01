@@ -20,7 +20,7 @@ export default function ToCMenuCore(props: ToCMenuCoreProps) {
   const [isReady, setIsReady] = useState(false);
   const { tocInView, setToCNotInView } = useToCViewStore((state) => state);
   const [hasAnimated, setHasAnimated] = useState(false);
-  
+  const tocRef = useRef<HTMLDivElement>(null!);
   useIntersectionObserver(setActiveId, activeId);
 
   useEffect(() => {
@@ -30,18 +30,22 @@ export default function ToCMenuCore(props: ToCMenuCoreProps) {
       setIsReady(true);
     }
   }, [props.nestedHeadings]);
-
+  
+  useEffect(() => {
+    
+  },[])
 
   return (
     <>
       <div
+        ref={tocRef}
         aria-hidden={!tocInView}
-        className={`${tocInView ? 'md:w-80 md:min-w-[21rem] lg:w-96 lg:min-w-96' : 'w-0 min-w-0'} sticky hidden top-0 h-full overflow-x-hidden shadow-xl [transition:width_0.8s,min-width_0.8s] md:block`}
+        className={`${tocInView ? 'md:w-80 md:min-w-fit lg:w-96 lg:min-w-fit' : 'w-0 min-w-0'} min-h-dvh sticky hidden top-0 h-full overflow-y-auto shadow-xl motion-safe:[transition:width_0.8s,min-width_0.8s,background-color_0.5s] md:block bg-ctp-crust dark:bg-ctp-base/20`}
       >
         <nav
-          className={`relative flex max-h-dvh min-h-dvh min-w-0 flex-col items-center justify-start gap-12 overflow-y-auto bg-ctp-crust pb-12 text-slate-100 motion-safe:simple-color-trans md:min-w-80 lg:min-w-96 dark:bg-ctp-base/20`}
+          className={`absolute overflow-visible min-h-fit border-r inset-0 flex min-w-0 flex-col items-center justify-start gap-0  pb-6 text-slate-100 w-fit`}
         >
-          <div className='sticky top-0 z-10 flex min-h-16 w-full flex-row items-center justify-start px-4 text-ctp-text'>
+          <div className='sticky top-0 z-10 flex min-h-16 w-full flex-row items-center justify-start text-ctp-text'>
             <div id='nav-mask-bg' className='nav-glassy-bg' />
             <div id='nav-mask-edge' className='nav-glassy-edge' />
             <button
@@ -50,7 +54,7 @@ export default function ToCMenuCore(props: ToCMenuCoreProps) {
                 localStorage.setItem('toc-state-pref', 'closed');
                 setHasAnimated(true);
               }}
-              className='icon-[ph--sidebar-simple-fill] text-3xl'
+              className='icon-[ph--sidebar-simple-fill] text-3xl ml-4'
             />
           </div>
 
@@ -81,14 +85,13 @@ export function ToCMenuMobileCore(props: ToCMenuCoreProps) {
   const handleToCOffClick = useCallback((e: MouseEvent) => {
     e.stopPropagation();
     const navbar = document.getElementById(NAV_MAIN_ID);
-
     if ((e.target as HTMLElement).id === 'show-hide-table-of-contents-button-mobile') {
       // do nothing
-    } else if (dropToCRef?.current?.contains(e.target as Node) && (e.target as Node)?.nodeName !== 'A') {
+    } else if (dropToCRef?.current?.contains(e.target as Node) && (e.target as Node)?.nodeName !== 'BUTTON') {
       // do nothing
     } else if (
       mainToCRef?.current?.contains(e.target as Node) &&
-      (e.target as Node)?.nodeName !== 'A' &&
+      (e.target as Node)?.nodeName !== 'BUTTON' &&
       (e.target as HTMLElement).id !== 'toc-offclick-bg'
     ) {
       // do nothing
