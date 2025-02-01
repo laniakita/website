@@ -1,13 +1,12 @@
 'use client';
 
 import { TW_SPACING } from '@/lib/constants';
-import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { type Dispatch, type SetStateAction, Suspense, useEffect, useId, useMemo, useRef, useState } from 'react';
 
 export const MED_SCREEN = 768; // px
-const MD_MAX_TOC_WIDTH = 'md:max-w-80';
-const LG_MAX_TOC_WIDTH = 'lg:max-w-96';
+const MD_MAX_TOC_WIDTH = 'md:max-w-76';
+const LG_MAX_TOC_WIDTH = 'lg:max-w-92';
 
 // inspired by Emma Goto React ToC: https://www.emgoto.com/react-table-of-contents
 
@@ -39,7 +38,7 @@ export function HeadingNode({
           id={linkId}
           role='link'
           aria-label={`Jump to: ${node.title}`}
-          className={`text-left inline-block w-full border-b border-ctp-overlay0/20 py-1 group-hover:bg-ctp-blue/20 ${activeId === node.id ? 'bg-ctp-blue/20' : ''} transition-[background-color] duration-300`}
+          className={`text-left inline-block w-full border-b border-ctp-overlay0/20 py-1 group-hover:bg-ctp-mauve/30 ${activeId === node.id ? 'bg-ctp-mauve/30' : ''} transition-[background-color] duration-300`}
           onClick={(e) => {
             router.push(`${pathname}#${node.id}`, {scroll: false});
             e.preventDefault();
@@ -49,7 +48,7 @@ export function HeadingNode({
         >
           <span
             aria-labelledby={linkId}
-            className={`pointer-events-none inline-block w-full pr-[2ch] font-mono text-sm leading-relaxed font-semibold text-balance link-color-trans group-hover:text-ctp-text group-hover:underline [&>code]:pretty-inline-code ${activeId === node.id ? 'text-ctp-text underline' : 'text-ctp-subtext0'} break-words ${MD_MAX_TOC_WIDTH} ${LG_MAX_TOC_WIDTH}`}
+            className={`pointer-events-none inline-block pr-[2ch] font-mono text-sm leading-relaxed font-semibold text-balance link-color-trans group-hover:text-ctp-text group-hover:underline [&>code]:pretty-inline-code ${activeId === node.id ? 'text-ctp-text underline' : 'text-ctp-subtext0'} break-words ${MD_MAX_TOC_WIDTH} ${LG_MAX_TOC_WIDTH}`}
             style={{ paddingLeft: `${marginLeft ?? 2}ch` }}
             dangerouslySetInnerHTML={{ __html: node.title }}
           />
