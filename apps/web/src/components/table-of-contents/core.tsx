@@ -77,7 +77,6 @@ export function ToCMenuMobileCore(props: ToCMenuCoreProps) {
   const dropToCRef = useRef<HTMLDivElement>(null!);
   const mainToCRef = useRef<HTMLElement>(null!);
 
-
   const handleToCOffClick = useCallback((e: MouseEvent) => {
     e.stopPropagation();
     const navbar = document.getElementById(NAV_MAIN_ID);
@@ -173,7 +172,7 @@ export function ToCMenuMobileCore(props: ToCMenuCoreProps) {
       <div
         id='toc-offclick-bg'
         aria-hidden={!showMobileMenu}
-        className={`${showMobileMenu ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'} absolute inset-x-0 top-12 bottom-0 z-20 size-full flex-col justify-start bg-black/40 [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] [perspective:_5px] motion-safe:[transition:_opacity_0.3s,]`}
+        className={`${showMobileMenu ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'} h-dvh absolute inset-x-0 top-12 bottom-0 z-20 size-full flex-col justify-start bg-black/40 [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] [perspective:_5px] motion-safe:transition-[opacity] duration-300`}
       >
         <div
           aria-label='Table of contents'

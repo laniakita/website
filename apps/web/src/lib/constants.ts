@@ -15,3 +15,5 @@ export const SHOWCASE_URL =
   process.env.NODE_ENV === 'production' && process.env.NEXT_PUBLIC_DEPLOYED_URL
     ? 'https://showcase.laniakita.com'
     : 'http://localhost:3100';
+// Spacing in rem. see: https://github.com/tailwindlabs/tailwindcss/blob/main/packages/tailwindcss/theme.css
+export const TW_SPACING = 0.25; 
