@@ -2,7 +2,7 @@
 
 import { TW_SPACING } from '@/lib/constants';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { type Dispatch, type SetStateAction, Suspense, useEffect, useId, useMemo, useRef, useState } from 'react';
 
 export const MED_SCREEN = 768; // px
@@ -28,21 +28,20 @@ export function HeadingNode({
   marginLeft?: number;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
   const id = useId();
-  const linkId = `toc-link${id}`
+  const linkId = `toc-link${id}`;
 
   return (
     <li key={node.id}>
-
-      <p
-        className='group'
-      >
-        <Link
+      <p className='group'>
+        <button
           id={linkId}
+          role='link'
           aria-label={`Jump to: ${node.title}`}
-          href={`${pathname}#${node.id}`}
-          className={`border-b border-ctp-overlay0/20 inline-block w-full py-1 group-hover:bg-ctp-blue/20 ${activeId === node.id ? 'bg-ctp-blue/20' : ''} transition-[background-color] duration-300`}
+          className={`text-left inline-block w-full border-b border-ctp-overlay0/20 py-1 group-hover:bg-ctp-blue/20 ${activeId === node.id ? 'bg-ctp-blue/20' : ''} transition-[background-color] duration-300`}
           onClick={(e) => {
+            router.push(`${pathname}#${node.id}`, {scroll: false});
             e.preventDefault();
             const el = document.getElementById(node.id);
             el?.scrollIntoView({behavior: "smooth"});
@@ -50,19 +49,18 @@ export function HeadingNode({
         >
           <span
             aria-labelledby={linkId}
-            className={`w-full pointer-events-none inline-block pr-[2ch] [&>code]:pretty-inline-code font-mono text-sm leading-relaxed font-semibold text-balance group-hover:text-ctp-text group-hover:underline link-color-trans ${activeId === node.id ? 'text-ctp-text underline' : 'text-ctp-subtext0'} break-words ${MD_MAX_TOC_WIDTH} ${LG_MAX_TOC_WIDTH}`}
+            className={`pointer-events-none inline-block w-full pr-[2ch] font-mono text-sm leading-relaxed font-semibold text-balance link-color-trans group-hover:text-ctp-text group-hover:underline [&>code]:pretty-inline-code ${activeId === node.id ? 'text-ctp-text underline' : 'text-ctp-subtext0'} break-words ${MD_MAX_TOC_WIDTH} ${LG_MAX_TOC_WIDTH}`}
             style={{ paddingLeft: `${marginLeft ?? 2}ch` }}
             dangerouslySetInnerHTML={{ __html: node.title }}
           />
-
-        </Link>
+        </button>
       </p>
 
       <ul className='list-none'>
         {node.children
           ? node.children.map((childNode) => (
-            <HeadingNode key={childNode.id} node={childNode} activeId={activeId} marginLeft={2 * node.level} />
-          ))
+              <HeadingNode key={childNode.id} node={childNode} activeId={activeId} marginLeft={2 * node.level} />
+            ))
           : null}
       </ul>
     </li>
@@ -175,25 +173,25 @@ export const useIntersectionObserver = (setActiveId: Dispatch<SetStateAction<str
 export const concatHeadingUtil = (concat: number, heading: string, innerWidth: number) => {
   if (!heading) return;
   if (!innerWidth) return;
-  
+
   // utils
   const re = /(?=>(?<innerText>[^<]+))/;
-  
-  const spaceEscape = '&nbsp;'
+
+  const spaceEscape = '&nbsp;';
   const escapeSpaces = (text: string) => {
     return text.split(' ').join(spaceEscape);
-  }
+  };
   const escapeCounter = (text: string | null, escapeStr: string): number => {
     if (!text) return 0;
     const re = new RegExp(escapeStr, 'g');
     return text.match(re)?.length ?? 0;
-  }
+  };
 
   if (heading.length > concat) {
     let headingWithEscapedHTML = heading;
 
     const found = heading.match(re);
-    
+
     if (found?.groups?.innerText) {
       const foundInnerText = found?.groups?.innerText;
       headingWithEscapedHTML = heading.replace(foundInnerText, escapeSpaces(foundInnerText));
@@ -201,13 +199,11 @@ export const concatHeadingUtil = (concat: number, heading: string, innerWidth: n
 
     let lastWord;
     let lastHtmlWord: RegExpMatchArray | null = null;
-    
-
 
     const headingActualArr = headingWithEscapedHTML?.split(' ').map((word) => {
       const found = word.match(re);
       lastHtmlWord = found;
-      return  found?.groups?.innerText ?? word;
+      return found?.groups?.innerText ?? word;
     });
 
     const headingActual = headingActualArr.join(' ');
@@ -216,9 +212,14 @@ export const concatHeadingUtil = (concat: number, heading: string, innerWidth: n
     while (headingActualArr.join(' ').length - escapedLen > concat) {
       lastWord = headingActualArr.pop();
     }
-    
+
     if (lastWord) {
-      const finalWord = (headingArr: string[], spaceEscape: string, lastWord: string, lastHtmlWord: RegExpMatchArray | null): string => {
+      const finalWord = (
+        headingArr: string[],
+        spaceEscape: string,
+        lastWord: string,
+        lastHtmlWord: RegExpMatchArray | null,
+      ): string => {
         const almostTitleLen = headingArr.join(' ').length;
         const lastWordCopy = lastWord.replace(spaceEscape, ' ').split('');
         while (almostTitleLen + lastWordCopy.length > concat) {
@@ -229,15 +230,13 @@ export const concatHeadingUtil = (concat: number, heading: string, innerWidth: n
           return lastHtmlWord?.input?.replace(lastWord, lastWordCopy.join('')) ?? '';
         }
         return lastWordCopy.join('');
-      }
+      };
       const res = finalWord(headingActualArr, spaceEscape, lastWord, lastHtmlWord);
 
       headingActualArr.push(res);
 
       return headingActualArr.join(' ').replace(spaceEscape, ' ');
-
     }
-
   }
 
   return heading;
@@ -252,12 +251,12 @@ const getCharWidth = (text: string, font: string): number => {
     const metrics = ctx.measureText(char);
     return metrics.width;
   }
-  return 0
-}
+  return 0;
+};
 
 const maxConcatCharCalc = (totalNavWidth: number, concatPosX: number, pxPerChar: number): number => {
-  return (totalNavWidth - concatPosX) / pxPerChar
-}
+  return (totalNavWidth - concatPosX) / pxPerChar;
+};
 
 type CombinedProps = {
   text: string;
@@ -266,18 +265,18 @@ type CombinedProps = {
   elOffset: number;
   clientWidth: number;
   injectOffset: number;
-}
+};
 
 const combinedUtil = (props: CombinedProps) => {
   const charWidth = getCharWidth(props.text.toString(), props.font);
   const concatLen = Math.floor(maxConcatCharCalc(props.actualWidth, props.elOffset, charWidth)) - props.injectOffset;
   return concatHeadingUtil(concatLen, props.text.toString(), props.clientWidth);
-}
+};
 
 export type FlatHeadingNode = {
   id: string;
   title: string;
-}
+};
 
 export function ConcatTitle({
   activeId,
@@ -293,7 +292,7 @@ export function ConcatTitle({
   const [elOffset, setElOffset] = useState(0);
   const concatRef = useRef<HTMLElement>(null!);
   const navPaddingX = 6;
-  const actualWidth = innerWidth - (16 * (2 * navPaddingX * TW_SPACING));
+  const actualWidth = innerWidth - 16 * (2 * navPaddingX * TW_SPACING);
   useEffect(() => {
     if (concatRef?.current) {
       const fontRes = window.getComputedStyle(concatRef?.current, null).font;
@@ -301,13 +300,21 @@ export function ConcatTitle({
       setFont(fontRes);
       setElOffset(offSet);
     }
-  }, [activeHeading])
+  }, [activeHeading]);
 
-  const concat = useMemo(() => combinedUtil({ text: activeHeading, font, actualWidth, elOffset, clientWidth: innerWidth, injectOffset: 3 }), [activeHeading, font, actualWidth, elOffset, innerWidth]);
-
+  const concat = useMemo(
+    () => combinedUtil({ text: activeHeading, font, actualWidth, elOffset, clientWidth: innerWidth, injectOffset: 3 }),
+    [activeHeading, font, actualWidth, elOffset, innerWidth],
+  );
 
   if (concat) {
-    return <strong ref={concatRef} className='[&>code]:pretty-inline-code overflow-clip' dangerouslySetInnerHTML={{ __html: concat }} />;
+    return (
+      <strong
+        ref={concatRef}
+        className='overflow-clip [&>code]:pretty-inline-code'
+        dangerouslySetInnerHTML={{ __html: concat }}
+      />
+    );
   }
-  return <strong>{activeHeading}</strong>
+  return <strong>{activeHeading}</strong>;
 }

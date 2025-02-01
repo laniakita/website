@@ -183,12 +183,9 @@
     min-height: 100dvh;
     box-sizing: border-box;
     margin: 0;
-    scroll-padding-top: calc(var(--spacing)*32);
     background-color: light-dark(var(--color-ctp-base), var(--color-ctp-midnight));
     color: var(--color-ctp-text);
-    @media (width >= 48rem) {
-      scroll-padding-top: calc(var(--spacing)*24);
-    };
+    @apply scroll-pt-32 md:scroll-pt-18 ;
   }
 
   canvas {
@@ -239,7 +236,7 @@
       @apply !text-sm;
     }
     :where(p, ul li, summary):not(pre) > code {
-      @apply !border-none !bg-inherit !font-black !text-inherit !italic !text-sm;
+      @apply !border-none !bg-inherit !text-sm !font-black !text-inherit !italic;
     }
     @apply my-[calc(32em/20)] block rounded-lg border border-ctp-blue bg-ctp-blue/10 p-6 font-mono text-sm shadow-lg dark:border-ctp-sky dark:bg-ctp-sky/5 dark:text-ctp-sky;
   }
@@ -247,23 +244,16 @@
     @apply rounded-lg border border-ctp-blue bg-ctp-blue/10 p-6 font-mono text-sm shadow-lg dark:border-ctp-sky dark:bg-ctp-sky/5 dark:text-ctp-sky;
   }
 
-  .sr-only {
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    border: 0;
-    margin: -1px;
-    padding: 0;
-    width: 1px;
-    height: 1px;
-  }
-
   #footnote-label {
-    overflow: hidden;
-    width: 100%;
-    height: 1px;
-    margin-top: 3rem;
-    margin-bottom: 3rem;
-    background-color: var(--footnote-divider-line);
+    clip: auto !important;
+    overflow: hidden !important;
+    display: block !important;
+    position: relative !important;
+    width: 100% !important;
+    height: 1px !important;
+    margin-top: 3rem !important;
+    margin-bottom: 3rem !important;
+    background-color: var(--color-ctp-subtext0) !important;
   }
 
   :where(h1, h2, h3, h4, h5, h6) code {
@@ -741,15 +731,11 @@
 }
 
 @utility prose-headings-mod {
-  @apply prose-headings:align-baseline prose-headings:font-black prose-h2:text-xl lg:prose-h2:text-2xl prose-h3:text-lg lg:prose-h3:text-xl prose-h4:text-lg prose-h4:font-bold lg:prose-h4:text-xl prose-h5:text-lg prose-h5:font-semibold lg:prose-h5:text-xl prose-h6:text-lg prose-h6:font-medium lg:prose-h6:text-lg break-words;
+  @apply break-words prose-headings:align-baseline prose-headings:font-black prose-h2:text-xl lg:prose-h2:text-2xl prose-h3:text-lg lg:prose-h3:text-xl prose-h4:text-lg prose-h4:font-bold lg:prose-h4:text-xl prose-h5:text-lg prose-h5:font-semibold lg:prose-h5:text-xl prose-h6:text-lg prose-h6:font-medium lg:prose-h6:text-lg;
 }
 
 @utility prose-text-pretty {
   @apply prose-headings-mod prose-p:supports-[text-wrap:pretty]:text-pretty prose-a:break-words prose-em:mr-[0.2ch];
-}
-
-@utility prose-footnotes-active {
-  @apply after:pointer-events-none after:absolute after:-inset-y-2 after:-right-4 after:-left-10 after:rounded-lg after:border after:border-ctp-mauve after:bg-ctp-mauve/20 after:opacity-100 after:[transition:opacity_0.3s];
 }
 
 @layer components {

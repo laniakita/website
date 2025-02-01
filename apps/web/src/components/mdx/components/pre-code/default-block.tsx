@@ -38,8 +38,7 @@ export default function DefaultBlock(props: DetailedHTMLProps<HTMLAttributes<HTM
         }}
         {...props}
         className='my-0'
-      >
-      </pre>
+      ></pre>
     </div>
   );
 }

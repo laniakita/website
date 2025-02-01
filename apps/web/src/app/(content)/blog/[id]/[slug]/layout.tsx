@@ -4,7 +4,7 @@ import NavbarV2 from '@/components/navbar/variants/v2/core';
 import ToCMenuCore, { ToCMenuMobileCore } from '@/components/table-of-contents/core';
 import { allPosts } from 'contentlayer/generated';
 import jsxToHtml from './utils';
-import { JSDOM } from 'jsdom'
+import { JSDOM } from 'jsdom';
 
 type Params = Promise<{ id: string; slug: string }>;
 
@@ -18,10 +18,9 @@ interface HeadingNode {
 type FlatHeadingNode = {
   id: string;
   title: string;
-}
+};
 
 export default async function PostPageLayout({ children, params }: { children: ReactNode; params: Params }) {
-
   const { id, slug } = await params;
   const post = allPosts.find(
     (postX) =>
@@ -32,7 +31,9 @@ export default async function PostPageLayout({ children, params }: { children: R
 
   const postHtml = await jsxToHtml(post!.body.code);
   const doc = new JSDOM(`<!DOCTYPE html>${postHtml}</html>`);
-  const headings = Array.from(doc.window.document.querySelectorAll("h2, h3, h4, h5, h6")).filter((el) => el.id.length > 0) as HTMLHeadingElement[];
+  const headings = Array.from(doc.window.document.querySelectorAll('h2, h3, h4, h5, h6')).filter(
+    (el) => el.id.length > 0,
+  ) as HTMLHeadingElement[];
 
   const getNestedHeadings = (headings: HTMLHeadingElement[], level: number): HeadingNode[] => {
     const nestedTree: HeadingNode[] = [];
@@ -65,30 +66,33 @@ export default async function PostPageLayout({ children, params }: { children: R
     }
     return nestedTree;
   };
-  
+
   const getFlatHeadings = (headings: HTMLHeadingElement[]): FlatHeadingNode[] => {
     const headingsArr = [];
 
     for (const heading of headings) {
       const node = {
         id: heading.id ?? '',
-        title: heading.innerHTML ?? ''
-      }
+        title: heading.innerHTML ?? '',
+      };
       headingsArr.push(node);
     }
-    return headingsArr
-  }; 
-  
+    return headingsArr;
+  };
+
   const nestedHeadings = getNestedHeadings(Array.from(headings), 2);
   const flatHeadings = getFlatHeadings(headings);
 
   return (
-    <div className='flex size-full max-w-[100vw] flex-col md:relative md:flex-row '>
+    <div className='flex size-full max-w-[100vw] flex-col md:relative md:flex-row'>
       <ToCMenuCore flatHeadings={JSON.stringify(flatHeadings)} nestedHeadings={JSON.stringify(nestedHeadings)} />
 
       <div className='size-full min-w-0'>
         <NavbarV2 />
-        <ToCMenuMobileCore flatHeadings={JSON.stringify(flatHeadings)} nestedHeadings={JSON.stringify(nestedHeadings)} />
+        <ToCMenuMobileCore
+          flatHeadings={JSON.stringify(flatHeadings)}
+          nestedHeadings={JSON.stringify(nestedHeadings)}
+        />
         <div className='flex max-w-7xl flex-col md:m-auto md:min-w-0'>
           {children}
           <Footer

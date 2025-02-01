@@ -2,10 +2,13 @@
 import dynamic from 'next/dynamic';
 import { ToCMenuCoreProps } from './core';
 
-const ToCMenuMobileCore = dynamic(() => import('./core').then((mod) => mod.ToCMenuMobileCore), {ssr: false, loading: Fallback});
+const ToCMenuMobileCore = dynamic(() => import('./core').then((mod) => mod.ToCMenuMobileCore), {
+  ssr: false,
+  loading: Fallback,
+});
 
 function Fallback() {
-   return (
+  return (
     <>
       <nav className='motion-safe:[transition:_transform_0.38s sticky top-16 z-20 translate-y-0 md:hidden'>
         <div className='absolute z-30 flex w-full flex-row items-center bg-ctp-base/80 md:hidden dark:bg-ctp-midnight/50'>
