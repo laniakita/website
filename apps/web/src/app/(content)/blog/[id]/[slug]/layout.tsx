@@ -84,7 +84,7 @@ export default async function PostPageLayout({ children, params }: { children: R
   const flatHeadings = getFlatHeadings(headings);
 
   return (
-    <div className='flex size-full max-w-[100vw] flex-col md:relative md:flex-row'>
+    <div className='flex size-full flex-col md:relative md:flex-row'>
       <ToCMenuCore flatHeadings={JSON.stringify(flatHeadings)} nestedHeadings={JSON.stringify(nestedHeadings)} />
 
       <div className='size-full min-w-0'>

@@ -1,28 +1,20 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { MinPageData, shareUnderChar } from './utils';
 import { DEFAULT_INSTANCE, MastodonBtn, MastodonPrompt } from './mastodon';
 import { NAV_MAIN_ID, TOC_NAV_ID } from '../nav-constants';
 
 export default function ShareButton() {
-  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   const shareDivRef = useRef<HTMLDivElement>(null!);
-  const shareListRef = useRef<HTMLUListElement>(null!);
+  const shareListRef = useRef<HTMLMenuElement>(null!);
 
   // mastodon sharebtn
   const [showMastodonForm, setShowMastodonForm] = useState(false);
   const [instanceInput, setInstanceInput] = useState(DEFAULT_INSTANCE);
   const mastodonPromptRef = useRef<HTMLDivElement>(null!);
-
-  const linkGen = useCallback(() => {
-    const baseUrl = 'https://laniakita.com';
-    const linkstr = `${baseUrl}${pathname}`;
-    return linkstr;
-  }, [pathname]);
 
   const [minPageData, setMinPageData] = useState<MinPageData>();
   const shareBtnRef = useRef<HTMLDivElement>(null!);
@@ -57,19 +49,16 @@ export default function ShareButton() {
   }, []);
 
   useEffect(() => {
-    const titleQ = document.querySelector('h1');
-    if (pathname.split('/').pop() === titleQ?.id) {
-      setMinPageData({
-        title: titleQ!.innerText,
-        url: linkGen(),
-      });
-    }
+    setMinPageData({
+      title: document.title,
+      url: location.href,
+    });
 
     document.addEventListener('click', handleShareOffClick);
     return () => {
       document.removeEventListener('click', handleShareOffClick);
     };
-  }, [handleShareOffClick, pathname, linkGen]);
+  }, [handleShareOffClick]);
 
   return (
     <>
@@ -89,11 +78,16 @@ export default function ShareButton() {
           ref={shareDivRef}
           className={`${isOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none h-0 opacity-0'} absolute bottom-0 z-[2] min-w-fit translate-y-[104%] overflow-hidden rounded-md border border-ctp-overlay0 bg-ctp-base/90 font-mono whitespace-nowrap shadow-lg backdrop-blur-md motion-safe:[transition:_opacity_0.5s,_transform_0.5s,_height_0.5s] dark:bg-ctp-base/50 dark:shadow-ctp-pink/30`}
         >
-          <ul ref={shareListRef} className='space-y-1.5 p-1.5 pb-2'>
+          <menu
+            id="social-media-share-menu"
+            aria-expanded={isOpen}
+            ref={shareListRef}
+            className='space-y-1.5 p-1.5 pb-2'
+          >
             <li>
               <button
                 onClick={() => {
-                  navigator.clipboard.writeText(linkGen());
+                  navigator.clipboard.writeText(location.href);
                   setIsCopied(true);
                   setTimeout(() => {
                     setIsCopied(false);
@@ -142,10 +136,12 @@ export default function ShareButton() {
                 <span>Substack</span>
               </a>
             </li>
-          </ul>
+          </menu>
         </div>
 
         <button
+          aria-expanded={!isOpen}
+          aria-controls="social-media-share-menu"
           onClick={() => {
             if (!isOpen) {
               setIsOpen(true);

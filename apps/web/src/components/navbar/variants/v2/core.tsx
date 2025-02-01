@@ -8,7 +8,7 @@ import { useDarkStore } from '@/providers/theme-store-provider';
 import { RESUME_LINK, TW_SPACING } from '@/lib/constants';
 import DarkModeSwitch from '@/components/navbar/dark-mode-switch';
 import LinkPlus from '@/components/navbar/link-plus';
-import { NAV_MAIN_ID, NAV_MAIN_MOBILE_CONTAINER_ID, NAV_MAIN_MOBILE_MENU_IO_ID } from '@/components/nav-constants';
+import { IPAD_TOC_ID, NAV_MAIN_ID, NAV_MAIN_MOBILE_CONTAINER_ID, NAV_MAIN_MOBILE_MENU_ID, NAV_MAIN_MOBILE_MENU_IO_ID } from '@/components/nav-constants';
 import { useNavScrollViewStore } from '@/providers/nav-scroll-view-store-provider';
 import SimpleSocials from './simple-socials';
 import { simpleSocialItems } from './data';
@@ -136,10 +136,11 @@ export default function NavbarV2Core() {
         <ul className='z-[51] flex flex-row items-center gap-[1ch]'>
           {isPost && (
             <li
-              aria-hidden={!tocInView}
               className={`hidden items-center justify-center md:flex ${tocInView ? 'w-0 opacity-0' : 'w-full opacity-100'} motion-safe:transition-[opacity_0.38s_ease,_width_0.38s_ease]`}
             >
               <button
+                aria-expanded="true"
+                aria-controls={IPAD_TOC_ID}
                 onClick={() => {
                   setToCInView();
                   localStorage.setItem('toc-state-pref', 'open');
@@ -201,6 +202,8 @@ function HamburgerToggle({ hamburgerOpen, setHamburgerOpen, tocInView, isPost }:
     <div className={`z-[51] flex flex-row-reverse items-center ${tocInView && isPost ? 'xl:hidden' : 'lg:hidden'}`}>
       <button
         id={NAV_MAIN_MOBILE_MENU_IO_ID}
+        aria-expanded={!hamburgerOpen}
+        aria-controls={NAV_MAIN_MOBILE_MENU_ID}
         type='button'
         onClick={() => {
           setHamburgerOpen(!hamburgerOpen);
@@ -230,7 +233,7 @@ interface MobileDropdownProps extends HamburgerToggleProps {
 
 function MobileDropdown({ hamburgerOpen, setHamburgerOpen, dropNavRef }: MobileDropdownProps) {
   return (
-    <div aria-hidden={!hamburgerOpen} className={`absolute inset-0 z-50 flex`}>
+    <div  className={`absolute inset-0 z-50 flex`}>
       {/* mobile menu container */}
       <div
         id='mobile-nav-offclick-bg'
@@ -242,7 +245,11 @@ function MobileDropdown({ hamburgerOpen, setHamburgerOpen, dropNavRef }: MobileD
           ref={dropNavRef}
           className={`${hamburgerOpen ? '[transform:translate3d(0%,0%,0px)] opacity-100' : '[transform:translate3d(0%,-100%,-0.01rem)] opacity-0'} max-h-[calc(100dvh-4rem)] w-full overflow-y-auto rounded-b-2xl border-b border-ctp-pink bg-ctp-base/90 backdrop-blur-md [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:transform_0.5s,_opacity_0.3s,_background-color_0.8s] dark:border-ctp-sky dark:bg-ctp-midnight/90`}
         >
-          <menu className='flex flex-col gap-3 p-10'>
+          <menu 
+            id={NAV_MAIN_MOBILE_MENU_ID}
+            aria-expanded={hamburgerOpen}
+            className='flex flex-col gap-3 p-10'
+          >
             {pagesArr.map((page) => (
               <li key={crypto.randomUUID()}>
                 <LinkPlus
