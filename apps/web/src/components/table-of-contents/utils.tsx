@@ -1,7 +1,8 @@
 'use client';
 
+import { TW_SPACING } from '@/lib/constants';
 import { usePathname } from 'next/navigation';
-import { type Dispatch, type SetStateAction, Suspense, useEffect, useId, useMemo, useRef, useState } from 'react';
+import { type Dispatch, RefObject, type SetStateAction, Suspense, useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 const MED_SCREEN = 768; // px
 
 const Z_FOLD_SCREEN = 344;
@@ -177,38 +178,13 @@ export const useIntersectionObserver = (setActiveId: Dispatch<SetStateAction<str
   }, [setActiveId, activeId]);
 };
 
-export const concatHeadingUtil = (concat = 0, heading: string, innerWidth: number) => {
+export const concatHeadingUtil = (concat: number, heading: string, innerWidth: number) => {
   if (!heading) return;
   if (!innerWidth) return;
-
-  // todo: figure out a math formula
-  if (innerWidth <= Z_FOLD_SCREEN) {
-    concat = 10;
-  } else if (innerWidth <= 360) {
-    concat = 12;
-  } else if (innerWidth <= IPHONE_SE_SCREEN) {
-    concat = 13;
-  } else if (innerWidth <= 390) {
-    concat = 15;
-  } else if (innerWidth <= 414) {
-    concat = 17;
-  } else if (innerWidth <= IPHONE_THIRTEEN_PRO_MAX) {
-    concat = 19;
-  } else if (innerWidth <= IPHONE_FOURTEEN_PRO_MAX) {
-    concat = 20;
-  } else if (innerWidth <= WEIRD_PHABLET) {
-    concat = 24;
-  } else if (innerWidth <= SMALL_SCREEN_MAX) {
-    concat = 28;
-  } else if (innerWidth <= MED_SCREEN) {
-    concat = 45;
-  } else {
-    concat = 100;
-  }
-
+  
   // utils
   const re = /(?=>(?<innerText>[^<]+))/;
-
+  
   const spaceEscape = '&nbsp;'
   const escapeSpaces = (text: string) => {
     return text.split(' ').join(spaceEscape);
@@ -220,17 +196,24 @@ export const concatHeadingUtil = (concat = 0, heading: string, innerWidth: numbe
   }
 
   if (heading.length > concat) {
+    let headingWithEscapedHTML = heading;
+
     const found = heading.match(re);
-    const foundInnerText = found?.groups?.innerText
-    const headingWithEscapedHTML = foundInnerText ? heading.replace(foundInnerText, escapeSpaces(foundInnerText)) : heading;
+    
+    if (found?.groups?.innerText) {
+      const foundInnerText = found?.groups?.innerText;
+      headingWithEscapedHTML = heading.replace(foundInnerText, escapeSpaces(foundInnerText));
+    }
 
     let lastWord;
     let lastHtmlWord: RegExpMatchArray | null = null;
+    
+
 
     const headingActualArr = headingWithEscapedHTML?.split(' ').map((word) => {
       const found = word.match(re);
       lastHtmlWord = found;
-      return found?.groups?.innerText ?? word
+      return  found?.groups?.innerText ?? word;
     });
 
     const headingActual = headingActualArr.join(' ');
@@ -239,19 +222,23 @@ export const concatHeadingUtil = (concat = 0, heading: string, innerWidth: numbe
     while (headingActualArr.join(' ').length - escapedLen > concat) {
       lastWord = headingActualArr.pop();
     }
-
+    
     if (lastWord) {
-      const finalWord = (headingArr: string[], spaceEscape: string, lastWord: string, lastHtmlWord: RegExpMatchArray | null) => {
+      const finalWord = (headingArr: string[], spaceEscape: string, lastWord: string, lastHtmlWord: RegExpMatchArray | null): string => {
         const almostTitleLen = headingArr.join(' ').length;
         const lastWordCopy = lastWord.replace(spaceEscape, ' ').split('');
         while (almostTitleLen + lastWordCopy.length > concat) {
           lastWordCopy.pop();
         }
         lastWordCopy.splice(-1, 1, '...');
-        return lastHtmlWord?.input?.replace(lastWord, lastWordCopy.join('')) ?? lastWordCopy.join('')
+        if (lastWord === lastHtmlWord?.groups?.innerText) {
+          return lastHtmlWord?.input?.replace(lastWord, lastWordCopy.join('')) ?? '';
+        }
+        return lastWordCopy.join('');
       }
+      const res = finalWord(headingActualArr, spaceEscape, lastWord, lastHtmlWord);
 
-      headingActualArr.push(finalWord(headingActualArr, spaceEscape, lastWord, lastHtmlWord));
+      headingActualArr.push(res);
 
       return headingActualArr.join(' ').replace(spaceEscape, ' ');
 
@@ -261,6 +248,37 @@ export const concatHeadingUtil = (concat = 0, heading: string, innerWidth: numbe
 
   return heading;
 };
+
+const getCharWidth = (text: string, font: string): number => {
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  const char = text.charAt(0);
+  if (ctx && font.length > 0) {
+    ctx.font = font;
+    const metrics = ctx.measureText(char);
+    return metrics.width;
+  }
+  return 0
+}
+
+const maxConcatCharCalc = (totalNavWidth: number, concatPosX: number, pxPerChar: number): number => {
+  return (totalNavWidth - concatPosX) / pxPerChar
+}
+
+type CombinedProps = {
+  text: string;
+  font: string;
+  actualWidth: number;
+  elOffset: number;
+  clientWidth: number;
+  injectOffset: number;
+}
+
+const combinedUtil = (props: CombinedProps) => {
+  const charWidth = getCharWidth(props.text.toString(), props.font);
+  const concatLen = Math.floor(maxConcatCharCalc(props.actualWidth, props.elOffset, charWidth)) - props.injectOffset;
+  return concatHeadingUtil(concatLen, props.text.toString(), props.clientWidth);
+}
 
 export type FlatHeadingNode = {
   id: string;
@@ -276,17 +294,24 @@ export function ConcatTitle({
   headings: FlatHeadingNode[];
   innerWidth: number;
 }) {
-  const activeHeading = headings?.find((heading) => heading.id === activeId)?.title ?? headings[0]?.title;
-  const [concatSize, setConcatSize] = useState(0);
+  const activeHeading = headings?.find((heading) => heading.id === activeId)?.title ?? headings[0]?.title ?? 'heading';
+  const [font, setFont] = useState<string>('');
+  const [elOffset, setElOffset] = useState(0);
   const concatRef = useRef<HTMLElement>(null!);
-
+  const navPaddingX = 6;
+  const actualWidth = innerWidth - (16 * (2 * navPaddingX * TW_SPACING));
   useEffect(() => {
-    const box = concatRef?.current?.getClientRects();
-    console.log(innerWidth - (16*4));
-    console.log(box[0] && box[0]?.x + box[0]?.width);
-  }, [activeId, innerWidth])
+    if (concatRef?.current) {
+      const fontRes = window.getComputedStyle(concatRef?.current, null).font;
+      const offSet = concatRef?.current?.offsetLeft;
+      setFont(fontRes);
+      setElOffset(offSet);
+    }
+  }, [activeHeading])
 
-  const concat = useMemo(() => concatHeadingUtil(concatSize, activeHeading ?? '', innerWidth), [concatSize, activeHeading, innerWidth]);
+  const concat = useMemo(() => combinedUtil({ text: activeHeading, font, actualWidth, elOffset, clientWidth: innerWidth, injectOffset: 3 }), [activeHeading, font, actualWidth, elOffset, innerWidth]);
+
+
   if (concat) {
     return <strong ref={concatRef} className='[&>code]:pretty-inline-code overflow-clip' dangerouslySetInnerHTML={{ __html: concat }} />;
   }
