@@ -66,30 +66,19 @@ export const viewport: Viewport = {
   themeColor: APP_THEME_COLOR,
 };
 
-function LoadingSpinner() {
-  return (
-    <div className='flex size-full min-h-screen items-center justify-center bg-ctp-base dark:bg-ctp-midnight'>
-      <div role='status'>
-        <span className='icon-[eos-icons--bubble-loading] size-12 fill-ctp-text md:size-20' />
-        <span className='sr-only'>Loading...</span>
-      </div>
-    </div>
-  );
-}
-
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang='en-US' dir='ltr' className={`${inter_tight.variable} ${zeroxproto.variable} `} suppressHydrationWarning>
+      <head>
+        {/* eslint-disable @next/next/no-sync-scripts -- necessary 
+            @ts-expect-error -- fetchPriority exists */}
+        <script src='/dist/theme-getter.js' fetchPriority='high' />
+      </head>
       <body
         className={`${inter_tight.className} `}
         suppressHydrationWarning
       >
-        {/* eslint-disable @next/next/no-sync-scripts -- necessary */
-        /* @ts-expect-error -- fetchPriority exists */}
-        <script src='/dist/theme-getter.js' fetchPriority='high' />
-        <Suspense fallback={<LoadingSpinner />}>
-          <ZustandWrappersCore>{children}</ZustandWrappersCore>
-        </Suspense>
+        <ZustandWrappersCore>{children}</ZustandWrappersCore>
       </body>
     </html>
   );

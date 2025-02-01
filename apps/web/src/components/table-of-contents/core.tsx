@@ -9,7 +9,7 @@ import dynamic from 'next/dynamic';
 const Headings = dynamic(() => import('./utils').then((mod) => mod.Headings), { ssr: false });
 const ConcatTitle = dynamic(() => import('./utils').then((mod) => mod.ConcatTitle), { ssr: false });
 
-type ToCMenuCoreProps = {
+export type ToCMenuCoreProps = {
   nestedHeadings: string;
   flatHeadings: string;
 };
@@ -19,7 +19,8 @@ export default function ToCMenuCore(props: ToCMenuCoreProps) {
   const [readyHeadings, setReadyHeadings] = useState<HeadingNode[]>([]);
   const [isReady, setIsReady] = useState(false);
   const { tocInView, setToCNotInView } = useToCViewStore((state) => state);
-
+  const [hasAnimated, setHasAnimated] = useState(false);
+  
   useIntersectionObserver(setActiveId, activeId);
 
   useEffect(() => {
@@ -47,13 +48,14 @@ export default function ToCMenuCore(props: ToCMenuCoreProps) {
               onClick={() => {
                 setToCNotInView();
                 localStorage.setItem('toc-state-pref', 'closed');
+                setHasAnimated(true);
               }}
               className='icon-[ph--sidebar-simple-fill] text-3xl'
             />
           </div>
 
           <div aria-label='Table of contents' className={``}>
-            <Headings tree={readyHeadings} activeId={activeId} ariaExpanded={isReady} notMobile />
+            <Headings tree={readyHeadings} activeId={activeId} ariaExpanded={isReady} notMobile hasAnimated={hasAnimated} />
           </div>
         </nav>
       </div>
@@ -65,11 +67,10 @@ export function ToCMenuMobileCore(props: ToCMenuCoreProps) {
   // common
   const [activeId, setActiveId] = useState('');
   const [readyHeadings, setReadyHeadings] = useState<HeadingNode[]>([]);
-  const { tocInView, setToCNotInView } = useToCViewStore((state) => state);
+  const [hasAnimated, setHasAnimated] = useState(false);
   useIntersectionObserver(setActiveId, activeId);
 
   // mobile only
-  const [hasAnimated, setHasAnimated] = useState(false);
   const [flatHeadings, setFlatHeadings] = useState<HTMLHeadingElement[]>([]);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [width, setWidth] = useState(0);
@@ -129,14 +130,14 @@ export function ToCMenuMobileCore(props: ToCMenuCoreProps) {
       document.removeEventListener('click', handleToCOffClick);
       window.removeEventListener('resize', handleResize);
     };
-  }, [props.flatHeadings, handleToCOffClick, width]);
+  }, [handleToCOffClick, props.flatHeadings, width]);
 
 
   return (
     <nav
       ref={mainToCRef}
       id={TOC_NAV_ID}
-      className={`sticky top-16 z-20 ${tocInView ? 'hidden' : 'display:block'} ${inView ? 'translate-y-0' : '-translate-y-16'} motion-safe:transition-transform duration-300`}
+      className={`sticky top-16 z-20 block md:hidden ${inView ? 'translate-y-0' : '-translate-y-16'} motion-safe:transition-transform duration-300`}
     >
       <div
         className={`absolute z-30 flex w-full flex-row items-center ${showMobileMenu ? 'bg-ctp-base/90 dark:bg-ctp-midnight/80' : 'bg-ctp-base/80 dark:bg-ctp-midnight/50'}`}

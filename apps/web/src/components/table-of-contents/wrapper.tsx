@@ -1,8 +1,8 @@
 'use client';
-import { useToCViewStore } from '@/providers/toc-view-store-provider';
 import dynamic from 'next/dynamic';
+import { ToCMenuCoreProps } from './core';
 
-const ToCMenuCore = dynamic(() => import('./core'));
+const ToCMenuMobileCore = dynamic(() => import('./core').then((mod) => mod.ToCMenuMobileCore), {ssr: false, loading: Fallback});
 
 function Fallback() {
    return (
@@ -15,24 +15,10 @@ function Fallback() {
           </div>
         </div>
       </nav>
-
-      <div
-        className={`md:w-80 md:min-w-[21rem] lg:w-96 lg:min-w-96' sticky top-0 hidden h-full overflow-x-hidden shadow-xl [transition:width_0.8s,min-width_0.8s] md:block bg-amber-100`}
-      >
-        <nav
-          className='relative flex max-h-dvh min-h-dvh min-w-0 flex-col items-center justify-start gap-12 overflow-y-auto bg-ctp-crust pb-12 text-slate-100 motion-safe:simple-color-trans md:min-w-[21rem] lg:min-w-96 dark:bg-ctp-base/20'
-        >
-          <div className='sticky top-0 z-10 flex min-h-16 w-full flex-row items-center justify-start px-4 text-ctp-text'>
-            <div id='nav-mask-bg' className='nav-glassy-bg' />
-            <div id='nav-mask-edge' className='nav-glassy-edge' />
-            <button className='icon-[ph--sidebar-simple-fill] text-3xl' />
-          </div>
-        </nav>
-      </div>
     </>
   );
 }
 
-export default function TableOfContents() {
-  return <ToCMenuCore />;
+export default function TableOfContentsMobile(props: ToCMenuCoreProps) {
+  return <ToCMenuMobileCore nestedHeadings={props.nestedHeadings} flatHeadings={props.flatHeadings} />;
 }
