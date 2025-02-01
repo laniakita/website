@@ -243,16 +243,6 @@
     }
     @apply my-[calc(32em/20)] block rounded-lg border border-ctp-blue bg-ctp-blue/10 p-6 font-mono text-sm shadow-lg dark:border-ctp-sky dark:bg-ctp-sky/5 dark:text-ctp-sky;
   }
-/*
-  :where(details p, details summary, details ul li, aside p) {
-    &:not(pre > code) code {
-      @apply !border-none !bg-inherit !text-sm !font-black !text-inherit !italic;
-    }
-    &:is(pre) > code {
-      @apply text-base;
-    }
-  }
-*/
   aside {
     @apply rounded-lg border border-ctp-blue bg-ctp-blue/10 p-6 font-mono text-sm shadow-lg dark:border-ctp-sky dark:bg-ctp-sky/5 dark:text-ctp-sky;
   }

@@ -1,23 +1,12 @@
 'use client';
 
 import { TW_SPACING } from '@/lib/constants';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { type Dispatch, RefObject, type SetStateAction, Suspense, useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
-const MED_SCREEN = 768; // px
+import { type Dispatch, type SetStateAction, Suspense, useEffect, useId, useMemo, useRef, useState } from 'react';
 
-const Z_FOLD_SCREEN = 344;
-const IPHONE_SE_SCREEN = 375;
-//const PIXEL_SEVEN_SCREEN = 412;
-const IPHONE_THIRTEEN_PRO_MAX = 428;
-const IPHONE_FOURTEEN_PRO_MAX = 430;
-const WEIRD_PHABLET = 500;
-const SMALL_SCREEN_MAX = 600;
-
-//const MD_TOC_WIDTH = 'md:w-80';
-//const MD_MIN_TOC_WIDTH = 'md:min-w-80';
+export const MED_SCREEN = 768; // px
 const MD_MAX_TOC_WIDTH = 'md:max-w-80';
-//const LG_TOC_WIDTH = 'lg:w-96';
-//const LG_MIN_TOC_WIDTH = 'lg:min-w-96';
 const LG_MAX_TOC_WIDTH = 'lg:max-w-96';
 
 // inspired by Emma Goto React ToC: https://www.emgoto.com/react-table-of-contents
@@ -48,11 +37,16 @@ export function HeadingNode({
       <p
         className='group'
       >
-        <a
+        <Link
           id={linkId}
           aria-label={`Jump to: ${node.title}`}
           href={`${pathname}#${node.id}`}
           className={`border-b border-ctp-overlay0/20 inline-block w-full py-1 group-hover:bg-ctp-blue/20 ${activeId === node.id ? 'bg-ctp-blue/20' : ''} transition-[background-color] duration-300`}
+          onClick={(e) => {
+            e.preventDefault();
+            const el = document.getElementById(node.id);
+            el?.scrollIntoView({behavior: "smooth"});
+          }}
         >
           <span
             aria-labelledby={linkId}
@@ -61,7 +55,7 @@ export function HeadingNode({
             dangerouslySetInnerHTML={{ __html: node.title }}
           />
 
-        </a>
+        </Link>
       </p>
 
       <ul className='list-none'>
