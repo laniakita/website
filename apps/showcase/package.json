@@ -7,7 +7,7 @@
     "@date-fns/utc": "2.1.0",
     "@react-three/a11y": "^3.0.0",
     "@react-three/drei": "9.114.3",
-    "@react-three/fiber": "^8.17.10",
+    "@react-three/fiber": "^9.0.0-rc.5",
     "@react-three/postprocessing": "^2.16.5",
     "@serwist/next": "^9.0.11",
     "date-fns": "4.1.0",
