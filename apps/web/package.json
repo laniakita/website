@@ -49,7 +49,7 @@
     "@types/jsdom": "^21.1.7",
     "@types/jstoxml": "^5.0.0",
     "@types/lodash": "^4.17.15",
-    "@types/node": "22.12.0",
+    "@types/node": "22.13.0",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
     "@types/three": "^0.172.0",
