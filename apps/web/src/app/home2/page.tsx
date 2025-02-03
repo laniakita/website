@@ -101,7 +101,7 @@ async function Summary() {
   
   In practice, that means I'm sometimes creating, deploying, and or maintaining websites for Clients. Other times, I'm creating, publishing, and or maintaining open-source libraries/software for myself and others to use. Either way, I typically work (& think) across the entire stack to accomplish such things.
 
-  As well, I'm someone whose deeply passionate about the future of the Web. I'm obsessed with bleeding-edge tools and technologies that enables web developers like me to redefine _what_ a website can be. Technologies that push beyond the limits of what ought to be possible to run from a web browser, such as <a href="https://www.w3.org/TR/webgpu/" target="_blank" rel="noopener">WebGPU</a>, and <a href="https://webassembly.github.io/spec/core/intro/introduction.html" target="_blank" rel="noopener">WebAssembly</a>.
+  I'm also someone whose deeply passionate about the future of the Web. I'm obsessed with bleeding-edge tools and technologies that enables web developers like me to redefine _what_ a website can be. Technologies that push beyond the limits of what ought to be possible to run from a web browser, such as <a href="https://www.w3.org/TR/webgpu/" target="_blank" rel="noopener">WebGPU</a>, and <a href="https://webassembly.github.io/spec/core/intro/introduction.html" target="_blank" rel="noopener">WebAssembly</a>.
   `;
 
   const profileObj =
@@ -156,20 +156,19 @@ async function LatestPostsSection() {
 }
 
 async function ProjectsSection() {
-  const blogSec = `
+  const projectSec = `
   ## Projects
   
-  When I get the chance, I like to indulge in writing words, instead of code. Though, I'll admit most of my published endeavors into the _written word_ often contain quite a bit of \`code\` snippets anyways (it is a dev blog after all). You can find more articles like the below on my [blog](/blog).
-  `;
+  When I'm not working for someone else, I'm working for myself and the open-source community, sharpening my skillset on a healthy dose of ambitious side-projects. I love exploring the latest tools, learning their secrets, and discovering how (and where) these new technologies fit into my software engineering toolbelt.`;
 
-  const blogRes = await resMdxMinimal(blogSec);
+  const projectRes = await resMdxMinimal(projectSec);
 
   return (
     <section className='flex flex-col'>
       <div className='px-6'>
         <div className='mx-auto w-full max-w-5xl pb-6'>
           <div className='prose-protocol-omega -mt-6 w-1/2'>
-            <MiniMDXComponent code={blogRes.code} />
+            <MiniMDXComponent code={projectRes.code} />
           </div>
         </div>
       </div>
