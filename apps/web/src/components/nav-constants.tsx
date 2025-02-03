@@ -88,7 +88,7 @@ export const SOCIALS_FULL = [
     title: 'Atom/RSS',
     url: '/atom.xml',
     iconName: 'icon-[ph--rss-bold]',
-    linkName: 'you feed reader!',
+    linkName: 'your feed reader!',
     textSize: 'text-2xl md:text-3xl min-h-[2rem] min-w-[2rem]',
   },
 ];
