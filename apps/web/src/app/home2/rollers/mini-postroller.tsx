@@ -1,8 +1,8 @@
 'use client';
 
 import { allPosts } from 'contentlayer/generated';
-import { HomePostPreview } from '../(content)/blog/post-components';
 import { compareDesc } from 'date-fns';
+import { HomePostPreview } from '../previews/mini-post-preview';
 
 export default function MiniPostRoller() {
   return allPosts

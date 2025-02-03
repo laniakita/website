@@ -1,14 +1,11 @@
+import LocalDate from '@/app/(content)/blog/local-date';
 import { FeaturedImageR1 } from '@/lib/image-process';
 import { Work } from 'contentlayer/generated';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useId } from 'react';
-import LocalDate from '../blog/local-date';
-import GlobalMDXComponent from '@/components/mdx/global-mdx-components';
 
 export function MiniWorkPreview(data: Work) {
   const res = data.featured_image as FeaturedImageR1;
-  const uKey = useId();
 
   return (
     <div className='relative z-10 flex size-full basis-full flex-col overflow-hidden rounded-md border border-ctp-surface0 bg-ctp-base shadow-2xl motion-safe:simple-color-trans dark:border-ctp-base dark:bg-ctp-midnight'>

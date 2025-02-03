@@ -6,9 +6,10 @@ import { resMdxMinimal } from '@/lib/mdx-utils';
 import { getMDXComponent } from '@/components/mdx/mdx-bundler-components';
 import { MiniMDXComponent } from '@/components/mdx/global-mdx-components';
 import { SocialIconNavProps } from '@/components/social-icon';
-import { MiniWorkRoller } from './mini-server-roller';
-import MiniPostRoller from './mini-postroller';
 import { socialItemsV } from '@/lib/socials-data';
+import MiniPostRoller from './rollers/mini-postroller';
+import MiniProjectsRoller from './rollers/mini-projects-roller';
+import { MiniWorkRoller } from './rollers/mini-server-roller';
 
 export const metadata: Metadata = {
   openGraph: {
@@ -172,10 +173,8 @@ async function ProjectsSection() {
           </div>
         </div>
       </div>
-      <div className='mx-auto max-w-5xl'>
-        <div className='flex w-full flex-row gap-6'>
-          <MiniWorkRoller />
-        </div>
+      <div className='flex w-full flex-row gap-6 overflow-x-auto bg-ctp-crust/70 px-6 py-10'>
+        <MiniProjectsRoller />
       </div>
     </section>
   );

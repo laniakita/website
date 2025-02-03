@@ -1,18 +1,25 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import { type Post } from 'contentlayer/generated';
-import { descriptionHelper } from '@/lib/description-helper';
-import type { FeaturedImageR1 } from '@/lib/image-process';
-import GlobalMDXRenderer from '@/components/mdx/global-mdx-renderer';
-import { CatTagRoller } from './cat-tag-roller';
-import LocalDate from './local-date';
+import { CatTagRoller } from "@/app/(content)/blog/cat-tag-roller";
+import LocalDate from "@/app/(content)/blog/local-date";
+import type { FeaturedImageR1 } from "@/lib/image-process";
+import { Post } from "contentlayer/generated";
+import Image from "next/image";
+import Link from "next/link";
+import { type HTMLAttributes } from "react";
 
-export default function PostPreviewV4(post: Post) {
-  const descriptionStr = descriptionHelper(post.body.raw, post.url)!;
+interface HomePostPreviewProps extends HTMLAttributes<HTMLDivElement> {
+  post: Post;
+  parentExtraClass?: string;
+}
+
+export function HomePostPreview(props: HomePostPreviewProps) {
+  const post = props.post;
   const res = post.featured_image as FeaturedImageR1;
 
   return (
-    <div className='flex basis-full flex-col overflow-hidden rounded-md border border-ctp-surface0 bg-ctp-base motion-safe:simple-color-trans dark:border-ctp-base dark:bg-ctp-midnight'>
+    <div
+      {...props}
+      className={`flex min-w-96 basis-full flex-col overflow-hidden rounded-md border border-ctp-surface0 bg-ctp-base motion-safe:simple-color-trans dark:border-ctp-base dark:bg-ctp-midnight ${props.parentExtraClass}`}
+    >
       {res.hasImage ? (
         <Link href={post.url}>
           <Image
@@ -23,7 +30,7 @@ export default function PostPreviewV4(post: Post) {
             height={res.height}
             width={res.width}
             sizes='(max-width: 300px) 70vw, (max-width: 600px) 45vw, (max-width:1500px) 27vw'
-            className='object-contain'
+            className='h-96 object-cover'
           />
         </Link>
       ) : (
@@ -55,14 +62,8 @@ export default function PostPreviewV4(post: Post) {
           </div>
         </div>
         <div className='h-px w-full rounded bg-ctp-surface0' />
-        <div className='prose-protocol-omega max-w-full text-pretty prose-p:my-0 prose-a:no-underline'>
-          <GlobalMDXRenderer>{descriptionStr}</GlobalMDXRenderer>
-        </div>
-        <div className='h-px w-full rounded bg-ctp-surface0' />
         <CatTagRoller cats={post.categories} tags={post.tags} />
       </div>
     </div>
   );
 }
-
-

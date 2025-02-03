@@ -44,7 +44,6 @@ export const metadata: Metadata = {
 };
 
 export default function Projects() {
-  const uKey = useId();
   const data = allPages.find((page) => page.url.split('/').pop() === 'projects');
   if (!data) return notFound();
   const projectData = allProjects.sort((a, b) =>
@@ -65,9 +64,9 @@ export default function Projects() {
         </div>
 
         <div className='flex size-full max-w-3xl flex-wrap items-center justify-center gap-4 md:gap-6'>
-          {projectData.map((proj, idx) => (
+          {projectData.map((proj) => (
             <ProjectPreview
-              key={`project-${uKey}-${Math.floor(Math.PI * Math.random() * 1000)}-${idx * Math.random()}`}
+              key={crypto.randomUUID()}
               {...proj}
             />
           ))}

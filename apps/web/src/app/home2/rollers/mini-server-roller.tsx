@@ -1,6 +1,6 @@
 import { allWorks } from 'contentlayer/generated';
 import { compareDesc } from 'date-fns';
-import { MiniWorkPreview } from '../(content)/work/mini-work-preview';
+import { MiniWorkPreview } from '../previews/mini-work-preview';
 
 export function MiniWorkRoller() {
   return allWorks
