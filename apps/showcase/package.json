@@ -18,7 +18,7 @@
     "schema-dts": "^1.1.2",
     "server-only": "^0.0.1",
     "sharp": "0.33",
-    "three": "0.169.0",
+    "three": "0.173.0",
     "three-stdlib": "2.32.2",
     "zustand": "5.0.0"
   },
