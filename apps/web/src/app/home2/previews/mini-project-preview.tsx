@@ -43,7 +43,7 @@ export default function MiniProjectPreview(data: Project) {
             height={res.height}
             width={res.width}
             sizes='(max-width: 300px) 70vw, (max-width: 600px) 45vw, (max-width:1500px) 27vw'
-            className='object-contain'
+            className='object-cover h-96'
           />
         </Link>
       ) : (
@@ -86,17 +86,17 @@ export default function MiniProjectPreview(data: Project) {
 
         <div className='h-px w-full bg-ctp-surface0 dark:bg-ctp-base' />
         <div className='flex flex-row gap-[1ch]'>
-          <div className='flex flex-wrap gap-[1ch]'>
+          <p>
             {data.tech?.map((tag, idx) => (
-              <p
+              <span
                 key={`project-preview-${uKey}-${Math.floor(Math.random() * 100 + idx)}-${idx * Math.random()}`}
                 className='w-fit font-mono text-sm font-semibold'
               >
                 {tag}
-                {data.tech && idx < data.tech.length - 1 ? <span>,</span> : ''}
-              </p>
+                {data.tech && idx < data.tech.length - 1 ? ', ' : ''}
+              </span>
             ))}
-          </div>
+          </p>
         </div>
       </div>
     </div>
