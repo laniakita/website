@@ -157,7 +157,7 @@ async function LatestPostsSection() {
 
 async function ProjectsSection() {
   const projectSec = `
-  ## Projects
+  ## Passion Projects
   
   When I'm not working for someone else, I'm working for myself and the open-source community, sharpening my skillset on a healthy dose of ambitious side-projects. I love exploring the latest tools, learning their secrets, and discovering how (and where) these new technologies fit into my software engineering toolbelt.`;
 
@@ -181,9 +181,9 @@ async function ProjectsSection() {
 
 async function ClientWorksSection() {
   const blogSec = `
-  ## Client Works
+  ## Client Work
   
-  When I get the chance, I like to indulge in writing words, instead of code. Though, I'll admit most of my published endeavors into the _written word_ often contain quite a bit of \`code\` snippets anyways (it is a dev blog after all). You can find more articles like the below on my [blog](/blog).
+  I used to be a freelance WordPress developer, now I'm a freelance Full Stack Developer. Below are some of the sites I've created for my Clients, that utilize my Full Stack skillset.
   `;
 
   const blogRes = await resMdxMinimal(blogSec);
@@ -211,7 +211,7 @@ export default function HomeV2() {
     <>
       <Navbar />
       <Hero />
-      <main className='m-auto overflow-hidden'>
+      <main className='m-auto overflow-hidden pb-common'>
         <article>
           <Summary />
           <ProjectsSection />
