@@ -857,3 +857,15 @@
     --wipe-position: calc(-1 * var(--gradient-length));
   }
 }
+
+@utility view {
+  height: 100%;
+  width: 100%;
+  display: inline-block;
+  overflow: hidden;
+}
+
+@utility three-home-section {
+  position: absolute;
+}
+

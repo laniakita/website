@@ -1,11 +1,10 @@
 'use client'
 
-import { Scroll, ScrollControls } from "@react-three/drei";
-import { CanvasWrapper } from "./canvas-wrapper";
+import { OrthographicCamera, Scroll, ScrollControls, View } from "@react-three/drei";
 
-export default function ThreeContent() {
+export function ThreeContent() {
   return (
-    <CanvasWrapper>
+    <View className="view">
       <ScrollControls pages={3} damping={0.1}>
         <Scroll html>
           <h1 className='text-3xl'>Aloha, I&apos;m Lani</h1>
@@ -13,7 +12,10 @@ export default function ThreeContent() {
           <h1 className='text-3xl top-[200dvh]'>Client Work</h1>
         </Scroll>
       </ScrollControls>
-    </CanvasWrapper>
+      <OrthographicCamera
+        zoom={80}
+      />
+    </View>
   );
 }
 

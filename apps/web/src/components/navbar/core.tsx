@@ -34,7 +34,7 @@ const handleRef = (pageStr: string) => {
 
 const pagesArr = ['Blog', 'About', 'Work', 'Projects', 'Atom/RSS', 'Résumé', 'Contact'];
 
-export default function NavbarV2Core() {
+export default function Navbar() {
   const { dark } = useDarkStore((state) => state);
   const [hamburgerOpen, setHamburgerOpen] = useState(false);
   const dropNavRef = useRef<HTMLDivElement>(null!);

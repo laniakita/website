@@ -8,6 +8,7 @@ import Common2DCanvas from '@/components/canvas/dom/common-2d-canvas';
 import vertex from './shader.vert';
 // @ts-expect-error -- using glsl loader for this
 import fragment from './shader.frag';
+import { OrthographicCamera, View } from '@react-three/drei';
 
 interface NoiseShaderMaterialProps extends ShaderMaterial {
   uniforms: {
@@ -20,12 +21,34 @@ interface NoiseShaderMaterialProps extends ShaderMaterial {
 export default function NoiseShader01() {
   return (
     <Common2DCanvas>
-      <Setup />
+      <NoiseShader01Core />
     </Common2DCanvas>
   );
 }
 
-function Setup() {
+export function NoiseShader01View() {
+  
+
+  return (
+    <View className='view'>
+      <ambientLight intensity={1.1} />
+      <NoiseShader01Core />
+      <OrthographicCamera
+        left={-0.5}
+        right={0.5}
+        top={0.5}
+        bottom={-0.5}
+        near={-1000}
+        far={1000}
+        position={[0, 0, 1]}
+        makeDefault
+        manual
+      />
+    </View>
+  );
+};
+
+export function NoiseShader01Core() {
   const meshRef = useRef<Mesh>(null);
   const { viewport } = useThree();
   const PLANE_HEIGHT = 1;

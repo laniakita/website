@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import NavbarV2Core from './core';
+import Navbar from '../../core';
 
 // for every other route
 export default function NavbarV2NonPost() {
@@ -12,5 +12,5 @@ export default function NavbarV2NonPost() {
     return;
   }
 
-  return <NavbarV2Core />;
+  return <Navbar />;
 }

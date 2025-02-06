@@ -11,6 +11,7 @@
     "@vercel/functions": "^1.6.0",
     "date-fns": "4.1.0",
     "jsdom": "^26.0.0",
+    "lenis": "^1.1.20",
     "lodash": "^4.17.21",
     "markdown-to-jsx": "^7.7.3",
     "next": "^15.1.6",
