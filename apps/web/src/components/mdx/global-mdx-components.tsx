@@ -13,7 +13,7 @@ export const globalMdxComponents = {
   img: BlogImageBlurServer,
   pre: PreCodeV2,
   a: Anchors,
-  section: Section
+  section: Section,
 };
 
 /*

@@ -64,5 +64,3 @@ export default function PostPreviewV4(post: Post) {
     </div>
   );
 }
-
-

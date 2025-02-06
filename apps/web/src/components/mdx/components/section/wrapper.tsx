@@ -1,8 +1,8 @@
-'use client'
-import dynamic from "next/dynamic";
-import { Suspense, type DetailedHTMLProps, type HTMLAttributes } from "react";
+'use client';
+import dynamic from 'next/dynamic';
+import { Suspense, type DetailedHTMLProps, type HTMLAttributes } from 'react';
 
-const SectionCore = dynamic(() => import('./section'), { ssr: false })
+const SectionCore = dynamic(() => import('./section'), { ssr: false });
 
 export default function Section(props: DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement>) {
   return (

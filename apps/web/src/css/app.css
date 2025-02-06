@@ -185,7 +185,7 @@
     margin: 0;
     background-color: light-dark(var(--color-ctp-base), var(--color-ctp-midnight));
     color: var(--color-ctp-text);
-    @apply scroll-pt-32 md:scroll-pt-18 ;
+    @apply scroll-pt-32 md:scroll-pt-18;
   }
 
   canvas {
@@ -193,7 +193,7 @@
   }
 
   a {
-    @apply links
+    @apply links;
   }
 
   button {
@@ -601,7 +601,7 @@
     }
   }
   a {
-    @apply links
+    @apply links;
   }
   aside {
     :is(h2, h3, h4, h5, h6) {
@@ -753,11 +753,11 @@
 /* navbar */
 
 @utility nav-logo {
-  @apply text-2xl font-black text-ctp-text hover:no-underline ;
+  @apply text-2xl font-black text-ctp-text hover:no-underline;
 }
 
 @utility nav-item {
-  @apply w-min font-mono text-base font-semibold text-ctp-subtext1 hover:text-ctp-pink capitalize aria-[current]:text-ctp-pink;
+  @apply w-min font-mono text-base font-semibold text-ctp-subtext1 capitalize hover:text-ctp-pink aria-[current]:text-ctp-pink;
 }
 
 @utility force-repaint {

@@ -1,13 +1,13 @@
-import LocalDate from "@/app/(content)/blog/local-date";
-import GlobalMDXRenderer from "@/components/mdx/global-mdx-renderer";
-import { APP_URL, SHOWCASE_URL } from "@/lib/constants";
-import { descriptionHelper } from "@/lib/description-helper";
-import type { FeaturedImageR1 } from "@/lib/image-process";
-import { allPosts, type Project } from "contentlayer/generated";
-import Markdown from "markdown-to-jsx";
-import Image from "next/image";
-import Link from "next/link";
-import { useId } from "react";
+import LocalDate from '@/app/(content)/blog/local-date';
+import GlobalMDXRenderer from '@/components/mdx/global-mdx-renderer';
+import { APP_URL, SHOWCASE_URL } from '@/lib/constants';
+import { descriptionHelper } from '@/lib/description-helper';
+import type { FeaturedImageR1 } from '@/lib/image-process';
+import { allPosts, type Project } from 'contentlayer/generated';
+import Markdown from 'markdown-to-jsx';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useId } from 'react';
 
 export default function MiniProjectPreview(data: Project) {
   const res = data.featured_image as FeaturedImageR1;
@@ -32,7 +32,7 @@ export default function MiniProjectPreview(data: Project) {
   }
 
   return (
-    <div className='min-w-96 flex basis-full flex-col overflow-hidden rounded-md border border-ctp-surface0 bg-ctp-base motion-safe:simple-color-trans dark:border-ctp-base dark:bg-ctp-midnight'>
+    <div className='flex min-w-96 basis-full flex-col overflow-hidden rounded-md border border-ctp-surface0 bg-ctp-base motion-safe:simple-color-trans dark:border-ctp-base dark:bg-ctp-midnight'>
       {res.src ? (
         <Link href={projectLink()} target='_blank'>
           <Image
@@ -43,7 +43,7 @@ export default function MiniProjectPreview(data: Project) {
             height={res.height}
             width={res.width}
             sizes='(max-width: 300px) 70vw, (max-width: 600px) 45vw, (max-width:1500px) 27vw'
-            className='object-cover h-96'
+            className='h-96 object-cover'
           />
         </Link>
       ) : (
@@ -81,8 +81,6 @@ export default function MiniProjectPreview(data: Project) {
             <GlobalMDXRenderer>{projDescription}</GlobalMDXRenderer>
           </div>
         </div>
-
-
 
         <div className='h-px w-full bg-ctp-surface0 dark:bg-ctp-base' />
         <div className='flex flex-row gap-[1ch]'>

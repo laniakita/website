@@ -11,4 +11,4 @@ imageSrc: '../assets/images/open-oc/2025/rehype-fn-citation-spacer.png'
 altText: 'Foreground: In big text are the words "rehype fn-citation spacer", with smaller text below that says "a rehype plugin that makes some space between adjacent in-text footnote-citation/references". Background: A pink gradient, with a grid pattern imposed upon on it.'
 description: A rehype plugin that makes some space between adjacent in-text footnote citations/references.
 embedded: false
-foreignUrl: https://www.npmjs.com/package/rehype-fn-citation-spacer 
+foreignUrl: https://www.npmjs.com/package/rehype-fn-citation-spacer

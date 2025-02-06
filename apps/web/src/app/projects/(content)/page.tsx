@@ -1,4 +1,3 @@
-import { useId } from 'react';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { compareDesc } from 'date-fns';
@@ -65,15 +64,10 @@ export default function Projects() {
 
         <div className='flex size-full max-w-3xl flex-wrap items-center justify-center gap-4 md:gap-6'>
           {projectData.map((proj) => (
-            <ProjectPreview
-              key={crypto.randomUUID()}
-              {...proj}
-            />
+            <ProjectPreview key={crypto.randomUUID()} {...proj} />
           ))}
         </div>
       </div>
     </main>
   );
 }
-
-

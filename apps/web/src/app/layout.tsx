@@ -68,12 +68,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html
-      lang='en-US'
-      dir='ltr'
-      className={`${inter_tight.variable} ${zeroxproto.variable}`}
-      suppressHydrationWarning
-    >
+    <html lang='en-US' dir='ltr' className={`${inter_tight.variable} ${zeroxproto.variable}`} suppressHydrationWarning>
       <head>
         {/* eslint-disable @next/next/no-sync-scripts -- necessary 
             @ts-expect-error -- fetchPriority exists */}

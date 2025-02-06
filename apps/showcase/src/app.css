@@ -185,7 +185,7 @@
     margin: 0;
     background-color: light-dark(var(--color-ctp-base), var(--color-ctp-midnight));
     color: var(--color-ctp-text);
-    @apply scroll-pt-32 md:scroll-pt-18 ;
+    @apply md:scroll-pt-18 scroll-pt-32;
   }
 
   canvas {
@@ -193,7 +193,7 @@
   }
 
   a {
-    @apply links
+    @apply links;
   }
 
   button {
@@ -236,12 +236,12 @@
       @apply !text-sm;
     }
     :where(p, ul li, summary):not(pre) > code {
-      @apply !border-none !bg-inherit !text-sm !font-black !text-inherit !italic;
+      @apply !border-none !bg-inherit !text-sm !font-black !italic !text-inherit;
     }
-    @apply my-[calc(32em/20)] block rounded-lg border border-ctp-blue bg-ctp-blue/10 p-6 font-mono text-sm shadow-lg dark:border-ctp-sky dark:bg-ctp-sky/5 dark:text-ctp-sky;
+    @apply border-ctp-blue bg-ctp-blue/10 dark:border-ctp-sky dark:bg-ctp-sky/5 dark:text-ctp-sky my-[calc(32em/20)] block rounded-lg border p-6 font-mono text-sm shadow-lg;
   }
   aside {
-    @apply rounded-lg border border-ctp-blue bg-ctp-blue/10 p-6 font-mono text-sm shadow-lg dark:border-ctp-sky dark:bg-ctp-sky/5 dark:text-ctp-sky;
+    @apply border-ctp-blue bg-ctp-blue/10 dark:border-ctp-sky dark:bg-ctp-sky/5 dark:text-ctp-sky rounded-lg border p-6 font-mono text-sm shadow-lg;
   }
 
   #footnote-label {
@@ -449,12 +449,12 @@
 }
 
 @utility links {
-  @apply text-ctp-mauve link-color-trans hover:text-ctp-pink hover:underline aria-[current]:text-ctp-pink aria-[current]:underline;
+  @apply text-ctp-mauve link-color-trans hover:text-ctp-pink aria-[current]:text-ctp-pink hover:underline aria-[current]:underline;
 }
 
 @layer components {
   .footer-nav-item {
-    @apply text-base text-ctp-subtext1 capitalize aria-[current]:text-ctp-pink aria-[current]:underline;
+    @apply text-ctp-subtext1 aria-[current]:text-ctp-pink text-base capitalize aria-[current]:underline;
   }
 
   .layout01 {
@@ -601,7 +601,7 @@
     }
   }
   a {
-    @apply links
+    @apply links;
   }
   aside {
     :is(h2, h3, h4, h5, h6) {
@@ -672,7 +672,7 @@
 }
 
 @utility pretty-inline-code {
-  @apply rounded-sm border border-ctp-surface0 bg-ctp-crust px-1 py-0.5 break-words dark:bg-ctp-base;
+  @apply border-ctp-surface0 bg-ctp-crust dark:bg-ctp-base break-words rounded-sm border px-1 py-0.5;
 }
 
 @utility prose-invert {
@@ -738,7 +738,7 @@
 }
 
 @utility prose-headings-mod {
-  @apply break-words prose-headings:align-baseline prose-headings:font-black prose-h2:text-xl lg:prose-h2:text-2xl prose-h3:text-lg lg:prose-h3:text-xl prose-h4:text-lg prose-h4:font-bold lg:prose-h4:text-xl prose-h5:text-lg prose-h5:font-semibold lg:prose-h5:text-xl prose-h6:text-lg prose-h6:font-medium lg:prose-h6:text-lg;
+  @apply prose-headings:align-baseline prose-headings:font-black prose-h2:text-xl lg:prose-h2:text-2xl prose-h3:text-lg lg:prose-h3:text-xl prose-h4:text-lg prose-h4:font-bold lg:prose-h4:text-xl prose-h5:text-lg prose-h5:font-semibold lg:prose-h5:text-xl prose-h6:text-lg prose-h6:font-medium lg:prose-h6:text-lg break-words;
 }
 
 @utility prose-text-pretty {
@@ -753,11 +753,11 @@
 /* navbar */
 
 @utility nav-logo {
-  @apply text-2xl font-black text-ctp-text hover:no-underline ;
+  @apply text-ctp-text text-2xl font-black hover:no-underline;
 }
 
 @utility nav-item {
-  @apply w-min font-mono text-base font-semibold text-ctp-subtext1 hover:text-ctp-pink capitalize aria-[current]:text-ctp-pink;
+  @apply text-ctp-subtext1 hover:text-ctp-pink aria-[current]:text-ctp-pink w-min font-mono text-base font-semibold capitalize;
 }
 
 @utility force-repaint {
@@ -769,34 +769,34 @@
 }
 
 @utility nav-glassy-edge {
-  @apply pointer-events-none absolute inset-0 h-full [transform:_translateY(100%)] bg-ctp-base/30 [backdrop-filter:_blur(8px)_brightness(110%)_saturate(120%)] [mask-image:_linear-gradient(to_bottom,_black_0_3px,_transparent_3px)] dark:[backdrop-filter:_blur(8px)_brightness(140%)_saturate(120%)];
+  @apply bg-ctp-base/30 pointer-events-none absolute inset-0 h-full [backdrop-filter:_blur(8px)_brightness(110%)_saturate(120%)] [mask-image:_linear-gradient(to_bottom,_black_0_3px,_transparent_3px)] [transform:_translateY(100%)] dark:[backdrop-filter:_blur(8px)_brightness(140%)_saturate(120%)];
 }
 
 /* post-header */
 @utility post-headline {
-  @apply w-full max-w-4xl text-2xl leading-7 font-black supports-[text-wrap:balance]:text-balance md:max-w-2xl lg:text-3xl lg:leading-9;
+  @apply w-full max-w-4xl text-2xl font-black leading-7 supports-[text-wrap:balance]:text-balance md:max-w-2xl lg:text-3xl lg:leading-9;
 }
 @utility post-subheadline {
-  @apply -mt-2 w-full max-w-4xl text-xl leading-tight font-light supports-[text-wrap:balance]:text-balance md:max-w-2xl lg:text-2xl;
+  @apply -mt-2 w-full max-w-4xl text-xl font-light leading-tight supports-[text-wrap:balance]:text-balance md:max-w-2xl lg:text-2xl;
 }
 @utility header-alt-text {
   @apply -mt-4 flex w-full flex-col items-center justify-center px-6 text-xs font-light lg:-mt-3 lg:text-sm;
 }
 @utility header-caption {
-  @apply flex w-full items-center justify-center px-6 text-lg leading-tight font-black italic lg:text-xl;
+  @apply flex w-full items-center justify-center px-6 text-lg font-black italic leading-tight lg:text-xl;
 }
 
 /* post-preview */
 @utility post-preview-headline {
-  @apply text-2xl leading-7 font-black text-balance lg:text-3xl lg:leading-9;
+  @apply text-balance text-2xl font-black leading-7 lg:text-3xl lg:leading-9;
 }
 @utility post-preview-subheadline {
-  @apply text-xl leading-tight font-light text-balance lg:text-2xl;
+  @apply text-balance text-xl font-light leading-tight lg:text-2xl;
 }
 
 /* sidebar */
 @utility sidebar-box {
-  @apply w-full rounded-md border border-ctp-surface0 md:w-72 md:max-w-xs dark:border-ctp-base;
+  @apply border-ctp-surface0 dark:border-ctp-base w-full rounded-md border md:w-72 md:max-w-xs;
 }
 @utility tab-btn {
   @apply flex basis-full items-center justify-center gap-2 rounded-t-xl py-1 pb-2 text-center;
@@ -805,32 +805,32 @@
   @apply bg-ctp-crust dark:bg-ctp-base;
 }
 @utility tab-btn-hover {
-  @apply absolute inset-0 z-10 mx-2 mt-px mb-1.5 rounded-xl color-trans-quick hover:bg-ctp-pink/80 dark:hover:bg-ctp-pink/60;
+  @apply color-trans-quick hover:bg-ctp-pink/80 dark:hover:bg-ctp-pink/60 absolute inset-0 z-10 mx-2 mb-1.5 mt-px rounded-xl;
 }
 @utility tab-btn-text {
-  @apply pointer-events-none z-20 flex flex-row items-center gap-[1ch] font-semibold text-ctp-text;
+  @apply text-ctp-text pointer-events-none z-20 flex flex-row items-center gap-[1ch] font-semibold;
 }
 
 /* social-button */
 @utility social-button {
-  @apply flex items-center justify-center rounded border border-ctp-surface0 text-ctp-text shadow-none color-trans-2 hover:bg-ctp-mauve hover:text-ctp-base hover:shadow-none hover:shadow-ctp-mauve/30 dark:border-ctp-base;
+  @apply border-ctp-surface0 text-ctp-text color-trans-2 hover:bg-ctp-mauve hover:text-ctp-base hover:shadow-ctp-mauve/30 dark:border-ctp-base flex items-center justify-center rounded border shadow-none hover:shadow-none;
 }
 @utility share-button {
-  @apply flex w-full flex-row items-center gap-[1ch] rounded border border-ctp-overlay0 px-4 py-2 text-ctp-subtext0 hover:text-ctp-base motion-safe:color-trans-quick dark:hover:text-ctp-text;
+  @apply border-ctp-overlay0 text-ctp-subtext0 hover:text-ctp-base motion-safe:color-trans-quick dark:hover:text-ctp-text flex w-full flex-row items-center gap-[1ch] rounded border px-4 py-2;
 }
 @utility instance-share-button {
-  @apply absolute inset-y-2 right-2 rounded-full border border-ctp-blue bg-ctp-blue/20 px-4 font-mono text-ctp-blue hover:border-ctp-sky hover:bg-ctp-sky/20 hover:text-ctp-sky hover:shadow-lg hover:shadow-ctp-sky/30 active:border-ctp-sky active:text-ctp-sky active:shadow-lg active:shadow-ctp-sky/30 motion-safe:color-trans-2-quick dark:hover:bg-ctp-sky/40;
+  @apply border-ctp-blue bg-ctp-blue/20 text-ctp-blue hover:border-ctp-sky hover:bg-ctp-sky/20 hover:text-ctp-sky hover:shadow-ctp-sky/30 active:border-ctp-sky active:text-ctp-sky active:shadow-ctp-sky/30 motion-safe:color-trans-2-quick dark:hover:bg-ctp-sky/40 absolute inset-y-2 right-2 rounded-full border px-4 font-mono hover:shadow-lg active:shadow-lg;
 }
 
 /* home */
 @utility home-btn-standard {
-  @apply rounded border border-ctp-mauve bg-ctp-base/70 p-2 text-center font-mono text-lg text-ctp-mauve backdrop-blur-md color-trans-quick hover:border-ctp-flamingo hover:bg-ctp-pink hover:text-ctp-base hover:no-underline;
+  @apply border-ctp-mauve bg-ctp-base/70 text-ctp-mauve color-trans-quick hover:border-ctp-flamingo hover:bg-ctp-pink hover:text-ctp-base rounded border p-2 text-center font-mono text-lg backdrop-blur-md hover:no-underline;
 }
 @utility home-btn-extra {
   @apply home-btn-standard bg-ctp-mauve/20;
 }
 @utility home-btn-2 {
-  @apply flex w-full items-center justify-center rounded border border-ctp-text/40 px-4 py-2 font-mono text-base font-bold text-ctp-text lowercase [transition:_background-color_0.3s,_color_0.38s,_border_0.38s] hover:border-ctp-pink hover:bg-ctp-pink/40 hover:text-ctp-base hover:no-underline md:w-fit md:border-ctp-surface1 md:whitespace-nowrap dark:hover:text-ctp-pink;
+  @apply border-ctp-text/40 text-ctp-text hover:border-ctp-pink hover:bg-ctp-pink/40 hover:text-ctp-base md:border-ctp-surface1 dark:hover:text-ctp-pink flex w-full items-center justify-center rounded border px-4 py-2 font-mono text-base font-bold lowercase [transition:_background-color_0.3s,_color_0.38s,_border_0.38s] hover:no-underline md:w-fit md:whitespace-nowrap;
 }
 @utility home-btn-2-extra {
   @apply home-btn-2 border-ctp-sapphire bg-ctp-sapphire/20 text-ctp-sapphire hover:border-ctp-sky hover:bg-ctp-sky/40 hover:text-ctp-base dark:hover:text-ctp-sky;

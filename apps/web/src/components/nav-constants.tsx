@@ -4,7 +4,7 @@ export const NAV_MAIN_MOBILE_MENU_IO_ID = 'nav-main-mobile-menu-button';
 export const NAV_MAIN_MOBILE_MENU_ID = 'nav-main-mobile-menu';
 export const NAV_MAIN_ID = 'main-nav';
 export const TOC_NAV_ID = 'toc-nav-container';
-export const IPAD_TOC_ID = 'horizontal-table-of-contents'
+export const IPAD_TOC_ID = 'horizontal-table-of-contents';
 
 const MAIN_PAGES_ARR = new Map([
   ['home', '/'],

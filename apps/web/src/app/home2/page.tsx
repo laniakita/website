@@ -10,6 +10,8 @@ import { socialItemsV } from '@/lib/socials-data';
 import MiniPostRoller from './rollers/mini-postroller';
 import MiniProjectsRoller from './rollers/mini-projects-roller';
 import { MiniWorkRoller } from './rollers/mini-server-roller';
+import CanvasSection from './canvas-section';
+import ThreeContent from './three-content';
 
 export const metadata: Metadata = {
   openGraph: {
@@ -37,7 +39,6 @@ export const metadata: Metadata = {
   },
 };
 
-
 function SocialIconNav3({ boxItems }: SocialIconNavProps) {
   return (
     <div className='flex grid-cols-none flex-row items-center gap-2 md:grid md:grid-cols-3 md:gap-x-1 md:gap-y-0 xl:flex xl:gap-2'>
@@ -64,24 +65,19 @@ function Hero() {
       <div className='absolute inset-0 z-0'>
         <NoiseShader01 />
       </div>
-      <div className='relative w-full inset-x-0 z-10 flex animate-fade-in border-t border-ctp-base bg-ctp-base/80 opacity-0 backdrop-blur-xl color-trans-quick dark:border-ctp-text dark:bg-ctp-base/50 px-6'>
-        <div className='@container/main w-full flex flex-row max-w-5xl m-auto gap-x-10 py-10'>
-
+      <div className='relative inset-x-0 z-10 flex w-full animate-fade-in border-t border-ctp-base bg-ctp-base/80 px-6 opacity-0 backdrop-blur-xl color-trans-quick dark:border-ctp-text dark:bg-ctp-base/50'>
+        <div className='@container/main m-auto flex w-full max-w-5xl flex-row gap-x-10 py-10'>
           <div className=''>
-            <h1 className='uppercase font-black text-5xl text-ctp-text'>
-              Lani Akita
-            </h1>
-            <h2 className='text-2xl uppercase font-medium'>Full Stack Developer</h2>
+            <h1 className='text-5xl font-black text-ctp-text uppercase'>Lani Akita</h1>
+            <h2 className='text-2xl font-medium uppercase'>Full Stack Developer</h2>
           </div>
 
-          <div className='h-auto min-h-full overflow-visible bg-ctp-text w-0.5' />
-
+          <div className='h-auto min-h-full w-0.5 overflow-visible bg-ctp-text' />
 
           <div className='my-auto hidden md:flex md:flex-col xl:flex-row xl:gap-2'>
             <SocialIconNav3 boxItems={socialItemsV.slice(0, 3)} />
             <SocialIconNav3 boxItems={socialItemsV.slice(3, 6)} />
           </div>
-
         </div>
       </div>
     </div>
@@ -206,7 +202,7 @@ async function ClientWorksSection() {
   );
 }
 
-export default function HomeV2() {
+export function HomeV2Classic() {
   return (
     <>
       <Navbar />
@@ -224,3 +220,13 @@ export default function HomeV2() {
   );
 }
 
+export default function HomeV2() {
+  return (
+    <>
+      <Navbar />
+      <Hero />
+      <ThreeContent />
+      <Footer />
+    </>
+  );
+}

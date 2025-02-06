@@ -38,12 +38,12 @@ export function HeadingNode({
           id={linkId}
           role='link'
           aria-label={`Jump to: ${node.title}`}
-          className={`text-left inline-block w-full border-b border-ctp-overlay0/20 py-1 group-hover:bg-ctp-mauve/30 ${activeId === node.id ? 'bg-ctp-mauve/30' : ''} transition-[background-color] duration-300`}
+          className={`inline-block w-full border-b border-ctp-overlay0/20 py-1 text-left group-hover:bg-ctp-mauve/30 ${activeId === node.id ? 'bg-ctp-mauve/30' : ''} transition-[background-color] duration-300`}
           onClick={(e) => {
-            router.push(`${pathname}#${node.id}`, {scroll: false});
+            router.push(`${pathname}#${node.id}`, { scroll: false });
             e.preventDefault();
             const el = document.getElementById(node.id);
-            el?.scrollIntoView({behavior: "smooth"});
+            el?.scrollIntoView({ behavior: 'smooth' });
           }}
         >
           <span

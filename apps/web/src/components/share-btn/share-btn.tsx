@@ -79,7 +79,7 @@ export default function ShareButton() {
           className={`${isOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none h-0 opacity-0'} absolute bottom-0 z-[2] min-w-fit translate-y-[104%] overflow-hidden rounded-md border border-ctp-overlay0 bg-ctp-base/90 font-mono whitespace-nowrap shadow-lg backdrop-blur-md motion-safe:[transition:_opacity_0.5s,_transform_0.5s,_height_0.5s] dark:bg-ctp-base/50 dark:shadow-ctp-pink/30`}
         >
           <menu
-            id="social-media-share-menu"
+            id='social-media-share-menu'
             aria-expanded={isOpen}
             ref={shareListRef}
             className='space-y-1.5 p-1.5 pb-2'
@@ -141,7 +141,7 @@ export default function ShareButton() {
 
         <button
           aria-expanded={!isOpen}
-          aria-controls="social-media-share-menu"
+          aria-controls='social-media-share-menu'
           onClick={() => {
             if (!isOpen) {
               setIsOpen(true);

@@ -37,31 +37,37 @@ export default function ToCMenuCore(props: ToCMenuCoreProps) {
       setTimeout(() => {
         setMenuWidth(menuRef?.current?.clientWidth);
       }, 801);
-    };
-  }, [tocInView])
+    }
+  }, [tocInView]);
 
   return (
     <nav
       id={IPAD_TOC_ID}
-      className={`${tocInView ? 'md:w-80 min-w-80 lg:w-96 lg:min-w-96' : 'w-0 min-w-0'} max-h-dvh overflow-y-auto overflow-x-hidden sticky hidden top-0 shadow-xl motion-safe:[transition:width_0.8s,min-width_0.8s,background-color_0.5s] bg-ctp-crust dark:bg-ctp-base/20 md:block text-slate-100`}
+      className={`${tocInView ? 'min-w-80 md:w-80 lg:w-96 lg:min-w-96' : 'w-0 min-w-0'} sticky top-0 hidden max-h-dvh overflow-x-hidden overflow-y-auto bg-ctp-crust text-slate-100 shadow-xl motion-safe:[transition:width_0.8s,min-width_0.8s,background-color_0.5s] md:block dark:bg-ctp-base/20`}
     >
       <div className='sticky top-0 z-10 flex min-h-16 w-full flex-row items-center justify-start text-ctp-text'>
         <div id='nav-mask-bg' className='nav-glassy-bg' />
         <div id='nav-mask-edge' className='nav-glassy-edge' />
         <button
-          aria-expanded="false"
+          aria-expanded='false'
           aria-controls={IPAD_TOC_ID}
           onClick={() => {
             setToCNotInView();
             localStorage.setItem('toc-state-pref', 'closed');
             setHasAnimated(true);
           }}
-          className='icon-[ph--sidebar-simple-fill] min-w-[3ch] min-h-[3ch] ml-4'
+          className='ml-4 icon-[ph--sidebar-simple-fill] min-h-[3ch] min-w-[3ch]'
         />
       </div>
 
       <div ref={menuRef} aria-label='Table of contents' style={{ minWidth: menuWidth !== null ? menuWidth : 305 }}>
-        <Headings tree={readyHeadings} activeId={activeId} ariaExpanded={!hasAnimated ? isReady : tocInView} notMobile hasAnimated={hasAnimated} />
+        <Headings
+          tree={readyHeadings}
+          activeId={activeId}
+          ariaExpanded={!hasAnimated ? isReady : tocInView}
+          notMobile
+          hasAnimated={hasAnimated}
+        />
       </div>
     </nav>
   );
@@ -109,7 +115,6 @@ export function ToCMenuMobileCore(props: ToCMenuCoreProps) {
     }
   }, [props.nestedHeadings]);
 
-
   useEffect(() => {
     // grab headings on mount
     const passedFlatHeadings = JSON.parse(props.flatHeadings);
@@ -135,12 +140,11 @@ export function ToCMenuMobileCore(props: ToCMenuCoreProps) {
     };
   }, [handleToCOffClick, props.flatHeadings, width]);
 
-
   return (
     <nav
       ref={mainToCRef}
       id={TOC_NAV_ID}
-      className={`sticky top-16 z-20 block md:hidden ${inView ? 'translate-y-0' : '-translate-y-16'} motion-safe:transition-transform duration-300`}
+      className={`sticky top-16 z-20 block md:hidden ${inView ? 'translate-y-0' : '-translate-y-16'} duration-300 motion-safe:transition-transform`}
     >
       <div
         className={`absolute z-30 flex w-full flex-row items-center ${showMobileMenu ? 'bg-ctp-base/90 dark:bg-ctp-midnight/80' : 'bg-ctp-base/80 dark:bg-ctp-midnight/50'}`}
@@ -151,9 +155,7 @@ export function ToCMenuMobileCore(props: ToCMenuCoreProps) {
           <button
             aria-expanded={showMobileMenu}
             aria-controls={TOC_NAV_ID}
-            id={
-              'show-hide-table-of-contents-button-mobile'
-            }
+            id={'show-hide-table-of-contents-button-mobile'}
             className={`link-color-trans ${showMobileMenu ? 'text-ctp-pink underline' : ''} z-40 -m-1.5 flex items-center font-mono text-sm whitespace-pre text-ctp-subtext0 hover:text-ctp-pink hover:underline`}
             onClick={() => {
               setShowMobileMenu(!showMobileMenu);
@@ -177,22 +179,16 @@ export function ToCMenuMobileCore(props: ToCMenuCoreProps) {
 
       <div
         id='toc-offclick-bg'
-        className={`${showMobileMenu ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'} h-dvh absolute inset-x-0 top-12 bottom-0 z-20 size-full flex-col justify-start bg-black/40 [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] [perspective:_5px] motion-safe:transition-[opacity] duration-300`}
+        className={`${showMobileMenu ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'} absolute inset-x-0 top-12 bottom-0 z-20 size-full h-dvh flex-col justify-start bg-black/40 duration-300 [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] [perspective:_5px] motion-safe:transition-[opacity]`}
       >
         <div
           aria-label='Table of contents'
           ref={dropToCRef}
           className={`${showMobileMenu ? '[transform:translate3d(0%,0%,0px)] opacity-100' : 'pointer-events-none [transform:translate3d(0%,-100%,-0.01rem)] opacity-0'} inset-x-0 top-28 bottom-0 z-20 max-h-[calc(100dvh-7rem)] w-full overflow-auto rounded-b-2xl border-b border-ctp-pink bg-ctp-base/90 py-10 backdrop-blur-md [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:transform_0.8s,_opacity_0.5s,_background-color_0.8s] dark:border-ctp-sky dark:bg-ctp-midnight/90`}
         >
-          <Headings
-            tree={readyHeadings}
-            activeId={activeId}
-            ariaExpanded={showMobileMenu}
-            hasAnimated={hasAnimated}
-          />
+          <Headings tree={readyHeadings} activeId={activeId} ariaExpanded={showMobileMenu} hasAnimated={hasAnimated} />
         </div>
       </div>
     </nav>
-  )
-
+  );
 }
