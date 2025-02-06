@@ -5,6 +5,7 @@ interface TextSplitterUltraProps extends ComponentProps<'span'> {
   spanRole: string;
   level: number;
   charClass: string;
+  reverse?: boolean;
 }
 
 export default function TextSplitterUltra({
@@ -12,6 +13,7 @@ export default function TextSplitterUltra({
   spanRole,
   charClass,
   level,
+  reverse,
   ...spanProps
 }: TextSplitterUltraProps) {
   return (
@@ -19,9 +21,9 @@ export default function TextSplitterUltra({
       {textIn.split('').map((char, index) => {
         return (
           <span
-            key={`${char}-${textIn.indexOf(char)}-${Math.random() * 10}`}
-            className={`${char === ' ' ? 'mx-[0.2rem]' : ''} ${charClass}`}
-            style={{ animationDelay: `${0.5 + index / 10}s` }}
+            key={crypto.randomUUID()}
+            className={`${char === ' ' ? 'mx-[0.2ch]' : ''} ${charClass}`}
+            style={{ animationDelay: reverse ? `${1.5-index/10}s` : `${0.1 + index / 10}s` }}
           >
             {char}
           </span>

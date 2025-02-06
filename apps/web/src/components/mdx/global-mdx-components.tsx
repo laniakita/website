@@ -34,7 +34,4 @@ export function UniversalMDXComponent({ code }: { code: string }) {
   return <MDXContent code={code} />;
 }
 
-export function MiniMDXComponent({ code }: { code: string }) {
-  const MDXContent = getMDXComponent(code, {});
-  return <MDXContent code={code} />;
-}
+
