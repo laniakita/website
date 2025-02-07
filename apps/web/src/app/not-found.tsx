@@ -1,7 +1,7 @@
 'use client';
 import { Suspense } from 'react';
 import Link from 'next/link';
-import Navbar from '@/components/navbar/core';
+import Navbar from '@/components/navbar';
 import Footer from '@/components/footer/footer';
 import NoiseShader01 from './projects/(three)/shaders/noise/01/noise';
 

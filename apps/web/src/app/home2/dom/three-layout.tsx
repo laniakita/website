@@ -1,9 +1,9 @@
-'use client'
+'use client';
 
-import { ReactNode, useRef } from "react";
-import dynamic from "next/dynamic";
+import { ReactNode, useRef } from 'react';
+import dynamic from 'next/dynamic';
 
-const Scene = dynamic(() => import('../canvas/scene').then((mod) => mod.Scene), {ssr: false})
+const Scene = dynamic(() => import('../canvas/scene').then((mod) => mod.Scene), { ssr: false });
 
 export function ViewCanvasLayout({ children }: { children: ReactNode }) {
   const container = useRef(null!);
@@ -21,7 +21,7 @@ export function ViewCanvasLayout({ children }: { children: ReactNode }) {
     >
       {children}
       <Scene
-        eventPrefix="client"
+        eventPrefix='client'
         eventSource={container}
         style={{
           height: '100%',
@@ -35,6 +35,5 @@ export function ViewCanvasLayout({ children }: { children: ReactNode }) {
         }}
       />
     </div>
-  )
+  );
 }
-

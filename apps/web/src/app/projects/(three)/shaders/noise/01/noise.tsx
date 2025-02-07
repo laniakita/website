@@ -27,8 +27,6 @@ export default function NoiseShader01() {
 }
 
 export function NoiseShader01View() {
-  
-
   return (
     <View className='view'>
       <ambientLight intensity={1.1} />
@@ -46,7 +44,7 @@ export function NoiseShader01View() {
       />
     </View>
   );
-};
+}
 
 export function NoiseShader01Core() {
   const meshRef = useRef<Mesh>(null);

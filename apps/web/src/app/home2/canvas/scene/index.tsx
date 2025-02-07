@@ -1,7 +1,8 @@
-'use client'
+'use client';
 
-import { Preload, View } from "@react-three/drei";
-import { Canvas } from "@react-three/fiber";
+import { ScrollTicker } from '@/wrappers/scroll';
+import { Preload, View } from '@react-three/drei';
+import { Canvas } from '@react-three/fiber';
 
 export function Scene({ ...props }) {
   return (

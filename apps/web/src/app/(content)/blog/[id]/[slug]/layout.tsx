@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import Footer from '@/components/footer/footer';
-import NavbarV2 from '@/components/navbar/core';
+import Navbar from '@/components/navbar';
 import ToCMenuCore, { ToCMenuMobileCore } from '@/components/table-of-contents/core';
 import { allPosts } from 'contentlayer/generated';
 import jsxToHtml from './utils';
@@ -88,7 +88,7 @@ export default async function PostPageLayout({ children, params }: { children: R
       <ToCMenuCore flatHeadings={JSON.stringify(flatHeadings)} nestedHeadings={JSON.stringify(nestedHeadings)} />
 
       <div className='size-full min-w-0'>
-        <NavbarV2 />
+        <Navbar />
         <ToCMenuMobileCore
           flatHeadings={JSON.stringify(flatHeadings)}
           nestedHeadings={JSON.stringify(nestedHeadings)}

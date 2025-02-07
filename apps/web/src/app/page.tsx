@@ -4,7 +4,7 @@ import NoiseShader01 from '@/app/projects/(three)/shaders/noise/01/noise';
 import { type SocialIconNavProps } from '@/components/social-icon';
 import { RESUME_LINK } from '@/lib/constants';
 import { socialItems2 } from '@/components/sidebar/main';
-import Navbar from '@/components/navbar/core';
+import Navbar from '@/components/navbar';
 import Footer from '@/components/footer/footer';
 
 export const metadata: Metadata = {

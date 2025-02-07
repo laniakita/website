@@ -56,7 +56,7 @@ export function MastodonPrompt({
     <div className='fixed inset-0 z-[11] flex h-screen w-screen items-center justify-center bg-ctp-midnight/50 px-3 backdrop-blur-sm'>
       <div
         ref={promptRef}
-        className='relative rounded-lg border border-ctp-overlay0 bg-ctp-base p-10 opacity-0 shadow-2xl motion-safe:animate-fade-in-up-2 md:p-20 dark:bg-ctp-midnight'
+        className='relative rounded-lg border border-ctp-overlay0 bg-ctp-base p-10 opacity-0 shadow-2xl motion-safe:animate-fade-in-up md:p-20 dark:bg-ctp-midnight'
       >
         <button
           onClick={() => setShowMastodonForm(false)}

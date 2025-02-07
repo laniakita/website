@@ -23,7 +23,7 @@ export default function TextSplitterUltra({
           <span
             key={crypto.randomUUID()}
             className={`${char === ' ' ? 'mx-[0.2ch]' : ''} ${charClass}`}
-            style={{ animationDelay: reverse ? `${1.5-index/10}s` : `${0.1 + index / 10}s` }}
+            style={{ animationDelay: reverse ? `${1.5 - index / 10}s` : `${0.1 + index / 10}s` }}
           >
             {char}
           </span>

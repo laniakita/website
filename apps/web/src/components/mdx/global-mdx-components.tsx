@@ -33,5 +33,3 @@ export function UniversalMDXComponent({ code }: { code: string }) {
   const MDXContent = getMDXComponent(code, {});
   return <MDXContent code={code} />;
 }
-
-

@@ -1,8 +1,7 @@
-
-import { resMdxMinimal } from "@/lib/mdx-utils";
-import { pageData } from "./data";
-import { ThreePage } from "./three-page";
-import { MiniMDXComponent } from "@/components/mdx/mini-mdx-component";
+import { resMdxMinimal } from '@/lib/mdx-utils';
+import { pageData } from './data';
+import { ThreePage } from './three-page';
+import { MiniMDXComponent } from '@/components/mdx/mini-mdx-component';
 
 export default async function HomeV2() {
   const summary = await resMdxMinimal(pageData.summarySec);
@@ -17,11 +16,9 @@ export default async function HomeV2() {
       profile: { code: ReactDomServer.renderToStaticMarkup(<MiniMDXComponent code={profile.code} />) },
       projects: { code: ReactDomServer.renderToStaticMarkup(<MiniMDXComponent code={projects.code} />) },
       works: { code: ReactDomServer.renderToStaticMarkup(<MiniMDXComponent code={works.code} />) },
-      blog: { code: ReactDomServer.renderToStaticMarkup(<MiniMDXComponent code={blog.code } />) },
-    }
-  }
+      blog: { code: ReactDomServer.renderToStaticMarkup(<MiniMDXComponent code={blog.code} />) },
+    },
+  };
 
-  return (
-    <ThreePage data={data} />
-  );
+  return <ThreePage data={data} />;
 }
