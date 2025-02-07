@@ -1,7 +1,7 @@
 'use client';
 
 import { ReactNode, useRef } from 'react';
-import { useIntersectionObserver } from '../utils';
+import { useIntersectionObserver } from '../../utils';
 import TextSplitterUltra from '@/components/text-splitter-v2';
 import slugify from '@/utils/slugify';
 type HomeSectionProps = {
@@ -16,8 +16,9 @@ export default function Section(props: HomeSectionProps) {
   const visible = useIntersectionObserver(divRef);
 
   return (
-    <div ref={divRef} aria-current={visible} className='group flex w-full max-w-5xl flex-col items-center md:flex-row'>
-      <div className='w-full space-y-10 md:w-1/2'>
+    <section ref={divRef} aria-current={visible} className='@container/sec max-w-5xl mx-auto group w-full'>
+      <div className='flex flex-col items-center @3xl/sec:flex-row'>
+      <div className='w-full space-y-10 @3xl:w-1/2'>
         <h1 id={slugify(props.title)} className={`overflow-hidden text-4xl font-bold`}>
           <TextSplitterUltra
             spanRole='heading'
@@ -28,16 +29,17 @@ export default function Section(props: HomeSectionProps) {
           />
         </h1>
         <div
-          className={`${visible ? 'motion-safe:animate-fade-in-slide-right motion-safe:opacity-0' : 'motion-safe:animate-fade-out-slide-left'} prose-protocol-omega -mt-6`}
+          className={`${visible ? 'motion-safe:animate-fade-in-slide-right motion-safe:opacity-0' : 'motion-safe:animate-fade-out-slide-left'} prose-protocol-omega max-w-full -mt-6`}
         >
           <div dangerouslySetInnerHTML={{ __html: props.markdown }} />
         </div>
       </div>
       <div
-        className={`${visible ? 'opacity-0 motion-safe:animate-big-fade-in-up' : 'motion-safe:animate-big-fade-down'} w-full md:w-1/2 md:pl-10`}
+        className={`w-full @3xl/sec:w-1/2 @3xl/sec:pl-10`}
       >
         {props.children}
       </div>
-    </div>
+      </div>
+    </section>
   );
 }
