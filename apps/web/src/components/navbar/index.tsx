@@ -20,6 +20,7 @@ import SimpleSocials from './simple-socials';
 import { simpleSocialItems } from './data';
 import { useToCViewStore } from '@/providers/toc-view-store-provider';
 import { usePathname } from 'next/navigation';
+import { useRouter } from 'next/router';
 
 const handleRef = (pageStr: string) => {
   if (pageStr.toLowerCase() === 'home') {
@@ -45,12 +46,13 @@ export default function Navbar() {
   const [tocLastSeen, setToCLastSeen] = useState(0);
 
   const handleNavOffClick = useCallback((e: MouseEvent) => {
+    //console.log(e.target.nodeName);
     e.stopPropagation();
-
-    if ((e.target as Node).nodeName === 'BUTTON') {
+    if ((e.target as Node).nodeName === 'BUTTON' || (e.target as Node).nodeName === 'A') {
       // do nothing
+      //console.log('hello!')
     } else if (dropNavRef?.current?.contains(e.target as Node)) {
-      // do nothing
+      //console.log('hello!')
     } else if (
       navBarRef?.current?.contains(e.target as Node) &&
       (e.target as HTMLButtonElement).id !== NAV_MAIN_MOBILE_MENU_IO_ID &&
@@ -130,7 +132,7 @@ export default function Navbar() {
   const logo = dark ? darklogo : lightlogo;
 
   return (
-    <>
+    <div className='sticky top-0 z-50'>
       <nav
         id={NAV_MAIN_ID}
         ref={navBarRef}
@@ -189,10 +191,10 @@ export default function Navbar() {
           </span>
           <HamburgerToggle {...{ hamburgerOpen, setHamburgerOpen, tocInView, isPost }} />
         </div>
-
-        <MobileDropdown {...{ hamburgerOpen, setHamburgerOpen, dropNavRef, tocInView, isPost }} />
       </nav>
-    </>
+
+      <MobileDropdown {...{ hamburgerOpen, setHamburgerOpen, dropNavRef, tocInView, isPost }} />
+    </div>
   );
 }
 
@@ -238,18 +240,29 @@ interface MobileDropdownProps extends HamburgerToggleProps {
 }
 
 function MobileDropdown({ hamburgerOpen, setHamburgerOpen, dropNavRef }: MobileDropdownProps) {
+  const pathname = usePathname();
+  const [path, setPath] = useState(pathname);
+  useEffect(() => {
+    if (pathname !== path) {
+      setPath(pathname);
+      if (pathname !== 'feed.xml') {
+        setHamburgerOpen(false);
+      }
+    }
+  }, [path, pathname, setHamburgerOpen]);
+
   return (
-    <div className={`absolute inset-0 z-50 flex`}>
+    <nav className={`pointer-events-none absolute top-16 z-50 flex min-h-dvh w-full`}>
       {/* mobile menu container */}
       <div
         id='mobile-nav-offclick-bg'
-        className={`${hamburgerOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'} absolute inset-0 top-16 z-40 flex h-dvh max-h-[calc(100dvh-4rem)] flex-col justify-start bg-black/40 duration-300 [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] perspective-[5px] motion-safe:transition-opacity`}
+        className={`${hamburgerOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'} absolute inset-0 z-40 flex min-h-full flex-col justify-start bg-black/40 duration-300 [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] perspective-[5px] motion-safe:transition-opacity`}
       >
         {/* menu box */}
         <div
           id={NAV_MAIN_MOBILE_CONTAINER_ID}
           ref={dropNavRef}
-          className={`${hamburgerOpen ? '[transform:translate3d(0%,0%,0px)] opacity-100' : '[transform:translate3d(0%,-100%,-0.01rem)] opacity-0'} max-h-[calc(100dvh-4rem)] w-full overflow-y-auto rounded-b-2xl border-b border-ctp-pink bg-ctp-base/90 backdrop-blur-md [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:transform_0.5s,_opacity_0.3s,_background-color_0.8s] dark:border-ctp-sky dark:bg-ctp-midnight/90`}
+          className={`${hamburgerOpen ? '[transform:translate3d(0%,0%,0px)] opacity-100' : '[transform:translate3d(0%,-100%,-0.01rem)] opacity-0'} min-h-fit w-full overflow-y-auto rounded-b-2xl border-b border-ctp-pink bg-ctp-base/90 backdrop-blur-md [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:transform_0.5s,_opacity_0.3s,_background-color_0.8s] dark:border-ctp-sky dark:bg-ctp-midnight/90`}
         >
           <menu id={NAV_MAIN_MOBILE_MENU_ID} aria-expanded={hamburgerOpen} className='flex flex-col gap-3 p-10'>
             {pagesArr.map((page) => (
@@ -257,21 +270,18 @@ function MobileDropdown({ hamburgerOpen, setHamburgerOpen, dropNavRef }: MobileD
                 <LinkPlus
                   href={handleRef(page)}
                   className='nav-item text-xl'
-                  onClick={() => {
-                    if (page !== 'Atom/RSS') {
-                      setHamburgerOpen(false);
-                    }
-                  }}
                   target={page === 'Atom/RSS' ? '_blank' : undefined}
                   type={page === 'Atom/RSS' ? 'application/atom+xml' : undefined}
                 >
-                  <span className='whitespace-nowrap'>{page === 'Atom/RSS' ? page : page.toLowerCase()}</span>
+                  <span className='pointer-events-none whitespace-nowrap'>
+                    {page === 'Atom/RSS' ? page : page.toLowerCase()}
+                  </span>
                 </LinkPlus>
               </li>
             ))}
           </menu>
         </div>
       </div>
-    </div>
+    </nav>
   );
 }

@@ -205,7 +205,7 @@
   }
 
   /* one-offs */
-  --animate-fade-in-up-slow: fade-in-up-slow 0.8s ease forwards;
+  --animate-fade-in-up-slow: fade-in-up-slow 0.5s ease forwards;
   @keyframes fade-in-up-slow {
     from {
       opacity: 0;
@@ -216,7 +216,7 @@
       transform: translate3d(0rem, 0%, 0rem);
     }
   }
-  --animate-fade-in-down-slow: fade-in-down-slow 0.8s ease forwards;
+  --animate-fade-in-down-slow: fade-in-down-slow 0.5s ease forwards;
   @keyframes fade-in-down-slow {
     from {
       opacity: 0;
@@ -237,12 +237,15 @@
   }
 
   html {
-    min-height: 100dvh;
     box-sizing: border-box;
     margin: 0;
     background-color: light-dark(var(--color-ctp-base), var(--color-ctp-midnight));
     color: var(--color-ctp-text);
     @apply scroll-pt-32 md:scroll-pt-18;
+  }
+
+  body {
+    box-sizing: border-box;
   }
 
   canvas {

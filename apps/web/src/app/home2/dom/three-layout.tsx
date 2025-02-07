@@ -13,10 +13,11 @@ export function ViewCanvasLayout({ children }: { children: ReactNode }) {
       ref={container}
       style={{
         position: 'relative',
-        width: ' 100%',
+        width: '100%',
         height: '100%',
         overflow: 'auto',
-        touchAction: 'auto',
+        touchAction: 'none',
+        boxSizing: 'border-box',
       }}
     >
       {children}
@@ -26,12 +27,13 @@ export function ViewCanvasLayout({ children }: { children: ReactNode }) {
         style={{
           height: '100%',
           width: '100%',
-          position: 'fixed',
+          position: 'absolute',
           top: 0,
           right: 0,
           left: 0,
           bottom: 0,
           pointerEvents: 'none',
+          boxSizing: 'border-box',
         }}
       />
     </div>
