@@ -32,7 +32,7 @@ export default function MiniProjectPreview(data: Project) {
   }
 
   return (
-    <div className='flex min-w-96 basis-full flex-col overflow-hidden rounded-md border border-ctp-surface0 bg-ctp-base motion-safe:simple-color-trans dark:border-ctp-base dark:bg-ctp-midnight'>
+    <div className='flex flex-col'>
       {res.src ? (
         <Link href={projectLink()} target='_blank'>
           <Image

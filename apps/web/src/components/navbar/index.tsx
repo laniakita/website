@@ -20,7 +20,7 @@ import SimpleSocials from './simple-socials';
 import { simpleSocialItems } from './data';
 import { useToCViewStore } from '@/providers/toc-view-store-provider';
 import { usePathname } from 'next/navigation';
-import { useRouter } from 'next/router';
+import { useLenis } from 'lenis/react';
 
 const handleRef = (pageStr: string) => {
   if (pageStr.toLowerCase() === 'home') {
@@ -92,11 +92,12 @@ export default function Navbar() {
       setToCNotInView();
     }
   }, [setIsPost, pathname, setToCNotInView]);
-
+  
   useEffect(() => {
     let lastScrollTop = 0;
     const scrollBuffer = 10;
     const handleScroll = () => {
+
       if (hamburgerOpen) return;
       if (!isPost) {
         setNavInView();

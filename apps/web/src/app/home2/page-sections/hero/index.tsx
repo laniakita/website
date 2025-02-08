@@ -8,13 +8,19 @@ const NoiseShader01View = dynamic(
   () => import('../../../projects/(three)/shaders/noise/01/noise').then((mod) => mod.NoiseShader01View),
   { ssr: false },
 );
+
+const NoiseShader01 = dynamic(
+  () => import('../../../projects/(three)/shaders/noise/01/noise').then((mod) => mod.default),
+  { ssr: false },
+);
+
 const HeroScrollBtn = dynamic(() => import('./scroll-btn'), { ssr: true });
 
 export default function Hero() {
   return (
     <div className='@container relative -mt-16 flex h-dvh w-full items-end justify-start overflow-hidden'>
-      <div className='absolute inset-0 z-[-1]'>
-        <NoiseShader01View />
+      <div className='absolute inset-0'>
+        <NoiseShader01 />
       </div>
       <div className='relative inset-x-0 z-20 flex w-full border-t border-b border-ctp-base bg-ctp-base/80 px-6 backdrop-blur-md color-trans-quick dark:border-ctp-text dark:bg-ctp-midnight/80'>
         <div className='m-auto flex w-fit flex-col gap-y-2 py-10 @3xl:w-full @3xl:max-w-5xl @3xl:flex-row @3xl:gap-x-10 @3xl:gap-y-0'>

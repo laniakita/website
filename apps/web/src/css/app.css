@@ -247,6 +247,10 @@
   body {
     box-sizing: border-box;
   }
+  
+  canvas {
+    @apply animate-fade-in;
+  }
 
   a {
     @apply links;

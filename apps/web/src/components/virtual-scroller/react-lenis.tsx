@@ -1,18 +1,17 @@
 'use client';
 import { addEffect } from '@react-three/fiber';
 import { type LenisRef, ReactLenis } from 'lenis/react';
-import { type ReactNode, Suspense, useEffect, useRef } from 'react';
+import { type ReactNode, Suspense, useEffect, useRef} from 'react';
 
 export function ReactLenisScroller({ children }: { children: ReactNode }) {
   const lenisRef = useRef<LenisRef>(null!);
 
   useEffect(() => {
     const subEffect = addEffect((t) => lenisRef.current?.lenis?.raf(t));
-    console.log(lenisRef.current);
     return () => {
       subEffect();
     };
-  });
+  }, []);
 
   return (
     <>
@@ -22,7 +21,6 @@ export function ReactLenisScroller({ children }: { children: ReactNode }) {
           autoRaf: false,
           anchors: true,
           overscroll: false,
-          syncTouch: true,
         }}
         ref={lenisRef}
         className='wrapper'

@@ -3,7 +3,6 @@ import { pageData } from './data';
 import { MiniMDXComponent } from '@/components/mdx/mini-mdx-component';
 import Navbar from '@/components/navbar';
 import Footer from '@/components/footer/footer';
-import { ViewCanvasLayout } from './dom/three-layout';
 import { ReactLenisScroller } from '@/components/virtual-scroller/react-lenis';
 import Hero from './page-sections/hero';
 import Main from './page-sections/main';
@@ -26,13 +25,11 @@ export default async function HomeV2() {
   };
 
   return (
-    <ViewCanvasLayout>
-      <ReactLenisScroller>
-        <Navbar />
-        <Hero />
-        <Main data={data} />
-        <Footer />
-      </ReactLenisScroller>
-    </ViewCanvasLayout>
+    <ReactLenisScroller>
+      <Navbar />
+      <Hero />
+      <Main data={data} />
+      <Footer />
+    </ReactLenisScroller>
   );
 }
