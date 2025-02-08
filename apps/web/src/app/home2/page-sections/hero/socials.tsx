@@ -1,4 +1,4 @@
-import type { SocialIconNavProps } from "@/components/social-icon";
+import type { SocialIconNavProps } from '@/components/social-icon';
 
 export default function HeroSocials({ boxItems }: SocialIconNavProps) {
   return boxItems.map((item) => (

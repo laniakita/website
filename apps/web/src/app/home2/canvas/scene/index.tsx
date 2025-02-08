@@ -1,6 +1,5 @@
 'use client';
 
-import { ScrollTicker } from '@/wrappers/scroll';
 import { Preload, View } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 

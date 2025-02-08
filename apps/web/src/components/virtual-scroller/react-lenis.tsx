@@ -22,6 +22,7 @@ export function ReactLenisScroller({ children }: { children: ReactNode }) {
           autoRaf: false,
           anchors: true,
           overscroll: false,
+          syncTouch: true,
         }}
         ref={lenisRef}
         className='wrapper'

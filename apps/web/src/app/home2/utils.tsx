@@ -6,15 +6,17 @@ export function useIntersectionObserver(ref: RefObject<HTMLElement>) {
   const [isIntersecting, setIntersecting] = useState(false);
 
   const observer = useMemo(() => {
-    return new IntersectionObserver(([entry]) => setIntersecting(entry?.isIntersecting ?? false), {
-      rootMargin: '-72px 0px -10% 0px',
-    });
+    if (typeof window !== 'undefined') {
+      return new IntersectionObserver(([entry]) => setIntersecting(entry?.isIntersecting ?? false), {
+        rootMargin: '-72px 0px -10% 0px',
+      });
+    }
   }, []);
 
   useEffect(() => {
-    observer.observe(ref.current);
+    observer?.observe(ref.current);
     return () => {
-      observer.disconnect();
+      observer?.disconnect();
     };
   }, [observer, ref]);
 

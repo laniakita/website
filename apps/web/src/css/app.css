@@ -248,10 +248,6 @@
     box-sizing: border-box;
   }
 
-  canvas {
-    @apply animate-fade-in;
-  }
-
   a {
     @apply links;
   }
@@ -919,10 +915,10 @@
 }
 
 @utility view {
-  height: 100%;
-  width: 100%;
   display: inline-block;
   overflow: hidden;
+  position: absolute;
+  inset: 0;
 }
 
 @utility three-home-section {

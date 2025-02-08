@@ -1,16 +1,22 @@
 'use client';
 
-import { ReactNode, useRef } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 
 const Scene = dynamic(() => import('../canvas/scene').then((mod) => mod.Scene), { ssr: false });
 
 export function ViewCanvasLayout({ children }: { children: ReactNode }) {
-  const container = useRef(null!);
+  const [root, setRoot] = useState<HTMLElement>();
+
+  useEffect(() => {
+    const root = document.getElementById('root');
+    if (root) {
+      setRoot(root);
+    }
+  }, []);
 
   return (
     <div
-      ref={container}
       style={{
         position: 'relative',
         width: '100%',
@@ -23,17 +29,17 @@ export function ViewCanvasLayout({ children }: { children: ReactNode }) {
       {children}
       <Scene
         eventPrefix='client'
-        eventSource={container}
+        eventSource={root}
         style={{
-          height: '100%',
-          width: '100%',
           position: 'absolute',
           top: 0,
           right: 0,
           left: 0,
           bottom: 0,
+          overflow: 'hidden',
           pointerEvents: 'none',
           boxSizing: 'border-box',
+          zIndex: -1,
         }}
       />
     </div>
