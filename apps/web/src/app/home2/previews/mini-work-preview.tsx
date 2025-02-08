@@ -8,7 +8,7 @@ export function MiniWorkPreview(data: Work) {
   const res = data.featured_image as FeaturedImageR1;
 
   return (
-    <div className='relative z-10 flex size-full basis-full flex-col overflow-hidden rounded-md border border-ctp-surface0 bg-ctp-base shadow-2xl motion-safe:simple-color-trans dark:border-ctp-base dark:bg-ctp-midnight'>
+    <div className=''>
       {res.src ? (
         <Link href={`https://${data.domain}`} target='_blank' aria-disabled={!data.active}>
           <Image

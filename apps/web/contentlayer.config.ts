@@ -80,6 +80,7 @@ export const Project = defineDocumentType(() => ({
     altText: { type: 'string', required: false },
     caption: { type: 'string', required: false },
     description: { type: 'string', required: true },
+    altDescription: { type: 'string', required: false },
     blogPost: { type: 'string', required: false },
     embedded: { type: 'boolean', required: true },
     foreignUrl: { type: 'string', required: false },

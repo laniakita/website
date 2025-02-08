@@ -6,19 +6,19 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { type HTMLAttributes } from 'react';
 
-interface HomePostPreviewProps extends HTMLAttributes<HTMLDivElement> {
+export interface MiniPostPreviewProps extends HTMLAttributes<HTMLDivElement> {
   post: Post;
   parentExtraClass?: string;
 }
 
-export function HomePostPreview(props: HomePostPreviewProps) {
+export default function MiniPostPreview(props: MiniPostPreviewProps) {
   const post = props.post;
   const res = post.featured_image as FeaturedImageR1;
 
   return (
     <div
       {...props}
-      className={`flex min-w-96 basis-full flex-col overflow-hidden rounded-md border border-ctp-surface0 bg-ctp-base motion-safe:simple-color-trans dark:border-ctp-base dark:bg-ctp-midnight ${props.parentExtraClass}`}
+      className={`flex flex-col ${props.parentExtraClass}`}
     >
       {res.hasImage ? (
         <Link href={post.url}>

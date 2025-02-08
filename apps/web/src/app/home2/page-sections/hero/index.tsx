@@ -4,11 +4,6 @@ import dynamic from 'next/dynamic';
 import HeroDivider from './divider';
 import HeroSocials from './socials';
 
-const NoiseShader01View = dynamic(
-  () => import('../../../projects/(three)/shaders/noise/01/noise').then((mod) => mod.NoiseShader01View),
-  { ssr: false },
-);
-
 const NoiseShader01 = dynamic(
   () => import('../../../projects/(three)/shaders/noise/01/noise').then((mod) => mod.default),
   { ssr: false },
