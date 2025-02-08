@@ -2,7 +2,6 @@
 import MiniProjectsRoller from '../../rollers/mini-projects-roller';
 //import dynamic from 'next/dynamic';
 import Section from '../section';
-import Projects from '../section/projects';
 import Summary from '../section/summary';
 
 //const BgTestV = dynamic(() => import('../../canvas/decor/bg-test-v').then((mod) => mod.BgTestV), { ssr: false });
@@ -37,7 +36,7 @@ export default function Main(props: MainProps) {
         <Summary code={props.data.markdown.profile.code} />
       </Section>
       <Section type={1} title='Passion Projects' page={1} markdown={props.data.markdown.projects.code}>
-        <Projects />
+        <MiniProjectsRoller />
       </Section>
       <Section title='Client Works' page={2} markdown={props.data.markdown.works.code} />
       <Section title='Latest from the Blog' page={3} markdown={props.data.markdown.blog.code} />
