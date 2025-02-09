@@ -1,7 +1,6 @@
 import { useRef } from 'react';
 import { useIntersectionObserver } from '../../utils';
 
-
 export default function ServicesTable({ code }: { code: string }) {
   const figureRef = useRef<HTMLElement>(null!);
   const visible = useIntersectionObserver(figureRef);

@@ -167,9 +167,7 @@ export default function Navbar() {
           <SimpleSocials arr={simpleSocialItems} />
           <span className='px-1 font-thin text-ctp-subtext1/80'>|</span>
           <DarkModeSwitch />
-          <span className={`px-1 font-thin text-ctp-subtext1/80 @4xl/nav:hidden`}>
-            |
-          </span>
+          <span className={`px-1 font-thin text-ctp-subtext1/80 @4xl/nav:hidden`}>|</span>
           <HamburgerToggle {...{ hamburgerOpen, setHamburgerOpen, tocInView, isPost }} />
         </div>
       </nav>
@@ -179,7 +177,7 @@ export default function Navbar() {
   );
 }
 
-function NavLink({ page}: { page: string }) {
+function NavLink({ page }: { page: string }) {
   const handleRef = (pageStr: string) => {
     if (pageStr.toLowerCase() === 'home') {
       return '/';

@@ -53,7 +53,7 @@ export default function Main(props: MainProps) {
           </div>
         </div>
       </Section>
-      <Section type={3} title="Dev for Hire" markdown={props.data.markdown.services.code}>
+      <Section type={3} title='Dev for Hire' markdown={props.data.markdown.services.code}>
         <ServicesTable code={props.data.markdown.servicesTable.code} />
       </Section>
       <Section type={1} title='Latest from the Blog' page={3} markdown={props.data.markdown.blog.code}>
