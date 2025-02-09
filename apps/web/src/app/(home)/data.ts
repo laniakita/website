@@ -32,7 +32,7 @@ const servicesTable = `
 |Developer Consulting| I offer my analytical-skills as a trained Biologist, and my years spent behind the command line and text-editor, to help your business grow.|
 |Front-end Development| My Front-end skillset can be used to build elegant, accesible, responsive, user interfaces, immersive digital experiences powered by WebGL (and now WebGPU) via Three.js, brochure sites, and more.|
 |Back-end Development| My back-end skills can be used to create APIs, internal web applications, content management systems, and anything else that CRUD's the rows and tables of a database (or several).|
-|Full-Stack Development| For projects that require me to work on both ends of the stack, my entire breadth of knowledge is available as a single service.| 
+|Full-Stack Development| For projects that require me to work on both ends of the stack (like creating a Next.js/SvelteKit based application), my entire breadth of knowledge is available as a single service.| 
 |AI-generated Software Application Rescue (AGAR)| LLMs and AI assistants are tools, but when wielded improperly, can result in deeply flawed, highly fragile, software applications. I offer my sympathetic ear, along with my software engineering skillset, to help make things right when AI-generated applications go awry.|
 
 `;
