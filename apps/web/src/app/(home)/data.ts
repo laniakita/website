@@ -1,7 +1,7 @@
 const summarySec = `
-Hi! My name is Lani Akita, and I'm a Full Stack Developer from Honolulu, Hawai'i. I'm also pretty passionate about the Web, as a person who enjoys building (and [writing about](/blog)) stuff for the Internet. 
+Hi! My name is Lani Akita, and I'm a Full Stack Developer from Honolulu, Hawai'i. I'm also pretty passionate about the Web, as a person who enjoys building (and [writing about](/blog)) stuff for the Internet. You can see my <a href="/resume" target="_blank" rel="noreferrer">résumé</a> to learn more.  
 
-Naturally, I'm obsessed with bleeding-edge tools and technologies that enables us to redefine _what_ a website can be. Technologies that push beyond the limits of what ought to be possible to run from a web browser, like <a href="https://www.w3.org/TR/webgpu/" target="_blank" rel="noopener">WebGPU</a>, or <a href="https://webassembly.github.io/spec/core/intro/introduction.html" target="_blank" rel="noopener">WebAssembly</a>
+Naturally, I'm obsessed with bleeding-edge tools and technologies that enables us to redefine _what_ a website can be. Technologies that push beyond the limits of what ought to be possible to run from a web browser, like <a href="https://www.w3.org/TR/webgpu/" target="_blank" rel="nofollow noreferrer noopener">WebGPU</a>, or <a href="https://webassembly.github.io/spec/core/intro/introduction.html" target="_blank" rel="nofollow noreferrer noopener">WebAssembly</a>
 `;
 
 // In practice, that means I'm sometimes creating, deploying, and or maintaining websites for Clients. Other times, I'm creating, publishing, and or maintaining open-source libraries/software for myself and others to use. Either way, I typically work (& think) across the entire stack to accomplish such things.

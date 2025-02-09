@@ -7,6 +7,6 @@ tech:
   - React Three Fiber
 imageSrc: '../../../assets/images/oc/2024/07/noise_shader_01.png'
 altText: Screenshot of a simplex noise shader, featuring black and white elements.
-description: A GLSL shader created using simplex noise, and many distance functions. 
+description: A GLSL shader created using simplex noise, and many distance functions.
 altDescription: A GLSL shader created using simplex noise, and many distance functions. It's featured as the moving artwork on the landing page. The shader itself is rendered onto a simple plane using Three.js (React Three Fiber).
 embedded: true

@@ -48,14 +48,9 @@ export default function Section(props: HomeSectionProps) {
 
   if (props.type === 1) {
     return (
-      <section
-        ref={divRef}
-        aria-current={visible}
-        className='group @container/sec relative'
-      >
-
-        <div className='py-20 shadow-2xl dark:shadow-ctp-mauve z-20'>
-          <div className='px-6 max-w-5xl w-full mx-auto'>
+      <section ref={divRef} aria-current={visible} className='group @container/sec relative'>
+        <div className='z-20 py-20 shadow-2xl dark:shadow-ctp-mauve'>
+          <div className='mx-auto w-full max-w-5xl px-6'>
             <div className='w-full space-y-10 @3xl:w-1/2'>
               <h1 id={slugify(props.title)} className={`overflow-hidden text-4xl font-bold`}>
                 <TextSplitterUltra
@@ -75,24 +70,16 @@ export default function Section(props: HomeSectionProps) {
           </div>
         </div>
 
-        <div>
-          {props.children}
-        </div>
-      </section >
+        <div>{props.children}</div>
+      </section>
     );
   }
-
 
   if (props.type === 2) {
     return (
-      <section
-        ref={divRef}
-        aria-current={visible}
-        className='group @container/sec relative py-40'
-      >
-
+      <section ref={divRef} aria-current={visible} className='group @container/sec relative py-40'>
         <div className='z-20 pb-20'>
-          <div className='px-6 max-w-5xl w-full mx-auto'>
+          <div className='mx-auto w-full max-w-5xl px-6'>
             <div className='w-full space-y-10 @3xl:w-1/2'>
               <h1 id={slugify(props.title)} className={`overflow-hidden text-4xl font-bold`}>
                 <TextSplitterUltra
@@ -112,11 +99,8 @@ export default function Section(props: HomeSectionProps) {
           </div>
         </div>
 
-        <div className='px-6'>
-          {props.children}
-        </div>
-      </section >
+        <div className='px-6'>{props.children}</div>
+      </section>
     );
   }
-
 }

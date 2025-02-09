@@ -3,9 +3,9 @@ import GlobalMDXRenderer from '@/components/mdx/global-mdx-renderer';
 import { APP_URL, SHOWCASE_URL } from '@/lib/constants';
 // import { descriptionHelper } from '@/lib/description-helper';
 import type { FeaturedImageR1 } from '@/lib/image-process';
-import { 
+import {
   //allPosts,
-  type Project 
+  type Project,
 } from 'contentlayer/generated';
 import Markdown from 'markdown-to-jsx';
 import Image from 'next/image';
@@ -15,7 +15,7 @@ import { useId } from 'react';
 export default function MiniProjectPreview(data: Project) {
   const res = data.featured_image as FeaturedImageR1;
   const uKey = useId();
-  
+
   /*
   const getDescription = (dataX: Project) => {
     const getPost = allPosts.find((post) => post.url === dataX.blogPost);

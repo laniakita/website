@@ -1,7 +1,7 @@
 'use client';
 import { addEffect } from '@react-three/fiber';
 import { type LenisRef, ReactLenis } from 'lenis/react';
-import { type ReactNode, Suspense, useEffect, useRef} from 'react';
+import { type ReactNode, Suspense, useEffect, useRef } from 'react';
 
 export function ReactLenisScroller({ children }: { children: ReactNode }) {
   const lenisRef = useRef<LenisRef>(null!);

@@ -1,18 +1,15 @@
 'use client';
-import { type Url } from 'next/dist/shared/lib/router/router';
 import Link, { type LinkProps } from 'next/link';
 import { usePathname } from 'next/navigation';
-import { type ReactNode } from 'react';
+import { AnchorHTMLAttributes } from 'react';
 
-interface LinkyProps extends LinkProps {
-  children: ReactNode;
-  href: Url;
-  className?: string;
-  target?: string;
-  type?: string;
-}
-
-export default function LinkPlus({ children, href, target, type, ...props }: LinkyProps) {
+export default function LinkPlus({
+  children,
+  href,
+  target,
+  type,
+  ...props
+}: AnchorHTMLAttributes<HTMLAnchorElement> & LinkProps) {
   const path = usePathname();
   const isCurrentPage = href === path;
   return (

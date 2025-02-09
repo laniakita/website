@@ -111,6 +111,11 @@ const nextConfig = {
         destination: RESUME_LINK,
         permanent: true,
       },
+      {
+        source: '/lani-akita_resume-december-2024.pdf',
+        destination: RESUME_LINK,
+        permanent: true,
+      },
     ];
   },
 };

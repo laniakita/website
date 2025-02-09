@@ -16,10 +16,7 @@ export default function MiniPostPreview(props: MiniPostPreviewProps) {
   const res = post.featured_image as FeaturedImageR1;
 
   return (
-    <div
-      {...props}
-      className={`flex flex-col ${props.parentExtraClass}`}
-    >
+    <div {...props} className={`flex flex-col ${props.parentExtraClass}`}>
       {res.hasImage ? (
         <Link href={post.url}>
           <Image

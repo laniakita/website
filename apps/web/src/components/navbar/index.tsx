@@ -20,18 +20,6 @@ import SimpleSocials from './simple-socials';
 import { simpleSocialItems } from './data';
 import { useToCViewStore } from '@/providers/toc-view-store-provider';
 import { usePathname } from 'next/navigation';
-import { useLenis } from 'lenis/react';
-
-const handleRef = (pageStr: string) => {
-  if (pageStr.toLowerCase() === 'home') {
-    return '/';
-  } else if (pageStr.toLowerCase() === 'atom/rss') {
-    return '/atom.xml';
-  } else if (pageStr.toLowerCase() === 'résumé') {
-    return RESUME_LINK;
-  }
-  return `/${pageStr.toLowerCase()}`;
-};
 
 const pagesArr = ['Blog', 'About', 'Work', 'Projects', 'Atom/RSS', 'Résumé', 'Contact'];
 
@@ -92,12 +80,11 @@ export default function Navbar() {
       setToCNotInView();
     }
   }, [setIsPost, pathname, setToCNotInView]);
-  
+
   useEffect(() => {
     let lastScrollTop = 0;
     const scrollBuffer = 10;
     const handleScroll = () => {
-
       if (hamburgerOpen) return;
       if (!isPost) {
         setNavInView();
@@ -133,7 +120,7 @@ export default function Navbar() {
   const logo = dark ? darklogo : lightlogo;
 
   return (
-    <div className='sticky top-0 z-50'>
+    <div className='@container/nav sticky top-0 z-50'>
       <nav
         id={NAV_MAIN_ID}
         ref={navBarRef}
@@ -142,7 +129,7 @@ export default function Navbar() {
         <div id='nav-mask-bg' className='nav-glassy-bg' />
         <div id='nav-mask-edge' className='nav-glassy-edge' />
 
-        <ul className='z-[51] flex flex-row items-center gap-[1ch]'>
+        <ul className='z-[51] flex flex-row items-center gap-[1.5ch]'>
           {isPost && (
             <li
               className={`hidden items-center justify-center md:flex ${tocInView ? 'w-0 opacity-0' : 'w-full opacity-100'} motion-safe:transition-[opacity_0.38s_ease,_width_0.38s_ease]`}
@@ -170,15 +157,8 @@ export default function Navbar() {
           </li>
 
           {pagesArr.map((page) => (
-            <li key={crypto.randomUUID()} className={`hidden ${tocInView && isPost ? 'xl:block' : 'lg:block'}`}>
-              <LinkPlus
-                href={handleRef(page)}
-                className='nav-item'
-                target={page === 'Atom/RSS' ? '_blank' : undefined}
-                type={page === 'Atom/RSS' ? 'application/atom+xml' : undefined}
-              >
-                <span className='whitespace-break-spaces'>{page === 'Atom/RSS' ? page : page.toLowerCase()}</span>
-              </LinkPlus>
+            <li key={crypto.randomUUID()} className={`@max-4xl/nav:hidden`}>
+              <NavLink page={page} />
             </li>
           ))}
         </ul>
@@ -187,7 +167,7 @@ export default function Navbar() {
           <SimpleSocials arr={simpleSocialItems} />
           <span className='px-1 font-thin text-ctp-subtext1/80'>|</span>
           <DarkModeSwitch />
-          <span className={`px-1 font-thin text-ctp-subtext1/80 ${tocInView && isPost ? 'xl:hidden' : 'lg:hidden'}`}>
+          <span className={`px-1 font-thin text-ctp-subtext1/80 @4xl/nav:hidden`}>
             |
           </span>
           <HamburgerToggle {...{ hamburgerOpen, setHamburgerOpen, tocInView, isPost }} />
@@ -196,6 +176,38 @@ export default function Navbar() {
 
       <MobileDropdown {...{ hamburgerOpen, setHamburgerOpen, dropNavRef, tocInView, isPost }} />
     </div>
+  );
+}
+
+function NavLink({ page}: { page: string }) {
+  const handleRef = (pageStr: string) => {
+    if (pageStr.toLowerCase() === 'home') {
+      return '/';
+    } else if (pageStr.toLowerCase() === 'atom/rss') {
+      return '/atom.xml';
+    } else if (pageStr.toLowerCase() === 'résumé') {
+      return RESUME_LINK;
+    }
+    return `/${pageStr.toLowerCase()}`;
+  };
+  return (
+    <LinkPlus
+      href={handleRef(page)}
+      className={`nav-item @max-4xl/nav:text-xl`}
+      target={page.toLowerCase() === 'atom/rss' || page.toLowerCase() === 'résumé' ? '_blank' : undefined}
+      rel={page.toLowerCase() === 'atom/rss' || page.toLowerCase() === 'résumé' ? 'noopener noreferrer' : undefined}
+      type={
+        page.toLowerCase() === 'atom/rss'
+          ? 'application/atom+xml'
+          : page.toLowerCase() === 'résumé'
+            ? 'application/pdf'
+            : undefined
+      }
+    >
+      <span className='pointer-events-none whitespace-nowrap md:whitespace-break-spaces'>
+        {page === 'Atom/RSS' ? page : page.toLowerCase()}
+      </span>
+    </LinkPlus>
   );
 }
 
@@ -208,7 +220,7 @@ interface HamburgerToggleProps {
 
 function HamburgerToggle({ hamburgerOpen, setHamburgerOpen, tocInView, isPost }: HamburgerToggleProps) {
   return (
-    <div className={`z-[51] flex flex-row-reverse items-center ${tocInView && isPost ? 'xl:hidden' : 'lg:hidden'}`}>
+    <div className={`z-[51] flex flex-row-reverse items-center @4xl/nav:hidden`}>
       <button
         id={NAV_MAIN_MOBILE_MENU_IO_ID}
         aria-expanded={!hamburgerOpen}
@@ -263,21 +275,12 @@ function MobileDropdown({ hamburgerOpen, setHamburgerOpen, dropNavRef }: MobileD
         <div
           id={NAV_MAIN_MOBILE_CONTAINER_ID}
           ref={dropNavRef}
-          className={`${hamburgerOpen ? '[transform:translate3d(0%,0%,0px)] opacity-100' : '[transform:translate3d(0%,-100%,-0.01rem)] opacity-0'} min-h-fit w-full overflow-y-auto rounded-b-2xl border-b border-ctp-pink bg-ctp-base/90 backdrop-blur-md [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:transform_0.5s,_opacity_0.3s,_background-color_0.8s] dark:border-ctp-sky dark:bg-ctp-midnight/90`}
+          className={`${hamburgerOpen ? '[transform:translate3d(0%,0%,0px)]' : '[transform:translate3d(0%,-100%,-0.01rem)] opacity-0'} min-h-fit w-full overflow-y-auto rounded-b-2xl border-b border-ctp-pink bg-ctp-base/90 backdrop-blur-md [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:transform_0.5s,_opacity_0.3s,_background-color_0.8s] dark:border-ctp-sky dark:bg-ctp-midnight/90`}
         >
           <menu id={NAV_MAIN_MOBILE_MENU_ID} aria-expanded={hamburgerOpen} className='flex flex-col gap-3 p-10'>
             {pagesArr.map((page) => (
               <li key={crypto.randomUUID()}>
-                <LinkPlus
-                  href={handleRef(page)}
-                  className='nav-item text-xl'
-                  target={page === 'Atom/RSS' ? '_blank' : undefined}
-                  type={page === 'Atom/RSS' ? 'application/atom+xml' : undefined}
-                >
-                  <span className='pointer-events-none whitespace-nowrap'>
-                    {page === 'Atom/RSS' ? page : page.toLowerCase()}
-                  </span>
-                </LinkPlus>
+                <NavLink page={page} hamburgerOpen={hamburgerOpen} />
               </li>
             ))}
           </menu>

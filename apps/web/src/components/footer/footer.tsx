@@ -22,7 +22,7 @@ export default function Footer({
   linksContainerPadding?: string;
 }) {
   const pathname = usePathname();
-  const hiddenPaths = ['/'];
+  const hiddenPaths = [''];
   const weirdPaths = ['blog'];
 
   const isWeirdPath = (path: string, override?: boolean): boolean => {
