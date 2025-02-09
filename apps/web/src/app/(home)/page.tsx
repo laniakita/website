@@ -12,6 +12,8 @@ export default async function HomeV2() {
   const profile = await resMdxMinimal(pageData.profileObj);
   const projects = await resMdxMinimal(pageData.projectSec);
   const works = await resMdxMinimal(pageData.workSec);
+  const services = await resMdxMinimal(pageData.servicesSec);
+  const servicesTable = await resMdxMinimal(pageData.servicesTable);
   const blog = await resMdxMinimal(pageData.blogSec);
   const ReactDomServer = await import('react-dom/server').then((res) => res.default);
   const data = {
@@ -20,6 +22,8 @@ export default async function HomeV2() {
       profile: { code: ReactDomServer.renderToStaticMarkup(<MiniMDXComponent code={profile.code} />) },
       projects: { code: ReactDomServer.renderToStaticMarkup(<MiniMDXComponent code={projects.code} />) },
       works: { code: ReactDomServer.renderToStaticMarkup(<MiniMDXComponent code={works.code} />) },
+      services: { code: ReactDomServer.renderToStaticMarkup(<MiniMDXComponent code={services.code} />) },
+      servicesTable: { code: ReactDomServer.renderToStaticMarkup(<MiniMDXComponent code={servicesTable.code} />) },
       blog: { code: ReactDomServer.renderToStaticMarkup(<MiniMDXComponent code={blog.code} />) },
     },
   };

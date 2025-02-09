@@ -802,7 +802,7 @@
 }
 
 @utility prose-text-pretty {
-  @apply prose-headings-mod prose-p:supports-[text-wrap:pretty]:text-pretty prose-a:break-words prose-em:mr-[0.2ch];
+  @apply prose-headings-mod prose-p:supports-[text-wrap:pretty]:text-pretty prose-a:break-words prose-em:mr-[0.2ch] prose-table:supports-[text-wrap:pretty]:text-pretty;
 }
 
 @layer components {

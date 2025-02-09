@@ -4,6 +4,7 @@ import MiniProjectsRoller from '../../rollers/mini-projects-roller';
 import { MiniWorkRoller } from '../../rollers/mini-server-roller';
 //import dynamic from 'next/dynamic';
 import Section from '../section';
+import ServicesTable from '../section/services-table';
 import Summary from '../section/summary';
 
 //const BgTestV = dynamic(() => import('../../canvas/decor/bg-test-v').then((mod) => mod.BgTestV), { ssr: false });
@@ -21,6 +22,12 @@ export type MainProps = {
         code: string;
       };
       works: {
+        code: string;
+      };
+      services: {
+        code: string;
+      };
+      servicesTable: {
         code: string;
       };
       blog: {
@@ -45,6 +52,9 @@ export default function Main(props: MainProps) {
             <MiniWorkRoller />
           </div>
         </div>
+      </Section>
+      <Section title="Dev for Hire" markdown={props.data.markdown.services.code}>
+        <ServicesTable code={props.data.markdown.servicesTable.code} />
       </Section>
       <Section type={1} title='Latest from the Blog' page={3} markdown={props.data.markdown.blog.code}>
         <MiniPostsRoller />
