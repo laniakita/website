@@ -38,7 +38,7 @@ export default async function ForHirePage() {
   const placeHolderLaunchYear = () => {
     const currDate = new Date();
     currDate.setFullYear(currDate.getFullYear() + 2);
-    return currDate.getFullYear().toString();
+    return currDate.toString();
   };
 
   return (
@@ -67,11 +67,11 @@ export default async function ForHirePage() {
           <div className='space-y-2'>
             <p>---For existing projects---</p>
             <div className='flex flex-row items-center gap-x-2'>
-              <label htmlFor='proj-age'>My project launched in:</label>
+              <label htmlFor='proj-launch-date'>My project launched on:</label>
               <input
-                placeholder='2020'
-                id='proj-age'
-                className='w-[6ch] rounded bg-ctp-crust px-2 py-1 text-center font-semibold'
+                type="date"
+                id='proj-launch-date'
+                className='w-fit rounded bg-ctp-crust px-2 py-1 text-center font-semibold'
               />
             </div>
 
@@ -84,6 +84,59 @@ export default async function ForHirePage() {
               />
               active users
             </div>
+
+            <fieldset>
+              <legend>Select the option that best describes your project&apos;s active user growth rate:</legend>
+              <div className='flex flex-row items-center gap-x-2'>
+                <input
+                  type="radio"
+                  name="user-growth-rate"
+                  id="exponential-user-growth"
+                  value="exponential-user-growth"
+                  defaultChecked
+                />
+                <label htmlFor='exponential-user-growth'>Rapidly adding users</label>
+              </div>
+              <div className='flex flex-row items-center gap-x-2'>
+                <input
+                  type="radio"
+                  name="user-growth-rate"
+                  id="slow-user-growth"
+                  value="slow-user-growth"
+                />
+                <label htmlFor='slow-user-growth'>Slowly adding users</label>
+              </div>
+              <div className='flex flex-row items-center gap-x-2'>
+                <input
+                  type="radio"
+                  name="user-growth-rate"
+                  id="neutral-user-growth"
+                  value="neutral-user-growth"
+                />
+                <label htmlFor='neutral-user-growth'>Neutral/stable</label>
+              </div>
+              <div className='flex flex-row items-center gap-x-2'>
+                <input
+                  type="radio"
+                  name="user-growth-rate"
+                  id="slow-user-decline"
+                  value="slow-user-decline"
+                />
+                <label htmlFor='slow-user-decline'>Slowly losing users</label>
+              </div>
+              <div className='flex flex-row items-center gap-x-2'>
+                <input
+                  type="radio"
+                  name="user-growth-rate"
+                  id="exponential-user-decay"
+                  value="exponential-user-decay"
+                />
+                <label htmlFor='exponential-user-decay'>Rapidly losing users</label>
+              </div>
+            </fieldset>
+
+
+
             <p>---</p>
           </div>
 
@@ -91,16 +144,16 @@ export default async function ForHirePage() {
           <div className='space-y-2'>
             <p>---For greenfield projects---</p>
             <div className='flex flex-row items-center gap-x-2'>
-              <label htmlFor='proj-age'>I want this project to launch by:</label>
+              <label htmlFor='proj-future-launch-date'>I want this project to launch by:</label>
               <input
-                placeholder={placeHolderLaunchYear()}
-                id='proj-age'
-                className='w-[6ch] rounded bg-ctp-crust px-2 py-1 text-center font-semibold'
+                type="date"
+                id='proj-future-launch-date'
+                className='w-fit rounded bg-ctp-crust px-2 py-1 text-center font-semibold'
               />
             </div>
 
             <div className='flex flex-row items-center gap-x-2'>
-              <label htmlFor='proj-user-count'>I expect to serve:</label>
+              <label htmlFor='proj-user-count'>By the end of Year 02, I expect to serve:</label>
               <input
                 placeholder='10 Million'
                 id='proj-user-count'
