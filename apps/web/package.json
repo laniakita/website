@@ -7,7 +7,7 @@
     "@date-fns/utc": "2.1.0",
     "@giscus/react": "^3.1.0",
     "@react-three/drei": "10.0.0-rc.1",
-    "@react-three/fiber": "9.0.0-rc.5",
+    "@react-three/fiber": "9.0.0-rc.7",
     "@vercel/functions": "^1.6.0",
     "date-fns": "4.1.0",
     "jsdom": "^26.0.0",
