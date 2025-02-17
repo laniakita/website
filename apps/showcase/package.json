@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "@catppuccin/tailwindcss": "^0.1.6",
-    "@happy-dom/global-registrator": "^16.7.3",
+    "@happy-dom/global-registrator": "^17.1.0",
     "@iconify-json/ant-design": "^1.2.5",
     "@iconify-json/fa6-brands": "^1.2.5",
     "@iconify-json/ph": "^1.2.2",
