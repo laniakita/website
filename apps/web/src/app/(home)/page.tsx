@@ -6,6 +6,33 @@ import Footer from '@/components/footer/footer';
 import { ReactLenisScroller } from '@/components/virtual-scroller/react-lenis';
 import Hero from './page-sections/hero';
 import Main from './page-sections/main';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  openGraph: {
+    images: [
+      {
+        alt: `Home Page`,
+        type: 'image/png',
+        width: 1200,
+        height: 630,
+        url: `/opengraph/home`,
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    images: [
+      {
+        alt: `Home Page`,
+        type: 'image/png',
+        width: 1600,
+        height: 900,
+        url: `/opengraph/home?twitter=true`,
+      },
+    ],
+  },
+};
 
 export default async function HomeV2() {
   const summary = await resMdxMinimal(pageData.summarySec);

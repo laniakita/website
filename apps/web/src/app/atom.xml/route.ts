@@ -165,7 +165,7 @@ export async function GET() {
             name: 'Lani Akita',
           },
           {
-            email: 'lani@laniakita.com',
+            email: 'me@laniakita.com',
           },
           {
             uri: `${HOST_URL}/about`,

@@ -9,7 +9,7 @@ type HomeSectionProps = {
   page?: number;
   markdown: string;
   children?: ReactNode;
-  type?: number;
+  type?: number | string;
 };
 
 export default function Section(props: HomeSectionProps) {
@@ -104,7 +104,7 @@ export default function Section(props: HomeSectionProps) {
     );
   }
 
-  if (props.type === 3) {
+  if (props.type === 'dev-for-hire') {
     return (
       <section
         ref={divRef}
@@ -126,12 +126,13 @@ export default function Section(props: HomeSectionProps) {
               className={`${visible ? 'motion-safe:animate-fade-in-slide-right motion-safe:opacity-0' : 'motion-safe:animate-fade-out-slide-left'} prose-protocol-omega -mt-6 max-w-full`}
             >
               <div dangerouslySetInnerHTML={{ __html: props.markdown }} />
-              <button
-                className={`flex w-full flex-row items-center justify-center rounded-md border border-ctp-green bg-ctp-green/20 px-4 py-4 font-mono text-sm font-bold text-balance text-ctp-green no-underline hover:border-ctp-teal hover:bg-ctp-teal/40 hover:text-ctp-teal ${visible ? 'opacity-0 motion-safe:animate-fade-in-down-slow' : 'motion-safe:animate-fade-out-down-ultra-down'} @3xl:py-4 @4xl:text-base`}
+              <a
+                href="mailto:me@laniakita.com"
+                className={`flex w-full flex-row items-center justify-center rounded-md border border-ctp-sapphire bg-ctp-sapphire/20 px-4 py-4 font-mono text-sm font-bold text-balance text-ctp-sapphire no-underline hover:border-ctp-sapphire hover:bg-ctp-sky/40 hover:text-ctp-sky ${visible ? 'opacity-0 motion-safe:animate-fade-in-down-slow' : 'motion-safe:animate-fade-out-down-ultra-down'} @3xl:py-4 @4xl:text-base`}
                 style={{ animationDelay: '0.5s' }}
               >
-                hire me
-              </button>
+                contact me
+              </a>
             </div>
           </div>
           <div className={`w-full @3xl/sec:w-1/2 @3xl/sec:pl-10`}>{props.children}</div>
