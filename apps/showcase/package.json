@@ -31,7 +31,7 @@
     "@iconify/tailwind": "^1.1.3",
     "@iconify/tailwind4": "^1.0.1",
     "@next/bundle-analyzer": "^15.1.6",
-    "@opennextjs/aws": "^3.4.1",
+    "@opennextjs/aws": "^3.4.2",
     "@tailwindcss/postcss": "^4.0.1",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",

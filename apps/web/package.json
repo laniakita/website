@@ -40,7 +40,7 @@
     "@mdx-js/loader": "^3.1.0",
     "@mdx-js/mdx": "^3.1.0",
     "@next/bundle-analyzer": "15.1.6",
-    "@opennextjs/aws": "^3.4.1",
+    "@opennextjs/aws": "^3.4.2",
     "@react-three/eslint-plugin": "^0.1.2",
     "@serwist/next": "^9.0.11",
     "@shikijs/rehype": "^2.1.0",
