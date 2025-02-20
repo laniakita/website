@@ -216,7 +216,7 @@ interface HamburgerToggleProps {
   isPost: boolean;
 }
 
-function HamburgerToggle({ hamburgerOpen, setHamburgerOpen, tocInView, isPost }: HamburgerToggleProps) {
+function HamburgerToggle({ hamburgerOpen, setHamburgerOpen }: HamburgerToggleProps) {
   return (
     <div className={`z-[51] flex flex-row-reverse items-center @4xl/nav:hidden`}>
       <button
@@ -278,7 +278,7 @@ function MobileDropdown({ hamburgerOpen, setHamburgerOpen, dropNavRef }: MobileD
           <menu id={NAV_MAIN_MOBILE_MENU_ID} aria-expanded={hamburgerOpen} className='flex flex-col gap-3 p-10'>
             {pagesArr.map((page) => (
               <li key={crypto.randomUUID()}>
-                <NavLink page={page} hamburgerOpen={hamburgerOpen} />
+                <NavLink page={page} />
               </li>
             ))}
           </menu>

@@ -127,7 +127,7 @@ export default function Section(props: HomeSectionProps) {
             >
               <div dangerouslySetInnerHTML={{ __html: props.markdown }} />
               <a
-                href="mailto:me@laniakita.com"
+                href='mailto:me@laniakita.com'
                 className={`flex w-full flex-row items-center justify-center rounded-md border border-ctp-sapphire bg-ctp-sapphire/20 px-4 py-4 font-mono text-sm font-bold text-balance text-ctp-sapphire no-underline hover:border-ctp-sapphire hover:bg-ctp-sky/40 hover:text-ctp-sky ${visible ? 'opacity-0 motion-safe:animate-fade-in-down-slow' : 'motion-safe:animate-fade-out-down-ultra-down'} @3xl:py-4 @4xl:text-base`}
                 style={{ animationDelay: '0.5s' }}
               >
