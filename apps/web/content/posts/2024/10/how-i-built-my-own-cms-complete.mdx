@@ -2072,6 +2072,12 @@ Okay, so I've talked a lot about generating data, but where does it all go? Well
 
 The below isn't that complicated (thankfully). You'll notice that I'm primarily integrating all the schemas/tables defined all the way at the beginning of this article, and leveraging drizzle's statement builder to insert the data we generated into the database.
 
+<details>
+
+<summary>
+  [INFO]: <code>bun-db-funcs.ts</code>
+</summary>
+
 ```typescript
 // bun-db-funcs.ts
 
@@ -2429,6 +2435,8 @@ export const insertPosts = async (data: Posts): Promise<void> => {
 };
 ```
 
+</details>
+
 One thing you'll probably notice, is that I'm assembling a temporary object within each insertion function (respective of the given table, e.g., `authors`), from what already exists in the database. By running this comparison, I'm ensuring that only new content is inserted into the database, or content that needs to be updated. As such, this drastically reduces the number of rows that need to be written.
 
 <details>
@@ -2558,6 +2566,12 @@ What good would a CMS be if you couldn't access any of the data you stored on to
 ### `node-db-funcs.ts`
 
 One thing to point out, is there's a switch over from `bun` to `node` functions, and that's because the production build of a Next.js application runs on `node`. While it is possible to run the Next.js development server from `bun`, the production run time environment is strictly node, _for good reason_: Next.js often relies on the latest Node.js APIs that Bun simply hasn't had time to implement, _yet_.
+
+<details>
+
+<summary>
+  [INFO]: <code>node-db-funcs.ts</code>
+</summary>
 
 ```typescript
 // node-db-funcs.ts
@@ -2833,6 +2847,8 @@ export const getPostsWithTagID = cache(async (tagIdStr: string) => {
 });
 ```
 
+</details>
+
 In this script, I'm primarily just using the Drizzle query builder to create functions to `select` data from the database, to be returned as assembled chunks (with types), for use around the website. The latter can be seen in the next section.
 
 As well, I'm also making use of the `cache` function, that Next.js integrates from React. In theory, this meant that each call to the database was memoized, so I'd reduce the number of row reads to the database. In practice, all these posts were statically generated, so there was ultimately no point to doing things like this, other than for science, I suppose—which is quite important!
@@ -3004,6 +3020,12 @@ As such, once I'd come across `contentlayer2`, I was smitten. It was doing every
 So, I dove in. I swallowed my pride, and I scrapped months of effort building my own CMS for something I can honestly say is better. However, because I did, maintenance on this site is now significantly less burdensome, and I'm far less worried about dependency updates breaking it.
 
 Though, I will say that the time and energy I spent creating my own solution wasn't all for naught. In fact, I still use the image processing functions I'd created earlier, inside of my `contentlayer` configuration. You can see how I've done this with the below code blocks. The first is my `contentlayer.config.ts` and the second is my recycled image processing functions (`image-process.ts`).
+
+<details>
+
+<summary>
+  [INFO]: <code>contentlayer.config.ts</code>
+</summary>
 
 ```typescript
 // contentlayer.config.ts
@@ -3253,6 +3275,14 @@ export default makeSource({
 });
 ```
 
+</details>
+
+<details>
+
+<summary>
+  [INFO]: <code>image-process.ts</code>
+</summary>
+
 ```typescript
 // image-process.ts
 
@@ -3498,6 +3528,8 @@ export const imageProcessor = async ({
   return { src: '', base64: '', height: 0, width: 0, resized: '', _debug: null };
 };
 ```
+
+</details>
 
 Granted, they're a little modified—there's an additional image down scaler too—but the base of it is there. Likewise, if I hadn't sunk all this energy into my own solution in the first place, I'd never have been able to truly appreciate all the work that goes into CMSes and projects like `contentlayer`, nor would I be able to know their limitations so closely either.
 

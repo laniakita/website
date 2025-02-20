@@ -120,7 +120,7 @@ export default function Navbar() {
   const logo = dark ? darklogo : lightlogo;
 
   return (
-    <div className='@container/nav sticky top-0 z-50'>
+    <div className={`@container/nav sticky top-0 z-50 ${inView ? '' : 'pointer-events-none'}`}>
       <nav
         id={NAV_MAIN_ID}
         ref={navBarRef}

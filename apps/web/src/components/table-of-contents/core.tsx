@@ -43,7 +43,7 @@ export default function ToCMenuCore(props: ToCMenuCoreProps) {
   return (
     <nav
       id={IPAD_TOC_ID}
-      className={`${tocInView ? 'min-w-80 md:w-80 lg:w-96 lg:min-w-96' : 'w-0 min-w-0'} sticky top-0 hidden max-h-dvh overflow-x-hidden overflow-y-auto bg-ctp-crust text-slate-100 shadow-xl motion-safe:[transition:width_0.8s,min-width_0.8s,background-color_0.5s] md:block dark:bg-ctp-base/20`}
+      className={`${tocInView ? 'min-w-80 md:w-80 lg:w-96 lg:min-w-96' : 'w-0 min-w-0'} sticky top-0 hidden max-h-dvh overflow-x-hidden overflow-y-auto border-r border-ctp-mauve/50 bg-ctp-crust text-slate-100 shadow-xl motion-safe:[transition:width_0.8s,min-width_0.8s,background-color_0.5s] md:block dark:bg-ctp-base/20`}
     >
       <div className='sticky top-0 z-10 flex min-h-16 w-full flex-row items-center justify-start text-ctp-text'>
         <div id='nav-mask-bg' className='nav-glassy-bg' />
