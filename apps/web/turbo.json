@@ -6,10 +6,10 @@
       "outputs": [".contentlayer", ".contentlayerhtml", ".contentlayermini", ".versionvault", "public/assets/images/**"]
     },
     "test": {
-      "dependsOn": ["prebuild"]
+      "dependsOn": []
     },
     "build": {
-      "dependsOn": ["test"],
+      "dependsOn": ["test", "^build"],
       "outputs": [".next/**", "public/dist/**", "public/sw.js"],
       "inputs": [
         "$TURBO_DEFAULT$",
@@ -33,6 +33,9 @@
       "env": ["OPEN_NEXT_VERSION", "NEXT_PUBLIC_DEPLOYED_URL"],
       "outputs": [".open-next/**"],
       "inputs": ["$TURBO_DEFAULT$", ".open-next.config.ts"]
+    },
+    "deploy:production": {
+      "dependsOn": ["build:open-next"]
     },
     "copy-sharp": {
       "inputs": [
