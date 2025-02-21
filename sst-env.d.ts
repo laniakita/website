@@ -5,6 +5,26 @@
 
 declare module "sst" {
   export interface Resource {
+    "BudgetAlertSNS": {
+      "arn": string
+      "type": "sst.aws.SnsTopic"
+    }
+    "KillSwitch": {
+      "name": string
+      "type": "sst.aws.Function"
+    }
+    "MonitorCloudFrontMetrics": {
+      "name": string
+      "type": "sst.aws.Function"
+    }
+    "Showcase": {
+      "type": "sst.aws.Nextjs"
+      "url": string
+    }
+    "Web": {
+      "type": "sst.aws.Nextjs"
+      "url": string
+    }
   }
 }
 /// <reference path="sst-env.d.ts" />
