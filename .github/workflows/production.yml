@@ -56,5 +56,5 @@ jobs:
 
       # ROTFB
       - name: Deploy
-        run: bun sst deploy --stage=production --verbose
+        run: bun sst deploy --stage production --verbose
         timeout-minutes: 30
