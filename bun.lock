@@ -6,7 +6,7 @@
       "devDependencies": {
         "prettier": "^3.4.2",
         "sharp": "^0.33.5",
-        "sst": "^3.9.10",
+        "sst": "^3.6.27",
         "syncpack": "^13.0.0",
         "turbo": "^2.4.3-canary.3",
       },
@@ -176,7 +176,7 @@
         "@aws-sdk/client-cloudfront": "^3.738.0",
         "@aws-sdk/client-cloudwatch": "^3.738.0",
         "@aws-sdk/client-sns": "^3.738.0",
-        "sst": "^3.9.10",
+        "sst": "^3.6.27",
       },
       "devDependencies": {
         "@types/aws-lambda": "^8.10.147",
