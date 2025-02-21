@@ -1,0 +1,19 @@
+{
+  "name": "@website/ui",
+  "version": "0.0.0",
+  "private": true,
+  "author": "Lani Akita <me@laniakita.com> (https://laniakita.com)",
+  "type": "module",
+  "license": "GPL-3.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "peerDependencies": {
+    "@types/bun": "latest",
+    "@types/react": ">=19",
+    "@types/react-dom": ">=19",
+    "bun-plugin-dts": "^0.3.0",
+    "react": ">=19",
+    "react-dom": ">=19"
+  }
+}

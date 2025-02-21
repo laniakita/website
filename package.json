@@ -1,6 +1,7 @@
 {
   "name": "website",
   "private": true,
+  "license": "GPL-3.0",
   "engines": {
     "node": ">=20.17.0"
   },
