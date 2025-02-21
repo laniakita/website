@@ -18,7 +18,7 @@ export default function Hero() {
         <NoiseShader01 />
       </div>
       <div className='relative inset-x-0 z-20 flex w-full border-t border-b border-ctp-base bg-ctp-base/80 px-6 backdrop-blur-md color-trans-quick dark:border-ctp-text dark:bg-ctp-midnight/80'>
-        <div className='m-auto flex w-fit flex-col gap-y-2 py-10 @3xl:w-full @3xl:max-w-5xl @3xl:flex-row @3xl:gap-x-10 @3xl:gap-y-0'>
+        <div className='m-auto flex w-fit flex-col gap-y-4 py-10 @3xl:w-full @3xl:max-w-5xl @3xl:flex-row @3xl:gap-x-10 @3xl:gap-y-0'>
           <div className='mx-auto @3xl:mx-0 @3xl:min-w-fit'>
             <h1 className='overflow-hidden text-4xl font-black text-ctp-text uppercase opacity-0 motion-safe:animate-fade-in-up-slow @3xl:text-5xl'>
               Lani Akita

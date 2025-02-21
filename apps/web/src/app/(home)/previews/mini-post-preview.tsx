@@ -27,7 +27,7 @@ export default function MiniPostPreview(props: MiniPostPreviewProps) {
             height={res.height}
             width={res.width}
             sizes='(max-width: 300px) 70vw, (max-width: 600px) 45vw, (max-width:1500px) 27vw'
-            className='h-96 object-cover'
+            className='h-64 object-cover @3xl:h-96'
           />
         </Link>
       ) : (
