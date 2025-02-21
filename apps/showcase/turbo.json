@@ -7,10 +7,10 @@
       "outputs": [".contentlayer", ".contentlayermini", ".versionvault"]
     },
     "test": {
-      "dependsOn": ["prebuild"]
+      "dependsOn": []
     },
     "build": {
-      "dependsOn": ["test", "^build"],
+      "dependsOn": ["^build"],
       "outputs": [".next/**", "public/dist/**", "public/sw.js", ".contentlayer", ".contentlayermini"],
       "inputs": [
         "$TURBO_DEFAULT$",

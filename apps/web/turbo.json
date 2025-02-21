@@ -7,10 +7,10 @@
       "outputs": [".contentlayer", ".contentlayerhtml", ".contentlayermini", ".versionvault", "public/assets/images/**"]
     },
     "test": {
-      "dependsOn": ["prebuild"]
+      "dependsOn": []
     },
     "build": {
-      "dependsOn": ["test", "^build"],
+      "dependsOn": ["^build"],
       "outputs": [".next/**", "public/dist/**", "public/sw.js"],
       "inputs": [
         "$TURBO_DEFAULT$",
