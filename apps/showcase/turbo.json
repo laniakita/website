@@ -2,11 +2,12 @@
   "extends": ["//"],
   "tasks": {
     "prebuild": {
+      "dependsOn": [],
       "inputs": ["$TURBO_DEFAULT$", "content/**"],
       "outputs": [".contentlayer", ".contentlayermini", ".versionvault"]
     },
     "test": {
-      "dependsOn": []
+      "dependsOn": ["prebuild"]
     },
     "build": {
       "dependsOn": ["test", "^build"],
