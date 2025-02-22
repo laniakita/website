@@ -16,7 +16,9 @@
     "lint": "turbo run lint",
     "test": "turbo run test",
     "test:watch": "turbo run test:watch",
-    "sso": "aws sso login --sso-session=lani"
+    "sso": "aws sso login --sso-session=lani",
+    "deploy": "turbo run deploy",
+    "deploy:dev": "turbo run deploy && sst deploy --stage=dev --verbose"
   },
   "devDependencies": {
     "prettier": "^3.4.2",

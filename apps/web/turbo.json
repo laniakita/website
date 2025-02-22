@@ -7,11 +7,10 @@
       "outputs": [".contentlayer", ".contentlayerhtml", ".contentlayermini", ".versionvault", "public/assets/images/**"]
     },
     "test": {
-      "dependsOn": []
+      "dependsOn": ["build"]
     },
     "build": {
-      "dependsOn": ["^build"],
-      "outputs": [".next/**", "public/dist/**", "public/sw.js"],
+      "outputs": [".next/**", "public/dist/**", "public/sw.js", ".contentlayer", ".contentlayerhtml", ".contentlayermini", ".versionvault", "public/assets/images/**"],
       "inputs": [
         "$TURBO_DEFAULT$",
         ".env",
@@ -24,10 +23,10 @@
       ]
     },
     "analyze": {
+      "dependsOn": ["build"],
       "env": ["ANALYZE"],
       "outputs": [],
-      "inputs": ["$TURBO_DEFAULT$"],
-      "dependsOn": ["build"]
+      "inputs": ["$TURBO_DEFAULT$"]
     },
     "build:open-next": {
       "dependsOn": ["build"],
@@ -35,7 +34,7 @@
       "outputs": [".open-next/**"],
       "inputs": ["$TURBO_DEFAULT$", ".open-next.config.ts"]
     },
-    "deploy:production": {
+    "deploy": {
       "dependsOn": ["build:open-next"]
     },
     "copy-sharp": {

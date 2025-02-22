@@ -7,11 +7,10 @@
       "outputs": [".contentlayer", ".contentlayermini", ".versionvault"]
     },
     "test": {
-      "dependsOn": []
+      "dependsOn": ["build"]
     },
     "build": {
-      "dependsOn": ["^build"],
-      "outputs": [".next/**", "public/dist/**", "public/sw.js", ".contentlayer", ".contentlayermini"],
+      "outputs": [".next/**", "public/dist/**", "public/sw.js", ".contentlayer", ".contentlayermini", ".versionvault"],
       "inputs": [
         "$TURBO_DEFAULT$",
         ".env",
@@ -23,16 +22,19 @@
       ]
     },
     "analyze": {
+      "dependsOn": ["build"],
       "env": ["ANALYZE"],
       "outputs": [],
-      "inputs": ["$TURBO_DEFAULT$"],
-      "dependsOn": ["build"]
+      "inputs": ["$TURBO_DEFAULT$"]
     },
     "build:open-next": {
       "dependsOn": ["build"],
       "env": ["OPEN_NEXT_VERSION", "NEXT_PUBLIC_DEPLOYED_URL"],
       "outputs": [".open-next/**"],
       "inputs": ["$TURBO_DEFAULT$", ".open-next.config.ts"]
+    },
+    "deploy": {
+      "dependsOn": ["build:open-next"]
     },
     "copy-sharp": {
       "inputs": [

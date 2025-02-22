@@ -1,6 +1,6 @@
 export const showcase = new sst.aws.Nextjs("Showcase", {
   path: "apps/showcase",
-  buildCommand: "bun run build:open-next",
+  buildCommand: "exit 0;",
   server: {
     runtime: "nodejs22.x"
   },
