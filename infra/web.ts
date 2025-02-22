@@ -1,6 +1,6 @@
 export const web = new sst.aws.Nextjs("Web", {
   path: "apps/web",
-  buildCommand: "bun turbo build:open-next;",
+  buildCommand: "bun run build:open-next",
   server: {
     runtime: "nodejs22.x"
   },
