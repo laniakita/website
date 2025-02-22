@@ -13,12 +13,11 @@ env:
 jobs:
   SST-Deploy-Dev:
     if: ${{ github.ref == 'refs/heads/main' }}
-    needs: validation
     environment: dev
     runs-on: ubuntu-latest
     steps:
       # info
-      - run: echo "Deploying build ${{ needs.validation.outputs.build_id }} on branch ${{ github.ref_name }} to dev"
+      - run: echo "Deploying build from branch ${{ github.ref_name }} to dev"
       - run: echo "Build triggered by ${{ github.event_name }}"
       - run: echo "Building on ${{ runner.os }}"
 
@@ -47,7 +46,7 @@ jobs:
       # Setup Bun
       - name: Setup bun 
         uses: oven-sh/setup-bun@v2
-      
+        
       - run: bun install
 
       # ROTFB
