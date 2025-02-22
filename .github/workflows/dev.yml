@@ -11,40 +11,6 @@ env:
   CLOUDFLARE_DEFAULT_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_DEFAULT_ACCOUNT_ID }}
   CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 jobs:
-  validation:
-    if: ${{ github.ref == 'refs/heads/main' }}
-    runs-on: ubuntu-latest
-    outputs:
-      build_id: ${{ steps.build_step.outputs.build_id }}
-    steps:
-      - run: echo "Attempting to Validate..."
-      - name: Build
-        id: build_step
-        run: echo "build_id=$RANDOM" >> $GITHUB_OUTPUT
-  
-      # fetch repo
-      - name: Check out code
-        uses: actions/checkout@v2
-      - run: echo "Checked out ${{ github.repository }}"
-      
-      # nodejs
-      - name: nodejs
-        uses: actions/setup-node@v4
-        with: 
-          node-version: '22.14.0'
-
-      # install bun
-      - run: npm install --global bun
-
-      # install packages
-      - name: install packages
-        run: bun install
-
-      # Turbo Build
-      - name: Build
-        run: bun turbo build:open-next
-        timeout-minutes: 30
-
   SST-Deploy-Dev:
     if: ${{ github.ref == 'refs/heads/main' }}
     needs: validation
@@ -59,6 +25,8 @@ jobs:
       # fetch repo
       - name: Check out code
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
       - run: echo "Checked out ${{ github.repository }}"
 
       # aws
@@ -76,69 +44,14 @@ jobs:
           aws configure set aws_secret_access_key ${{ env.AWS_SECRET_ACCESS_KEY }} --profile lani-dev
           aws configure set aws_session_token ${{ env.AWS_SESSION_TOKEN }} --profile lani-dev
 
-      # nodejs
-      - name: nodejs
-        uses: actions/setup-node@v4
-        with: 
-          node-version: '22.14.0'
-
-      # install bun
-      - run: npm install --global bun
-
-      # install packages
-      - name: install packages
-        run: bun install
+      # Setup Bun
+      - name: Setup bun 
+        uses: oven-sh/setup-bun@v2
+      
+      - run: bun install
 
       # ROTFB
       - name: Deploy
         run: bun sst deploy --stage dev --verbose
         timeout-minutes: 30
-    
-  Handle-Failed-Deploy:
-    if: ${{ failure() }}
-    needs: SST-Deploy-Dev
-    environment: dev
-    runs-on: ubuntu-latest
-    steps:
-      # info
-      - run: echo "Build failed to deploy to dev! ...cleaning up"
 
-      # fetch repo
-      - name: Check out code
-        uses: actions/checkout@v2
-      - run: echo "Checked out ${{ github.repository }}"
-
-      # aws
-      - name: Configure AWS
-        uses: aws-actions/configure-aws-credentials@v4
-        with: 
-          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
-          aws-region: ${{ secrets.AWS_REGION }}
-          mask-aws-account-id: true
-    
-      - name: Add AWS profile to ~/.aws/credentials
-        run: |
-          aws configure set region ${{ secrets.AWS_REGION }} --profile lani-dev
-          aws configure set aws_access_key_id ${{ env.AWS_ACCESS_KEY_ID }} --profile lani-dev
-          aws configure set aws_secret_access_key ${{ env.AWS_SECRET_ACCESS_KEY }} --profile lani-dev
-          aws configure set aws_session_token ${{ env.AWS_SESSION_TOKEN }} --profile lani-dev
-
-      # nodejs
-      - name: nodejs
-        uses: actions/setup-node@v4
-        with: 
-          node-version: '22.14.0'
-
-      # install bun
-      - run: npm install --global bun
-
-      # install packages
-      - name: install packages
-        run: bun install
-
-      # ROTFB
-      - name: Deploy
-        run: |
-          bun sst unlock --stage dev
-          bun sst state repair --stage dev 
-        timeout-minutes: 30
