@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # info
-      - run: echo "Deploying to production on branch $GITHUB_REF"
+      - run: echo "Deploying to production on branch ${{ github.ref_name }}"
       - run: echo "Build triggered by ${{ github.event_name }}"
       - run: echo "Building on ${{ runner.os }}"
 
