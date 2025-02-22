@@ -9,6 +9,7 @@
     "@react-three/drei": "10.0.0-rc.1",
     "@react-three/fiber": "9.0.0-rc.5",
     "@vercel/functions": "^2.0.0",
+    "arctic": "^3.3.0",
     "date-fns": "4.1.0",
     "jsdom": "^26.0.0",
     "lenis": "^1.1.20",
@@ -22,6 +23,7 @@
     "server-only": "^0.0.1",
     "three": "^0.173.0",
     "three-stdlib": "^2.35.13",
+    "valibot": "^1.0.0-rc.1",
     "zustand": "5.0.3"
   },
   "devDependencies": {

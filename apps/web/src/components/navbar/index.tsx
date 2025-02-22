@@ -5,7 +5,7 @@ import Link from 'next/link';
 import * as darklogo from '@/app/laniakita-logo-transparent-darkmode.svg';
 import * as lightlogo from '@/app/laniakita-logo-transparent-lightmode.svg';
 import { useDarkStore } from '@/providers/theme-store-provider';
-import { RESUME_LINK } from '@/lib/constants';
+import { APP_URL, RESUME_LINK } from '@/lib/constants';
 import DarkModeSwitch from '@/components/navbar/dark-mode-switch';
 import LinkPlus from '@/components/navbar/link-plus';
 import {
@@ -32,6 +32,13 @@ export default function Navbar() {
   const { tocInView, setToCInView, setToCNotInView } = useToCViewStore((state) => state);
   const [isPost, setIsPost] = useState(false);
   const [tocLastSeen, setToCLastSeen] = useState(0);
+  const [warnDev, setWarnDev] = useState(false);
+
+  useEffect(() => {
+    if (APP_URL.includes('https://dev.') || APP_URL.includes('localhost')) {
+      setWarnDev(true)
+    }
+  }, [])
 
   const handleNavOffClick = useCallback((e: MouseEvent) => {
     //console.log(e.target.nodeName);
@@ -121,14 +128,17 @@ export default function Navbar() {
 
   return (
     <div className={`@container/nav sticky top-0 z-50 ${inView ? '' : 'pointer-events-none'}`}>
+     
       <nav
         id={NAV_MAIN_ID}
         ref={navBarRef}
-        className={`sticky top-0 z-50 flex h-16 flex-row items-center justify-between px-6 ${inView ? 'translate-y-0' : '-translate-y-full'} bg-ctp-base/80 duration-300 motion-safe:transition-transform dark:bg-ctp-midnight/50`}
+        className={`sticky top-0 ${warnDev ? 'top-8' : 'top-0'} z-50 flex h-16 flex-row items-center justify-between px-6 ${inView ? 'translate-y-0' : '-translate-y-full'} bg-ctp-base/80 duration-300 motion-safe:transition-transform dark:bg-ctp-midnight/50`}
       >
         <div id='nav-mask-bg' className='nav-glassy-bg' />
         <div id='nav-mask-edge' className='nav-glassy-edge' />
 
+        {warnDev ? (<p className='z-51 absolute text-center top-0 text-xs inset-x-0 font-semibold'>[WARN]: This is a dev preview (<a href="https://laniakita.com">{`go to main site =>`}</a>)</p>) : ''}
+        
         <ul className='z-[51] flex flex-row items-center gap-[1.5ch]'>
           {isPost && (
             <li

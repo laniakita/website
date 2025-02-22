@@ -3,7 +3,7 @@
   "private": true,
   "license": "GPL-3.0",
   "engines": {
-    "node": ">=20.17.0"
+    "node": ">=22"
   },
   "packageManager": "bun@1.2.2",
   "workspaces": [

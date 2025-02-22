@@ -8,6 +8,7 @@
 .vscode
 tmp.txt
 .tmp_dir/
+.tmp/
 
 # debug
 *.log
