@@ -36,9 +36,9 @@ export default function Navbar() {
 
   useEffect(() => {
     if (APP_URL.includes('https://dev.') || APP_URL.includes('localhost')) {
-      setWarnDev(true)
+      setWarnDev(true);
     }
-  }, [])
+  }, []);
 
   const handleNavOffClick = useCallback((e: MouseEvent) => {
     //console.log(e.target.nodeName);
@@ -128,7 +128,6 @@ export default function Navbar() {
 
   return (
     <div className={`@container/nav sticky top-0 z-50 ${inView ? '' : 'pointer-events-none'}`}>
-     
       <nav
         id={NAV_MAIN_ID}
         ref={navBarRef}
@@ -137,8 +136,14 @@ export default function Navbar() {
         <div id='nav-mask-bg' className='nav-glassy-bg' />
         <div id='nav-mask-edge' className='nav-glassy-edge' />
 
-        {warnDev ? (<p className='z-51 absolute text-center top-0 text-xs inset-x-0 font-semibold'>[WARN]: This is a dev preview (<a href="https://laniakita.com">{`go to main site =>`}</a>)</p>) : ''}
-        
+        {warnDev ? (
+          <p className='absolute inset-x-0 top-0 z-51 text-center text-xs font-semibold'>
+            [WARN]: This is a dev preview (<a href='https://laniakita.com'>{`go to main site =>`}</a>)
+          </p>
+        ) : (
+          ''
+        )}
+
         <ul className='z-[51] flex flex-row items-center gap-[1.5ch]'>
           {isPost && (
             <li

@@ -13,7 +13,6 @@ import {
   APP_THEME_COLOR,
 } from '@/lib/constants';
 import ZustandWrappersCore from '@/components/wrappers/main';
-import LoginGate from '@/components/auth/login-gate';
 
 const inter_tight = Inter_Tight({
   subsets: ['latin'],

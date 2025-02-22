@@ -6,11 +6,11 @@ export default function robots(): MetadataRoute.Robots {
     return {
       rules: {
         userAgent: '*',
-        disallow: ['/']
-      }, 
+        disallow: ['/'],
+      },
       sitemap: `${APP_URL}/sitemap.xml`,
     };
-  };
+  }
 
   return {
     rules: {
@@ -27,7 +27,7 @@ export default function robots(): MetadataRoute.Robots {
         // WP crawlers
         '/*/cgi-bin/',
         '/*/wp-admin/',
-        '/*/xmlrpc.php'
+        '/*/xmlrpc.php',
       ],
     },
     sitemap: `${APP_URL}/sitemap.xml`,

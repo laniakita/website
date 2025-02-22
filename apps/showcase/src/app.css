@@ -97,10 +97,12 @@
   --breakpoint-beeg-phablet: 430px;
   --breakpoint-fold: 500px;
   --breakpoint-not-tablet: 600px;
-  --font-sans: var(--font-inter-tight), ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+  --font-sans:
+    var(--font-inter-tight), ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
     'Segoe UI Symbol', 'Noto Color Emoji';
-  --font-mono: var(--font-zeroxproto), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
-    'Courier New', monospace;
+  --font-mono:
+    var(--font-zeroxproto), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+    monospace;
   --animate-fade-in: fade-in 0.8s ease forwards;
   --animate-fade-in-up: fade-in-up 0.2s ease 1s forwards;
   --animate-fade-in-up-2: fade-in-up 0.5s ease forwards;
