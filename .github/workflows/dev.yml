@@ -51,6 +51,5 @@ jobs:
 
       # ROTFB
       - name: Deploy
-        run: bun run 
+        run: bun run deploy:dev
         timeout-minutes: 30
-

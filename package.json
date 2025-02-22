@@ -18,7 +18,8 @@
     "test:watch": "turbo run test:watch",
     "sso": "aws sso login --sso-session=lani",
     "deploy": "turbo run deploy",
-    "deploy:dev": "turbo run deploy && sst deploy --stage=dev --verbose"
+    "deploy:dev": "turbo run deploy && sst deploy --stage=dev --verbose",
+    "deploy:production": "turbo run deploy && sst deploy --stage=production --verbose"
   },
   "devDependencies": {
     "prettier": "^3.4.2",
