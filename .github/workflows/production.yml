@@ -11,13 +11,48 @@ env:
   CLOUDFLARE_DEFAULT_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_DEFAULT_ACCOUNT_ID }}
   CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 jobs:
+  validation:
+    if: ${{ github.ref == 'refs/heads/production' }}
+    runs-on: ubuntu-latest
+    outputs:
+      build_id: ${{ steps.build_step.outputs.build_id }}
+    steps:
+      - run: echo "Attempting to Validate..."
+      - name: Build
+        id: build_step
+        run: echo "build_id=$RANDOM" >> $GITHUB_OUTPUT
+  
+      # fetch repo
+      - name: Check out code
+        uses: actions/checkout@v2
+      - run: echo "Checked out ${{ github.repository }}"
+      
+      # nodejs
+      - name: nodejs
+        uses: actions/setup-node@v4
+        with: 
+          node-version: '22.14.0'
+
+      # install bun
+      - run: npm install --global bun
+
+      # install packages
+      - name: install packages
+        run: bun install
+
+      # Turbo Build
+      - name: Build
+        run: bun turbo build:open-next
+        timeout-minutes: 30
+
   SST-Deploy-Production:
     if: ${{ github.ref == 'refs/heads/production' }}
+    needs: validation
     environment: production
     runs-on: ubuntu-latest
     steps:
       # info
-      - run: echo "Deploying to production on branch ${{ github.ref_name }}"
+      - run: echo "Deploying build ${{ needs.validation.outputs.build_id }} on branch ${{ github.ref_name }} to dev"
       - run: echo "Build triggered by ${{ github.event_name }}"
       - run: echo "Building on ${{ runner.os }}"
 
