@@ -23,7 +23,7 @@
     "sharp": "^0.33.5",
     "sst": "^3.9.10",
     "syncpack": "^13.0.0",
-    "turbo": "^2.4.3-canary.3"
+    "turbo": "2.3.4"
   },
   "trustedDependencies": [
     "contentlayer2",
