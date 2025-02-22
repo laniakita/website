@@ -58,7 +58,7 @@
     "copy-sharp": "bun run copy-sharp.ts",
     "build:open-next": "bun run open-next build",
     "dev": "next dev -p 3100",
-    "prebuild": "NODE_ENV=production contentlayer2 build && bun run ./src/scripts/runner.ts && bun test",
+    "prebuild": "NODE_ENV=production contentlayer2 build && bun run ./src/scripts/runner.ts",
     "pretty": "prettier . --write",
     "start": "next start -p 3100",
     "test": "bun test",
