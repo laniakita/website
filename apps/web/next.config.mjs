@@ -127,6 +127,7 @@ const nextConfigFunction = async ({ defaultConfig }) => {
     swSrc: 'src/app/sw.ts',
     swDest: 'public/sw.js',
     maximumFileSizeToCacheInBytes: 7864000,
+    disable: process.env.NODE_ENV !== 'production',
   });
   plugins.push(withSerwist);
 

@@ -10,7 +10,16 @@
       "dependsOn": ["build"]
     },
     "build": {
-      "outputs": [".next/**", "public/dist/**", "public/sw.js", ".contentlayer", ".contentlayerhtml", ".contentlayermini", ".versionvault", "public/assets/images/**"],
+      "outputs": [
+        ".next/**",
+        "public/dist/**",
+        "public/sw.js",
+        ".contentlayer",
+        ".contentlayerhtml",
+        ".contentlayermini",
+        ".versionvault",
+        "public/assets/images/**"
+      ],
       "inputs": [
         "$TURBO_DEFAULT$",
         ".env",
