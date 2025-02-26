@@ -16,5 +16,7 @@ drizzle/meta/*
 .wrangler/*
 .contentlayermini/*
 .contentlayerplushtml/*
+.content-collections/*
+.content-collection-plus-html/*
 sst-env.d.ts
 .turbo/*
