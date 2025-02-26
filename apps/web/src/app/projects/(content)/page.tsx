@@ -7,7 +7,7 @@ import GlobalMDXComponent from '@/components/mdx/global-mdx-components';
 import ProjectPreview from './project-preview';
 
 const pageData = allPages.find((page) => page.url === '/projects');
-const description = descriptionHelper(pageData?.body.raw, pageData?.url, true);
+const description = descriptionHelper(pageData?.content, pageData?.url, true);
 
 export const metadata: Metadata = {
   title: pageData?.title,

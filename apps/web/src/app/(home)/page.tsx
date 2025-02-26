@@ -1,6 +1,6 @@
 import { resMdxMinimal } from '@/lib/mdx-utils';
 import { pageData } from './data';
-import { MiniMDXComponent } from '@/components/mdx/mini-mdx-component';
+import { MiniMDXComponent } from './mini-mdx-component';
 import Navbar from '@/components/navbar';
 import Footer from '@/components/footer/footer';
 import { ReactLenisScroller } from '@/components/virtual-scroller/react-lenis';

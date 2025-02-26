@@ -2,7 +2,7 @@
 import dynamic from 'next/dynamic';
 
 const LocalDate = dynamic(() =>
-  import('../../local-date').then((mod) => ({
+  import('../local-date').then((mod) => ({
     default: mod.default,
     ssr: false,
     loading: () => <span>Month, Xst, 2KZZ</span>,

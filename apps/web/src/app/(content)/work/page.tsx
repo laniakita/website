@@ -8,7 +8,7 @@ import GlobalMDXComponent from '@/components/mdx/global-mdx-components';
 import { WorkPreview } from './work-preview';
 
 const pageData = allPages.find((page) => page.url === '/work');
-const description = descriptionHelper(pageData?.body.raw, pageData?.url, true);
+const description = descriptionHelper(pageData?.content, pageData?.url, true);
 
 export const metadata: Metadata = {
   title: pageData?.title,

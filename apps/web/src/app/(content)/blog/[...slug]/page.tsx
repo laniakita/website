@@ -9,32 +9,24 @@ import { APP_URL } from '@/lib/constants';
 import { PostHeader2 } from './post-header-2';
 import CommentsComponent from './comments/core';
 import { MDXContent } from '@content-collections/mdx/react';
-import { CatTag } from '../../cat-tag-roller';
+import { CatTag } from '../cat-tag-roller';
 import { globalMdxComponents } from '@/components/mdx/global-mdx-components';
-//import { MDXComponent } from './mdx-comp';
 
-/*
 export function generateStaticParams() {
   const posts = allPosts.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
   return posts.map((meta) => ({
-    id: meta.id.split('-').shift(),
-    slug: meta.url.split('/').pop(),
+    slug: [meta.url.split('/').pop()],
   }));
-}*/
-
+}
 
 export async function generateMetadata(
-  props: { params: Promise<{ id: string; slug: string }> },
+  props: { params: Promise<{ slug: string[] }> },
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  const params = await props.params;
 
-  const postData = allPosts.find(
-    (postX) =>
-      (postX.id.split('-').shift() === params.id && postX.url.split('/').pop() === params.slug) ||
-      postX.id.split('-').shift() === params.id ||
-      postX.url.split('/').pop() === params.slug,
-  );
+  const {slug} = await props.params;
+  
+  const postData = allPosts.find((postX) => slug.some((sl) => postX.url.split('/').pop() === sl));
 
   const description = descriptionHelper(postData?.content, postData?.url, true);
   const previousImages = (await parent).openGraph?.images ?? [];
@@ -65,7 +57,7 @@ export async function generateMetadata(
           type: 'image/png',
           width: 1200,
           height: 630,
-          url: `/opengraph/blog/${params.id}/${params.slug}`,
+          url: `/opengraph${postData?.url}`,
         },
         ...previousImages,
       ],
@@ -80,7 +72,7 @@ export async function generateMetadata(
           type: 'image/png',
           width: 1600,
           height: 900,
-          url: `/opengraph/blog/${params.id}/${params.slug}?twitter=true`,
+          url: `/opengraph${postData?.url}?twitter=true`,
         },
         ...previousImagesTwitter,
       ],
@@ -88,33 +80,23 @@ export async function generateMetadata(
   };
 }
 
+export default async function BlogPostPage({ params }: { params: Promise<{ slug: string[] }> }) {
+  const { slug } = await params;
 
-
-export default async function BlogPostPage(props: { params: Promise<{ id: string; slug: string }> }) {
-  const params = await props.params;
-
-  const post = allPosts.find(
-    (postX) =>
-      (postX.id.split('-').shift() === params.id && postX.url.split('/').pop() === params.slug) ||
-      postX.id.split('-').shift() === params.id ||
-      postX.url.split('/').pop() === params.slug,
-  );
-
-  if (post) {
-    if (post.id.split('-').shift() !== params.id) {
-      redirect(`/blog/${post.id.split('-').shift()}/${params.slug}`);
-    } else if (post.url.split('/').pop() !== params.slug) {
-      redirect(`/blog/${params.id}/${post.url.split('/').pop()}`);
-    }
-  }
+  const post = allPosts.find((postX) => slug.some((sl) => postX.url.split('/').pop() === sl));
 
   if (!post) {
     return notFound();
   }
 
+  if (post && slug.length > 1) {
+    redirect(post.url)
+  }
 
-  const catTagArr = ([ ...post.categories ?? '', ...post.tags ?? ''] as CatTag[]).map((catTag) => {return catTag.title}) as string[];
-  
+  const catTagArr = ([...(post.categories ?? ''), ...(post.tags ?? '')] as CatTag[]).map((catTag) => {
+    return catTag.title;
+  }) as string[];
+
   const jsonLd: WithContext<BlogPosting> = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
@@ -137,10 +119,10 @@ export default async function BlogPostPage(props: { params: Promise<{ id: string
         description: `${(post.featured_image as FeaturedImageR1).altText}`,
       },
     ],
-    thumbnailUrl: `${APP_URL}/opengraph/blog/${params.id}/${params.slug}?twitter=true`,
+    thumbnailUrl: `${APP_URL}/opengraph${post.url}?twitter=true`,
     keywords: post.keywords ?? catTagArr,
     countryOfOrigin: 'United States',
-  }; 
+  };
 
   return (
     <>

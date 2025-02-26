@@ -5,9 +5,7 @@ import ToCMenuCore, { ToCMenuMobileCore } from '@/components/table-of-contents/c
 import { allPosts } from 'content-collections';
 import jsxToHtml from './utils';
 import { JSDOM } from 'jsdom';
-//import { postBundle } from './postRes';
 
-type Params = Promise<{ id: string; slug: string }>;
 
 interface HeadingNode {
   id: string;
@@ -21,16 +19,10 @@ type FlatHeadingNode = {
   title: string;
 };
 
-export default async function PostPageLayout({ children, params }: { children: ReactNode; params: Params }) {
-  const { id, slug } = await params;
-  const post = allPosts.find(
-    (postX) =>
-      (postX.id.split('-').shift() === id && postX.url.split('/').pop() === slug) ||
-      postX.id.split('-').shift() === id ||
-      postX.url.split('/').pop() === slug,
-  );
+export default async function PostPageLayout({ children, params }: { children: ReactNode; params: Promise<{ slug: string[] }> }) {
+  const { slug } = await params;
 
-  //const postData = await postBundle(post as Post);
+  const post = allPosts.find((postX) => slug.some((sl) => postX.url.split('/').pop() === sl));
 
   const postHtml = await jsxToHtml(post!.mdx);
   const doc = new JSDOM(`<!DOCTYPE html>${postHtml}</html>`);
@@ -85,7 +77,7 @@ export default async function PostPageLayout({ children, params }: { children: R
 
   const nestedHeadings = getNestedHeadings(Array.from(headings), 2);
   const flatHeadings = getFlatHeadings(headings);
-
+  
   return (
     <div className='flex size-full flex-col md:relative md:flex-row'>
       <ToCMenuCore flatHeadings={JSON.stringify(flatHeadings)} nestedHeadings={JSON.stringify(nestedHeadings)} />

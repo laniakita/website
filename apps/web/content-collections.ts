@@ -13,6 +13,7 @@ import rehypeHighlightLines from 'rehype-highlight-code-lines';
 import nix from 'highlight.js/lib/languages/nix';
 import { common } from 'lowlight';
 import path from 'node:path';
+import { compileMDX } from "@content-collections/mdx";
 
 const exec = util.promisify(exec_process);
 
@@ -33,6 +34,7 @@ const categories = defineCollection({
   }),
   transform: async (document, context) => {
     const urlRes = `/categories/${document._meta.path}`;
+    const mdx = await compileMDX(context, document)
 
     const lastModified = await context.cache(document._meta.filePath, async (filePath) => {
       const { stdout } = await exec(`git log -1 --format=%ai -- ${filePath}`);
@@ -44,6 +46,7 @@ const categories = defineCollection({
 
     return {
       ...document,
+      mdx,
       url: urlRes,
       lastModified,
     };
@@ -64,6 +67,7 @@ const tags = defineCollection({
   }),
   transform: async (document, context) => {
     const urlRes = `/tags/${document._meta.path}`;
+    const mdx = await compileMDX(context, document)
 
     const lastModified = await context.cache(document._meta.filePath, async (filePath) => {
       const { stdout } = await exec(`git log -1 --format=%ai -- ${filePath}`);
@@ -75,6 +79,7 @@ const tags = defineCollection({
 
     return {
       ...document,
+      mdx,
       url: urlRes,
       lastModified,
     };
@@ -94,6 +99,7 @@ const authors = defineCollection({
   }),
   transform: async (document, context) => {
     const slug = slugify(document.name);
+    const mdx = await compileMDX(context, document)
 
     const urlRes = `/${document._meta.path}`;
 
@@ -107,6 +113,7 @@ const authors = defineCollection({
 
     return {
       ...document,
+      mdx,
       slug,
       url: urlRes,
       lastModified,
@@ -138,8 +145,6 @@ const posts = defineCollection({
     const mdx = await bundleMDX({
       file: path.join(process.cwd(), 'content/posts', document._meta.filePath),
       cwd: path.join(process.cwd(), 'content/posts', document._meta.directory),
-      //bundleDirectory: path.join(process.cwd(), 'public/assets/bundles/blog', `${post._meta.fileName.split('.').shift()}`),
-      //bundlePath: `/${post._meta.fileName.split('.').shift()}/`,
       mdxOptions(options) {
         options.remarkPlugins = [...(options.remarkPlugins ?? []), remarkGfm];
         options.rehypePlugins = [
@@ -171,7 +176,7 @@ const posts = defineCollection({
       },
     });
 
-    const urlRes = `/blog/${document.id.split('-').shift()}/${document._meta.fileName.split('.').shift()}`;
+    const urlRes = `/blog/${document._meta.fileName.split('.').shift()}`;
 
     const categoriesRes =
       document.catSlugs &&
@@ -245,17 +250,18 @@ const pages = defineCollection({
   name: 'pages',
   directory: 'content/pages',
   include: '**/*.mdx',
-  parser: 'frontmatter-only',
   schema: (z) => ({
     title: z.string(),
     description: z.string().optional(),
     date: z.coerce.date().optional(),
   }),
-  transform: async (document) => {
+  transform: async (document, context) => {
     const urlRes = `/${document._meta.path}`;
+    const mdx = await compileMDX(context, document)
 
     return {
       ...document,
+      mdx,
       url: urlRes,
     };
   },
@@ -282,7 +288,7 @@ const projects = defineCollection({
     foreignUrl: z.string().optional(),
   }),
   transform: async (document) => {
-    const urlRes = `/projects/${document._meta.fileName.split('.').shift()}`;
+    const urlRes = `/projects/${document._meta.filePath.split('.').shift()}`;
 
     const imgData =
       document.imageSrc &&
@@ -321,6 +327,7 @@ const works = defineCollection({
   name: 'works',
   directory: 'content/works',
   include: '**/*.mdx',
+  parser: 'frontmatter-only',
   schema: (z) => ({
     id: z.string(),
     startDate: z.coerce.date(),
@@ -384,6 +391,7 @@ const works = defineCollection({
 
     return {
       ...document,
+      content: mdx.matter.content,
       mdx: mdx.code,
       url: urlRes,
       featured_image: JSON.parse(featured_image_res),

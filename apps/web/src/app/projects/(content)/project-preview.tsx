@@ -16,7 +16,7 @@ export default function ProjectPreview(data: Project) {
   const getDescription = (dataX: Project) => {
     const getPost = allPosts.find((post) => post.url === dataX.blogPost);
     if (!getPost) return;
-    return descriptionHelper(getPost.body.raw, getPost.url);
+    return descriptionHelper(getPost.content, getPost.url);
   };
 
   const projDescription = data.description;

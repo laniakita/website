@@ -6,7 +6,7 @@ import { PageCommon } from '@/app/(content)/(info)/page-common';
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  const credits = allPages.filter((page) => page._raw.sourceFileDir === 'pages/credits');
+  const credits = allPages.filter((page) => `credits/${page._meta.directory}` === 'pages/credits');
   return credits.map((cred) => ({
     slug: cred.url.split('/').pop(),
   }));
@@ -18,7 +18,7 @@ export async function generateMetadata(
   const params = await props.params;
   const data = allPages.find((credit) => credit.url.split('/').pop() === params.slug);
 
-  const description = descriptionHelper(data?.body?.raw, data?.url, true);
+  const description = descriptionHelper(data?.content, data?.url, true);
 
   const previousImages = (await parent).openGraph?.images ?? [];
   const previousImagesTwitter = (await parent).twitter?.images ?? [];
