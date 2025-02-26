@@ -39,6 +39,8 @@ const webConfig = [
       'node_modules/*',
       '.contentlayermini/*',
       '.contentlayerplushtml/*',
+      '.content-collections/*',
+      '.content-collections-plus-html/*',
       'sst-env.d.ts',
     ],
   },

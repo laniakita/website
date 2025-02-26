@@ -5,7 +5,7 @@ import { descriptionHelper } from '@/lib/description-helper';
 
 const data = allPages.find((page) => page.url === '/credits');
 
-const description = descriptionHelper(data?.body?.raw, data?.url, true);
+const description = descriptionHelper(data?.content, data?.url, true);
 
 export const metadata: Metadata = {
   title: data?.title,
