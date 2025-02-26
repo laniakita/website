@@ -21,7 +21,7 @@ export async function generateMetadata(
   const params = await props.params;
   const catData = allCategories.find((catY) => catY.url.split('/').pop() === params.slug);
 
-  const description = descriptionHelper(catData?.body.raw, catData?.url, true);
+  const description = descriptionHelper(catData?.content, catData?.url, true);
 
   const previousImages = (await parent).openGraph?.images ?? [];
   const previousImagesTwitter = (await parent).twitter?.images ?? [];

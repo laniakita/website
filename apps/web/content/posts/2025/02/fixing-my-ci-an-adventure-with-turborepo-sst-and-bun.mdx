@@ -25,7 +25,7 @@ author: lani
 headline: 'How I Use SST in a GitHub Action to Deploy Next.js Apps from a Monorepo (Turborepo)'
 subheadline: "Translation: How I Broke (this Site's) Production for 4 Hours (& How I Fixed it)"
 imageSrc: ../../../assets/images/non-oc/artem-horovenko-pipes.jpg
-altText: "Source: Artem Horovenko (via Unsplash). On the left side of the image, there are two adjacent pairs of large blue tubes, aligned vertically, and running from the left to the center of the image, featuring a convex-fairing, and a grate over their respective openings. In the background we can see more large blue tubes, curving left and right, with steel cages and catwalks adjacent to them. On the right side of the image, there are six large green tubes, placed vertically, and spaced tightly together, running from top to bottom of the image."
+altText: 'Source: Artem Horovenko (via Unsplash). On the left side of the image, there are two adjacent pairs of large blue tubes, aligned vertically, and running from the left to the center of the image, featuring a convex-fairing, and a grate over their respective openings. In the background we can see more large blue tubes, curving left and right, with steel cages and catwalks adjacent to them. On the right side of the image, there are six large green tubes, placed vertically, and spaced tightly together, running from top to bottom of the image.'
 caption: The internet is not something that you just dump something on. It's not a big truck. It's a series of tubes. - Sen. Ted Stevens (R-Alaska).
 ---
 
@@ -55,12 +55,14 @@ To give you some context, in the Workflow file, I preemptively set the `timeout-
 
 <details>
 
-<summary>[INFO]: Workflow (<code>production.yml</code>) for build #41</summary>
+<summary>
+  [INFO]: Workflow (<code>production.yml</code>) for build #41
+</summary>
 
 ```yml
 name: Production Build Action
 run-name: ${{github.actor}} is building for production
-on: 
+on:
   push:
     branches:
       - production
@@ -89,11 +91,11 @@ jobs:
       # aws
       - name: Configure AWS
         uses: aws-actions/configure-aws-credentials@v4
-        with: 
+        with:
           role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
           aws-region: ${{ secrets.AWS_REGION }}
           mask-aws-account-id: true
-    
+
       - name: Add AWS profile to ~/.aws/credentials
         run: |
           aws configure set region ${{ secrets.AWS_REGION }} --profile lani-production
@@ -103,7 +105,7 @@ jobs:
       # nodejs
       - name: nodejs
         uses: actions/setup-node@v4
-        with: 
+        with:
           node-version: '22.11.0'
 
       # install bun

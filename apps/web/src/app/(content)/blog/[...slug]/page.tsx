@@ -2,7 +2,7 @@ import { notFound, redirect } from 'next/navigation';
 import type { Metadata, ResolvingMetadata } from 'next';
 import type { BlogPosting, WithContext } from 'schema-dts';
 import { compareDesc } from 'date-fns';
-import { allAuthors, allPosts, Post } from 'content-collections';
+import { allAuthors, allPosts } from 'content-collections';
 import { descriptionHelper } from '@/lib/description-helper';
 import type { FeaturedImageR1 } from '@/lib/image-process';
 import { APP_URL } from '@/lib/constants';
@@ -23,9 +23,8 @@ export async function generateMetadata(
   props: { params: Promise<{ slug: string[] }> },
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
+  const { slug } = await props.params;
 
-  const {slug} = await props.params;
-  
   const postData = allPosts.find((postX) => slug.some((sl) => postX.url.split('/').pop() === sl));
 
   const description = descriptionHelper(postData?.content, postData?.url, true);
@@ -90,7 +89,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   }
 
   if (post && slug.length > 1) {
-    redirect(post.url)
+    redirect(post.url);
   }
 
   const catTagArr = ([...(post.categories ?? ''), ...(post.tags ?? '')] as CatTag[]).map((catTag) => {

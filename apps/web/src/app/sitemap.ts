@@ -16,9 +16,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // note: using postsRes above
     if (isCat) {
       const postResX = postsRes.find((postX) =>
-        postX.categories?.some(
-          (catX) => (catX as unknown as Category).url === cattag.url,
-        ),
+        postX.categories?.some((catX) => (catX as unknown as Category).url === cattag.url),
       );
 
       return postResX?.updated ?? postResX?.date ?? new Date();

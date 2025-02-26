@@ -1,7 +1,7 @@
 import { compareDesc } from 'date-fns';
 import { toXML } from 'jstoxml';
 import versionVault from 'versionVault/compiled';
-import { allTags, allCategories } from 'content-collections'
+import { allTags, allCategories } from 'content-collections';
 import type { Tag, Category, Post } from 'content-collections';
 import type { FeaturedImageR1 } from '@/lib/image-process';
 import { APP_URL, BLOG_DESCR } from '@/lib/constants';
@@ -61,7 +61,7 @@ export async function GET() {
     const cats =
       post.categories &&
       (
-        (post.categories).map((cat) => {
+        post.categories.map((cat) => {
           const category = allCategories.find((categoryX) => categoryX.url === cat?.url);
 
           return category;

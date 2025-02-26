@@ -21,7 +21,7 @@ export async function generateMetadata(
   const params = await props.params;
   const data = allTags.find((tagY) => tagY.url === `/tags/${params.slug}`);
 
-  const description = data?.body.raw && data.url ? descriptionHelper(data.body.raw, data.url, true) : 'Tag page.';
+  const description = data?.content && data.url ? descriptionHelper(data.content, data.url, true) : 'Tag page.';
 
   const previousImages = (await parent).openGraph?.images ?? [];
   const previousImagesTwitter = (await parent).twitter?.images ?? [];

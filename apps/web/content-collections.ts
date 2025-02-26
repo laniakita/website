@@ -13,7 +13,7 @@ import rehypeHighlightLines from 'rehype-highlight-code-lines';
 import nix from 'highlight.js/lib/languages/nix';
 import { common } from 'lowlight';
 import path from 'node:path';
-import { compileMDX } from "@content-collections/mdx";
+import { compileMDX } from '@content-collections/mdx';
 
 const exec = util.promisify(exec_process);
 
@@ -34,7 +34,7 @@ const categories = defineCollection({
   }),
   transform: async (document, context) => {
     const urlRes = `/categories/${document._meta.path}`;
-    const mdx = await compileMDX(context, document)
+    const mdx = await compileMDX(context, document);
 
     const lastModified = await context.cache(document._meta.filePath, async (filePath) => {
       const { stdout } = await exec(`git log -1 --format=%ai -- ${filePath}`);
@@ -67,7 +67,7 @@ const tags = defineCollection({
   }),
   transform: async (document, context) => {
     const urlRes = `/tags/${document._meta.path}`;
-    const mdx = await compileMDX(context, document)
+    const mdx = await compileMDX(context, document);
 
     const lastModified = await context.cache(document._meta.filePath, async (filePath) => {
       const { stdout } = await exec(`git log -1 --format=%ai -- ${filePath}`);
@@ -99,7 +99,7 @@ const authors = defineCollection({
   }),
   transform: async (document, context) => {
     const slug = slugify(document.name);
-    const mdx = await compileMDX(context, document)
+    const mdx = await compileMDX(context, document);
 
     const urlRes = `/${document._meta.path}`;
 
@@ -257,7 +257,7 @@ const pages = defineCollection({
   }),
   transform: async (document, context) => {
     const urlRes = `/${document._meta.path}`;
-    const mdx = await compileMDX(context, document)
+    const mdx = await compileMDX(context, document);
 
     return {
       ...document,

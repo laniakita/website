@@ -2,7 +2,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'url';
 import { PHASE_PRODUCTION_BUILD } from 'next/constants.js';
 import { RESUME_LINK, SHOWCASE_URL } from './src/lib/constants-js.mjs';
-import { withContentCollections } from "@content-collections/next";
+import { withContentCollections } from '@content-collections/next';
 
 const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
 const __dirname = path.dirname(__filename); // get the name of the directory
@@ -138,15 +138,13 @@ const nextConfigFunction = async ({ defaultConfig, phase }) => {
   //const withContentLayer = (await import('next-contentlayer2')).withContentlayer;
   //plugins.push(withContentLayer);
 
-
   const withBundleAnalyzer = (await import('@next/bundle-analyzer')).default({
     enabled: process.env.ANALYZE === 'true',
   });
   plugins.push(withBundleAnalyzer);
-  
+
   // needs to be last plugin in chain (see: https://github.com/sdorra/content-collections/issues/472#issuecomment-2607096538)
   plugins.push(withContentCollections);
-
 
   return plugins.reduce((acc, next) => next(acc), {
     ...defaultConfig,

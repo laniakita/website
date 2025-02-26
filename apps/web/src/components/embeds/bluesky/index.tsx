@@ -1,14 +1,12 @@
-'use client'
+'use client';
 
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 export const BlueskyEmbed = () => {
-  const [data, setData] = useState<{msg: string}>({msg: ''});
+  const [data, setData] = useState<{ msg: string }>({ msg: '' });
   useEffect(() => {
-    setData({msg: 'hi'})
-  }, [])
+    setData({ msg: 'hi' });
+  }, []);
 
-  return (
-    <p>{data.msg}</p>
-  );
+  return <p>{data.msg}</p>;
 };

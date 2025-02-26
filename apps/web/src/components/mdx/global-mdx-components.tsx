@@ -1,7 +1,7 @@
 import type { Category, Page, Post, Tag, Work } from 'content-collections';
 import BlogImageBlurServer from './components/img-blur-server';
 import { Paragraph } from './components/paragraph';
-import { MDXContent } from "@content-collections/mdx/react";
+import { MDXContent } from '@content-collections/mdx/react';
 //import { getMDXComponent } from './mdx-bundler-components';
 //import { useMDXComponent } from 'next-contentlayer2/hooks';
 //import Footnotes, { SupAnchors } from '../.tmp/section-footnotes';

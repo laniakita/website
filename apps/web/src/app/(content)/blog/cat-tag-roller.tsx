@@ -7,14 +7,14 @@ export interface CatTag {
   type: string | undefined;
 }
 
-export function CatTagRoller({ cats, tags }: { cats?: CatTag[] | undefined; tags?: CatTag[] | undefined}) {
+export function CatTagRoller({ cats, tags }: { cats?: CatTag[] | undefined; tags?: CatTag[] | undefined }) {
   const uniqueKey = (idx: number) => {
     const num = Math.floor(Math.random() * 1000 + idx);
 
     return `category-tag-${crypto.randomUUID()}-${num}-${idx}`;
   };
 
-  const comboArr = [ ...cats ?? '', ...tags ?? '' ] as CatTag[];
+  const comboArr = [...(cats ?? ''), ...(tags ?? '')] as CatTag[];
 
   return (
     <Suspense>

@@ -6,7 +6,6 @@ import { allPosts } from 'content-collections';
 import jsxToHtml from './utils';
 import { JSDOM } from 'jsdom';
 
-
 interface HeadingNode {
   id: string;
   level: number;
@@ -19,7 +18,13 @@ type FlatHeadingNode = {
   title: string;
 };
 
-export default async function PostPageLayout({ children, params }: { children: ReactNode; params: Promise<{ slug: string[] }> }) {
+export default async function PostPageLayout({
+  children,
+  params,
+}: {
+  children: ReactNode;
+  params: Promise<{ slug: string[] }>;
+}) {
   const { slug } = await params;
 
   const post = allPosts.find((postX) => slug.some((sl) => postX.url.split('/').pop() === sl));
@@ -77,7 +82,7 @@ export default async function PostPageLayout({ children, params }: { children: R
 
   const nestedHeadings = getNestedHeadings(Array.from(headings), 2);
   const flatHeadings = getFlatHeadings(headings);
-  
+
   return (
     <div className='flex size-full flex-col md:relative md:flex-row'>
       <ToCMenuCore flatHeadings={JSON.stringify(flatHeadings)} nestedHeadings={JSON.stringify(nestedHeadings)} />

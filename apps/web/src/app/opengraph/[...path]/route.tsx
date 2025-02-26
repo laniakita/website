@@ -2,7 +2,18 @@ import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { ImageResponse } from 'next/og';
 import type { NextRequest } from 'next/server';
-import { allPosts,allPages, allProjects, allCategories, allTags, type Post, type Project, type Page, type Tag, type Category  } from 'content-collections';
+import {
+  allPosts,
+  allPages,
+  allProjects,
+  allCategories,
+  allTags,
+  type Post,
+  type Project,
+  type Page,
+  type Tag,
+  type Category,
+} from 'content-collections';
 import type { FeaturedImageR1 } from '@/lib/image-process';
 
 export const maxDuration = 5;
@@ -25,7 +36,6 @@ export async function GET(request: NextRequest) {
   const zeroXProtoData = await readFile(join(process.cwd(), '0xProto-Regular.woff'));
   const zeroXProto = Uint8Array.from(zeroXProtoData).buffer;
 
-  
   const validPostPaths = allPosts.map((post) => {
     return `/opengraph${post.url.toLowerCase()}`;
   });
