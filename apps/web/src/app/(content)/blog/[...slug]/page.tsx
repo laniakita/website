@@ -8,9 +8,9 @@ import type { FeaturedImageR1 } from '@/lib/image-process';
 import { APP_URL } from '@/lib/constants';
 import { PostHeader2 } from './post-header-2';
 import CommentsComponent from './comments/core';
-import { MDXContent } from '@content-collections/mdx/react';
+//import { MDXContent } from '@content-collections/mdx/react';
 import { CatTag } from '../cat-tag-roller';
-import { globalMdxComponents } from '@/components/mdx/global-mdx-components';
+//import { globalMdxComponents } from '@/components/mdx/global-mdx-components';
 
 export function generateStaticParams() {
   const posts = allPosts.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
@@ -128,6 +128,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     countryOfOrigin: 'United States',
   };
 
+  const { default: PostMDX } = await import(`@content/posts/${post._meta.path}.mdx`)
+
+
   return (
     <>
       <script type='application/ld+json' dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
@@ -136,8 +139,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           <PostHeader2 {...post} />
           <div className='w-full px-6'>
             <div className='prose-protocol-omega mx-auto max-w-4xl md:max-w-2xl'>
-              {/* @ts-expect-error -- types issue? */}
-              <MDXContent code={post.mdx} components={globalMdxComponents} />
+             <PostMDX />
             </div>
           </div>
         </article>

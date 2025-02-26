@@ -3,8 +3,8 @@ import Footer from '@/components/footer/footer';
 import Navbar from '@/components/navbar';
 import ToCMenuCore, { ToCMenuMobileCore } from '@/components/table-of-contents/core';
 import { allPosts } from 'content-collections';
-import jsxToHtml from './utils';
 import { JSDOM } from 'jsdom';
+import render from './render';
 
 interface HeadingNode {
   id: string;
@@ -29,8 +29,9 @@ export default async function PostPageLayout({
 
   const post = allPosts.find((postX) => slug.some((sl) => postX.url.split('/').pop() === sl));
 
-  const postHtml = await jsxToHtml(post!.mdx);
-  const doc = new JSDOM(`<!DOCTYPE html>${postHtml}</html>`);
+  //const postHtml = post && await render(post._meta.path);
+
+  const doc = new JSDOM(`<!DOCTYPE html>${post.html}</html>`);
   const headings = Array.from(doc.window.document.querySelectorAll('h2, h3, h4, h5, h6')).filter(
     (el) => el.id.length > 0,
   ) as HTMLHeadingElement[];

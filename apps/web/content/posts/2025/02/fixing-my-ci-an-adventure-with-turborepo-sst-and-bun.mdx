@@ -29,6 +29,8 @@ altText: 'Source: Artem Horovenko (via Unsplash). On the left side of the image,
 caption: The internet is not something that you just dump something on. It's not a big truck. It's a series of tubes. - Sen. Ted Stevens (R-Alaska).
 ---
 
+import * as BlueskyEmbed from '../../../components/embeds/bluesky/mod'
+
 Since I finally managed to break the CI/CD pipeline for this site, I've been thinking a lot about that infamous quote from the Senator for Alaska. Not for its accuracy (or lack thereof), but because in this one instance, I did, in fact, break (or jam) a _critical tube_ that gets this site out to the internet. Though, I should admit that's not what took this site offline for 4 hours (we'll get to that part soon).
 
 ## The Situation
@@ -38,6 +40,8 @@ At around 0600 Zulu time on February 21st, I rebased this site's production bran
 ![Screenshot of a GitHub Action notification email on the status of the Production Build Action workflow run, that informed me that all jobs have failed. The info box states: laniakita is building for production / SST-Deploy-Production Failed in 30 minutes and 37 seconds](../../../assets/images/oc/2025/02/production-action-failed-timeout-email.png)
 
 What followed was what I can only describe as _an adventure_.
+
+<BlueskyEmbed />
 
 That _skeet_ now serves as both a historical record of what happened that Thursday night, and was the inspiration behind this very blog post.
 
@@ -55,9 +59,7 @@ To give you some context, in the Workflow file, I preemptively set the `timeout-
 
 <details>
 
-<summary>
-  [INFO]: Workflow (<code>production.yml</code>) for build #41
-</summary>
+<summary>[INFO]: Workflow for build #41</summary>
 
 ```yml
 name: Production Build Action

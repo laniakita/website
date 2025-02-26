@@ -5,7 +5,6 @@ import { exec as exec_process } from 'node:child_process';
 import { imageProcessor, FeaturedImageR1 } from './src/lib/image-process';
 import { bundleMDX } from 'mdx-bundler';
 import remarkGfm from 'remark-gfm';
-import rehypeMdxImportMedia from 'rehype-mdx-import-media';
 import rehypeSlug from 'rehype-slug';
 import rehypeFnCitationSpacer from 'rehype-fn-citation-spacer';
 import rehypeHighlight from 'rehype-highlight';
@@ -14,6 +13,7 @@ import nix from 'highlight.js/lib/languages/nix';
 import { common } from 'lowlight';
 import path from 'node:path';
 import { compileMDX } from '@content-collections/mdx';
+import { generate } from '@/scripts/html-gen';
 
 const exec = util.promisify(exec_process);
 
@@ -125,7 +125,7 @@ const posts = defineCollection({
   name: 'posts',
   directory: 'content/posts',
   include: '**/*.mdx',
-  parser: 'frontmatter-only',
+  //parser: 'frontmatter-only',
   schema: (z) => ({
     id: z.string(),
     headline: z.string(),
@@ -142,39 +142,10 @@ const posts = defineCollection({
     url: z.string().optional(),
   }),
   transform: async (document, context) => {
-    const mdx = await bundleMDX({
-      file: path.join(process.cwd(), 'content/posts', document._meta.filePath),
-      cwd: path.join(process.cwd(), 'content/posts', document._meta.directory),
-      mdxOptions(options) {
-        options.remarkPlugins = [...(options.remarkPlugins ?? []), remarkGfm];
-        options.rehypePlugins = [
-          ...(options.rehypePlugins ?? []),
-          [rehypeHighlight, { languages: { ...common, nix } }],
-          [
-            rehypeHighlightLines,
-            {
-              showLineNumbers: true,
-              lineContainerTagName: 'div',
-            },
-          ],
-          rehypeMdxImportMedia,
-          rehypeSlug,
-          rehypeFnCitationSpacer,
-        ];
-        return options;
-      },
-      esbuildOptions: (options) => {
-        options.outdir = `${process.cwd()}/public/assets/images/blog`;
-        options.loader = {
-          ...options.loader,
-          '.png': 'file',
-          '.jpg': 'file',
-        };
-        options.publicPath = `/assets/images/blog`;
-        options.write = true;
-        return options;
-      },
-    });
+    const html = await generate(document.content, new URL(path.join('file://', process.cwd(), 'content/posts', document._meta.filePath)))
+    
+
+
 
     const urlRes = `/blog/${document._meta.fileName.split('.').shift()}`;
 
@@ -236,8 +207,9 @@ const posts = defineCollection({
 
     return {
       ...document,
-      content: mdx.matter.content,
-      mdx: mdx.code,
+      //content: mdx.matter.content,
+      //mdx: mdx.code,
+      html,
       url: urlRes,
       featured_image: JSON.parse(featured_image_res),
       categories: categoriesRes,

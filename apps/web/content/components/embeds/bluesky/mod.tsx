@@ -1,8 +1,8 @@
-'use client';
+'use client'
 
 import { useEffect, useState } from 'react';
 
-export const BlueskyEmbed = () => {
+const BlueskyEmbed = () => {
   const [data, setData] = useState<{ msg: string }>({ msg: '' });
   useEffect(() => {
     setData({ msg: 'hi' });
@@ -10,3 +10,5 @@ export const BlueskyEmbed = () => {
 
   return <p>{data.msg}</p>;
 };
+
+export default BlueskyEmbed
