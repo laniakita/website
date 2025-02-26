@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Suspense } from 'react';
 
 export interface CatTag {
-  title: string | undefined;
+  title: string;
   url: string | undefined;
   type: string | undefined;
 }
@@ -14,7 +14,10 @@ export function CatTagRoller({ cats, tags }: { cats?: CatTag[] | undefined; tags
     return `category-tag-${crypto.randomUUID()}-${num}-${idx}`;
   };
 
-  const comboArr = [...(cats ?? ''), ...(tags ?? '')] as CatTag[];
+  const comboArr = [
+    ...(cats ? cats.sort((a, b) => a?.title.localeCompare(b?.title ?? '') ?? 0) : ''),
+    ...(tags ? tags.sort((a, b) => a?.title.localeCompare(b?.title ?? '') ?? 0) : ''),
+  ] as CatTag[];
 
   return (
     <Suspense>

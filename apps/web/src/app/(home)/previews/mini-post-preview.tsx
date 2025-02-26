@@ -1,4 +1,4 @@
-import { CatTagRoller } from '@/app/(content)/blog/cat-tag-roller';
+import { CatTag, CatTagRoller } from '@/app/(content)/blog/cat-tag-roller';
 import LocalDate from '@/app/(content)/blog/local-date';
 import type { FeaturedImageR1 } from '@/lib/image-process';
 import { Post } from 'content-collections';
@@ -59,7 +59,7 @@ export default function MiniPostPreview(props: MiniPostPreviewProps) {
           </div>
         </div>
         <div className='h-px w-full rounded bg-ctp-surface0' />
-        <CatTagRoller cats={post.categories} tags={post.tags} />
+        <CatTagRoller cats={post.categories as CatTag[]} tags={post.tags as CatTag[]} />
       </div>
     </div>
   );

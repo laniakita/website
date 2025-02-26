@@ -1,22 +1,22 @@
-import { allCategories, allTags } from 'contentlayer/generated';
+import { allCategories, allTags } from 'content-collections';
 
 interface CatTag {
-  slug: string;
+  url: string;
+  title: string;
 }
 
-export const catTagData = ({ cats, tags }: { cats?: string[] | undefined; tags?: string[] | undefined }) => {
+export const catTagData = ({ cats, tags }: { cats?: CatTag[] | undefined; tags?: CatTag[] | undefined }) => {
   const categories = cats
     ? cats.map((cat) => {
-        const category = allCategories.find(
-          (categoryX) => categoryX._raw.flattenedPath === `categories/${(cat as unknown as CatTag).slug}`,
-        );
+        const category = allCategories.find((categoryX) => categoryX.url === cat.url);
 
         return category;
       })
     : [];
+
   const tagsArr = tags
     ? tags.map((tagIdx) => {
-        const tag = allTags.find((tagX) => tagX._raw.flattenedPath === `tags/${(tagIdx as unknown as CatTag).slug}`);
+        const tag = allTags.find((tagX) => tagX.url === tagIdx.url);
 
         return tag;
       })

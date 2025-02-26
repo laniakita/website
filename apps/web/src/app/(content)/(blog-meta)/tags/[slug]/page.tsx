@@ -66,7 +66,7 @@ export default async function TagPage(props: { params: Promise<{ slug: string }>
   const params = await props.params;
   const tag = allTags.find((tagX) => tagX.url === `/tags/${params.slug}`);
   const matchingPosts = allPosts
-    .filter((postX) => postX.tags?.some((tagZ) => (tagZ as unknown as { slug: string }).slug === params.slug))
+    .filter((postX) => postX.tags?.some((tagZ) => tagZ && 'url' in tagZ && tagZ.url!.split('/').pop() === params.slug))
     .sort((a, b) => compareDesc(new Date(a.updated ?? a.date), new Date(b.updated ?? b.date)));
 
   if (!tag) return notFound();

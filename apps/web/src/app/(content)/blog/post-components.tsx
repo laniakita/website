@@ -4,7 +4,7 @@ import { type Post } from 'content-collections';
 import { descriptionHelper } from '@/lib/description-helper';
 import type { FeaturedImageR1 } from '@/lib/image-process';
 import GlobalMDXRenderer from '@/components/mdx/global-mdx-renderer';
-import { CatTagRoller } from './cat-tag-roller';
+import { CatTag, CatTagRoller } from './cat-tag-roller';
 import LocalDate from './local-date';
 
 export default function PostPreviewV4(post: Post) {
@@ -59,7 +59,7 @@ export default function PostPreviewV4(post: Post) {
           <GlobalMDXRenderer>{descriptionStr}</GlobalMDXRenderer>
         </div>
         <div className='h-px w-full rounded bg-ctp-surface0' />
-        <CatTagRoller cats={post.categories} tags={post.tags} />
+        <CatTagRoller cats={post.categories as CatTag[]} tags={post.tags as CatTag[]} />
       </div>
     </div>
   );

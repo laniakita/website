@@ -66,7 +66,9 @@ export default async function CategoryPage(props: { params: Promise<{ slug: stri
   const params = await props.params;
   const category = allCategories.find((catX) => catX.url.split('/').pop() === params.slug);
   const matchingPosts = allPosts
-    .filter((postX) => postX.categories?.some((cat) => (cat as unknown as { slug: string }).slug === params.slug))
+    .filter((postX) =>
+      postX.categories?.some((cat) => cat && 'url' in cat && cat.url!.split('/').pop() === params.slug),
+    )
     .sort((a, b) => compareDesc(new Date(a.updated ?? a.date), new Date(b.updated ?? b.date)));
 
   if (!category) return notFound();

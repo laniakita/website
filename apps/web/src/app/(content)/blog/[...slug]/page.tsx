@@ -92,7 +92,12 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     redirect(post.url);
   }
 
-  const catTagArr = ([...(post.categories ?? ''), ...(post.tags ?? '')] as CatTag[]).map((catTag) => {
+  const catTagArr = (
+    [
+      ...(post.categories ? post.categories.sort((a, b) => a?.title.localeCompare(b?.title ?? '') ?? 0) : ''),
+      ...(post.tags ? post.tags.sort((a, b) => a?.title.localeCompare(b?.title ?? '') ?? 0) : ''),
+    ] as CatTag[]
+  ).map((catTag) => {
     return catTag.title;
   }) as string[];
 

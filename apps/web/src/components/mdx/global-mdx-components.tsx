@@ -2,9 +2,6 @@ import type { Category, Page, Post, Tag, Work } from 'content-collections';
 import BlogImageBlurServer from './components/img-blur-server';
 import { Paragraph } from './components/paragraph';
 import { MDXContent } from '@content-collections/mdx/react';
-//import { getMDXComponent } from './mdx-bundler-components';
-//import { useMDXComponent } from 'next-contentlayer2/hooks';
-//import Footnotes, { SupAnchors } from '../.tmp/section-footnotes';
 import Anchors from './components/anchor-tags';
 import PreCodeV2 from './components/pre-code/codeblock-v2';
 import Section from './components/section/section';
@@ -27,7 +24,7 @@ export const globalMdxComponents = {
 
 export default function GlobalMDXComponent(data: Post | Page | Category | Tag | Work) {
   // @ts-expect-error -- types issue
-  return <MDXContent code={data.mdx} />;
+  return <MDXContent code={data.mdx} components={globalMdxComponents} />;
 }
 
 export function UniversalMDXComponent({ code }: { code: string }) {
