@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { allCategories, allTags } from 'contentlayer/generated';
+import { allCategories, allTags } from 'content-collections';
 import { SOCIALS_FULL } from '../nav-constants';
 import InfoBox from './info-box';
 import { SocialIconNav2 } from './social-icon-nav-client';

@@ -36,7 +36,7 @@ const BlogImageBlurServer: FC = async (props) => {
           width={propsObj.width}
         />
       </picture>
-      <figcaption className='font-mono text-sm font-thin'>{propsObj.alt}</figcaption>
+      <figcaption className='font-mono text-xs font-thin'>{propsObj.alt}</figcaption>
     </figure>
   );
 };

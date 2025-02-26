@@ -1,6 +1,6 @@
 'use client';
 
-import { allPosts } from 'contentlayer/generated';
+import { allPosts } from 'content-collections';
 import { compareDesc } from 'date-fns';
 import { useRef } from 'react';
 import { useIntersectionObserver } from '../utils';

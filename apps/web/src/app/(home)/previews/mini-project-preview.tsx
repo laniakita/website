@@ -2,7 +2,7 @@ import LocalDate from '@/app/(content)/blog/local-date';
 import GlobalMDXRenderer from '@/components/mdx/global-mdx-renderer';
 import { APP_URL, SHOWCASE_URL } from '@/lib/constants';
 import type { FeaturedImageR1 } from '@/lib/image-process';
-import { type Project } from 'contentlayer/generated';
+import { type Project } from 'content-collections';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useId } from 'react';

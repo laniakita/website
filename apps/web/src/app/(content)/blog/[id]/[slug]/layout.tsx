@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import Footer from '@/components/footer/footer';
 import Navbar from '@/components/navbar';
 import ToCMenuCore, { ToCMenuMobileCore } from '@/components/table-of-contents/core';
-import { allPosts } from 'contentlayer/generated';
+import { allPosts } from 'content-collections';
 import jsxToHtml from './utils';
 import { JSDOM } from 'jsdom';
 
@@ -29,7 +29,7 @@ export default async function PostPageLayout({ children, params }: { children: R
       postX.url.split('/').pop() === slug,
   );
 
-  const postHtml = await jsxToHtml(post!.body.code);
+  const postHtml = await jsxToHtml(post!.mdx);
   const doc = new JSDOM(`<!DOCTYPE html>${postHtml}</html>`);
   const headings = Array.from(doc.window.document.querySelectorAll('h2, h3, h4, h5, h6')).filter(
     (el) => el.id.length > 0,

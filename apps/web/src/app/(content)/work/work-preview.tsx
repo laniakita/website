@@ -1,5 +1,5 @@
 import { FeaturedImageR1 } from '@/lib/image-process';
-import { Work } from 'contentlayer/generated';
+import { Work } from 'content-collections';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useId } from 'react';

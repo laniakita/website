@@ -2,12 +2,12 @@
 id: 231e2ed6-25bd-4e8a-86b0-a17386640f7f
 type: Post
 date: 2025-02-23T00:50:54Z
-categories:
-  - slug: guides
-tags:
-  - slug: turborepo
-  - slug: sst
-  - slug: bun
+catSlugs:
+  - guides
+tagSlugs:
+  - turborepo
+  - sst
+  - bun
 keywords:
   - Tutorial
   - Monorepo
@@ -23,8 +23,102 @@ keywords:
   - Runner
 author: lani
 headline: 'How I Use SST in a GitHub Action to Deploy Next.js Apps from a Monorepo (Turborepo)'
-subheadline: "Translation: How I Broke (this site's) Production for 4 Hours (& How I Fixed it)"
-caption: The more I learn, the more I realize how much I don't know - Albert Einstein
+subheadline: "Translation: How I Broke (this Site's) Production for 4 Hours (& How I Fixed it)"
+imageSrc: ../../../assets/images/non-oc/artem-horovenko-pipes.jpg
+altText: "Source: Artem Horovenko (via Unsplash). On the left side of the image, there are two adjacent pairs of large blue tubes, aligned vertically, and running from the left to the center of the image, featuring a convex-fairing, and a grate over their respective openings. In the background we can see more large blue tubes, curving left and right, with steel cages and catwalks adjacent to them. On the right side of the image, there are six large green tubes, placed vertically, and spaced tightly together, running from top to bottom of the image."
+caption: The internet is not something that you just dump something on. It's not a big truck. It's a series of tubes. - Sen. Ted Stevens (R-Alaska).
 ---
 
-You ever have one of those days?
+Since I finally managed to break the CI/CD pipeline for this site, I've been thinking a lot about that infamous quote from the Senator for Alaska. Not for its accuracy (or lack thereof), but because in this one instance, I did, in fact, break (or jam) a _critical tube_ that gets this site out to the internet. Though, I should admit that's not what took this site offline for 4 hours (we'll get to that part soon).
+
+## The Situation
+
+At around 0600 Zulu time on February 21st, I rebased this site's production branch with main, and pushed two of my latest commits. One updated my `flake.nix` inputs (updated `flake.lock`), the other was a simple fix to the cards on the landing page. About 30 minutes later I received the following email.
+
+![Screenshot of a GitHub Action notification email on the status of the Production Build Action workflow run, that informed me that all jobs have failed. The info box states: laniakita is building for production / SST-Deploy-Production Failed in 30 minutes and 37 seconds](../../../assets/images/oc/2025/02/production-action-failed-timeout-email.png)
+
+What followed was what I can only describe as _an adventure_.
+
+That _skeet_ now serves as both a historical record of what happened that Thursday night, and was the inspiration behind this very blog post.
+
+## The Investigation
+
+Debugging is an _Art_. While I'm not the world's greatest detective, I am pretty good at sniffing out the cause of the issue, and assembling a solution thereafter. So, let's go through what I did.
+
+### POI #01: Timing Out
+
+The first thing I did was look into the [workflow logs](https://github.com/laniakita/website/actions/runs/13448074321/job/37577491756), where I discovered our first Point of Interest (POI), the timeout error.
+
+![Screenshot of Production Build Action #41 at the Deploy step (point of failure). At line 1 collapses the next 11 lines into a single `Run bun sst deploy --stage=production --verbose`. Lines 12 - 35 showcase normal behavior for SST + Turborepo so far. Line 36 states `Error: The action 'Deploy' has timed out after 30 minutes.](../../../assets/images/oc/2025/02/production-deploy-logs-41.png)
+
+To give you some context, in the Workflow file, I preemptively set the `timeout-minutes` to `30` to handle cases like this. This was done because when SSTv3 was still in beta, the `sst deploy` commands would occasionally hang. Timing the steps out saves both time and money, so it's a no-brainer.
+
+<details>
+
+<summary>[INFO]: Workflow (<code>production.yml</code>) for build #41</summary>
+
+```yml
+name: Production Build Action
+run-name: ${{github.actor}} is building for production
+on: 
+  push:
+    branches:
+      - production
+permissions:
+  id-token: write
+  contents: read
+env:
+  CLOUDFLARE_DEFAULT_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_DEFAULT_ACCOUNT_ID }}
+  CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+jobs:
+  SST-Deploy-Production:
+    if: ${{ github.ref == 'refs/heads/production' }}
+    environment: production
+    runs-on: ubuntu-latest
+    steps:
+      # info
+      - run: echo "Deploying to production on branch $GITHUB_REF"
+      - run: echo "Build triggered by ${{ github.event_name }}"
+      - run: echo "Building on ${{ runner.os }}"
+
+      # fetch repo
+      - name: Check out code
+        uses: actions/checkout@v2
+      - run: echo "Checked out ${{ github.repository }}"
+
+      # aws
+      - name: Configure AWS
+        uses: aws-actions/configure-aws-credentials@v4
+        with: 
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          aws-region: ${{ secrets.AWS_REGION }}
+          mask-aws-account-id: true
+    
+      - name: Add AWS profile to ~/.aws/credentials
+        run: |
+          aws configure set region ${{ secrets.AWS_REGION }} --profile lani-production
+          aws configure set aws_access_key_id ${{ env.AWS_ACCESS_KEY_ID }} --profile lani-production
+          aws configure set aws_secret_access_key ${{ env.AWS_SECRET_ACCESS_KEY }} --profile lani-production
+          aws configure set aws_session_token ${{ env.AWS_SESSION_TOKEN }} --profile lani-production
+      # nodejs
+      - name: nodejs
+        uses: actions/setup-node@v4
+        with: 
+          node-version: '22.11.0'
+
+      # install bun
+      - run: npm install --global bun
+
+      # install packages
+      - name: install packages
+        run: bun install
+
+      # ROTFB
+      - name: Deploy
+        run: bun sst deploy --stage=production --verbose
+        timeout-minutes: 30
+```
+
+</details>
+
+## The another

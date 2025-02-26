@@ -1,4 +1,4 @@
-import type { Post, Tag, Category } from 'contentlayer/generated';
+import type { Post, Tag, Category } from 'content-collections';
 import PostRollerV4 from '@/app/(content)/blog/post-roller-v4';
 import GlobalMDXComponent from '@/components/mdx/global-mdx-components';
 

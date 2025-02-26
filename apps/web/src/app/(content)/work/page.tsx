@@ -2,7 +2,7 @@ import { useId } from 'react';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { compareDesc } from 'date-fns';
-import { allPages, allWorks } from 'contentlayer/generated';
+import { allPages, allWorks } from 'content-collections';
 import { descriptionHelper } from '@/lib/description-helper';
 import GlobalMDXComponent from '@/components/mdx/global-mdx-components';
 import { WorkPreview } from './work-preview';

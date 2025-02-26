@@ -1,7 +1,7 @@
 import { CatTagRoller } from '@/app/(content)/blog/cat-tag-roller';
 import LocalDate from '@/app/(content)/blog/local-date';
 import type { FeaturedImageR1 } from '@/lib/image-process';
-import { Post } from 'contentlayer/generated';
+import { Post } from 'content-collections';
 import Image from 'next/image';
 import Link from 'next/link';
 import { type HTMLAttributes } from 'react';

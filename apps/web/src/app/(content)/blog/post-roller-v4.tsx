@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import type { Post } from 'contentlayer/generated';
+import type { Post } from 'content-collections';
 import { SubscribeBox } from '@/components/sidebar/main';
 import PostPreviewV4 from './post-components';
 

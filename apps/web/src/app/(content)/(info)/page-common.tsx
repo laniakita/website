@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { allPages, type Page } from 'contentlayer/generated';
+import { allPages, type Page } from 'content-collections';
 import GlobalMDXComponent from '@/components/mdx/global-mdx-components';
 
 export function PageCommon({ slug, prefix }: { slug: string; prefix?: string }) {

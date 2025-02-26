@@ -1,15 +1,18 @@
 {
   "name": "website",
-  "private": true,
-  "license": "GPL-3.0",
+  "devDependencies": {
+    "prettier": "^3.4.2",
+    "sharp": "^0.33.5",
+    "sst": "^3.9.10",
+    "syncpack": "^13.0.0",
+    "turbo": "^2.4.2"
+  },
   "engines": {
     "node": ">=22"
   },
+  "license": "GPL-3.0",
   "packageManager": "bun@1.2.2",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
+  "private": true,
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
@@ -21,17 +24,14 @@
     "deploy:dev": "turbo run deploy && sst deploy --stage=dev --verbose",
     "deploy:production": "turbo run deploy && sst deploy --stage=production --verbose"
   },
-  "devDependencies": {
-    "prettier": "^3.4.2",
-    "sharp": "^0.33.5",
-    "sst": "^3.9.10",
-    "syncpack": "^13.0.0",
-    "turbo": "^2.4.2"
-  },
   "trustedDependencies": [
     "contentlayer2",
     "esbuild",
     "protobufjs",
     "sharp"
+  ],
+  "workspaces": [
+    "apps/*",
+    "packages/*"
   ]
 }

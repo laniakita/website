@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import type { Metadata, ResolvingMetadata } from 'next';
 import { compareDesc } from 'date-fns';
-import { allCategories, allPosts } from 'contentlayer/generated';
+import { allCategories, allPosts } from 'content-collections';
 import { descriptionHelper } from '@/lib/description-helper';
 import { MiniLayout } from '../../cat-tag-common';
 

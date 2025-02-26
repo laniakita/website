@@ -11,8 +11,10 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
+      "@content/*": ["./content/*"],
       "contentlayer/generated": ["./.contentlayer/generated"],
-      "versionVault/compiled": ["./.versionvault/compiled/latest.json"]
+      "versionVault/compiled": ["./.versionvault/compiled/latest.json"],
+      "content-collections": ["./.content-collections/generated"]
     },
     "allowSyntheticDefaultImports": true,
     "types": ["@serwist/next/typings", "bun", "node"],

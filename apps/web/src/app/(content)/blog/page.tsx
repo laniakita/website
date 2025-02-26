@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { compareDesc } from 'date-fns';
-import { allPages, allPosts } from 'contentlayer/generated';
+import { allPages, allPosts } from 'content-collections';
 import Sidebar from '@/components/sidebar/main';
 import PostRollerV4 from './post-roller-v4';
 import Footer from '@/components/footer/footer';

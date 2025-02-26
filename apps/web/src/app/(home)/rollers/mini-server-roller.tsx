@@ -1,4 +1,4 @@
-import { allWorks } from 'contentlayer/generated';
+import { allWorks } from 'content-collections';
 import { compareDesc } from 'date-fns';
 import { MiniWorkPreview } from '../previews/mini-work-preview';
 import { useIntersectionObserver } from '../utils';

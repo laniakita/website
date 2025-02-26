@@ -3,12 +3,12 @@ id: 438e83f7-6fd4-45aa-9d62-c10a9aeff80d
 type: Post
 date: 2024-10-08T06:18:55Z
 updated: 2024-10-17T02:33:45Z
-categories:
-  - slug: meta
-  - slug: backend
-  - slug: technical-summary
-tags:
-  - slug: drizzle-orm
+catSlugs:
+  - meta
+  - backend
+  - technical-summary
+tagSlugs:
+  -  drizzle-orm
 keywords:
   - custom CMS
   - DIY CMS
@@ -114,13 +114,13 @@ Something I should note, is that instead of injecting the Turso credentials from
 Once I had that, then I just had to define some schemas/tables[^58] for my posts. This resulted in creating the following tables:
 
 - authors
-- tags
+- tagSlugs
 - featured_images
 - posts
 
-The idea was that the authors, featured_images, and tags tables would respectively create one-many[^59], and many-many[^59] relations to the posts table. Something like this:
+The idea was that the authors, featured_images, and tagSlugs tables would respectively create one-many[^59], and many-many[^59] relations to the posts table. Something like this:
 
-![Entity Relationship diagram showing 1:M (authors, featured_images), and M:M (tags). The latter made possible with a junction table (posts_to_tags)](../../../assets/images/oc/2024/10/cms-relations-diagram.jpg)
+![Entity Relationship diagram showing 1:M (authors, featured_images), and M:M (tagSlugs). The latter made possible with a junction table (posts_to_tagSlugs)](../../../assets/images/oc/2024/10/cms-relations-diagram.jpg)
 
 In keeping with SQLites Datatypes[^60] and what's available in Drizzle[^61] Some commonalities between these tables (as we'll see), is that I'm using a `string` for each rows `id` and primary key column, and a `integer` set to `timestamp` for the date column. That's because the `id` is a `UUIDv4`[^62] generated using Bun's `crypto.randomUUID()`[^63], and the date is a `utc` string. The `rawStr` column, is simply the raw `utf8` string generated from reading the `.mdx` file into memory.
 
@@ -155,7 +155,7 @@ export const authors = sqliteTable('authors', {
 ```
 
 ```typescript
-// tags.ts
+// tagSlugs.ts
 
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
 
@@ -168,7 +168,7 @@ export interface Tags {
   rawStr?: string;
 }
 
-export const tags = sqliteTable('tags', {
+export const tagSlugs = sqliteTable('tagSlugs', {
   id: text('id').primaryKey(),
   slug: text('slug').unique(),
   date: integer('date', { mode: 'timestamp' }),
@@ -220,7 +220,7 @@ export const featuredImages = sqliteTable('featured_images', {
 });
 ```
 
-Since the `posts.ts` schema/table is the most complicated, being the one that integrates all the other tables, it's important to talk about what's happening. You'll notice in the below, I'm importing the previously defined schemas `authors`, `tags`, and `featured_images`, and consuming them both as foreign keys and in relational tables.
+Since the `posts.ts` schema/table is the most complicated, being the one that integrates all the other tables, it's important to talk about what's happening. You'll notice in the below, I'm importing the previously defined schemas `authors`, `tagSlugs`, and `featured_images`, and consuming them both as foreign keys and in relational tables.
 
 ```typescript
 // posts.ts
@@ -228,7 +228,7 @@ Since the `posts.ts` schema/table is the most complicated, being the one that in
 import { sqliteTable, text, primaryKey, integer } from 'drizzle-orm/sqlite-core';
 import { relations } from 'drizzle-orm';
 import { authors } from './authors';
-import { tags } from './tags';
+import { tagSlugs } from './tagSlugs';
 import { featuredImages } from './featured-images';
 
 export const authorsRelations = relations(authors, ({ many }) => ({
@@ -243,7 +243,7 @@ export interface Posts {
   id: string;
   slug: string;
   date: Date;
-  tags: string[];
+  tagSlugs: string[];
   author: string;
   headline: string;
   subheadline?: string;
@@ -284,14 +284,14 @@ export const postsRelations = relations(posts, ({ one, many }) => ({
 }));
 
 export const postsToTags = sqliteTable(
-  'posts_to_tags',
+  'posts_to_tagSlugs',
   {
     postId: text('post_id')
       .notNull()
       .references(() => posts.id, { onUpdate: 'cascade', onDelete: 'cascade' }),
     tagId: text('tag_id')
       .notNull()
-      .references(() => tags.id, { onUpdate: 'cascade', onDelete: 'cascade' }),
+      .references(() => tagSlugs.id, { onUpdate: 'cascade', onDelete: 'cascade' }),
   },
   (t) => {
     return {
@@ -301,9 +301,9 @@ export const postsToTags = sqliteTable(
 );
 
 export const postsToTagsRelations = relations(postsToTags, ({ one }) => ({
-  tag: one(tags, {
+  tag: one(tagSlugs, {
     fields: [postsToTags.tagId],
-    references: [tags.id],
+    references: [tagSlugs.id],
   }),
   post: one(posts, {
     fields: [postsToTags.postId],
@@ -314,7 +314,7 @@ export const postsToTagsRelations = relations(postsToTags, ({ one }) => ({
 
 In using them as foreign keys, I'm really just taking advantage of the cascade operations.
 
-As far as relations go, I'm using drizzles relations[^65] feature, and creating relational tables for both _one-to-many_ (`authors`, `featured_images`) and _many-to-many_ (`tags`) relations. In truth, this was somewhat _extra_, since I had foreign keys available to me on `turso`, but I was curious to know what `drizzle` was capable of, and this is one such addition that `drizzle` brings to the table (no pun intended \>.\<), beyond (most) vanilla SQL functions.
+As far as relations go, I'm using drizzles relations[^65] feature, and creating relational tables for both _one-to-many_ (`authors`, `featured_images`) and _many-to-many_ (`tagSlugs`) relations. In truth, this was somewhat _extra_, since I had foreign keys available to me on `turso`, but I was curious to know what `drizzle` was capable of, and this is one such addition that `drizzle` brings to the table (no pun intended \>.\<), beyond (most) vanilla SQL functions.
 
 ### Database Config
 
@@ -327,7 +327,7 @@ import { drizzle } from 'drizzle-orm/libsql';
 import { Resource } from 'sst';
 import { createClient } from '@libsql/client';
 import * as authors from './schema/authors';
-import * as tags from './schema/tags';
+import * as tagSlugs from './schema/tagSlugs';
 import * as featuredImages from './schema/featured-images';
 import * as posts from './schema/posts';
 
@@ -338,7 +338,7 @@ const client = createClient({
   authToken: Resource.TursoAuth.value,
 });
 
-export const maindb = drizzle(client, { schema: { ...authors, ...tags, ...featuredImages, ...posts } });
+export const maindb = drizzle(client, { schema: { ...authors, ...tagSlugs, ...featuredImages, ...posts } });
 ```
 
 With that squared away, the final step was to push our schemas as tables to our database on `turso`, with a single command: `drizzle-kit push`[^67]. Though, since I was importing credentials via SST, that command was more like: `sst shell bun run drizzle-kit push`[^68], but I digress.
@@ -2086,7 +2086,7 @@ import { eq, and } from 'drizzle-orm';
 //import { maindb } from '@/lib/db/bun-db';
 import { maindb } from '@/lib/db/turso-db';
 import { type Authors, authors } from '@/lib/db/schema/authors';
-import { type Tags, tags } from '@/lib/db/schema/tags';
+import { type Tags, tagSlugs } from '@/lib/db/schema/tagSlugs';
 import { type Posts, posts, postsToTags } from '@/lib/db/schema/posts';
 import { type FeaturedImages, featuredImages } from '@/lib/db/schema/featured-images';
 
@@ -2158,8 +2158,8 @@ export const insertTags = async (data: Tags): Promise<void> => {
   try {
     const tagData = data;
 
-    const inserted = await maindb.query.tags.findFirst({
-      where: eq(tags.id, tagData.id),
+    const inserted = await maindb.query.tagSlugs.findFirst({
+      where: eq(tagSlugs.id, tagData.id),
       columns: {
         id: true,
         slug: true,
@@ -2181,10 +2181,10 @@ export const insertTags = async (data: Tags): Promise<void> => {
 
     if (JSON.stringify(assembledData) !== JSON.stringify(inserted)) {
       await maindb
-        .insert(tags)
+        .insert(tagSlugs)
         .values(assembledData)
         .onConflictDoUpdate({
-          target: tags.id,
+          target: tagSlugs.id,
           set: {
             slug: tagData.slug,
             date: tagData.date,
@@ -2199,7 +2199,7 @@ export const insertTags = async (data: Tags): Promise<void> => {
       console.log('tag', tagData.title, 'already exists');
     }
   } catch (err) {
-    console.error("Couldn't insert tags", err);
+    console.error("Couldn't insert tagSlugs", err);
   }
 };
 
@@ -2384,9 +2384,9 @@ export const insertPosts = async (data: Posts): Promise<void> => {
     }
 
     await Promise.all(
-      postData.tags.map(async (tagSlug) => {
-        const res = await maindb.query.tags.findFirst({
-          where: eq(tags.slug, tagSlug),
+      postData.tagSlugs.map(async (tagSlug) => {
+        const res = await maindb.query.tagSlugs.findFirst({
+          where: eq(tagSlugs.slug, tagSlug),
           columns: {
             id: true,
           },
@@ -2529,14 +2529,14 @@ const laniConfig = {
   publicPath: 'assets/images/featured',
   priorityConfig: {
     authors: 1,
-    tags: 2,
+    tagSlugs: 2,
     featuredImages: 3,
     posts: 4,
   },
   dbFunctionModules: {
     insert: {
       authors: { insertAuthors: '@/lib/bun-db-funcs' },
-      tags: { insertTags: '@/lib/bun-db-funcs' },
+      tagSlugs: { insertTags: '@/lib/bun-db-funcs' },
       featuredImages: { insertFeaturedImages: '@/lib/bun-db-funcs' },
       posts: { insertPosts: '@/lib/bun-db-funcs' },
     },
@@ -2582,7 +2582,7 @@ import 'server-only';
 import { eq, desc, like, or, and } from 'drizzle-orm';
 import { maindb } from '@/lib/db/turso-db';
 import { posts, postsToTags } from '@/lib/db/schema/posts';
-import { tags } from '@/lib/db/schema/tags';
+import { tagSlugs } from '@/lib/db/schema/tagSlugs';
 
 //import { maindb } from '@/lib/db/drizzle';
 
@@ -2610,7 +2610,7 @@ export interface QueryPostMetaItem {
     height: number;
     width: number;
   };
-  tags: {
+  tagSlugs: {
     slug: string;
     title: string;
     id: string;
@@ -2663,15 +2663,15 @@ export const queryPostMetas = cache(async () => {
     },
   });
   const finalRes = postRes.map((post) => {
-    const tagsOne = post.postToTags.map((tagsObj) => {
-      const slug = tagsObj.tag.slug;
-      const title = tagsObj.tag.title;
-      const id = tagsObj.tag.id;
+    const tagSlugsOne = post.postToTags.map((tagSlugsObj) => {
+      const slug = tagSlugsObj.tag.slug;
+      const title = tagSlugsObj.tag.title;
+      const id = tagSlugsObj.tag.id;
 
       return { slug, title, id };
     });
     delete (post as unknown as { postToTags: Record<string, unknown> | undefined }).postToTags;
-    return { ...post, tags: tagsOne };
+    return { ...post, tagSlugs: tagSlugsOne };
   });
   //console.dir(finalRes, { depth: null });
   return finalRes;
@@ -2765,16 +2765,16 @@ export const queryPostMetaByIdandSlugOrJustId = cache(
 
     if (!postRes) return;
 
-    const tagsMap = postRes.postToTags.map((tagsObj) => {
-      const slug = tagsObj.tag.slug;
-      const title = tagsObj.tag.title;
-      const id = tagsObj.tag.id;
+    const tagSlugsMap = postRes.postToTags.map((tagSlugsObj) => {
+      const slug = tagSlugsObj.tag.slug;
+      const title = tagSlugsObj.tag.title;
+      const id = tagSlugsObj.tag.id;
       return { slug, title, id };
     });
 
     delete (postRes as unknown as { postToTags: Record<string, unknown> | undefined }).postToTags;
 
-    return { ...postRes, tags: tagsMap };
+    return { ...postRes, tagSlugs: tagSlugsMap };
   },
 );
 
@@ -2798,21 +2798,21 @@ export interface TagQ {
 }
 
 export const getAllTags = cache(async () => {
-  const res = await maindb.select().from(tags);
+  const res = await maindb.select().from(tagSlugs);
   return res;
 });
 
 export const getTag = cache(async ({ idStr, slugStr }: { idStr: string; slugStr: string }) => {
-  const idRes2 = await maindb.query.tags.findFirst({
-    where: or(and(like(tags.id, `${idStr}%`), eq(tags.slug, slugStr)), like(tags.id, `${idStr}%`)),
+  const idRes2 = await maindb.query.tagSlugs.findFirst({
+    where: or(and(like(tagSlugs.id, `${idStr}%`), eq(tagSlugs.slug, slugStr)), like(tagSlugs.id, `${idStr}%`)),
   });
   return idRes2;
 });
 
 // type of metaItem arr
 export const getPostsWithTagID = cache(async (tagIdStr: string) => {
-  const idRes = await maindb.query.tags.findFirst({
-    where: like(tags.id, `${tagIdStr}%`),
+  const idRes = await maindb.query.tagSlugs.findFirst({
+    where: like(tagSlugs.id, `${tagIdStr}%`),
     columns: {
       id: true,
     },
@@ -3132,7 +3132,7 @@ export const Page = defineDocumentType(() => ({
 
 const Tag = defineDocumentType(() => ({
   name: 'Tag',
-  filePathPattern: 'tags/**/*.mdx',
+  filePathPattern: 'tagSlugs/**/*.mdx',
   contentType: 'mdx',
   fields: {
     id: { type: 'string', required: false },
@@ -3150,7 +3150,7 @@ const Tag = defineDocumentType(() => ({
 
 const Category = defineDocumentType(() => ({
   name: 'Category',
-  filePathPattern: 'categories/**/*.mdx',
+  filePathPattern: 'catSlugs/**/*.mdx',
   contentType: 'mdx',
   fields: {
     id: { type: 'string', required: false },
@@ -3178,11 +3178,11 @@ export const Post = defineDocumentType(() => ({
     date: { type: 'date', required: true },
     updated: { type: 'date', required: false },
     author: { type: 'string', required: false },
-    categories: {
+    catSlugs: {
       type: 'list',
       of: Category,
     },
-    tags: {
+    tagSlugs: {
       type: 'list',
       of: Tag,
     },

@@ -2,7 +2,7 @@ import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { ImageResponse } from 'next/og';
 import type { NextRequest } from 'next/server';
-import type { Project, Post, Page, Tag, Category } from 'contentlayer/generated';
+import type { Project, Post, Page, Tag, Category } from 'content-collections';
 import type { FeaturedImageR1 } from '@/lib/image-process';
 
 export const maxDuration = 5;

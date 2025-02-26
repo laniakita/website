@@ -47,6 +47,8 @@ secrets.env
 # contentlayer
 .contentlayer
 
+.content-collections
+
 # patched contentlayer outputs
 contentlayermini
 .contentlayermini

@@ -1,6 +1,11 @@
+import { PHASE_PRODUCTION_BUILD } from 'next/constants.js';
 import { RESUME_LINK, SHOWCASE_URL } from './src/lib/constants-js.mjs';
 import path from 'node:path';
 import { fileURLToPath } from 'url';
+import createMdx from '@next/mdx';
+import { withContentCollections } from "@content-collections/next";
+import nix from 'highlight.js/lib/languages/nix';
+import { common, all } from 'lowlight';
 
 const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
 const __dirname = path.dirname(__filename); // get the name of the directory
@@ -120,25 +125,50 @@ const nextConfig = {
   },
 };
 
-const nextConfigFunction = async ({ defaultConfig }) => {
+const nextConfigFunction = async ({ defaultConfig, phase }) => {
   const plugins = [];
 
-  const withSerwist = (await import('@serwist/next')).default({
-    swSrc: 'src/app/sw.ts',
-    swDest: 'public/sw.js',
-    maximumFileSizeToCacheInBytes: 7864000,
-    disable: process.env.NODE_ENV !== 'production',
-  });
-  plugins.push(withSerwist);
+  if (phase === PHASE_PRODUCTION_BUILD) {
+    const withSerwist = (await import('@serwist/next')).default({
+      swSrc: 'src/app/sw.ts',
+      swDest: 'public/sw.js',
+      maximumFileSizeToCacheInBytes: 7864000,
+    });
+    plugins.push(withSerwist);
+  }
 
   // ignore webpack cache warnings (see: https://github.com/contentlayerdev/contentlayer/issues/313)
-  const withContentLayer = (await import('next-contentlayer2')).withContentlayer;
-  plugins.push(withContentLayer);
+  //const withContentLayer = (await import('next-contentlayer2')).withContentlayer;
+  //plugins.push(withContentLayer);
+
+  const withMdx = createMdx({
+    options: {
+      remarkPlugins: [['remark-gfm', {}]],
+      rehypePlugins: [
+        ['rehype-highlight', phase === PHASE_PRODUCTION_BUILD && { languages: { ...common, nix } } ],
+        [
+          'rehype-highlight-code-lines',
+          {
+            showLineNumbers: true,
+            lineContainerTagName: 'div',
+          },
+        ],
+        'rehype-mdx-import-media',
+        'rehype-slug',
+        'rehype-fn-citation-spacer',
+      ],
+    },
+  });
 
   const withBundleAnalyzer = (await import('@next/bundle-analyzer')).default({
     enabled: process.env.ANALYZE === 'true',
   });
   plugins.push(withBundleAnalyzer);
+  
+  // needs to be last plugin in chain (see: https://github.com/sdorra/content-collections/issues/472#issuecomment-2607096538)
+  const contentCollections = (config) => withContentCollections(withMdx(config));
+  plugins.push(contentCollections);
+
 
   return plugins.reduce((acc, next) => next(acc), {
     ...defaultConfig,

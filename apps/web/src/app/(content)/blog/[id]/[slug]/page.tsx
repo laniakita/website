@@ -2,22 +2,25 @@ import { notFound, redirect } from 'next/navigation';
 import type { Metadata, ResolvingMetadata } from 'next';
 import type { BlogPosting, WithContext } from 'schema-dts';
 import { compareDesc } from 'date-fns';
-import { allAuthors, allPosts } from 'contentlayer/generated';
+import { allAuthors, allPosts } from 'content-collections';
 import { descriptionHelper } from '@/lib/description-helper';
 import type { FeaturedImageR1 } from '@/lib/image-process';
 import { APP_URL } from '@/lib/constants';
-import GlobalMDXComponent from '@/components/mdx/global-mdx-components';
+//import GlobalMDXComponent from '@/components/mdx/global-mdx-components';
 import { catTagData } from '@/lib/cat-tag-data';
 import { PostHeader2 } from './post-header-2';
 import CommentsComponent from './comments/core';
+import { MDXContent } from '@content-collections/mdx/react';
 
+/*
 export function generateStaticParams() {
   const posts = allPosts.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
   return posts.map((meta) => ({
     id: meta.id.split('-').shift(),
     slug: meta.url.split('/').pop(),
   }));
-}
+}*/
+
 
 export async function generateMetadata(
   props: { params: Promise<{ id: string; slug: string }> },
@@ -32,7 +35,7 @@ export async function generateMetadata(
       postX.url.split('/').pop() === params.slug,
   );
 
-  const description = descriptionHelper(postData?.body.raw, postData?.url, true);
+  const description = descriptionHelper(postData?.content, postData?.url, true);
   const previousImages = (await parent).openGraph?.images ?? [];
 
   const previousImagesTwitter = (await parent).twitter?.images ?? [];
@@ -106,15 +109,18 @@ export default async function BlogPostPage(props: { params: Promise<{ id: string
     return notFound();
   }
 
-  const catTagArr = catTagData({ cats: post.categories, tags: post.tags }).map((catTag) => catTag?.title);
+  const { default: PostMdx } = await import(`@content/posts/${post._meta.path}.mdx`)
 
+  //const catTagArr = [ ...post.categories ?? '', ...post.tags ?? ''].map((catTag) => catTag.title);
+
+  /*
   const jsonLd: WithContext<BlogPosting> = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     headline: post.headline,
     alternativeHeadline: post.subheadline ?? undefined,
     url: `${process.env.NEXT_PUBLIC_DEPLOYED_URL ? process.env.NEXT_PUBLIC_DEPLOYED_URL : APP_URL}${post.url}`,
-    description: descriptionHelper(post.body.raw, post.url, true),
+    description: descriptionHelper(post.content, post.url, true),
     author: 'Lani Akita',
     editor: 'Lani Akita',
     dateCreated: new Date(post.date).toISOString(),
@@ -134,16 +140,16 @@ export default async function BlogPostPage(props: { params: Promise<{ id: string
     keywords: post.keywords ?? (catTagArr as string[]),
     countryOfOrigin: 'United States',
   };
-
+  */
   return (
     <>
-      <script type='application/ld+json' dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      {/*<script type='application/ld+json' dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />*/}
       <main className='-mb-0.5 flex min-h-full w-full flex-col pb-common'>
         <article id='content'>
           <PostHeader2 {...post} />
           <div className='w-full px-6'>
             <div className='prose-protocol-omega mx-auto max-w-4xl md:max-w-2xl'>
-              <GlobalMDXComponent {...post} />
+              <PostMdx />
             </div>
           </div>
         </article>

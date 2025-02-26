@@ -1,5 +1,5 @@
 'use client';
-import { allProjects } from 'contentlayer/generated';
+import { allProjects } from 'content-collections';
 import { compareDesc } from 'date-fns';
 import MiniProjectPreview from '../previews/mini-project-preview';
 import { useRef } from 'react';

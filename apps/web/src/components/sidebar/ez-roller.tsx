@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import type { Category, Tag } from 'contentlayer/generated';
+import type { Category, Tag } from 'content-collections';
 
 export default function EzRoller({ array, title }: { array: Category[] | Tag[]; title: string }) {
   const uniqueKey = crypto.randomUUID();

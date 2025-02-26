@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import type { Metadata, ResolvingMetadata } from 'next';
 import { compareDesc } from 'date-fns';
-import { allProjects } from 'contentlayer/generated';
+import { allProjects } from 'content-collections';
 
 export const dynamicParams = false;
 

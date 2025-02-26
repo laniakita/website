@@ -1,5 +1,5 @@
 import type { Metadata, ResolvingMetadata } from 'next';
-import { allPages } from 'contentlayer/generated';
+import { allPages } from 'content-collections';
 import { descriptionHelper } from '@/lib/description-helper';
 import { PageCommon } from '@/app/(content)/(info)/page-common';
 

@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { type Post } from 'contentlayer/generated';
+import { type Post } from 'content-collections';
 import type { FeaturedImageR1 } from '@/lib/image-process';
 
 export function HeroBlur2(post: Post) {

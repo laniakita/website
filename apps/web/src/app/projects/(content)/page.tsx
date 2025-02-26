@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { compareDesc } from 'date-fns';
-import { allPages, allProjects } from 'contentlayer/generated';
+import { allPages, allProjects } from 'content-collections';
 import { descriptionHelper } from '@/lib/description-helper';
 import GlobalMDXComponent from '@/components/mdx/global-mdx-components';
 import ProjectPreview from './project-preview';

@@ -1,8 +1,8 @@
 import Link from 'next/link';
-import { allAuthors, type Post } from 'contentlayer/generated';
+import { allAuthors, type Post } from 'content-collections';
 import type { FeaturedImageR1 } from '@/lib/image-process';
 import ShareButton from '@/components/share-btn/share-btn';
-import { CatTagRoller } from '../../cat-tag-roller';
+import { CatTag, CatTagRoller } from '../../cat-tag-roller';
 import { HeroBlur2 } from './hero-blur-2';
 import LocalDate from '../../local-date';
 
@@ -13,7 +13,7 @@ export function PostHeader2(post: Post) {
       <header className='z-0 pt-post-page'>
         <div className='flex w-full flex-col items-center justify-center gap-2 px-6 pb-6 lg:pb-10'>
           <div className='w-full max-w-3xl font-mono md:max-w-2xl'>
-            <CatTagRoller cats={post.categories} tags={post.tags} />
+            <CatTagRoller cats={post.categories as CatTag[]} tags={post.tags as CatTag[]} />
           </div>
 
           <h1 id={post.url.split('/').pop()} className='post-headline'>

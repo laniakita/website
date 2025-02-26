@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { type Post } from 'contentlayer/generated';
+import { type Post } from 'content-collections';
 import { descriptionHelper } from '@/lib/description-helper';
 import type { FeaturedImageR1 } from '@/lib/image-process';
 import GlobalMDXRenderer from '@/components/mdx/global-mdx-renderer';
@@ -8,7 +8,7 @@ import { CatTagRoller } from './cat-tag-roller';
 import LocalDate from './local-date';
 
 export default function PostPreviewV4(post: Post) {
-  const descriptionStr = descriptionHelper(post.body.raw, post.url)!;
+  const descriptionStr = descriptionHelper(post.content, post.url)!;
   const res = post.featured_image as FeaturedImageR1;
 
   return (

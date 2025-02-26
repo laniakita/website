@@ -3,7 +3,7 @@ import GlobalMDXRenderer from '@/components/mdx/global-mdx-renderer';
 import { APP_URL, SHOWCASE_URL } from '@/lib/constants';
 import { descriptionHelper } from '@/lib/description-helper';
 import type { FeaturedImageR1 } from '@/lib/image-process';
-import { allPosts, type Project } from 'contentlayer/generated';
+import { allPosts, type Project } from 'content-collections';
 import Markdown from 'markdown-to-jsx';
 import Image from 'next/image';
 import Link from 'next/link';

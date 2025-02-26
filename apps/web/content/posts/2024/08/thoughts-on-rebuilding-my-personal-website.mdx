@@ -3,12 +3,12 @@ id: 843fc0c8-e2f7-4267-bdfa-4c6cbef28cb6
 type: Post
 date: 2024-08-08T06:09:41Z
 updated: 2024-09-03T23:46:58Z
-categories:
-  - slug: meta
-  - slug: full-stack
-tags:
-  - slug: next-js
-  - slug: sst
+catSlugs:
+  - meta
+  - full-stack
+tagSlugs:
+  - next-js
+  - sst
 keywords:
   - thoughts
   - Next.js
@@ -142,10 +142,10 @@ With Meta having developed and maintained React, and React having not-so-subtly 
 To demonstrate, there’s quite a lot of [metadata APIs](https://nextjs.org/docs/app/building-your-application/optimizing/metadata) included in Next.js by default. To give you an idea of how much, I put together the following list. It's an overview of the metadata APIs I’m currently using for this site.
 
 - From the [`generateMetadata` API](https://nextjs.org/docs/app/api-reference/functions/generate-metadata)
-  - To generate meta tags on simple static pages, I’m using the [`metadata` Object](https://nextjs.org/docs/app/api-reference/functions/generate-metadata#the-metadata-object).
-  - To generate meta tags dynamically on dynamic routes I’m using the namesake [`generateMetadata` function](https://nextjs.org/docs/app/api-reference/functions/generate-metadata#generatemetadata-function).
+  - To generate meta tagSlugs on simple static pages, I’m using the [`metadata` Object](https://nextjs.org/docs/app/api-reference/functions/generate-metadata#the-metadata-object).
+  - To generate meta tagSlugs dynamically on dynamic routes I’m using the namesake [`generateMetadata` function](https://nextjs.org/docs/app/api-reference/functions/generate-metadata#generatemetadata-function).
 - From the [Metadata files API](https://nextjs.org/docs/app/api-reference/file-conventions/metadata)
-  - To auto-generate the various icon meta tags, I’m using [favicon, icon, apple-icon](https://nextjs.org/docs/app/api-reference/file-conventions/metadata/app-icons) file conventions.
+  - To auto-generate the various icon meta tagSlugs, I’m using [favicon, icon, apple-icon](https://nextjs.org/docs/app/api-reference/file-conventions/metadata/app-icons) file conventions.
   - To generate the robots.txt, I’m using a special [`robots.ts`](https://nextjs.org/docs/app/api-reference/file-conventions/metadata/robots) file.
   - To generate the `sitemap.xml`, I’m using the [`generateSitemaps` function from its namesake API](https://nextjs.org/docs/app/api-reference/functions/generate-sitemaps).
 
@@ -155,11 +155,11 @@ The `generateMetadata` function can even be paired with the [`generateStaticPara
 
 Aside, the Metadata files API has quite a lot of time saving utilities too. Beyond the _special files_ that allow you to generate things like the `robots.txt` or `sitemap.xml` with functions similar to those in the `generateMetadata API`, the file-based metadata generation for icons is a feature that I really love.
 
-Like the `generateMetadata API`, it too has saved me quite a lot of the mind-numbingly tedious grunt work in hard-coding the different icons into their respective meta tags. The difference (and best part) of course, is that it does this automatically without even an object! All you need to do is simply give your icon a corresponding `filename` to its file format, in accordance with the icon file conventions under the Metadata files API, et voilà! Essential icons automatically defined in your site’s header!
+Like the `generateMetadata API`, it too has saved me quite a lot of the mind-numbingly tedious grunt work in hard-coding the different icons into their respective meta tagSlugs. The difference (and best part) of course, is that it does this automatically without even an object! All you need to do is simply give your icon a corresponding `filename` to its file format, in accordance with the icon file conventions under the Metadata files API, et voilà! Essential icons automatically defined in your site’s header!
 
-While these APIs go more in depth, metadata utilities are one of the crazy-cool _sleeper_ features that Next.js provides. Features that just seem to be absent in other frameworks. I suppose this might be because metadata & metadata tools don’t seem all that important in the Proof-of-Concept stage. However, given the ubiquity of metadata and its uses, metatags can add _A LOT_ of polish to the production build of a web application, in my opinion.
+While these APIs go more in depth, metadata utilities are one of the crazy-cool _sleeper_ features that Next.js provides. Features that just seem to be absent in other frameworks. I suppose this might be because metadata & metadata tools don’t seem all that important in the Proof-of-Concept stage. However, given the ubiquity of metadata and its uses, metatagSlugs can add _A LOT_ of polish to the production build of a web application, in my opinion.
 
-Regardless of how you feel about SEO, metadata shows up everywhere. The little tags are used in way more places than just search engine algorithms. In the web browser alone, favicon tags show a site’s icon, title tags name the current tab, and minor tags like the author and a date show up in a browser’s reader view. Likewise, metadata and thus meta tags, are pretty much the sole determining factor in how a website will preview itself on social media.
+Regardless of how you feel about SEO, metadata shows up everywhere. The little tagSlugs are used in way more places than just search engine algorithms. In the web browser alone, favicon tagSlugs show a site’s icon, title tagSlugs name the current tab, and minor tagSlugs like the author and a date show up in a browser’s reader view. Likewise, metadata and thus meta tagSlugs, are pretty much the sole determining factor in how a website will preview itself on social media.
 
 For those reasons, I’m quite pleased with the suite of metadata tools Next.js provides OOTB. Especially because tools like these set Next.js worlds apart from other frameworks. While it’s not so complicated to just write your own in-house versions of these tools, having these _batteries_ make Next.js an attractive option for myself and I imagine other ~~lazy~~ **_time efficient_** devs as well.
 
