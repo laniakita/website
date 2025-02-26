@@ -1,6 +1,6 @@
 import { syncVersionVault } from './version-vault';
-import { writeMinifiedContent } from './contentlayer-minifier';
-import { writeWithHtmlContent } from './contentlayer-plus-html';
+//import { writeMinifiedContent } from './contentlayer-minifier';
+import { writeWithHtmlContent } from './content-collections-plus-html';
 
 const runScripts = async (): Promise<void> => {
   try {
@@ -11,7 +11,7 @@ const runScripts = async (): Promise<void> => {
     };
     await syncVersionVault(laniVersionVaultConfig);
     await writeWithHtmlContent();
-    await writeMinifiedContent();
+    //await writeMinifiedContent();
     console.log('trying to build theme-getter');
     await Bun.build({
       entrypoints: ['./src/lib/theme-getter.ts'],

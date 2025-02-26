@@ -26,7 +26,6 @@
     ".contentlayer/generated",
     "./**/*.ts",
     "./**/*.tsx",
-    "src/components/.tmp/section-footnotes.tsx"
-  ],
+   ],
   "exclude": ["node_modules", "public/sw.js"]
 }

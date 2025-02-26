@@ -99,7 +99,7 @@
     "build:open-next": "bun run open-next build",
     "dev": "bun run prebuild && next dev --turbo",
     "lint": "eslint . --cache --fix",
-    "prebuild": "echo 'hi'",
+    "prebuild": "NODE_ENV=production bun run ./src/scripts/runner.ts",
     "pretty": "prettier . --write",
     "start": "next start",
     "test": "bun test",

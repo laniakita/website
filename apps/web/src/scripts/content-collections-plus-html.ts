@@ -1,6 +1,6 @@
 #! /usr/bin/env bun
 import { mkdir } from 'node:fs/promises';
-import { allPosts } from 'contentlayer/generated';
+import { allPosts } from 'content-collections';
 import { postHtml } from '@/lib/html/mdx-html-wrapper';
 
 const allPostsRes = await Promise.all(
@@ -18,7 +18,7 @@ export const writeWithHtmlContent = async () => {
   try {
     const postsPlusHtml = allPostsRes;
 
-    const mainDir = './.contentlayerplushtml/generated';
+    const mainDir = './.content-collections-plus-html/generated';
     const mainOut = 'index.json';
 
     const postDir = `${mainDir}/Post`;

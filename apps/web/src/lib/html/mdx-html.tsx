@@ -2,7 +2,7 @@
 import type { ReactElement, DetailedHTMLProps, HTMLProps } from 'react';
 import * as ReactDomServer from 'react-dom/server';
 import { resMdx } from './utils';
-import { getMDXComponent } from '@/components/mdx/mdx-bundler-components';
+import { getMDXComponent } from './mdx-bundler-components';
 
 function Paragraph(props: DetailedHTMLProps<HTMLProps<HTMLParagraphElement>, HTMLParagraphElement>) {
   if (typeof props.children !== 'string' && (props.children as ReactElement).type === 'img') {

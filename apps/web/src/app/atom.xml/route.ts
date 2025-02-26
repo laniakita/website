@@ -1,8 +1,8 @@
 import { compareDesc } from 'date-fns';
 import { toXML } from 'jstoxml';
 import versionVault from 'versionVault/compiled';
-import { allTags, allCategories } from 'contentlayer/generated';
-import type { Tag, Category, Post } from 'contentlayer/generated';
+import { allTags, allCategories } from 'content-collections'
+import type { Tag, Category, Post } from 'content-collections';
 import type { FeaturedImageR1 } from '@/lib/image-process';
 import { APP_URL, BLOG_DESCR } from '@/lib/constants';
 import { readFile } from 'node:fs/promises';
@@ -18,7 +18,7 @@ const xmlOpts = {
 export async function GET() {
   const NEXTJS_VERSION = versionVault.versions.dependencies.next;
 
-  const allPostData = await readFile(join(process.cwd(), '.contentlayerplushtml/generated/Post/index.json'), {
+  const allPostData = await readFile(join(process.cwd(), '.content-collections-plus-html/generated/Post/index.json'), {
     encoding: 'utf8',
   });
 
@@ -61,8 +61,8 @@ export async function GET() {
     const cats =
       post.categories &&
       (
-        (post.categories as unknown as { slug: string }[]).map((cat) => {
-          const category = allCategories.find((categoryX) => categoryX._raw.flattenedPath === `categories/${cat.slug}`);
+        (post.categories).map((cat) => {
+          const category = allCategories.find((categoryX) => categoryX.url === cat?.url);
 
           return category;
         }) as Category[]
@@ -71,8 +71,8 @@ export async function GET() {
     const tagsArr =
       post.tags &&
       (
-        (post.tags as unknown as { slug: string }[]).map((tag) => {
-          const tagY = allTags.find((tagX) => tagX._raw.flattenedPath === `tags/${tag.slug}`);
+        post.tags.map((tag) => {
+          const tagY = allTags.find((tagX) => tagX.url === tag?.url);
 
           return tagY;
         }) as Tag[]

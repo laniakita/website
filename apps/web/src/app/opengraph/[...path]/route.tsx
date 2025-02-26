@@ -2,7 +2,7 @@ import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { ImageResponse } from 'next/og';
 import type { NextRequest } from 'next/server';
-import type { Project, Post, Page, Tag, Category } from 'content-collections';
+import { allPosts,allPages, allProjects, allCategories, allTags, type Post, type Project, type Page, type Tag, type Category  } from 'content-collections';
 import type { FeaturedImageR1 } from '@/lib/image-process';
 
 export const maxDuration = 5;
@@ -25,31 +25,7 @@ export async function GET(request: NextRequest) {
   const zeroXProtoData = await readFile(join(process.cwd(), '0xProto-Regular.woff'));
   const zeroXProto = Uint8Array.from(zeroXProtoData).buffer;
 
-  const allPostData = await readFile(join(process.cwd(), '.contentlayermini/generated/Post/index.json'), {
-    encoding: 'utf8',
-  });
-  const allPosts = JSON.parse(allPostData) as Post[];
-
-  const allPagesData = await readFile(join(process.cwd(), '.contentlayermini/generated/Page/index.json'), {
-    encoding: 'utf8',
-  });
-  const allPages = JSON.parse(allPagesData) as Page[];
-
-  const allProjectData = await readFile(join(process.cwd(), '.contentlayermini/generated/Project/index.json'), {
-    encoding: 'utf8',
-  });
-  const allProjects = JSON.parse(allProjectData) as Project[];
-
-  const allCategoryData = await readFile(join(process.cwd(), '.contentlayermini/generated/Category/index.json'), {
-    encoding: 'utf8',
-  });
-  const allCategories = JSON.parse(allCategoryData) as Category[];
-
-  const allTagData = await readFile(join(process.cwd(), '.contentlayermini/generated/Tag/index.json'), {
-    encoding: 'utf8',
-  });
-  const allTags = JSON.parse(allTagData) as Tag[];
-
+  
   const validPostPaths = allPosts.map((post) => {
     return `/opengraph${post.url.toLowerCase()}`;
   });
@@ -69,6 +45,7 @@ export async function GET(request: NextRequest) {
   const validProjectPaths = allProjects.map((proj) => {
     return `/opengraph${proj.url.toLowerCase()}`;
   });
+
   const allValidPaths = [
     '/opengraph/home',
     ...validPagePaths,
@@ -116,17 +93,16 @@ export async function GET(request: NextRequest) {
     switch (reqType) {
       case 'projects': {
         const projectUrl = `/projects/${modUrl}`;
-        data.fetched = allProjects.find((projX) => projX.url === projectUrl) as unknown as Project | undefined;
+        data.fetched = allProjects.find((projX) => projX.url === projectUrl) as Project;
         data.type = 'projects';
         data.title = data.fetched?.title;
         data.prefix = 'Projects by Lani';
-
         data.hasImage = data.fetched?.featured_image?.hasImage;
         break;
       }
       case 'blog': {
         const postUrl = `/blog/${modUrl}`;
-        data.fetched = allPosts.find((postX) => postX.url === postUrl) as unknown as Post | undefined;
+        data.fetched = allPosts.find((postX) => postX.url === postUrl);
         data.type = 'blog';
         data.title = data.fetched?.headline;
         data.prefix = 'Dev Blog of Lani';
@@ -136,7 +112,7 @@ export async function GET(request: NextRequest) {
       }
       case 'credits': {
         const creditUrl = `/credits/${modUrl}`;
-        data.fetched = allPages.find((credit) => credit.url === creditUrl) as unknown as Page | undefined;
+        data.fetched = allPages.find((credit) => credit.url === creditUrl);
         data.type = 'credits';
         data.title = data.fetched?.title;
         data.prefix = 'Credits';
@@ -144,7 +120,7 @@ export async function GET(request: NextRequest) {
       }
       case 'tags': {
         const tagUrl = `/tags/${modUrl}`;
-        data.fetched = allTags.find((tag) => tag.url === tagUrl) as unknown as Tag | undefined;
+        data.fetched = allTags.find((tag) => tag.url === tagUrl);
         data.type = 'tags';
         data.title = data.fetched?.title;
         data.prefix = 'Tags';
@@ -152,7 +128,7 @@ export async function GET(request: NextRequest) {
       }
       case 'categories': {
         const catUrl = `/categories/${modUrl}`;
-        data.fetched = allCategories.find((cat) => cat.url === catUrl) as unknown as Category | undefined;
+        data.fetched = allCategories.find((cat) => cat.url === catUrl);
         data.type = 'categories';
         data.title = data.fetched?.title;
         data.prefix = 'Categories';
@@ -160,7 +136,7 @@ export async function GET(request: NextRequest) {
       }
       case 'static': {
         const staticUrl = `/${modUrl}`;
-        data.fetched = allPages.find((page) => page.url === staticUrl) as unknown as Page | undefined;
+        data.fetched = allPages.find((page) => page.url === staticUrl);
         data.type = 'static';
         data.title = data.fetched?.title;
         data.dynamic = false;

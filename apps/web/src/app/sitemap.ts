@@ -1,7 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { compareDesc } from 'date-fns';
-import { allPosts, allProjects, allCategories, allTags, allPages } from 'contentlayer/generated';
-import type { Tag, Category, Project } from 'contentlayer/generated';
+import { allPosts, allProjects, allCategories, allTags, allPages } from 'content-collections';
+import type { Tag, Category, Project } from 'content-collections';
 import { APP_URL } from '@/lib/constants';
 
 // funfact/improbable todo: google only supports 50,000 urls per sitemap, so filter
@@ -17,7 +17,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     if (isCat) {
       const postResX = postsRes.find((postX) =>
         postX.categories?.some(
-          (catX) => (catX as unknown as Category).slug === cattag._raw.flattenedPath.split('/').pop(),
+          (catX) => (catX as unknown as Category).url === cattag.url,
         ),
       );
 
@@ -25,7 +25,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
 
     const postResTag = postsRes.find((postY) =>
-      postY.tags?.some((tagX) => (tagX as unknown as Tag).slug === cattag._raw.flattenedPath.split('/').pop()),
+      postY.tags?.some((tagX) => (tagX as unknown as Tag).url === cattag.url),
     );
 
     return postResTag?.updated ?? postResTag?.date ?? new Date();

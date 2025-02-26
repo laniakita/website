@@ -2,15 +2,16 @@ import { notFound, redirect } from 'next/navigation';
 import type { Metadata, ResolvingMetadata } from 'next';
 import type { BlogPosting, WithContext } from 'schema-dts';
 import { compareDesc } from 'date-fns';
-import { allAuthors, allPosts } from 'content-collections';
+import { allAuthors, allPosts, Post } from 'content-collections';
 import { descriptionHelper } from '@/lib/description-helper';
 import type { FeaturedImageR1 } from '@/lib/image-process';
 import { APP_URL } from '@/lib/constants';
-//import GlobalMDXComponent from '@/components/mdx/global-mdx-components';
-import { catTagData } from '@/lib/cat-tag-data';
 import { PostHeader2 } from './post-header-2';
 import CommentsComponent from './comments/core';
 import { MDXContent } from '@content-collections/mdx/react';
+import { CatTag } from '../../cat-tag-roller';
+import { globalMdxComponents } from '@/components/mdx/global-mdx-components';
+//import { MDXComponent } from './mdx-comp';
 
 /*
 export function generateStaticParams() {
@@ -87,6 +88,8 @@ export async function generateMetadata(
   };
 }
 
+
+
 export default async function BlogPostPage(props: { params: Promise<{ id: string; slug: string }> }) {
   const params = await props.params;
 
@@ -109,11 +112,9 @@ export default async function BlogPostPage(props: { params: Promise<{ id: string
     return notFound();
   }
 
-  const { default: PostMdx } = await import(`@content/posts/${post._meta.path}.mdx`)
 
-  //const catTagArr = [ ...post.categories ?? '', ...post.tags ?? ''].map((catTag) => catTag.title);
-
-  /*
+  const catTagArr = ([ ...post.categories ?? '', ...post.tags ?? ''] as CatTag[]).map((catTag) => {return catTag.title}) as string[];
+  
   const jsonLd: WithContext<BlogPosting> = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
@@ -137,19 +138,20 @@ export default async function BlogPostPage(props: { params: Promise<{ id: string
       },
     ],
     thumbnailUrl: `${APP_URL}/opengraph/blog/${params.id}/${params.slug}?twitter=true`,
-    keywords: post.keywords ?? (catTagArr as string[]),
+    keywords: post.keywords ?? catTagArr,
     countryOfOrigin: 'United States',
-  };
-  */
+  }; 
+
   return (
     <>
-      {/*<script type='application/ld+json' dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />*/}
+      <script type='application/ld+json' dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <main className='-mb-0.5 flex min-h-full w-full flex-col pb-common'>
         <article id='content'>
           <PostHeader2 {...post} />
           <div className='w-full px-6'>
             <div className='prose-protocol-omega mx-auto max-w-4xl md:max-w-2xl'>
-              <PostMdx />
+              {/* @ts-expect-error -- types issue? */}
+              <MDXContent code={post.mdx} components={globalMdxComponents} />
             </div>
           </div>
         </article>

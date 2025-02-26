@@ -5,6 +5,7 @@ import ToCMenuCore, { ToCMenuMobileCore } from '@/components/table-of-contents/c
 import { allPosts } from 'content-collections';
 import jsxToHtml from './utils';
 import { JSDOM } from 'jsdom';
+//import { postBundle } from './postRes';
 
 type Params = Promise<{ id: string; slug: string }>;
 
@@ -28,6 +29,8 @@ export default async function PostPageLayout({ children, params }: { children: R
       postX.id.split('-').shift() === id ||
       postX.url.split('/').pop() === slug,
   );
+
+  //const postData = await postBundle(post as Post);
 
   const postHtml = await jsxToHtml(post!.mdx);
   const doc = new JSDOM(`<!DOCTYPE html>${postHtml}</html>`);

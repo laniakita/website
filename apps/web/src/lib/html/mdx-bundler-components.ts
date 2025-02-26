@@ -4,12 +4,12 @@ import * as _jsx_dev_runtime from 'react/jsx-dev-runtime';
 import * as ReactDOM from 'react-dom';
 import type { Jsx } from '@mdx-js/mdx';
 
-export function getMDXComponent(code: string, globals: Record<string, unknown>) {
+export function getMDXComponent(code: string, globals?: Record<string, unknown>) {
   const mdxExport = getMDXExport(code, globals);
   return mdxExport.default;
 }
 
-function getMDXExport(code: string, globals: Record<string, unknown>) {
+function getMDXExport(code: string, globals?: Record<string, unknown>) {
   const scope = {
     React,
     ReactDOM,
