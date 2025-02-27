@@ -8,9 +8,7 @@ import type { FeaturedImageR1 } from '@/lib/image-process';
 import { APP_URL } from '@/lib/constants';
 import { PostHeader2 } from './post-header-2';
 import CommentsComponent from './comments/core';
-//import { MDXContent } from '@content-collections/mdx/react';
 import { CatTag } from '../cat-tag-roller';
-//import { globalMdxComponents } from '@/components/mdx/global-mdx-components';
 
 export function generateStaticParams() {
   const posts = allPosts.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
@@ -41,6 +39,8 @@ export async function generateMetadata(
     return descr;
   }
 
+  const altTextTrunc = descriptionTruncator(postData?.featured_image.altText)
+  
   return {
     title: postData?.headline,
     authors: [
@@ -52,7 +52,7 @@ export async function generateMetadata(
       description: descriptionTruncator(description),
       images: [
         {
-          alt: `${descriptionTruncator((postData?.featured_image as FeaturedImageR1).altText) || postData?.headline}`,
+          alt: altTextTrunc ?? postData?.headline,
           type: 'image/png',
           width: 1200,
           height: 630,
@@ -67,7 +67,7 @@ export async function generateMetadata(
       description: descriptionTruncator(description),
       images: [
         {
-          alt: `${descriptionTruncator((postData?.featured_image as FeaturedImageR1).altText) || postData?.headline}`,
+          alt: altTextTrunc ?? postData?.headline,
           type: 'image/png',
           width: 1600,
           height: 900,
@@ -129,7 +129,6 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   };
 
   const { default: PostMDX } = await import(`@content/posts/${post._meta.path}.mdx`)
-
 
   return (
     <>

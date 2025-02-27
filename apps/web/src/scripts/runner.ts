@@ -10,7 +10,7 @@ const runScripts = async (): Promise<void> => {
       },
     };
     await syncVersionVault(laniVersionVaultConfig);
-    await writeWithHtmlContent();
+    //await writeWithHtmlContent();
     //await writeMinifiedContent();
     console.log('trying to build theme-getter');
     await Bun.build({

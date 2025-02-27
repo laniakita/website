@@ -1,5 +1,7 @@
 import slugify from '@/utils/slugify';
-import { createDefaultImport, defineCollection, defineConfig } from '@content-collections/core';
+import { defineCollections } from 'fumadocs-mdx/config';
+import * as z from 'zod';
+//import { createDefaultImport, defineCollections, defineConfig } from '@content-collections/core';
 import util from 'node:util';
 import { exec as exec_process } from 'node:child_process';
 import { imageProcessor, FeaturedImageR1 } from './src/lib/image-process';
@@ -23,11 +25,10 @@ const exec = util.promisify(exec_process);
 // for more information on configuration, visit:
 // https://www.content-collections.dev/docs/configuration
 
-const categories = defineCollection({
-  name: 'categories',
-  directory: 'content/categories',
-  include: '**/*.mdx',
-  schema: (z) => ({
+const categories = defineCollections({
+  dir: './content/categories',
+  type: 'doc',
+  schema: z.object({
     id: z.string().optional(),
     title: z.string(),
     slug: z.string().optional(),
@@ -56,11 +57,10 @@ const categories = defineCollection({
   },
 });
 
-const tags = defineCollection({
-  name: 'tags',
-  directory: 'content/tags',
-  include: '**/*.mdx',
-  schema: (z) => ({
+const tags = defineCollections({
+  dir: './content/tags',
+  type: 'doc',
+  schema: z.object({
     id: z.string().optional(),
     title: z.string(),
     slug: z.string().optional(),
@@ -89,11 +89,11 @@ const tags = defineCollection({
   },
 });
 
-const authors = defineCollection({
+const authors = defineCollections({
   name: 'authors',
-  directory: 'content/authors',
-  include: '**/*.mdx',
-  schema: (z) => ({
+  dir: './content/authors',
+  type: 'doc',
+  schema: z.object({
     name: z.string(),
     bluesky: z.string().optional(),
     mastodon: z.string().optional(),
@@ -124,12 +124,11 @@ const authors = defineCollection({
   },
 });
 
-const posts = defineCollection({
-  name: 'posts',
-  directory: 'content/posts',
-  include: '**/*.mdx',
+const posts = defineCollections({
+  dir: './content/posts',
+  type: 'doc',
   //parser: 'frontmatter-only',
-  schema: (z) => ({
+  schema: z.object({
     id: z.string(),
     headline: z.string(),
     subheadline: z.string().optional(),
@@ -153,7 +152,7 @@ const posts = defineCollection({
     //const html = await htmlGenS(document.content, url)
     /*
     const body = await compileMDX(context, document, {
-      cwd: path.join(process.cwd(), 'content/posts', document._meta.directory)
+      cwd: path.join(process.cwd(), 'content/posts', document._meta.dir)
     });
     */
     const categoriesRes =
@@ -225,11 +224,11 @@ const posts = defineCollection({
   },
 });
 
-const pages = defineCollection({
+const pages = defineCollections({
   name: 'pages',
-  directory: 'content/pages',
-  include: '**/*.mdx',
-  schema: (z) => ({
+  dir: './content/pages',
+  type: 'doc',
+  schema: z.object({
     title: z.string(),
     description: z.string().optional(),
     date: z.coerce.date().optional(),
@@ -246,12 +245,10 @@ const pages = defineCollection({
   },
 });
 
-const projects = defineCollection({
-  name: 'projects',
-  directory: 'content/projects',
-  include: '**/*.yaml',
-  parser: 'yaml',
-  schema: (z) => ({
+const projects = defineCollections({
+  dir: './content/projects',
+  type: 'meta',
+  schema: z.object({
     id: z.string(),
     date: z.coerce.date(),
     updated: z.coerce.date().optional(),
@@ -302,12 +299,10 @@ const projects = defineCollection({
   },
 });
 
-const works = defineCollection({
-  name: 'works',
-  directory: 'content/works',
-  include: '**/*.mdx',
-  parser: 'frontmatter-only',
-  schema: (z) => ({
+const works = defineCollections({
+  dir: './content/works',
+  type: 'doc',
+  schema: z.object({
     id: z.string(),
     startDate: z.coerce.date(),
     endDate: z.coerce.date().optional(),
@@ -323,7 +318,7 @@ const works = defineCollection({
 
     const mdx = await bundleMDX({
       file: path.join(process.cwd(), 'content/works', document._meta.filePath),
-      cwd: path.join(process.cwd(), 'content/works', document._meta.directory),
+      cwd: path.join(process.cwd(), 'content/works', document._meta.dir),
       mdxOptions(options) {
         options.remarkPlugins = [...(options.remarkPlugins ?? []), remarkGfm];
         options.rehypePlugins = [

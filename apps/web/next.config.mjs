@@ -2,6 +2,9 @@ import path from 'node:path';
 import { fileURLToPath } from 'url';
 import { PHASE_PRODUCTION_BUILD } from 'next/constants.js';
 import { RESUME_LINK, SHOWCASE_URL } from './src/lib/constants-js.mjs';
+import { createMDX } from 'fumadocs-mdx/next';
+
+/*
 import { withContentCollections } from '@content-collections/next';
 import createMDX from '@next/mdx';
 import remarkGfm from 'remark-gfm';
@@ -13,14 +16,14 @@ import rehypeHighlightLines from 'rehype-highlight-code-lines';
 import remarkFrontmatter from 'remark-frontmatter'
 import remarkMdxFrontmatter from 'remark-mdx-frontmatter'
 import nix from 'highlight.js/lib/languages/nix';
-import { common } from 'lowlight';
+import { common } from 'lowlight';*/
 
 const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
 const __dirname = path.dirname(__filename); // get the name of the directory
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
+  pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
   images: {
     loader: 'custom',
     // loader for cloudfront during deploy & loader for local development.
@@ -155,8 +158,9 @@ const nextConfigFunction = async ({ defaultConfig, phase }) => {
   });
   plugins.push(withBundleAnalyzer);
 
+  /*
   const withMdx = createMDX({
-    options: /*phase === PHASE_PRODUCTION_BUILD ?*/ {
+    options:  {
       remarkPlugins: [remarkGfm, remarkFrontmatter, remarkMdxFrontmatter],
       rehypePlugins: [
         [rehypeHighlight, { languages: { ...common, nix } }],
@@ -171,13 +175,20 @@ const nextConfigFunction = async ({ defaultConfig, phase }) => {
         rehypeSlug,
         rehypeFnCitationSpacer,
       ],
-    } //: undefined,
+    },
   });
 
   plugins.push(withMdx);
 
   // needs to be last plugin in chain (see: https://github.com/sdorra/content-collections/issues/472#issuecomment-2607096538)
   plugins.push(withContentCollections);
+  */
+
+  const withMDX = createMDX({
+    configPath: './source.config.ts',
+  });
+
+  plugins.push(withMDX)
 
   return plugins.reduce((acc, next) => next(acc), {
     ...defaultConfig,

@@ -8,7 +8,7 @@
     "jsx": "preserve",
     "lib": ["esnext", "DOM", "DOM.Iterable"],
     "module": "esnext",
-    "moduleResolution": "Bundler",
+    "moduleResolution": "bundler",
     "noEmit": true,
     "plugins": [{ "name": "next" }],
     "target": "ESNext"
