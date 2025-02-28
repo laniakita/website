@@ -28,7 +28,8 @@
     "contentlayer2",
     "esbuild",
     "protobufjs",
-    "sharp"
+    "sharp",
+    "fumadocs-mdx"
   ],
   "workspaces": [
     "apps/*",

@@ -1,14 +1,9 @@
-import { defineCollections, defineDocs } from 'fumadocs-mdx/config';
-import * as z from 'zod';
-import { imageProcessor, FeaturedImageR1 } from './src/lib/image-process';
-import matter from 'gray-matter';
-
-// for more information on configuration, visit:
-// https://www.content-collections.dev/docs/configuration
-
-export const category = defineCollections({
-  dir: './content/categories',
-  type: 'doc',
+// source.config.ts
+import { defineCollections } from "fumadocs-mdx/config";
+import * as z from "zod";
+var category = defineCollections({
+  dir: "./content/categories",
+  type: "doc",
   schema: (ctx) => {
     return z.object({
       id: z.string().optional(),
@@ -17,15 +12,14 @@ export const category = defineCollections({
       type: z.string().optional(),
       date: z.coerce.date().optional(),
       url: z.string().default(
-        `/categories/${ctx.path.split('.').shift()}`
-      ),
-    })
-  },
+        `/categories/${ctx.path.split(".").shift()}`
+      )
+    });
+  }
 });
-
-export const tag = defineCollections({
-  dir: './content/tags',
-  type: 'doc',
+var tag = defineCollections({
+  dir: "./content/tags",
+  type: "doc",
   schema: (ctx) => {
     return z.object({
       id: z.string().optional(),
@@ -34,15 +28,14 @@ export const tag = defineCollections({
       type: z.string().optional(),
       date: z.coerce.date().optional(),
       url: z.string().default(
-        `/tags/${ctx.path.split('.').shift()}`
-      ),
-    })
-  },
+        `/tags/${ctx.path.split(".").shift()}`
+      )
+    });
+  }
 });
-
-export const author = defineCollections({
-  dir: './content/authors',
-  type: 'doc',
+var author = defineCollections({
+  dir: "./content/authors",
+  type: "doc",
   schema: (ctx) => {
     return z.object({
       name: z.string(),
@@ -50,17 +43,14 @@ export const author = defineCollections({
       mastodon: z.string().optional(),
       github: z.string().optional(),
       url: z.string().default(
-        `/authors/${ctx.path.split('.').shift()}`
-      ),
-    })
-  },
+        `/authors/${ctx.path.split(".").shift()}`
+      )
+    });
+  }
 });
-
-
-
-export const post = defineCollections({
-  type: 'doc',
-  dir: './content/posts',
+var post = defineCollections({
+  type: "doc",
+  dir: "./content/posts",
   schema: (ctx) => {
     return z.object({
       id: z.string(),
@@ -76,7 +66,7 @@ export const post = defineCollections({
       tagSlugs: z.array(z.string()).optional(),
       keywords: z.array(z.string()).optional(),
       url: z.string().default(() => {
-        return `/blog/${ctx.path.split('.').shift()}`
+        return `/blog/${ctx.path.split(".").shift()}`;
       }),
       featured_image: z.object({
         hasImage: z.boolean(),
@@ -97,13 +87,12 @@ export const post = defineCollections({
           reason: z.string()
         }).or(z.null())
       }).optional()
-    })
+    });
   }
 });
-
-
-/* 
-  *           })
-      })).default(async () => {
-
-  * */
+export {
+  author,
+  category,
+  post,
+  tag
+};

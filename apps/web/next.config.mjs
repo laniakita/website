@@ -4,8 +4,9 @@ import { PHASE_PRODUCTION_BUILD } from 'next/constants.js';
 import { RESUME_LINK, SHOWCASE_URL } from './src/lib/constants-js.mjs';
 import { createMDX } from 'fumadocs-mdx/next';
 
+//import { withContentCollections } from '@content-collections/next';
+
 /*
-import { withContentCollections } from '@content-collections/next';
 import createMDX from '@next/mdx';
 import remarkGfm from 'remark-gfm';
 import rehypeMdxImportMedia from 'rehype-mdx-import-media';
@@ -60,7 +61,7 @@ const nextConfig = {
   output: 'standalone',
   outputFileTracingRoot: path.join(__dirname, '../../'),
 
-  /*
+  
   experimental: {
     turbo: {
       rules: {
@@ -74,7 +75,7 @@ const nextConfig = {
         },
       },
     },
-  },*/
+  },
 
   async redirects() {
     return [
@@ -180,14 +181,15 @@ const nextConfigFunction = async ({ defaultConfig, phase }) => {
 
   plugins.push(withMdx);
 
-  // needs to be last plugin in chain (see: https://github.com/sdorra/content-collections/issues/472#issuecomment-2607096538)
-  plugins.push(withContentCollections);
   */
-
+  
+  // needs to be last plugin in chain (see: https://github.com/sdorra/content-collections/issues/472#issuecomment-2607096538)
+  //plugins.push(withContentCollections);
+  
+  
   const withMDX = createMDX({
     configPath: './source.config.ts',
   });
-
   plugins.push(withMDX)
 
   return plugins.reduce((acc, next) => next(acc), {

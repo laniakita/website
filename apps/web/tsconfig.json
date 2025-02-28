@@ -2,7 +2,12 @@
   "extends": "@website/typescript-config/nextjs.json",
   "compilerOptions": {
     "target": "es2020",
-    "lib": ["DOM", "DOM.Iterable", "esnext", "webworker"],
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "esnext",
+      "webworker"
+    ],
     "plugins": [
       {
         "name": "next"
@@ -10,16 +15,44 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "@content/*": ["./content/*"],
-      "contentlayer/generated": ["./.contentlayer/generated"],
-      "versionVault/compiled": ["./.versionvault/compiled/latest.json"],
-      "content-collections": ["./.content-collections/generated"]
+      "@/*": [
+        "./src/*"
+      ],
+      "@content/*": [
+        "./content/*"
+      ],
+      "contentlayer/generated": [
+        "./.contentlayer/generated"
+      ],
+      "versionVault/compiled": [
+        "./.versionvault/compiled/latest.json"
+      ],
+      "content-collections": [
+        "./.content-collections/generated"
+      ],
+      "source": [
+        "./.source"
+      ]
     },
     "allowSyntheticDefaultImports": true,
-    "types": ["@serwist/next/typings", "bun", "node"],
+    "types": [
+      "@serwist/next/typings",
+      "bun",
+      "node"
+    ],
     "resolveJsonModule": true
   },
-  "include": ["next-env.d.ts", ".next/types/**/*.ts", ".contentlayer/generated", "./**/*.ts", "./**/*.tsx", "src/app/(content)/blog/[...slug]/layout.old"],
-  "exclude": ["node_modules", "public/sw.js"]
+  "include": [
+    "next-env.d.ts",
+    ".next/types/**/*.ts",
+    ".contentlayer/generated",
+    ".source/**/*.ts",
+    ".source/**/*.js",
+    "./**/*.ts",
+    "./**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules",
+    "public/sw.js"
+  ]
 }

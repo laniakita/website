@@ -15,6 +15,7 @@ import path from 'node:path';
 import { compileMDX } from '@content-collections/mdx';
 import { HtmlCode } from '@/scripts/html-gen';
 import { MDXContentProps } from 'mdx-bundler/dist/types';
+import { transformMDX } from '@fumadocs/content-collections/configuration';
 
 const exec = util.promisify(exec_process);
 
@@ -37,7 +38,7 @@ const categories = defineCollection({
   }),
   transform: async (document, context) => {
     const urlRes = `/categories/${document._meta.path}`;
-    const mdx = await compileMDX(context, document);
+    const { body } = await transformMDX(document, context);
 
     const lastModified = await context.cache(document._meta.filePath, async (filePath) => {
       const { stdout } = await exec(`git log -1 --format=%ai -- ${filePath}`);
@@ -49,7 +50,7 @@ const categories = defineCollection({
 
     return {
       ...document,
-      mdx,
+      mdx: body,
       url: urlRes,
       lastModified,
     };
