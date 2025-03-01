@@ -1,15 +1,17 @@
 'use client';
 
-import { allPosts } from 'content-collections';
-import { compareDesc } from 'date-fns';
 import { useRef } from 'react';
 import { useIntersectionObserver } from '../utils';
 import MiniPostPreview from '../previews/mini-post-preview';
+import { blog } from '$/.source';
 
-export default function MiniPostsRoller() {
+type AllPostsProps = typeof blog
+
+export default function MiniPostsRoller({allPostsString}: {allPostsString :string}) {
+  const allPosts = JSON.parse(allPostsString) as AllPostsProps;
+    
   function PostMap({ visible }: { visible: boolean }) {
     return allPosts
-      .sort((a, b) => compareDesc(new Date(a.updated ?? a.date), new Date(b.updated ?? b.date)))
       .slice(0, 10)
       .map((post, idx) => (
         <li

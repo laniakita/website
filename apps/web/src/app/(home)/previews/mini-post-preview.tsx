@@ -1,13 +1,13 @@
+import { blog } from '$/.source';
 import { CatTag, CatTagRoller } from '@/app/(content)/blog/cat-tag-roller';
 import LocalDate from '@/app/(content)/blog/local-date';
 import type { FeaturedImageR1 } from '@/lib/image-process';
-import { Post } from 'content-collections';
 import Image from 'next/image';
 import Link from 'next/link';
 import { type HTMLAttributes } from 'react';
 
 export interface MiniPostPreviewProps extends HTMLAttributes<HTMLDivElement> {
-  post: Post;
+  post: typeof blog[0];
   parentExtraClass?: string;
 }
 

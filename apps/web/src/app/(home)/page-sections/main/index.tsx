@@ -1,4 +1,5 @@
 'use client';
+import { allPosts } from '@/lib/fumadocs/processed';
 import MiniPostsRoller from '../../rollers/mini-postroller';
 import MiniProjectsRoller from '../../rollers/mini-projects-roller';
 import { MiniWorkRoller } from '../../rollers/mini-server-roller';
@@ -34,10 +35,14 @@ export type MainProps = {
         code: string;
       };
     };
+    source: {
+      blog: string;
+    }
   };
 };
 
 export default function Main(props: MainProps) {
+  
   return (
     <main className='@container/main relative flex h-full flex-col pb-20'>
       <Section title="Aloha, I'm Lani" markdown={props.data.markdown.summary.code}>
@@ -57,7 +62,7 @@ export default function Main(props: MainProps) {
         <ServicesTable code={props.data.markdown.servicesTable.code} />
       </Section>
       <Section type={1} title='Latest from the Blog' page={3} markdown={props.data.markdown.blog.code}>
-        <MiniPostsRoller />
+        <MiniPostsRoller allPostsString={props.data.source.blog} />
       </Section>
     </main>
   );

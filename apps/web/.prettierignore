@@ -20,3 +20,4 @@ drizzle/meta/*
 .content-collection-plus-html/*
 sst-env.d.ts
 .turbo/*
+.source/*

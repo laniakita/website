@@ -7,7 +7,7 @@ import { ReactLenisScroller } from '@/components/virtual-scroller/react-lenis';
 import Hero from './page-sections/hero';
 import Main from './page-sections/main';
 import type { Metadata } from 'next';
-import { blogPosts } from '@/lib/source';
+import { allPosts } from '@/lib/fumadocs/processed';
 
 export const metadata: Metadata = {
   openGraph: {
@@ -45,8 +45,8 @@ export default async function HomeV2() {
   const blog = await resMdxMinimal(pageData.blogSec);
   const ReactDomServer = await import('react-dom/server').then((res) => res.default);
   
-  const posts = blogPosts.getPages();
-  
+  const posts = allPosts;
+
   const data = {
     markdown: {
       summary: { code: ReactDomServer.renderToStaticMarkup(<MiniMDXComponent code={summary.code} />) },
@@ -57,6 +57,9 @@ export default async function HomeV2() {
       servicesTable: { code: ReactDomServer.renderToStaticMarkup(<MiniMDXComponent code={servicesTable.code} />) },
       blog: { code: ReactDomServer.renderToStaticMarkup(<MiniMDXComponent code={blog.code} />) },
     },
+    source: {
+      blog: JSON.stringify(posts),
+    }
   };
 
   return (

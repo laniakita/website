@@ -42,6 +42,7 @@ const webConfig = [
       '.content-collections/*',
       '.content-collections-plus-html/*',
       'sst-env.d.ts',
+      '.source/*'
     ],
   },
   ...fixupConfigRules(compat.extends('plugin:@react-three/recommended')),

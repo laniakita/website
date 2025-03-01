@@ -78,7 +78,7 @@ const tags = defineCollection({
       if (stdout) {
         return new Date(stdout.trim()).toISOString();
       }
-      return new Date().toISOString();
+  return new Date().toISOString();
     });
 
     return {

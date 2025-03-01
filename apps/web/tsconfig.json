@@ -18,6 +18,9 @@
       "@/*": [
         "./src/*"
       ],
+      "$/*": [
+        "./*"
+      ],
       "@content/*": [
         "./content/*"
       ],
@@ -29,9 +32,6 @@
       ],
       "content-collections": [
         "./.content-collections/generated"
-      ],
-      "source": [
-        "./.source"
       ]
     },
     "allowSyntheticDefaultImports": true,
@@ -47,8 +47,8 @@
     ".next/types/**/*.ts",
     ".contentlayer/generated",
     ".source/**/*.ts",
-    ".source/**/*.js",
     "./**/*.ts",
+    "./**/*.mts",
     "./**/*.tsx"
   ],
   "exclude": [
