@@ -7,7 +7,7 @@ import { CatTag, CatTagRoller } from '../cat-tag-roller';
 import { HeroBlur2 } from './hero-blur-2';
 import LocalDate from '../local-date';
 
-export function PostHeader2(post: typeof blog[0]) {
+export function PostHeader2(post: (typeof blog)[0]) {
   const authorName = allAuthors.find((author) => author.url === `/authors/${post.author}`)?.name;
   return (
     <>

@@ -44,7 +44,7 @@ export default async function HomeV2() {
   const servicesTable = await resMdxMinimal(pageData.servicesTable);
   const blog = await resMdxMinimal(pageData.blogSec);
   const ReactDomServer = await import('react-dom/server').then((res) => res.default);
-  
+
   const data = {
     markdown: {
       summary: { code: ReactDomServer.renderToStaticMarkup(<MiniMDXComponent code={summary.code} />) },
@@ -58,8 +58,8 @@ export default async function HomeV2() {
     source: {
       blog: JSON.stringify(allPosts),
       projects: JSON.stringify(allProjects),
-      works: JSON.stringify(allWorks)
-    }
+      works: JSON.stringify(allWorks),
+    },
   };
 
   return (

@@ -9,16 +9,15 @@ import dynamic from 'next/dynamic';
 const Headings = dynamic(() => import('./utils').then((mod) => mod.Headings), { ssr: false });
 const ConcatTitle = dynamic(() => import('./utils').then((mod) => mod.ConcatTitle), { ssr: false });
 
-
 export type ToCMenuCoreProps = {
   nestedHeadings: HeadingNode[];
-  flatHeadings: {id: string; content: string}[];
+  flatHeadings: { id: string; content: string }[];
 };
 
 export default function ToCMenuCore(props: ToCMenuCoreProps) {
   const [activeId, setActiveId] = useState('');
   const [readyHeadings, setReadyHeadings] = useState<HeadingNode[]>([]);
-  const { tocInView, setToCNotInView } = useToCViewStore((state) => state);
+  const { tocInView, setToCNotInView, setToCInView } = useToCViewStore((state) => state);
   const [hasAnimated, setHasAnimated] = useState(false);
   const [isReady, setIsReady] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null!);
@@ -34,6 +33,12 @@ export default function ToCMenuCore(props: ToCMenuCoreProps) {
   }, [props.nestedHeadings, isReady]);
 
   useEffect(() => {
+    if (!localStorage.getItem('toc-state-pref')) {
+      setToCInView();
+    }
+  }, [setToCInView]);
+
+  useEffect(() => {
     if (tocInView) {
       setTimeout(() => {
         setMenuWidth(menuRef?.current?.clientWidth);
@@ -44,7 +49,7 @@ export default function ToCMenuCore(props: ToCMenuCoreProps) {
   return (
     <nav
       id={IPAD_TOC_ID}
-      className={`${tocInView ? 'min-w-80 md:w-80 lg:w-96 lg:min-w-96' : 'w-0 min-w-0'} sticky top-0 hidden max-h-dvh overflow-x-hidden overflow-y-auto border-r border-ctp-mauve/50 bg-ctp-crust text-slate-100 shadow-xl motion-safe:[transition:width_0.8s,min-width_0.8s,background-color_0.5s] md:block dark:bg-ctp-base/20`}
+      className={`${!hasAnimated || tocInView ? 'min-w-80 md:w-80 lg:w-96 lg:min-w-96' : 'w-0 min-w-0'} sticky top-0 hidden max-h-dvh overflow-x-hidden overflow-y-auto border-r border-ctp-mauve/50 bg-ctp-crust text-slate-100 shadow-xl motion-safe:[transition:width_0.8s,min-width_0.8s,background-color_0.5s] md:block dark:bg-ctp-base/20`}
     >
       <div className='sticky top-0 z-10 flex min-h-16 w-full flex-row items-center justify-start text-ctp-text'>
         <div id='nav-mask-bg' className='nav-glassy-bg' />
@@ -110,7 +115,7 @@ export function ToCMenuMobileCore(props: ToCMenuCoreProps) {
   }, []);
 
   useEffect(() => {
-    const nestedHeadings = props.nestedHeadings; 
+    const nestedHeadings = props.nestedHeadings;
     if (nestedHeadings && nestedHeadings?.length > 1) {
       setReadyHeadings(nestedHeadings);
     }

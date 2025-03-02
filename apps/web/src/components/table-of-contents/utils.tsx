@@ -1,7 +1,16 @@
 'use client';
 import { TW_SPACING } from '@/lib/constants';
 import { usePathname, useRouter } from 'next/navigation';
-import React, { type Dispatch, type SetStateAction, Suspense, useEffect, useId, useMemo, useRef, useState } from 'react';
+import React, {
+  type Dispatch,
+  type SetStateAction,
+  Suspense,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
 export const MED_SCREEN = 768; // px
 const MD_MAX_TOC_WIDTH = 'md:max-w-76';
@@ -26,9 +35,6 @@ export function Headings({
   hasAnimated?: boolean;
   notMobile?: boolean;
 }) {
-
-  console.log(tree);
-
   return (
     <menu
       aria-expanded={ariaExpanded}
@@ -38,19 +44,16 @@ export function Headings({
           : `${!hasAnimated ? 'motion-safe:wipe-fade-in' : ''} list-none leading-relaxed`
       }
     >
-      {tree?.map((heading) => <Suspense key={heading.url} fallback={null}><HeadingNode node={heading} activeId={activeId} /></Suspense>)}
+      {tree?.map((heading) => (
+        <Suspense key={heading.url} fallback={null}>
+          <HeadingNode node={heading} activeId={activeId} />
+        </Suspense>
+      ))}
     </menu>
   );
 }
 
-export function HeadingNode({
-  node,
-  activeId,
-}: {
-  node: HeadingNode;
-  activeId: string;
-}) {
-
+export function HeadingNode({ node, activeId }: { node: HeadingNode; activeId: string }) {
   const pathname = usePathname();
   const router = useRouter();
   const id = useId();
@@ -76,7 +79,7 @@ export function HeadingNode({
             aria-labelledby={linkId}
             className={`pointer-events-none inline-block pr-[2ch] font-mono text-sm leading-relaxed font-semibold text-balance link-color-trans group-hover:text-ctp-text group-hover:underline [&>code]:pretty-inline-code ${activeId === nodeId ? 'text-ctp-text underline' : 'text-ctp-subtext0'} break-words ${MD_MAX_TOC_WIDTH} ${LG_MAX_TOC_WIDTH}`}
             style={{ paddingLeft: `${node.depth * 2}ch` }}
-            dangerouslySetInnerHTML={{__html: node.title}}
+            dangerouslySetInnerHTML={{ __html: node.title }}
           />
         </button>
       </p>
@@ -277,7 +280,8 @@ export function ConcatTitle({
   headings: FlatHeadingNode[];
   innerWidth: number;
 }) {
-  const activeHeading = headings?.find((heading) => heading.id === activeId)?.content ?? headings[0]?.content ?? 'heading';
+  const activeHeading =
+    headings?.find((heading) => heading.id === activeId)?.content ?? headings[0]?.content ?? 'heading';
   const [font, setFont] = useState<string>('');
   const [elOffset, setElOffset] = useState(0);
   const concatRef = useRef<HTMLElement>(null!);

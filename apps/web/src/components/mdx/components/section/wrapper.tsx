@@ -7,7 +7,7 @@ const SectionCore = dynamic(() => import('./section'), { ssr: false });
 export default function Section(props: DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement>) {
   return (
     <Suspense fallback={<section {...props} />}>
-      <SectionCore {...props} />)
+      <SectionCore {...props} />
     </Suspense>
   );
 }

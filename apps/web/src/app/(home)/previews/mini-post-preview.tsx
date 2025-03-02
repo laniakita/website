@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { type HTMLAttributes } from 'react';
 
 export interface MiniPostPreviewProps extends HTMLAttributes<HTMLDivElement> {
-  post: typeof blog[0];
+  post: (typeof blog)[0];
   parentExtraClass?: string;
 }
 

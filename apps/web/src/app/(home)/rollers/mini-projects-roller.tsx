@@ -5,21 +5,19 @@ import { useRef } from 'react';
 import { useIntersectionObserver } from '../utils';
 import { projects } from '$/.source';
 
-type AllProjectsProps = typeof projects
+type AllProjectsProps = typeof projects;
 
-export default function MiniProjectsRoller({allProjects}: {allProjects: AllProjectsProps}) {
+export default function MiniProjectsRoller({ allProjects }: { allProjects: AllProjectsProps }) {
   function ProjMap({ visible }: { visible: boolean }) {
-    return allProjects
-      .slice(0, 10)
-      .map((project, idx) => (
-        <li
-          key={crypto.randomUUID()}
-          className={`${visible ? 'motion-safe:animate-big-fade-in-up motion-safe:opacity-0' : 'motion-safe:animate-big-fade-down'} max-w-96 min-w-80 overflow-hidden rounded-md border border-ctp-surface0 bg-ctp-base motion-safe:simple-color-trans @3xl:min-w-96 dark:border-ctp-base dark:bg-ctp-midnight`}
-          style={{ animationDelay: `${(0.5 + idx) / 10}s` }}
-        >
-          <MiniProjectPreview {...project} />
-        </li>
-      ));
+    return allProjects.slice(0, 10).map((project, idx) => (
+      <li
+        key={crypto.randomUUID()}
+        className={`${visible ? 'motion-safe:animate-big-fade-in-up motion-safe:opacity-0' : 'motion-safe:animate-big-fade-down'} max-w-96 min-w-80 overflow-hidden rounded-md border border-ctp-surface0 bg-ctp-base motion-safe:simple-color-trans @3xl:min-w-96 dark:border-ctp-base dark:bg-ctp-midnight`}
+        style={{ animationDelay: `${(0.5 + idx) / 10}s` }}
+      >
+        <MiniProjectPreview {...project} />
+      </li>
+    ));
   }
 
   const menuRef = useRef<HTMLElement>(null!);

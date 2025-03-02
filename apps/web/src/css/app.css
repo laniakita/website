@@ -474,7 +474,7 @@
     */
   }
   span.code-line {
-    min-width: 100%;
+    min-width: calc(100% + 6rem);
     display: inline-block;
   }
   .code-line {
@@ -490,7 +490,7 @@
   .code-line.deleted {
     background-color: var(--code-line-deleted) /* deleted code-line (-) color */;
   }
-  .highlighted-code-line {
+  .code-line.highlighted-code-line {
     background-color: var(--code-line-highlighted);
     border-left: 4px solid var(--code-line-highlight-indicator);
   }
@@ -793,10 +793,6 @@
   --tw-prose-invert-pre-bg: var(--color-ctp-base);
   --tw-prose-invert-th-borders: var(--color-ctp-mauve);
   --tw-prose-invert-td-borders: var(--color-ctp-mauve);
-}
-
-@utility prose-code-pretty-2 {
-  @apply prose-code:bg-orange-300;
 }
 
 @utility prose-headings-mod {

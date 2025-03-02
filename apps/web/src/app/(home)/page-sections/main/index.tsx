@@ -39,12 +39,11 @@ export type MainProps = {
       blog: string;
       projects: string;
       works: string;
-    }
+    };
   };
 };
 
 export default function Main(props: MainProps) {
-  
   return (
     <main className='@container/main relative flex h-full flex-col pb-20'>
       <Section title="Aloha, I'm Lani" markdown={props.data.markdown.summary.code}>

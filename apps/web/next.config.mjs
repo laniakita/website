@@ -61,7 +61,6 @@ const nextConfig = {
   output: 'standalone',
   outputFileTracingRoot: path.join(__dirname, '../../'),
 
-  
   experimental: {
     turbo: {
       rules: {
@@ -182,15 +181,14 @@ const nextConfigFunction = async ({ defaultConfig, phase }) => {
   plugins.push(withMdx);
 
   */
-  
+
   // needs to be last plugin in chain (see: https://github.com/sdorra/content-collections/issues/472#issuecomment-2607096538)
   //plugins.push(withContentCollections);
-  
-  
+
   const withMDX = createMDX({
     configPath: './source.config.ts',
   });
-  plugins.push(withMDX)
+  plugins.push(withMDX);
 
   return plugins.reduce((acc, next) => next(acc), {
     ...defaultConfig,

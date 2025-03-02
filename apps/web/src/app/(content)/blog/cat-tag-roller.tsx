@@ -14,10 +14,7 @@ export function CatTagRoller({ cats, tags }: { cats?: CatTag[] | undefined; tags
     return `category-tag-${crypto.randomUUID()}-${num}-${idx}`;
   };
 
-  const comboArr = [
-    ...cats ?? '',
-    ...tags ?? '',
-  ] as CatTag[];
+  const comboArr = [...(cats ?? ''), ...(tags ?? '')] as CatTag[];
 
   return (
     <Suspense>
@@ -30,7 +27,7 @@ export function CatTagRoller({ cats, tags }: { cats?: CatTag[] | undefined; tags
             {comboArr[idx]?.type === 'Category' && comboArr[idx + 1]?.type === 'Tag' && comboArr[idx + 1]?.title ? (
               <span className='px-[0.5ch] font-light'>|</span>
             ) : (
-              idx < comboArr.length - 1 && comboArr[idx+1]?.url && <span className='pr-[0.5ch]'>,</span>
+              idx < comboArr.length - 1 && comboArr[idx + 1]?.url && <span className='pr-[0.5ch]'>,</span>
             )}
           </p>
         ))}

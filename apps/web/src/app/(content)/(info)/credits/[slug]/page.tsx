@@ -1,12 +1,11 @@
 import type { Metadata, ResolvingMetadata } from 'next';
-import { allPages } from 'content-collections';
-import { descriptionHelper } from '@/lib/description-helper';
+import { allPages } from '@/lib/fumadocs';
 import { PageCommon } from '@/app/(content)/(info)/page-common';
 
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  const credits = allPages.filter((page) => `credits/${page._meta.directory}` === 'pages/credits');
+  const credits = allPages.filter((page) => page.url === 'pages/credits');
   return credits.map((cred) => ({
     slug: cred.url.split('/').pop(),
   }));
@@ -18,18 +17,16 @@ export async function generateMetadata(
   const params = await props.params;
   const data = allPages.find((credit) => credit.url.split('/').pop() === params.slug);
 
-  const description = descriptionHelper(data?.content, data?.url, true);
-
   const previousImages = (await parent).openGraph?.images ?? [];
   const previousImagesTwitter = (await parent).twitter?.images ?? [];
 
   return {
     title: data?.title,
     authors: [{ name: 'Lani Akita' }],
-    description,
+    description: data?.description,
     openGraph: {
       title: data?.title,
-      description,
+      description: data?.description,
       images: [
         {
           alt: data?.title,
@@ -44,7 +41,7 @@ export async function generateMetadata(
     twitter: {
       card: 'summary_large_image',
       title: data?.title,
-      description,
+      description: data?.description,
       images: [
         {
           alt: data?.title,
@@ -61,5 +58,5 @@ export async function generateMetadata(
 
 export default async function ContactPage(props: { params: Promise<{ slug: string }> }) {
   const params = await props.params;
-  return <PageCommon slug={params.slug} prefix='credits' />;
+  return <PageCommon slug={params.slug} prefix='pages/credits' />;
 }

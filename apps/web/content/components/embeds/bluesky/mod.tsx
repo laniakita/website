@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { useEffect, useState } from 'react';
 
@@ -11,4 +11,4 @@ const BlueskyEmbed = () => {
   return <p>{data.msg}</p>;
 };
 
-export default BlueskyEmbed
+export default BlueskyEmbed;

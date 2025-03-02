@@ -3,7 +3,7 @@ import { renderToString } from 'react-dom/server';
 //import {evaluate} from '@mdx-js/mdx'
 //import * as runtime from 'react/jsx-runtime'
 //import { createElement } from 'react';
-import { MDXContent } from "@content-collections/mdx/react";
+import { MDXContent } from '@content-collections/mdx/react';
 /*
 export const htmlGenS = async (mdxStr: string, url: string) => {
   const mdx = await evaluate(mdxStr, {

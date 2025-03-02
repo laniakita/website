@@ -7,7 +7,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useId } from 'react';
 
-type ProjectProps = typeof projects[0];
+type ProjectProps = (typeof projects)[0];
 
 export default function MiniProjectPreview(data: ProjectProps) {
   const res = data.featured_image as FeaturedImageR1;

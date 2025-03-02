@@ -19,8 +19,6 @@ import { transformMDX } from '@fumadocs/content-collections/configuration';
 
 const exec = util.promisify(exec_process);
 
-
-
 // for more information on configuration, visit:
 // https://www.content-collections.dev/docs/configuration
 
@@ -78,7 +76,7 @@ const tags = defineCollection({
       if (stdout) {
         return new Date(stdout.trim()).toISOString();
       }
-  return new Date().toISOString();
+      return new Date().toISOString();
     });
 
     return {
@@ -148,7 +146,7 @@ const posts = defineCollection({
   transform: async (document, context) => {
     const urlRes = `/blog/${document._meta.fileName.split('.').shift()}`;
     const mdxContent = createDefaultImport<MDXContentProps>(`@content/posts/${document._meta.filePath}`);
-    
+
     //const url = path.join('file://', process.cwd(), 'content/posts/', document._meta.filePath)
 
     //const html = await htmlGenS(document.content, url)
@@ -334,7 +332,6 @@ const works = defineCollection({
             rehypeHighlightLines,
             {
               showLineNumbers: true,
-              lineContainerTagName: 'div',
             },
           ],
           rehypeSlug,

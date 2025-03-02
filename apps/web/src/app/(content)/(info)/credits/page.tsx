@@ -1,19 +1,18 @@
 import type { Metadata } from 'next';
-import { allPages } from 'content-collections';
+import { allPages } from '@/lib/fumadocs';
 import { PageCommon } from '@/app/(content)/(info)/page-common';
-import { descriptionHelper } from '@/lib/description-helper';
 
-const data = allPages.find((page) => page.url === '/credits');
+const data = allPages.find((page) => page.url === '/pages/credits');
 
-const description = descriptionHelper(data?.content, data?.url, true);
+console.log(data)
 
 export const metadata: Metadata = {
   title: data?.title,
   authors: [{ name: 'Lani Akita' }],
-  description,
+  description: data?.description,
   openGraph: {
     title: data?.title,
-    description,
+    description: data?.description,
     images: [
       {
         alt: `${data?.title}`,
@@ -27,7 +26,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: data?.title,
-    description,
+    description: data?.description,
     images: [
       {
         alt: `${data?.title}`,

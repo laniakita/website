@@ -51,6 +51,6 @@ const resMdx = async (mdxStr: string, contentDir: string, folderPath: string) =>
 export default async function jsxToHtml(markdown: string, contentDir: string, folderPath: string) {
   const mdxCode = await resMdx(markdown, contentDir, folderPath);
   // @ts-expect-error -- ...types okay?
-  const res5 = ReactDomServer.renderToStaticMarkup(<MDXContent code={mdxCode.code} components={{p: Paragraph}} />);
+  const res5 = ReactDomServer.renderToStaticMarkup(<MDXContent code={mdxCode.code} components={{ p: Paragraph }} />);
   return res5;
 }

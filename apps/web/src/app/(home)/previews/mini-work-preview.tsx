@@ -4,7 +4,7 @@ import { FeaturedImageR1 } from '@/lib/image-process';
 import Image from 'next/image';
 import Link from 'next/link';
 
-type WorkProps = typeof works[0]
+type WorkProps = (typeof works)[0];
 
 export function MiniWorkPreview(data: WorkProps) {
   const res = data.featured_image as FeaturedImageR1;

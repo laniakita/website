@@ -5,22 +5,19 @@ import { useIntersectionObserver } from '../utils';
 import MiniPostPreview from '../previews/mini-post-preview';
 import { blog } from '$/.source';
 
-type AllPostsProps = typeof blog
+type AllPostsProps = typeof blog;
 
-export default function MiniPostsRoller({allPosts}: {allPosts: AllPostsProps}) {
-    
+export default function MiniPostsRoller({ allPosts }: { allPosts: AllPostsProps }) {
   function PostMap({ visible }: { visible: boolean }) {
-    return allPosts
-      .slice(0, 10)
-      .map((post, idx) => (
-        <li
-          key={crypto.randomUUID()}
-          className={`${visible ? 'motion-safe:animate-big-fade-in-up motion-safe:opacity-0' : 'motion-safe:animate-big-fade-down'} max-w-96 min-w-80 overflow-hidden rounded-md border border-ctp-surface0 bg-ctp-base motion-safe:simple-color-trans @3xl:min-w-96 dark:border-ctp-base dark:bg-ctp-midnight`}
-          style={{ animationDelay: `${(0.5 + idx) / 10}s` }}
-        >
-          <MiniPostPreview post={post} />
-        </li>
-      ));
+    return allPosts.slice(0, 10).map((post, idx) => (
+      <li
+        key={crypto.randomUUID()}
+        className={`${visible ? 'motion-safe:animate-big-fade-in-up motion-safe:opacity-0' : 'motion-safe:animate-big-fade-down'} max-w-96 min-w-80 overflow-hidden rounded-md border border-ctp-surface0 bg-ctp-base motion-safe:simple-color-trans @3xl:min-w-96 dark:border-ctp-base dark:bg-ctp-midnight`}
+        style={{ animationDelay: `${(0.5 + idx) / 10}s` }}
+      >
+        <MiniPostPreview post={post} />
+      </li>
+    ));
   }
 
   const menuRef = useRef<HTMLElement>(null!);

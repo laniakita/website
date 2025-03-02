@@ -1,7 +1,7 @@
 import { compareDesc } from 'date-fns';
 import { toXML } from 'jstoxml';
 import versionVault from 'versionVault/compiled';
-import { allTags, allCategories } from 'content-collections';
+import { allTags, allCategories } from '@/lib/fumadocs';
 import type { Tag, Category, Post } from 'content-collections';
 import type { FeaturedImageR1 } from '@/lib/image-process';
 import { APP_URL, BLOG_DESCR } from '@/lib/constants';

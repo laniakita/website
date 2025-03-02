@@ -5,5 +5,3 @@ export default async function jsxToHtml(code: string) {
   const res5 = ReactDomServer.renderToStaticMarkup(<UniversalMDXComponent code={code} />);
   return res5;
 }
-
-
