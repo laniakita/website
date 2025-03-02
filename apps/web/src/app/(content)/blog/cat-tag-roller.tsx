@@ -2,9 +2,9 @@ import Link from 'next/link';
 import { Suspense } from 'react';
 
 export interface CatTag {
-  title: string;
+  title: string | undefined;
   url: string | undefined;
-  type: string | undefined;
+  type: string;
 }
 
 export function CatTagRoller({ cats, tags }: { cats?: CatTag[] | undefined; tags?: CatTag[] | undefined }) {
@@ -15,8 +15,8 @@ export function CatTagRoller({ cats, tags }: { cats?: CatTag[] | undefined; tags
   };
 
   const comboArr = [
-    ...(cats ? cats.sort((a, b) => a?.title.localeCompare(b?.title ?? '') ?? 0) : ''),
-    ...(tags ? tags.sort((a, b) => a?.title.localeCompare(b?.title ?? '') ?? 0) : ''),
+    ...cats ?? '',
+    ...tags ?? '',
   ] as CatTag[];
 
   return (
@@ -27,10 +27,10 @@ export function CatTagRoller({ cats, tags }: { cats?: CatTag[] | undefined; tags
             <Link href={combo?.url ?? ''}>
               <span className=''>{`${combo?.type === 'Tag' ? '#' : ''}${combo?.title}`}</span>
             </Link>
-            {comboArr[idx]?.type === 'Category' && comboArr[idx + 1]?.type === 'Tag' ? (
+            {comboArr[idx]?.type === 'Category' && comboArr[idx + 1]?.type === 'Tag' && comboArr[idx + 1]?.title ? (
               <span className='px-[0.5ch] font-light'>|</span>
             ) : (
-              idx < comboArr.length - 1 && <span className='pr-[0.5ch]'>,</span>
+              idx < comboArr.length - 1 && comboArr[idx+1]?.url && <span className='pr-[0.5ch]'>,</span>
             )}
           </p>
         ))}

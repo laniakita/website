@@ -7,15 +7,27 @@ import PreCodeV2 from '@/components/mdx/components/pre-code/codeblock-v2';
 import Section from '@/components/mdx/components/section/wrapper';
 import Image, { ImageProps } from 'next/image';
 
+function ImgReplacer(props: ImageProps) {
+  return <Image {...props} />
+}
+
+export const mdxComponents = {
+  p: Paragraph,
+  img: ImgReplacer,
+  pre: PreCodeV2,
+  a: Anchors,
+  section: Section
+}
+
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
     // @ts-expect-error -- types
     p: (props) => <Paragraph {...props} />,
-    //img: (props) => <Image {...props as ImageProps} />,
+    img: (props) => <Image {...props as ImageProps} />,
     // @ts-expect-error -- types
     pre: (props) => <PreCodeV2 {...props} />,
     // @ts-expect-error -- types
-    a: (props) =>  <Anchors {...props} />,
+    a: (props) => <Anchors {...props} />,
     // @ts-expect-error -- types
     section: (props) => <Section {...props} />,
     ...components,

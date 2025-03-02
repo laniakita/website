@@ -1,14 +1,15 @@
 'use client';
-import { allProjects } from 'content-collections';
-import { compareDesc } from 'date-fns';
+
 import MiniProjectPreview from '../previews/mini-project-preview';
 import { useRef } from 'react';
 import { useIntersectionObserver } from '../utils';
+import { projects } from '$/.source';
 
-export default function MiniProjectsRoller() {
+type AllProjectsProps = typeof projects
+
+export default function MiniProjectsRoller({allProjects}: {allProjects: AllProjectsProps}) {
   function ProjMap({ visible }: { visible: boolean }) {
     return allProjects
-      .sort((a, b) => compareDesc(new Date(a.updated ?? a.date), new Date(b.updated ?? b.date)))
       .slice(0, 10)
       .map((project, idx) => (
         <li

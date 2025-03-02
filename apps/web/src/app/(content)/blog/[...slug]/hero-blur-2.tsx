@@ -1,8 +1,8 @@
 import Image from 'next/image';
-import { type Post } from 'content-collections';
 import type { FeaturedImageR1 } from '@/lib/image-process';
+import { blog } from '$/.source';
 
-export function HeroBlur2(post: Post) {
+export function HeroBlur2(post: typeof blog[0]) {
   const res = post.featured_image as FeaturedImageR1;
 
   return (

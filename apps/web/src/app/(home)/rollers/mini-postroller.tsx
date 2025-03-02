@@ -7,8 +7,7 @@ import { blog } from '$/.source';
 
 type AllPostsProps = typeof blog
 
-export default function MiniPostsRoller({allPostsString}: {allPostsString :string}) {
-  const allPosts = JSON.parse(allPostsString) as AllPostsProps;
+export default function MiniPostsRoller({allPosts}: {allPosts: AllPostsProps}) {
     
   function PostMap({ visible }: { visible: boolean }) {
     return allPosts

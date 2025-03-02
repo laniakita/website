@@ -1,12 +1,13 @@
 import Link from 'next/link';
-import { allAuthors, type Post } from 'content-collections';
+import { allAuthors } from '@/lib/fumadocs';
+import { blog } from '$/.source';
 import type { FeaturedImageR1 } from '@/lib/image-process';
 import ShareButton from '@/components/share-btn/share-btn';
 import { CatTag, CatTagRoller } from '../cat-tag-roller';
 import { HeroBlur2 } from './hero-blur-2';
 import LocalDate from '../local-date';
 
-export function PostHeader2(post: Post) {
+export function PostHeader2(post: typeof blog[0]) {
   const authorName = allAuthors.find((author) => author.url === `/authors/${post.author}`)?.name;
   return (
     <>

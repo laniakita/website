@@ -1,13 +1,15 @@
+import { projects } from '$/.source';
 import LocalDate from '@/app/(content)/blog/local-date';
 import GlobalMDXRenderer from '@/components/mdx/global-mdx-renderer';
 import { APP_URL, SHOWCASE_URL } from '@/lib/constants';
 import type { FeaturedImageR1 } from '@/lib/image-process';
-import { type Project } from 'content-collections';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useId } from 'react';
 
-export default function MiniProjectPreview(data: Project) {
+type ProjectProps = typeof projects[0];
+
+export default function MiniProjectPreview(data: ProjectProps) {
   const res = data.featured_image as FeaturedImageR1;
   const uKey = useId();
   const projDescription = data.description;

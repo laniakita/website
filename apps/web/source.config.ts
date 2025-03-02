@@ -1,5 +1,7 @@
 import { defineCollections } from 'fumadocs-mdx/config';
+import path from 'node:path';
 import * as z from 'zod';
+import { descriptionHelper } from '@/lib/description-helper';
 
 // for more information on configuration, visit:
 // https://www.content-collections.dev/docs/configuration
@@ -13,9 +15,9 @@ export const categories = defineCollections({
       title: z.string().default('Category Page'),
       slug: z.string().default('category-page'),
       type: z.string().default('category'),
-      date: z.coerce.date().optional(),
+      date: z.coerce.date().default(new Date()),
       url: z.string().default(
-        `/categories${ctx.path.split('.').shift()}`
+        `${ctx.path.split('content').pop()?.split('.').shift()}`
       ),
     })
   },
@@ -30,9 +32,9 @@ export const tags = defineCollections({
       title: z.string().default('tag'),
       slug: z.string().optional(),
       type: z.string().optional(),
-      date: z.coerce.date().optional(),
+      date: z.coerce.date().default(new Date()),
       url: z.string().default(
-        `/tags${ctx.path.split('.').shift()}`
+        `${ctx.path.split('content').pop()?.split('.').shift()}`
       ),
     })
   },
@@ -43,12 +45,13 @@ export const authors = defineCollections({
   type: 'doc',
   schema: (ctx) => {
     return z.object({
+      date: z.coerce.date().default(new Date()),
       name: z.string(),
       bluesky: z.string().optional(),
       mastodon: z.string().optional(),
       github: z.string().optional(),
       url: z.string().default(
-        `/authors${ctx.path.split('.').shift()}`
+        `${ctx.path.split('content').pop()?.split('.').shift()}`
       ),
     })
   },
@@ -61,9 +64,9 @@ export const pages = defineCollections({
     return z.object({
       title: z.string(),
       description: z.string().optional(),
-      date: z.coerce.date().optional(),
+      date: z.coerce.date().default(new Date()),
       url: z.string().default(
-        `${ctx.path.split('.').shift()}`
+        `${ctx.path.split('content').pop()?.split('.').shift()}`
       ),
     })
   },
@@ -87,9 +90,9 @@ export const projects = defineCollections({
       blogPost: z.string().optional(),
       embedded: z.boolean(),
       foreignUrl: z.string().optional(),
-      url: z.string().default(() => {
-        return `/projects${ctx.path.split('.').shift()}`
-      }),
+      url: z.string().default(
+        `${ctx.path.split('content').pop()?.split('.').shift()}`
+      ),
       featured_image: z.object({
         hasImage: z.boolean(),
         src: z.string(),
@@ -123,7 +126,55 @@ export const projects = defineCollections({
   }
 });
 
-
+export const works = defineCollections({
+  type: 'doc',
+  dir: './content/works',
+  schema: (ctx) => {
+    return z.object({
+      id: z.string(),
+      startDate: z.coerce.date(),
+      endDate: z.coerce.date().optional(),
+      title: z.string(),
+      domain: z.string(),
+      active: z.boolean(),
+      tech: z.array(z.string()),
+      imageSrc: z.string().optional(),
+      altText: z.string().optional(),
+      url: z.string().default(
+        `${ctx.path.split('content').pop()?.split('.').shift()}`
+      ),
+      featured_image: z.object({
+        hasImage: z.boolean(),
+        src: z.string(),
+        base64: z.string(),
+        height: z.number(),
+        width: z.number(),
+        resized: z.string(),
+        altText: z.string(),
+        caption: z.string(),
+        _debug: z.object({
+          destination: z.string(),
+          status: z.object({
+            exists: z.boolean(),
+            existsInPublic: z.boolean()
+          }),
+          didCopy: z.string(),
+          reason: z.string()
+        }).or(z.null())
+      }).default({
+        hasImage: false,
+        src: '',
+        base64: '',
+        height: 0,
+        width: 0,
+        resized: '',
+        altText: '',
+        caption: '',
+        _debug: null
+      })
+    })
+  }
+});
 
 export const blog = defineCollections({
   type: 'doc',
@@ -140,13 +191,16 @@ export const blog = defineCollections({
       altText: z.string().optional(),
       caption: z.string().optional(),
       catSlugs: z.array(z.string()).optional(),
-      categories: z.array(z.object({ title: z.string(), url: z.string(), type: z.string() })).default([{ title: '', url: '', type: 'category' }]),
+      categories: z.array(z.object({ title: z.string().or(z.undefined()), url: z.string().or(z.undefined()), type: z.string() })).default([{ title: undefined, url: undefined, type: 'category' }]),
       tagSlugs: z.array(z.string()).optional(),
       tags: z.array(z.object({ title: z.string(), url: z.string(), type: z.string() })).default([{ title: '', url: '', type: 'tag' }]),
       keywords: z.array(z.string()).optional(),
-      url: z.string().default(() => {
-        return `/blog${ctx.path.split('.').shift()}`
-      }),
+      url: z.string().default(
+        path.join('/blog', `${ctx.path.split('/').pop()?.split('.').shift()}`)
+      ),
+      description: z.string().default(
+        descriptionHelper(ctx.source) ?? 'Post description'
+      ),
       featured_image: z.object({
         hasImage: z.boolean(),
         src: z.string(),

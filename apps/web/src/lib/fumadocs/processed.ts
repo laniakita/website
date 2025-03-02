@@ -1,8 +1,38 @@
-import { blog, categories, tags } from "$/.source";
-import { compareDesc } from "date-fns";
+import { blog, categories, projects, tags, works } from "$/.source";
 import { FeaturedImageR1, imageProcessor } from "../image-process";
 
-const allPostsRes = await Promise.all(blog.map(async (post) => {
+export const allProjectsRes =  await Promise.all(projects.map(async (project) => {
+
+  const config = {
+    imageSrc: project.imageSrc ?? '',
+    altText: project.altText ?? '',
+    caption: ''
+  }
+
+  const featured_image = await featuredImgRes('projects', project._file.path, config);
+  project.featured_image = { ...featured_image }
+
+ 
+  return project
+}));
+
+
+export const allWorksRes = await Promise.all(works.map(async (work) => {
+
+  const config = {
+    imageSrc: work.imageSrc ?? '',
+    altText: work.altText ?? '',
+    caption: ''
+  }
+
+  const featured_image = await featuredImgRes('works', work._file.path, config);
+  work.featured_image = { ...featured_image }
+
+ 
+  return work
+}));
+
+export const allPostsRes = await Promise.all(blog.map(async (post) => {
 
   const config = {
     imageSrc: post.imageSrc ?? '',
@@ -60,7 +90,6 @@ const allPostsRes = await Promise.all(blog.map(async (post) => {
   return post
 }));
 
-export const allPosts = allPostsRes.sort((a, b) => compareDesc(new Date(a.updated ?? a.date), new Date(b.updated ?? b.date)));
 
 async function featuredImgRes (collection: string, path: string, { imageSrc, altText, caption }: { imageSrc: string, altText: string, caption: string }) {
   const imgData = await imageProcessor({

@@ -3,15 +3,16 @@ import { IPAD_TOC_ID, NAV_MAIN_ID, TOC_NAV_ID } from '@/components/nav-constants
 import { useNavScrollViewStore } from '@/providers/nav-scroll-view-store-provider';
 import { useToCViewStore } from '@/providers/toc-view-store-provider';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { type HeadingNode, useIntersectionObserver } from './utils';
+import { FlatHeadingNode, type HeadingNode, useIntersectionObserver } from './utils';
 import dynamic from 'next/dynamic';
 
 const Headings = dynamic(() => import('./utils').then((mod) => mod.Headings), { ssr: false });
 const ConcatTitle = dynamic(() => import('./utils').then((mod) => mod.ConcatTitle), { ssr: false });
 
+
 export type ToCMenuCoreProps = {
-  nestedHeadings: string;
-  flatHeadings: string;
+  nestedHeadings: HeadingNode[];
+  flatHeadings: {id: string; content: string}[];
 };
 
 export default function ToCMenuCore(props: ToCMenuCoreProps) {
@@ -25,7 +26,7 @@ export default function ToCMenuCore(props: ToCMenuCoreProps) {
   const [menuWidth, setMenuWidth] = useState<number | null>(null);
 
   useEffect(() => {
-    const nestedHeadings = JSON.parse(props.nestedHeadings);
+    const nestedHeadings = props.nestedHeadings;
     if (nestedHeadings && nestedHeadings?.length > 1) {
       setReadyHeadings(nestedHeadings);
       setIsReady(true);
@@ -81,7 +82,7 @@ export function ToCMenuMobileCore(props: ToCMenuCoreProps) {
   useIntersectionObserver(setActiveId, activeId);
 
   // mobile only
-  const [flatHeadings, setFlatHeadings] = useState<HTMLHeadingElement[]>([]);
+  const [flatHeadings, setFlatHeadings] = useState<FlatHeadingNode[]>([]);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [width, setWidth] = useState(0);
   const { inView } = useNavScrollViewStore((state) => state);
@@ -109,7 +110,7 @@ export function ToCMenuMobileCore(props: ToCMenuCoreProps) {
   }, []);
 
   useEffect(() => {
-    const nestedHeadings = JSON.parse(props.nestedHeadings);
+    const nestedHeadings = props.nestedHeadings; 
     if (nestedHeadings && nestedHeadings?.length > 1) {
       setReadyHeadings(nestedHeadings);
     }
@@ -117,7 +118,7 @@ export function ToCMenuMobileCore(props: ToCMenuCoreProps) {
 
   useEffect(() => {
     // grab headings on mount
-    const passedFlatHeadings = JSON.parse(props.flatHeadings);
+    const passedFlatHeadings = props.flatHeadings;
     if (passedFlatHeadings?.length > 1) {
       setFlatHeadings(passedFlatHeadings);
     }

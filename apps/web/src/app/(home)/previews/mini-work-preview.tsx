@@ -1,10 +1,12 @@
+import { works } from '$/.source';
 import LocalDate from '@/app/(content)/blog/local-date';
 import { FeaturedImageR1 } from '@/lib/image-process';
-import { Work } from 'content-collections';
 import Image from 'next/image';
 import Link from 'next/link';
 
-export function MiniWorkPreview(data: Work) {
+type WorkProps = typeof works[0]
+
+export function MiniWorkPreview(data: WorkProps) {
   const res = data.featured_image as FeaturedImageR1;
 
   return (

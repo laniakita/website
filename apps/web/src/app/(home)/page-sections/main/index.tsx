@@ -37,6 +37,8 @@ export type MainProps = {
     };
     source: {
       blog: string;
+      projects: string;
+      works: string;
     }
   };
 };
@@ -49,12 +51,12 @@ export default function Main(props: MainProps) {
         <Summary code={props.data.markdown.profile.code} />
       </Section>
       <Section type={1} title='Passion Projects' page={1} markdown={props.data.markdown.projects.code}>
-        <MiniProjectsRoller />
+        <MiniProjectsRoller allProjects={JSON.parse(props.data.source.projects)} />
       </Section>
       <Section type={2} title='Client Works' page={2} markdown={props.data.markdown.works.code}>
         <div className='mx-auto max-w-5xl'>
           <div className='flex w-full flex-row gap-6'>
-            <MiniWorkRoller />
+            <MiniWorkRoller allWorks={JSON.parse(props.data.source.works)} />
           </div>
         </div>
       </Section>
@@ -62,7 +64,7 @@ export default function Main(props: MainProps) {
         <ServicesTable code={props.data.markdown.servicesTable.code} />
       </Section>
       <Section type={1} title='Latest from the Blog' page={3} markdown={props.data.markdown.blog.code}>
-        <MiniPostsRoller allPostsString={props.data.source.blog} />
+        <MiniPostsRoller allPosts={JSON.parse(props.data.source.blog)} />
       </Section>
     </main>
   );

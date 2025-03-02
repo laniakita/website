@@ -1,19 +1,17 @@
 import { notFound, redirect } from 'next/navigation';
 import type { Metadata, ResolvingMetadata } from 'next';
 import type { BlogPosting, WithContext } from 'schema-dts';
-import { compareDesc } from 'date-fns';
-import { allAuthors, allPosts } from 'content-collections';
-import { descriptionHelper } from '@/lib/description-helper';
+import { allAuthors, allPosts } from '@/lib/fumadocs';
 import type { FeaturedImageR1 } from '@/lib/image-process';
 import { APP_URL } from '@/lib/constants';
 import { PostHeader2 } from './post-header-2';
 import CommentsComponent from './comments/core';
 import { CatTag } from '../cat-tag-roller';
+import { mdxComponents } from '@/mdx-components';
 
 export function generateStaticParams() {
-  const posts = allPosts.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
-  return posts.map((meta) => ({
-    slug: [meta.url.split('/').pop()],
+  return allPosts.map((post) => ({
+    slug: [post.url.split('/').pop()],
   }));
 }
 
@@ -25,7 +23,7 @@ export async function generateMetadata(
 
   const postData = allPosts.find((postX) => slug.some((sl) => postX.url.split('/').pop() === sl));
 
-  const description = descriptionHelper(postData?.content, postData?.url, true);
+  const description = postData?.description;
   const previousImages = (await parent).openGraph?.images ?? [];
 
   const previousImagesTwitter = (await parent).twitter?.images ?? [];
@@ -94,8 +92,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   const catTagArr = (
     [
-      ...(post.categories ? post.categories.sort((a, b) => a?.title.localeCompare(b?.title ?? '') ?? 0) : ''),
-      ...(post.tags ? post.tags.sort((a, b) => a?.title.localeCompare(b?.title ?? '') ?? 0) : ''),
+      ...post.categories,
+      ...post.tags,
     ] as CatTag[]
   ).map((catTag) => {
     return catTag.title;
@@ -107,7 +105,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     headline: post.headline,
     alternativeHeadline: post.subheadline ?? undefined,
     url: `${process.env.NEXT_PUBLIC_DEPLOYED_URL ? process.env.NEXT_PUBLIC_DEPLOYED_URL : APP_URL}${post.url}`,
-    description: descriptionHelper(post.content, post.url, true),
+    description: post.description,
     author: 'Lani Akita',
     editor: 'Lani Akita',
     dateCreated: new Date(post.date).toISOString(),
@@ -128,7 +126,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     countryOfOrigin: 'United States',
   };
 
-  const { default: PostMDX } = await import(`@content/posts/${post._meta.path}.mdx`)
+  const MDX = post.body;
 
   return (
     <>
@@ -138,7 +136,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           <PostHeader2 {...post} />
           <div className='w-full px-6'>
             <div className='prose-protocol-omega mx-auto max-w-4xl md:max-w-2xl'>
-             <PostMDX />
+              {/* @ts-expect-error -- types issues */}
+             <MDX components={mdxComponents} />
             </div>
           </div>
         </article>

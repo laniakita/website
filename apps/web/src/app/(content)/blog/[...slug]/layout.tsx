@@ -2,20 +2,8 @@ import type { ReactNode } from 'react';
 import Footer from '@/components/footer/footer';
 import Navbar from '@/components/navbar';
 import ToCMenuCore, { ToCMenuMobileCore } from '@/components/table-of-contents/core';
-import { allPosts } from 'content-collections';
-import { JSDOM } from 'jsdom';
-
-interface HeadingNode {
-  id: string;
-  level: number;
-  title: string;
-  children: HeadingNode[];
-}
-
-type FlatHeadingNode = {
-  id: string;
-  title: string;
-};
+import { allPosts } from '@/lib/fumadocs';
+import { notFound } from 'next/navigation';
 
 export default async function PostPageLayout({
   children,
@@ -28,73 +16,39 @@ export default async function PostPageLayout({
 
   const post = allPosts.find((postX) => slug.some((sl) => postX.url.split('/').pop() === sl));
 
-  const PostMdx = post && await import(`@content/posts/${post._meta.path}.mdx`)
-  
+  if (!post) return notFound();
 
-  //const postHtml = post && await render(post._meta.path);
+  const flatHeadingsAlt: { id: string; content: string; }[] = []
 
-  const doc = new JSDOM(`<!DOCTYPE html></html>`);
-  const headings = Array.from(doc.window.document.querySelectorAll('h2, h3, h4, h5, h6')).filter(
-    (el) => el.id.length > 0,
-  ) as HTMLHeadingElement[];
+  const ReactDomServer = await import('react-dom/server');
 
-  const getNestedHeadings = (headings: HTMLHeadingElement[], level: number): HeadingNode[] => {
-    const nestedTree: HeadingNode[] = [];
-    let currNode: HeadingNode = {
-      id: '',
-      level: 0,
-      title: '',
-      children: [],
-    };
+  const toc = post.toc.map((item) => {
+    const { depth, url, title } = item
 
-    while (headings.length > 0) {
-      const currHeading = headings[0]!;
-      const headingLevel = parseInt(currHeading.nodeName[1]!);
-      if (headingLevel === level) {
-        currNode = {
-          id: currHeading.id ?? '',
-          level: parseInt(currHeading.nodeName[1]!),
-          title: currHeading.innerHTML ?? '',
-          children: [],
-        };
-        nestedTree.push(currNode);
-        headings.shift();
-      } else if (headingLevel > level) {
-        if (currNode) {
-          currNode.children = getNestedHeadings(headings, headingLevel);
-        }
-      } else {
-        break;
-      }
+    const titleHtml = ReactDomServer.renderToStaticMarkup(title as ReactNode);
+
+    flatHeadingsAlt.push({ id: url.substring(1), content: titleHtml })
+
+    return {
+      depth,
+      url,
+      title: titleHtml
     }
-    return nestedTree;
-  };
 
-  const getFlatHeadings = (headings: HTMLHeadingElement[]): FlatHeadingNode[] => {
-    const headingsArr = [];
+  });
 
-    for (const heading of headings) {
-      const node = {
-        id: heading.id ?? '',
-        title: heading.innerHTML ?? '',
-      };
-      headingsArr.push(node);
-    }
-    return headingsArr;
-  };
 
-  const nestedHeadings = getNestedHeadings(Array.from(headings), 2);
-  const flatHeadings = getFlatHeadings(headings);
+  //console.log(toc)
 
   return (
     <div className='flex size-full flex-col md:relative md:flex-row'>
-      <ToCMenuCore flatHeadings={JSON.stringify(flatHeadings)} nestedHeadings={JSON.stringify(nestedHeadings)} />
+      <ToCMenuCore flatHeadings={flatHeadingsAlt} nestedHeadings={toc} />
 
       <div className='size-full min-w-0'>
         <Navbar />
         <ToCMenuMobileCore
-          flatHeadings={JSON.stringify(flatHeadings)}
-          nestedHeadings={JSON.stringify(nestedHeadings)}
+          flatHeadings={flatHeadingsAlt}
+          nestedHeadings={toc}
         />
         <div className='flex max-w-7xl flex-col md:m-auto md:min-w-0'>
           {children}

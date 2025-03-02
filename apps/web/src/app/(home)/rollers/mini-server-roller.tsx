@@ -1,13 +1,13 @@
-import { allWorks } from 'content-collections';
-import { compareDesc } from 'date-fns';
+import { works } from '$/.source';
 import { MiniWorkPreview } from '../previews/mini-work-preview';
 import { useIntersectionObserver } from '../utils';
 import { useRef } from 'react';
 
-export function MiniWorkRoller() {
+type AllWorksProps = typeof works
+
+export function MiniWorkRoller({allWorks}: {allWorks: AllWorksProps}) {
   function WorksMap({ visible }: { visible: boolean }) {
     return allWorks
-      .sort((a, b) => compareDesc(new Date(a.endDate ?? a.startDate), new Date(b.endDate ?? b.startDate)))
       .map((work, idx) => (
         <li
           key={crypto.randomUUID()}
