@@ -43,9 +43,7 @@ export const metadata: Metadata = {
 export default function Projects() {
   const data = allPages.find((page) => page.url.split('/').pop() === 'projects');
   if (!data) return notFound();
-  const projectData = allProjects.sort((a, b) =>
-    compareDesc(new Date(a.updated ?? a.date), new Date(b.updated ?? b.date)),
-  );
+  const projectData = allProjects;
   const MDXComponent = data.body;
 
   return (
