@@ -1,5 +1,4 @@
 import type { MDXComponents } from 'mdx/types';
-//import BlogImageBlurServer from '@/components/mdx/components/img-blur-server';
 import { Paragraph } from '@/components/mdx/components/paragraph';
 import Anchors from '@/components/mdx/components/anchor-tags';
 import PreCodeV2 from '@/components/mdx/components/pre-code/codeblock-v2';
