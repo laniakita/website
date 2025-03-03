@@ -10,20 +10,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const categoriesRes = allCategories;
   const tagsRes = allTags;
   const projectsRes = allProjects;
-  
-  const isNewPostInCatTag = (cattag: typeof allCategories[0] | typeof allTags[0], isCat: boolean) => {
+
+  const isNewPostInCatTag = (cattag: (typeof allCategories)[0] | (typeof allTags)[0], isCat: boolean) => {
     // note: using postsRes above
     if (isCat) {
-      const postResX = postsRes.find((postX) =>
-        postX.categories?.some((catX) => catX.url === cattag.url),
-      );
+      const postResX = postsRes.find((postX) => postX.categories?.some((catX) => catX.url === cattag.url));
 
       return postResX?.updated ?? postResX?.date ?? new Date();
     }
 
-    const postResTag = postsRes.find((postY) =>
-      postY.tags?.some((tagX) => tagX.url === cattag.url),
-    );
+    const postResTag = postsRes.find((postY) => postY.tags?.some((tagX) => tagX.url === cattag.url));
 
     return postResTag?.updated ?? postResTag?.date ?? new Date();
   };
@@ -83,14 +79,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.2,
     },
   ];
-  
-  const creditsRes = allPages.filter((page) => page.url.includes('credits/'))
+
+  const creditsRes = allPages.filter((page) => page.url.includes('credits/'));
   const credits = creditsRes.map((cred) => ({
     url: `${APP_URL}${cred.url.split('/pages').pop()}`,
     lastModified: cred.date,
+  }));
 
-  }))
-  
   const posts = postsRes.map((post) => ({
     url: `${APP_URL}${post.url}`,
     lastModified: post.updated ?? post.date,

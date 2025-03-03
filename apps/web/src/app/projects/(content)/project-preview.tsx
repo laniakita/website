@@ -8,11 +8,11 @@ import Link from 'next/link';
 import { useId } from 'react';
 import { projects } from '$/.source';
 
-export default function ProjectPreview(data: typeof projects[0]) {
+export default function ProjectPreview(data: (typeof projects)[0]) {
   const res = data.featured_image;
   const uKey = useId();
 
-  const getDescription = (dataX: typeof projects[0]) => {
+  const getDescription = (dataX: (typeof projects)[0]) => {
     const getPost = allPosts.find((post) => post.url === dataX.blogPost);
     if (!getPost) return;
     return getPost.description ?? dataX.description;
@@ -63,16 +63,16 @@ export default function ProjectPreview(data: typeof projects[0]) {
             {data.updated ? (
               <div className='flex flex-wrap gap-x-2 font-mono'>
                 <p className='flex w-fit flex-wrap gap-x-2 rounded-full font-mono'>
-                  <strong>Released:</strong> <LocalDate date={data.date} />
+                  <strong>Released:</strong> <LocalDate date={data.date.toISOString()} />
                 </p>
                 <span className=''>|</span>
                 <p className='flex w-fit flex-wrap gap-x-2 rounded-full font-mono'>
-                  <strong>Updated:</strong> <LocalDate date={data.updated} />
+                  <strong>Updated:</strong> <LocalDate date={data.updated.toISOString()} />
                 </p>
               </div>
             ) : (
               <p className='flex w-fit flex-wrap gap-x-2 rounded-full font-mono'>
-                <strong>Released:</strong> <LocalDate date={data.date} />
+                <strong>Released:</strong> <LocalDate date={data.date.toISOString()} />
               </p>
             )}
           </div>

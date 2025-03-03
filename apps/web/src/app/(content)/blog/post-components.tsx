@@ -33,12 +33,12 @@ export default function PostPreviewV4({post}: {post: typeof blog[0]}) {
             {post.updated ? (
               <div className='flex flex-wrap gap-x-2 font-mono'>
                 <p className='flex w-fit flex-wrap gap-x-2 rounded-full font-mono'>
-                <strong>Updated:</strong> <LocalDate date={post.updated.toISOString()} />
+                <strong>Updated:</strong> <LocalDate date={post.updated} />
                 </p>
               </div>
             ) : (
               <p className='flex w-fit flex-wrap gap-x-2 rounded-full font-mono'>
-              <LocalDate date={post.date.toISOString()} />
+              <LocalDate date={post.date} />
               </p>
             )}
           </div>

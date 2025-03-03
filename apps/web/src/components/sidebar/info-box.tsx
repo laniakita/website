@@ -15,7 +15,7 @@ export default function InfoBox({
   blogInfo: string;
 }) {
   const [isActiveTab, setIsActiveTab] = useState('info');
-  
+
   return (
     <div className=''>
       <div className='relative flex sidebar-box min-w-full flex-col gap-6 bg-ctp-base simple-color-trans dark:bg-ctp-midnight'>

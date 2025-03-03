@@ -2,7 +2,7 @@
 import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
 
-export default function LocalDate({ date, tag }: { date: string; tag?: boolean }) {
+export default function LocalDate({ date, tag }: { date: Date |  string; tag?: boolean }) {
   const [localTime, setLocalTime] = useState(format(date, 'LLL do, y'));
 
   useEffect(() => {

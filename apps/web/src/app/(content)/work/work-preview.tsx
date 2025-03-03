@@ -5,10 +5,10 @@ import LocalDate from '../blog/local-date';
 import { works } from '$/.source';
 import { mdxComponents } from '@/mdx-components';
 
-export function WorkPreview(data: typeof works[0]) {
+export function WorkPreview(data: (typeof works)[0]) {
   const res = data.featured_image;
   const uKey = useId();
-  
+
   const MDXComponent = data.body;
 
   return (

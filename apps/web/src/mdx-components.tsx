@@ -20,7 +20,7 @@ export const mdxComponents = {
   img: ImgReplacer,
   pre: PreCodeV2,
   a: Anchors,
-  section: SectionCore
+  section: SectionCore,
 };
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {

@@ -2,13 +2,7 @@ import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { ImageResponse } from 'next/og';
 import type { NextRequest } from 'next/server';
-import {
-  allPosts,
-  allPages,
-  allProjects,
-  allCategories,
-  allTags,
-} from '@/lib/fumadocs';
+import { allPosts, allPages, allProjects, allCategories, allTags } from '@/lib/fumadocs';
 import type { FeaturedImageR1 } from '@/lib/image-process';
 import { blog, categories, pages, projects, tags } from '$/.source';
 
@@ -37,7 +31,10 @@ export async function GET(request: NextRequest) {
   });
   const validPagePaths = allPages.map((page) => {
     // we need to find dynamic pages like '/credits/bot-clicker' too
-    const trimmedUrl = page.url.split('/pages').filter(el=>el).join('/');
+    const trimmedUrl = page.url
+      .split('/pages')
+      .filter((el) => el)
+      .join('/');
     if (trimmedUrl.split('/').length > 2) {
       return `/opengraph${trimmedUrl}`;
     }
@@ -71,7 +68,14 @@ export async function GET(request: NextRequest) {
   const reqType = request.nextUrl.pathname.split('/')[2];
 
   interface ResData {
-    fetched: typeof projects[0] | typeof blog[0] | typeof pages[0] | typeof tags[0] | typeof categories[0] | null | undefined;
+    fetched:
+      | (typeof projects)[0]
+      | (typeof blog)[0]
+      | (typeof pages)[0]
+      | (typeof tags)[0]
+      | (typeof categories)[0]
+      | null
+      | undefined;
     title: string | null | undefined;
     prefix: string | null | undefined;
     type: string | null | undefined;
@@ -88,14 +92,12 @@ export async function GET(request: NextRequest) {
     dynamic: true,
   };
 
-
   const searchParams = request.nextUrl.searchParams;
   const isTwitter = searchParams.get('twitter') === 'true';
   if (isTwitter) {
     size.width = 1600;
     size.height = 900;
   }
-  
 
   const modUrl = request.nextUrl.pathname.split('/').slice(3, request.nextUrl.pathname.split('/').length).join('/');
 
@@ -107,7 +109,7 @@ export async function GET(request: NextRequest) {
         data.type = 'projects';
         data.title = data.fetched?.title;
         data.prefix = 'Projects by Lani';
-        data.hasImage = (data.fetched as typeof projects[0]).featured_image?.hasImage;
+        data.hasImage = (data.fetched as (typeof projects)[0]).featured_image?.hasImage;
         break;
       }
       case 'blog': {
@@ -117,7 +119,7 @@ export async function GET(request: NextRequest) {
         data.title = data.fetched?.headline;
         data.prefix = 'Dev Blog of Lani';
 
-        data.hasImage = (data?.fetched as typeof blog[0]).featured_image?.hasImage;
+        data.hasImage = (data?.fetched as (typeof blog)[0]).featured_image?.hasImage;
         break;
       }
       case 'credits': {
@@ -168,7 +170,7 @@ export async function GET(request: NextRequest) {
   }
 
   return new ImageResponse(
-    data.hasImage && (data.fetched as typeof blog[0] | typeof projects[0]).featured_image !== undefined ? (
+    data.hasImage && (data.fetched as (typeof blog)[0] | (typeof projects)[0]).featured_image !== undefined ? (
       <div
         style={{
           display: 'flex',
@@ -184,7 +186,7 @@ export async function GET(request: NextRequest) {
             objectFit: 'cover',
             objectPosition: '50% 50%',
           }}
-          src={((data.fetched as typeof blog[0] | typeof projects[0]).featured_image as FeaturedImageR1).resized}
+          src={((data.fetched as (typeof blog)[0] | (typeof projects)[0]).featured_image as FeaturedImageR1).resized}
         />
       </div>
     ) : (

@@ -10,18 +10,18 @@ export function useHash() {
 
   useEffect(() => {
     const onHashChange = () => setHash(window.location.hash);
-    const {pushState, replaceState} = window.history
-    
+    const { pushState, replaceState } = window.history;
+
     window.history.pushState = (...args) => {
       pushState.apply(window.history, args);
       setTimeout(() => setHash(window.location.hash));
-    }
+    };
 
     window.history.replaceState = (...args) => {
       replaceState.apply(window.history, args);
       setTimeout(() => setHash(window.location.hash));
-    }
-    
+    };
+
     window.addEventListener('hashchange', onHashChange);
     return () => {
       window.removeEventListener('hashchange', onHashChange);

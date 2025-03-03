@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export default function EzRoller({ arrayString, title }: { arrayString: string; title: string }) {
   const uniqueKey = crypto.randomUUID();
-  const array = JSON.parse(arrayString) as typeof categories | typeof tags
+  const array = JSON.parse(arrayString) as typeof categories | typeof tags;
 
   return (
     <>

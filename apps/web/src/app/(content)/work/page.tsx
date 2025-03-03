@@ -1,7 +1,6 @@
 import { useId } from 'react';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import { compareDesc } from 'date-fns';
 import { allPages, allWorks } from '@/lib/fumadocs';
 import { WorkPreview } from './work-preview';
 import { mdxComponents } from '@/mdx-components';
@@ -45,10 +44,8 @@ export default function Works() {
   const uKey = useId();
   const data = allPages.find((page) => page.url.split('/').pop() === 'work');
   if (!data) return notFound();
-  const workData = allWorks.sort((a, b) =>
-    compareDesc(new Date(a.endDate ?? a.startDate), new Date(b.endDate ?? b.startDate)),
-  );
-  
+  const workData = allWorks;
+
   const MDXComponent = data.body;
 
   return (

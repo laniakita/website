@@ -3,8 +3,7 @@ import PostPreviewV4 from './post-components';
 import { blog } from '$/.source';
 
 export default function PostRollerV4({ posts, isBlog }: { posts: typeof blog; isBlog?: boolean }) {
-    
-   return (
+  return (
     <div className='flex items-center justify-center'>
       <div className='flex w-full max-w-3xl flex-col gap-4 md:gap-6'>
         {isBlog

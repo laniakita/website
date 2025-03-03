@@ -19,7 +19,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const params = await props.params;
   const data = allTags.find((tagY) => tagY.url === `/tags/${params.slug}`);
-  
+
   const previousImages = (await parent).openGraph?.images ?? [];
   const previousImagesTwitter = (await parent).twitter?.images ?? [];
 

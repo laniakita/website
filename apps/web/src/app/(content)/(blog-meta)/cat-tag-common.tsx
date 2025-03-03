@@ -1,9 +1,17 @@
 import { categories, tags } from '$/.source';
-import {allPosts} from '@/lib/fumadocs'
+import { allPosts } from '@/lib/fumadocs';
 import PostRollerV4 from '@/app/(content)/blog/post-roller-v4';
 import { mdxComponents } from '@/mdx-components';
 
-export function MiniLayout({ data, posts, isTag }: { data: typeof categories[0] | typeof tags[0]; posts: typeof allPosts; isTag?: boolean }) {
+export function MiniLayout({
+  data,
+  posts,
+  isTag,
+}: {
+  data: (typeof categories)[0] | (typeof tags)[0];
+  posts: typeof allPosts;
+  isTag?: boolean;
+}) {
   const MDXComponent = data.body;
   return (
     <div className='relative z-[5] -mb-1 flex flex-col gap-4 common-padding md:gap-6'>
