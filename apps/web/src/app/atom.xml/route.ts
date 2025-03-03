@@ -1,6 +1,6 @@
 import { toXML } from 'jstoxml';
 import versionVault from 'versionVault/compiled';
-import {  allPosts, allTags, allCategories, allPostsFeed } from '@/lib/fumadocs';
+import { allPosts, allTags, allCategories, allPostsFeed } from '@/lib/fumadocs';
 import type { FeaturedImageR1 } from '@/lib/image-process';
 import { APP_URL, BLOG_DESCR } from '@/lib/constants';
 import { renderStatic } from '@/lib/fumadocs/html';
@@ -42,60 +42,61 @@ export async function GET() {
 
     return res;
   };
-  
 
-  const postEntry = await Promise.all(allPostsFeed.map(async (post) => {
-    const resCats = post.categories && catTagRoller(post.categories as typeof allCategories);
-    const resTags = post.tags && catTagRoller(post.tags as typeof allTags);
-    const html = await renderStatic(post);
-    
-    const imgEmbed = (post.featured_image as FeaturedImageR1).hasImage
-      ? `
+  const postEntry = await Promise.all(
+    allPostsFeed.map(async (post) => {
+      const resCats = post.categories && catTagRoller(post.categories as typeof allCategories);
+      const resTags = post.tags && catTagRoller(post.tags as typeof allTags);
+      const html = await renderStatic(post);
+
+      const imgEmbed = (post.featured_image as FeaturedImageR1).hasImage
+        ? `
           <figure>
             <img src="${HOST_URL}${(post.featured_image as FeaturedImageR1).src}" alt="${(post.featured_image as FeaturedImageR1).altText}" />
             <figcaption>${(post.featured_image as FeaturedImageR1).caption}</figcaption>
           </figure>
         `
-      : `
+        : `
           <figure>
             <img src="${HOST_URL}/opengraph${post.url}" alt="${post.headline}" />
             <figcaption>${post.caption ?? post.subheadline ?? post.headline}</figcaption>
           </figure>
         `;
 
-    const res = [
-      {
-        title: post.headline,
-      },
-      {
-        _name: 'link',
-        _attrs: [
-          {
-            rel: 'alternate',
-          },
-          {
-            href: `${HOST_URL}${post.url}`,
-          },
-        ],
-      },
-      {
-        id: `${HOST_URL}${post.url}`,
-      },
-      {
-        updated: new Date(post.updated ?? post.date).toISOString(),
-      },
-      resCats,
-      resTags,
-      {
-        _name: 'content',
-        _attrs: {
-          type: 'html',
+      const res = [
+        {
+          title: post.headline,
         },
-        _content: `<![CDATA[${imgEmbed} ${html}]]>`,
-      },
-    ];
-    return { entry: res };
-  }));
+        {
+          _name: 'link',
+          _attrs: [
+            {
+              rel: 'alternate',
+            },
+            {
+              href: `${HOST_URL}${post.url}`,
+            },
+          ],
+        },
+        {
+          id: `${HOST_URL}${post.url}`,
+        },
+        {
+          updated: new Date(post.updated ?? post.date).toISOString(),
+        },
+        resCats,
+        resTags,
+        {
+          _name: 'content',
+          _attrs: {
+            type: 'html',
+          },
+          _content: `<![CDATA[${imgEmbed} ${html}]]>`,
+        },
+      ];
+      return { entry: res };
+    }),
+  );
 
   const atomFeed = {
     _name: 'feed',

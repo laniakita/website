@@ -4,7 +4,7 @@ import { PageCommon } from '@/app/(content)/(info)/page-common';
 
 const data = allPages.find((page) => page.url === '/pages/credits');
 
-console.log(data)
+console.log(data);
 
 export const metadata: Metadata = {
   title: data?.title,

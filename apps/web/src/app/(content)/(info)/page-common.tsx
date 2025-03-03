@@ -15,7 +15,7 @@ export function PageCommon({ slug, prefix }: { slug: string; prefix?: string }) 
   }
 }
 
-function Inside(data: typeof pages[0]) {
+function Inside(data: (typeof pages)[0]) {
   const MDXContent = data.body;
 
   return (

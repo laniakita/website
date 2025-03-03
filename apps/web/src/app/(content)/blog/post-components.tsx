@@ -6,7 +6,7 @@ import { CatTag, CatTagRoller } from './cat-tag-roller';
 import LocalDate from './local-date';
 import { allPosts } from '@/lib/fumadocs';
 
-export default function PostPreviewV4(post: typeof allPosts[0]) {
+export default function PostPreviewV4(post: (typeof allPosts)[0]) {
   const res = post.featured_image as FeaturedImageR1;
 
   return (

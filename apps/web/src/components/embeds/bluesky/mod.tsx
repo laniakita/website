@@ -10,4 +10,3 @@ export const BlueskyEmbedCore = () => {
 
   return <p>{data.msg}</p>;
 };
-

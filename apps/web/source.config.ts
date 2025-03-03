@@ -20,9 +20,7 @@ export const categories = defineCollections({
     return z.object({
       id: z.string().optional(),
       title: z.string().default('Category Page'),
-      slug: z.string().default(
-        `${ctx.path.split('/').pop()?.split('.').shift()?.toLowerCase()}`
-      ),
+      slug: z.string().default(`${ctx.path.split('/').pop()?.split('.').shift()?.toLowerCase()}`),
       type: z.string().default('category'),
       date: z.coerce.date().default(new Date()),
       url: z.string().default(`${ctx.path.split('content').pop()?.split('.').shift()?.toLowerCase()}`),
@@ -37,9 +35,7 @@ export const tags = defineCollections({
     return z.object({
       id: z.string().optional(),
       title: z.string().default('tag'),
-      slug: z.string().default(
-        `${ctx.path.split('/').pop()?.split('.').shift()?.toLowerCase()}`
-      ),
+      slug: z.string().default(`${ctx.path.split('/').pop()?.split('.').shift()?.toLowerCase()}`),
       type: z.string().optional(),
       date: z.coerce.date().default(new Date()),
       url: z.string().default(`${ctx.path.split('content').pop()?.split('.').shift()?.toLowerCase()}`),
@@ -183,7 +179,7 @@ export const works = defineCollections({
   },
 });
 
-const postSchema = (ctx: { path: string, source: string }) => {
+const postSchema = (ctx: { path: string; source: string }) => {
   return z.object({
     id: z.string(),
     headline: z.string(),
@@ -206,7 +202,7 @@ const postSchema = (ctx: { path: string, source: string }) => {
     url: z.string().default(path.join('/blog', `${ctx.path.split('/').pop()?.split('.').shift()}`)),
     description: z.string().default(() => {
       const content = matter(ctx.source);
-      return descriptionHelper(content.content) ?? 'Post description'
+      return descriptionHelper(content.content) ?? 'Post description';
     }),
     featured_image: z
       .object({
@@ -242,7 +238,7 @@ const postSchema = (ctx: { path: string, source: string }) => {
         _debug: null,
       }),
   });
-}
+};
 
 export const blog = defineCollections({
   type: 'doc',
@@ -257,7 +253,7 @@ export const blogFeed = defineCollections({
   mdxOptions: getDefaultMDXOptions({
     rehypeCodeOptions: false,
     remarkPlugins: (v) => [remarkGfm, ...v],
-    rehypePlugins: (v) => [rehypeFnCitationSpacer, ...v]
+    rehypePlugins: (v) => [rehypeFnCitationSpacer, ...v],
   }),
 });
 

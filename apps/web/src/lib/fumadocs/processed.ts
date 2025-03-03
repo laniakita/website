@@ -161,7 +161,6 @@ export const allPostsFeedRes = await Promise.all(
   }),
 );
 
-
 async function featuredImgRes(
   collection: string,
   path: string,
