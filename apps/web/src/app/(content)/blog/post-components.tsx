@@ -7,7 +7,7 @@ import { blog } from '$/.source';
 
 export default function PostPreviewV4({post}: {post: typeof blog[0]}) {
   const res = post.featured_image;
-
+  
   return (
 
     <div className='flex basis-full flex-col overflow-hidden rounded-md border border-ctp-surface0 bg-ctp-base motion-safe:simple-color-trans dark:border-ctp-base dark:bg-ctp-midnight'>
@@ -33,12 +33,12 @@ export default function PostPreviewV4({post}: {post: typeof blog[0]}) {
             {post.updated ? (
               <div className='flex flex-wrap gap-x-2 font-mono'>
                 <p className='flex w-fit flex-wrap gap-x-2 rounded-full font-mono'>
-                <strong>Updated:</strong> <LocalDate date={post.updated} />
+                <strong>Updated:</strong> <LocalDate date={post.updated.toISOString()} />
                 </p>
               </div>
             ) : (
               <p className='flex w-fit flex-wrap gap-x-2 rounded-full font-mono'>
-              <LocalDate date={post.date} />
+              <LocalDate date={post.date.toISOString()} />
               </p>
             )}
           </div>
