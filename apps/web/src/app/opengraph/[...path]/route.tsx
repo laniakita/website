@@ -8,13 +8,9 @@ import {
   allProjects,
   allCategories,
   allTags,
-  type Post,
-  type Project,
-  type Page,
-  type Tag,
-  type Category,
-} from 'content-collections';
+} from '@/lib/fumadocs';
 import type { FeaturedImageR1 } from '@/lib/image-process';
+import { blog, categories, pages, projects, tags } from '$/.source';
 
 export const maxDuration = 5;
 
@@ -41,10 +37,11 @@ export async function GET(request: NextRequest) {
   });
   const validPagePaths = allPages.map((page) => {
     // we need to find dynamic pages like '/credits/bot-clicker' too
-    if (page.url.split('/').length > 2) {
-      return `/opengraph${page.url}`;
+    const trimmedUrl = page.url.split('/pages').filter(el=>el).join('/');
+    if (trimmedUrl.split('/').length > 2) {
+      return `/opengraph${trimmedUrl}`;
     }
-    return `/opengraph/static${page.url.toLowerCase()}`;
+    return `/opengraph/static${trimmedUrl}`;
   });
   const validCategoryPaths = allCategories.map((cat) => {
     return `/opengraph${cat.url.toLowerCase()}`;
@@ -66,7 +63,7 @@ export async function GET(request: NextRequest) {
   ];
 
   if (!allValidPaths.includes(request.nextUrl.pathname.toLowerCase())) {
-    return new Response('Resource Not found.', { status: 404 });
+    return new Response("I'm a teapot", { status: 418 });
   }
 
   // phase 2
@@ -74,7 +71,7 @@ export async function GET(request: NextRequest) {
   const reqType = request.nextUrl.pathname.split('/')[2];
 
   interface ResData {
-    fetched: Project | Post | Page | Tag | Category | null | undefined;
+    fetched: typeof projects[0] | typeof blog[0] | typeof pages[0] | typeof tags[0] | typeof categories[0] | null | undefined;
     title: string | null | undefined;
     prefix: string | null | undefined;
     type: string | null | undefined;
@@ -91,23 +88,26 @@ export async function GET(request: NextRequest) {
     dynamic: true,
   };
 
+
   const searchParams = request.nextUrl.searchParams;
   const isTwitter = searchParams.get('twitter') === 'true';
   if (isTwitter) {
     size.width = 1600;
     size.height = 900;
   }
+  
 
   const modUrl = request.nextUrl.pathname.split('/').slice(3, request.nextUrl.pathname.split('/').length).join('/');
+
   if (modUrl || reqType === 'home' || (reqType === 'credits' && !modUrl)) {
     switch (reqType) {
       case 'projects': {
         const projectUrl = `/projects/${modUrl}`;
-        data.fetched = allProjects.find((projX) => projX.url === projectUrl) as Project;
+        data.fetched = allProjects.find((projX) => projX.url === projectUrl);
         data.type = 'projects';
         data.title = data.fetched?.title;
         data.prefix = 'Projects by Lani';
-        data.hasImage = data.fetched?.featured_image?.hasImage;
+        data.hasImage = (data.fetched as typeof projects[0]).featured_image?.hasImage;
         break;
       }
       case 'blog': {
@@ -117,11 +117,11 @@ export async function GET(request: NextRequest) {
         data.title = data.fetched?.headline;
         data.prefix = 'Dev Blog of Lani';
 
-        data.hasImage = data?.fetched?.featured_image?.hasImage;
+        data.hasImage = (data?.fetched as typeof blog[0]).featured_image?.hasImage;
         break;
       }
       case 'credits': {
-        const creditUrl = `/credits/${modUrl}`;
+        const creditUrl = `/pages/credits/${modUrl}`;
         data.fetched = allPages.find((credit) => credit.url === creditUrl);
         data.type = 'credits';
         data.title = data.fetched?.title;
@@ -145,7 +145,7 @@ export async function GET(request: NextRequest) {
         break;
       }
       case 'static': {
-        const staticUrl = `/${modUrl}`;
+        const staticUrl = `/pages/${modUrl}`;
         data.fetched = allPages.find((page) => page.url === staticUrl);
         data.type = 'static';
         data.title = data.fetched?.title;
@@ -164,11 +164,11 @@ export async function GET(request: NextRequest) {
       }
     }
   } else if (reqType && !modUrl) {
-    return new Response('Resource not found.', { status: 404 });
+    return new Response("I'm a teapot", { status: 418 });
   }
 
   return new ImageResponse(
-    data.hasImage && (data.fetched as Post | Project).featured_image !== undefined ? (
+    data.hasImage && (data.fetched as typeof blog[0] | typeof projects[0]).featured_image !== undefined ? (
       <div
         style={{
           display: 'flex',
@@ -184,7 +184,7 @@ export async function GET(request: NextRequest) {
             objectFit: 'cover',
             objectPosition: '50% 50%',
           }}
-          src={((data.fetched as Post | Project).featured_image as FeaturedImageR1).resized}
+          src={((data.fetched as typeof blog[0] | typeof projects[0]).featured_image as FeaturedImageR1).resized}
         />
       </div>
     ) : (

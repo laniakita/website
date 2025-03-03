@@ -6,7 +6,7 @@ import { allPages, allWorks } from '@/lib/fumadocs';
 import { WorkPreview } from './work-preview';
 import { mdxComponents } from '@/mdx-components';
 
-const pageData = allPages.find((page) => page.url === '/work');
+const pageData = allPages.find((page) => page.url === '/pages/work');
 
 export const metadata: Metadata = {
   title: pageData?.title,

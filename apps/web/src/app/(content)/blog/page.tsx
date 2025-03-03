@@ -5,7 +5,7 @@ import PostRollerV4 from './post-roller-v4';
 import Footer from '@/components/footer/footer';
 import { allPages, allPosts } from '@/lib/fumadocs';
 
-const data = allPages.find((page) => page.url === 'pages/blog');
+const data = allPages.find((page) => page.url === '/pages/blog');
 
 export const metadata: Metadata = {
   title: data?.title,

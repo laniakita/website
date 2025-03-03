@@ -1,7 +1,6 @@
 import LocalDate from '@/app/(content)/blog/local-date';
 import GlobalMDXRenderer from '@/components/mdx/global-mdx-renderer';
 import { APP_URL, SHOWCASE_URL } from '@/lib/constants';
-import { descriptionHelper } from '@/lib/description-helper';
 import { allPosts } from '@/lib/fumadocs';
 import Markdown from 'markdown-to-jsx';
 import Image from 'next/image';

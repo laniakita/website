@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { allPages } from '@/lib/fumadocs';
 import { PageCommon } from '@/app/(content)/(info)/page-common';
 
-const data = allPages.find((page) => page.url === 'pages/about');
+const data = allPages.find((page) => page.url === '/pages/about');
 
 export const metadata: Metadata = {
   title: data?.title,

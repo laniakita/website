@@ -1,36 +1,35 @@
 import type { MetadataRoute } from 'next';
-import { compareDesc } from 'date-fns';
-import { allPosts, allProjects, allCategories, allTags, allPages } from 'content-collections';
-import type { Tag, Category, Project } from 'content-collections';
+import { allPosts, allProjects, allCategories, allTags, allPages, allWorks } from '@/lib/fumadocs';
 import { APP_URL } from '@/lib/constants';
 
 // funfact/improbable todo: google only supports 50,000 urls per sitemap, so filter
 // old content if needed.
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const postsRes = allPosts.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
-  const categoriesRes = allCategories.sort((a, b) => a.title.localeCompare(b.title));
-  const tagsRes = allTags.sort((a, b) => a.title.localeCompare(b.title));
-  const projectsRes = allProjects.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
-  const isNewPostInCatTag = (cattag: Category | Tag, isCat: boolean) => {
+  const postsRes = allPosts;
+  const categoriesRes = allCategories;
+  const tagsRes = allTags;
+  const projectsRes = allProjects;
+  
+  const isNewPostInCatTag = (cattag: typeof allCategories[0] | typeof allTags[0], isCat: boolean) => {
     // note: using postsRes above
     if (isCat) {
       const postResX = postsRes.find((postX) =>
-        postX.categories?.some((catX) => (catX as unknown as Category).url === cattag.url),
+        postX.categories?.some((catX) => catX.url === cattag.url),
       );
 
       return postResX?.updated ?? postResX?.date ?? new Date();
     }
 
     const postResTag = postsRes.find((postY) =>
-      postY.tags?.some((tagX) => (tagX as unknown as Tag).url === cattag.url),
+      postY.tags?.some((tagX) => tagX.url === cattag.url),
     );
 
     return postResTag?.updated ?? postResTag?.date ?? new Date();
   };
 
   const getPageDate = (pageSlug: string) => {
-    const res = allPages.find((page) => page.url === `/${pageSlug}`);
+    const res = allPages.find((page) => page.url === `/pages/${pageSlug}`);
     return res?.date ?? new Date();
   };
 
@@ -60,6 +59,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     },
     {
+      url: `${APP_URL}/work`,
+      lastModified: allWorks[0]?.endDate ?? new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.68,
+    },
+    {
       url: `${APP_URL}/resume`,
       lastModified: new Date('2024-10-05T07:42:42Z'),
       changeFrequency: 'yearly',
@@ -78,7 +83,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.2,
     },
   ];
+  
+  const creditsRes = allPages.filter((page) => page.url.includes('credits/'))
+  const credits = creditsRes.map((cred) => ({
+    url: `${APP_URL}${cred.url.split('/pages').pop()}`,
+    lastModified: cred.date,
 
+  }))
+  
   const posts = postsRes.map((post) => ({
     url: `${APP_URL}${post.url}`,
     lastModified: post.updated ?? post.date,
@@ -101,12 +113,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     return undefined;
   });
 
-  const projRes = embeddedProjectsSearch.filter((el) => el) as Project[];
+  const projRes = embeddedProjectsSearch.filter((el) => el) as typeof allProjects;
 
   const projects = projRes.map((project) => ({
     url: `${APP_URL}${project.url}`,
     lastModified: project.updated ?? project.date,
   }));
 
-  return [...baseSite, ...posts, ...categories, ...tags, ...projects];
+  return [...baseSite, ...credits, ...posts, ...categories, ...tags, ...projects];
 }

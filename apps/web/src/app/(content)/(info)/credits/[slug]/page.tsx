@@ -5,7 +5,7 @@ import { PageCommon } from '@/app/(content)/(info)/page-common';
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  const credits = allPages.filter((page) => page.url === 'pages/credits');
+  const credits = allPages.filter((page) => page.url === '/pages/credits');
   return credits.map((cred) => ({
     slug: cred.url.split('/').pop(),
   }));

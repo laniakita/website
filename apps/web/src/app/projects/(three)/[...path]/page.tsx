@@ -1,12 +1,11 @@
 import { notFound } from 'next/navigation';
 import type { Metadata, ResolvingMetadata } from 'next';
-import { compareDesc } from 'date-fns';
-import { allProjects } from 'content-collections';
+import { allProjects } from '@/lib/fumadocs';
 
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  const projects = allProjects.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)));
+  const projects = allProjects;
   const embeddedProjs = projects.map((projX) => {
     const obj = projX.embedded ? { path: projX.url.split('/').slice(2, projX.url.split('/').length) } : undefined;
     return obj;
