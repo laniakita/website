@@ -54,7 +54,7 @@
     "@opennextjs/aws": "^3.4.2",
     "@react-three/eslint-plugin": "^0.1.2",
     "@shikijs/rehype": "^2.1.0",
-    "@shikijs/twoslash": "^2.1.0",
+    "@shikijs/twoslash": "^3.1.0",
     "@tailwindcss/postcss": "^4.0.1",
     "@tailwindcss/typography": "^0.5.16",
     "@testing-library/dom": "^10.4.0",
