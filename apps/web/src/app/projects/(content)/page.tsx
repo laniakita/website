@@ -7,8 +7,6 @@ import { mdxComponents } from '@/mdx-components';
 
 const pageData = allPages.find((page) => page.url === '/pages/projects');
 
-console.log(pageData);
-
 export const metadata: Metadata = {
   title: pageData?.title,
   authors: [{ name: 'Lani Akita' }],
