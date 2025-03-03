@@ -2,21 +2,21 @@ import LocalDate from '@/app/(content)/blog/local-date';
 import GlobalMDXRenderer from '@/components/mdx/global-mdx-renderer';
 import { APP_URL, SHOWCASE_URL } from '@/lib/constants';
 import { descriptionHelper } from '@/lib/description-helper';
-import type { FeaturedImageR1 } from '@/lib/image-process';
-import { allPosts, type Project } from 'content-collections';
+import { allPosts } from '@/lib/fumadocs';
 import Markdown from 'markdown-to-jsx';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useId } from 'react';
+import { projects } from '$/.source';
 
-export default function ProjectPreview(data: Project) {
-  const res = data.featured_image as FeaturedImageR1;
+export default function ProjectPreview(data: typeof projects[0]) {
+  const res = data.featured_image;
   const uKey = useId();
 
-  const getDescription = (dataX: Project) => {
+  const getDescription = (dataX: typeof projects[0]) => {
     const getPost = allPosts.find((post) => post.url === dataX.blogPost);
     if (!getPost) return;
-    return descriptionHelper(getPost.content, getPost.url);
+    return getPost.description ?? dataX.description;
   };
 
   const projDescription = data.description;

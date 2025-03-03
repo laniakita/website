@@ -1,9 +1,10 @@
-'use client';
+import { categories, tags } from '$/.source';
 import Link from 'next/link';
-import type { Category, Tag } from 'content-collections';
 
-export default function EzRoller({ array, title }: { array: Category[] | Tag[]; title: string }) {
+export default function EzRoller({ arrayString, title }: { arrayString: string; title: string }) {
   const uniqueKey = crypto.randomUUID();
+  const array = JSON.parse(arrayString) as typeof categories | typeof tags
+
   return (
     <>
       <h4 className='font-black'>{title}</h4>

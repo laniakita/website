@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { allCategories, allTags } from 'content-collections';
+import { allCategories, allTags } from '@/lib/fumadocs';
 import { SOCIALS_FULL } from '../nav-constants';
 import InfoBox from './info-box';
 import { SocialIconNav2 } from './social-icon-nav-client';
@@ -72,13 +72,11 @@ export const socialItems2 = [
 const blogInfo = 'A blog about life, Linux, and web development. Written by, [Lani Akita](/about).';
 
 export default function Sidebar() {
-  const categories = allCategories.sort((a, b) => a.title.localeCompare(b.title));
-  const tags = allTags.sort((a, b) => a.title.localeCompare(b.title));
 
   return (
     <div className='flex size-full max-h-[calc(100vh-4rem)] shadow-xl md:sticky md:top-16'>
       <div className='flex w-full flex-col gap-0 overflow-y-auto bg-ctp-surface0/20 md:gap-6 md:border md:p-4 dark:border-ctp-base dark:bg-ctp-base/20'>
-        <InfoBox categories={categories} tags={tags} socialItems={socialItems2} blogInfo={blogInfo} />
+        <InfoBox categoriesString={JSON.stringify(allCategories)} tagsString={JSON.stringify(allTags)} socialItems={socialItems2} blogInfo={blogInfo} />
         <SubscribeBox />
         <div className='relative flex w-full flex-col items-center justify-center md:pb-4'>
           <SocialBox />

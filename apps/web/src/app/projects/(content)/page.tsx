@@ -1,21 +1,19 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { compareDesc } from 'date-fns';
-import { allPages, allProjects } from 'content-collections';
-import { descriptionHelper } from '@/lib/description-helper';
-import GlobalMDXComponent from '@/components/mdx/global-mdx-components';
+import { allPages, allProjects } from '@/lib/fumadocs';
 import ProjectPreview from './project-preview';
+import { mdxComponents } from '@/mdx-components';
 
-const pageData = allPages.find((page) => page.url === '/projects');
-const description = descriptionHelper(pageData?.content, pageData?.url, true);
+const pageData = allPages.find((page) => page.url === 'pages/projects');
 
 export const metadata: Metadata = {
   title: pageData?.title,
   authors: [{ name: 'Lani Akita' }],
-  description,
+  description: pageData?.description,
   openGraph: {
     title: pageData?.title,
-    description,
+    description: pageData?.description,
     images: [
       {
         alt: `${pageData?.title}`,
@@ -29,7 +27,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: pageData?.title,
-    description,
+    description: pageData?.description,
     images: [
       {
         alt: `${pageData?.title}`,
@@ -48,6 +46,7 @@ export default function Projects() {
   const projectData = allProjects.sort((a, b) =>
     compareDesc(new Date(a.updated ?? a.date), new Date(b.updated ?? b.date)),
   );
+  const MDXComponent = data.body;
 
   return (
     <main className='common-padding'>
@@ -58,7 +57,8 @@ export default function Projects() {
           </div>
           <div className='h-px w-full rounded bg-ctp-surface0 dark:bg-ctp-base' />
           <div className='prose-protocol-omega w-full max-w-sm prose-p:my-0'>
-            <GlobalMDXComponent {...data} />
+            {/* @ts-expect-error -- types issues */}
+            <MDXComponent components={mdxComponents} />
           </div>
         </div>
 

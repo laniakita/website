@@ -1,8 +1,10 @@
-import type { Post, Tag, Category } from 'content-collections';
+import { categories, tags } from '$/.source';
+import {allPosts} from '@/lib/fumadocs'
 import PostRollerV4 from '@/app/(content)/blog/post-roller-v4';
-import GlobalMDXComponent from '@/components/mdx/global-mdx-components';
+import { mdxComponents } from '@/mdx-components';
 
-export function MiniLayout({ data, posts, isTag }: { data: Category | Tag; posts: Post[]; isTag?: boolean }) {
+export function MiniLayout({ data, posts, isTag }: { data: typeof categories[0] | typeof tags[0]; posts: typeof allPosts; isTag?: boolean }) {
+  const MDXComponent = data.body;
   return (
     <div className='relative z-[5] -mb-1 flex flex-col gap-4 common-padding md:gap-6'>
       <div className='flex items-center justify-center'>
@@ -12,12 +14,13 @@ export function MiniLayout({ data, posts, isTag }: { data: Category | Tag; posts
           </div>
           <div className='h-px w-full rounded bg-ctp-surface0 dark:bg-ctp-base' />
           <div className='prose-protocol-omega w-full max-w-sm prose-p:my-0'>
-            <GlobalMDXComponent {...data} />
+            {/* @ts-expect-error -- types issues */}
+            <MDXComponent components={mdxComponents} />
           </div>
         </div>
       </div>
       {posts.length >= 1 ? (
-        <PostRollerV4 posts={posts} />
+        <PostRollerV4 posts={allPosts} isBlog={false} />
       ) : (
         <div>
           <p>Oops no matching posts founds. Hmm, somethings wrong here.</p>

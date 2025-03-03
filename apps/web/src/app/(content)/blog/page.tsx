@@ -45,11 +45,11 @@ export default function BlogPage2() {
   return (
     <div className='flex size-full flex-row'>
       <div className='hidden md:flex md:w-full md:max-w-xs lg:max-w-sm'>
-        <Sidebar />
-      </div>
+        <Sidebar />     
+        </div>
       <main className='m-auto flex flex-col-reverse justify-center gap-4 px-page-common pt-blog simple-color-trans md:flex-row md:gap-6'>
         <div className='flex flex-col gap-16'>
-          <PostRollerV4 postString={JSON.stringify(posts)} />
+          <PostRollerV4 posts={posts} isBlog />
           <Footer
             override
             overrideBlog
@@ -60,7 +60,6 @@ export default function BlogPage2() {
           />
         </div>
         <div className='block md:hidden'>
-          <Sidebar />
         </div>
       </main>
     </div>

@@ -1,14 +1,15 @@
-import { FeaturedImageR1 } from '@/lib/image-process';
-import { Work } from 'content-collections';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useId } from 'react';
 import LocalDate from '../blog/local-date';
-import GlobalMDXComponent from '@/components/mdx/global-mdx-components';
+import { works } from '$/.source';
+import { mdxComponents } from '@/mdx-components';
 
-export function WorkPreview(data: Work) {
-  const res = data.featured_image as FeaturedImageR1;
+export function WorkPreview(data: typeof works[0]) {
+  const res = data.featured_image;
   const uKey = useId();
+  
+  const MDXComponent = data.body;
 
   return (
     <div className='flex size-full basis-full flex-col overflow-hidden rounded-md border border-ctp-surface0 bg-ctp-base motion-safe:simple-color-trans dark:border-ctp-base dark:bg-ctp-midnight'>
@@ -62,7 +63,8 @@ export function WorkPreview(data: Work) {
             )}
           </div>
           <div className='prose-protocol-omega max-w-full prose-a:no-underline'>
-            <GlobalMDXComponent {...data} />
+            {/* @ts-expect-error -- types issues */}
+            <MDXComponent components={mdxComponents} />
           </div>
         </div>
 

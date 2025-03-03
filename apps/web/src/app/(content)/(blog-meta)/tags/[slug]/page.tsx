@@ -1,8 +1,7 @@
 import { notFound } from 'next/navigation';
 import type { Metadata, ResolvingMetadata } from 'next';
 import { compareDesc } from 'date-fns';
-import { allTags, allPosts } from 'content-collections';
-import { descriptionHelper } from '@/lib/description-helper';
+import { allTags, allPosts } from '@/lib/fumadocs';
 import { MiniLayout } from '../../cat-tag-common';
 
 export const dynamicParams = false;
@@ -20,19 +19,17 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const params = await props.params;
   const data = allTags.find((tagY) => tagY.url === `/tags/${params.slug}`);
-
-  const description = data?.content && data.url ? descriptionHelper(data.content, data.url, true) : 'Tag page.';
-
+  
   const previousImages = (await parent).openGraph?.images ?? [];
   const previousImagesTwitter = (await parent).twitter?.images ?? [];
 
   return {
     title: data?.title,
     authors: [{ name: 'Lani Akita' }],
-    description,
+    description: data?.description,
     openGraph: {
       title: data?.title,
-      description,
+      description: data?.description,
       images: [
         {
           alt: `${data?.title}`,
@@ -47,7 +44,7 @@ export async function generateMetadata(
     twitter: {
       card: 'summary_large_image',
       title: data?.title,
-      description,
+      description: data?.description,
       images: [
         {
           alt: `${data?.title}`,

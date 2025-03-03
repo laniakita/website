@@ -1,8 +1,7 @@
 import { notFound } from 'next/navigation';
 import type { Metadata, ResolvingMetadata } from 'next';
 import { compareDesc } from 'date-fns';
-import { allCategories, allPosts } from 'content-collections';
-import { descriptionHelper } from '@/lib/description-helper';
+import { allCategories, allPosts } from '@/lib/fumadocs';
 import { MiniLayout } from '../../cat-tag-common';
 
 export const dynamicParams = false;
@@ -21,18 +20,16 @@ export async function generateMetadata(
   const params = await props.params;
   const catData = allCategories.find((catY) => catY.url.split('/').pop() === params.slug);
 
-  const description = descriptionHelper(catData?.content, catData?.url, true);
-
   const previousImages = (await parent).openGraph?.images ?? [];
   const previousImagesTwitter = (await parent).twitter?.images ?? [];
 
   return {
     title: catData?.title,
     authors: [{ name: 'Lani Akita' }],
-    description,
+    description: catData?.description,
     openGraph: {
       title: catData?.title,
-      description,
+      description: catData?.description,
       images: [
         {
           alt: `${catData?.title}`,
@@ -47,7 +44,7 @@ export async function generateMetadata(
     twitter: {
       card: 'summary_large_image',
       title: catData?.title,
-      description,
+      description: catData?.description,
       images: [
         {
           alt: `${catData?.title}`,

@@ -1,22 +1,21 @@
 'use client';
 import { useState } from 'react';
-import { type Category, type Tag } from 'content-collections';
 import GlobalMDXRenderer from '@/components/mdx/global-mdx-renderer';
 import { type SocialNavIcon } from '../social-icon';
 import EzRoller from './ez-roller';
 
 export default function InfoBox({
-  categories,
-  tags,
+  categoriesString,
+  tagsString,
   blogInfo,
 }: {
-  categories: Category[];
-  tags: Tag[];
+  categoriesString: string;
+  tagsString: string;
   socialItems: SocialNavIcon[];
   blogInfo: string;
 }) {
   const [isActiveTab, setIsActiveTab] = useState('info');
-
+  
   return (
     <div className=''>
       <div className='relative flex sidebar-box min-w-full flex-col gap-6 bg-ctp-base simple-color-trans dark:bg-ctp-midnight'>
@@ -29,10 +28,10 @@ export default function InfoBox({
         {isActiveTab === 'meta' && (
           <div className='flex flex-col gap-2 px-6 pt-[4.5rem] pb-6'>
             <div>
-              <EzRoller title='Categories' array={categories} />
+              <EzRoller title='Categories' arrayString={categoriesString} />
             </div>
             <div>
-              <EzRoller title='Tags' array={tags} />
+              <EzRoller title='Tags' arrayString={tagsString} />
             </div>
           </div>
         )}

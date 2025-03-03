@@ -24,6 +24,11 @@ export const categories = defineCollections({
       type: z.string().default('category'),
       date: z.coerce.date().default(new Date()),
       url: z.string().default(`${ctx.path.split('content').pop()?.split('.').shift()?.toLowerCase()}`),
+      description: z.string().default(() => {
+        const content = matter(ctx.source);
+        const url = `${ctx.path.split('content').pop()?.split('.').shift()?.toLowerCase()}`;
+        return descriptionHelper(content.content, url, true) ?? 'Category description';
+      }),
     });
   },
 });
@@ -39,6 +44,11 @@ export const tags = defineCollections({
       type: z.string().optional(),
       date: z.coerce.date().default(new Date()),
       url: z.string().default(`${ctx.path.split('content').pop()?.split('.').shift()?.toLowerCase()}`),
+      description: z.string().default(() => {
+        const content = matter(ctx.source);
+        const url = `${ctx.path.split('content').pop()?.split('.').shift()?.toLowerCase()}`;
+        return descriptionHelper(content.content, url, true) ?? 'Tag description';
+      }),
     });
   },
 });
@@ -202,7 +212,8 @@ const postSchema = (ctx: { path: string; source: string }) => {
     url: z.string().default(path.join('/blog', `${ctx.path.split('/').pop()?.split('.').shift()}`)),
     description: z.string().default(() => {
       const content = matter(ctx.source);
-      return descriptionHelper(content.content) ?? 'Post description';
+      const url = path.join('/blog', `${ctx.path.split('/').pop()?.split('.').shift()?.toLowerCase()}`);
+      return descriptionHelper(content.content, url) ?? 'Post description';
     }),
     featured_image: z
       .object({

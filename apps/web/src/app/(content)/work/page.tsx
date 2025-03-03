@@ -2,21 +2,19 @@ import { useId } from 'react';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { compareDesc } from 'date-fns';
-import { allPages, allWorks } from 'content-collections';
-import { descriptionHelper } from '@/lib/description-helper';
-import GlobalMDXComponent from '@/components/mdx/global-mdx-components';
+import { allPages, allWorks } from '@/lib/fumadocs';
 import { WorkPreview } from './work-preview';
+import { mdxComponents } from '@/mdx-components';
 
 const pageData = allPages.find((page) => page.url === '/work');
-const description = descriptionHelper(pageData?.content, pageData?.url, true);
 
 export const metadata: Metadata = {
   title: pageData?.title,
   authors: [{ name: 'Lani Akita' }],
-  description,
+  description: pageData?.description,
   openGraph: {
     title: pageData?.title,
-    description,
+    description: pageData?.description,
     images: [
       {
         alt: `${pageData?.title}`,
@@ -30,7 +28,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: pageData?.title,
-    description,
+    description: pageData?.description,
     images: [
       {
         alt: `${pageData?.title}`,
@@ -50,6 +48,8 @@ export default function Works() {
   const workData = allWorks.sort((a, b) =>
     compareDesc(new Date(a.endDate ?? a.startDate), new Date(b.endDate ?? b.startDate)),
   );
+  
+  const MDXComponent = data.body;
 
   return (
     <main className='common-padding'>
@@ -60,7 +60,8 @@ export default function Works() {
           </div>
           <div className='h-px w-full rounded bg-ctp-surface0 dark:bg-ctp-base' />
           <div className='prose-protocol-omega w-full max-w-sm prose-p:my-0'>
-            <GlobalMDXComponent {...data} />
+            {/* @ts-expect-error -- types issues */}
+            <MDXComponent components={mdxComponents} />
           </div>
         </div>
 
