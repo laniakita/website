@@ -1,6 +1,5 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import { compareDesc } from 'date-fns';
 import { allPages, allProjects } from '@/lib/fumadocs';
 import ProjectPreview from './project-preview';
 import { mdxComponents } from '@/mdx-components';

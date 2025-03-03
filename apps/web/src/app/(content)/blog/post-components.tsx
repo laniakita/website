@@ -5,11 +5,10 @@ import { CatTag, CatTagRoller } from './cat-tag-roller';
 import LocalDate from './local-date';
 import { blog } from '$/.source';
 
-export default function PostPreviewV4({post}: {post: typeof blog[0]}) {
+export default function PostPreviewV4({ post }: { post: (typeof blog)[0] }) {
   const res = post.featured_image;
-  
-  return (
 
+  return (
     <div className='flex basis-full flex-col overflow-hidden rounded-md border border-ctp-surface0 bg-ctp-base motion-safe:simple-color-trans dark:border-ctp-base dark:bg-ctp-midnight'>
       {res.hasImage ? (
         <Link href={post.url}>
@@ -33,12 +32,12 @@ export default function PostPreviewV4({post}: {post: typeof blog[0]}) {
             {post.updated ? (
               <div className='flex flex-wrap gap-x-2 font-mono'>
                 <p className='flex w-fit flex-wrap gap-x-2 rounded-full font-mono'>
-                <strong>Updated:</strong> <LocalDate date={post.updated} />
+                  <strong>Updated:</strong> <LocalDate date={post.updated} />
                 </p>
               </div>
             ) : (
               <p className='flex w-fit flex-wrap gap-x-2 rounded-full font-mono'>
-              <LocalDate date={post.date} />
+                <LocalDate date={post.date} />
               </p>
             )}
           </div>
@@ -54,7 +53,7 @@ export default function PostPreviewV4({post}: {post: typeof blog[0]}) {
         </div>
         <div className='h-px w-full rounded bg-ctp-surface0' />
         <div className='prose-protocol-omega max-w-full text-pretty prose-p:my-0 prose-a:no-underline'>
-        <GlobalMDXRenderer>{post.description}</GlobalMDXRenderer>
+          <GlobalMDXRenderer>{post.description}</GlobalMDXRenderer>
         </div>
         <div className='h-px w-full rounded bg-ctp-surface0' />
         <CatTagRoller cats={post.categories as CatTag[]} tags={post.tags as CatTag[]} />
