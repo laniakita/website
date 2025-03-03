@@ -1,11 +1,14 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import type { Post } from 'content-collections';
 import { SubscribeBox } from '@/components/sidebar/main';
 import PostPreviewV4 from './post-components';
+import { allPosts } from '@/lib/fumadocs';
 
-export default function PostRollerV4({ posts }: { posts: Post[] }) {
+export default function PostRollerV4({ postString }: { postString: string }) {
+  
+  const posts = JSON.parse(postString) as typeof allPosts;
+
   const uniqueKey = (idx: number) => {
     const num = Math.floor(Math.random() * 1000 + idx);
 

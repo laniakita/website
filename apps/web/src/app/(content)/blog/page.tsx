@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
 import { compareDesc } from 'date-fns';
-import { allPages, allPosts } from 'content-collections';
 import Sidebar from '@/components/sidebar/main';
 import PostRollerV4 from './post-roller-v4';
 import Footer from '@/components/footer/footer';
+import { allPages, allPosts } from '@/lib/fumadocs';
 
-const data = allPages.find((page) => page.url === '/blog');
+const data = allPages.find((page) => page.url === 'pages/blog');
 
 export const metadata: Metadata = {
   title: data?.title,
@@ -49,7 +49,7 @@ export default function BlogPage2() {
       </div>
       <main className='m-auto flex flex-col-reverse justify-center gap-4 px-page-common pt-blog simple-color-trans md:flex-row md:gap-6'>
         <div className='flex flex-col gap-16'>
-          <PostRollerV4 posts={posts} />
+          <PostRollerV4 postString={JSON.stringify(posts)} />
           <Footer
             override
             overrideBlog

@@ -1,12 +1,11 @@
 import { compareDesc } from 'date-fns';
 import { toXML } from 'jstoxml';
 import versionVault from 'versionVault/compiled';
-import { allTags, allCategories } from '@/lib/fumadocs';
-import type { Tag, Category, Post } from 'content-collections';
+import {  allPosts, allTags, allCategories, allPostsFeed } from '@/lib/fumadocs';
 import type { FeaturedImageR1 } from '@/lib/image-process';
 import { APP_URL, BLOG_DESCR } from '@/lib/constants';
-import { readFile } from 'node:fs/promises';
-import { join } from 'node:path';
+import { createElement } from 'react';
+import { renderStatic } from '@/lib/fumadocs/html';
 
 export const dynamic = 'force-static';
 
@@ -18,24 +17,13 @@ const xmlOpts = {
 export async function GET() {
   const NEXTJS_VERSION = versionVault.versions.dependencies.next;
 
-  const allPostData = await readFile(join(process.cwd(), '.content-collections-plus-html/generated/Post/index.json'), {
-    encoding: 'utf8',
-  });
-
-  interface PostPlus extends Post {
-    html: string;
-  }
-
-  const allPosts = JSON.parse(allPostData) as PostPlus[];
-
-  const posts = allPosts.sort((a, b) => compareDesc(new Date(a.updated ?? a.date), new Date(b.updated ?? b.date)));
   const buildDate = new Date(
-    posts.length >= 1 && posts[0] !== undefined ? (posts[0].updated ?? posts[0]?.date) : '',
+    allPosts.length >= 1 && allPosts[0] !== undefined ? (allPosts[0].updated ?? allPosts[0]?.date) : '',
   ).toISOString();
 
   const HOST_URL = APP_URL;
 
-  const catTagRoller = (catsTagArr: Category[] | Tag[]) => {
+  const catTagRoller = (catsTagArr: typeof allCategories | typeof allTags) => {
     const res = catsTagArr.map((catTagX) => {
       const catTag = {
         _name: 'category',
@@ -56,31 +44,13 @@ export async function GET() {
 
     return res;
   };
+  
 
-  const postEntry = posts.map((post) => {
-    const cats =
-      post.categories &&
-      (
-        post.categories.map((cat) => {
-          const category = allCategories.find((categoryX) => categoryX.url === cat?.url);
-
-          return category;
-        }) as Category[]
-      ).sort((a, b) => a.title.localeCompare(b.title));
-
-    const tagsArr =
-      post.tags &&
-      (
-        post.tags.map((tag) => {
-          const tagY = allTags.find((tagX) => tagX.url === tag?.url);
-
-          return tagY;
-        }) as Tag[]
-      ).sort((a, b) => a.title.localeCompare(b.title));
-
-    const resCats = cats && catTagRoller(cats);
-    const resTags = tagsArr && catTagRoller(tagsArr);
-
+  const postEntry = await Promise.all(allPostsFeed.map(async (post) => {
+    const resCats = post.categories && catTagRoller(post.categories as typeof allCategories);
+    const resTags = post.tags && catTagRoller(post.tags as typeof allTags);
+    const html = await renderStatic(post);
+    
     const imgEmbed = (post.featured_image as FeaturedImageR1).hasImage
       ? `
           <figure>
@@ -123,11 +93,11 @@ export async function GET() {
         _attrs: {
           type: 'html',
         },
-        _content: `<![CDATA[${imgEmbed} ${post.html} ]]>`,
+        _content: `<![CDATA[${imgEmbed} ${html}]]>`,
       },
     ];
     return { entry: res };
-  });
+  }));
 
   const atomFeed = {
     _name: 'feed',

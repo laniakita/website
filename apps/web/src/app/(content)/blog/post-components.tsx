@@ -1,14 +1,12 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { type Post } from 'content-collections';
-import { descriptionHelper } from '@/lib/description-helper';
 import type { FeaturedImageR1 } from '@/lib/image-process';
 import GlobalMDXRenderer from '@/components/mdx/global-mdx-renderer';
 import { CatTag, CatTagRoller } from './cat-tag-roller';
 import LocalDate from './local-date';
+import { allPosts } from '@/lib/fumadocs';
 
-export default function PostPreviewV4(post: Post) {
-  const descriptionStr = descriptionHelper(post.content, post.url)!;
+export default function PostPreviewV4(post: typeof allPosts[0]) {
   const res = post.featured_image as FeaturedImageR1;
 
   return (
@@ -56,7 +54,7 @@ export default function PostPreviewV4(post: Post) {
         </div>
         <div className='h-px w-full rounded bg-ctp-surface0' />
         <div className='prose-protocol-omega max-w-full text-pretty prose-p:my-0 prose-a:no-underline'>
-          <GlobalMDXRenderer>{descriptionStr}</GlobalMDXRenderer>
+          <GlobalMDXRenderer>{post.description}</GlobalMDXRenderer>
         </div>
         <div className='h-px w-full rounded bg-ctp-surface0' />
         <CatTagRoller cats={post.categories as CatTag[]} tags={post.tags as CatTag[]} />

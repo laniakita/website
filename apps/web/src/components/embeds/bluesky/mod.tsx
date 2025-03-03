@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-const BlueskyEmbed = () => {
+export const BlueskyEmbedCore = () => {
   const [data, setData] = useState<{ msg: string }>({ msg: '' });
   useEffect(() => {
     setData({ msg: 'hi' });
@@ -11,4 +11,3 @@ const BlueskyEmbed = () => {
   return <p>{data.msg}</p>;
 };
 
-export default BlueskyEmbed;

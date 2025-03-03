@@ -6,7 +6,7 @@ import PreCodeV2 from '@/components/mdx/components/pre-code/codeblock-v2';
 import Section from '@/components/mdx/components/section/wrapper';
 import Image, { ImageProps } from 'next/image';
 
-function ImgReplacer(props: ImageProps) {
+export function ImgReplacer(props: ImageProps) {
   return (
     <figure>
       <Image {...props} className='h-auto w-full' />
@@ -20,7 +20,6 @@ export const mdxComponents = {
   img: ImgReplacer,
   pre: PreCodeV2,
   a: Anchors,
-  section: Section,
 };
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {

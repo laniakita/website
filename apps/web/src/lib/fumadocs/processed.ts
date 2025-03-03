@@ -1,4 +1,4 @@
-import { blog, categories, projects, tags, works } from '$/.source';
+import { blog, blogFeed, categories, projects, tags, works } from '$/.source';
 import { FeaturedImageR1, imageProcessor } from '../image-process';
 
 export const allProjectsRes = await Promise.all(
@@ -51,6 +51,7 @@ export const allPostsRes = await Promise.all(
             if (found) {
               return {
                 title: found.title,
+                slug: found.slug,
                 url: found.url,
                 type: found.type,
               };
@@ -75,6 +76,7 @@ export const allPostsRes = await Promise.all(
             if (foundTags) {
               return {
                 title: foundTags.title,
+                slug: foundTags.slug,
                 url: foundTags.url,
                 type: foundTags.type,
               };
@@ -93,6 +95,72 @@ export const allPostsRes = await Promise.all(
     return post;
   }),
 );
+
+export const allPostsFeedRes = await Promise.all(
+  blogFeed.map(async (post) => {
+    const config = {
+      imageSrc: post.imageSrc ?? '',
+      altText: post.altText ?? '',
+      caption: post.caption ?? '',
+    };
+
+    const featured_image = await featuredImgRes('posts', post._file.path, config);
+    post.featured_image = { ...featured_image };
+
+    const categoriesRes =
+      post.catSlugs &&
+      ((
+        await Promise.all(
+          post.catSlugs.map(async (ref) => {
+            const found = categories.find((cat) => cat.slug === ref);
+            if (found) {
+              return {
+                title: found.title,
+                slug: found.slug,
+                url: found.url,
+                type: found.type,
+              };
+            }
+          }),
+        )
+      )
+        .filter((el) => el)
+        .sort((a, b) => a?.title.localeCompare(b?.title ?? '') ?? 0) as { title: string; url: string; type: string }[]);
+
+    if (categoriesRes) {
+      post.categories = categoriesRes;
+      delete post.catSlugs;
+    }
+
+    const tagsRes =
+      post.tagSlugs &&
+      ((
+        await Promise.all(
+          post.tagSlugs.map(async (ref) => {
+            const foundTags = tags.find((tag) => tag.slug === ref);
+            if (foundTags) {
+              return {
+                title: foundTags.title,
+                slug: foundTags.slug,
+                url: foundTags.url,
+                type: foundTags.type,
+              };
+            }
+          }),
+        )
+      )
+        .filter((el) => el)
+        .sort((a, b) => a?.title.localeCompare(b?.title ?? '') ?? 0) as { title: string; url: string; type: string }[]);
+
+    if (tagsRes) {
+      post.tags = tagsRes;
+      delete post.tagSlugs;
+    }
+
+    return post;
+  }),
+);
+
 
 async function featuredImgRes(
   collection: string,
