@@ -4,6 +4,7 @@ import Anchors from '@/components/mdx/components/anchor-tags';
 import PreCodeV2 from '@/components/mdx/components/pre-code/codeblock-v2';
 import Section from '@/components/mdx/components/section/wrapper';
 import Image, { ImageProps } from 'next/image';
+import SectionCore from './components/mdx/components/section/section';
 
 export function ImgReplacer(props: ImageProps) {
   return (
@@ -19,6 +20,7 @@ export const mdxComponents = {
   img: ImgReplacer,
   pre: PreCodeV2,
   a: Anchors,
+  section: SectionCore
 };
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
