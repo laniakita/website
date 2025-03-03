@@ -28,7 +28,7 @@ export function MiniLayout({
         </div>
       </div>
       {posts.length >= 1 ? (
-        <PostRollerV4 posts={allPosts} isBlog={false} />
+        <PostRollerV4 posts={posts} isBlog={false} />
       ) : (
         <div>
           <p>Oops no matching posts founds. Hmm, somethings wrong here.</p>
