@@ -31,7 +31,7 @@
     "three": "^0.173.0",
     "three-stdlib": "^2.35.13",
     "zod": "^3.24.2",
-    "zustand": "5.0.3"
+    "zustand": "^5.0.3"
   },
   "devDependencies": {
     "@eslint/compat": "^1.2.6",
