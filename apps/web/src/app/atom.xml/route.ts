@@ -1,10 +1,8 @@
-import { compareDesc } from 'date-fns';
 import { toXML } from 'jstoxml';
 import versionVault from 'versionVault/compiled';
 import {  allPosts, allTags, allCategories, allPostsFeed } from '@/lib/fumadocs';
 import type { FeaturedImageR1 } from '@/lib/image-process';
 import { APP_URL, BLOG_DESCR } from '@/lib/constants';
-import { createElement } from 'react';
 import { renderStatic } from '@/lib/fumadocs/html';
 
 export const dynamic = 'force-static';

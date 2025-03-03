@@ -1,9 +1,7 @@
 'use client';
-import { allPosts } from '@/lib/fumadocs/processed';
 import MiniPostsRoller from '../../rollers/mini-postroller';
 import MiniProjectsRoller from '../../rollers/mini-projects-roller';
 import { MiniWorkRoller } from '../../rollers/mini-server-roller';
-//import dynamic from 'next/dynamic';
 import Section from '../section';
 import ServicesTable from '../section/services-table';
 import Summary from '../section/summary';
