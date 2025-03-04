@@ -60,6 +60,12 @@ const nextConfig = {
     },
   },
 
+  compiler: {
+    removeConsole: {
+      exclude: ['error']
+    },
+  },
+
   async redirects() {
     return [
       {
