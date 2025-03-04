@@ -1,9 +1,8 @@
 'use client';
-
+/* eslint-disable @next/next/no-img-element -- necessary */
 import { ThreadViewPost } from '@atproto/api/dist/client/types/app/bsky/feed/defs';
 import { OutputSchema } from '@atproto/api/dist/client/types/app/bsky/feed/getPostThread';
 import { format } from 'date-fns';
-import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 export const BlueskyEmbedCore = ({ postUrl }: { postUrl: string }) => {
@@ -53,9 +52,7 @@ export const BlueskyEmbedCore = ({ postUrl }: { postUrl: string }) => {
           <div className='flex flex-col gap-4'>
             <div className='flex flex-row items-center gap-2'>
               <a href={postUrl} target='_blank' rel='noreferrer noopener nofollow'>
-                <Image
-                  priority={false}
-                  placeholder='empty'
+                <img
                   src={avatar!}
                   alt={`${displayName}'s avatar`}
                   width={50}
@@ -75,9 +72,7 @@ export const BlueskyEmbedCore = ({ postUrl }: { postUrl: string }) => {
             </div>
             <p className='text-lg'>{text as string}</p>
             <a href={postUrl} target='_blank' rel='noreferrer noopener nofollow'>
-              <Image
-                priority={false}
-                placeholder='empty'
+              <img
                 src={img.thumb}
                 alt={img.alt}
                 height={img.aspectRatio.height}
