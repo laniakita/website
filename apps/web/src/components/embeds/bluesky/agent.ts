@@ -1,5 +1,5 @@
-import { Agent, CredentialSession } from '@atproto/api'
+import { Agent, CredentialSession } from '@atproto/api';
 
-const session = new CredentialSession(new URL('https://public.api.bsky.app'))
+const session = new CredentialSession(new URL('https://public.api.bsky.app'));
 
-export const atpAgent = new Agent(session)
+export const atpAgent = new Agent(session);
