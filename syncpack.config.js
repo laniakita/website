@@ -45,6 +45,18 @@ const config = {
       dependencies: ["@react-three/fiber"],
       pinVersion: "8.17.10"
     },
+    {
+      label: "Keep showcase on pinned react-three/a11y",
+      packages: ["@website/showcase"],
+      dependencies: ["@react-three/a11y"],
+      pinVersion: "^3.0.0"
+    },
+    {
+      label: "Keep showcase on pinned react-three/postprocessing",
+      packages: ["@website/showcase"],
+      dependencies: ["@react-three/postprocessing"],
+      pinVersion: "^2.16.5"
+    },
   ],
 };
 
