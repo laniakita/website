@@ -1,0 +1,55 @@
+name: Validation Action
+run-name: ${{github.actor}} is building for dev
+on: 
+  pull_request:
+    types: [opened, reopened]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      # syncpack
+      - run: echo "Checking deps for mismatches"
+      
+      # fetch repo
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+      - run: echo "Checked out ${{ github.repository }}"
+      
+      # Setup Bun
+      - name: Setup bun 
+        uses: oven-sh/setup-bun@v2
+      - run: bun install
+
+      - name: Check mismatches
+        run: bunx syncpack list-mismatches 
+
+  build:
+    if: ${{ github.ref == 'refs/heads/main' }}
+    needs: [check]
+    runs-on: ubuntu-latest
+    steps:
+      # info
+      - run: echo "Building ${{ github.run_id }} (Attempt \#${{ github.run_attempt }}) from branch ${{ github.ref_name }}"
+      - run: echo "Build triggered by ${{ github.event_name }}"
+      - run: echo "Building on ${{ runner.os }}"
+
+      # fetch repo
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+      - run: echo "Checked out ${{ github.repository }}"
+
+      # Setup Bun
+      - name: Setup bun 
+        uses: oven-sh/setup-bun@v2
+        
+      - run: bun install
+
+      # ROTFB
+      - name: Deploy
+        run: bun run build
+        timeout-minutes: 30
