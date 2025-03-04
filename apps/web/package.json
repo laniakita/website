@@ -12,7 +12,7 @@
     "@mdx-js/react": "^3.1.0",
     "@next/mdx": "^15.1.7",
     "@react-three/drei": "10.0.0-rc.1",
-    "@react-three/fiber": "9.0.0-rc.5",
+    "@react-three/fiber": "9.0.4",
     "@serwist/next": "^9.0.12",
     "@vercel/functions": "^2.0.0",
     "arctic": "^3.3.0",
