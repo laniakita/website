@@ -61,7 +61,7 @@
     "@types/jstoxml": "^5.0.0",
     "@types/lodash": "^4.17.15",
     "@types/mdx": "^2.0.13",
-    "@types/node": "22.13.0",
+    "@types/node": "22.13.9",
     "@types/react": ">=19",
     "@types/react-dom": ">=19",
     "@types/three": "^0.173.0",
