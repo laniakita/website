@@ -39,7 +39,7 @@
     "@types/bun": "*",
     "@types/node": "22.13.0",
     "@types/react": "18.3.x",
-    "@types/react-dom": "18.3.x",
+    "@types/react-dom": "19.0.x",
     "@types/three": "0.169.0",
     "@website/typescript-config": "workspace:*",
     "contentlayer2": "^0.5.4",
