@@ -10,6 +10,7 @@
       "dependsOn": ["build"]
     },
     "build": {
+      "passThroughEnv": ["NEXT_PUBLIC_DEPLOYED_URL"],
       "outputs": [
         ".next/**",
         "public/dist/**",
