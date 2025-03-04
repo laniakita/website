@@ -12,3 +12,12 @@ updates:
       interval: "weekly"
     labels:
       - "npm dependencies"
+    ignore:
+      - dependency-name: "@react-three/*"
+      - dependency-name: "three"
+      - dependency-name: "three-stdlib"
+      - dependency-name: "@types/three"
+      - dependency-name: "*"
+        update-types: ["version-update:semver-patch"]
+
+
