@@ -1,5 +1,5 @@
 name: Validation Action
-run-name: ${{github.actor}} is building for dev
+run-name: ${{github.actor}} is validating ${{ github.sha }}
 on: 
   pull_request:
     types: [opened, reopened]
@@ -7,7 +7,13 @@ on:
 jobs:
   check:
     runs-on: ubuntu-latest
+    outputs: 
+      short_sha: ${{ steps.set_vars.outputs.short_sha }}
     steps:
+      - name: Set outputs
+        id: set_vars
+        run: echo "short_sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
       # syncpack
       - run: echo "Checking deps for mismatches"
       
@@ -27,12 +33,11 @@ jobs:
         run: bunx syncpack list-mismatches 
 
   build:
-    if: ${{ github.ref == 'refs/heads/main' }}
     needs: [check]
     runs-on: ubuntu-latest
     steps:
       # info
-      - run: echo "Building ${{ github.run_id }} (Attempt \#${{ github.run_attempt }}) from branch ${{ github.ref_name }}"
+      - run: echo "Building ${{ needs.check.outputs.short_sha }}#${{ github.run_id }}-${{ github.run_attempt }} from branch ${{ github.ref_name }}"
       - run: echo "Build triggered by ${{ github.event_name }}"
       - run: echo "Building on ${{ runner.os }}"
 
