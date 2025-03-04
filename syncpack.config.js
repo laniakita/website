@@ -10,10 +10,40 @@ const config = {
       pinVersion: "workspace:*",
     },
     {
-      label: "Keep showcase (deps) on Next.js 14",
+      label: "Keep showcase on Next.js 14",
       packages: ["@website/showcase"],
-      dependencies: ["next", "@next/bundle-analyzer", "react", "react-dom", "@types/react", "@types/react-dom", "@react-three/drei", "@react-three/fiber", "three", "@types/three", "three-stdlib"],
-      isIgnored: true
+      dependencies: ["next", "@next/bundle-analyzer"],
+      pinVersion: "^14.2.24"
+    },
+    {
+      label: "Keep showcase on react 18",
+      packages: ["@website/showcase"],
+      dependencies: ["react", "react-dom", "@types/react", "@types/react-dom"],
+      pinVersion: "18.3.x"
+    },
+    {
+      label: "Keep showcase on pinned three.js",
+      packages: ["@website/showcase"],
+      dependencies: ["three", "@types/three"],
+      pinVersion: "0.169.0"
+    },
+    {
+      label: "Keep showcase on pinned three-stdlib",
+      packages: ["@website/showcase"],
+      dependencies: ["three-stdlib"],
+      pinVersion: "2.32.2"
+    },
+    {
+      label: "Keep showcase on pinned react-three/drei",
+      packages: ["@website/showcase"],
+      dependencies: ["@react-three/drei"],
+      pinVersion: "9.114.3"
+    },
+    {
+      label: "Keep showcase on pinned react-three/fiber",
+      packages: ["@website/showcase"],
+      dependencies: ["@react-three/fiber"],
+      pinVersion: "8.17.10"
     },
   ],
 };
