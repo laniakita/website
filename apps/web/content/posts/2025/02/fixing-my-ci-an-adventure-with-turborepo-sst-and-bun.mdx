@@ -93,7 +93,7 @@ At the time, I figured that was good-enough, and a dev CI/CD would be something 
 
 ### Troubleshooter's Step 02: Update Deps
 
-As I was reeling from terror, I decided to try an emergency dependencies update of Node.js and Turbo. I didn't have any evidence that they we're the cause of the problems, but a cheap hail-mary attempt seemed worth a shot.
+As I was reeling from terror, I decided to try an emergency dependencies update of Node.js and Turbo. I didn't have any evidence that they weren't the cause of the problems, but a cheap hail-mary attempt seemed worth a shot.
 
 ![Screenshot of Production Build #42, showing the same hang at lines 74-75 where it finishes creating the MonitorMetricsSchedule scheduler before getting stuck](../../../assets/images/oc/2025/03/prod-build-log-42-hang.png)
 
@@ -141,7 +141,7 @@ While I can't find the relevant issue now, I do remember coming across a closed 
 
 ### Redefining Turborepo's Tasks
 
-Armed with the possibility the _tasks_ we'ren't executing properly, I decided to remove the `prebuild` task as dependency of `test` from the `turbo.json` in both `@website/web` and `@website/showcase`. I also made `build` depend on other build tasks first (suggested by the [turborepo docs](https://turbo.build/repo/docs/crafting-your-repository/configuring-tasks#running-tasks-in-the-right-order))
+Armed with the possibility the _tasks_ weren't executing properly, I decided to remove the `prebuild` task as dependency of `test` from the `turbo.json` in both `@website/web` and `@website/showcase`. I also made `build` depend on other build tasks first (suggested by the [turborepo docs](https://turbo.build/repo/docs/crafting-your-repository/configuring-tasks#running-tasks-in-the-right-order))
 
 ```diff
     "test": {
@@ -358,7 +358,7 @@ This worked _so perfectly_, I've had consistent deployments with it no problem o
 
 #### Dude, where's my variables?
 
-Bypassing SST's `buildCommand`, like I did, _the rub_ is that you lose out on having resources passed down to the application's build environment. While the resources part can be solved with wrapping `turbo deploy` with `sst shell` i.e. `sst shell bun run turbo deploy`, the environmental variables that you can define in a config, apparently don't.
+Bypassing SST's `buildCommand`, like I did, _the rub_ is that you lose out on having resources passed down to the application's build environment. While the resources part can be solved with wrapping `turbo deploy` with `sst shell` i.e. `sst shell bun run turbo deploy`, that apparently does nothing for the environmental variables that you can define in a config.
 
 ```ts {7,8,9,10,11,12}
 export const web = new sst.aws.Nextjs('Web', {
