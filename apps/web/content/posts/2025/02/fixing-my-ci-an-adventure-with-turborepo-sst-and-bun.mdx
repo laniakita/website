@@ -1,9 +1,9 @@
 ---
 id: 231e2ed6-25bd-4e8a-86b0-a17386640f7f
 type: Post
-date: 2025-02-23T00:50:54Z
+date: 2025-03-05T07:25:49Z
 catSlugs:
-  - guides
+  - meta
 tagSlugs:
   - turborepo
   - sst
@@ -22,8 +22,8 @@ keywords:
   - CI/CD
   - Runner
 author: lani
-headline: 'How I Use SST in a GitHub Action to Deploy Next.js Apps from a Monorepo (Turborepo)'
-subheadline: "Translation: How I Broke (this Site's) Production for 4 Hours (& How I Fixed it)"
+headline: 'How I Broke (my own) Production & How I Fixed it 4 Hours Later'
+subheadline: 'An Adventure in Deploying Next.js Apps with Bun, Turborepo, and SST from a CI'
 imageSrc: ../../../assets/images/non-oc/artem-horovenko-pipes.jpg
 altText: 'Source: Artem Horovenko (via Unsplash). On the left side of the image, there are two adjacent pairs of large blue tubes, aligned vertically, and running from the left to the center of the image, featuring a convex-fairing, and a grate over their respective openings. In the background we can see more large blue tubes, curving left and right, with steel cages and catwalks adjacent to them. On the right side of the image, there are six large green tubes, placed vertically, and spaced tightly together, running from top to bottom of the image.'
 caption: The internet is not something that you just dump something on. It's not a big truck. It's a series of tubes. - Sen. Ted Stevens (R-Alaska).
@@ -256,82 +256,183 @@ _I did it! I did the thing!_ I was ecstatic for the rest of the evening, basking
 
 ## Revenge of the CI Runner
 
-In setting up the _dev_ Action Workflow, I hit a painfully familiar snag (after hitting a few unrelated snags).
+In setting up the _dev_ Action Workflow (about two weeks ago at the time of writing), I hit a painfully familiar snag—after hitting a few _unrelated_ snags, of course.
 
 ![Screenshot of the process it took to get the dev action working.](../../../assets/images/oc/2025/03/a-new-adventure.png)
 
-> Why yes, I am writing about this 2 weeks later, thank you for noticing \>.\<
+Let me preface with: this _adventure_ wasn't as bad as it looks. In order:
 
+- The first five build attempts failed due to a misconfiguration of an AWS role.
+- The next two failed due to my _handle failed deploy_ job on failure, failed to unlock the state (ironic).
+- The eighth run I canceled due to seeing a very familiar deploy printout
+- Runs nine and ten timed-out (just like before)
+- Run eleven (Dev Build Action #5 attempt 2) failed due to state being locked again
+- Run twelve (Dev Build Action #6) I canceled after it seemed like it was going to just hang.
+- Run thirteen (what a lucky number) succeeded as Dev Build Action #7.
 
+While I am going to explain what I changed, to make run thirteen a success, I do need to preface that my _changes_ are apparently no longer necessary given the success of the most recent build action (#19). I'll explain that towards the end.
 
-<details>
+### Nuclear Option: SST buildCommand set to "exit 0;"
 
-<summary>[INFO]: Workflow for build #41</summary>
+After banging my head against the keyboard in frustration, I decided upon the _nuclear option_. Instead of letting `sst deploy` run the build command, it's possible to just let `turbo` do it instead. This is very similar to the [Nx Monorepo Configuration](https://opennext.js.org/aws/config/nx) guide in the [OpenNext](https://opennext.js.org/) Docs.
 
-```yml
-name: Production Build Action
-run-name: ${{github.actor}} is building for production
-on:
-  push:
-    branches:
-      - production
-permissions:
-  id-token: write
-  contents: read
-env:
-  CLOUDFLARE_DEFAULT_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_DEFAULT_ACCOUNT_ID }}
-  CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-jobs:
-  SST-Deploy-Production:
-    if: ${{ github.ref == 'refs/heads/production' }}
-    environment: production
-    runs-on: ubuntu-latest
-    steps:
-      # info
-      - run: echo "Deploying to production on branch $GITHUB_REF"
-      - run: echo "Build triggered by ${{ github.event_name }}"
-      - run: echo "Building on ${{ runner.os }}"
+In my root `turbo.json` I created a _deploy_ task that depends on build.
 
-      # fetch repo
-      - name: Check out code
-        uses: actions/checkout@v2
-      - run: echo "Checked out ${{ github.repository }}"
+```diff
+{
+  "$schema": "https://turbo.build/schema.json",
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"]
+    },
++    "deploy": {
++      "dependsOn": ["build"]
++    },
+  }
+}
+```
 
-      # aws
-      - name: Configure AWS
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
-          aws-region: ${{ secrets.AWS_REGION }}
-          mask-aws-account-id: true
+In my root `package.json` I added _deploy_ and _deploy:dev_ to the scripts object.
 
-      - name: Add AWS profile to ~/.aws/credentials
-        run: |
-          aws configure set region ${{ secrets.AWS_REGION }} --profile lani-production
-          aws configure set aws_access_key_id ${{ env.AWS_ACCESS_KEY_ID }} --profile lani-production
-          aws configure set aws_secret_access_key ${{ env.AWS_SECRET_ACCESS_KEY }} --profile lani-production
-          aws configure set aws_session_token ${{ env.AWS_SESSION_TOKEN }} --profile lani-production
-      # nodejs
-      - name: nodejs
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22.11.0'
+```diff
+{
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "test:watch": "turbo run test:watch",
++    "deploy": "turbo run deploy",
++    "deploy:dev": "turbo run deploy && sst deploy --stage=dev --verbose"
+  },
+}
+```
 
-      # install bun
-      - run: npm install --global bun
+In my `sst.aws.Nextjs` function I set the `buildCommand` to `exit 0;` (thus SST won't handle the build process).
 
-      # install packages
-      - name: install packages
-        run: bun install
+```diff
+export const web = new sst.aws.Nextjs("Web", {
+  path: "apps/web",
+-  buildCommand: "bun run build:open-next",
++  buildCommand: "exit 0;",
+```
 
+Finally In the nested `turbo.json` of each application (`@website/web`, `@website/showcase`), I created a task called _deploy_, and set it dependent on the _build:open-next_ task.
+
+```diff
+{
+  "extends": ["//"],
+  "tasks": {
+    "build": {
+      outputs": [".next/**", "public/dist/**", "public/sw.js"],
+      "inputs": ["$TURBO_DEFAULT$", "next.config.*"]
+    },
+    "build:open-next": {
+      "dependsOn": ["build"],
+      "env": ["OPEN_NEXT_VERSION", "NEXT_PUBLIC_DEPLOYED_URL"],
+      "outputs": [".open-next/**"],
+      "inputs": ["$TURBO_DEFAULT$", ".open-next.config.ts"]
+    },
++    "deploy": {
++      "dependsOn": ["build:open-next"]
++    }
+    }
+  }
+```
+
+I also altered the _Dev_ workflow to run `bun run deploy:dev` (the script in the root `package.json`) instead of `sst` directly.
+
+```diff
       # ROTFB
       - name: Deploy
-        run: bun sst deploy --stage=production --verbose
+-        run: bun sst deploy --stage dev --verbose
++        run: bun run deploy:dev
         timeout-minutes: 30
 ```
 
-</details>
+This worked perfectly.
 
-## To Be continued ...
+![Screenshot showing a perfect run from Dev Build Action #7. Every step has a check mark, finishing in just under three minutes.](../../../assets/images/oc/2025/03/dev-build-log-7-perfect.png)
 
-This section still needs work.
+This worked _so perfectly_, I've had consistent deployments with it no problem over the last week and a half or so. There is one caveat, which leads us to our next section.
+
+#### Dude, where's my variables?
+
+Bypassing SST's `buildCommand`, like I did, _the rub_ is that you lose out on having resources passed down to the application's build environment. While the resources part can be solved with wrapping `turbo deploy` with `sst shell` i.e. `sst shell bun run turbo deploy`, the environmental variables that you can define in a config, apparently don't.
+
+```ts {7,8,9,10,11,12}
+export const web = new sst.aws.Nextjs('Web', {
+  path: 'apps/web',
+  buildCommand: 'exit 0;',
+  server: {
+    runtime: 'nodejs22.x',
+  },
+  environment: {
+    NEXT_PUBLIC_DEPLOYED_URL:
+      $app.stage === 'production' ? 'https://laniakita.com' : `https://${$app.stage}.laniakita.com`,
+  },
+  domain: {
+    name: $app.stage === 'production' ? 'laniakita.com' : `${$app.stage}.laniakita.com`,
+    dns: sst.cloudflare.dns(),
+  },
+});
+```
+
+So, in the example above, a variable defined between lines 7-12 just doesn't get passed down. While I've thought about some clever workarounds importing specific `.env` files based on a task, I decided to try something.
+
+## Going Full Circle
+
+Last night, I was brought _full circle_, when I tested the waters on returning to what I was doing weeks ago, before all these _shenanigans_ took place. I used the `buildCommand`.
+
+```diff
+export const web = new sst.aws.Nextjs("Web", {
+  path: "apps/web",
+-  buildCommand: "exit 0;",
++  buildCommand: "turbo run build:open-next"
+```
+
+Likewise, I edited the scripts in the root `package.json` once more.
+
+```diff
+{
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "test:watch": "turbo run test:watch",
+    "deploy": "turbo run deploy",
+-   "deploy:dev": "turbo run deploy && sst deploy --stage=dev --verbose"
+-   "deploy:production": "turbo run deploy && sst deploy --stage=production --verbose"
++   "deploy:dev": "sst deploy --stage=dev --verbose",
++   "deploy:production": "sst deploy --stage=production --verbose"
+
+  },
+}
+```
+
+I pushed everything from my local terminal, and was surprised to see a little green check mark against my hesitant commit message.
+
+![Screenshot of my commit into main with the message: refactor: test if sst deploy command hangs in CI. A green check mark appears below it with a 1/1 informing me that it completed the workflow successfully](../../../assets/images/oc/2025/03/a-perfect-test.png)
+
+I then sent several more changes through, to test whether that was a fluke. It was not.
+
+![Screenshot showing my latest commits all deployed perfectly, no hangups.](../../../assets/images/oc/2025/03/not-a-fluke.png)
+
+Given everything _just works_, like it should. Like it did before, **for months**, leading up to this. I'll admit to feeling a _little_ vexed.
+
+## Discussion
+
+> This was an adventure. This was multiple adventures. I want off Mr. Bone's Wild Adventure.
+
+![Screenshot of Mr. Bone's Wild Ride, created by an anonymous Roller Coaster Tycoon 2 player. The front left side of the image features a dark gray sign with the phrase THE RIDE NEVER ENDS in red lettering, placed into a square of green grass, perpendicular to the roller coaster tracks to the left of it. On the right side of the image, a giant skeleton holding a large top hat, statically performs a tipping gesture to incoming riders.](../../../assets/images/non-oc/mr-bones-ride-never-ends.jpg)
+
+If the internet is like a series of tubes, then the _wild ride_ I just endured can be blamed on a jammed tube, a criss-crossed tube, and a return tube.
+
+In other words, this website failed to deploy to production, a _jam_ in the CI tube, which culminated in the site going offline. Making some changes to how the site is processed through _the tube_, let it go through. Yet, those same changes weren't sufficient for a _different tube_, and it _jammed_ again. A _criss-crossing_ if you will from failure-to-success-to-failure-to-success. Then, everything fell down the _return tube_ (for reasons), and we went full circle with the website being able to go through the _dev tube_ with the original build instructions.
+
+Metaphorical tubes aside, I had originally intended this article to be somewhat instructional. I had _assumed_ that this was clearly a configuration problem on my part, because a _poor craftsman blames their tools_. So, I wanted to _figure it out_, write it down, and paste my opinionated configuration guide to the internet for anyone else looking to configure Turborepo, Bun, Next.js and SST with a Github Action to handle deployments.
+
+However, given my _experiment_ last night, which demonstrated sequential, successful deployments were possible using the **original, wrapped build commands**... I've been given some pause by this whole thing, I'll admit.
+
+In the end, I'm left only more confused, than when I began.

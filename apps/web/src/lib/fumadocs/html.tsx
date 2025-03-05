@@ -14,17 +14,16 @@ export async function renderStatic(post: (typeof blog)[0]) {
 
 function MDXComponent({ post }: { post: (typeof blog)[0] }) {
   const MDX = post.body;
-    // @ts-expect-error -- types issues
+  // @ts-expect-error -- types issues
   return <MDX components={{ img: ImageR2 }} />;
 }
 
 // eslint-disable-next-line -- any is fine here.
 function ImageR2(props: any) {
-    if (props.src.src) {
-      // eslint-disable-next-line -- work around for next/image
-      return <img src={props.src.src} alt={props.alt} width={props.src.width} height={props.src.height} />;
-    }
+  if (props.src.src) {
     // eslint-disable-next-line -- work around for next/image
-    return <img {...props} />;
+    return <img src={props.src.src} alt={props.alt} width={props.src.width} height={props.src.height} />;
   }
-
+  // eslint-disable-next-line -- work around for next/image
+  return <img {...props} />;
+}
