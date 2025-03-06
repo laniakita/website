@@ -205,7 +205,7 @@ const imageResize = async (imgPath: string) => {
   const imgFile = await readFile(imgPath);
   const { data } = await sharp(imgFile)
     .resize(1600, 900, { kernel: 'lanczos3' })
-    .toFormat('jpeg', { mozjpeg: true })
+    .toFormat('jpeg', { mozjpeg: true, quality: 75 })
     .toBuffer({ resolveWithObject: true });
 
   const baseSixtyFour = `data:image/jpeg;base64,${data.toString('base64')}`;

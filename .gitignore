@@ -35,6 +35,8 @@ public/dist
 **/public/swe-worker*
 certificates/
 
+**/content/assets/data/
+
 # wrangler / @cloudflare/next-on-pages
 .wrangler
 .vercel

@@ -1,3 +1,4 @@
+import { ConfigSchema, SourcePreprocessor } from './preprocess';
 import { syncVersionVault } from './version-vault';
 
 const runScripts = async (): Promise<void> => {
@@ -14,6 +15,25 @@ const runScripts = async (): Promise<void> => {
       outdir: './public/dist',
     });
     console.log('theme-getter.js built successfully!');
+    const config = [
+      {
+        schema: 'blog',
+        type: 'doc',
+        dir: 'content/posts',
+      },
+      {
+        schema: 'projects',
+        type: 'doc',
+        dir: 'content/projects',
+      },
+      {
+        schema: 'works',
+        type: 'doc',
+        dir: 'content/works',
+      },
+    ] satisfies ConfigSchema[];
+
+    await SourcePreprocessor(config);
   } catch (err) {
     console.error(err);
   }

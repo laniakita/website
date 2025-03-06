@@ -9,6 +9,8 @@ import rehypeHighlightLines from 'rehype-highlight-code-lines';
 import nix from 'highlight.js/lib/languages/nix';
 import { common } from 'lowlight';
 import matter from 'gray-matter';
+import { readFileSync } from 'node:fs';
+import { FeaturedImageR1 } from '@/lib/image-process';
 
 // for more information on configuration, visit:
 // https://www.content-collections.dev/docs/configuration
@@ -122,16 +124,9 @@ export const projects = defineCollections({
             })
             .or(z.null()),
         })
-        .default({
-          hasImage: false,
-          src: '',
-          base64: '',
-          height: 0,
-          width: 0,
-          resized: '',
-          altText: '',
-          caption: '',
-          _debug: null,
+        .default(() => {
+          const data = fetchData(ctx.path);
+          return data.data.featured_image;
         }),
     });
   },
@@ -237,16 +232,9 @@ const postSchema = (ctx: { path: string; source: string }) => {
           })
           .or(z.null()),
       })
-      .default({
-        hasImage: false,
-        src: '',
-        base64: '',
-        height: 0,
-        width: 0,
-        resized: '',
-        altText: '',
-        caption: '',
-        _debug: null,
+      .default(() => {
+        const data = fetchData(ctx.path);
+        return data.data.featured_image;
       }),
   });
 };
@@ -286,3 +274,29 @@ export default defineConfig({
     ],
   },
 });
+
+function fetchData(pathStr: string) {
+  const file = normalizePath(pathStr);
+  const { dir, slug } = file._file;
+  const dataPath = path.join(process.cwd(), 'content/assets/data', `${dir}/${slug}.json`);
+
+  return JSON.parse(readFileSync(dataPath, { encoding: 'utf-8' })) as {
+    data: { featured_image: FeaturedImageR1 };
+  };
+}
+
+function normalizePath(pathStr: string) {
+  const filePath = pathStr.split(`${process.cwd()}/`).pop();
+  const fileName = filePath?.split('/').pop();
+  const fileDir = filePath?.split(`/${fileName}`).shift()?.split('content/').pop();
+  const slug = fileName?.split('.').shift();
+  return {
+    _file: {
+      abs: pathStr,
+      path: filePath,
+      name: fileName,
+      dir: fileDir,
+      slug,
+    },
+  };
+}

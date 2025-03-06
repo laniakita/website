@@ -1,5 +1,5 @@
-import { authors, categories, pages, tags } from '$/.source';
-import { allPostsFeedRes, allPostsRes, allProjectsRes, allWorksRes } from './processed';
+import { authors, categories, pages, projects, tags, works } from '$/.source';
+import { allPostsFeedRes, allPostsRes } from './processed';
 import { compareDesc } from 'date-fns';
 
 export const allAuthors = authors.sort(
@@ -18,5 +18,5 @@ export const allPosts = allPostsRes.sort((a, b) =>
 export const allPostsFeed = allPostsFeedRes.sort((a, b) =>
   compareDesc(new Date(a.updated ?? a.date), new Date(b.updated ?? b.date)),
 );
-export const allWorks = allWorksRes.sort((a, b) => compareDesc(a.startDate, b.startDate));
-export const allProjects = allProjectsRes.sort((a, b) => compareDesc(a.date, b.date));
+export const allWorks = works.sort((a, b) => compareDesc(a.startDate, b.startDate));
+export const allProjects = projects.sort((a, b) => compareDesc(a.date, b.date));

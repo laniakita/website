@@ -1,47 +1,8 @@
-import { blog, blogFeed, categories, projects, tags, works } from '$/.source';
-import { FeaturedImageR1, imageProcessor } from '../image-process';
-
-export const allProjectsRes = await Promise.all(
-  projects.map(async (project) => {
-    const config = {
-      imageSrc: project.imageSrc ?? '',
-      altText: project.altText ?? '',
-      caption: '',
-    };
-
-    const featured_image = await featuredImgRes('projects', project._file.path, config);
-    project.featured_image = { ...featured_image };
-
-    return project;
-  }),
-);
-
-export const allWorksRes = await Promise.all(
-  works.map(async (work) => {
-    const config = {
-      imageSrc: work.imageSrc ?? '',
-      altText: work.altText ?? '',
-      caption: '',
-    };
-
-    const featured_image = await featuredImgRes('works', work._file.path, config);
-    work.featured_image = { ...featured_image };
-
-    return work;
-  }),
-);
+import { blog, blogFeed, categories, tags, } from '$/.source';
 
 export const allPostsRes = await Promise.all(
   blog.map(async (post) => {
-    const config = {
-      imageSrc: post.imageSrc ?? '',
-      altText: post.altText ?? '',
-      caption: post.caption ?? '',
-    };
-
-    const featured_image = await featuredImgRes('posts', post._file.path, config);
-    post.featured_image = { ...featured_image };
-
+    
     const categoriesRes =
       post.catSlugs &&
       ((
@@ -98,6 +59,7 @@ export const allPostsRes = await Promise.all(
 
 export const allPostsFeedRes = await Promise.all(
   blogFeed.map(async (post) => {
+    /*
     const config = {
       imageSrc: post.imageSrc ?? '',
       altText: post.altText ?? '',
@@ -106,6 +68,7 @@ export const allPostsFeedRes = await Promise.all(
 
     const featured_image = await featuredImgRes('posts', post._file.path, config);
     post.featured_image = { ...featured_image };
+    */
 
     const categoriesRes =
       post.catSlugs &&
@@ -160,32 +123,3 @@ export const allPostsFeedRes = await Promise.all(
     return post;
   }),
 );
-
-async function featuredImgRes(
-  collection: string,
-  path: string,
-  { imageSrc, altText, caption }: { imageSrc: string; altText: string; caption: string },
-) {
-  const imgData = await imageProcessor({
-    contentDir: 'content',
-    prefix: `content/${collection}/${path}`,
-    imgPath: imageSrc,
-    debug: false,
-  });
-
-  const res = imgData
-    ? new FeaturedImageR1(
-        true,
-        imgData.src,
-        imgData.base64,
-        imgData.height,
-        imgData.width,
-        imgData.resized,
-        altText ?? '',
-        caption ?? '',
-        imgData._debug ?? null,
-      )
-    : new FeaturedImageR1(false, '', '', 0, 0, '', '', '', null);
-
-  return res;
-}
