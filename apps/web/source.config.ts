@@ -169,16 +169,9 @@ export const works = defineCollections({
             })
             .or(z.null()),
         })
-        .default({
-          hasImage: false,
-          src: '',
-          base64: '',
-          height: 0,
-          width: 0,
-          resized: '',
-          altText: '',
-          caption: '',
-          _debug: null,
+         .default(() => {
+          const data = fetchData(ctx.path);
+          return data.data.featured_image;
         }),
     });
   },
