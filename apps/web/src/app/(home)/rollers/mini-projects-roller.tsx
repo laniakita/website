@@ -105,8 +105,10 @@ export default function MiniProjectsRoller({ allProjects }: { allProjects: AllPr
 
               if (swipe < -swipeConfidenceThreshold) {
                 paginate(1);
+                setUserAction(true);
               } else if (swipe > swipeConfidenceThreshold) {
                 paginate(-1);
+                setUserAction(true);
               }
             }}
             className='absolute inset-0 max-h-[70vh] overflow-hidden'
@@ -155,34 +157,36 @@ export default function MiniProjectsRoller({ allProjects }: { allProjects: AllPr
 
           <div key='mobile-main' className='pointer-events-none absolute inset-0 z-3 flex'>
             <div className='flex w-full flex-col items-center justify-between'>
-              <div className='w-full max-w-5xl pt-4'>
-                <h4 className='px-6 text-2xl font-black text-balance'>
-                  <Link
-                    href={
-                      allProjects[projIndex]?.foreignUrl
-                        ? allProjects[projIndex].foreignUrl
-                        : !allProjects[projIndex]?.foreignUrl && !allProjects[projIndex]?.embedded
-                          ? `${SHOWCASE_URL}${allProjects[projIndex]?.url}`
-                          : `${APP_URL}${allProjects[projIndex]?.url}`
-                    }
-                    target='_blank'
-                    className='pointer-events-auto text-ctp-text'
-                  >
-                    <span className='relative'>
-                      {allProjects[projIndex]?.title}
-                      <span className='absolute bottom-1 ml-px icon-[ph--arrow-up-right-bold] text-xl' />
-                    </span>
-                  </Link>
-                </h4>
+              <div className='w-full  bg-ctp-crust/80 backdrop-blur-md border-b border-ctp-surface0 shadow-xl'>
+                <div className='max-w-5xl mx-auto py-4 px-6 flex flex-col justify-center items-start'>
+                  <h4 className='text-2xl font-black text-balance pr-5'>
+                    <Link
+                      href={
+                        allProjects[projIndex]?.foreignUrl
+                          ? allProjects[projIndex].foreignUrl
+                          : !allProjects[projIndex]?.foreignUrl && !allProjects[projIndex]?.embedded
+                            ? `${SHOWCASE_URL}${allProjects[projIndex]?.url}`
+                            : `${APP_URL}${allProjects[projIndex]?.url}`
+                      }
+                      target='_blank'
+                      className='pointer-events-auto text-ctp-text'
+                    >
+                      <span className='relative'>
+                        {allProjects[projIndex]?.title}
+                        <span className='absolute bottom-1 ml-px icon-[ph--arrow-up-right-bold] text-xl' />
+                      </span>
+                    </Link>
+                  </h4>
 
-                <p className='px-6 font-mono text-xs'>
-                  <LocalDate date={allProjects[projIndex]?.date ?? new Date()} />
-                </p>
+                  <p className='font-mono text-xs'>
+                    <LocalDate date={allProjects[projIndex]?.date ?? new Date()} />
+                  </p>
+                </div>
               </div>
 
-              <div className='w-full bg-ctp-crust/80 py-4 backdrop-blur-md'>
+              <div className='w-full bg-ctp-crust/80 py-4 backdrop-blur-md border-t border-ctp-surface0 shadow-lg'>
                 <div className='mx-auto max-w-5xl space-y-2 px-6'>
-                  <p className='text-sm text-pretty @3xl:max-w-1/2'>{allProjects[projIndex]?.description}</p>
+                  <p className='text-sm @3xl:text-base text-pretty @3xl:max-w-1/2'>{allProjects[projIndex]?.description}</p>
                   <div className='h-px w-full bg-ctp-surface0' />
                   <div className='flex flex-row gap-[1ch] @3xl:max-w-1/2'>
                     <p className='text-balance'>
