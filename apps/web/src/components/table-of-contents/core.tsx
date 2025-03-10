@@ -1,10 +1,11 @@
 'use client';
+import dynamic from 'next/dynamic';
+import { AnimatePresence, } from 'motion/react'
 import { IPAD_TOC_ID, NAV_MAIN_ID, TOC_NAV_ID } from '@/components/nav-constants';
 import { useNavScrollViewStore } from '@/providers/nav-scroll-view-store-provider';
 import { useToCViewStore } from '@/providers/toc-view-store-provider';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { FlatHeadingNode, type HeadingNode, useIntersectionObserver } from './utils';
-import dynamic from 'next/dynamic';
+import {  type HeadingNode, useIntersectionObserver } from './utils';
 
 const Headings = dynamic(() => import('./utils').then((mod) => mod.Headings), { ssr: false });
 const ConcatTitle = dynamic(() => import('./utils').then((mod) => mod.ConcatTitle), { ssr: false });
@@ -16,40 +17,15 @@ export type ToCMenuCoreProps = {
 
 export default function ToCMenuCore(props: ToCMenuCoreProps) {
   const [activeId, setActiveId] = useState('');
-  const [readyHeadings, setReadyHeadings] = useState<HeadingNode[]>([]);
-  const { tocInView, setToCNotInView, setToCInView } = useToCViewStore((state) => state);
+  const { tocInView, setToCNotInView } = useToCViewStore((state) => state);
   const [hasAnimated, setHasAnimated] = useState(false);
-  const [isReady, setIsReady] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null!);
   useIntersectionObserver(setActiveId, activeId);
-  const [menuWidth, setMenuWidth] = useState<number | null>(null);
-
-  useEffect(() => {
-    const nestedHeadings = props.nestedHeadings;
-    if (nestedHeadings && nestedHeadings?.length > 1) {
-      setReadyHeadings(nestedHeadings);
-      setIsReady(true);
-    }
-  }, [props.nestedHeadings, isReady]);
-
-  useEffect(() => {
-    if (!localStorage.getItem('toc-state-pref')) {
-      setToCInView();
-    }
-  }, [setToCInView]);
-
-  useEffect(() => {
-    if (tocInView) {
-      setTimeout(() => {
-        setMenuWidth(menuRef?.current?.clientWidth);
-      }, 801);
-    }
-  }, [tocInView]);
 
   return (
     <nav
       id={IPAD_TOC_ID}
-      className={`${!hasAnimated || tocInView ? 'min-w-80 md:w-80 lg:w-96 lg:min-w-96' : 'w-0 min-w-0'} sticky top-0 hidden max-h-dvh overflow-x-hidden overflow-y-auto border-r border-ctp-mauve/50 bg-ctp-crust text-slate-100 shadow-xl motion-safe:[transition:width_0.8s,min-width_0.8s,background-color_0.5s] md:block dark:bg-ctp-base/20`}
+      className={`${tocInView ? 'min-w-80 md:w-80 lg:w-96 lg:min-w-96' : 'w-0 min-w-0'} sticky top-0 hidden max-h-dvh overflow-x-hidden overflow-y-auto border-r border-ctp-mauve/50 bg-ctp-crust text-slate-100 shadow-xl motion-safe:[transition:width_0.8s,min-width_0.8s,background-color_0.5s] md:block dark:bg-ctp-base/20`}
     >
       <div className='sticky top-0 z-10 flex min-h-16 w-full flex-row items-center justify-start text-ctp-text'>
         <div id='nav-mask-bg' className='nav-glassy-bg' />
@@ -66,28 +42,29 @@ export default function ToCMenuCore(props: ToCMenuCoreProps) {
         />
       </div>
 
-      <div ref={menuRef} aria-label='Table of contents' style={{ minWidth: menuWidth !== null ? menuWidth : 305 }}>
-        <Headings
-          tree={readyHeadings}
-          activeId={activeId}
-          ariaExpanded={!hasAnimated ? isReady : tocInView}
-          notMobile
-          hasAnimated={hasAnimated}
-        />
+      <div ref={menuRef} aria-label='Table of contents' className='min-w-80 lg:min-w-96'>
+        <AnimatePresence>
+          {tocInView && <Headings
+            tree={props.nestedHeadings}
+            activeId={activeId}
+            ariaExpanded={tocInView}
+            notMobile
+            hasAnimated={hasAnimated}
+          />}
+        </AnimatePresence>
       </div>
     </nav>
+
   );
 }
 
 export function ToCMenuMobileCore(props: ToCMenuCoreProps) {
   // common
   const [activeId, setActiveId] = useState('');
-  const [readyHeadings, setReadyHeadings] = useState<HeadingNode[]>([]);
   const [hasAnimated, setHasAnimated] = useState(false);
   useIntersectionObserver(setActiveId, activeId);
 
   // mobile only
-  const [flatHeadings, setFlatHeadings] = useState<FlatHeadingNode[]>([]);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [width, setWidth] = useState(0);
   const { inView } = useNavScrollViewStore((state) => state);
@@ -114,20 +91,9 @@ export function ToCMenuMobileCore(props: ToCMenuCoreProps) {
     }
   }, []);
 
-  useEffect(() => {
-    const nestedHeadings = props.nestedHeadings;
-    if (nestedHeadings && nestedHeadings?.length > 1) {
-      setReadyHeadings(nestedHeadings);
-    }
-  }, [props.nestedHeadings]);
 
   useEffect(() => {
-    // grab headings on mount
-    const passedFlatHeadings = props.flatHeadings;
-    if (passedFlatHeadings?.length > 1) {
-      setFlatHeadings(passedFlatHeadings);
-    }
-
+    
     function handleResize() {
       if (width == window.innerWidth) return;
       setWidth(window.innerWidth);
@@ -178,7 +144,7 @@ export function ToCMenuMobileCore(props: ToCMenuCoreProps) {
 
           <p className='z-40 flex flex-row items-center gap-[1ch] overflow-x-hidden font-mono text-sm whitespace-pre'>
             <span className='icon-[ph--caret-double-right-bold] min-w-[2ch] text-xl text-ctp-subtext0' />
-            <ConcatTitle headings={flatHeadings} activeId={activeId} innerWidth={width} />
+            <ConcatTitle headings={props.flatHeadings} activeId={activeId} innerWidth={width} />
           </p>
         </div>
       </div>
@@ -192,7 +158,15 @@ export function ToCMenuMobileCore(props: ToCMenuCoreProps) {
           ref={dropToCRef}
           className={`${showMobileMenu ? '[transform:translate3d(0%,0%,0px)] opacity-100' : 'pointer-events-none [transform:translate3d(0%,-100%,-0.01rem)] opacity-0'} inset-x-0 top-28 bottom-0 z-20 max-h-[calc(100dvh-7rem)] w-full overflow-auto rounded-b-2xl border-b border-ctp-pink bg-ctp-base/90 py-10 backdrop-blur-md [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:transform_0.8s,_opacity_0.5s,_background-color_0.8s] dark:border-ctp-sky dark:bg-ctp-midnight/90`}
         >
-          <Headings tree={readyHeadings} activeId={activeId} ariaExpanded={showMobileMenu} hasAnimated={hasAnimated} />
+          <AnimatePresence>
+            {showMobileMenu && <Headings
+              tree={props.nestedHeadings}
+              activeId={activeId}
+              ariaExpanded={showMobileMenu}
+              notMobile
+              hasAnimated={hasAnimated}
+            />}
+          </AnimatePresence>
         </div>
       </div>
     </nav>

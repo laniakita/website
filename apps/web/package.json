@@ -23,6 +23,7 @@
     "lenis": "^1.1.20",
     "lodash": "^4.17.21",
     "markdown-to-jsx": "^7.7.3",
+    "motion": "^12.4.10",
     "next": "^15.2.1",
     "plaiceholder": "^3.0.0",
     "react": ">=19",

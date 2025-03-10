@@ -1,6 +1,6 @@
 'use client';
-import { TW_SPACING } from '@/lib/constants';
 import { usePathname, useRouter } from 'next/navigation';
+import { motion } from 'motion/react'
 import React, {
   type Dispatch,
   type SetStateAction,
@@ -11,6 +11,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import { TW_SPACING } from '@/lib/constants';
 
 export const MED_SCREEN = 768; // px
 const MD_MAX_TOC_WIDTH = 'md:max-w-76';
@@ -26,8 +27,6 @@ export function Headings({
   tree,
   activeId,
   ariaExpanded,
-  hasAnimated,
-  notMobile,
 }: {
   tree: HeadingNode[];
   activeId: string;
@@ -35,21 +34,38 @@ export function Headings({
   hasAnimated?: boolean;
   notMobile?: boolean;
 }) {
+  
   return (
-    <menu
+    <motion.menu
       aria-expanded={ariaExpanded}
-      className={
-        notMobile
-          ? `${!hasAnimated && localStorage.getItem('toc-state-pref') !== 'closed' ? 'motion-safe:wipe-fade-in' : ''} list-none leading-relaxed`
-          : `${!hasAnimated ? 'motion-safe:wipe-fade-in' : ''} list-none leading-relaxed`
-      }
+      initial={{
+        '--wipe-position': '100%',
+      }}
+      animate={{
+        '--wipe-position': '-20%',
+      }}
+      exit={{
+        '--wipe-position': '100%',
+      }}
+      transition={{
+        duration: Math.min(tree.length*0.1, 3),
+        ease: [0.37, 0, 0.63, 1]
+      }}
+      style={{
+        maskImage: "linear-gradient(to top,transparent var(--wipe-position),black calc(var(--wipe-position) + 20%),black)",
+        WebkitMaskImage: "linear-gradient(to top,transparent var(--wipe-position),black calc(var(--wipe-position) + 20%),black)"
+      }}
+
+      className="list-none leading-relaxed"
+
+
     >
       {tree?.map((heading) => (
         <Suspense key={heading.url} fallback={null}>
           <HeadingNode node={heading} activeId={activeId} />
         </Suspense>
       ))}
-    </menu>
+    </motion.menu>
   );
 }
 

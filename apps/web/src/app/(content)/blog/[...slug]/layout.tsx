@@ -134,8 +134,6 @@ export default async function PostPageLayout({
     countryOfOrigin: 'United States',
   };
 
-  //console.log(toc)
-
   return (
     <>
       <script type='application/ld+json' dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
