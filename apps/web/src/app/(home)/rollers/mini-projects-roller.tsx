@@ -157,9 +157,9 @@ export default function MiniProjectsRoller({ allProjects }: { allProjects: AllPr
 
           <div key='mobile-main' className='pointer-events-none absolute inset-0 z-3 flex'>
             <div className='flex w-full flex-col items-center justify-between'>
-              <div className='w-full  bg-ctp-crust/80 backdrop-blur-md border-b border-ctp-surface0 shadow-xl'>
-                <div className='max-w-5xl mx-auto py-4 px-6 flex flex-col justify-center items-start'>
-                  <h4 className='text-2xl font-black text-balance pr-5'>
+              <div className='w-full border-b border-ctp-surface0 bg-ctp-crust/80 shadow-xl backdrop-blur-md'>
+                <div className='mx-auto flex max-w-5xl flex-col items-start justify-center px-6 py-4'>
+                  <h4 className='pr-5 text-2xl font-black text-balance'>
                     <Link
                       href={
                         allProjects[projIndex]?.foreignUrl
@@ -184,9 +184,11 @@ export default function MiniProjectsRoller({ allProjects }: { allProjects: AllPr
                 </div>
               </div>
 
-              <div className='w-full bg-ctp-crust/80 py-4 backdrop-blur-md border-t border-ctp-surface0 shadow-lg'>
+              <div className='w-full border-t border-ctp-surface0 bg-ctp-crust/80 py-4 shadow-lg backdrop-blur-md'>
                 <div className='mx-auto max-w-5xl space-y-2 px-6'>
-                  <p className='text-sm @3xl:text-base text-pretty @3xl:max-w-1/2'>{allProjects[projIndex]?.description}</p>
+                  <p className='text-sm text-pretty @3xl:max-w-1/2 @3xl:text-base'>
+                    {allProjects[projIndex]?.description}
+                  </p>
                   <div className='h-px w-full bg-ctp-surface0' />
                   <div className='flex flex-row gap-[1ch] @3xl:max-w-1/2'>
                     <p className='text-balance'>
