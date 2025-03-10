@@ -1,11 +1,11 @@
 'use client';
 import dynamic from 'next/dynamic';
-import { AnimatePresence, } from 'motion/react'
+import { AnimatePresence } from 'motion/react';
 import { IPAD_TOC_ID, NAV_MAIN_ID, TOC_NAV_ID } from '@/components/nav-constants';
 import { useNavScrollViewStore } from '@/providers/nav-scroll-view-store-provider';
 import { useToCViewStore } from '@/providers/toc-view-store-provider';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import {  type HeadingNode, useIntersectionObserver } from './utils';
+import { type HeadingNode, useIntersectionObserver } from './utils';
 
 const Headings = dynamic(() => import('./utils').then((mod) => mod.Headings), { ssr: false });
 const ConcatTitle = dynamic(() => import('./utils').then((mod) => mod.ConcatTitle), { ssr: false });
@@ -44,17 +44,18 @@ export default function ToCMenuCore(props: ToCMenuCoreProps) {
 
       <div ref={menuRef} aria-label='Table of contents' className='min-w-80 lg:min-w-96'>
         <AnimatePresence>
-          {tocInView && <Headings
-            tree={props.nestedHeadings}
-            activeId={activeId}
-            ariaExpanded={tocInView}
-            notMobile
-            hasAnimated={hasAnimated}
-          />}
+          {tocInView && (
+            <Headings
+              tree={props.nestedHeadings}
+              activeId={activeId}
+              ariaExpanded={tocInView}
+              notMobile
+              hasAnimated={hasAnimated}
+            />
+          )}
         </AnimatePresence>
       </div>
     </nav>
-
   );
 }
 
@@ -91,9 +92,7 @@ export function ToCMenuMobileCore(props: ToCMenuCoreProps) {
     }
   }, []);
 
-
   useEffect(() => {
-    
     function handleResize() {
       if (width == window.innerWidth) return;
       setWidth(window.innerWidth);
@@ -159,13 +158,15 @@ export function ToCMenuMobileCore(props: ToCMenuCoreProps) {
           className={`${showMobileMenu ? '[transform:translate3d(0%,0%,0px)] opacity-100' : 'pointer-events-none [transform:translate3d(0%,-100%,-0.01rem)] opacity-0'} inset-x-0 top-28 bottom-0 z-20 max-h-[calc(100dvh-7rem)] w-full overflow-auto rounded-b-2xl border-b border-ctp-pink bg-ctp-base/90 py-10 backdrop-blur-md [transition-timing-function:_cubic-bezier(0.4,0,0.2,1)] motion-safe:[transition:transform_0.8s,_opacity_0.5s,_background-color_0.8s] dark:border-ctp-sky dark:bg-ctp-midnight/90`}
         >
           <AnimatePresence>
-            {showMobileMenu && <Headings
-              tree={props.nestedHeadings}
-              activeId={activeId}
-              ariaExpanded={showMobileMenu}
-              notMobile
-              hasAnimated={hasAnimated}
-            />}
+            {showMobileMenu && (
+              <Headings
+                tree={props.nestedHeadings}
+                activeId={activeId}
+                ariaExpanded={showMobileMenu}
+                notMobile
+                hasAnimated={hasAnimated}
+              />
+            )}
           </AnimatePresence>
         </div>
       </div>

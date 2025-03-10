@@ -4,7 +4,7 @@ import MiniProjectsRoller from '../../rollers/mini-projects-roller';
 import { MiniWorkRoller } from '../../rollers/mini-server-roller';
 import Section from '../section';
 import ServicesTable from '../section/services-table';
-import Summary from '../section/summary';
+import { SummarySection } from '../section/summary';
 
 //const BgTestV = dynamic(() => import('../../canvas/decor/bg-test-v').then((mod) => mod.BgTestV), { ssr: false });
 
@@ -44,12 +44,16 @@ export type MainProps = {
 export default function Main(props: MainProps) {
   return (
     <main className='@container/main relative flex h-full flex-col pb-20'>
-      <Section title="Aloha, I'm Lani" markdown={props.data.markdown.summary.code}>
-        <Summary code={props.data.markdown.profile.code} />
-      </Section>
+      <SummarySection
+        title="Aloha, I'm Lani"
+        markdown={props.data.markdown.summary.code}
+        summaryCodeMarkdown={props.data.markdown.profile.code}
+      />
+
       <Section type={1} title='Passion Projects' page={1} markdown={props.data.markdown.projects.code}>
         <MiniProjectsRoller allProjects={JSON.parse(props.data.source.projects)} />
       </Section>
+
       <Section type={2} title='Client Works' page={2} markdown={props.data.markdown.works.code}>
         <div className='mx-auto max-w-5xl'>
           <div className='flex w-full flex-row gap-6'>
@@ -57,9 +61,11 @@ export default function Main(props: MainProps) {
           </div>
         </div>
       </Section>
+
       <Section type='dev-for-hire' title='Dev for Hire' markdown={props.data.markdown.services.code}>
         <ServicesTable code={props.data.markdown.servicesTable.code} />
       </Section>
+
       <Section type={1} title='Latest from the Blog' page={3} markdown={props.data.markdown.blog.code}>
         <MiniPostsRoller allPosts={JSON.parse(props.data.source.blog)} />
       </Section>

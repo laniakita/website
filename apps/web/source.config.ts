@@ -169,7 +169,7 @@ export const works = defineCollections({
             })
             .or(z.null()),
         })
-         .default(() => {
+        .default(() => {
           const data = fetchData(ctx.path);
           return data.data.featured_image;
         }),

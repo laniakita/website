@@ -1,8 +1,7 @@
-import { blog, blogFeed, categories, tags, } from '$/.source';
+import { blog, blogFeed, categories, tags } from '$/.source';
 
 export const allPostsRes = await Promise.all(
   blog.map(async (post) => {
-    
     const categoriesRes =
       post.catSlugs &&
       ((

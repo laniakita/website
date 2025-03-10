@@ -69,24 +69,26 @@ export default function MiniProjectPreview(data: ProjectProps) {
               </p>
             )}
           </div>
+        </div>
+
+        <div className='hidden'>
           <div className='prose-protocol-omega max-w-full prose-p:my-0 prose-a:no-underline'>
             <GlobalMDXRenderer>{projDescription}</GlobalMDXRenderer>
           </div>
-        </div>
-
-        <div className='h-px w-full bg-ctp-surface0 dark:bg-ctp-base' />
-        <div className='flex flex-row gap-[1ch]'>
-          <p>
-            {data.tech?.map((tag, idx) => (
-              <span
-                key={`project-preview-${uKey}-${Math.floor(Math.random() * 100 + idx)}-${idx * Math.random()}`}
-                className='w-fit font-mono text-sm font-semibold'
-              >
-                {tag}
-                {data.tech && idx < data.tech.length - 1 ? ', ' : ''}
-              </span>
-            ))}
-          </p>
+          <div className='h-px w-full bg-ctp-surface0 dark:bg-ctp-base' />
+          <div className='flex flex-row gap-[1ch]'>
+            <p>
+              {data.tech?.map((tag, idx) => (
+                <span
+                  key={`project-preview-${uKey}-${Math.floor(Math.random() * 100 + idx)}-${idx * Math.random()}`}
+                  className='w-fit font-mono text-sm font-semibold'
+                >
+                  {tag}
+                  {data.tech && idx < data.tech.length - 1 ? ', ' : ''}
+                </span>
+              ))}
+            </p>
+          </div>
         </div>
       </div>
     </div>

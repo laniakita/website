@@ -15,7 +15,7 @@ type FileProps = {
 };
 
 type InfoProps = {
-  type: string,
+  type: string;
   path: string;
   absolute_path: string;
   ext: string;
@@ -91,24 +91,27 @@ async function handleDoc(props: ConfigSchema, docExtensions: string[]) {
     }),
   );
 
-
   for await (const file of fileGen) {
-    // write output   
+    // write output
     try {
       //console.log(file)
-      const outputDir = path.join(process.cwd(), 'content/assets/data', file._file.parent_dir.split('content').join('/'), file._file.dir)
-      const outputPath = path.join(outputDir, `${file._file.slug}.json`)
+      const outputDir = path.join(
+        process.cwd(),
+        'content/assets/data',
+        file._file.parent_dir.split('content').join('/'),
+        file._file.dir,
+      );
+      const outputPath = path.join(outputDir, `${file._file.slug}.json`);
       console.log(outputDir);
-      
-      await mkdir(outputDir, {recursive: true})
-      console.log(`[success]: created ${outputDir}`)
 
-      const fileData = JSON.stringify({data: {...file.data}});
-      console.log(`[success]: wrote ${file._file.slug}.json to ${outputPath}`)
+      await mkdir(outputDir, { recursive: true });
+      console.log(`[success]: created ${outputDir}`);
+
+      const fileData = JSON.stringify({ data: { ...file.data } });
+      console.log(`[success]: wrote ${file._file.slug}.json to ${outputPath}`);
       await writeFile(outputPath, fileData);
     } catch (err) {
-      console.error(err)
-
+      console.error(err);
     }
   }
 
@@ -126,4 +129,3 @@ export async function SourcePreprocessor(props: ConfigSchema[]) {
     }
   }
 }
-

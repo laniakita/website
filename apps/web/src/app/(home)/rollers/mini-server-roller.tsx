@@ -10,7 +10,7 @@ export function MiniWorkRoller({ allWorks }: { allWorks: AllWorksProps }) {
     return allWorks.map((work, idx) => (
       <li
         key={crypto.randomUUID()}
-        className={`${visible ? 'motion-safe:animate-big-fade-in-up motion-safe:opacity-0' : 'motion-safe:animate-big-fade-down'} relative z-10 flex size-full min-w-96 basis-full flex-col overflow-hidden rounded-md border border-ctp-surface0 bg-ctp-base motion-safe:simple-color-trans dark:border-ctp-base dark:bg-ctp-midnight`}
+        className={`${visible ? 'motion-safe:animate-big-fade-in-up motion-safe:opacity-0' : 'motion-safe:animate-big-fade-down'} relative z-10 flex size-full basis-full flex-col overflow-hidden rounded-md border border-ctp-surface0 bg-ctp-base motion-safe:simple-color-trans @3xl:min-w-96 dark:border-ctp-base dark:bg-ctp-midnight`}
         style={{ animationDelay: `${(0.5 + idx) / 10}s` }}
       >
         <MiniWorkPreview key={crypto.randomUUID()} {...work} />

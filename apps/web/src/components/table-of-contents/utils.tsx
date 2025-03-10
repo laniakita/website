@@ -1,6 +1,6 @@
 'use client';
 import { usePathname, useRouter } from 'next/navigation';
-import { motion } from 'motion/react'
+import { motion } from 'motion/react';
 import React, {
   type Dispatch,
   type SetStateAction,
@@ -28,15 +28,15 @@ const container = {
   show: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.035
-    }
-  }
-}
+      staggerChildren: 0.035,
+    },
+  },
+};
 
 const item = {
   hidden: { opacity: 0 },
-  show: { opacity: 1 }
-}
+  show: { opacity: 1 },
+};
 
 export function Headings({
   tree,
@@ -49,15 +49,14 @@ export function Headings({
   hasAnimated?: boolean;
   notMobile?: boolean;
 }) {
-  
   return (
     <motion.menu
       aria-expanded={ariaExpanded}
       variants={container}
-      initial="hidden"
-      animate="show"
-      exit="hidden"
-      className="list-none leading-relaxed"
+      initial='hidden'
+      animate='show'
+      exit='hidden'
+      className='list-none leading-relaxed'
     >
       {tree?.map((heading) => (
         <Suspense key={heading.url} fallback={null}>
@@ -68,7 +67,6 @@ export function Headings({
   );
 }
 
-
 export function HeadingNode({ node, activeId }: { node: HeadingNode; activeId: string }) {
   const pathname = usePathname();
   const router = useRouter();
@@ -78,10 +76,7 @@ export function HeadingNode({ node, activeId }: { node: HeadingNode; activeId: s
   const nodeId = node.url.substring(1);
 
   return (
-    <motion.li 
-      key={node.url}
-      variants={item}
-    >
+    <motion.li key={node.url} variants={item}>
       <p className='group'>
         <button
           id={linkId}
