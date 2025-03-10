@@ -23,6 +23,21 @@ export interface HeadingNode {
   title: string;
 }
 
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.035
+    }
+  }
+}
+
+const item = {
+  hidden: { opacity: 0 },
+  show: { opacity: 1 }
+}
+
 export function Headings({
   tree,
   activeId,
@@ -38,27 +53,11 @@ export function Headings({
   return (
     <motion.menu
       aria-expanded={ariaExpanded}
-      initial={{
-        '--wipe-position': '100%',
-      }}
-      animate={{
-        '--wipe-position': '-20%',
-      }}
-      exit={{
-        '--wipe-position': '100%',
-      }}
-      transition={{
-        duration: Math.min(tree.length*0.1, 3),
-        ease: [0.37, 0, 0.63, 1]
-      }}
-      style={{
-        maskImage: "linear-gradient(to top,transparent var(--wipe-position),black calc(var(--wipe-position) + 20%),black)",
-        WebkitMaskImage: "linear-gradient(to top,transparent var(--wipe-position),black calc(var(--wipe-position) + 20%),black)"
-      }}
-
+      variants={container}
+      initial="hidden"
+      animate="show"
+      exit="hidden"
       className="list-none leading-relaxed"
-
-
     >
       {tree?.map((heading) => (
         <Suspense key={heading.url} fallback={null}>
@@ -69,6 +68,7 @@ export function Headings({
   );
 }
 
+
 export function HeadingNode({ node, activeId }: { node: HeadingNode; activeId: string }) {
   const pathname = usePathname();
   const router = useRouter();
@@ -78,7 +78,10 @@ export function HeadingNode({ node, activeId }: { node: HeadingNode; activeId: s
   const nodeId = node.url.substring(1);
 
   return (
-    <li key={node.url}>
+    <motion.li 
+      key={node.url}
+      variants={item}
+    >
       <p className='group'>
         <button
           id={linkId}
@@ -99,7 +102,7 @@ export function HeadingNode({ node, activeId }: { node: HeadingNode; activeId: s
           />
         </button>
       </p>
-    </li>
+    </motion.li>
   );
 }
 
