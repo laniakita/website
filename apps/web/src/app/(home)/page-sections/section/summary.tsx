@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
-import { motion, useInView } from 'motion/react';
+import { motion } from 'motion/react';
 import TextSplitterUltra from '@/components/text-splitter-v2';
 import slugify from '@/utils/slugify';
 import { HomeSectionProps } from '.';
@@ -12,24 +12,25 @@ interface SummarySecProps extends HomeSectionProps {
 
 export function SummarySection(props: SummarySecProps) {
   const divRef = useRef(null!);
-  const isInView = useInView(divRef);
 
   return (
     <section ref={divRef} className='group @container/sec relative z-20 mx-auto w-full max-w-5xl px-6 py-40'>
       <div className='flex flex-col items-center @3xl/sec:flex-row'>
         <div className='w-full space-y-10 @3xl:w-1/2'>
           <h1 id={slugify(props.title)} className={`overflow-hidden text-4xl font-bold`}>
-            <TextSplitterUltra
-              spanRole='heading'
-              level={1}
-              textIn={props.title}
-              reverse={!isInView}
-              charClass={`${isInView ? 'motion-safe:animate-fade-in-up-ultra motion-safe:opacity-0' : 'motion-safe:animate-fade-out-down-ultra'} inline-block`}
-            />
+            <TextSplitterUltra spanRole='heading' level={1} textIn={props.title} />
           </h1>
           <motion.div
             initial={{ opacity: 0, transform: 'translate3d(-10rem, 0rem, 0rem)' }}
-            whileInView={{ opacity: 1, transform: 'translate3d(0rem, 0rem, 0rem)' }}
+            whileInView={{
+              opacity: 1,
+              transform: 'translate3d(0rem, 0rem, 0rem)',
+              transition: {
+                duration: 0.8,
+                delay: 0,
+                ease: [0.87, 0, 0.13, 1],
+              },
+            }}
             viewport={{ once: true }}
             className={`prose-protocol-omega -mt-6 max-w-full`}
           >
@@ -51,11 +52,14 @@ function SummaryCode({ code }: { code: string }) {
     <motion.figure
       ref={figureRef}
       initial={{ opacity: 0, transform: 'translate3d(0rem, 20%, 0rem)' }}
-      whileInView={{ opacity: 1, transform: 'translate3d(0rem, 0%, 0rem)' }}
-      transition={{
-        duration: 0.8,
-        delay: 0,
-        ease: [0.87, 0, 0.13, 1],
+      whileInView={{
+        opacity: 1,
+        transform: 'translate3d(0rem, 0%, 0rem)',
+        transition: {
+          duration: 0.8,
+          delay: 0,
+          ease: 'backOut',
+        },
       }}
       viewport={{ once: true }}
       className={`relative z-10 size-full`}

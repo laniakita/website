@@ -1,16 +1,22 @@
-import { useRef } from 'react';
-import { useIntersectionObserver } from '../../utils';
+import { motion } from 'motion/react';
 
 export default function ServicesTable({ code }: { code: string }) {
-  const figureRef = useRef<HTMLElement>(null!);
-  const visible = useIntersectionObserver(figureRef);
-
   return (
-    <figure
-      ref={figureRef}
-      className={`${visible ? 'opacity-0 motion-safe:animate-big-fade-in-up' : 'motion-safe:animate-big-fade-down'} relative z-10`}
+    <motion.figure
+      initial={{ opacity: 0, transform: 'translate3d(0rem, 20%, 0rem)' }}
+      whileInView={{
+        opacity: 1,
+        transform: 'translate3d(0rem, 0%, 0rem)',
+        transition: {
+          duration: 0.8,
+          delay: 0,
+          ease: 'backOut',
+        },
+      }}
+      viewport={{ once: true }}
+      className={`relative z-10`}
     >
       <div className='prose-protocol-omega' dangerouslySetInnerHTML={{ __html: code }} />
-    </figure>
+    </motion.figure>
   );
 }

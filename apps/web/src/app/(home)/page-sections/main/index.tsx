@@ -1,6 +1,6 @@
 'use client';
 import MiniPostsRoller from '../../rollers/mini-postroller';
-import MiniProjectsRoller from '../../rollers/mini-projects-roller';
+import MiniProjectsRollerOG from '../../rollers/mini-projects-roller-og';
 import { MiniWorkRoller } from '../../rollers/mini-server-roller';
 import Section from '../section';
 import ServicesTable from '../section/services-table';
@@ -51,7 +51,7 @@ export default function Main(props: MainProps) {
       />
 
       <Section type={1} title='Passion Projects' page={1} markdown={props.data.markdown.projects.code}>
-        <MiniProjectsRoller allProjects={JSON.parse(props.data.source.projects)} />
+        <MiniProjectsRollerOG allProjects={JSON.parse(props.data.source.projects)} />
       </Section>
 
       <Section type={2} title='Client Works' page={2} markdown={props.data.markdown.works.code}>
