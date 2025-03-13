@@ -13,7 +13,6 @@ const MAIN_PAGES_ARR = new Map([
   ['work', '/work'],
   ['projects', '/projects'],
   ['Atom/RSS', '/feed.xml'],
-  ['résumé', '/resume'],
   ['contact', '/contact'],
 ]);
 
