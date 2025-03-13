@@ -21,7 +21,7 @@ import { simpleSocialItems } from './data';
 import { useToCViewStore } from '@/providers/toc-view-store-provider';
 import { usePathname } from 'next/navigation';
 
-const pagesArr = ['Blog', 'About', 'Work', 'Projects', 'Atom/RSS', 'Résumé', 'Contact'];
+const pagesArr = ['Blog', 'About', 'Work', 'Projects', 'Atom/RSS', 'Contact'];
 
 export default function Navbar() {
   const { dark } = useDarkStore((state) => state);

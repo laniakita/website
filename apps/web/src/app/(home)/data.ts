@@ -1,7 +1,5 @@
 const summarySec = `
-Aloha! My name is Lani Akita. I'm a Full Stack Developer from Honolulu, Hawai'i (see: <a href="/resume" target="_blank" rel="noreferrer">résumé</a>), and I'm pretty passionate about what I do, being dedicated to building (and [writing about](/blog)) stuff for the Internet.
-
-I'm also one of those kids that got raised by the Internet. I've been surfin' the Web since the early 2000s, and became my own Webmaster by the age of 12. While the Net's changed a lot since those days, so have I, as I evolved into the Full-Stack Developer I am today. 
+Aloha! My name is Lani Akita. I'm a Full Stack Developer, writer and ex-Biologist from Kailua, Hawaii. My specialty is in overcoming challenges, setbacks, and unsupported use cases. I'm also pretty passionate about what I do, as I've dedicated myself to building (and [writing about the process of developing](/blog)) web applications.
 
 Naturally, I'm obsessed with the never ending cascade of new shiny tools and technologies that enables us to redefine _what_ a website can be. Technologies that push beyond the limits of what ought to be possible to run from a web browser, like <a href="https://www.w3.org/TR/webgpu/" target="_blank" rel="nofollow noreferrer noopener">WebGPU</a> (a huge leap forward from WebGL), or <a href="https://webassembly.github.io/spec/core/intro/introduction.html" target="_blank" rel="nofollow noreferrer noopener">WebAssembly</a> (a technology that brings high-performance, low-level languages to the browser). 
 

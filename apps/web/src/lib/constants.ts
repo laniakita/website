@@ -9,7 +9,7 @@ export const APP_TITLE_TEMPLATE = '%s - Lani Akita';
 export const APP_DESCRIPTION = `Aloha! My name is Lani Akita. I'm a Full Stack Developer from Honolulu, Hawai'i (see: résumé), and I'm pretty passionate about what I do, being dedicated to building (and writing about) stuff for the Internet.`;
 export const APP_THEME_COLOR = '#11111b';
 export const BLOG_DESCR = 'A blog about life, Linux, and web development. Written by, Lani Akita.';
-export const RESUME_LINK = '/lani-akita_resume-feb-2025.pdf';
+export const RESUME_LINK = 'https://www.linkedin.com/in/laniakita/';
 export const SHOWCASE_URL =
   process.env.NODE_ENV === 'production' && process.env.NEXT_PUBLIC_DEPLOYED_URL
     ? 'https://showcase.laniakita.com'

@@ -103,22 +103,22 @@ const nextConfig = {
       },
       {
         source: '/resume',
-        destination: RESUME_LINK,
+        destination: 'https://www.linkedin.com/in/laniakita/',
         permanent: false,
       },
       {
         source: '/lani-akita_resume-october-2024.pdf',
-        destination: RESUME_LINK,
+        destination: 'https://www.linkedin.com/in/laniakita/',
         permanent: true,
       },
       {
         source: '/lani-akita_resume-november-2024.pdf',
-        destination: RESUME_LINK,
+        destination: 'https://www.linkedin.com/in/laniakita/',
         permanent: true,
       },
       {
         source: '/lani-akita_resume-december-2024.pdf',
-        destination: RESUME_LINK,
+        destination: 'https://www.linkedin.com/in/laniakita/',
         permanent: true,
       },
     ];
