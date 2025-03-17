@@ -11,7 +11,7 @@
     "@react-three/postprocessing": "^2.16.5",
     "@serwist/next": "^9.0.12",
     "date-fns": "4.1.0",
-    "next": "^14.2.24",
+    "next": "^15.2.2",
     "plaiceholder": "^3.0.0",
     "react": "18.3.x",
     "react-dom": "18.3.x",
