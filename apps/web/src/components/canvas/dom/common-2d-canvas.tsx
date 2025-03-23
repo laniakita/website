@@ -1,5 +1,5 @@
 'use client';
-/* eslint-disable react/no-unknown-property -- bad types */
+ 
 import type { ReactNode } from 'react';
 import { Suspense, useRef } from 'react';
 import type { ThreeElement } from '@react-three/fiber';

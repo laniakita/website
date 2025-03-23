@@ -15,7 +15,6 @@ export function ReactLenisScroller({ children }: { children: ReactNode }) {
 
   return (
     <>
-      {/* @ts-expect-error -- old types issue? */}
       <ReactLenis
         options={{
           autoRaf: false,

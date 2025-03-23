@@ -5,33 +5,19 @@ import pluginReactHooks from "eslint-plugin-react-hooks";
 import pluginReact from "eslint-plugin-react";
 import globals from "globals";
 import pluginNext from "@next/eslint-plugin-next";
-import jsxA11y from 'eslint-plugin-jsx-a11y';
-//import tailwind from "eslint-plugin-tailwindcss";
 
 import { config as baseConfig } from "./base.js";
 
 /**
  * A custom ESLint configuration for libraries that use Next.js.
  *
- * @type {import("eslint").Linter.Config}
+ * @type {import("eslint").Linter.Config[]}
  * */
 export const nextJsConfig = [
   ...baseConfig,
   js.configs.recommended,
-  
-  
   eslintConfigPrettier,
   ...tseslint.configs.recommended,
-  {
-    ...jsxA11y.flatConfigs.recommended,
-    languageOptions: {
-      ...jsxA11y.flatConfigs.recommended.languageOptions,
-      globals: {
-        ...globals.serviceworker,
-        ...globals.browser,
-      },
-    },
-  },
   {
     ...pluginReact.configs.flat.recommended,
     languageOptions: {

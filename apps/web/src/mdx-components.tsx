@@ -9,6 +9,7 @@ import SectionCore from './components/mdx/components/section/section';
 export function ImgReplacer(props: ImageProps) {
   return (
     <figure>
+      {/* eslint-disable jsx-a11y/alt-text -- image generator, not html. */}
       <Image {...props} className='h-auto w-full' />
       <figcaption className='font-mono text-xs'>{props.alt}</figcaption>
     </figure>
@@ -25,7 +26,6 @@ export const mdxComponents = {
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
-    // @ts-expect-error -- types
     p: (props) => <Paragraph {...props} />,
     img: (props) => <Image {...(props as ImageProps)} />,
     // @ts-expect-error -- types

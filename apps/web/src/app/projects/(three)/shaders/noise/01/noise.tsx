@@ -1,5 +1,5 @@
 'use client';
-/* eslint-disable  react/no-unknown-property -- bad types */
+ 
 import { useMemo, useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import type { Mesh, ShaderMaterial } from 'three';

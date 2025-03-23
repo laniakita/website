@@ -25,11 +25,14 @@
     "deploy:production": "sst deploy --stage=production --verbose"
   },
   "trustedDependencies": [
+    "@parcel/watcher",
+    "@website/web",
+    "aws-sdk",
     "contentlayer2",
     "esbuild",
+    "fumadocs-mdx",
     "protobufjs",
-    "sharp",
-    "fumadocs-mdx"
+    "sharp"
   ],
   "workspaces": [
     "apps/*",

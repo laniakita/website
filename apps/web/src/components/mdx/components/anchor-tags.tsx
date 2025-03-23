@@ -13,7 +13,7 @@ export default function Anchors(
 
     if (re.test(props.href) || re2.test(props.href)) {
       return (
-        // eslint-disable-next-line -- proper props are passed to the anchor tag
+         
         <a {...props} target='_blank' rel='noopener noreferrer nofollow' />
       );
     }

@@ -13,7 +13,7 @@ const config = {
       label: "Keep showcase on Next.js 14",
       packages: ["@website/showcase"],
       dependencies: ["next", "@next/bundle-analyzer"],
-      pinVersion: "^14.2.24"
+      pinVersion: "^14.2.25"
     },
     {
       label: "Keep showcase on react 18",

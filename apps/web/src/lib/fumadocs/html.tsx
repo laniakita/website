@@ -14,7 +14,6 @@ export async function renderStatic(post: (typeof blog)[0]) {
 
 function MDXComponent({ post }: { post: (typeof blog)[0] }) {
   const MDX = post.body;
-  // @ts-expect-error -- types issues
   return <MDX components={{ img: ImageR2 }} />;
 }
 
