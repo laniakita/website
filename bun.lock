@@ -41,7 +41,7 @@
         "@iconify-json/ph": "^1.2.2",
         "@iconify/tailwind": "^1.1.3",
         "@iconify/tailwind4": "^1.0.1",
-        "@next/bundle-analyzer": "^14.2.25",
+        "@next/bundle-analyzer": "^15.3.0",
         "@opennextjs/aws": "^3.5.1",
         "@tailwindcss/postcss": "^4.0.1",
         "@testing-library/dom": "^10.4.0",
@@ -113,7 +113,7 @@
         "@iconify/tailwind4": "^1.0.1",
         "@mdx-js/loader": "^3.1.0",
         "@mdx-js/mdx": "^3.1.0",
-        "@next/bundle-analyzer": "^15.2.3",
+        "@next/bundle-analyzer": "^15.3.0",
         "@next/eslint-plugin-next": "^15.2.3",
         "@opennextjs/aws": "^3.5.1",
         "@react-three/eslint-plugin": "^0.1.2",
@@ -655,7 +655,7 @@
 
     "@napi-rs/wasm-runtime": ["@napi-rs/wasm-runtime@0.2.7", "", { "dependencies": { "@emnapi/core": "^1.3.1", "@emnapi/runtime": "^1.3.1", "@tybys/wasm-util": "^0.9.0" } }, "sha512-5yximcFK5FNompXfJFoWanu5l8v1hNGqNHh9du1xETp9HWk/B/PzvchX55WYOPaIeNglG8++68AAiauBAtbnzw=="],
 
-    "@next/bundle-analyzer": ["@next/bundle-analyzer@14.2.25", "", { "dependencies": { "webpack-bundle-analyzer": "4.10.1" } }, "sha512-aap+F+Uo71uW+1Tu+vdzswj8r9Bl5BTAQPdzv7PNOIDxIITIDVwi6vkf7F4KQ8ifri08Cxk2gGqCUVEE5AYw8Q=="],
+    "@next/bundle-analyzer": ["@next/bundle-analyzer@15.3.0", "", { "dependencies": { "webpack-bundle-analyzer": "4.10.1" } }, "sha512-t1dn32bTBJTfksh2xLfpaw6hNNNrw1rsr1GlVSkRbJ5626YgEMFBjuos5tHr6l9/b+jKz1HFYFlWNgrIHqCslw=="],
 
     "@next/env": ["@next/env@14.2.25", "", {}, "sha512-JnzQ2cExDeG7FxJwqAksZ3aqVJrHjFwZQAEJ9gQZSoEhIow7SNoKZzju/AwQ+PLIR4NY8V0rhcVozx/2izDO0w=="],
 
@@ -3074,8 +3074,6 @@
     "@website/ui/react": ["react@19.0.0", "", {}, "sha512-V8AVnmPIICiWpGfm6GLzCR/W5FXLchHop40W4nXBmdlEceh16rCN8O8LNWm5bh5XUX91fh7KpA+W0TgMKmgTpQ=="],
 
     "@website/ui/react-dom": ["react-dom@19.0.0", "", { "dependencies": { "scheduler": "^0.25.0" }, "peerDependencies": { "react": "^19.0.0" } }, "sha512-4GV5sHFG0e/0AD4X+ySy6UJd3jVl1iNsNHdpad0qhABJ11twS3TTBnseqsKurKcsNqCEFeGL3uLpVChpIO3QfQ=="],
-
-    "@website/web/@next/bundle-analyzer": ["@next/bundle-analyzer@15.2.3", "", { "dependencies": { "webpack-bundle-analyzer": "4.10.1" } }, "sha512-alZemRg2ciCTmT2WUbzy1M9H4luzmmlyZtdB4tHDA+qoD4WTNEwty+oxn3oIzDzIiMvOaODXUNdMrYsFnsAdEA=="],
 
     "@website/web/@react-three/drei": ["@react-three/drei@10.0.0-rc.1", "", { "dependencies": { "@babel/runtime": "^7.26.0", "@mediapipe/tasks-vision": "0.10.17", "@monogrid/gainmap-js": "^3.0.6", "@use-gesture/react": "^10.3.1", "camera-controls": "^2.9.0", "cross-env": "^7.0.3", "detect-gpu": "^5.0.56", "glsl-noise": "^0.0.0", "hls.js": "^1.5.17", "maath": "^0.10.8", "meshline": "^3.3.1", "stats-gl": "^2.2.8", "stats.js": "^0.17.0", "suspend-react": "^0.1.3", "three-mesh-bvh": "^0.8.3", "three-stdlib": "^2.35.6", "troika-three-text": "^0.52.0", "tunnel-rat": "^0.1.2", "use-sync-external-store": "^1.4.0", "utility-types": "^3.11.0", "zustand": "^5.0.1" }, "peerDependencies": { "@react-three/fiber": "9.0.0-rc.5", "react": "^19", "react-dom": "^19", "three": ">=0.159" }, "optionalPeers": ["react-dom"] }, "sha512-SzwqNlx93n11FrnNx5HP3SdC7BQHWvQTQ3qMnB1viz6yOANvTtiO75k1/MBvmMKg/GxTn1SvI8+yj18wTpqtYA=="],
 
