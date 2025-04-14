@@ -24,7 +24,7 @@
     "lodash": "^4.17.21",
     "markdown-to-jsx": "^7.7.3",
     "motion": "^12.4.10",
-    "next": "^15.2.3",
+    "next": "^15.3.0",
     "plaiceholder": "^3.0.0",
     "react": ">=19",
     "react-dom": ">=19",
