@@ -4,7 +4,7 @@
   "type": "module",
   "private": true,
   "dependencies": {
-    "@atproto/api": "^0.14.4",
+    "@atproto/api": "^0.15.3",
     "@content-collections/mdx": "^0.2.0",
     "@date-fns/utc": "2.1.0",
     "@fumadocs/mdx-remote": "^1.2.0",
