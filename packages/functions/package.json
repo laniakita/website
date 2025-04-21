@@ -2,7 +2,7 @@
   "name": "@website/functions",
   "version": "0.0.0",
   "dependencies": {
-    "@aws-sdk/client-cloudfront": "^3.738.0",
+    "@aws-sdk/client-cloudfront": "^3.787.0",
     "@aws-sdk/client-cloudwatch": "^3.738.0",
     "@aws-sdk/client-sns": "^3.738.0",
     "sst": "^3.9.10"
