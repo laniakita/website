@@ -3,10 +3,7 @@ import MiniPostsRoller from '../../rollers/mini-postroller';
 import MiniProjectsRollerOG from '../../rollers/mini-projects-roller-og';
 import { MiniWorkRoller } from '../../rollers/mini-server-roller';
 import Section from '../section';
-import ServicesTable from '../section/services-table';
 import { SummarySection } from '../section/summary';
-
-//const BgTestV = dynamic(() => import('../../canvas/decor/bg-test-v').then((mod) => mod.BgTestV), { ssr: false });
 
 export type MainProps = {
   data: {
@@ -60,10 +57,6 @@ export default function Main(props: MainProps) {
             <MiniWorkRoller allWorks={JSON.parse(props.data.source.works)} />
           </div>
         </div>
-      </Section>
-
-      <Section type='dev-for-hire' title='Dev for Hire' markdown={props.data.markdown.services.code}>
-        <ServicesTable code={props.data.markdown.servicesTable.code} />
       </Section>
 
       <Section type={1} title='Latest from the Blog' page={3} markdown={props.data.markdown.blog.code}>

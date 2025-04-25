@@ -3,7 +3,6 @@ import { pageData } from './data';
 import { MiniMDXComponent } from './mini-mdx-component';
 import Navbar from '@/components/navbar';
 import Footer from '@/components/footer/footer';
-import { ReactLenisScroller } from '@/components/virtual-scroller/react-lenis';
 import Hero from './page-sections/hero';
 import Main from './page-sections/main';
 import type { Metadata } from 'next';
@@ -63,11 +62,11 @@ export default async function HomeV2() {
   };
 
   return (
-    <ReactLenisScroller>
+    <>
       <Navbar />
       <Hero />
       <Main data={data} />
       <Footer />
-    </ReactLenisScroller>
+    </>
   );
 }
