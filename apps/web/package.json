@@ -74,7 +74,7 @@
     "eslint-plugin-tailwindcss": "^3.18.0",
     "gray-matter": "^4.0.3",
     "hast": "^1.0.0",
-    "jstoxml": "^5.0.2",
+    "jstoxml": "^7.0.1",
     "mdx-bundler": "^10.1.0",
     "next-contentlayer2": "^0.5.4",
     "postcss": "^8.5.1",
