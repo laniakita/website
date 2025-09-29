@@ -6,7 +6,7 @@
       "devDependencies": {
         "prettier": "^3.4.2",
         "sharp": "^0.33.5",
-        "sst": "^3.9.10",
+        "sst": "^3.17.14",
         "syncpack": "^13.0.0",
         "turbo": "^2.4.4",
       },
@@ -183,7 +183,7 @@
         "@aws-sdk/client-cloudfront": "^3.738.0",
         "@aws-sdk/client-cloudwatch": "^3.738.0",
         "@aws-sdk/client-sns": "^3.738.0",
-        "sst": "^3.9.10",
+        "sst": "^3.17.14",
       },
       "devDependencies": {
         "@types/aws-lambda": "^8.10.147",
@@ -2567,17 +2567,23 @@
 
     "sprintf-js": ["sprintf-js@1.0.3", "", {}, "sha512-D9cPgkvLlV3t3IzL0D0YLvGA9Ahk4PcvVwUbN0dSGr1aP0Nrt4AEnTUbuGvquEC0mA64Gqt1fzirlRs5ibXx8g=="],
 
-    "sst": ["sst@3.10.8", "", { "dependencies": { "aws-sdk": "2.1692.0", "aws4fetch": "1.0.18", "jose": "5.2.3", "opencontrol": "0.0.6", "openid-client": "5.6.4" }, "optionalDependencies": { "sst-darwin-arm64": "3.10.8", "sst-darwin-x64": "3.10.8", "sst-linux-arm64": "3.10.8", "sst-linux-x64": "3.10.8", "sst-linux-x86": "3.10.8" }, "bin": { "sst": "bin/sst.mjs" } }, "sha512-jeP2oQk5qDN8o6fhVmOKXesXmZXoer4wBvXCh87lwcyxeFYy3szog8nKFTwAYCP3zOps1lANjLA9Q9iIT1verQ=="],
+    "sst": ["sst@3.17.14", "", { "dependencies": { "aws-sdk": "2.1692.0", "aws4fetch": "1.0.18", "jose": "5.2.3", "opencontrol": "0.0.6", "openid-client": "5.6.4" }, "optionalDependencies": { "sst-darwin-arm64": "3.17.14", "sst-darwin-x64": "3.17.14", "sst-linux-arm64": "3.17.14", "sst-linux-x64": "3.17.14", "sst-linux-x86": "3.17.14", "sst-win32-arm64": "3.17.14", "sst-win32-x64": "3.17.14", "sst-win32-x86": "3.17.14" }, "bin": { "sst": "bin/sst.mjs" } }, "sha512-HkyMnBj55DZjzgNFoHQ1XPr9vXi2UHWz3TkuboyCybpJQcR7vW4za8uDDDPivAcUyqQe2aP8pzuxL6+cAztqsg=="],
 
-    "sst-darwin-arm64": ["sst-darwin-arm64@3.10.8", "", { "os": "darwin", "cpu": "arm64" }, "sha512-T+VGqjq3Pa+nvCtTqwM21hjijYNhiLPXgxEcCx5WMp4vQVKHN1bM7gm3x3SlO1y1IKSA/T8yUXC3V9Epb2M+LQ=="],
+    "sst-darwin-arm64": ["sst-darwin-arm64@3.17.14", "", { "os": "darwin", "cpu": "arm64" }, "sha512-ItOltB8HH+8XSS7FnQfR/yqsJVMr+/HvibBCNOf57WnjuNqWGLB4db/ESCeYuaQqpjpUt5lrT9ezflWrf4O9Tg=="],
 
-    "sst-darwin-x64": ["sst-darwin-x64@3.10.8", "", { "os": "darwin", "cpu": "x64" }, "sha512-kVQvslsBB/epok7YUShrPUtcwyL5PV4FMV/QVFvN1B7D52Hw2y5n1CO5FIVaZcKOwNbhrq+gfospHRNAJJp6nQ=="],
+    "sst-darwin-x64": ["sst-darwin-x64@3.17.14", "", { "os": "darwin", "cpu": "x64" }, "sha512-J22TN1Fa878qUXsZtPybzrUbGd68p6CjXpmpqMVTyKJ9u/purkO2TiXtcFs7Ow4nr1RuCXFKo3eQ1fHDeO9YUg=="],
 
-    "sst-linux-arm64": ["sst-linux-arm64@3.10.8", "", { "os": "linux", "cpu": "arm64" }, "sha512-VNE7VcSaq2McjX2iY3GcaBtM+7GaQ/G2jNIEFbSgMhvuPPiOFmQdnwwPIxQzMZ0rTtCJdx7PW8HKUwjl7ZpeDg=="],
+    "sst-linux-arm64": ["sst-linux-arm64@3.17.14", "", { "os": "linux", "cpu": "arm64" }, "sha512-5wivBPIcRClHdWknp4z/lww7WyU27YkHEfF2lmt7dDS1XtM3VfTW1GdzQDsaox3wdIAmpKeYF5Wg79+cCRM/iA=="],
 
-    "sst-linux-x64": ["sst-linux-x64@3.10.8", "", { "os": "linux", "cpu": "x64" }, "sha512-uCnPxGkd28m4RHIgzdIjqLu8/lgH9IkuGTEiquGWWABFmdZtlsjiwwPPTgpQrrC7EhjeIjmksxFF3Isj69cnoQ=="],
+    "sst-linux-x64": ["sst-linux-x64@3.17.14", "", { "os": "linux", "cpu": "x64" }, "sha512-fAaTdD6eP3kuNzkGVdYu3MOuNJkpm1rOH5Um2R2gbjtHwZ0QwP8r0f1d/ghP2kHXdgJqiNwqBbZmOuRCqmCuRA=="],
 
-    "sst-linux-x86": ["sst-linux-x86@3.10.8", "", { "os": "linux", "cpu": "none" }, "sha512-Bx8TWbsbwSB+xKben7YE+k/UkWf8bydUPQ7Pe9uDu4+UTZkjYNPb4048z9l4VJ8nicZSemAppDII6kyyS4niGg=="],
+    "sst-linux-x86": ["sst-linux-x86@3.17.14", "", { "os": "linux", "cpu": "none" }, "sha512-I0/IQmBk/4o1FVzMov9Ombxab4GzGNxGoyC3HTqDCRwC4jS9mnv5eTTpOQ57kGYehSnzUcflDPLZtVmKCc19+Q=="],
+
+    "sst-win32-arm64": ["sst-win32-arm64@3.17.14", "", { "os": "win32", "cpu": "arm64" }, "sha512-fueSfZqrGcPlhN0Lm5HpmDcCKr+JmMBBBjt38HlRU08ekY7lB05QAWNXgyBwXxLdXqVIFHCUaO2Mf4K+SMCv9A=="],
+
+    "sst-win32-x64": ["sst-win32-x64@3.17.14", "", { "os": "win32", "cpu": "x64" }, "sha512-DO8U5Uno2iD1N+AgJPde4nTP8oIeBI/rTaW5yuxJSW8cMMzySi9vQ45wz9vyZDteoHzmSwtnoC8QhZMgs0gVnQ=="],
+
+    "sst-win32-x86": ["sst-win32-x86@3.17.14", "", { "os": "win32", "cpu": "none" }, "sha512-Q+QKLERFU05wzYpcIhGX0XaLe+jsMuh95IQnrGDU8f82LM1KdWY+a62BaY1J4lbGpNrdZO22GXwIcqrFZOw8qA=="],
 
     "stable-hash": ["stable-hash@0.0.5", "", {}, "sha512-+L3ccpzibovGXFK+Ap/f8LOS0ahMrHTf3xu7mMLSpEGU0EO9ucaysSylKo9eRDFNhWve/y275iPmIZ4z39a9iA=="],
 
