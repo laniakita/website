@@ -3,6 +3,26 @@
 .env
 .cache
 
+# tmp
+archive/
+
+dist
+dist-ssr
+.nitro
+.tanstack
+.output
+.vinxi
+__unconfig*
+todos.json
+
+*storybook.log
+storybook-static
+
+.dev.vars*
+!.dev.vars.example
+!.env.example
+
+
 # misc
 .DS_Store
 .vscode
