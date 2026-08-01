@@ -10,7 +10,7 @@ import {
 	defaultNavItems,
 	defaultSocialItems,
 } from "@/components/navigation/header/data";
-import { ThemeStoreProvider } from "@/features/providers/theme-store-provider";
+import { ThemeStoreProvider } from "@/lib/providers/theme-store-provider";
 
 // TanStack Router requires a router context for Links to work in Storybook
 const rootRoute = createRootRoute({
