@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "laniakita-com-sb": {
+      "httpUrl": "http://localhost:6006/mcp"
+    },
+    "shadcn": {
+      "command": "bunx",
+      "args": ["shadcn@latest", "mcp"]
+    }
+  }
+}
