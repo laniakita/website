@@ -9,6 +9,7 @@ import { devtools } from "@tanstack/devtools-vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import viteReact from "@vitejs/plugin-react";
 import { playwright } from "@vitest/browser-playwright";
+import { fumadocsMdx } from "fumadocs-mdx/vite";
 import { defineConfig } from "vite";
 
 const dirname =
@@ -22,6 +23,7 @@ const config = defineConfig({
 		tsconfigPaths: true,
 	},
 	plugins: [
+		!process.env.STORYBOOK && fumadocsMdx(),
 		devtools(),
 		!process.env.STORYBOOK &&
 			cloudflare({

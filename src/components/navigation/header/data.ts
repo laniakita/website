@@ -13,8 +13,8 @@ export interface NavItem {
 }
 
 export const defaultNavItems: NavItem[] = [
-	{ label: "About", to: "/about" },
 	{ label: "Work", to: "/work" },
+	{ label: "About", to: "/about" },
 	{ label: "Atom/RSS", to: "/atom.xml" },
 	{ label: "Contact", to: "/contact" },
 ];

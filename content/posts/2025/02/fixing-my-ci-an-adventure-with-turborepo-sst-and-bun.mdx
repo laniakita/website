@@ -1,0 +1,438 @@
+---
+id: 231e2ed6-25bd-4e8a-86b0-a17386640f7f
+type: Post
+date: 2025-03-05T07:25:49Z
+catSlugs:
+  - meta
+tagSlugs:
+  - turborepo
+  - sst
+  - bun
+keywords:
+  - Tutorial
+  - Monorepo
+  - Turborepo
+  - Deploy
+  - Next.js
+  - App
+  - SST
+  - GitHub Action
+  - CI
+  - CD
+  - CI/CD
+  - Runner
+author: lani
+headline: 'How I Broke (my own) Production & How I Fixed it 4 Hours Later'
+subheadline: 'An Adventure in Deploying Next.js Apps with Bun, Turborepo, and SST from a CI'
+imageSrc: ../../../assets/images/non-oc/artem-horovenko-pipes.jpg
+altText: 'Source: Artem Horovenko (via Unsplash). On the left side of the image, there are two adjacent pairs of large blue tubes, aligned vertically, and running from the left to the center of the image, featuring a convex-fairing, and a grate over their respective openings. In the background we can see more large blue tubes, curving left and right, with steel cages and catwalks adjacent to them. On the right side of the image, there are six large green tubes, placed vertically, and spaced tightly together, running from top to bottom of the image.'
+caption: The internet is not something that you just dump something on. It's not a big truck. It's a series of tubes. - Sen. Ted Stevens (R-Alaska).
+---
+
+import BlueskyEmbed from '../../../../src/components/embeds/bluesky/index.tsx';
+
+Since I finally managed to break the CI/CD pipeline for this site, I've been thinking a lot about that infamous quote from the Senator for Alaska. Not for its accuracy (or lack thereof), but because in this one instance, I did, in fact, break (or jam) a _critical tube_ that gets this site out to the internet. Though, I should admit that's not what took this site offline for 4 hours (we'll get to that part soon).
+
+## The Situation
+
+At around 0600 Zulu time on February 21st, I rebased this site's production branch with main, and pushed two of my latest commits. One updated my `flake.nix` inputs (updated `flake.lock`), the other was a simple fix to the cards on the landing page. About 30 minutes later I received the following email.
+
+![Screenshot of a GitHub Action notification email on the status of the Production Build Action workflow run, that informed me that all jobs have failed. The info box states: laniakita is building for production / SST-Deploy-Production Failed in 30 minutes and 37 seconds](../../../assets/images/oc/2025/03/production-action-failed-timeout-email.png)
+
+What followed was what I can only describe as _an adventure_.
+
+<BlueskyEmbed postUrl='https://bsky.app/profile/laniakita.com/post/3lio7a7quw227' />
+
+That _skeet_ now serves as both a historical record of what happened that Thursday night, and was the inspiration behind this very blog post.
+
+## A Preliminary Investigation
+
+Debugging is an _Art_. While I'm not the world's greatest detective, I am pretty good at sniffing out the cause of the issue, and assembling a solution thereafter. So, let's go through what I did.
+
+### POI #01: Timing Out & Freezing
+
+The first thing I did was look into the [workflow logs](https://github.com/laniakita/website/actions/runs/13448074321/job/37577491756), where I discovered our first Point of Interest (POI), the timeout error.
+
+![Screenshot of Production Build Action #41 at the Deploy step (point of failure). At line 1 collapses the next 11 lines into a single `Run bun sst deploy --stage=production --verbose`. Lines 12 - 35 showcase normal behavior for SST + Turborepo so far. Line 36 states `Error: The action 'Deploy' has timed out after 30 minutes.](../../../assets/images/oc/2025/03/production-deploy-logs-41.png)
+
+Given my experience with the beta version of SSTv3 (`Ion`), an occasional timeout on `sst deploy` wasn't entirely unexpected. It's why I set `timeout-minutes: 30` on the _Deploy_ step in the first place. So, I decided to give it another go.
+
+![Screenshot of Production Build #41 attempt 02, showing a locked sst state error, failing the Deploy step](../../../assets/images/oc/2025/03/prod-build-log-41-attmpt-2.png)
+
+This gave a _Locked state error_, since the previous deploy attempt didn't get to _gracefully_ cancel deployment to AWS. So, following the error message's guidance, I ran `sst unlock` from my terminal and tried again.
+
+![Screenshot of Production Build #41 attempt 03, getting stuck building @website/web.](../../../assets/images/oc/2025/03/prod-build-log-41-attempt-3.png)
+
+_Huh._ I was audibly stunned. Watching this attempt go by, I was confounded why it was stuck at the same place as the first attempt. At about a minute and 23 seconds in, I pulled the plug.
+
+While that might seem pre-emptive, compared to a _successful_ production run up to this point, the process would be about half way done by now, so freezing up at line 39 was incredibly odd.
+
+### Troubleshooter's Step 01: Unplug it and Plug it Back in
+
+I was feeling puzzled, until I was suddenly struck with _genius_. I would simply perform the equivalent of _unplugging and plugging it back in again_ via running `sst remove` and `sst deploy`, _magically_ solving my problems! **_What could go wrong?_**
+
+![Screenshot of Production Build #41 attempt 04, showing the attempt at lines 51-53 to build @website/web, and the inevitable hang at lines 74 where it finished creating the MonitorMetricsSchedule scheduler](../../../assets/images/oc/2025/03/prod-build-log-41-hang.png)
+
+While I was grateful that _attempt 04_ displayed some signs of life, at about 4 minutes into the Deploy however, it was clear something had _gone wrong_. So, I pulled the plug on this attempt too.
+
+To make matters worse, because I did run `sst remove --stage=production`, my **production** site was now ripped from the internet. While this would be fine if I had either a backup to divert traffic to, or realized I could've just re-run the last passing production Build Action, I unfortunately did not. This was cause for some _light_ panic.
+
+<details open>
+
+<summary>Hubris: All in on Production</summary>
+
+If you notice the [repo](https://github.com/laniakita/website) for this site today, there's now two workflows I use: one for _dev_ and one for _production_. However, it wasn't like that before this happened.
+
+Why? Well, one part of it was stinginess, another was avoiding the work to add a dev build banner into the nav when the URL !== productionUrl. The rest of it though? That was arrogance. My hubris.
+
+However, that's not to say I didn't have a _dev_ deployment stage. I setup a _dev_ AWS account specifically to live test _radical_ changes of this site, before I rebased them into production.
+
+At the time, I figured that was good-enough, and a dev CI/CD would be something _nice to have_. I suppose I didn't feel strongly enough then to follow through with a proper CI/CD to handle _main_ for this little blog/portfolio thing. That was a foolish error on my part.
+
+</details>
+
+### Troubleshooter's Step 02: Update Deps
+
+As I was reeling from terror, I decided to try an emergency dependencies update of Node.js and Turbo. I didn't have any evidence that they weren't the cause of the problems, but a cheap hail-mary attempt seemed worth a shot.
+
+![Screenshot of Production Build #42, showing the same hang at lines 74-75 where it finishes creating the MonitorMetricsSchedule scheduler before getting stuck](../../../assets/images/oc/2025/03/prod-build-log-42-hang.png)
+
+_No dice._ As a follow-up, I wondered if re-creating `bun.lock` might help, so I tried that too.
+
+![Screenshot of Production Build #43, stuck in the same place](../../../assets/images/oc/2025/03/prod-build-log-43.png)
+
+As you can imagine, that didn't work either.
+
+### Troubleshooter's step 03: Pin Deps
+
+If updating dependencies wasn't working, perhaps pinning them to an older version might help. I decided `sst` might be playing a role here, so I rolled it back, and ran the CI again.
+
+![Screenshot of Production Build #44, showing a locked sst state error, (again) failing the Deploy step](../../../assets/images/oc/2025/03/prod-build-log-44-oops.png)
+
+_Oops_. I correct the _Lock_ once more, and sent through my final _hail mary_ attempt for the evening.
+
+![Screenshot of Production Build #45, hanging once more at line 73-75, with the canceled message below it.](../../../assets/images/oc/2025/03/prod-build-log-45-sigh.png)
+
+_Sigh_. I let out a pained sigh. _This is gonna require **thinking**, isn't it?_, I whined to myself. So, I took a break for a couple of hours, and contemplated.
+
+## Approaching a Solution
+
+After my basic troubleshooting session brought me to somewhere worse than square one (no website), I started mulling over what I learned.
+
+What I found peculiar, was that consecutive runs would hang around the same place. For whatever reason, attempting to build `@website/web` (this site), would lockup the Deploy step either right away (if the other functions don't exist yet), or 75 lines in if my metrics monitoring functions need to be created. Either way, this pointed to something going wrong with _how_ `@website/web` was being built.
+
+### New POIs
+
+This realization, narrowed things down to a few potential causes:
+
+- `@website/web` is being built, but something is failing to report that step finished (`sigterm`), freezing the Deploy step as a result.
+- `@website/web` is failing to build in the CI runner for _reasons_.
+  - Perhaps the `sst` CLI has a bug in reading the flag syntax?
+  - Perhaps Ubuntu/Debian is being difficult with SST again (I think this was an issue during the beta).
+- The Turborepo tasks for `@website/web` aren't being executed properly.
+  - A task that occurs before `build`, like `test`, might be _failing_ to send a `sigterm`, or `bun`/`sst`/`turbo` is failing to pick it up.
+  - In any event, the `build` task for `@website/web` gets stuck waiting to be executed, causing the hang.
+
+So, I decided to go down this list from _ez_ to _difficult_ in trying to solve the problem.
+
+### Too EZ: Check your syntax
+
+While I can't find the relevant issue now, I do remember coming across a closed issue in the [sst](https://github.com/sst/sst) repo, detailing that running a command like `sst COMMAND --FLAG=VAR` was causing issues but `sst COMMAND --FLAG VAR` wasn't. I believe I tried to run this locally, but that didn't fix it, so I moved on.
+
+### Redefining Turborepo's Tasks
+
+Armed with the possibility the _tasks_ weren't executing properly, I decided to remove the `prebuild` task as dependency of `test` from the `turbo.json` in both `@website/web` and `@website/showcase`. I also made `build` depend on other build tasks first (suggested by the [turborepo docs](https://turbo.build/repo/docs/crafting-your-repository/configuring-tasks#running-tasks-in-the-right-order))
+
+```diff
+    "test": {
+-      "dependsOn": ["prebuild"]
++      "dependsOn": []
+    },
+    "build": {
+-      "dependsOn": ["test"],
++      "dependsOn": ["test", "^build"],
+```
+
+I also changed the `buildCommand` (for both `web` and `showcase`) in my `sst.aws.Nextjs` function to specify bun specifically.
+
+```diff
+
+export const web = new sst.aws.Nextjs("Web", {
+  path: "apps/web",
+-  buildCommand: "turbo build:open-next",
++  buildCommand: "bun run turbo build:open-next;",
+  server: {
+    runtime: "nodejs22.x"
+  },
+
+```
+
+Then (locally) I held my breath and ran `sst deploy --stage production --verbose`. _Thank fuck!_ I was overwhelmed with relief, when I saw things had gone smoothly, and everything was back online.
+
+For a bit I even contemplated calling it here, but I knew that deploying locally and deploying in the CI were two very different things. However, having tasted this victory, I was confident I could coax a second from the CI runner.
+
+So, with a foolish grin, I pulled the website down with `sst remove`, because I knew an even greater victory awaited me in the CI runner.
+
+## Overcoming the CI runner
+
+Since everything worked locally, I figured either it would _just work_ in the CI runner, or if it didn't, I could just further reduce the barriers to the build step like I did earlier. So, I rebased _main_ onto _production_ and pushed things through.
+
+![Screenshot of production build #46. Showing a very familiar problem (hanging).](../../../assets/images/oc/2025/03/prod-build-log-46.png)
+
+Unsurprisingly, things did not _just work_. However, I did have an inkling of what I was doing this time around, so I got to work.
+
+### Experiment 01: Isolating the Tasks
+
+From earlier, I altered the build commands back to what they were, in case that was causing a problem.
+
+```diff
+
+export const web = new sst.aws.Nextjs("Web", {
+  path: "apps/web",
+-  buildCommand: "bun run turbo build:open-next;",
++  buildCommand: "turbo build:open-next",
+  server: {
+    runtime: "nodejs22.x"
+  },
+
+```
+
+Then I altered the tasks array somewhat back to what it was (which failed locally, but this is science now). I set `prebuild` to depend on nothing, and made `test` depend on `prebuild` (as it was).
+
+```diff
+  "extends": ["//"],
+  "tasks": {
+    "prebuild": {
++      "dependsOn": [],
+      "inputs": ["$TURBO_DEFAULT$", "content/**"],
+      "outputs": [".contentlayer", ".contentlayermini", ".versionvault"]
+    },
+    "test": {
+-      "dependsOn": []
++      "dependsOn": ["prebuild"]
+    },
+    "build": {
+      "dependsOn": ["test", "^build"],
+```
+
+This gave an interesting result.
+
+![Screenshot showing prebuild and test tasks completed, but getting stuck on MonitorMetricsSchedule again](../../../assets/images/oc/2025/03/prod-build-log-47.png)
+
+While I wasn't _enthusiastic_ about what I saw, it was an interesting result. In hindsight, this might've worked, I think I just got nervous around the two-minute mark and assumed the worse. Still, I pressed on.
+
+### Experiment 02: Simplifying the Task Dependencies
+
+I decided to do two things. I continued to tweak the build command, and then I did what I believed was the solution (simplifying the task deps) to start at the build task immediately.
+
+```diff
+export const web = new sst.aws.Nextjs("Web", {
+  path: "apps/web",
+-  buildCommand: "turbo build:open-next",
++  buildCommand: "turbo build:open-next;",
+  server: {
+    runtime: "nodejs22.x"
+  }
+```
+
+```diff
+    "test": {
+-      "dependsOn": ["prebuild"]
++      "dependsOn": []
+    },
+    "build": {
+-      "dependsOn": ["test", "^build"],
++      "dependsOn": ["^build"],
+      "outputs": [".next/**", "public/dist/**", "public/sw.js"],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+```
+
+This gave me the result I was working so hard towards.
+
+![Screenshot of production build #48, showcasing a successful run with all job steps complete.](../../../assets/images/oc/2025/03/prod-build-log-48-success.png)
+
+_I did it! I did the thing!_ I was ecstatic for the rest of the evening, basking in victory. It's just unfortunate this did not last into the next day when I setup the _dev_ workflow. My attempt at integrating the lesson I had just learned.
+
+## Revenge of the CI Runner
+
+In setting up the _dev_ Action Workflow (about two weeks ago at the time of writing), I hit a painfully familiar snag—after hitting a few _unrelated_ snags, of course.
+
+![Screenshot of the process it took to get the dev action working.](../../../assets/images/oc/2025/03/a-new-adventure.png)
+
+Let me preface with: this _adventure_ wasn't as bad as it looks. In order:
+
+- The first five build attempts failed due to a misconfiguration of an AWS role.
+- The next two failed due to my _handle failed deploy_ job on failure, failed to unlock the state (ironic).
+- The eighth run I canceled due to seeing a very familiar deploy printout
+- Runs nine and ten timed-out (just like before)
+- Run eleven (Dev Build Action #5 attempt 2) failed due to state being locked again
+- Run twelve (Dev Build Action #6) I canceled after it seemed like it was going to just hang.
+- Run thirteen (what a lucky number) succeeded as Dev Build Action #7.
+
+While I am going to explain what I changed, to make run thirteen a success, I do need to preface that my _changes_ are apparently no longer necessary given the success of the most recent build action (#19). I'll explain that towards the end.
+
+### Nuclear Option: SST buildCommand set to "exit 0;"
+
+After banging my head against the keyboard in frustration, I decided upon the _nuclear option_. Instead of letting `sst deploy` run the build command, it's possible to just let `turbo` do it instead. This is very similar to the [Nx Monorepo Configuration](https://opennext.js.org/aws/config/nx) guide in the [OpenNext](https://opennext.js.org/) Docs.
+
+In my root `turbo.json` I created a _deploy_ task that depends on build.
+
+```diff
+{
+  "$schema": "https://turbo.build/schema.json",
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"]
+    },
++    "deploy": {
++      "dependsOn": ["build"]
++    },
+  }
+}
+```
+
+In my root `package.json` I added _deploy_ and _deploy:dev_ to the scripts object.
+
+```diff
+{
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "test:watch": "turbo run test:watch",
++    "deploy": "turbo run deploy",
++    "deploy:dev": "turbo run deploy && sst deploy --stage=dev --verbose"
+  },
+}
+```
+
+In my `sst.aws.Nextjs` function I set the `buildCommand` to `exit 0;` (thus SST won't handle the build process).
+
+```diff
+export const web = new sst.aws.Nextjs("Web", {
+  path: "apps/web",
+-  buildCommand: "bun run build:open-next",
++  buildCommand: "exit 0;",
+```
+
+Finally In the nested `turbo.json` of each application (`@website/web`, `@website/showcase`), I created a task called _deploy_, and set it dependent on the _build:open-next_ task.
+
+```diff
+{
+  "extends": ["//"],
+  "tasks": {
+    "build": {
+      outputs": [".next/**", "public/dist/**", "public/sw.js"],
+      "inputs": ["$TURBO_DEFAULT$", "next.config.*"]
+    },
+    "build:open-next": {
+      "dependsOn": ["build"],
+      "env": ["OPEN_NEXT_VERSION", "NEXT_PUBLIC_DEPLOYED_URL"],
+      "outputs": [".open-next/**"],
+      "inputs": ["$TURBO_DEFAULT$", ".open-next.config.ts"]
+    },
++    "deploy": {
++      "dependsOn": ["build:open-next"]
++    }
+    }
+  }
+```
+
+I also altered the _Dev_ workflow to run `bun run deploy:dev` (the script in the root `package.json`) instead of `sst` directly.
+
+```diff
+      # ROTFB
+      - name: Deploy
+-        run: bun sst deploy --stage dev --verbose
++        run: bun run deploy:dev
+        timeout-minutes: 30
+```
+
+This worked perfectly.
+
+![Screenshot showing a perfect run from Dev Build Action #7. Every step has a check mark, finishing in just under three minutes.](../../../assets/images/oc/2025/03/dev-build-log-7-perfect.png)
+
+This worked _so perfectly_, I've had consistent deployments with it no problem over the last week and a half or so. There is one caveat, which leads us to our next section.
+
+#### Dude, where's my variables?
+
+Bypassing SST's `buildCommand`, like I did, _the rub_ is that you lose out on having resources passed down to the application's build environment. While the resources part can be solved with wrapping `turbo deploy` with `sst shell` i.e. `sst shell bun run turbo deploy`, that apparently does nothing for the environmental variables that you can define in a config.
+
+```ts {7,8,9,10,11,12}
+export const web = new sst.aws.Nextjs('Web', {
+  path: 'apps/web',
+  buildCommand: 'exit 0;',
+  server: {
+    runtime: 'nodejs22.x',
+  },
+  environment: {
+    NEXT_PUBLIC_DEPLOYED_URL:
+      $app.stage === 'production' ? 'https://laniakita.com' : `https://${$app.stage}.laniakita.com`,
+  },
+  domain: {
+    name: $app.stage === 'production' ? 'laniakita.com' : `${$app.stage}.laniakita.com`,
+    dns: sst.cloudflare.dns(),
+  },
+});
+```
+
+So, in the example above, a variable defined between lines 7-12 just doesn't get passed down. While I've thought about some clever workarounds importing specific `.env` files based on a task, I decided to try something.
+
+## Going Full Circle
+
+Last night, I was brought _full circle_, when I tested the waters on returning to what I was doing weeks ago, before all these _shenanigans_ took place. I used the `buildCommand`.
+
+```diff
+export const web = new sst.aws.Nextjs("Web", {
+  path: "apps/web",
+-  buildCommand: "exit 0;",
++  buildCommand: "turbo run build:open-next"
+```
+
+Likewise, I edited the scripts in the root `package.json` once more.
+
+```diff
+{
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "test:watch": "turbo run test:watch",
+    "deploy": "turbo run deploy",
+-   "deploy:dev": "turbo run deploy && sst deploy --stage=dev --verbose"
+-   "deploy:production": "turbo run deploy && sst deploy --stage=production --verbose"
++   "deploy:dev": "sst deploy --stage=dev --verbose",
++   "deploy:production": "sst deploy --stage=production --verbose"
+
+  },
+}
+```
+
+I pushed everything from my local terminal, and was surprised to see a little green check mark against my hesitant commit message.
+
+![Screenshot of my commit into main with the message: refactor: test if sst deploy command hangs in CI. A green check mark appears below it with a 1/1 informing me that it completed the workflow successfully](../../../assets/images/oc/2025/03/a-perfect-test.png)
+
+I then sent several more changes through, to test whether that was a fluke. It was not.
+
+![Screenshot showing my latest commits all deployed perfectly, no hangups.](../../../assets/images/oc/2025/03/not-a-fluke.png)
+
+Given everything _just works_, like it should. Like it did before, **for months**, leading up to this. I'll admit to feeling a _little_ vexed that evening, but more so just relieved.
+
+## Discussion
+
+> This was an adventure. This was too much adventure. I want off Mr. Bone's Wild Adventure.
+
+![Screenshot of Mr. Bone's Wild Ride, created by an anonymous Roller Coaster Tycoon 2 player. The front left side of the image features a dark gray sign with the phrase THE RIDE NEVER ENDS in red lettering, placed into a square of green grass, perpendicular to the roller coaster tracks to the left of it. On the right side of the image, a giant skeleton holding a large top hat, statically performs a tipping gesture to incoming riders.](../../../assets/images/non-oc/mr-bones-ride-never-ends.jpg)
+
+If the internet is like a series of tubes, then the _wild ride_ I just endured can be blamed on a jammed tube, a criss-crossed tube, and a return tube.
+
+In other words, this website failed to deploy to production, a _jam_ in the CI tube, which culminated in the site going offline. Making some changes to how the site is processed through _the tube_, let it go through. Yet, those same changes weren't sufficient for a _different tube_, and it _jammed_ again. A _criss-crossing_ if you will from failure-to-success-to-failure-to-success. Then, everything fell down the _return tube_ (for reasons), and we went full circle with the website being able to go through the _dev tube_ with the original build instructions.
+
+Metaphorical tubes aside, I had originally intended this article to be somewhat instructional. I had _assumed_ that this was clearly a configuration problem on my part, because a _poor craftsman blames their tools_. So, I wanted to _figure it out_, write it down, and paste my opinionated configuration guide to the internet for anyone else looking to configure Turborepo, Bun, Next.js and SST with a Github Action to handle deployments.
+
+However, given my _experiment_ last night, which demonstrated sequential, successful deployments were possible using the **original, wrapped build commands**... I've been given some pause by this whole thing, I'll admit.
+
+In the end, I'm left only more confused, than when I began.
