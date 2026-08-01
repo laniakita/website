@@ -1,5 +1,5 @@
 {
-	"name": "web",
+	"name": "laniakita-com",
 	"private": true,
 	"type": "module",
 	"imports": {
@@ -24,7 +24,9 @@
 		"@tanstack/react-router": "latest",
 		"@tanstack/react-router-devtools": "latest",
 		"@tanstack/react-start": "latest",
+		"fumadocs-core": "^16.14.0",
 		"react": "^19.2.0",
+		"react-aria-components": "^1.20.0",
 		"react-dom": "^19.2.0",
 		"tailwindcss": "^4.1.18"
 	},
@@ -45,6 +47,7 @@
 		"@types/node": "^26.1.2",
 		"@types/react": "^19.2.0",
 		"@types/react-dom": "^19.2.0",
+		"@vanilla-extract/vite-plugin": "^5.2.6",
 		"@vitejs/plugin-react": "^6.0.1",
 		"@vitest/browser-playwright": "^4.1.10",
 		"@vitest/coverage-v8": "^4.1.10",
