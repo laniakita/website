@@ -8,6 +8,7 @@ import tailwindcss from "@tailwindcss/vite";
 import { devtools } from "@tanstack/devtools-vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import viteReact from "@vitejs/plugin-react";
+import rsc from "@vitejs/plugin-rsc";
 import { playwright } from "@vitest/browser-playwright";
 import { fumadocsMdx } from "fumadocs-mdx/vite";
 import { defineConfig } from "vite";
@@ -28,11 +29,18 @@ const config = defineConfig({
 		!process.env.STORYBOOK &&
 			cloudflare({
 				viteEnvironment: {
-					name: "ssr",
+					name: "rsc",
+					childEnvironments: ["ssr"],
 				},
 			}),
 		tailwindcss(),
-		!process.env.STORYBOOK && tanstackStart(),
+		!process.env.STORYBOOK &&
+			tanstackStart({
+				rsc: {
+					enabled: true,
+				},
+			}),
+		rsc(),
 		viteReact(),
 	],
 	test: {

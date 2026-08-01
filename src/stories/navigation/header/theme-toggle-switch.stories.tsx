@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { expect, userEvent, within } from "storybook/test";
 import { ThemeToggleSwitch } from "@/components/navigation/header/theme-toggle-switch";
-import { ThemeStoreProvider } from "@/features/providers/theme-store-provider";
+import { ThemeStoreProvider } from "@/lib/providers/theme-store-provider";
 
 // A wrapper to inject state if needed, though ThemeToggleSwitch reads from ThemeStoreProvider
 const ThemeSwitchWrapper = () => (
