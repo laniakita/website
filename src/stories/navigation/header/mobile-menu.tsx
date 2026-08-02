@@ -1,4 +1,3 @@
-import * as React from "react";
 import type { NavItem, SocialItem } from "@/components/navigation/header/data";
 import { Button, LinkButton } from "@/components/ui/button";
 import { Link } from "@/components/ui/link";
