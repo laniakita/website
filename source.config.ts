@@ -6,6 +6,14 @@ import rehypeHighlight from "rehype-highlight";
 import rehypeHighlightLines from "rehype-highlight-code-lines";
 import remarkGfm from "remark-gfm";
 
+export { blog, feed } from "./schema/blog";
+export { categories } from "./schema/categories";
+export { tags } from "./schema/tags";
+export { projects } from "./schema/projects";
+export { works } from "./schema/works";
+export { authors } from "./schema/authors";
+export { pages } from "./schema/pages";
+
 export default defineConfig({
 	mdxOptions: {
 		rehypeCodeOptions: false,

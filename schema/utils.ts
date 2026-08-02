@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
-import { FeaturedImageR1 } from "../image-process";
+import { FeaturedImageR1 } from "../src/lib/image-process";
 
 export function normalizePath(pathStr: string) {
 	const filePath = pathStr.split(`${process.cwd()}/`).pop();
