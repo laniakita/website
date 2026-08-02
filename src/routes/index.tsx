@@ -5,9 +5,6 @@ import { blogSource } from "@/lib/collections/blog";
 import { categoriesSource } from "@/lib/collections/categories";
 import { tagsSource } from "@/lib/collections/tags";
 
-/*
-
-
 function PostRoller({
 	posts,
 }: {
@@ -88,32 +85,25 @@ const getPosts = createServerFn().handler(async () => {
 	);
 	return { Renderable };
 });
-*/
-
-function Greeting() {
-	return <h1>Hello from RSC</h1>;
-}
-
-const getGreeting = createServerFn().handler(async () => {
-	const Renderable = await renderServerComponent(<Greeting />);
-	return { Renderable };
-});
 
 export const Route = createFileRoute("/")({
 	loader: async () => {
-		const { Renderable } = await getGreeting();
-		return { Greeting: Renderable };
+		//const { Renderable } = await getGreeting();
+		//return { Greeting: Renderable };
+		const { Renderable } = await getPosts();
+		return { PostRoller: Renderable };
 	},
 	component: App,
 });
 
 function App() {
-	const { Greeting } = Route.useLoaderData();
+	//const { Greeting } = Route.useLoaderData();
+	const { PostRoller } = Route.useLoaderData();
 
 	return (
 		<main>
 			<div>home</div>
-			<>{Greeting}</>
+			<>{PostRoller}</>
 		</main>
 	);
 }
