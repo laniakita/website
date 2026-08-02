@@ -37,6 +37,7 @@
 		"date-fns": "^4.4.0",
 		"fumadocs-core": "^16.14.0",
 		"fumadocs-mdx": "^15.2.1",
+		"fumadocs-ui": "^16.14.0",
 		"gray-matter": "^4.0.3",
 		"react": "^19.2.8",
 		"react-aria-components": "^1.20.0",

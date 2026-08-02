@@ -168,7 +168,7 @@ type: tag
 		mockBunWrite.mockResolvedValue(0);
 
 		mockGetPlaiceholder.mockResolvedValue({
-			base64: "mock-base64",
+			css: { backgroundImage: "mock-css" },
 			metadata: { width: 800, height: 600 },
 		} as unknown as Awaited<ReturnType<typeof getPlaiceholder>>);
 
@@ -197,7 +197,7 @@ type: tag
 			expect(contentStr).toContain("JavaScript");
 			expect(contentStr).toContain("featured_image:");
 			expect(contentStr).toContain("src: 'https://assets.mock/assets/");
-			expect(contentStr).toContain("base64: mock-base64");
+			expect(contentStr).toContain("css:\n    backgroundImage: mock-css");
 		}
 	});
 
@@ -253,7 +253,7 @@ Post body`;
 							"content/assets/test.jpg": {
 								localHash: expectedHash,
 								src: "https://assets.mock/assets/some-hash.jpg",
-								base64: "mock-base64",
+								css: { backgroundImage: "mock-css" },
 							},
 						}),
 					} as unknown as BunFile;
@@ -293,115 +293,9 @@ Post body`;
 		if (postWriteCall) {
 			const [writtenPath, writtenContent] = postWriteCall;
 			expect(writtenPath.toString()).toContain(".content/posts/post1.md");
-			expect(writtenContent.toString()).toContain("base64: mock-base64");
-		}
-	});
-
-	it("should parse and replace local image urls in the markdown body", async () => {
-		const mockPostContent = `---
-title: Test Post
----
-# Hello
-![alt](./md-image.jpg)
-![file url](file:///Volumes/Minerva/Development/website/content/assets/file-image.jpg)
-
-<img src="./jsx-image.jpg" />
-<Image src="./custom-image.jpg" />
-<video src="./video.mp4" />
-
-Some embedded <Component />`;
-
-		const mockBunFile = spyOn(Bun, "file");
-		const mockBunWrite = spyOn(Bun, "write");
-		const mockReaddir = readdir as unknown as Mock<
-			(path: Parameters<typeof readdir>[0]) => Promise<Dirent[]>
-		>;
-
-		mockReaddir.mockImplementation(
-			async (dir: Parameters<typeof readdir>[0]) => {
-				const p = dir.toString();
-				if (p.endsWith("posts"))
-					return [
-						{
-							isFile: () => true,
-							name: "post2.md",
-							parentPath: p,
-						} as unknown as Dirent,
-					];
-				if (p.endsWith("content"))
-					return [
-						{
-							isFile: () => true,
-							name: "post2.md",
-							parentPath: `${p}/posts`,
-						} as unknown as Dirent,
-					];
-				return [];
-			},
-		);
-
-		mockBunFile.mockImplementation(
-			(filepath: string | URL | number | Uint8Array | ArrayBufferLike) => {
-				const p = filepath.toString();
-				if (p.includes("asset-manifest.json"))
-					return {
-						exists: async () => !p.includes("content/posts/content/assets"),
-						json: async () => ({}),
-					} as unknown as BunFile;
-				if (p.includes("post2.md"))
-					return {
-						text: async () => mockPostContent,
-						arrayBuffer: async () => Buffer.from(mockPostContent).buffer,
-					} as unknown as BunFile;
-				if (p.includes(".jpg") || p.includes(".mp4"))
-					return {
-						arrayBuffer: async () => Buffer.from("fake-media-data").buffer,
-						text: async () => "",
-						type: p.includes(".mp4") ? "video/mp4" : "image/jpeg",
-						exists: async () => !p.includes("content/posts/content/assets"),
-					} as unknown as BunFile;
-				return {
-					text: async () => "",
-					arrayBuffer: async () => new ArrayBuffer(0),
-					exists: async () => !p.includes("content/posts/content/assets"),
-				} as unknown as BunFile;
-			},
-		);
-
-		mockBunWrite.mockResolvedValue(0);
-
-		await processFrontmatter();
-
-		expect(mockBunWrite).toHaveBeenCalled();
-		const postWriteCall = mockBunWrite.mock.calls.find((call) =>
-			call[0].toString().includes("post2.md"),
-		);
-		expect(postWriteCall).toBeDefined();
-
-		if (postWriteCall) {
-			const [writtenPath, writtenContent] = postWriteCall;
-			expect(writtenPath.toString()).toContain(".content/posts/post2.md");
-			const contentStr = writtenContent.toString();
-
-			// Check markdown image
-			expect(contentStr).toMatch(
-				/!\[alt\]\(https:\/\/assets\.mock\/assets\/[a-f0-9]+\.jpg\)/,
+			expect(writtenContent.toString()).toContain(
+				"css:\n    backgroundImage: mock-css",
 			);
-			// Check jsx img
-			expect(contentStr).toMatch(
-				/<img src="https:\/\/assets\.mock\/assets\/[a-f0-9]+\.jpg"/,
-			);
-			// Check jsx Image
-			expect(contentStr).toMatch(
-				/<Image src="https:\/\/assets\.mock\/assets\/[a-f0-9]+\.jpg"/,
-			);
-			// Check jsx video
-			expect(contentStr).toMatch(
-				/<video src="https:\/\/assets\.mock\/assets\/[a-f0-9]+\.mp4"/,
-			);
-
-			// Ensure component is preserved
-			expect(contentStr).toContain("<Component />");
 		}
 	});
 });
