@@ -1,7 +1,11 @@
 import crypto from "node:crypto";
 import { readdir, rm } from "node:fs/promises";
 import path from "node:path";
-import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import {
+	DeleteObjectCommand,
+	PutObjectCommand,
+	S3Client,
+} from "@aws-sdk/client-s3";
 import matter from "gray-matter";
 import { getPlaiceholder } from "plaiceholder";
 
@@ -24,17 +28,24 @@ async function getFiles(dir: string, ext: string[]): Promise<string[]> {
 		.filter(
 			(dirent) => dirent.isFile() && ext.some((e) => dirent.name.endsWith(e)),
 		)
-		.map((dirent) => path.join(dirent.parentPath || dirent.path, dirent.name));
+		.map((dirent) => path.join(dirent.parentPath, dirent.name));
 }
 
 function calculateHash(buffer: Buffer): string {
 	return crypto.createHash("md5").update(buffer).digest("hex");
 }
 
-async function uploadToR2(fileName: string, buffer: Buffer, mimeType: string) {
+async function uploadToR2(
+	fileName: string,
+	buffer: Buffer,
+	mimeType: string,
+): Promise<boolean> {
 	if (!process.env.R2_ENDPOINT_URL) {
-		console.warn("⚠️ R2_ENDPOINT_URL not set. Skipping upload for:", fileName);
-		return;
+		console.warn(
+			"[warn] R2_ENDPOINT_URL not set. Skipping upload for:",
+			fileName,
+		);
+		return false;
 	}
 
 	const command = new PutObjectCommand({
@@ -44,13 +55,36 @@ async function uploadToR2(fileName: string, buffer: Buffer, mimeType: string) {
 		ContentType: mimeType,
 	});
 
-	await s3Client.send(command);
-	console.log(`✅ Uploaded ${fileName} to R2`);
+	try {
+		await s3Client.send(command);
+		console.log(`[success] Uploaded ${fileName} to R2`);
+		return true;
+	} catch (err) {
+		console.error(`[error] Failed to upload ${fileName} to R2:`, err);
+		return false;
+	}
+}
+
+async function deleteFromR2(fileName: string) {
+	if (!process.env.R2_ENDPOINT_URL) return;
+
+	const command = new DeleteObjectCommand({
+		Bucket: BUCKET_NAME,
+		Key: fileName,
+	});
+
+	try {
+		await s3Client.send(command);
+		console.log(`[success] Deleted old file ${fileName} from R2`);
+	} catch (err) {
+		console.warn(`[warn] Failed to delete ${fileName} from R2:`, err);
+	}
 }
 
 async function loadLookups(dir: string) {
 	const files = await getFiles(dir, [".md", ".mdx"]);
-	const lookup: Record<string, any> = {};
+	const lookup: Record<string, { title: string; url: string; type: string }> =
+		{};
 
 	for (const file of files) {
 		const content = await Bun.file(file).text();
@@ -87,7 +121,7 @@ export async function processFrontmatter() {
 	for (const dirent of allFiles) {
 		if (!dirent.isFile()) continue;
 
-		const file = path.join(dirent.parentPath || dirent.path, dirent.name);
+		const file = path.join(dirent.parentPath, dirent.name);
 		const destFile = file.replace(contentDir, dotContentDir);
 
 		// Only process .md/.mdx files in posts/
@@ -130,16 +164,25 @@ export async function processFrontmatter() {
 				}
 
 				try {
-					const imageBuffer = Buffer.from(
-						await Bun.file(imagePath).arrayBuffer(),
-					);
+					const bunFile = Bun.file(imagePath);
+					const imageBuffer = Buffer.from(await bunFile.arrayBuffer());
+					const mimeType = bunFile.type || "application/octet-stream";
 					const localHash = calculateHash(imageBuffer);
 
 					if (
 						!data.featured_image ||
 						data.featured_image.localHash !== localHash
 					) {
-						console.log(`🔄 Processing image for ${file}...`);
+						console.log(`[info] Processing image for ${file}...`);
+
+						// If there's an existing image hash, delete the old image from R2 first
+						if (data.featured_image?.localHash && data.featured_image?.src) {
+							// src is like https://domain.com/assets/hash.png
+							// we just need the 'assets/hash.png' part
+							const urlParts = data.featured_image.src.split("/");
+							const oldFileName = `${urlParts[urlParts.length - 2]}/${urlParts[urlParts.length - 1]}`;
+							await deleteFromR2(oldFileName);
+						}
 
 						const {
 							base64,
@@ -148,24 +191,28 @@ export async function processFrontmatter() {
 						const ext = path.extname(imagePath);
 						const fileName = `assets/${localHash}${ext}`;
 
-						let mimeType = "image/jpeg";
-						if (ext === ".png") mimeType = "image/png";
-						else if (ext === ".webp") mimeType = "image/webp";
+						const uploadSuccess = await uploadToR2(
+							fileName,
+							imageBuffer,
+							mimeType,
+						);
 
-						await uploadToR2(fileName, imageBuffer, mimeType);
-
-						data.featured_image = {
-							src: `${PUBLIC_URL}/${fileName}`,
-							base64,
-							width,
-							height,
-							localHash,
-							altText: data.altText || "",
-						};
+						if (uploadSuccess) {
+							data.featured_image = {
+								src: `${PUBLIC_URL}/${fileName}`,
+								base64,
+								width,
+								height,
+								localHash,
+								altText: data.altText || "",
+							};
+						} else {
+							throw new Error(`Upload to R2 failed for ${fileName}`);
+						}
 					}
 				} catch (err) {
 					console.error(
-						`❌ Failed to process image ${data.imageSrc} for ${file}:`,
+						`Failed to process image ${data.imageSrc} for ${file}:`,
 						err,
 					);
 				}
@@ -175,8 +222,8 @@ export async function processFrontmatter() {
 
 			const newFileContent = matter.stringify(content, data);
 			await Bun.write(destFile, newFileContent);
-			console.log(`📝 Processed and wrote ${destFile}`);
-		} else {
+			console.log(`[success] Processed and wrote ${destFile}`);
+		} else if (!file.includes("/assets/images/")) {
 			// Just copy the file using Bun.write
 			const fileBuffer = await Bun.file(file).arrayBuffer();
 			await Bun.write(destFile, fileBuffer);

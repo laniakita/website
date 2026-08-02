@@ -22,9 +22,7 @@ function PostRoller({
 const getPosts = createServerFn().handler(async () => {
 	const res = blogSource.getPages();
 
-	const Renderable = await renderServerComponent(
-		<PostRoller posts={res} />,
-	);
+	const Renderable = await renderServerComponent(<PostRoller posts={res} />);
 	return { Renderable };
 });
 

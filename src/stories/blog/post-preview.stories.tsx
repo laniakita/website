@@ -81,7 +81,7 @@ export const Default: Story = {
 		expect(headlineLink).toBeInTheDocument();
 
 		const subheadline = canvas.getByText(
-			/A subheadline that gives more context./i
+			/A subheadline that gives more context./i,
 		);
 		expect(subheadline).toBeInTheDocument();
 	},

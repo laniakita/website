@@ -1,5 +1,9 @@
 {
   "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": [
+    "node_modules",
+    "archive"
+  ],
   "compilerOptions": {
     "target": "ES2024",
     "jsx": "react-jsx",
@@ -12,7 +16,8 @@
     "types": [
         "./worker-configuration.d.ts",
         "node",
-        "vite/client"
+        "vite/client",
+        "bun"
     ],
 
     /* Bundler mode */

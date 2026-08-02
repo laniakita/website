@@ -1,7 +1,7 @@
 "use client";
 
 import { XIcon } from "@phosphor-icons/react";
-import * as React from "react";
+import type * as React from "react";
 import {
 	Dialog as DialogPrimitive,
 	type DialogProps as DialogPrimitiveProps,
@@ -168,14 +168,14 @@ function DialogDescription({
 }
 
 export {
-	type DialogPrimitiveProps,
-	type DialogTriggerPrimitiveProps,
 	Dialog,
 	DialogClose,
 	DialogDescription,
 	DialogFooter,
 	DialogHeader,
 	DialogOverlay,
+	type DialogPrimitiveProps,
 	DialogTitle,
 	DialogTrigger,
+	type DialogTriggerPrimitiveProps,
 };

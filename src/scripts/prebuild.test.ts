@@ -1,5 +1,15 @@
-import { afterEach, beforeEach, describe, expect, it, mock } from "bun:test";
+import {
+	afterEach,
+	beforeEach,
+	describe,
+	expect,
+	it,
+	type Mock,
+	mock,
+} from "bun:test";
+import type { Dirent } from "node:fs";
 import { readdir, rm } from "node:fs/promises";
+import type { BunFile } from "bun";
 import { getPlaiceholder } from "plaiceholder";
 
 mock.module("node:fs/promises", () => ({
@@ -21,9 +31,11 @@ describe("prebuild script", () => {
 		mock.restore();
 		spyOn(S3Client.prototype, "send").mockResolvedValue({} as never);
 
-		const mockReaddir = readdir as import("bun:test").Mock<any>;
-		const mockRm = rm as import("bun:test").Mock<any>;
-		const mockGetPlaiceholder = getPlaiceholder as import("bun:test").Mock<any>;
+		const mockReaddir = readdir as unknown as Mock<
+			(path: Parameters<typeof readdir>[0]) => Promise<Dirent[]>
+		>;
+		const mockRm = rm as Mock<typeof rm>;
+		const mockGetPlaiceholder = getPlaiceholder as Mock<typeof getPlaiceholder>;
 		mockReaddir.mockClear();
 		mockRm.mockClear();
 		mockGetPlaiceholder.mockClear();
@@ -62,91 +74,96 @@ type: tag
 
 		const mockBunFile = spyOn(Bun, "file");
 		const mockBunWrite = spyOn(Bun, "write");
-		const mockReaddir = readdir as import("bun:test").Mock<any>;
-		const mockGetPlaiceholder = getPlaiceholder as import("bun:test").Mock<any>;
+		const mockReaddir = readdir as unknown as Mock<
+			(path: Parameters<typeof readdir>[0]) => Promise<Dirent[]>
+		>;
+		const mockGetPlaiceholder = getPlaiceholder as Mock<typeof getPlaiceholder>;
 
-		mockReaddir.mockImplementation(async (dir: any) => {
-			const p = dir.toString();
-			if (p.endsWith("categories"))
-				return [
-					{
-						isFile: () => true,
-						name: "tech.md",
-						path: p,
-						parentPath: p,
-					} as any,
-				];
-			if (p.endsWith("tags"))
-				return [
-					{ isFile: () => true, name: "js.md", path: p, parentPath: p } as any,
-				];
-			if (p.endsWith("posts"))
-				return [
-					{
-						isFile: () => true,
-						name: "post1.md",
-						path: p,
-						parentPath: p,
-					} as any,
-				];
-			if (p.endsWith("content"))
-				return [
-					{
-						isFile: () => true,
-						name: "tech.md",
-						path: p + "/categories",
-						parentPath: p + "/categories",
-					} as any,
-					{
-						isFile: () => true,
-						name: "js.md",
-						path: p + "/tags",
-						parentPath: p + "/tags",
-					} as any,
-					{
-						isFile: () => true,
-						name: "post1.md",
-						path: p + "/posts",
-						parentPath: p + "/posts",
-					} as any,
-				];
-			return [];
-		});
+		mockReaddir.mockImplementation(
+			async (dir: Parameters<typeof readdir>[0]) => {
+				const p = dir.toString();
+				if (p.endsWith("categories"))
+					return [
+						{
+							isFile: () => true,
+							name: "tech.md",
+							parentPath: p,
+						} as unknown as Dirent,
+					];
+				if (p.endsWith("tags"))
+					return [
+						{
+							isFile: () => true,
+							name: "js.md",
+							parentPath: p,
+						} as unknown as Dirent,
+					];
+				if (p.endsWith("posts"))
+					return [
+						{
+							isFile: () => true,
+							name: "post1.md",
+							parentPath: p,
+						} as unknown as Dirent,
+					];
+				if (p.endsWith("content"))
+					return [
+						{
+							isFile: () => true,
+							name: "tech.md",
+							parentPath: `${p}/categories`,
+						} as unknown as Dirent,
+						{
+							isFile: () => true,
+							name: "js.md",
+							parentPath: `${p}/tags`,
+						} as unknown as Dirent,
+						{
+							isFile: () => true,
+							name: "post1.md",
+							parentPath: `${p}/posts`,
+						} as unknown as Dirent,
+					];
+				return [];
+			},
+		);
 
-		mockBunFile.mockImplementation((filepath: any) => {
-			const p = filepath.toString();
-			if (p.includes("tech.md"))
+		mockBunFile.mockImplementation(
+			(filepath: string | URL | number | Uint8Array | ArrayBufferLike) => {
+				const p = filepath.toString();
+				if (p.includes("tech.md"))
+					return {
+						text: async () => mockCategoryContent,
+						arrayBuffer: async () => Buffer.from(mockCategoryContent).buffer,
+					} as unknown as BunFile;
+				if (p.includes("js.md"))
+					return {
+						text: async () => mockTagContent,
+						arrayBuffer: async () => Buffer.from(mockTagContent).buffer,
+					} as unknown as BunFile;
+				if (p.includes("post1.md"))
+					return {
+						text: async () => mockPostContent,
+						arrayBuffer: async () => Buffer.from(mockPostContent).buffer,
+					} as unknown as BunFile;
+				if (p.includes("test.jpg"))
+					return {
+						arrayBuffer: async () => Buffer.from("fake-image-data").buffer,
+						text: async () => "",
+					} as unknown as BunFile;
 				return {
-					text: async () => mockCategoryContent,
-					arrayBuffer: async () => Buffer.from(mockCategoryContent).buffer,
-				} as any;
-			if (p.includes("js.md"))
-				return {
-					text: async () => mockTagContent,
-					arrayBuffer: async () => Buffer.from(mockTagContent).buffer,
-				} as any;
-			if (p.includes("post1.md"))
-				return {
-					text: async () => mockPostContent,
-					arrayBuffer: async () => Buffer.from(mockPostContent).buffer,
-				} as any;
-			if (p.includes("test.jpg"))
-				return {
-					arrayBuffer: async () => Buffer.from("fake-image-data").buffer,
 					text: async () => "",
-				} as any;
-			return {
-				text: async () => "",
-				arrayBuffer: async () => new ArrayBuffer(0),
-			} as any;
-		});
+					arrayBuffer: async () => new ArrayBuffer(0),
+				} as unknown as BunFile;
+			},
+		);
 
-		mockBunWrite.mockResolvedValue(0 as any);
+		mockBunWrite.mockResolvedValue(0);
 
 		mockGetPlaiceholder.mockResolvedValue({
 			base64: "mock-base64",
 			metadata: { width: 800, height: 600 },
-		} as any);
+		} as unknown as Awaited<ReturnType<typeof getPlaiceholder>>);
 
 		await processFrontmatter();
 
@@ -166,13 +183,14 @@ type: tag
 		if (postWriteCall) {
 			const [writtenPath, writtenContent] = postWriteCall;
 			expect(writtenPath.toString()).toContain(".content/posts/post1.md");
-			expect(writtenContent).toContain("categories:");
-			expect(writtenContent).toContain("Technology");
-			expect(writtenContent).toContain("tags:");
-			expect(writtenContent).toContain("JavaScript");
-			expect(writtenContent).toContain("featured_image:");
-			expect(writtenContent).toContain("src: /assets/");
-			expect(writtenContent).toContain("base64: mock-base64");
+			const contentStr = writtenContent.toString();
+			expect(contentStr).toContain("categories:");
+			expect(contentStr).toContain("Technology");
+			expect(contentStr).toContain("tags:");
+			expect(contentStr).toContain("JavaScript");
+			expect(contentStr).toContain("featured_image:");
+			expect(contentStr).toContain("src: /assets/");
+			expect(contentStr).toContain("base64: mock-base64");
 		}
 	});
 
@@ -192,51 +210,55 @@ Post body`;
 
 		const mockBunFile = spyOn(Bun, "file");
 		const mockBunWrite = spyOn(Bun, "write");
-		const mockReaddir = readdir as import("bun:test").Mock<any>;
-		const mockGetPlaiceholder = getPlaiceholder as import("bun:test").Mock<any>;
+		const mockReaddir = readdir as unknown as Mock<
+			(path: Parameters<typeof readdir>[0]) => Promise<Dirent[]>
+		>;
+		const mockGetPlaiceholder = getPlaiceholder as Mock<typeof getPlaiceholder>;
 
-		mockReaddir.mockImplementation(async (dir: any) => {
-			const p = dir.toString();
-			if (p.endsWith("posts"))
-				return [
-					{
-						isFile: () => true,
-						name: "post1.md",
-						path: p,
-						parentPath: p,
-					} as any,
-				];
-			if (p.endsWith("content"))
-				return [
-					{
-						isFile: () => true,
-						name: "post1.md",
-						path: p + "/posts",
-						parentPath: p + "/posts",
-					} as any,
-				];
-			return [];
-		});
+		mockReaddir.mockImplementation(
+			async (dir: Parameters<typeof readdir>[0]) => {
+				const p = dir.toString();
+				if (p.endsWith("posts"))
+					return [
+						{
+							isFile: () => true,
+							name: "post1.md",
+							parentPath: p,
+						} as unknown as Dirent,
+					];
+				if (p.endsWith("content"))
+					return [
+						{
+							isFile: () => true,
+							name: "post1.md",
+							parentPath: `${p}/posts`,
+						} as unknown as Dirent,
+					];
+				return [];
+			},
+		);
 
-		mockBunFile.mockImplementation((filepath: any) => {
-			const p = filepath.toString();
-			if (p.includes("post1.md"))
+		mockBunFile.mockImplementation(
+			(filepath: string | URL | number | Uint8Array | ArrayBufferLike) => {
+				const p = filepath.toString();
+				if (p.includes("post1.md"))
+					return {
+						text: async () => mockPostContent,
+						arrayBuffer: async () => Buffer.from(mockPostContent).buffer,
+					} as unknown as BunFile;
+				if (p.includes("test.jpg"))
+					return {
+						arrayBuffer: async () => Buffer.from("fake-image-data").buffer,
+						text: async () => "",
+					} as unknown as BunFile;
 				return {
-					text: async () => mockPostContent,
-					arrayBuffer: async () => Buffer.from(mockPostContent).buffer,
-				} as any;
-			if (p.includes("test.jpg"))
-				return {
-					arrayBuffer: async () => Buffer.from("fake-image-data").buffer,
 					text: async () => "",
-				} as any;
-			return {
-				text: async () => "",
-				arrayBuffer: async () => new ArrayBuffer(0),
-			} as any;
-		});
+					arrayBuffer: async () => new ArrayBuffer(0),
+				} as unknown as BunFile;
+			},
+		);
 
-		mockBunWrite.mockResolvedValue(0 as any);
+		mockBunWrite.mockResolvedValue(0);
 
 		await processFrontmatter();
 
