@@ -83,3 +83,4 @@ contentlayermini
 #version vault
 .versionvault
 .backup
+.content/

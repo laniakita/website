@@ -2,7 +2,7 @@ import { defineCollections } from "fumadocs-mdx/config";
 import * as z from "zod";
 
 export const authors = defineCollections({
-	dir: "./content/authors",
+	dir: "./.content/authors",
 	type: "doc",
 	schema: (ctx) => {
 		return z.object({
@@ -13,7 +13,7 @@ export const authors = defineCollections({
 			github: z.string().optional(),
 			url: z
 				.string()
-				.default(`${ctx.path.split("content").pop()?.split(".").shift()}`),
+				.default(`${ctx.path.split(".content").pop()?.split(".").shift()}`),
 		});
 	},
 });

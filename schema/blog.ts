@@ -6,7 +6,6 @@ import rehypeFnCitationSpacer from "rehype-fn-citation-spacer";
 import remarkGfm from "remark-gfm";
 import * as z from "zod";
 import { descriptionHelper } from "./description-helper";
-import { fetchData } from "./utils";
 
 const postSchema = (ctx: { path: string; source: string }) => {
 	return z.object({
@@ -49,42 +48,26 @@ const postSchema = (ctx: { path: string; source: string }) => {
 		}),
 		featured_image: z
 			.object({
-				hasImage: z.boolean(),
 				src: z.string(),
 				base64: z.string(),
 				height: z.number(),
 				width: z.number(),
-				resized: z.string(),
-				altText: z.string(),
-				caption: z.string(),
-				_debug: z
-					.object({
-						destination: z.string(),
-						status: z.object({
-							exists: z.boolean(),
-							existsInPublic: z.boolean(),
-						}),
-						didCopy: z.string(),
-						reason: z.string(),
-					})
-					.or(z.null()),
+				localHash: z.string(),
+				altText: z.string().optional(),
 			})
-			.default(() => {
-				const data = fetchData(ctx.path);
-				return data.data.featured_image;
-			}),
+			.optional(),
 	});
 };
 
 export const blog = defineCollections({
 	type: "doc",
-	dir: "./content/posts",
+	dir: "./.content/posts",
 	schema: postSchema,
 });
 
 export const feed = defineCollections({
 	type: "doc",
-	dir: "./content/posts",
+	dir: "./.content/posts",
 	schema: postSchema,
 	mdxOptions: applyMdxPreset({
 		rehypeCodeOptions: false,

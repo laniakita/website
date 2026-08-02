@@ -20,68 +20,10 @@ function PostRoller({
 }
 
 const getPosts = createServerFn().handler(async () => {
-	const res = blogSource.getPages().map((post) => {
-		const categoriesRes =
-			post.data.catSlugs &&
-			(post.data.catSlugs
-				.map((ref) => {
-					const found = categoriesSource.getPage([ref]);
-					if (found) {
-						return {
-							title: found.data.title,
-							slug: found.data.slug,
-							url: found.data.url,
-							type: found.data.type,
-						};
-					} else {
-						return undefined;
-					}
-				})
-				.filter((el) => el)
-				.sort((a, b) => a?.title.localeCompare(b?.title ?? "") ?? 0) as {
-				title: string;
-				url: string;
-				type: string;
-			}[]);
-
-		if (categoriesRes) {
-			post.data.categories = categoriesRes;
-			delete post.data.catSlugs;
-		}
-
-		const tagsRes =
-			post.data.tagSlugs &&
-			(post.data.tagSlugs
-				.map((ref) => {
-					const foundTags = tagsSource.getPage([ref]);
-					if (foundTags) {
-						return {
-							title: foundTags.data.title,
-							slug: foundTags.data.slug,
-							url: foundTags.data.url,
-							type: foundTags.data.type,
-						};
-					} else {
-						return undefined;
-					}
-				})
-				.filter((el) => el)
-				.sort((a, b) => a?.title.localeCompare(b?.title ?? "") ?? 0) as {
-				title: string;
-				url: string;
-				type: string;
-			}[]);
-
-		if (tagsRes) {
-			post.data.tags = tagsRes;
-			delete post.data.tagSlugs;
-		}
-
-		return post;
-	});
+	const res = blogSource.getPages();
 
 	const Renderable = await renderServerComponent(
-		<PostRoller posts={res as ReturnType<typeof blogSource.getPages>} />,
+		<PostRoller posts={res} />,
 	);
 	return { Renderable };
 });
