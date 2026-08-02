@@ -21,7 +21,7 @@ export function cloudflareLoader({
 		const qualityParam = quality ? `quality=${quality}` : "quality=75";
 
 		return `${url.origin}/cdn-cgi/image/${widthParam},${qualityParam},format=auto${url.pathname}`;
-	} catch (err) {
+	} catch (_err) {
 		// Fallback to original src if URL parsing fails
 		return src;
 	}

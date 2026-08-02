@@ -44,7 +44,7 @@ export const Default: Story = {};
 
 export const PostLayout: Story = {
 	decorators: [
-		(Story) => {
+		(_Story) => {
 			// Modify router context for post layout if needed
 			const rootRoute = createRootRoute({
 				component: () => (
@@ -69,7 +69,7 @@ export const PostLayout: Story = {
 
 export const WithDevWarning: Story = {
 	decorators: [
-		(Story) => {
+		(_Story) => {
 			const rootRoute = createRootRoute({
 				component: () => (
 					<ThemeStoreProvider>

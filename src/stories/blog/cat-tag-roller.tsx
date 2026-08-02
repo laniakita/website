@@ -1,4 +1,3 @@
-import * as React from "react";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "@/components/ui/link";
 
@@ -32,7 +31,7 @@ export function CatTagRoller({ cats = [], tags = [] }: CatTagRollerProps) {
 
 	return (
 		<div className="flex flex-wrap gap-2 font-mono text-sm">
-			{combined.map((item, idx) => (
+			{combined.map((item, _idx) => (
 				<Link
 					key={`${item.type}-${item.title}-${item.url}`}
 					to={item.url}

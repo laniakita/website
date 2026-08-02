@@ -2,8 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { renderServerComponent } from "@tanstack/react-start/rsc";
 import { blogSource } from "@/lib/collections/blog";
-import { categoriesSource } from "@/lib/collections/categories";
-import { tagsSource } from "@/lib/collections/tags";
 
 function PostRoller({
 	posts,
@@ -43,7 +41,7 @@ function App() {
 	return (
 		<main>
 			<div>home</div>
-			<>{PostRoller}</>
+			{PostRoller}
 		</main>
 	);
 }

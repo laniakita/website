@@ -1,6 +1,7 @@
 import crypto from "node:crypto";
 import { readdir, rm } from "node:fs/promises";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import {
 	DeleteObjectCommand,
 	PutObjectCommand,
@@ -8,6 +9,12 @@ import {
 } from "@aws-sdk/client-s3";
 import matter from "gray-matter";
 import { getPlaiceholder } from "plaiceholder";
+import remarkMdx from "remark-mdx";
+import remarkParse from "remark-parse";
+import remarkStringify from "remark-stringify";
+import { unified } from "unified";
+import type { Node } from "unist";
+import { visit } from "unist-util-visit";
 
 // R2 Client
 const s3Client = new S3Client({
@@ -20,7 +27,6 @@ const s3Client = new S3Client({
 });
 
 const BUCKET_NAME = process.env.R2_BUCKET_NAME || "";
-const PUBLIC_URL = process.env.R2_PUBLIC_URL || "";
 
 async function getFiles(dir: string, ext: string[]): Promise<string[]> {
 	const dirents = await readdir(dir, { withFileTypes: true, recursive: true });
@@ -100,19 +106,164 @@ async function loadLookups(dir: string) {
 	return lookup;
 }
 
+export interface ImageManifestEntry {
+	src: string;
+	base64?: string;
+	width?: number;
+	height?: number;
+	localHash: string;
+	altText?: string;
+}
+
+export async function processAsset(
+	assetPath: string,
+	assetManifest: Record<string, ImageManifestEntry>,
+	file: string,
+	options: { generatePlaiceholder?: boolean } = {},
+): Promise<ImageManifestEntry | null> {
+	if (assetPath.startsWith("http://") || assetPath.startsWith("https://")) {
+		return null;
+	}
+
+	let parsedPath = assetPath;
+	if (assetPath.startsWith("file://")) {
+		try {
+			parsedPath = fileURLToPath(assetPath);
+		} catch (_err) {
+			// Fallback if parsing fails
+		}
+	}
+
+	const imagePath = path.resolve(path.dirname(file), parsedPath);
+
+	try {
+		const bunFile = Bun.file(imagePath);
+		if (!(await bunFile.exists())) {
+			console.warn(
+				`[warn] Asset not found locally, skipping upload: ${imagePath}`,
+			);
+			return null;
+		}
+		const imageBuffer = Buffer.from(await bunFile.arrayBuffer());
+		const mimeType = bunFile.type || "application/octet-stream";
+		const localHash = calculateHash(imageBuffer);
+		const manifestKey = path.relative(process.cwd(), imagePath);
+		const cachedImage = assetManifest[manifestKey];
+
+		if (!cachedImage || cachedImage.localHash !== localHash) {
+			console.log(`[info] Processing asset ${assetPath} for ${file}...`);
+
+			if (cachedImage?.localHash && cachedImage?.src) {
+				const urlParts = cachedImage.src.split("/");
+				const oldFileName = `${urlParts[urlParts.length - 2]}/${urlParts[urlParts.length - 1]}`;
+				await deleteFromR2(oldFileName);
+			}
+
+			let base64: string | undefined;
+			let width: number | undefined;
+			let height: number | undefined;
+
+			if (
+				options.generatePlaiceholder &&
+				(mimeType.startsWith("image/") ||
+					mimeType === "application/octet-stream")
+			) {
+				const plaiceholderResult = await getPlaiceholder(imageBuffer);
+				base64 = plaiceholderResult.base64;
+				width = plaiceholderResult.metadata.width;
+				height = plaiceholderResult.metadata.height;
+			}
+
+			const ext = path.extname(imagePath);
+			const fileName = `assets/${localHash}${ext}`;
+
+			const uploadSuccess = await uploadToR2(fileName, imageBuffer, mimeType);
+
+			if (uploadSuccess) {
+				const publicUrl = process.env.R2_PUBLIC_URL || "";
+				const entry: ImageManifestEntry = {
+					src: `${publicUrl}/${fileName}`,
+					localHash,
+				};
+				if (base64) entry.base64 = base64;
+				if (width) entry.width = width;
+				if (height) entry.height = height;
+
+				assetManifest[manifestKey] = entry;
+				return entry;
+			} else {
+				throw new Error(`Upload to R2 failed for ${fileName}`);
+			}
+		} else {
+			return cachedImage;
+		}
+	} catch (err) {
+		console.error(`Failed to process asset ${assetPath} for ${file}:`, err);
+		return null;
+	}
+}
+
+export function remarkAssetUploader(
+	assetManifest: Record<string, ImageManifestEntry>,
+	file: string,
+) {
+	return async (tree: Node) => {
+		const promises: Promise<void>[] = [];
+
+		visit(
+			tree,
+			(
+				node: Node & {
+					url?: string;
+					name?: string;
+					attributes?: { name: string; value: unknown }[];
+				},
+			) => {
+				if (node.type === "image" && typeof node.url === "string") {
+					if (!node.url.startsWith("http")) {
+						promises.push(
+							processAsset(node.url, assetManifest, file).then((entry) => {
+								if (entry) {
+									node.url = entry.src;
+								}
+							}),
+						);
+					}
+				} else if (
+					node.type === "mdxJsxFlowElement" ||
+					node.type === "mdxJsxTextElement"
+				) {
+					if (
+						node.name === "img" ||
+						node.name === "Image" ||
+						node.name === "video"
+					) {
+						const srcAttr = node.attributes?.find((a) => a.name === "src");
+						if (srcAttr && typeof srcAttr.value === "string") {
+							const url = srcAttr.value;
+							if (!url.startsWith("http")) {
+								promises.push(
+									processAsset(url, assetManifest, file).then((entry) => {
+										if (entry) {
+											srcAttr.value = entry.src;
+										}
+									}),
+								);
+							}
+						}
+					}
+				}
+			},
+		);
+
+		await Promise.all(promises);
+	};
+}
+
 export async function processFrontmatter() {
 	const contentDir = path.join(process.cwd(), "content");
 	const dotContentDir = path.join(process.cwd(), ".content");
 	const manifestPath = path.join(process.cwd(), "asset-manifest.json");
-
-	interface ImageManifestEntry {
-		src: string;
-		base64: string;
-		width: number;
-		height: number;
-		localHash: string;
-		altText: string;
-	}
 
 	let assetManifest: Record<string, ImageManifestEntry> = {};
 	try {
@@ -173,77 +324,29 @@ export async function processFrontmatter() {
 
 			// Process image
 			if (data.imageSrc) {
-				let imagePath = data.imageSrc;
-				// Handle legacy paths like `content/assets/...` or relative paths
-				if (imagePath.startsWith("content/")) {
-					imagePath = path.join(process.cwd(), imagePath);
-				} else if (imagePath.startsWith(".")) {
-					imagePath = path.resolve(path.dirname(file), imagePath);
-				} else {
-					imagePath = path.join(contentDir, "assets", path.basename(imagePath));
+				const entry = await processAsset(data.imageSrc, assetManifest, file, {
+					generatePlaiceholder: true,
+				});
+				if (entry) {
+					data.featured_image = {
+						...entry,
+						altText: data.altText || "",
+					};
 				}
-
-				try {
-					const bunFile = Bun.file(imagePath);
-					const imageBuffer = Buffer.from(await bunFile.arrayBuffer());
-					const mimeType = bunFile.type || "application/octet-stream";
-					const localHash = calculateHash(imageBuffer);
-					const manifestKey = path.relative(process.cwd(), imagePath);
-					const cachedImage = assetManifest[manifestKey];
-
-					if (!cachedImage || cachedImage.localHash !== localHash) {
-						console.log(`[info] Processing image for ${file}...`);
-
-						// If there's an existing image hash in cache, delete the old image from R2 first
-						if (cachedImage?.localHash && cachedImage?.src) {
-							// src is like https://domain.com/assets/hash.png
-							// we just need the 'assets/hash.png' part
-							const urlParts = cachedImage.src.split("/");
-							const oldFileName = `${urlParts[urlParts.length - 2]}/${urlParts[urlParts.length - 1]}`;
-							await deleteFromR2(oldFileName);
-						}
-
-						const {
-							base64,
-							metadata: { width, height },
-						} = await getPlaiceholder(imageBuffer);
-						const ext = path.extname(imagePath);
-						const fileName = `assets/${localHash}${ext}`;
-
-						const uploadSuccess = await uploadToR2(
-							fileName,
-							imageBuffer,
-							mimeType,
-						);
-
-						if (uploadSuccess) {
-							data.featured_image = {
-								src: `${PUBLIC_URL}/${fileName}`,
-								base64,
-								width,
-								height,
-								localHash,
-								altText: data.altText || "",
-							};
-							assetManifest[manifestKey] = data.featured_image;
-						} else {
-							throw new Error(`Upload to R2 failed for ${fileName}`);
-						}
-					} else {
-						// Cache hit!
-						data.featured_image = cachedImage;
-					}
-				} catch (err) {
-					console.error(
-						`Failed to process image ${data.imageSrc} for ${file}:`,
-						err,
-					);
-				}
-
 				delete data.imageSrc;
 			}
 
-			const newFileContent = matter.stringify(content, data);
+			// Process AST (Markdown body) to replace image src
+			const processor = unified()
+				.use(remarkParse)
+				.use(remarkMdx)
+				.use(() => remarkAssetUploader(assetManifest, file))
+				.use(remarkStringify);
+
+			const vfile = await processor.process(content);
+			const updatedContent = String(vfile);
+
+			const newFileContent = matter.stringify(updatedContent, data);
 			await Bun.write(destFile, newFileContent);
 			console.log(`[success] Processed and wrote ${destFile}`);
 		} else if (!file.includes("/assets/images/")) {
