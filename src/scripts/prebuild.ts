@@ -103,6 +103,26 @@ async function loadLookups(dir: string) {
 export async function processFrontmatter() {
 	const contentDir = path.join(process.cwd(), "content");
 	const dotContentDir = path.join(process.cwd(), ".content");
+	const manifestPath = path.join(process.cwd(), "asset-manifest.json");
+
+	interface ImageManifestEntry {
+		src: string;
+		base64: string;
+		width: number;
+		height: number;
+		localHash: string;
+		altText: string;
+	}
+
+	let assetManifest: Record<string, ImageManifestEntry> = {};
+	try {
+		const manifestFile = Bun.file(manifestPath);
+		if (await manifestFile.exists()) {
+			assetManifest = await manifestFile.json();
+		}
+	} catch (err) {
+		console.warn(`[warn] Failed to read asset-manifest.json: ${err}`);
+	}
 
 	// Clear .content/ if it exists
 	await rm(dotContentDir, { recursive: true, force: true });
@@ -168,18 +188,17 @@ export async function processFrontmatter() {
 					const imageBuffer = Buffer.from(await bunFile.arrayBuffer());
 					const mimeType = bunFile.type || "application/octet-stream";
 					const localHash = calculateHash(imageBuffer);
+					const manifestKey = path.relative(process.cwd(), imagePath);
+					const cachedImage = assetManifest[manifestKey];
 
-					if (
-						!data.featured_image ||
-						data.featured_image.localHash !== localHash
-					) {
+					if (!cachedImage || cachedImage.localHash !== localHash) {
 						console.log(`[info] Processing image for ${file}...`);
 
-						// If there's an existing image hash, delete the old image from R2 first
-						if (data.featured_image?.localHash && data.featured_image?.src) {
+						// If there's an existing image hash in cache, delete the old image from R2 first
+						if (cachedImage?.localHash && cachedImage?.src) {
 							// src is like https://domain.com/assets/hash.png
 							// we just need the 'assets/hash.png' part
-							const urlParts = data.featured_image.src.split("/");
+							const urlParts = cachedImage.src.split("/");
 							const oldFileName = `${urlParts[urlParts.length - 2]}/${urlParts[urlParts.length - 1]}`;
 							await deleteFromR2(oldFileName);
 						}
@@ -206,9 +225,13 @@ export async function processFrontmatter() {
 								localHash,
 								altText: data.altText || "",
 							};
+							assetManifest[manifestKey] = data.featured_image;
 						} else {
 							throw new Error(`Upload to R2 failed for ${fileName}`);
 						}
+					} else {
+						// Cache hit!
+						data.featured_image = cachedImage;
 					}
 				} catch (err) {
 					console.error(
@@ -229,6 +252,9 @@ export async function processFrontmatter() {
 			await Bun.write(destFile, fileBuffer);
 		}
 	}
+
+	await Bun.write(manifestPath, JSON.stringify(assetManifest, null, 2));
+	console.log(`[success] Wrote asset-manifest.json`);
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {
