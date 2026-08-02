@@ -1,1 +1,13 @@
-{}
+{
+  "content/assets/test.jpg": {
+    "localHash": "ba3bdea20bb237b110c09fc1aa780719",
+    "src": "https://assets.mock/assets/ba3bdea20bb237b110c09fc1aa780719.jpg",
+    "css": {
+      "backgroundImage": "mock-css",
+      "filter": "blur(20px)",
+      "transform": "scale(1.1)"
+    },
+    "width": 800,
+    "height": 600
+  }
+}

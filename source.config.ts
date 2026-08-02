@@ -5,6 +5,7 @@ import rehypeFnCitationSpacer from "rehype-fn-citation-spacer";
 import rehypeHighlight from "rehype-highlight";
 import rehypeHighlightLines from "rehype-highlight-code-lines";
 import remarkGfm from "remark-gfm";
+import { remarkImgProcessor } from "./src/scripts/remark-img-processor";
 
 export { blog, feed } from "./schema/blog";
 export { categories } from "./schema/categories";
@@ -17,7 +18,7 @@ export { pages } from "./schema/pages";
 export default defineConfig({
 	mdxOptions: {
 		rehypeCodeOptions: false,
-		remarkPlugins: (v) => [remarkGfm, ...v],
+		remarkPlugins: (v) => [remarkGfm, remarkImgProcessor, ...v],
 		rehypePlugins: (v) => [
 			rehypeFnCitationSpacer,
 			[rehypeHighlight, { languages: { ...common, nix } }],
