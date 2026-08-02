@@ -14,9 +14,7 @@ import { fumadocsMdx } from "fumadocs-mdx/vite";
 import { defineConfig } from "vite";
 
 const dirname =
-	typeof __dirname !== "undefined"
-		? __dirname
-		: path.dirname(fileURLToPath(import.meta.url));
+	import.meta.dirname || path.dirname(fileURLToPath(import.meta.url));
 
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 const config = defineConfig({
@@ -29,8 +27,8 @@ const config = defineConfig({
 		!process.env.STORYBOOK &&
 			cloudflare({
 				viteEnvironment: {
-					name: "rsc",
-					childEnvironments: ["ssr"],
+					name: "ssr",
+					childEnvironments: ["rsc"],
 				},
 			}),
 		tailwindcss(),
@@ -43,6 +41,27 @@ const config = defineConfig({
 		rsc(),
 		viteReact(),
 	],
+	environments: {
+		rsc: {
+			optimizeDeps: {
+				// Exclude TanStack Start packages from Vite's dependency optimization
+				// to prevent issues with virtual imports (#tanstack-router-entry, etc.)
+				// source: https://github.com/TanStack/router/issues/5795#issuecomment-3761285233
+				exclude: [
+					"@tanstack/start-server-core",
+					"@tanstack/start-client-core",
+					"@tanstack/start-storage-context",
+					"@tanstack/react-start",
+					"@tanstack/react-start/client",
+					"@tanstack/react-start/server",
+					"@tanstack/router-core",
+					"@tanstack/history",
+					"seroval",
+					"seroval-plugins",
+				],
+			},
+		},
+	},
 	test: {
 		projects: [
 			{

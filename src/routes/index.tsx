@@ -1,9 +1,26 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { renderServerComponent } from "@tanstack/react-start/rsc";
-import { blogSource } from "../lib/collections/blog";
-import { categoriesSource } from "../lib/collections/categories";
-import { tagsSource } from "../lib/collections/tags";
+import { blogSource } from "@/lib/collections/blog";
+import { categoriesSource } from "@/lib/collections/categories";
+import { tagsSource } from "@/lib/collections/tags";
+
+/*
+
+
+function PostRoller({
+	posts,
+}: {
+	posts: ReturnType<typeof blogSource.getPages>;
+}) {
+	return (
+		<div>
+			{posts.map((post) => (
+				<div key={post.data.url}>{post.data.headline}</div>
+			))}
+		</div>
+	);
+}
 
 const getPosts = createServerFn().handler(async () => {
 	const res = blogSource.getPages().map((post) => {
@@ -66,31 +83,37 @@ const getPosts = createServerFn().handler(async () => {
 		return post;
 	});
 
-	const PostRoller = await renderServerComponent(
-		<div>
-			{res.map((post) => (
-				<div key={post.data.url}>{post.data.headline}</div>
-			))}
-		</div>,
+	const Renderable = await renderServerComponent(
+		<PostRoller posts={res as ReturnType<typeof blogSource.getPages>} />,
 	);
-	return { PostRoller };
+	return { Renderable };
+});
+*/
+
+function Greeting() {
+	return <h1>Hello from RSC</h1>;
+}
+
+const getGreeting = createServerFn().handler(async () => {
+	const Renderable = await renderServerComponent(<Greeting />);
+	return { Renderable };
 });
 
 export const Route = createFileRoute("/")({
 	loader: async () => {
-		const { PostRoller } = await getPosts();
-		return { PostRoller };
+		const { Renderable } = await getGreeting();
+		return { Greeting: Renderable };
 	},
 	component: App,
 });
 
 function App() {
-	const { PostRoller } = Route.useLoaderData();
+	const { Greeting } = Route.useLoaderData();
 
 	return (
 		<main>
 			<div>home</div>
-			<>{PostRoller}</>
+			<>{Greeting}</>
 		</main>
 	);
 }
