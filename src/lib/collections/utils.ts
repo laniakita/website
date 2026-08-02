@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
-import type { FeaturedImageR1 } from "../image-process";
+import { FeaturedImageR1 } from "../image-process";
 
 export function normalizePath(pathStr: string) {
 	const filePath = pathStr.split(`${process.cwd()}/`).pop();
@@ -23,6 +23,22 @@ export function normalizePath(pathStr: string) {
 }
 
 export function fetchData(pathStr: string) {
+	return {
+		data: {
+			featured_image: {
+				hasImage: false,
+				src: "",
+				base64: "",
+				height: 0,
+				width: 0,
+				resized: "",
+				altText: "",
+				caption: "",
+				_debug: null,
+			},
+		},
+	};
+	/*
 	const file = normalizePath(pathStr);
 	const { dir, slug } = file._file;
 	const dataPath = path.join(
@@ -33,5 +49,5 @@ export function fetchData(pathStr: string) {
 
 	return JSON.parse(readFileSync(dataPath, { encoding: "utf-8" })) as {
 		data: { featured_image: FeaturedImageR1 };
-	};
+	};*/
 }
