@@ -16,15 +16,17 @@ import { defineConfig } from "vite";
 const dirname =
 	import.meta.dirname || path.dirname(fileURLToPath(import.meta.url));
 
+const isTestOrStorybook = process.env.STORYBOOK || process.env.VITEST;
+
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 const config = defineConfig({
 	resolve: {
 		tsconfigPaths: true,
 	},
 	plugins: [
-		!process.env.STORYBOOK && fumadocsMdx(),
-		devtools(),
-		!process.env.STORYBOOK &&
+		!isTestOrStorybook && fumadocsMdx(),
+		!isTestOrStorybook && devtools(),
+		!isTestOrStorybook &&
 			cloudflare({
 				viteEnvironment: {
 					name: "ssr",
@@ -32,13 +34,13 @@ const config = defineConfig({
 				},
 			}),
 		tailwindcss(),
-		!process.env.STORYBOOK &&
+		!isTestOrStorybook &&
 			tanstackStart({
 				rsc: {
 					enabled: true,
 				},
 			}),
-		rsc(),
+		!isTestOrStorybook && rsc(),
 		viteReact(),
 	],
 	environments: {

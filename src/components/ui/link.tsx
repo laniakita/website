@@ -3,7 +3,12 @@ import * as React from "react";
 import { type LinkProps, Link as RACLink } from "react-aria-components";
 import { cn } from "@/lib/utils";
 
-const BaseLink = React.forwardRef<HTMLAnchorElement, LinkProps>(
+interface BaseLinkProps extends LinkProps {
+	/** The MIME media type of the linked resource */
+	type?: string;
+}
+
+const BaseLink = React.forwardRef<HTMLAnchorElement, BaseLinkProps>(
 	({ className, ...props }, ref) => {
 		return (
 			<RACLink
