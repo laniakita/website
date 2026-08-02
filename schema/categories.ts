@@ -4,7 +4,7 @@ import * as z from "zod";
 import { descriptionHelper } from "./description-helper";
 
 export const categories = defineCollections({
-	dir: "./content/categories",
+	dir: "./.content/categories",
 	type: "doc",
 	schema: (ctx) => {
 		return z.object({
@@ -20,11 +20,11 @@ export const categories = defineCollections({
 			url: z
 				.string()
 				.default(
-					`${ctx.path.split("content").pop()?.split(".").shift()?.toLowerCase()}`,
+					`${ctx.path.split(".content").pop()?.split(".").shift()?.toLowerCase()}`,
 				),
 			description: z.string().default(() => {
 				const content = matter(ctx.source);
-				const url = `${ctx.path.split("content").pop()?.split(".").shift()?.toLowerCase()}`;
+				const url = `${ctx.path.split(".content").pop()?.split(".").shift()?.toLowerCase()}`;
 				return (
 					descriptionHelper(content.content, url, true) ??
 					"Category description"

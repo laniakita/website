@@ -4,7 +4,7 @@ import { fetchData } from "./utils";
 
 export const works = defineCollections({
 	type: "doc",
-	dir: "./content/works",
+	dir: "./.content/works",
 	schema: (ctx) => {
 		return z.object({
 			id: z.string(),
@@ -18,7 +18,7 @@ export const works = defineCollections({
 			altText: z.string().optional(),
 			url: z
 				.string()
-				.default(`${ctx.path.split("content").pop()?.split(".").shift()}`),
+				.default(`${ctx.path.split(".content").pop()?.split(".").shift()}`),
 			featured_image: z
 				.object({
 					hasImage: z.boolean(),
