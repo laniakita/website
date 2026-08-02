@@ -131,6 +131,11 @@ type: tag
 		mockBunFile.mockImplementation(
 			(filepath: string | URL | number | Uint8Array | ArrayBufferLike) => {
 				const p = filepath.toString();
+				if (p.includes("asset-manifest.json"))
+					return {
+						exists: async () => true,
+						json: async () => ({}),
+					} as unknown as BunFile;
 				if (p.includes("tech.md"))
 					return {
 						text: async () => mockCategoryContent,
@@ -203,8 +208,6 @@ type: tag
 		const mockPostContent = `---
 title: Test Post
 imageSrc: "content/assets/test.jpg"
-featured_image:
-  localHash: "${expectedHash}"
 ---
 Post body`;
 
@@ -241,6 +244,17 @@ Post body`;
 		mockBunFile.mockImplementation(
 			(filepath: string | URL | number | Uint8Array | ArrayBufferLike) => {
 				const p = filepath.toString();
+				if (p.includes("asset-manifest.json"))
+					return {
+						exists: async () => true,
+						json: async () => ({
+							"content/assets/test.jpg": {
+								localHash: expectedHash,
+								src: "https://assets.mock/assets/some-hash.jpg",
+								base64: "mock-base64",
+							}
+						}),
+					} as unknown as BunFile;
 				if (p.includes("post1.md"))
 					return {
 						text: async () => mockPostContent,
@@ -275,8 +289,7 @@ Post body`;
 		if (postWriteCall) {
 			const [writtenPath, writtenContent] = postWriteCall;
 			expect(writtenPath.toString()).toContain(".content/posts/post1.md");
-			// Content shouldn't have new categories/tags/featured_image if it matched
-			expect(writtenContent.toString()).not.toContain("base64: mock-base64");
+			expect(writtenContent.toString()).toContain("base64: mock-base64");
 		}
 	});
 });

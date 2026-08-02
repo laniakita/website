@@ -54,7 +54,7 @@ public/dist
 **/public/sw*
 **/public/swe-worker*
 certificates/
-
+.content_test/
 **/content/assets/data/
 
 # wrangler / @cloudflare/next-on-pages
