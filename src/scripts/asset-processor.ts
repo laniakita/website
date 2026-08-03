@@ -10,8 +10,6 @@ import {
 import mime from "mime-types";
 import { getPlaiceholder } from "plaiceholder";
 
-
-
 function calculateHash(buffer: Buffer): string {
 	return crypto.createHash("md5").update(buffer).digest("hex");
 }
@@ -40,10 +38,7 @@ async function uploadToR2(
 	options: ProcessAssetOptions,
 ): Promise<boolean> {
 	if (!options.r2Endpoint) {
-		console.warn(
-			"[warn] r2Endpoint not set. Skipping upload for:",
-			fileName,
-		);
+		console.warn("[warn] r2Endpoint not set. Skipping upload for:", fileName);
 		return false;
 	}
 
@@ -204,16 +199,18 @@ export async function processAsset(
 				fileName = `assets/${localHash}${ext}`;
 			}
 
-			const success = await uploadToR2(fileName, imageBuffer, mimeType, options);
+			const success = await uploadToR2(
+				fileName,
+				imageBuffer,
+				mimeType,
+				options,
+			);
 
 			if (success) {
 				const publicUrl = options.r2PublicUrl;
-				const bucketName = options.r2Bucket;
 				const entry: ImageManifestEntry = {
 					localHash,
-					src: publicUrl
-						? `${publicUrl}/${bucketName}/${fileName}`
-						: `https://${bucketName}.r2.cloudflarestorage.com/${fileName}`,
+					src: `${publicUrl}/${fileName}`,
 				};
 				if (css) entry.css = css;
 				if (width) entry.width = width;
