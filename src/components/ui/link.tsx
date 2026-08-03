@@ -1,3 +1,5 @@
+"use client";
+
 import { createLink } from "@tanstack/react-router";
 import * as React from "react";
 import { type LinkProps, Link as RACLink } from "react-aria-components";
