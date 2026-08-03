@@ -65,11 +65,11 @@ export const BlueskyEmbedCore = ({ postUrl }: { postUrl: string }) => {
 								rel="noreferrer noopener nofollow"
 							>
 								<img
-									src={avatar!}
+									src={avatar}
 									alt={`${displayName}'s avatar`}
 									width={50}
 									height={50}
-									className="-my-0 rounded-full border border-ctp-surface0 object-contain"
+									className="my-0 rounded-full border border-ctp-surface0 object-contain"
 								/>
 							</a>
 							<p className="flex flex-col -space-y-1">
@@ -93,7 +93,7 @@ export const BlueskyEmbedCore = ({ postUrl }: { postUrl: string }) => {
 								alt={img.alt}
 								height={img.aspectRatio.height}
 								width={img.aspectRatio.width}
-								className="-my-0 rounded-2xl border border-ctp-surface0 object-contain shadow-xl"
+								className="my-0 rounded-2xl border border-ctp-surface0 object-contain shadow-xl"
 							/>
 						</a>
 						<div className="flex flex-col gap-2">
@@ -156,7 +156,7 @@ export const BlueskyEmbedCore = ({ postUrl }: { postUrl: string }) => {
 			<div className="flex w-full flex-col gap-4">
 				<div className="flex flex-row items-center gap-2">
 					<a href={postUrl} target="_blank" rel="noreferrer noopener nofollow">
-						<div className="-my-0 h-[50px] w-[50px] rounded-full border border-ctp-surface0 bg-ctp-pink object-contain" />
+						<div className="my-0 h-12.5 w-12.5 rounded-full border border-ctp-surface0 bg-ctp-pink object-contain" />
 					</a>
 					<p className="flex flex-col -space-y-1">
 						<span className="text-xl font-bold">User</span>

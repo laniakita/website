@@ -89,13 +89,16 @@ type: tag
 			return !p.includes("content/posts/content/assets");
 		});
 
-		mockReadFileSync.mockImplementation((filepath) => {
+		mockReadFileSync.mockImplementation(((
+			filepath: fs.PathOrFileDescriptor,
+		) => {
 			const p = filepath.toString();
 			if (p.includes("test.jpg")) {
 				return Buffer.from("fake-image-data");
 			}
 			return Buffer.from("");
-		});
+			// biome-ignore lint/suspicious/noExplicitAny: its a test
+		}) as any);
 
 		mockWriteFileSync.mockImplementation(() => {});
 
@@ -252,13 +255,16 @@ Post body`;
 			return !p.includes("content/posts/content/assets");
 		});
 
-		mockReadFileSync.mockImplementation((filepath) => {
+		mockReadFileSync.mockImplementation(((
+			filepath: fs.PathOrFileDescriptor,
+		) => {
 			const p = filepath.toString();
 			if (p.includes("test.jpg")) {
 				return Buffer.from("fake-image-data");
 			}
 			return Buffer.from("");
-		});
+			// biome-ignore lint/suspicious/noExplicitAny: its a test
+		}) as any);
 
 		mockReaddir.mockImplementation(
 			async (dir: Parameters<typeof readdir>[0]) => {

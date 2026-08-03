@@ -46,16 +46,16 @@ export const Route = createRootRoute({
 
 function RootDocument({ children }: { children: React.ReactNode }) {
 	return (
-		<TanstackProvider>
-			<html lang="en" suppressHydrationWarning>
-				<head>
-					<script
-						// biome-ignore lint/security/noDangerouslySetInnerHtml: This is ok.
-						dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }}
-					/>
-					<HeadContent />
-				</head>
-				<body>
+		<html lang="en" suppressHydrationWarning>
+			<head>
+				<script
+					// biome-ignore lint/security/noDangerouslySetInnerHtml: This is ok.
+					dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }}
+				/>
+				<HeadContent />
+			</head>
+			<body>
+				<TanstackProvider>
 					<ThemeStoreProvider>
 						<NavScrollViewStoreProvider>
 							<ToCViewStoreProvider>
@@ -67,20 +67,20 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 							</ToCViewStoreProvider>
 						</NavScrollViewStoreProvider>
 					</ThemeStoreProvider>
-					<TanStackDevtools
-						config={{
-							position: "bottom-right",
-						}}
-						plugins={[
-							{
-								name: "Tanstack Router",
-								render: <TanStackRouterDevtoolsPanel />,
-							},
-						]}
-					/>
-					<Scripts />
-				</body>
-			</html>
-		</TanstackProvider>
+				</TanstackProvider>
+				<TanStackDevtools
+					config={{
+						position: "bottom-right",
+					}}
+					plugins={[
+						{
+							name: "Tanstack Router",
+							render: <TanStackRouterDevtoolsPanel />,
+						},
+					]}
+				/>
+				<Scripts />
+			</body>
+		</html>
 	);
 }
