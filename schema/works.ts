@@ -1,6 +1,5 @@
 import { defineCollections } from "fumadocs-mdx/config";
 import * as z from "zod";
-import { fetchData } from "./utils";
 
 export const works = defineCollections({
 	type: "doc",
@@ -21,30 +20,14 @@ export const works = defineCollections({
 				.default(`${ctx.path.split(".content").pop()?.split(".").shift()}`),
 			featured_image: z
 				.object({
-					hasImage: z.boolean(),
 					src: z.string(),
-					base64: z.string(),
+					css: z.string(),
 					height: z.number(),
 					width: z.number(),
-					resized: z.string(),
-					altText: z.string(),
-					caption: z.string(),
-					_debug: z
-						.object({
-							destination: z.string(),
-							status: z.object({
-								exists: z.boolean(),
-								existsInPublic: z.boolean(),
-							}),
-							didCopy: z.string(),
-							reason: z.string(),
-						})
-						.or(z.null()),
+					localHash: z.string(),
+					altText: z.string().optional(),
 				})
-				.default(() => {
-					const data = fetchData(ctx.path);
-					return data.data.featured_image;
-				}),
+				.optional(),
 		});
 	},
 });

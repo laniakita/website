@@ -9,7 +9,7 @@ const mockProcessAsset = mock(
 		_options: { generatePlaiceholder?: boolean } = {},
 	) => ({
 		src: "https://mock.cdn/img.jpg",
-		css: { backgroundImage: "linear-gradient(to right, red, blue)" },
+		css: '{"backgroundImage":"linear-gradient(to right, red, blue)"}',
 		localHash: "mock-hash",
 		width: 800,
 		height: 600,
@@ -35,6 +35,14 @@ describe("remarkImgProcessor", () => {
 		mockProcessAsset.mockClear();
 	});
 
+	const mockOptions = {
+		r2Endpoint: "https://mock.endpoint",
+		r2Bucket: "mock-bucket",
+		r2AccessKey: "mock-key",
+		r2SecretKey: "mock-secret",
+		r2PublicUrl: "https://mock.public",
+	};
+
 	it("should replace markdown image urls and inject data-lqip", async () => {
 		const tree = {
 			type: "root",
@@ -52,7 +60,7 @@ describe("remarkImgProcessor", () => {
 			],
 		} as unknown as Parent;
 
-		const plugin = remarkImgProcessor();
+		const plugin = remarkImgProcessor(mockOptions);
 		await plugin(tree, { path: "/fake/path/post.md" });
 
 		expect(mockProcessAsset).toHaveBeenCalledTimes(2);
@@ -97,12 +105,12 @@ describe("remarkImgProcessor", () => {
 			],
 		} as unknown as Parent;
 
-		const plugin = remarkImgProcessor({ generateLqip: false });
+		const plugin = remarkImgProcessor({ ...mockOptions, generatePlaiceholder: false });
 		await plugin(tree, { path: "/fake/path/post.md" });
 
 		// It should call processAsset but pass generatePlaiceholder: false
 		expect(mockProcessAsset).toHaveBeenCalledTimes(2);
-		expect(mockProcessAsset.mock.calls[0][3]).toEqual({
+		expect(mockProcessAsset.mock.calls[0][3]).toMatchObject({
 			generatePlaiceholder: false,
 		});
 
@@ -132,7 +140,7 @@ describe("remarkImgProcessor", () => {
 			],
 		} as unknown as Parent;
 
-		const plugin = remarkImgProcessor();
+		const plugin = remarkImgProcessor(mockOptions);
 		await plugin(tree, { path: "/fake/path/post.md" });
 
 		expect(mockProcessAsset).not.toHaveBeenCalled();

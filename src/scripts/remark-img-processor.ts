@@ -2,7 +2,11 @@ import fs from "node:fs";
 import path from "node:path";
 import type { Node } from "unist";
 import { visit } from "unist-util-visit";
-import { type ImageManifestEntry, processAsset } from "./asset-processor";
+import {
+	type ImageManifestEntry,
+	type ProcessAssetOptions,
+	processAsset,
+} from "./asset-processor";
 
 let assetManifestCache: Record<string, ImageManifestEntry> | null = null;
 
@@ -19,12 +23,10 @@ function getManifest(): Record<string, ImageManifestEntry> {
 	return assetManifestCache!;
 }
 
-export interface RemarkImgProcessorOptions {
-	generateLqip?: boolean;
-}
+export type RemarkImgProcessorOptions = ProcessAssetOptions;
 
-export function remarkImgProcessor(options: RemarkImgProcessorOptions = {}) {
-	const generateLqip = options.generateLqip ?? true;
+export function remarkImgProcessor(options: RemarkImgProcessorOptions) {
+	const generateLqip = options.generatePlaiceholder ?? true;
 
 	// The second argument to a unified plugin transformer is a VFile.
 	return async (tree: Node, file: { path: string }) => {
@@ -41,6 +43,7 @@ export function remarkImgProcessor(options: RemarkImgProcessorOptions = {}) {
 						promises.push(
 							processAsset(node.url, manifest, filePath, {
 								generatePlaiceholder: generateLqip,
+								...options,
 							}).then((entry) => {
 								if (entry) {
 									node.url = entry.src;
@@ -48,9 +51,7 @@ export function remarkImgProcessor(options: RemarkImgProcessorOptions = {}) {
 										node.data = node.data || {};
 										node.data.hProperties = node.data.hProperties || {};
 										// We keep it as a string for standard markdown images which don't support objects well
-										node.data.hProperties["data-lqip"] = JSON.stringify(
-											entry.css,
-										);
+										node.data.hProperties["data-lqip"] = entry.css;
 									}
 								}
 							}),
@@ -73,6 +74,7 @@ export function remarkImgProcessor(options: RemarkImgProcessorOptions = {}) {
 								promises.push(
 									processAsset(url, manifest, filePath, {
 										generatePlaiceholder: generateLqip,
+										...options,
 									}).then((entry) => {
 										if (entry) {
 											srcAttr.value = entry.src;
@@ -83,7 +85,7 @@ export function remarkImgProcessor(options: RemarkImgProcessorOptions = {}) {
 													// Pass as a JS expression so it's a real object in props
 													value: {
 														type: "mdxJsxAttributeValueExpression",
-														value: JSON.stringify(entry.css),
+														value: entry.css,
 													},
 												});
 											}
