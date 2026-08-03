@@ -68,7 +68,9 @@ export async function processFrontmatter() {
 
 		// Only process .md/.mdx files in posts/
 		if (
-			file.includes("/posts/") &&
+			(file.includes("/posts/") ||
+				file.includes("/projects/") ||
+				file.includes("/works/")) &&
 			(file.endsWith(".md") || file.endsWith(".mdx"))
 		) {
 			const rawContent = await Bun.file(file).text();
@@ -97,6 +99,11 @@ export async function processFrontmatter() {
 			if (data.imageSrc) {
 				const entry = await processAsset(data.imageSrc, assetManifest, file, {
 					generatePlaiceholder: true,
+					r2Endpoint: process.env.R2_ENDPOINT_URL || "",
+					r2Bucket: process.env.R2_BUCKET_NAME || "",
+					r2AccessKey: process.env.R2_ACCESS_KEY_ID || "",
+					r2SecretKey: process.env.R2_SECRET_ACCESS_KEY || "",
+					r2PublicUrl: process.env.R2_PUBLIC_URL || "",
 				});
 				if (entry) {
 					data.featured_image = {
@@ -115,6 +122,8 @@ export async function processFrontmatter() {
 			// Just copy the file using Bun.write
 			const fileBuffer = await Bun.file(file).arrayBuffer();
 			await Bun.write(destFile, fileBuffer);
+		} else {
+			console.log(`[info] Skipped bundling ${file} (uploaded to R2)`);
 		}
 	}
 

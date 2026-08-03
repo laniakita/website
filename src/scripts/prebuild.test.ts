@@ -8,6 +8,7 @@ import {
 	mock,
 } from "bun:test";
 import type { Dirent } from "node:fs";
+import fs from "node:fs";
 import { readdir, rm } from "node:fs/promises";
 import type { BunFile } from "bun";
 import { getPlaiceholder } from "plaiceholder";
@@ -78,6 +79,25 @@ type: tag
 			(path: Parameters<typeof readdir>[0]) => Promise<Dirent[]>
 		>;
 		const mockGetPlaiceholder = getPlaiceholder as Mock<typeof getPlaiceholder>;
+
+		const mockExistsSync = spyOn(fs, "existsSync");
+		const mockReadFileSync = spyOn(fs, "readFileSync");
+		const mockWriteFileSync = spyOn(fs, "writeFileSync");
+
+		mockExistsSync.mockImplementation((filepath) => {
+			const p = filepath.toString();
+			return !p.includes("content/posts/content/assets");
+		});
+
+		mockReadFileSync.mockImplementation((filepath) => {
+			const p = filepath.toString();
+			if (p.includes("test.jpg")) {
+				return Buffer.from("fake-image-data");
+			}
+			return Buffer.from("");
+		});
+
+		mockWriteFileSync.mockImplementation(() => {});
 
 		mockReaddir.mockImplementation(
 			async (dir: Parameters<typeof readdir>[0]) => {
@@ -196,8 +216,12 @@ type: tag
 			expect(contentStr).toContain("tags:");
 			expect(contentStr).toContain("JavaScript");
 			expect(contentStr).toContain("featured_image:");
-			expect(contentStr).toContain("src: 'https://assets.mock/assets/");
-			expect(contentStr).toContain("css:\n    backgroundImage: mock-css");
+			expect(contentStr).toMatch(
+				/src: 'https:\/\/assets\.mock\/.*\/test\.jpg'/,
+			);
+			expect(contentStr).toContain(
+				'{"backgroundImage":"mock-css","filter":"blur(20px)","transform":"scale(1.1)"}',
+			);
 		}
 	});
 
@@ -219,6 +243,22 @@ Post body`;
 			(path: Parameters<typeof readdir>[0]) => Promise<Dirent[]>
 		>;
 		const mockGetPlaiceholder = getPlaiceholder as Mock<typeof getPlaiceholder>;
+
+		const mockExistsSync = spyOn(fs, "existsSync");
+		const mockReadFileSync = spyOn(fs, "readFileSync");
+
+		mockExistsSync.mockImplementation((filepath) => {
+			const p = filepath.toString();
+			return !p.includes("content/posts/content/assets");
+		});
+
+		mockReadFileSync.mockImplementation((filepath) => {
+			const p = filepath.toString();
+			if (p.includes("test.jpg")) {
+				return Buffer.from("fake-image-data");
+			}
+			return Buffer.from("");
+		});
 
 		mockReaddir.mockImplementation(
 			async (dir: Parameters<typeof readdir>[0]) => {
@@ -253,7 +293,7 @@ Post body`;
 							"content/assets/test.jpg": {
 								localHash: expectedHash,
 								src: "https://assets.mock/assets/some-hash.jpg",
-								css: { backgroundImage: "mock-css" },
+								css: '{"backgroundImage":"mock-css"}',
 							},
 						}),
 					} as unknown as BunFile;
@@ -294,7 +334,7 @@ Post body`;
 			const [writtenPath, writtenContent] = postWriteCall;
 			expect(writtenPath.toString()).toContain(".content/posts/post1.md");
 			expect(writtenContent.toString()).toContain(
-				"css:\n    backgroundImage: mock-css",
+				'{"backgroundImage":"mock-css"}',
 			);
 		}
 	});

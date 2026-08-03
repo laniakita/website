@@ -26,8 +26,6 @@ const getPosts = createServerFn().handler(async () => {
 
 export const Route = createFileRoute("/")({
 	loader: async () => {
-		//const { Renderable } = await getGreeting();
-		//return { Greeting: Renderable };
 		const { Renderable } = await getPosts();
 		return { PostRoller: Renderable };
 	},
@@ -35,7 +33,6 @@ export const Route = createFileRoute("/")({
 });
 
 function App() {
-	//const { Greeting } = Route.useLoaderData();
 	const { PostRoller } = Route.useLoaderData();
 
 	return (
