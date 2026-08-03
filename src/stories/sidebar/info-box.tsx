@@ -2,7 +2,7 @@ import type * as React from "react";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-export interface InfoBoxProps {
+export interface InfoBoxProps extends React.HTMLAttributes<HTMLDivElement> {
 	/** The main text or React node containing biographical or descriptive info. */
 	blogInfo: React.ReactNode;
 	/** A list of category links to display in the meta tab. */
@@ -10,7 +10,7 @@ export interface InfoBoxProps {
 	/** A list of tag links to display in the meta tab. */
 	tags: { title: string; url: string }[];
 	/** Optional CSS class name for overriding container styles. */
-	className?: string;
+	//className?: string;
 }
 
 function SimpleRoller({
@@ -52,7 +52,7 @@ export function InfoBox({
 	className,
 }: InfoBoxProps) {
 	return (
-		<Card className={className}>
+		<Card className={`${className} pt-0`}>
 			<Tabs defaultSelectedKey="info" className="w-full">
 				<TabsList className="w-full justify-start rounded-none rounded-t-lg border-b bg-muted/50 p-0 h-auto">
 					<TabsTrigger

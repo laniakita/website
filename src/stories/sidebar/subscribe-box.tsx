@@ -1,10 +1,8 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "@/components/ui/link";
 
-export interface SubscribeBoxProps {
-	/** Optional CSS class name for overriding container styles. */
-	className?: string;
-}
+export interface SubscribeBoxProps
+	extends React.HTMLAttributes<HTMLDivElement> {}
 
 /**
  * A card component that prompts users to subscribe via an RSS/Atom feed.

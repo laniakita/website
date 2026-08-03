@@ -3,7 +3,7 @@ import { PostPreview, type PostPreviewProps } from "./post-preview";
 
 export interface PostRollerProps {
 	/** An array of post preview data to render in the list. */
-	posts: PostPreviewProps["post"][];
+	posts: PostPreviewProps[];
 	/** An optional component to inject into the list (e.g., a newsletter sign-up or ad). */
 	injectedComponent?: React.ReactNode;
 	/** The index at which to inject the custom component. Defaults to 1 (after the first post). */
@@ -30,7 +30,7 @@ export function PostRoller({
 							{isInjectIndex && (
 								<div className="w-full">{injectedComponent}</div>
 							)}
-							<PostPreview post={post} />
+							<PostPreview {...post} />
 						</React.Fragment>
 					);
 				})}

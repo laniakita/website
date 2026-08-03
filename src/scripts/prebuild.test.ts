@@ -105,6 +105,14 @@ type: tag
 		mockReaddir.mockImplementation(
 			async (dir: Parameters<typeof readdir>[0]) => {
 				const p = dir.toString();
+				if (p.endsWith("assets"))
+					return [
+						{
+							isFile: () => true,
+							name: "test.jpg",
+							parentPath: p,
+						} as unknown as Dirent,
+					];
 				if (p.endsWith("categories"))
 					return [
 						{
@@ -145,6 +153,11 @@ type: tag
 							isFile: () => true,
 							name: "post1.md",
 							parentPath: `${p}/posts`,
+						} as unknown as Dirent,
+						{
+							isFile: () => true,
+							name: "test.jpg",
+							parentPath: `${p}/assets`,
 						} as unknown as Dirent,
 					];
 				return [];
@@ -209,19 +222,17 @@ type: tag
 			call[0].toString().includes("post1.md"),
 		);
 		expect(postWriteCall).toBeDefined();
-
 		if (postWriteCall) {
 			const [writtenPath, writtenContent] = postWriteCall;
 			expect(writtenPath.toString()).toContain(".content/posts/post1.md");
 			const contentStr = writtenContent.toString();
+			console.log(contentStr);
 			expect(contentStr).toContain("categories:");
 			expect(contentStr).toContain("Technology");
 			expect(contentStr).toContain("tags:");
 			expect(contentStr).toContain("JavaScript");
 			expect(contentStr).toContain("featured_image:");
-			expect(contentStr).toMatch(
-				/src: 'https:\/\/assets\.mock\/.*\/test\.jpg'/,
-			);
+			expect(contentStr).toMatch(/src: 'https:\/\/assets\.mock\/test\.jpg'/);
 			expect(contentStr).toContain(
 				'{"backgroundImage":"mock-css","filter":"blur(20px)","transform":"scale(1.1)"}',
 			);
@@ -269,6 +280,14 @@ Post body`;
 		mockReaddir.mockImplementation(
 			async (dir: Parameters<typeof readdir>[0]) => {
 				const p = dir.toString();
+				if (p.endsWith("assets"))
+					return [
+						{
+							isFile: () => true,
+							name: "test.jpg",
+							parentPath: p,
+						} as unknown as Dirent,
+					];
 				if (p.endsWith("posts"))
 					return [
 						{
@@ -299,7 +318,11 @@ Post body`;
 							"content/assets/test.jpg": {
 								localHash: expectedHash,
 								src: "https://assets.mock/assets/some-hash.jpg",
-								css: '{"backgroundImage":"mock-css"}',
+								imgData: {
+									css: '{"backgroundImage":"mock-css"}',
+									width: 800,
+									height: 600,
+								},
 							},
 						}),
 					} as unknown as BunFile;

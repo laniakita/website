@@ -14,7 +14,7 @@ export function HeaderRoot({
 	return (
 		<header
 			className={cn(
-				"z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60",
+				"z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60",
 				isSticky && "sticky top-0",
 				className,
 			)}

@@ -19,8 +19,8 @@ export function Sidebar({
 	socialBoxSlot,
 }: SidebarProps) {
 	return (
-		<div className="flex size-full min-h-min md:max-h-[calc(100vh-4rem)] md:sticky md:top-16 md:shadow-xl rounded-lg md:overflow-hidden">
-			<div className="flex w-full flex-col gap-6 md:overflow-y-auto bg-muted/10 md:border md:p-4 rounded-lg">
+		<div className="flex md:top-16">
+			<div className="flex w-full max-h-min  flex-col gap-6 bg-muted/40 md:border md:p-4 md:shadow-xl rounded-4xl">
 				{infoBoxSlot}
 				{subscribeBoxSlot}
 				<div className="flex w-full flex-col items-center justify-center pb-4">
