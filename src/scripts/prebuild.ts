@@ -1,8 +1,17 @@
 import { readdir, rm } from "node:fs/promises";
 import path from "node:path";
 import matter from "gray-matter";
-import { type ImageManifestEntry, processAsset } from "./asset-processor";
+import { batchUploadAssets } from "./asset-processor";
+import { resolveAssetEntry } from "./asset-processor/resolver";
+import type { AssetManifestEntry } from "./asset-processor/types";
 
+/**
+ * Recursively retrieves a list of files from a directory that match specific extensions.
+ *
+ * @param dir - The directory to search in.
+ * @param ext - An array of file extensions to include (e.g. `[".md", ".mdx"]`).
+ * @returns A promise that resolves to an array of absolute file paths.
+ */
 async function getFiles(dir: string, ext: string[]): Promise<string[]> {
 	const dirents = await readdir(dir, { withFileTypes: true, recursive: true });
 	return dirents
@@ -12,6 +21,13 @@ async function getFiles(dir: string, ext: string[]): Promise<string[]> {
 		.map((dirent) => path.join(dirent.parentPath, dirent.name));
 }
 
+/**
+ * Loads markdown content from a directory and constructs a lookup record based on the parsed frontmatter.
+ * This is used for associating categories and tags defined in individual markdown files with posts.
+ *
+ * @param dir - The directory containing category or tag markdown files.
+ * @returns A promise resolving to a record mapping slugs to their respective metadata (title, url, type).
+ */
 async function loadLookups(dir: string) {
 	const files = await getFiles(dir, [".md", ".mdx"]);
 	const lookup: Record<string, { title: string; url: string; type: string }> =
@@ -31,12 +47,24 @@ async function loadLookups(dir: string) {
 	return lookup;
 }
 
+/**
+ * The main prebuild routine executed before building the site.
+ *
+ * Responsibilities:
+ * 1. Copies all files from `content/` to a temporary `.content/` directory.
+ * 2. Processes all assets located in `content/assets`, uploading them to Cloudflare R2 and updating the `asset-manifest.json`.
+ * 3. Replaces local image references in Markdown/MDX frontmatter (e.g. `imageSrc`) with their public R2 URLs.
+ * 4. Resolves `catSlugs` and `tagSlugs` in frontmatter against loaded category and tag dictionaries, injecting the full data into the post.
+ *
+ * By modifying files in `.content/`, we ensure the original `content/` files remain untouched by automated processing,
+ * while Fumadocs is configured to build the site from the processed `.content/` directory.
+ */
 export async function processFrontmatter() {
 	const contentDir = path.join(process.cwd(), "content");
 	const dotContentDir = path.join(process.cwd(), ".content");
 	const manifestPath = path.join(process.cwd(), "asset-manifest.json");
 
-	let assetManifest: Record<string, ImageManifestEntry> = {};
+	let assetManifest: Record<string, AssetManifestEntry> = {};
 	try {
 		const manifestFile = Bun.file(manifestPath);
 		if (await manifestFile.exists()) {
@@ -54,6 +82,22 @@ export async function processFrontmatter() {
 	);
 	const tagsLookup = await loadLookups(path.join(contentDir, "tags"));
 
+	// Batch upload all assets first
+	const assetsDir = path.join(contentDir, "assets");
+	const uploadOptions = {
+		generatePlaiceholder: true,
+		r2Endpoint: process.env.R2_ENDPOINT_URL || "",
+		r2Bucket: process.env.R2_BUCKET_NAME || "",
+		r2AccessKey: process.env.R2_ACCESS_KEY_ID || "",
+		r2SecretKey: process.env.R2_SECRET_ACCESS_KEY || "",
+		r2PublicUrl: process.env.R2_PUBLIC_URL || "",
+	};
+	assetManifest = await batchUploadAssets(
+		assetsDir,
+		assetManifest,
+		uploadOptions,
+	);
+
 	// Get all files in content/
 	const allFiles = await readdir(contentDir, {
 		withFileTypes: true,
@@ -66,45 +110,33 @@ export async function processFrontmatter() {
 		const file = path.join(dirent.parentPath, dirent.name);
 		const destFile = file.replace(contentDir, dotContentDir);
 
-		// Only process .md/.mdx files in posts/
-		if (
-			(file.includes("/posts/") ||
-				file.includes("/projects/") ||
-				file.includes("/works/")) &&
-			(file.endsWith(".md") || file.endsWith(".mdx"))
-		) {
+		// Only process .md/.mdx files that have images in their front matter
+		if (file.endsWith(".md") || file.endsWith(".mdx")) {
 			const rawContent = await Bun.file(file).text();
 			const parsed = matter(rawContent);
 			const { data, content } = parsed;
 
-			// Resolve categories
-			if (data.catSlugs && Array.isArray(data.catSlugs)) {
-				const newCategories = data.catSlugs
-					.map((slug: string) => categoriesLookup[slug])
-					.filter(Boolean);
-				data.categories = newCategories;
-				delete data.catSlugs;
-			}
-
-			// Resolve tags
-			if (data.tagSlugs && Array.isArray(data.tagSlugs)) {
-				const newTags = data.tagSlugs
-					.map((slug: string) => tagsLookup[slug])
-					.filter(Boolean);
-				data.tags = newTags;
-				delete data.tagSlugs;
-			}
-
-			// Process featured image
 			if (data.imageSrc) {
-				const entry = await processAsset(data.imageSrc, assetManifest, file, {
-					generatePlaiceholder: true,
-					r2Endpoint: process.env.R2_ENDPOINT_URL || "",
-					r2Bucket: process.env.R2_BUCKET_NAME || "",
-					r2AccessKey: process.env.R2_ACCESS_KEY_ID || "",
-					r2SecretKey: process.env.R2_SECRET_ACCESS_KEY || "",
-					r2PublicUrl: process.env.R2_PUBLIC_URL || "",
-				});
+				// Resolve categories
+				if (data.catSlugs && Array.isArray(data.catSlugs)) {
+					const newCategories = data.catSlugs
+						.map((slug: string) => categoriesLookup[slug])
+						.filter(Boolean);
+					data.categories = newCategories;
+					delete data.catSlugs;
+				}
+
+				// Resolve tags
+				if (data.tagSlugs && Array.isArray(data.tagSlugs)) {
+					const newTags = data.tagSlugs
+						.map((slug: string) => tagsLookup[slug])
+						.filter(Boolean);
+					data.tags = newTags;
+					delete data.tagSlugs;
+				}
+
+				// Process featured image
+				const entry = resolveAssetEntry(data.imageSrc, file, assetManifest);
 				if (entry) {
 					data.featured_image = {
 						...entry,
@@ -112,18 +144,17 @@ export async function processFrontmatter() {
 					};
 				}
 				delete data.imageSrc;
-			}
 
-			// We no longer process AST here! Just write the updated frontmatter + original content.
-			const newFileContent = matter.stringify(content, data);
-			await Bun.write(destFile, newFileContent);
-			console.log(`[success] Processed and wrote ${destFile}`);
-		} else if (!file.includes("/assets/images/")) {
-			// Just copy the file using Bun.write
-			const fileBuffer = await Bun.file(file).arrayBuffer();
-			await Bun.write(destFile, fileBuffer);
-		} else {
-			console.log(`[info] Skipped bundling ${file} (uploaded to R2)`);
+				const newFileContent = matter.stringify(content, data);
+				await Bun.write(destFile, newFileContent);
+				console.log(`[success] Processed and wrote ${destFile}`);
+			} else {
+				// Just copy the file using Bun.write
+				const fileBuffer = await Bun.file(file).arrayBuffer();
+				await Bun.write(destFile, fileBuffer);
+			}
+		} else if (file.includes("assets/")) {
+			console.log(`[info] Asset: ${file} was uploaded`);
 		}
 	}
 

@@ -1,6 +1,6 @@
 import type * as React from "react";
-import logoDarkmode from "@/assets/laniakita-logo-darkmode.png";
-import logoLightmode from "@/assets/laniakita-logo-lightmode.png";
+import LogoDarkmode from "@/assets/laniakita-logo-transparent-darkmode.svg?react";
+import LogoLightmode from "@/assets/laniakita-logo-transparent-lightmode.svg?react";
 import { HeaderBanner } from "@/stories/navigation/header/banner";
 import { HeaderLogo } from "@/stories/navigation/header/logo";
 import { HeaderMobileMenu } from "@/stories/navigation/header/mobile-menu";
@@ -88,8 +88,8 @@ export function Header({
 	warnDev = false,
 	className,
 	isSticky = true,
-	logoLight = <img src={logoLightmode} alt="Logo Light" />,
-	logoDark = <img src={logoDarkmode} alt="Logo Dark" />,
+	logoLight = <LogoLightmode />,
+	logoDark = <LogoDarkmode />,
 	branding,
 	productionUrl = "https://laniakita.com",
 	warnDevBannerDescription = "[WARN]: This is a dev preview. ",

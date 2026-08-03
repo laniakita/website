@@ -7,8 +7,8 @@ import {
 } from "@tanstack/react-router";
 import * as React from "react";
 import { expect, within } from "storybook/test";
-import logoDarkmode from "@/assets/laniakita-logo-darkmode.png";
-import logoLightmode from "@/assets/laniakita-logo-lightmode.png";
+import LogoDarkmode from "@/assets/laniakita-logo-transparent-darkmode.svg?react";
+import LogoLightmode from "@/assets/laniakita-logo-transparent-lightmode.svg?react";
 import { HeaderLogo } from "./logo";
 
 // We must allow args to be passed in, so we wrap it inside a component that takes args
@@ -52,8 +52,8 @@ export const Default: Story = {
 
 export const WithImages: Story = {
 	args: {
-		logoLight: <img src={logoLightmode} alt="Logo Light" />,
-		logoDark: <img src={logoDarkmode} alt="Logo Dark" />,
+		logoLight: <LogoLightmode />,
+		logoDark: <LogoDarkmode />,
 	},
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);

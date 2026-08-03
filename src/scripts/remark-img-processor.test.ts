@@ -1,23 +1,24 @@
 import { beforeEach, describe, expect, it, mock } from "bun:test";
 
-const mockProcessAsset = mock(
-	async (
+const mockResolveAssetEntry = mock(
+	(
 		_assetPath: string,
+		_currentFilePath: string,
 		// biome-ignore lint/suspicious/noExplicitAny: AST attributes
 		_assetManifest: Record<string, any>,
-		_file: string,
-		_options: { generatePlaiceholder?: boolean } = {},
 	) => ({
 		src: "https://mock.cdn/img.jpg",
-		css: '{"backgroundImage":"linear-gradient(to right, red, blue)"}',
+		imgData: {
+			css: '{"backgroundImage":"linear-gradient(to right, red, blue)"}',
+			width: 800,
+			height: 600,
+		},
 		localHash: "mock-hash",
-		width: 800,
-		height: 600,
 	}),
 );
 
-mock.module("./asset-processor", () => ({
-	processAsset: mockProcessAsset,
+mock.module("./asset-processor/resolver", () => ({
+	resolveAssetEntry: mockResolveAssetEntry,
 }));
 
 mock.module("node:fs", () => ({
@@ -32,15 +33,11 @@ import { remarkImgProcessor } from "./remark-img-processor";
 
 describe("remarkImgProcessor", () => {
 	beforeEach(() => {
-		mockProcessAsset.mockClear();
+		mockResolveAssetEntry.mockClear();
 	});
 
 	const mockOptions = {
-		r2Endpoint: "https://mock.endpoint",
-		r2Bucket: "mock-bucket",
-		r2AccessKey: "mock-key",
-		r2SecretKey: "mock-secret",
-		r2PublicUrl: "https://mock.public",
+		addLqipAttribute: true,
 	};
 
 	it("should replace markdown image urls and inject data-lqip", async () => {
@@ -63,7 +60,7 @@ describe("remarkImgProcessor", () => {
 		const plugin = remarkImgProcessor(mockOptions);
 		await plugin(tree, { path: "/fake/path/post.md" });
 
-		expect(mockProcessAsset).toHaveBeenCalledTimes(2);
+		expect(mockResolveAssetEntry).toHaveBeenCalledTimes(2);
 
 		// biome-ignore lint/suspicious/noExplicitAny: AST attributes
 		const mdImage = tree.children[0] as any;
@@ -88,7 +85,7 @@ describe("remarkImgProcessor", () => {
 		});
 	});
 
-	it("should skip generating lqip if options specify generateLqip: false", async () => {
+	it("should skip generating lqip if options specify addLqipAttribute: false", async () => {
 		const tree = {
 			type: "root",
 			children: [
@@ -105,14 +102,10 @@ describe("remarkImgProcessor", () => {
 			],
 		} as unknown as Parent;
 
-		const plugin = remarkImgProcessor({ ...mockOptions, generatePlaiceholder: false });
+		const plugin = remarkImgProcessor({ addLqipAttribute: false });
 		await plugin(tree, { path: "/fake/path/post.md" });
 
-		// It should call processAsset but pass generatePlaiceholder: false
-		expect(mockProcessAsset).toHaveBeenCalledTimes(2);
-		expect(mockProcessAsset.mock.calls[0][3]).toMatchObject({
-			generatePlaiceholder: false,
-		});
+		expect(mockResolveAssetEntry).toHaveBeenCalledTimes(2);
 
 		// biome-ignore lint/suspicious/noExplicitAny: AST attributes
 		const mdImage = tree.children[0] as any;
@@ -143,7 +136,7 @@ describe("remarkImgProcessor", () => {
 		const plugin = remarkImgProcessor(mockOptions);
 		await plugin(tree, { path: "/fake/path/post.md" });
 
-		expect(mockProcessAsset).not.toHaveBeenCalled();
+		expect(mockResolveAssetEntry).not.toHaveBeenCalled();
 		// biome-ignore lint/suspicious/noExplicitAny: AST attributes
 		const mdImage = tree.children[0] as any;
 		expect(mdImage.url).toBe("https://example.com/external.jpg");

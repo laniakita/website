@@ -17,11 +17,10 @@ export interface SocialItem {
 	textSize?: string;
 }
 
-export interface SocialBoxProps {
+export interface SocialBoxProps extends React.HTMLAttributes<HTMLDivElement> {
 	/** An array of social media items to render. */
 	items: SocialItem[];
 	/** Optional CSS class name for overriding container styles. */
-	className?: string;
 }
 
 /**

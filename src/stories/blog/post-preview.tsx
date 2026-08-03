@@ -11,31 +11,32 @@ import { Link } from "@/components/ui/link";
 import { Separator } from "@/components/ui/separator";
 import { type CatTag, CatTagRoller } from "./cat-tag-roller";
 
+/** The post data to display in the preview card. */
 export interface PostPreviewProps {
-	/** The post data to display in the preview card. */
-	post: {
-		/** The URL of the full blog post. */
-		url: string;
-		/** The main title of the post. */
-		headline: string;
-		/** An optional subtitle or supporting text for the headline. */
-		subheadline?: string;
-		/** The excerpt or short description of the post content. */
-		description: React.ReactNode;
-		/** The original publication date of the post. */
-		date: Date | string;
-		/** An optional date indicating when the post was last updated. */
-		updated?: Date | string;
-		/** An optional cover image to display at the top of the card. */
-		featuredImage?: {
-			src: string;
-			altText?: string;
-		};
-		/** Categories associated with the post. */
-		categories?: CatTag[];
-		/** Tags associated with the post. */
-		tags?: CatTag[];
+	/** The URL of the full blog post. */
+	url: string;
+	/** The main title of the post. */
+	headline: string;
+	/** An optional subtitle or supporting text for the headline. */
+	subheadline?: string;
+	/** The excerpt or short description of the post content. */
+	description: React.ReactNode;
+	/** The original publication date of the post. */
+	date: Date | string;
+	/** An optional date indicating when the post was last updated. */
+	updated?: Date | string;
+	/** An optional cover image to display at the top of the card. */
+	featuredImage?: {
+		src: string;
+		height?: number;
+		width?: number;
+		blurHash?: string;
+		altText?: string;
 	};
+	/** Categories associated with the post. */
+	categories?: CatTag[];
+	/** Tags associated with the post. */
+	tags?: CatTag[];
 }
 
 function formatDate(date: Date | string) {
@@ -51,7 +52,7 @@ function formatDate(date: Date | string) {
  * A card component that previews a blog post, displaying its featured image,
  * title, date, excerpt, and associated tags/categories.
  */
-export function PostPreview({ post }: PostPreviewProps) {
+export function PostPreview(post: PostPreviewProps) {
 	const {
 		url,
 		headline,
@@ -71,13 +72,23 @@ export function PostPreview({ post }: PostPreviewProps) {
 		>
 			{featuredImage?.src && (
 				<Link to={url} className="bg-muted">
-					<Image
-						src={featuredImage.src}
-						layout="fullWidth"
-						alt={featuredImage.altText ?? ""}
-						background="auto"
-						className="-mt-6 object-cover h-full w-full"
-					/>
+					{featuredImage.height && featuredImage.width ? (
+						<Image
+							src={featuredImage.src}
+							height={featuredImage.height}
+							width={featuredImage.width}
+							alt={featuredImage.altText ?? ""}
+							background={featuredImage.blurHash}
+							className="-mt-6 object-cover h-full w-full"
+						/>
+					) : (
+						<Image
+							src={featuredImage.src}
+							layout="fullWidth"
+							alt={featuredImage.altText ?? ""}
+							className="-mt-6 object-cover h-full w-full"
+						/>
+					)}
 				</Link>
 			)}
 

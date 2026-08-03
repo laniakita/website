@@ -1,6 +1,6 @@
 import type * as React from "react";
-import logoDarkmode from "@/assets/laniakita-logo-darkmode.png";
-import logoLightmode from "@/assets/laniakita-logo-lightmode.png";
+import LogoDarkmode from "@/assets/laniakita-logo-transparent-darkmode.svg?react";
+import LogoLightmode from "@/assets/laniakita-logo-transparent-lightmode.svg?react";
 import { Link } from "@/components/ui/link";
 
 /**
@@ -30,8 +30,8 @@ export interface HeaderLogoProps {
  * using CSS display classes (`dark:hidden` and `hidden dark:flex`).
  */
 export function HeaderLogo({
-	logoLight = <img src={logoLightmode} alt="Logo Light" />,
-	logoDark = <img src={logoDarkmode} alt="Logo Dark" />,
+	logoLight = <LogoLightmode />,
+	logoDark = <LogoDarkmode />,
 	branding = (
 		<>
 			<span className="icon-[ph--leaf-fill] mr-2 size-6 text-primary" />

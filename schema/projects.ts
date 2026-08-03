@@ -25,10 +25,14 @@ export const projects = defineCollections({
 			featured_image: z
 				.object({
 					src: z.string(),
-					css: z.string(),
-					height: z.number(),
-					width: z.number(),
 					localHash: z.string(),
+					imgData: z
+						.object({
+							css: z.string(),
+							height: z.number(),
+							width: z.number(),
+						})
+						.optional(),
 					altText: z.string().optional(),
 				})
 				.optional(),

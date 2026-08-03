@@ -1,5 +1,3 @@
-/// <reference types="vitest/config" />
-
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { cloudflare } from "@cloudflare/vite-plugin";
@@ -12,6 +10,7 @@ import rsc from "@vitejs/plugin-rsc";
 import { playwright } from "@vitest/browser-playwright";
 import { fumadocsMdx } from "fumadocs-mdx/vite";
 import { defineConfig } from "vite";
+import svgr from "vite-plugin-svgr";
 
 const dirname =
 	import.meta.dirname || path.dirname(fileURLToPath(import.meta.url));
@@ -41,6 +40,7 @@ const config = defineConfig({
 				},
 			}),
 		!isTestOrStorybook && rsc(),
+		svgr(),
 		viteReact(),
 	],
 	environments: {

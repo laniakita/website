@@ -1,7 +1,7 @@
 import crypto from "node:crypto";
 import fs from "node:fs";
+import { readdir } from "node:fs/promises";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
 import {
 	DeleteObjectCommand,
 	PutObjectCommand,
@@ -9,28 +9,25 @@ import {
 } from "@aws-sdk/client-s3";
 import mime from "mime-types";
 import { getPlaiceholder } from "plaiceholder";
+import type { AssetManifestEntry, ProcessAssetOptions } from "./types";
 
+/**
+ * Calculates the MD5 hash of a given buffer.
+ * @param buffer - The file buffer to hash.
+ * @returns The hexadecimal representation of the MD5 hash.
+ */
 function calculateHash(buffer: Buffer): string {
 	return crypto.createHash("md5").update(buffer).digest("hex");
 }
 
-export interface ImageManifestEntry {
-	localHash: string;
-	src: string;
-	css?: string;
-	width?: number;
-	height?: number;
-}
-
-export interface ProcessAssetOptions {
-	generatePlaiceholder?: boolean;
-	r2Endpoint: string;
-	r2Bucket: string;
-	r2AccessKey: string;
-	r2SecretKey: string;
-	r2PublicUrl: string;
-}
-
+/**
+ * Uploads a file buffer to a Cloudflare R2 bucket.
+ * @param fileName - The target path/key in the bucket.
+ * @param buffer - The file buffer to upload.
+ * @param mimeType - The MIME type of the file.
+ * @param options - R2 connection options.
+ * @returns A promise that resolves to true if successful, false otherwise.
+ */
 async function uploadToR2(
 	fileName: string,
 	buffer: Buffer,
@@ -68,6 +65,11 @@ async function uploadToR2(
 	}
 }
 
+/**
+ * Deletes a file from a Cloudflare R2 bucket.
+ * @param fileName - The target path/key in the bucket to delete.
+ * @param options - R2 connection options.
+ */
 async function deleteFromR2(fileName: string, options: ProcessAssetOptions) {
 	if (!options.r2Endpoint) return;
 
@@ -93,42 +95,32 @@ async function deleteFromR2(fileName: string, options: ProcessAssetOptions) {
 	}
 }
 
-export async function processAsset(
-	assetPath: string,
-	assetManifest: Record<string, ImageManifestEntry>,
-	file: string,
+/**
+ * Iterates through the assets directory, checking against the cached manifest.
+ * New or changed assets are uploaded to R2, old versions are deleted, and
+ * image assets are processed to generate LQIP data if enabled.
+ *
+ * @param assetsDir - The local directory containing assets to process.
+ * @param assetManifest - The current asset manifest containing cached file state.
+ * @param options - Configuration options for processing and R2 uploading.
+ * @returns A promise that resolves to the updated asset manifest.
+ */
+export async function batchUploadAssets(
+	assetsDir: string,
+	assetManifest: Record<string, AssetManifestEntry>,
 	options: ProcessAssetOptions,
-): Promise<ImageManifestEntry | null> {
-	if (assetPath.startsWith("http://") || assetPath.startsWith("https://")) {
-		return null;
-	}
+) {
+	const dirents = await readdir(assetsDir, {
+		withFileTypes: true,
+		recursive: true,
+	});
+	const files = dirents
+		.filter((dirent) => dirent.isFile() && !dirent.name.startsWith("."))
+		.map((dirent) => path.join(dirent.parentPath, dirent.name));
 
-	let parsedPath = assetPath;
-	if (assetPath.startsWith("file://")) {
-		try {
-			parsedPath = fileURLToPath(assetPath);
-		} catch (_err) {
-			// Fallback if parsing fails
-		}
-	}
+	let hasChanges = false;
 
-	let imagePath = path.resolve(path.dirname(file), parsedPath);
-
-	const dotContentPath = path.join(process.cwd(), ".content");
-	if (imagePath.startsWith(dotContentPath)) {
-		imagePath = imagePath.replace(
-			dotContentPath,
-			path.join(process.cwd(), "content"),
-		);
-	}
-
-	try {
-		if (!fs.existsSync(imagePath)) {
-			console.warn(
-				`[warn] Asset not found locally, skipping upload: ${imagePath}`,
-			);
-			return null;
-		}
+	for (const imagePath of files) {
 		const imageBuffer = fs.readFileSync(imagePath);
 		const mimeType = mime.lookup(imagePath) || "application/octet-stream";
 		const localHash = calculateHash(imageBuffer);
@@ -136,7 +128,7 @@ export async function processAsset(
 		const cachedImage = assetManifest[manifestKey];
 
 		if (!cachedImage || cachedImage.localHash !== localHash) {
-			console.log(`[info] Processing asset ${assetPath} for ${file}...`);
+			console.log(`[info] Uploading new/changed asset: ${manifestKey}...`);
 
 			if (cachedImage?.localHash && cachedImage?.src) {
 				const publicUrl = options.r2PublicUrl;
@@ -175,20 +167,25 @@ export async function processAsset(
 				(mimeType.startsWith("image/") ||
 					mimeType === "application/octet-stream")
 			) {
-				const {
-					css: plaiceholderCss,
-					metadata: { width: plaiceholderWidth, height: plaiceholderHeight },
-				} = await getPlaiceholder(imageBuffer);
-				css = JSON.stringify({
-					...plaiceholderCss,
-					filter: "blur(20px)",
-					transform: "scale(1.1)",
-				});
-				width = plaiceholderWidth;
-				height = plaiceholderHeight;
+				try {
+					const {
+						css: plaiceholderCss,
+						metadata: { width: plaiceholderWidth, height: plaiceholderHeight },
+					} = await getPlaiceholder(imageBuffer);
+					css = JSON.stringify({
+						...plaiceholderCss,
+						filter: "blur(20px)",
+						transform: "scale(1.1)",
+					});
+					width = plaiceholderWidth;
+					height = plaiceholderHeight;
+				} catch (err) {
+					console.log(
+						`[info] Skipping plaiceholder generation for ${manifestKey}: ${err}`,
+					);
+				}
 			}
 
-			const assetsDir = path.join(process.cwd(), "content", "assets");
 			let fileName = path
 				.relative(assetsDir, imagePath)
 				.split(path.sep)
@@ -208,32 +205,33 @@ export async function processAsset(
 
 			if (success) {
 				const publicUrl = options.r2PublicUrl;
-				const entry: ImageManifestEntry = {
+				const entry: AssetManifestEntry = {
 					localHash,
 					src: `${publicUrl}/${fileName}`,
 				};
-				if (css) entry.css = css;
-				if (width) entry.width = width;
-				if (height) entry.height = height;
+				if (css && width && height) {
+					entry.imgData = {
+						css,
+						width,
+						height,
+					};
+				}
 
 				assetManifest[manifestKey] = entry;
-
-				// Save manifest right away
-				fs.writeFileSync(
-					"asset-manifest.json",
-					JSON.stringify(assetManifest, null, 2),
-				);
-
-				return entry;
+				hasChanges = true;
 			} else {
 				throw new Error(`Upload to R2 failed for ${fileName}`);
 			}
-		} else {
-			console.log(`[info] Skipping upload for ${assetPath} - already cached`);
-			return cachedImage;
 		}
-	} catch (err) {
-		console.error(`Failed to process asset ${assetPath} for ${file}:`, err);
-		return null;
 	}
+
+	if (hasChanges) {
+		fs.writeFileSync(
+			"asset-manifest.json",
+			JSON.stringify(assetManifest, null, 2),
+		);
+		console.log(`[success] Wrote updated asset-manifest.json`);
+	}
+
+	return assetManifest;
 }

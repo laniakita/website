@@ -2,15 +2,12 @@ import fs from "node:fs";
 import path from "node:path";
 import type { Node } from "unist";
 import { visit } from "unist-util-visit";
-import {
-	type ImageManifestEntry,
-	type ProcessAssetOptions,
-	processAsset,
-} from "./asset-processor";
+import { resolveAssetEntry } from "./asset-processor/resolver";
+import type { AssetManifestEntry } from "./asset-processor/types";
 
-let assetManifestCache: Record<string, ImageManifestEntry> | null = null;
+let assetManifestCache: Record<string, AssetManifestEntry> | null = null;
 
-function getManifest(): Record<string, ImageManifestEntry> {
+function getManifest(): Record<string, AssetManifestEntry> {
 	if (!assetManifestCache) {
 		const manifestPath = path.join(process.cwd(), "asset-manifest.json");
 		try {
@@ -23,16 +20,32 @@ function getManifest(): Record<string, ImageManifestEntry> {
 	return assetManifestCache!;
 }
 
-export type RemarkImgProcessorOptions = ProcessAssetOptions;
+/**
+ * Configuration options for the remark-img-processor plugin.
+ */
+export interface RemarkImgProcessorOptions {
+	/**
+	 * Whether to attach the generated LQIP (Low Quality Image Placeholder) CSS string
+	 * as a `data-lqip` attribute to discovered `img` nodes. Defaults to true.
+	 */
+	addLqipAttribute?: boolean;
+}
 
-export function remarkImgProcessor(options: RemarkImgProcessorOptions) {
-	const generateLqip = options.generatePlaiceholder ?? true;
+/**
+ * A remark/rehype plugin that processes local image/video references in Markdown and MDX.
+ * It resolves local paths against the `asset-manifest.json` cache and replaces them with
+ * their public R2 URLs. It also injects a `data-lqip` attribute for lazy loading placeholders.
+ *
+ * @param options - Plugin configuration options.
+ * @returns A unified transformer function.
+ */
+export function remarkImgProcessor(options: RemarkImgProcessorOptions = {}) {
+	const addLqipAttribute = options.addLqipAttribute ?? true;
 
 	// The second argument to a unified plugin transformer is a VFile.
-	return async (tree: Node, file: { path: string }) => {
+	return (tree: Node, file: { path: string }) => {
 		const manifest = getManifest();
 		const filePath = file.path;
-		const promises: Promise<void>[] = [];
 
 		visit(
 			tree,
@@ -40,22 +53,16 @@ export function remarkImgProcessor(options: RemarkImgProcessorOptions) {
 			(node: any) => {
 				if (node.type === "image" && typeof node.url === "string") {
 					if (!node.url.startsWith("http")) {
-						promises.push(
-							processAsset(node.url, manifest, filePath, {
-								generatePlaiceholder: generateLqip,
-								...options,
-							}).then((entry) => {
-								if (entry) {
-									node.url = entry.src;
-									if (entry.css && generateLqip) {
-										node.data = node.data || {};
-										node.data.hProperties = node.data.hProperties || {};
-										// We keep it as a string for standard markdown images which don't support objects well
-										node.data.hProperties["data-lqip"] = entry.css;
-									}
-								}
-							}),
-						);
+						const entry = resolveAssetEntry(node.url, filePath, manifest);
+						if (entry) {
+							node.url = entry.src;
+							if (entry.imgData?.css && addLqipAttribute) {
+								node.data = node.data || {};
+								node.data.hProperties = node.data.hProperties || {};
+								// We keep it as a string for standard markdown images which don't support objects well
+								node.data.hProperties["data-lqip"] = entry.imgData.css;
+							}
+						}
 					}
 				} else if (
 					node.type === "mdxJsxFlowElement" ||
@@ -71,34 +78,26 @@ export function remarkImgProcessor(options: RemarkImgProcessorOptions) {
 						if (srcAttr && typeof srcAttr.value === "string") {
 							const url = srcAttr.value;
 							if (!url.startsWith("http")) {
-								promises.push(
-									processAsset(url, manifest, filePath, {
-										generatePlaiceholder: generateLqip,
-										...options,
-									}).then((entry) => {
-										if (entry) {
-											srcAttr.value = entry.src;
-											if (entry.css && generateLqip && node.attributes) {
-												node.attributes.push({
-													type: "mdxJsxAttribute",
-													name: "data-lqip",
-													// Pass as a JS expression so it's a real object in props
-													value: {
-														type: "mdxJsxAttributeValueExpression",
-														value: entry.css,
-													},
-												});
-											}
-										}
-									}),
-								);
+								const entry = resolveAssetEntry(url, filePath, manifest);
+								if (entry) {
+									srcAttr.value = entry.src;
+									if (entry.imgData?.css && addLqipAttribute && node.attributes) {
+										node.attributes.push({
+											type: "mdxJsxAttribute",
+											name: "data-lqip",
+											// Pass as a JS expression so it's a real object in props
+											value: {
+												type: "mdxJsxAttributeValueExpression",
+												value: entry.imgData.css,
+											},
+										});
+									}
+								}
 							}
 						}
 					}
 				}
 			},
 		);
-
-		await Promise.all(promises);
 	};
 }
