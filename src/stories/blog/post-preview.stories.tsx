@@ -33,30 +33,28 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
 	args: {
-		post: {
-			url: "/blog/hello-world",
-			headline: "Hello World! Welcome to the new blog.",
-			subheadline: "A subheadline that gives more context.",
-			description: (
-				<p>
-					This is a short description of the blog post. It could be rendered
-					Markdown or just standard text. Here is a little more text to show how
-					it wraps.
-				</p>
-			),
-			date: "2026-08-01",
-			featuredImage: {
-				src: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=2000",
-				altText: "Computer code on a screen",
-			},
-			categories: [
-				{ title: "Web Dev", url: "/category/web-dev", type: "Category" },
-			],
-			tags: [
-				{ title: "react", url: "/tag/react", type: "Tag" },
-				{ title: "storybook", url: "/tag/storybook", type: "Tag" },
-			],
+		url: "/blog/hello-world",
+		headline: "Hello World! Welcome to the new blog.",
+		subheadline: "A subheadline that gives more context.",
+		description: (
+			<p>
+				This is a short description of the blog post. It could be rendered
+				Markdown or just standard text. Here is a little more text to show how
+				it wraps.
+			</p>
+		),
+		date: "2026-08-01",
+		featuredImage: {
+			src: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=2000",
+			altText: "Computer code on a screen",
 		},
+		categories: [
+			{ title: "Web Dev", url: "/category/web-dev", type: "Category" },
+		],
+		tags: [
+			{ title: "react", url: "/tag/react", type: "Tag" },
+			{ title: "storybook", url: "/tag/storybook", type: "Tag" },
+		],
 	},
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);

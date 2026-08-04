@@ -43,8 +43,8 @@ export const Default: Story = {
 		await expect(link).toBeInTheDocument();
 
 		// Default logo now has images
-		const lightImg = await canvas.findByAltText(/Logo Light/i);
-		const darkImg = await canvas.findByAltText(/Logo Dark/i);
+		const lightImg = canvasElement.querySelector('svg[title="Logo Light"]');
+		const darkImg = canvasElement.querySelector('svg[title="Logo Dark"]');
 		await expect(lightImg).toBeInTheDocument();
 		await expect(darkImg).toBeInTheDocument();
 	},
@@ -52,8 +52,8 @@ export const Default: Story = {
 
 export const WithImages: Story = {
 	args: {
-		logoLight: <LogoLightmode />,
-		logoDark: <LogoDarkmode />,
+		logoLight: <LogoLightmode title="Logo Light" />,
+		logoDark: <LogoDarkmode title="Logo Dark" />,
 	},
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
@@ -61,8 +61,8 @@ export const WithImages: Story = {
 		await expect(link).toBeInTheDocument();
 
 		// We can check if images are rendered
-		const lightImg = await canvas.findByAltText(/Logo Light/i);
-		const darkImg = await canvas.findByAltText(/Logo Dark/i);
+		const lightImg = canvasElement.querySelector('svg[title="Logo Light"]');
+		const darkImg = canvasElement.querySelector('svg[title="Logo Dark"]');
 		await expect(lightImg).toBeInTheDocument();
 		await expect(darkImg).toBeInTheDocument();
 	},

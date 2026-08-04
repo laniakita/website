@@ -30,8 +30,8 @@ export interface HeaderLogoProps {
  * using CSS display classes (`dark:hidden` and `hidden dark:flex`).
  */
 export function HeaderLogo({
-	logoLight = <LogoLightmode />,
-	logoDark = <LogoDarkmode />,
+	logoLight = <LogoLightmode title="Logo Light" />,
+	logoDark = <LogoDarkmode title="Logo Dark" />,
 	branding = (
 		<>
 			<span className="icon-[ph--leaf-fill] mr-2 size-6 text-primary" />
