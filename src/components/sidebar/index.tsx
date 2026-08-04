@@ -24,7 +24,7 @@ export function BlogSidebar({ categories, tags }: BlogSidebarProps) {
 					tags={tags}
 					blogInfo={
 						<p>
-							A blog about life, Linux, and web development. Written by Lani
+							A blog about life, systems, and programming. Written by Lani
 							Akita.
 						</p>
 					}

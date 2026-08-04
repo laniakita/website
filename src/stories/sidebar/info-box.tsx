@@ -23,8 +23,8 @@ function SimpleRoller({
 	if (!items || items.length === 0) return null;
 	return (
 		<div className="mb-4">
-			<h3 className="font-bold mb-2">{title}</h3>
-			<div className="flex flex-wrap gap-2 text-sm font-mono text-muted-foreground">
+			<h3 className="font-bold mb-2 font-heading">{title}</h3>
+			<div className="flex flex-wrap gap-2 text-sm text-muted-foreground">
 				{items.map((item, idx) => (
 					<span key={`${item.url}`}>
 						<a
@@ -54,7 +54,7 @@ export function InfoBox({
 	return (
 		<Card className={`${className} pt-0`}>
 			<Tabs defaultSelectedKey="info" className="w-full">
-				<TabsList className="w-full justify-start rounded-none rounded-t-lg border-b bg-muted/50 p-0 h-auto">
+				<TabsList className="w-full justify-start rounded-none rounded-t-lg border-b bg-muted/50 p-0 h-auto font-heading capitalize">
 					<TabsTrigger
 						id="info"
 						className="data-selected:bg-background rounded-none border-b-2 border-transparent data-selected:border-primary px-6 py-3"
