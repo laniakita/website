@@ -1,0 +1,208 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { Dialog, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+	DropdownMenu,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "react-aria-components";
+
+export interface MinPageData {
+	title: string;
+
+	url: string;
+}
+
+export const shareUnderChar = (
+	minPageData: MinPageData | undefined,
+	isBsky?: boolean,
+) => {
+	if (!minPageData) return "";
+	const urlLen = isBsky ? 46 : 23;
+	const titleLen = minPageData.title.length;
+
+	if (urlLen + titleLen + 1 > 300) {
+		const titleSlice = minPageData.title
+			.slice(0, titleLen - urlLen - 3)
+			.split("");
+		titleSlice.push("...");
+		const titleTrunc = titleSlice.join("");
+		return encodeURIComponent(`${titleTrunc} ${minPageData.url}`);
+	}
+	return `${encodeURIComponent(minPageData.title)} ${encodeURIComponent(minPageData.url)}`;
+};
+
+const DEFAULT_INSTANCE = "mastodon.social";
+
+export function ShareButton({ title, url }: { title: string; url: string }) {
+	const [isCopied, setIsCopied] = useState(false);
+	const [isMastodonOpen, setIsMastodonOpen] = useState(false);
+	const [instanceInput, setInstanceInput] = useState(DEFAULT_INSTANCE);
+
+	// Optional fallback if props aren't passed
+	const [clientUrl, setClientUrl] = useState(url);
+	const [clientTitle, setClientTitle] = useState(title);
+
+	useEffect(() => {
+		if (!url && typeof window !== "undefined") {
+			setClientUrl(window.location.href);
+		}
+		if (!title && typeof document !== "undefined") {
+			setClientTitle(document.title);
+		}
+	}, [url, title]);
+
+	useEffect(() => {
+		if (typeof window !== "undefined") {
+			const cachedInstance = localStorage.getItem("mastodon-instance");
+			if (cachedInstance && cachedInstance.length > 0) {
+				setInstanceInput(cachedInstance);
+			}
+		}
+	}, []);
+
+	const pageData = { title: clientTitle, url: clientUrl };
+
+	const handleCopy = () => {
+		navigator.clipboard.writeText(clientUrl);
+		setIsCopied(true);
+		setTimeout(() => {
+			setIsCopied(false);
+		}, 2000);
+	};
+
+	const shareToMastodon = (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		const formData = new FormData(e.currentTarget);
+		const userInstance = formData.get("mastodon-instance");
+		let targetInstance = DEFAULT_INSTANCE;
+
+		if (typeof userInstance === "string" && userInstance.length > 0) {
+			localStorage.setItem("mastodon-instance", userInstance);
+			targetInstance = userInstance;
+		} else {
+			const cached = localStorage.getItem("mastodon-instance");
+			if (cached) targetInstance = cached;
+		}
+
+		const returnUrl = `https://${targetInstance}/share?text=${encodeURIComponent(clientTitle)}%0A%0A${encodeURIComponent(clientUrl)}`;
+		window.open(returnUrl, "_blank", "noreferrer=true")?.focus();
+		setIsMastodonOpen(false);
+	};
+
+	return (
+		<>
+			<DropdownMenuTrigger>
+				<Button
+					className="z-10 flex flex-row items-center justify-center gap-2 rounded-full border border-ctp-mauve bg-ctp-mauve/10 px-8 py-2 font-mono font-black transition-colors hover:border-ctp-flamingo hover:bg-ctp-pink hover:text-ctp-base outline-none"
+				>
+					<span className="icon-[ph--upload-bold] text-2xl" />
+					<span>share</span>
+				</Button>
+				<DropdownMenu
+					placement="bottom"
+					className="min-w-48 font-mono bg-ctp-base/90 backdrop-blur-md border-ctp-overlay0 dark:bg-ctp-base/50 dark:shadow-ctp-pink/30 p-1.5 shadow-lg"
+				>
+					<DropdownMenuItem
+						onAction={handleCopy}
+						className="cursor-pointer hover:bg-ctp-pink hover:text-ctp-base gap-2 rounded-md"
+					>
+						<span className="icon-[ph--link] text-xl" />
+						{isCopied ? "copied!" : "copy link"}
+					</DropdownMenuItem>
+
+					<DropdownMenuItem className="cursor-pointer hover:bg-[#1185FE] hover:text-white gap-2 rounded-md">
+						<a
+							href={`https://bsky.app/intent/compose?text=${shareUnderChar(pageData, true)}`}
+							target="_blank"
+							rel="noreferrer"
+							className="flex w-full items-center gap-2"
+						>
+							<span className="icon-[fa6-brands--bluesky] text-xl" />
+							Bluesky
+						</a>
+					</DropdownMenuItem>
+
+					<DropdownMenuItem
+						onAction={() => {
+							setIsMastodonOpen(true);
+						}}
+						className="cursor-pointer hover:bg-[#563ACC] hover:text-white gap-2 rounded-md"
+					>
+						<span className="icon-[fa6-brands--mastodon] text-xl" />
+						Mastodon
+					</DropdownMenuItem>
+
+					<DropdownMenuItem className="cursor-pointer hover:bg-[#0a66c2] hover:text-white gap-2 rounded-md">
+						<a
+							href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(clientUrl)}`}
+							target="_blank"
+							rel="noreferrer"
+							className="flex w-full items-center gap-2"
+						>
+							<span className="icon-[fa6-brands--linkedin] text-xl" />
+							LinkedIn
+						</a>
+					</DropdownMenuItem>
+
+					<DropdownMenuItem className="cursor-pointer hover:bg-[#ff6719] hover:text-white gap-2 rounded-md">
+						<a
+							href={`https://substack.com/notes?action=compose&message=${encodeURIComponent(clientTitle)} ${encodeURIComponent(clientUrl)}`}
+							target="_blank"
+							rel="noreferrer"
+							className="flex w-full items-center gap-2"
+						>
+							<span className="icon-[simple-icons--substack] text-xl" />
+							Substack
+						</a>
+					</DropdownMenuItem>
+				</DropdownMenu>
+			</DropdownMenuTrigger>
+
+			<Dialog isOpen={isMastodonOpen} onOpenChange={setIsMastodonOpen}>
+				<DialogHeader>
+					<DialogTitle className="sr-only">Share to Mastodon</DialogTitle>
+				</DialogHeader>
+				<div className="py-6">
+					<form onSubmit={shareToMastodon} className="flex flex-col gap-4">
+						<label
+							htmlFor="mastodon-instance"
+							className="font-semibold text-foreground"
+						>
+							mastodon_server:{" "}
+							{instanceInput.length > 0 ? instanceInput : DEFAULT_INSTANCE}
+						</label>
+						<div className="relative flex flex-row">
+							<input
+								id="mastodon-instance"
+								name="mastodon-instance"
+								type="text"
+								placeholder={
+									instanceInput.length > 0 ? instanceInput : DEFAULT_INSTANCE
+								}
+								onChange={(e) => setInstanceInput(e.target.value)}
+								className="w-full rounded-l-lg border border-r-0 border-ctp-surface0 bg-background px-4 py-3 placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ctp-mauve"
+							/>
+							<button
+								type="submit"
+								className="rounded-r-lg bg-ctp-mauve text-ctp-base px-6 font-bold hover:bg-ctp-pink transition-colors"
+							>
+								share
+							</button>
+						</div>
+					</form>
+				</div>
+			</Dialog>
+		</>
+	);
+}
+export function ShareButtonSkeleton() {
+	return (
+		<div className="z-10 flex h-10 w-32 animate-pulse flex-row items-center justify-center gap-2 rounded-full border border-ctp-mauve/50 bg-ctp-mauve/10 px-8 py-2">
+			<div className="size-6 animate-pulse rounded-full bg-ctp-mauve/40" />
+			<div className="h-4 w-12 animate-pulse rounded bg-ctp-mauve/40" />
+		</div>
+	);
+}

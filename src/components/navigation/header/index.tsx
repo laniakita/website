@@ -103,7 +103,7 @@ export function Header({
 				warnDevBannerDescription={warnDevBannerDescription}
 				warnDevBannerReturnText={warnDevBannerReturnText}
 			/>
-			<HeaderContainer>
+			<HeaderContainer className=" min-w-full">
 				<div className="flex items-center gap-2 md:gap-4 lg:gap-6">
 					<HeaderTocToggle
 						isPost={isPost}

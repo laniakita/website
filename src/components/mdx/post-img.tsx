@@ -1,7 +1,6 @@
+"use client";
 import { Image } from "@unpic/react";
-import defaultMdxComponents from "fumadocs-ui/mdx";
-import type { MDXComponents } from "mdx/types";
-import { cloudflareLoader } from "../lib/image-loader";
+import { transform } from "unpic/providers/cloudflare";
 
 export function ImgReplacer(props: React.ImgHTMLAttributes<HTMLImageElement>) {
 	// biome-ignore lint/suspicious/noExplicitAny: MDX props are too dynamic
@@ -16,10 +15,8 @@ export function ImgReplacer(props: React.ImgHTMLAttributes<HTMLImageElement>) {
 				layout="fullWidth"
 				className="h-auto w-full"
 				background={lqip}
+				transform={transform}
 				// Pass the original src and a transformUrl function so unpic generates the srcset properly
-				transformUrl={(src: string, width: number) =>
-					cloudflareLoader({ src, width })
-				}
 			/>
 			{alt && (
 				<figcaption className="font-mono text-xs text-center mt-2 text-muted-foreground">
@@ -28,19 +25,4 @@ export function ImgReplacer(props: React.ImgHTMLAttributes<HTMLImageElement>) {
 			)}
 		</figure>
 	);
-}
-
-export function getMDXComponents(components?: MDXComponents) {
-	return {
-		...defaultMdxComponents,
-		img: ImgReplacer,
-		Image: ImgReplacer,
-		...components,
-	} satisfies MDXComponents;
-}
-
-export const useMDXComponents = getMDXComponents;
-
-declare global {
-	type MDXProvidedComponents = ReturnType<typeof getMDXComponents>;
 }
