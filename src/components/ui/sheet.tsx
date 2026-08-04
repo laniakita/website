@@ -65,16 +65,18 @@ function Sheet({
 	children,
 	side = "right",
 	showCloseButton = true,
+	overlayClassName,
 	...props
 }: Omit<ModalOverlayPrimitiveProps, "className" | "children"> &
 	Pick<React.ComponentProps<typeof ModalPrimitive>, "isDismissable"> & {
 		className?: string;
+		overlayClassName?: string;
 		children: React.ReactNode;
 		side?: "top" | "right" | "bottom" | "left";
 		showCloseButton?: boolean;
 	}) {
 	return (
-		<SheetOverlay {...props}>
+		<SheetOverlay className={overlayClassName} {...props}>
 			<ModalPrimitive
 				data-slot="sheet-content"
 				data-side={side}
@@ -109,14 +111,17 @@ function SheetContent({
 	children,
 	side = "right",
 	showCloseButton = true,
+	overlayClassName,
 	...props
 }: React.ComponentProps<typeof Sheet> & {
 	side?: "top" | "right" | "bottom" | "left";
 	showCloseButton?: boolean;
+	overlayClassName?: string;
 }) {
 	return (
 		<Sheet
 			className={className}
+			overlayClassName={overlayClassName}
 			side={side}
 			showCloseButton={showCloseButton}
 			{...props}

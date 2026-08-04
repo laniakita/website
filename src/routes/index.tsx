@@ -5,6 +5,9 @@ import { compareDesc } from "date-fns";
 import { blogSource } from "@/lib/collections/blog";
 import { BlogPostRoller } from "../components/blog/post-roller";
 import GlobalMDXRenderer from "../components/mdx-renderer";
+import { SOCIALS_NAVBAR } from "../components/nav-constants";
+import { Header } from "../components/navigation/header";
+import { defaultNavItems } from "../components/navigation/header/data";
 import { BlogSidebar } from "../components/sidebar";
 import { SidebarInfo } from "../components/sidebar/info";
 import { categoriesSource } from "../lib/collections/categories";
@@ -107,18 +110,21 @@ function App() {
 	const { PostRoller, meta } = Route.useLoaderData();
 
 	return (
-		<div className="flex size-full flex-row p-2 md:p-10 gap-6 max-w-7xl m-auto">
-			<main className="m-auto flex flex-col justify-center gap-4 px-page-common pt-blog simple-color-trans md:flex-row md:gap-6">
-				<SidebarInfo
-					className="md:hidden"
-					categories={meta.categories}
-					tags={meta.tags}
-				/>
-				{PostRoller}
-			</main>
-			<div className="hidden md:flex md:w-full md:max-w-xs lg:max-w-sm">
-				<BlogSidebar categories={meta.categories} tags={meta.tags} />
+		<>
+			<Header navItems={defaultNavItems} socialItems={SOCIALS_NAVBAR} />
+			<div className="flex size-full flex-row p-2 md:p-10 gap-6 max-w-7xl m-auto">
+				<main className="m-auto flex flex-col justify-center gap-4 px-page-common pt-blog simple-color-trans md:flex-row md:gap-6">
+					<SidebarInfo
+						className="md:hidden"
+						categories={meta.categories}
+						tags={meta.tags}
+					/>
+					{PostRoller}
+				</main>
+				<div className="hidden md:flex md:w-full md:max-w-xs lg:max-w-sm">
+					<BlogSidebar categories={meta.categories} tags={meta.tags} />
+				</div>
 			</div>
-		</div>
+		</>
 	);
 }

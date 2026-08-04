@@ -60,10 +60,6 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 					<ThemeStoreProvider>
 						<NavScrollViewStoreProvider>
 							<ToCViewStoreProvider>
-								<Header
-									navItems={defaultNavItems}
-									socialItems={defaultSocialItems}
-								/>
 								{children}
 								<Footer />
 							</ToCViewStoreProvider>

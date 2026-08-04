@@ -22,7 +22,7 @@ export function HeaderNav({ navItems }: HeaderNavProps) {
 				<Link
 					key={item.label}
 					to={item.to}
-					className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+					className="z-51 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
 				>
 					{item.label}
 				</Link>

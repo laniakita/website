@@ -1,10 +1,12 @@
+import type * as React from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 /**
  * Props for the HeaderTocToggle component.
  */
-export interface HeaderTocToggleProps {
+export interface HeaderTocToggleProps
+	extends React.HTMLAttributes<HTMLButtonElement> {
 	/**
 	 * Determines if the current page is a post. If false, the toggle is not rendered.
 	 */
@@ -28,6 +30,7 @@ export function HeaderTocToggle({
 	isPost,
 	tocInView,
 	onTocToggle,
+	...props
 }: HeaderTocToggleProps) {
 	if (!isPost) return null;
 
@@ -38,6 +41,7 @@ export function HeaderTocToggle({
 			className={cn(
 				"md:flex hidden transition-all duration-300",
 				tocInView ? "w-0 opacity-0 p-0 overflow-hidden" : "w-9 opacity-100",
+				props.className,
 			)}
 			onPress={onTocToggle}
 			aria-label="Toggle Table of Contents"
