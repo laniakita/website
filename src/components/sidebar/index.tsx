@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { Sidebar } from "$/src/stories/sidebar/sidebar";
 import { sidebarSocialItems } from "./data";
 import { SidebarInfo } from "./info";
@@ -13,21 +14,17 @@ export interface BlogSidebarProps {
 		title: string;
 		url: string;
 	}[];
+	info?: ReactNode;
 }
 
-export function BlogSidebar({ categories, tags }: BlogSidebarProps) {
+export function BlogSidebar({ categories, tags, info }: BlogSidebarProps) {
 	return (
 		<Sidebar
 			infoBoxSlot={
 				<SidebarInfo
 					categories={categories}
 					tags={tags}
-					blogInfo={
-						<p>
-							A blog about life, systems, and programming. Written by Lani
-							Akita.
-						</p>
-					}
+					blogInfo={info}
 					className="min-h-min"
 				/>
 			}

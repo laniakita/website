@@ -4,7 +4,9 @@ import { renderServerComponent } from "@tanstack/react-start/rsc";
 import { compareDesc } from "date-fns";
 import { blogSource } from "@/lib/collections/blog";
 import { BlogPostRoller } from "../components/blog/post-roller";
+import GlobalMDXRenderer from "../components/mdx-renderer";
 import { BlogSidebar } from "../components/sidebar";
+import { SidebarInfo } from "../components/sidebar/info";
 import { categoriesSource } from "../lib/collections/categories";
 import { tagsSource } from "../lib/collections/tags";
 import type { CatTag } from "../stories/blog/cat-tag-roller";
@@ -27,11 +29,11 @@ const getPosts = createServerFn().handler(async () => {
 						title: c.title,
 						url: c.url,
 						type: "Category",
-					} satisfies CatTag;
+					};
 				}
 				return undefined;
 			})
-			.filter((c: CatTag | undefined): c is CatTag => c !== undefined);
+			.filter((c): c is CatTag => c !== undefined);
 		const tags = meta.data.tags
 			.map((c) => {
 				if (c.title && c.url) {
@@ -39,16 +41,18 @@ const getPosts = createServerFn().handler(async () => {
 						title: c.title,
 						url: c.url,
 						type: "Tag",
-					} satisfies CatTag;
+					};
 				}
 				return undefined;
 			})
-			.filter((c: CatTag | undefined): c is CatTag => c !== undefined);
+			.filter((c): c is CatTag => c !== undefined);
 		return {
 			url: meta.data.url,
 			headline: meta.data.headline,
 			subheadline: meta.data.subheadline,
-			description: meta.data.description,
+			description: (
+				<GlobalMDXRenderer>{meta.data.description}</GlobalMDXRenderer>
+			),
 			date: meta.data.date,
 			updated: meta.data.updated,
 			featuredImage: {
@@ -103,8 +107,13 @@ function App() {
 	const { PostRoller, meta } = Route.useLoaderData();
 
 	return (
-		<div className="flex size-full flex-row p-10 gap-6">
-			<main className="m-auto flex flex-col-reverse justify-center gap-4 px-page-common pt-blog simple-color-trans md:flex-row md:gap-6">
+		<div className="flex size-full flex-row p-2 md:p-10 gap-6 max-w-7xl m-auto">
+			<main className="m-auto flex flex-col justify-center gap-4 px-page-common pt-blog simple-color-trans md:flex-row md:gap-6">
+				<SidebarInfo
+					className="md:hidden"
+					categories={meta.categories}
+					tags={meta.tags}
+				/>
 				{PostRoller}
 			</main>
 			<div className="hidden md:flex md:w-full md:max-w-xs lg:max-w-sm">

@@ -2,7 +2,9 @@ import { InfoBox, type InfoBoxProps } from "$/src/stories/sidebar/info-box";
 
 export function SidebarInfo({
 	className,
-	blogInfo,
+	blogInfo = (
+		<p>A blog about life, systems, and programming. Written by Lani Akita.</p>
+	),
 	categories,
 	tags,
 }: InfoBoxProps) {

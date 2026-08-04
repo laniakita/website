@@ -11,7 +11,7 @@ export function SubscribeBox({ className }: SubscribeBoxProps) {
 	return (
 		<Card className={className}>
 			<CardContent className="flex flex-col gap-4 p-6">
-				<h4 className="flex-wrap text-3xl font-black text-balance">
+				<h4 className="flex-wrap text-3xl font-black font-heading text-balance">
 					Articles delivered right to your feed reader.
 				</h4>
 				<Link

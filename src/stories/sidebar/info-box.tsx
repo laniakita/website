@@ -4,7 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export interface InfoBoxProps extends React.HTMLAttributes<HTMLDivElement> {
 	/** The main text or React node containing biographical or descriptive info. */
-	blogInfo: React.ReactNode;
+	blogInfo?: React.ReactNode;
 	/** A list of category links to display in the meta tab. */
 	categories: { title: string; url: string }[];
 	/** A list of tag links to display in the meta tab. */
@@ -52,7 +52,7 @@ export function InfoBox({
 	className,
 }: InfoBoxProps) {
 	return (
-		<Card className={`${className} pt-0`}>
+		<Card className={`${className} py-0`}>
 			<Tabs defaultSelectedKey="info" className="w-full">
 				<TabsList className="w-full justify-start rounded-none rounded-t-lg border-b bg-muted/50 p-0 h-auto font-heading capitalize">
 					<TabsTrigger
@@ -68,12 +68,12 @@ export function InfoBox({
 						<span className="icon-[ph--tag] text-xl mr-2" /> meta
 					</TabsTrigger>
 				</TabsList>
-				<TabsContent id="info" className="p-6 mt-0">
+				<TabsContent id="info" className="p-4 md:p-6 -mt-2">
 					<div className="prose dark:prose-invert max-w-none text-sm">
 						{blogInfo}
 					</div>
 				</TabsContent>
-				<TabsContent id="meta" className="p-6 mt-0">
+				<TabsContent id="meta" className="p-4 md:p-6 -mt-2">
 					<SimpleRoller title="Categories" items={categories} />
 					<SimpleRoller title="Tags" items={tags} />
 				</TabsContent>
