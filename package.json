@@ -39,6 +39,7 @@
 		"fumadocs-mdx": "^15.2.1",
 		"fumadocs-ui": "^16.14.0",
 		"gray-matter": "^4.0.3",
+		"markdown-to-jsx": "^9.10.2",
 		"react": "^19.2.8",
 		"react-aria-components": "^1.20.0",
 		"react-dom": "^19.2.8",

@@ -21,7 +21,7 @@ export function PostRoller({
 }: PostRollerProps) {
 	return (
 		<div className="flex items-center justify-center">
-			<div className="flex w-full max-w-3xl flex-col gap-6 md:gap-8">
+			<div className="flex w-full max-w-3xl flex-col gap-4 md:gap-8">
 				{posts.map((post, idx) => {
 					const isInjectIndex = injectedComponent && idx === injectAtIndex;
 
