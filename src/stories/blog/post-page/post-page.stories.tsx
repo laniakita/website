@@ -80,9 +80,10 @@ export const Default: Story = {
 					This is standard MDX content being rendered directly inside the prose
 					wrapper.
 				</p>
+				<div className="h-[150vh]" />
 				<h1 id="usage">Usage</h1>
 				<p>Here is some more content to pad out the page and test scrolling.</p>
-				<div className="h-[50vh]" />
+				<div className="h-[150vh]" />
 			</div>
 		),
 	},
@@ -102,22 +103,32 @@ export const Default: Story = {
 		});
 
 		await step("Verify TOC interaction", async () => {
-			// Find the navbar TOC toggle button
-			const navbarTocBtn = canvas.getByRole("button", {
+			// Find the navbar TOC toggle button explicitly in the header to avoid conflicts
+			// with the sidebar button which is also a TocToggle component
+			const header = canvasElement.querySelector("header");
+			if (!header) throw new Error("Header not found");
+			const headerCanvas = within(header as HTMLElement);
+			const navbarTocBtn = headerCanvas.getByRole("button", {
 				name: /Toggle Table of Contents/i,
 			});
 			expect(navbarTocBtn).toBeInTheDocument();
 
 			// Find the TOC sidebar close button
-			const sidebarCloseBtn = canvas.getByRole("button", {
-				name: /Close Table of Contents/i,
+			// Since we replaced the Close button with TocToggle, its aria-label is also Toggle Table of Contents.
+			// We can find it by looking inside the TOC nav (IPAD_TOC_ID)
+			const sidebarNav = canvasElement.querySelector(
+				"#horizontal-table-of-contents",
+			);
+			if (!sidebarNav) throw new Error("Sidebar TOC not found");
+			const sidebarCanvas = within(sidebarNav as HTMLElement);
+			const sidebarCloseBtn = sidebarCanvas.getByRole("button", {
+				name: /Toggle Table of Contents/i,
 			});
 			expect(sidebarCloseBtn).toBeInTheDocument();
 
 			// By default, TOC is visible (tocInView is true), so the navbar button should be hidden (w-0, opacity-0)
 			expect(navbarTocBtn).toHaveClass("w-0", "opacity-0");
 			// And the sidebar should be open (w-80 or w-96)
-			const sidebarNav = sidebarCloseBtn.closest("nav");
 			expect(sidebarNav).not.toHaveClass("w-0");
 
 			// Close the TOC
@@ -172,8 +183,8 @@ export const Mobile: Story = {
 			// Let's get the "Usage" heading
 			const usageHeading = canvas.getByRole("heading", { name: "Usage" });
 
-			// Scroll the usage heading into view
-			usageHeading.scrollIntoView({ behavior: "instant" });
+			// Scroll the usage heading into view, specifically to the center so it intersects the observer
+			usageHeading.scrollIntoView({ behavior: "instant", block: "center" });
 
 			// The IntersectionObserver should update the activeId, and the ConcatTitle should render "Usage"
 			// Next to the "On this page" button, there is a <p> tag that contains the ConcatTitle
@@ -206,35 +217,107 @@ export const Mobile: Story = {
 				});
 				await userEvent.click(mobileTocBtn);
 
-				// Find the opened dialog overlay (ModalOverlay uses fixed inset-0)
-				// It renders in a portal outside the canvas, so we check document.body
-				const bodyCanvas = within(document.body);
-				const tocDialog = await bodyCanvas.findByRole("dialog");
-				expect(tocDialog).toBeInTheDocument();
+				// Find the opened collapsible content (DisclosurePanel uses role="group")
+				// It renders inline, not in a portal
+				const tocGroup = await canvas.findByRole("group", { hidden: true });
+				expect(tocGroup).toBeInTheDocument();
 
-				// We added !z-30 to the SheetContent (which applies to ModalPrimitive), so let's verify that's applied correctly
+				// We added z-30 to the CollapsibleContent so let's verify that's applied correctly
 				// This ensures it slides OUT under the mobile menu bar which is z-40, and the header which is z-50
-				expect(tocDialog.parentElement).toHaveClass("!z-30");
+				expect(tocGroup).toHaveClass("z-30");
 
-				// Verify the menu bar is z-40
+				// Verify the menu bar is visually above
 				const nav = mobileTocBtn.closest("nav");
-				expect(nav).toHaveClass("z-40");
+				expect(nav).toBeInTheDocument();
 			},
 		);
 
 		await step("Verify mobile TOC closes on item click", async () => {
-			// Find the opened dialog overlay
-			const bodyCanvas = within(document.body);
-			const tocDialog = await bodyCanvas.findByRole("dialog");
+			// Find the opened collapsible content
+			const tocGroup = await canvas.findByRole("group", { hidden: true });
 
 			// Find a link inside the TOC and click it
-			const dialogCanvas = within(tocDialog);
-			const usageLink = dialogCanvas.getByRole("link", { name: /Usage/i });
+			const groupCanvas = within(tocGroup);
+			const usageLink = await groupCanvas.findByRole("link", { name: /Usage/i, hidden: true });
 			await userEvent.click(usageLink);
 
-			// Verify the dialog closes (is removed from DOM)
-			// queryByRole returns null if not found
-			expect(bodyCanvas.queryByRole("dialog")).not.toBeInTheDocument();
+			// Verify the group closes (is removed from DOM or gets hidden attribute)
+			// wait for the exit animation to finish
+			await waitFor(() => {
+				const group = canvas.queryByRole("group", { hidden: true });
+				if (group) {
+					expect(group).toHaveAttribute("hidden");
+				}
+			});
 		});
+
+		await step(
+			"Verify clicking outside mobile TOC closes it",
+			async () => {
+				// Ensure it's closed first
+				const initialGroup = canvas.queryByRole("group", { hidden: true });
+				if (initialGroup) {
+					expect(initialGroup).toHaveAttribute("hidden");
+				}
+
+				// Open it
+				const mobileTocBtn = canvas.getByRole("button", {
+					name: /On this page/i,
+					hidden: true,
+				});
+				await userEvent.click(mobileTocBtn);
+
+				// Wait for it to appear
+				await waitFor(() => {
+					expect(canvas.getByRole("group", { hidden: true })).not.toHaveAttribute("hidden");
+				});
+
+				// Verify scrim is present
+				const scrim = canvas.getByTestId("mobile-toc-scrim");
+				expect(scrim).toBeInTheDocument();
+
+				// Click the scrim to close
+				await userEvent.click(scrim);
+
+				// Wait for exit animations and verify it closes
+				await waitFor(() => {
+					const closedGroup = canvas.queryByRole("group", { hidden: true });
+					if (closedGroup) {
+						expect(closedGroup).toHaveAttribute("hidden");
+					}
+					
+					// Verify scrim is gone
+					expect(canvas.queryByTestId("mobile-toc-scrim")).not.toBeInTheDocument();
+				});
+			},
+		);
+
+		await step(
+			"Verify mobile TOC can be toggled by the 'On this page' button",
+			async () => {
+				const bodyCanvas = within(document.body);
+				const mobileTocBtn = canvas.getByRole("button", {
+					name: /On this page/i,
+					hidden: true,
+				});
+
+				// 1. Open the TOC
+				await userEvent.click(mobileTocBtn);
+				expect(await canvas.findByRole("group", { hidden: true })).toBeInTheDocument();
+
+				// 2. Close the TOC by clicking the button again
+				await userEvent.click(mobileTocBtn);
+				await waitFor(() => {
+					expect(canvas.queryByRole("group", { hidden: true })).not.toBeVisible();
+				});
+
+				// 3. Open it again
+				await userEvent.click(mobileTocBtn);
+				expect(await canvas.findByRole("group", { hidden: true })).toBeInTheDocument();
+
+				// Cleanup: close it
+				await userEvent.click(mobileTocBtn);
+			},
+		);
 	},
 };

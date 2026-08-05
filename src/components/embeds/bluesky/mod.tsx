@@ -27,7 +27,6 @@ export const BlueskyEmbedCore = ({ postUrl }: { postUrl: string }) => {
 				.getPostThread({ uri: postATUri })
 				.then((res) => res.data);
 			setData(post);
-			console.log(post);
 		}
 		fetchAgent(postUrl);
 	}, [postUrl]);
