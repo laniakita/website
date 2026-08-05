@@ -1,5 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "@/components/ui/link";
+import { cn } from "$/src/lib/utils";
 
 export interface SubscribeBoxProps
 	extends React.HTMLAttributes<HTMLDivElement> {}
@@ -9,7 +10,7 @@ export interface SubscribeBoxProps
  */
 export function SubscribeBox({ className }: SubscribeBoxProps) {
 	return (
-		<Card className={className}>
+		<Card className={cn("bg-background", className)}>
 			<CardContent className="flex flex-col gap-4 p-6">
 				<h4 className="flex-wrap text-3xl font-black font-heading text-balance">
 					Articles delivered right to your feed reader.

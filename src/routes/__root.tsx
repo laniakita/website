@@ -55,7 +55,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 				/>
 				<HeadContent />
 			</head>
-			<body className="bg-muted">
+			<body className="bg-background dark:bg-muted">
 				<TanstackProvider>
 					<ThemeStoreProvider>
 						<NavScrollViewStoreProvider>

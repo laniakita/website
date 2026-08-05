@@ -1,5 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "@/components/ui/link";
+import { cn } from "$/src/lib/utils";
 
 /**
  * Defines a single social media link item.
@@ -28,7 +29,7 @@ export interface SocialBoxProps extends React.HTMLAttributes<HTMLDivElement> {
  */
 export function SocialBox({ items, className }: SocialBoxProps) {
 	return (
-		<Card className={className}>
+		<Card className={cn("bg-background", className)}>
 			<CardContent className="p-6">
 				<div className="grid grid-cols-3 gap-2">
 					{items.map((item, _idx) => (

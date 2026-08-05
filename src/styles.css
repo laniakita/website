@@ -43,18 +43,18 @@
   --card-foreground: var(--ctp-text);
   --popover: var(--ctp-surface0);
   --popover-foreground: var(--ctp-text);
-  --primary: var(--ctp-pink);
+  --primary: oklch(from var(--ctp-mauve) calc(l - 0.1) c h);
   --primary-foreground: var(--ctp-base);
-  --secondary: var(--ctp-surface1);
+  --secondary: var(--ctp-surface0);
   --secondary-foreground: var(--ctp-text);
   --muted: var(--ctp-crust);
-  --muted-foreground: var(--ctp-subtext0);
+  --muted-foreground: var(--ctp-subtext1);
   --accent: var(--ctp-surface1);
   --accent-foreground: var(--ctp-text);
   --destructive: var(--ctp-red);
   --border: var(--ctp-surface1);
   --input: var(--ctp-surface1);
-  --ring: var(--ctp-pink);
+  --ring: var(--ctp-mauve);
   --chart-1: var(--ctp-red);
   --chart-2: var(--ctp-peach);
   --chart-3: var(--ctp-yellow);
@@ -63,12 +63,12 @@
   --radius: 0.625rem;
   --sidebar: var(--ctp-mantle);
   --sidebar-foreground: var(--ctp-text);
-  --sidebar-primary: var(--ctp-pink);
+  --sidebar-primary: oklch(from var(--ctp-mauve) calc(l - 0.1) c h);
   --sidebar-primary-foreground: var(--ctp-base);
   --sidebar-accent: var(--ctp-surface0);
   --sidebar-accent-foreground: var(--ctp-text);
   --sidebar-border: var(--ctp-surface1);
-  --sidebar-ring: var(--ctp-pink);
+  --sidebar-ring: var(--ctp-mauve);
 }
 
 * {
@@ -217,7 +217,7 @@ body,
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-muted text-foreground;
+    @apply bg-background dark:bg-muted text-foreground;
   }
   button:not(:disabled),
   [role="button"]:not(:disabled) {
