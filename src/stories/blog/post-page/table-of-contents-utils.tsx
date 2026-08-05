@@ -6,6 +6,7 @@ import {
 	type Dispatch,
 	type SetStateAction,
 	Suspense,
+	useCallback,
 	useEffect,
 	useId,
 	useRef,
@@ -92,19 +93,18 @@ export function HeadingLink({
 					href={node.url}
 					id={linkId}
 					aria-label={`Jump to: ${node.url}`}
-					className={`inline-block w-full border-b border-border/20 py-1 text-left group-hover:bg-muted/50 ${isActive ? "bg-muted/50" : ""} transition-colors duration-300`}
+					className={`inline-block w-full border-b border-border/20 py-1 text-left group-hover:bg-muted/50 ${isActive ? "bg-muted/50" : "text-muted-foreground"} duration-300 transition-colors group-hover:text-foreground [&>code]:pretty-inline-code`}
 					onClick={(e) => {
 						e.preventDefault();
 						window.history.pushState(null, "", node.url);
 						const el = document.getElementById(nodeId);
 						el?.scrollIntoView({ behavior: "smooth" });
-						// Pause intersection observer and trigger manual active state
-						setScrollToHeading();
+						// Trigger manual active state and pause logic
 						onItemClick?.(nodeId);
 					}}
 				>
 					<span
-						className={`pointer-events-none inline-block pr-[2ch] font-mono text-sm leading-relaxed font-semibold text-balance transition-colors group-hover:text-foreground group-hover:underline [&>code]:pretty-inline-code ${isActive ? "text-foreground underline" : "text-muted-foreground"} break-words ${MD_MAX_TOC_WIDTH} ${LG_MAX_TOC_WIDTH}`}
+						className={`pointer-events-none inline-block pr-[2ch] font-mono text-sm leading-relaxed font-semibold text-balance group-hover:underline  ${isActive ? "underline" : ""}  wrap-break-word ${MD_MAX_TOC_WIDTH} ${LG_MAX_TOC_WIDTH}`}
 						style={{ paddingLeft: `${node.depth * 2}ch` }}
 						//biome-ignore lint/security/noDangerouslySetInnerHtml: MDX headings are safe
 						dangerouslySetInnerHTML={{ __html: node.title }}
@@ -117,31 +117,31 @@ export function HeadingLink({
 
 // inspired by Emma Goto React ToC: https://www.emgoto.com/react-table-of-contents
 
-let isScrollingToHeading = false;
-let scrollTimeout: NodeJS.Timeout | null = null;
-
-export const setScrollToHeading = () => {
-	isScrollingToHeading = true;
-	if (scrollTimeout) clearTimeout(scrollTimeout);
-	// Fallback timeout in case scrolling doesn't fire long enough
-	scrollTimeout = setTimeout(() => {
-		isScrollingToHeading = false;
-	}, 1000);
-};
+// inspired by Emma Goto React ToC: https://www.emgoto.com/react-table-of-contents
 
 export const useIntersectionObserver = (
 	setActiveId: Dispatch<SetStateAction<string>>,
 	activeId: string,
 ) => {
 	const headingElsRef = useRef<Record<string, IntersectionObserverEntry>>({});
+	const isScrollingToHeading = useRef(false);
+	const scrollTimeout = useRef<NodeJS.Timeout | null>(null);
+
+	const setScrollToHeading = useCallback(() => {
+		isScrollingToHeading.current = true;
+		if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
+		scrollTimeout.current = setTimeout(() => {
+			isScrollingToHeading.current = false;
+		}, 1000);
+	}, []);
 
 	// Track scroll interactions to pause the observer during a click
 	useEffect(() => {
 		const onScroll = () => {
-			if (isScrollingToHeading && scrollTimeout) {
-				clearTimeout(scrollTimeout);
-				scrollTimeout = setTimeout(() => {
-					isScrollingToHeading = false;
+			if (isScrollingToHeading.current && scrollTimeout.current) {
+				clearTimeout(scrollTimeout.current);
+				scrollTimeout.current = setTimeout(() => {
+					isScrollingToHeading.current = false;
 				}, 100);
 			}
 		};
@@ -155,7 +155,7 @@ export const useIntersectionObserver = (
 		);
 
 		const callback = (headings: IntersectionObserverEntry[]) => {
-			if (isScrollingToHeading) return; // Pause tracking while smooth scrolling
+			if (isScrollingToHeading.current) return; // Pause tracking while smooth scrolling
 
 			headingElsRef.current = headings.reduce<
 				Record<string, IntersectionObserverEntry>
@@ -210,6 +210,15 @@ export const useIntersectionObserver = (
 			observer.disconnect();
 		};
 	}, [setActiveId, activeId]);
+
+	// Cleanup timeout on unmount
+	useEffect(() => {
+		return () => {
+			if (scrollTimeout.current) clearTimeout(scrollTimeout.current);
+		};
+	}, []);
+
+	return { setScrollToHeading };
 };
 
 export type FlatHeadingNode = {

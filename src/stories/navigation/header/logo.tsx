@@ -42,6 +42,7 @@ export function HeaderLogo({
 	return (
 		<Link
 			to="/"
+			aria-label="Home"
 			className="font-bold text-xl tracking-tight mr-4 flex items-center hover:opacity-80 transition-opacity"
 		>
 			{logoLight && logoDark ? (

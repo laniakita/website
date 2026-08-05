@@ -80,7 +80,7 @@ export const WithInjectedComponent: Story = {
 				<h3 className="text-xl font-bold text-primary mb-2">
 					Subscribe to our newsletter!
 				</h3>
-				<p className="text-muted-foreground">
+				<p className="text-foreground">
 					Get the latest updates right in your inbox.
 				</p>
 			</div>

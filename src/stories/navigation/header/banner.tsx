@@ -42,7 +42,7 @@ export function HeaderBanner({
 	if (!warnDev || !productionUrl) return null;
 
 	return (
-		<div className="bg-destructive/10 text-destructive text-xs font-medium px-4 py-1 text-center">
+		<div className="bg-red-600 text-white dark:bg-red-900 dark:text-red-50 text-xs font-medium px-4 py-1 text-center">
 			{warnDevBannerDescription}{" "}
 			<RACLink
 				href={productionUrl}
