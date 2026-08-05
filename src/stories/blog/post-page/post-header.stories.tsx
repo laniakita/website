@@ -41,8 +41,8 @@ export const Default: Story = {
 			altText: "Computer code on a screen",
 			caption: "A beautiful stock photo of code",
 			hasImage: true,
-			width: 1000,
-			height: 600,
+			//width: 1000,
+			//height: 600,
 		},
 	},
 	play: async ({ canvasElement }) => {

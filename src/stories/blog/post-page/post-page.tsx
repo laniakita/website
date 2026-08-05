@@ -1,5 +1,6 @@
 import { ClientOnly } from "@tanstack/react-router";
 import type * as React from "react";
+import { Footer } from "@/components/navigation/footer";
 // We import Header just for Storybook structure, but in a real app this might be in a layout
 import { Header, type HeaderProps } from "@/components/navigation/header";
 import { useToCViewStore } from "@/lib/providers/toc-view-store-provider";
@@ -29,7 +30,7 @@ export function PostPage(props: PostPageProps) {
 	const { tocInView, setToCInView } = useToCViewStore((state) => state);
 
 	return (
-		<div className="flex size-full flex-col md:relative md:flex-row bg-background">
+		<div className="flex size-full flex-col md:relative md:flex-row">
 			{/* Desktop ToC (will only show if useToCViewStore says so and screen is md+) */}
 			<ClientOnly fallback={<TableOfContentsDesktopSkeleton />}>
 				<TableOfContentsDesktop {...props.toc} />
@@ -62,6 +63,7 @@ export function PostPage(props: PostPageProps) {
 					<ClientOnly fallback={<CommentsSkeleton />}>
 						<Comments />
 					</ClientOnly>
+					<Footer />
 				</main>
 			</div>
 		</div>

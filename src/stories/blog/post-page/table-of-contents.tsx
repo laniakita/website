@@ -36,7 +36,7 @@ export function TableOfContentsDesktop(props: ToCMenuProps) {
 		<nav
 			id={IPAD_TOC_ID}
 			aria-label="Table of Contents (Desktop)"
-			className={`${tocInView ? "min-w-80 md:w-80 lg:w-96 lg:min-w-96" : "w-0 min-w-0"}  sticky top-0 hidden max-h-dvh overflow-x-hidden overflow-y-auto border-r border-border bg-background text-foreground shadow-xl motion-safe:[transition:width_0.8s,min-width_0.8s,background-color_0.5s] md:block`}
+			className={`${tocInView ? "min-w-80 md:w-80 lg:w-96 lg:min-w-96" : "w-0 min-w-0"}  sticky top-0 hidden max-h-dvh overflow-x-hidden overflow-y-auto border-r border-border bg-muted text-foreground shadow-xl motion-safe:[transition:width_0.8s,min-width_0.8s,background-color_0.5s] md:block`}
 		>
 			<div className="px-6 sticky top-0 z-10 flex min-h-16 w-full flex-row items-center justify-start text-foreground ">
 				<div className="nav-glassy-bg" />

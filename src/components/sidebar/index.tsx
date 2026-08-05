@@ -25,16 +25,18 @@ export function BlogSidebar({ categories, tags, info }: BlogSidebarProps) {
 					categories={categories}
 					tags={tags}
 					blogInfo={info}
-					className="min-h-min"
+					className="min-h-min shadow-none rounded-lg bg-background/50"
 				/>
 			}
 			socialBoxSlot={
 				<SidebarSocials
 					items={sidebarSocialItems}
-					className="min-h-min w-full py-0"
+					className="min-h-min w-full py-0 shadow-none rounded-lg bg-background/50"
 				/>
 			}
-			subscribeBoxSlot={<SidebarSubscribe className="min-h-min" />}
+			subscribeBoxSlot={
+				<SidebarSubscribe className="min-h-min rounded-lg shadow-none bg-background/50" />
+			}
 		/>
 	);
 }

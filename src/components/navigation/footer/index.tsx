@@ -46,34 +46,34 @@ export function Footer({
 			<FooterBackdrop>
 				<FooterContainer>
 					<FooterContent>
-						<div className="flex w-full flex-col items-center justify-center gap-2 md:flex-row md:gap-14">
+						<div className="flex w-full flex-col items-center justify-center gap-2 @xl:flex-row @xl:gap-14">
 							{/* Mobile Top Divider */}
-							<div className="flex w-full px-4 md:hidden">
+							<div className="flex w-full px-4 @xl:hidden">
 								<div className="mb-4 flex h-px w-full bg-border" />
 							</div>
 
 							{/* Social Icons Section */}
-							<div className="w-full space-y-4 px-4 md:px-0 md:pl-4">
+							<div className="w-full space-y-4 px-4 @xl:px-0 @xl:pl-4">
 								<FooterSocialIcons items={socialItems} />
 							</div>
 
 							{/* Desktop Vertical Divider */}
-							<div className="hidden h-80 w-px bg-border md:flex" />
+							<div className="hidden h-80 w-px bg-border @xl:flex" />
 
 							{/* Mobile Bottom Divider */}
-							<div className="flex w-full px-4 md:hidden">
+							<div className="flex w-full px-4 @xl:hidden">
 								<div className="mt-4 flex h-px w-full bg-border" />
 							</div>
 
 							{/* Links & Socials Section */}
 							<div className="relative flex size-full flex-col">
-								<div className="grid w-full grid-cols-1 gap-4 p-4 sm:grid-cols-2 md:gap-14 md:p-0">
+								<div className="grid w-full grid-cols-1 gap-4 p-4 @lg:grid-cols-2 @xl:gap-14 @xl:p-0">
 									<FooterNavBox title="navigation" items={navItems} />
 									<FooterSocialBox title="socials" items={socialItems} />
 								</div>
 
 								{/* Desktop Copyright Badge */}
-								<div className="absolute hidden bg-background px-2 -bottom-13 z-50 md:flex">
+								<div className="absolute hidden px-2 -bottom-13 z-50 @xl:flex">
 									<FooterCopyright
 										startYear={startYear}
 										authorName={authorName}
@@ -82,7 +82,7 @@ export function Footer({
 							</div>
 
 							{/* Mobile Copyright */}
-							<div className="md:hidden mt-4">
+							<div className="@xl:hidden mt-4">
 								<FooterCopyright
 									startYear={startYear}
 									authorName={authorName}

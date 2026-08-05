@@ -1,6 +1,5 @@
 "use client";
 import { Image } from "@unpic/react";
-import { transform } from "unpic/providers/cloudflare";
 
 export function ImgReplacer(props: React.ImgHTMLAttributes<HTMLImageElement>) {
 	// biome-ignore lint/suspicious/noExplicitAny: MDX props are too dynamic
@@ -12,11 +11,20 @@ export function ImgReplacer(props: React.ImgHTMLAttributes<HTMLImageElement>) {
 				{...rest}
 				src={src}
 				alt={alt}
-				layout="fullWidth"
-				className="h-auto w-full"
+				layout="constrained"
+				fallback="cloudflare"
+				options={{
+					cloudflare: {
+						domain: import.meta.env.VITE_CDN,
+					},
+				}}
+				operations={{
+					cloudflare: {
+						quality: 75,
+						format: "avif",
+					},
+				}}
 				background={lqip}
-				transform={transform}
-				// Pass the original src and a transformUrl function so unpic generates the srcset properly
 			/>
 			{alt && (
 				<figcaption className="font-mono text-xs text-center mt-2 text-muted-foreground">
