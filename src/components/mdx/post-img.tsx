@@ -25,6 +25,7 @@ export function ImgReplacer(props: React.ImgHTMLAttributes<HTMLImageElement>) {
 					},
 				}}
 				background={lqip}
+				className="m-auto"
 			/>
 			{alt && (
 				<figcaption className="font-mono text-xs text-center mt-2 text-muted-foreground">

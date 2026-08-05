@@ -7,6 +7,7 @@ import {
 	TabsList,
 	TabsTrigger,
 } from "@/components/ui/tabs";
+import { cn } from "$/src/lib/utils";
 
 export interface InfoBoxProps extends React.HTMLAttributes<HTMLDivElement> {
 	/** The main text or React node containing biographical or descriptive info. */
@@ -58,7 +59,7 @@ export function InfoBox({
 	className,
 }: InfoBoxProps) {
 	return (
-		<Card className={`${className} py-0`}>
+		<Card className={cn("bg-background py-0", className)}>
 			<Tabs defaultSelectedKey="info" className="w-full">
 				<TabsList className="w-full justify-start rounded-none border-b-2 border-background bg-secondary px-6 pt-2 h-auto font-heading capitalize">
 					<SmoothTabsTrigger id="info">

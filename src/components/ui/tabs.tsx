@@ -99,7 +99,7 @@ function SmoothTabsTrigger({
 			data-slot="tabs-trigger-smooth"
 			className={cn(
 				"relative inline-flex flex-1 cursor-default items-center justify-center gap-2 rounded-t-xl border border-transparent! px-3 py-1 pb-2 text-sm font-medium whitespace-nowrap text-foreground/60 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-50",
-				"data-selected:bg-background data-selected:text-foreground dark:data-selected:bg-background dark:data-selected:text-foreground",
+				"data-selected:bg-background text-foreground dark:data-selected:bg-background",
 				className,
 			)}
 			{...props}
@@ -108,7 +108,6 @@ function SmoothTabsTrigger({
 				const { isSelected } = renderProps;
 				return (
 					<>
-						{/* Hover effect span for unselected state to match legacy */}
 						{!isSelected && (
 							<span className="absolute inset-0 z-10 mx-2 mt-px mb-1.5 rounded-xl transition-colors duration-300 hover:bg-primary/80 dark:hover:bg-primary/60" />
 						)}
