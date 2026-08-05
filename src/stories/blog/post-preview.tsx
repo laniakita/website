@@ -1,5 +1,6 @@
 import { Image } from "@unpic/react";
 import type * as React from "react";
+import { transform } from "unpic/providers/cloudflare";
 import {
 	Card,
 	CardContent,
@@ -28,10 +29,10 @@ export interface PostPreviewProps {
 	/** An optional cover image to display at the top of the card. */
 	featuredImage?: {
 		src: string;
+		altText?: string;
 		height?: number;
 		width?: number;
 		blurHash?: string;
-		altText?: string;
 	};
 	/** Categories associated with the post. */
 	categories?: CatTag[];
@@ -68,7 +69,7 @@ export function PostPreview(post: PostPreviewProps) {
 	return (
 		<Card
 			data-testid="post-preview-card"
-			className="pt-6 flex basis-full flex-col overflow-hidden motion-safe:transition-colors duration-300"
+			className="pt-6 flex basis-full flex-col overflow-hidden motion-safe:transition-colors duration-300 bg-transparent shadow-none rounded-lg border border-secondary"
 		>
 			{featuredImage?.src && (
 				<Link to={url} className="bg-muted">
@@ -79,6 +80,19 @@ export function PostPreview(post: PostPreviewProps) {
 							width={featuredImage.width}
 							alt={featuredImage.altText ?? ""}
 							background={featuredImage.blurHash}
+							fallback="cloudflare"
+							options={{
+								cloudflare: {
+									domain: import.meta.env.VITE_CDN,
+								},
+							}}
+							operations={{
+								cloudflare: {
+									quality: 75,
+									format: "avif",
+								},
+							}}
+							layout="constrained"
 							className="-mt-6 object-cover h-full w-full"
 						/>
 					) : (

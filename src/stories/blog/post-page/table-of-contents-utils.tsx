@@ -93,7 +93,7 @@ export function HeadingLink({
 					href={node.url}
 					id={linkId}
 					aria-label={`Jump to: ${node.url}`}
-					className={`inline-block w-full border-b border-border/20 py-1 text-left group-hover:bg-muted/50 ${isActive ? "bg-muted/50" : "text-muted-foreground"} duration-300 transition-colors group-hover:text-foreground [&>code]:pretty-inline-code`}
+					className={`inline-block w-full border-b border-border/20 py-1 text-left group-hover:bg-background ${isActive ? "bg-background" : "text-muted-foreground"} duration-300 transition-colors group-hover:text-foreground [&>code]:pretty-inline-code`}
 					onClick={(e) => {
 						e.preventDefault();
 						window.history.pushState(null, "", node.url);

@@ -56,8 +56,8 @@ export const Default: Story = {
 			src: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=1000",
 			altText: "Computer code on a screen",
 			hasImage: true,
-			width: 1000,
-			height: 600,
+			//width: 1000,
+			//height: 600,
 		},
 		toc: {
 			nestedHeadings: [
@@ -238,7 +238,10 @@ export const Mobile: Story = {
 
 			// Find a link inside the TOC and click it
 			const groupCanvas = within(tocGroup);
-			const usageLink = await groupCanvas.findByRole("link", { name: /Usage/i, hidden: true });
+			const usageLink = await groupCanvas.findByRole("link", {
+				name: /Usage/i,
+				hidden: true,
+			});
 			await userEvent.click(usageLink);
 
 			// Verify the group closes (is removed from DOM or gets hidden attribute)
@@ -251,46 +254,47 @@ export const Mobile: Story = {
 			});
 		});
 
-		await step(
-			"Verify clicking outside mobile TOC closes it",
-			async () => {
-				// Ensure it's closed first
-				const initialGroup = canvas.queryByRole("group", { hidden: true });
-				if (initialGroup) {
-					expect(initialGroup).toHaveAttribute("hidden");
+		await step("Verify clicking outside mobile TOC closes it", async () => {
+			// Ensure it's closed first
+			const initialGroup = canvas.queryByRole("group", { hidden: true });
+			if (initialGroup) {
+				expect(initialGroup).toHaveAttribute("hidden");
+			}
+
+			// Open it
+			const mobileTocBtn = canvas.getByRole("button", {
+				name: /On this page/i,
+				hidden: true,
+			});
+			await userEvent.click(mobileTocBtn);
+
+			// Wait for it to appear
+			await waitFor(() => {
+				expect(canvas.getByRole("group", { hidden: true })).not.toHaveAttribute(
+					"hidden",
+				);
+			});
+
+			// Verify scrim is present
+			const scrim = canvas.getByTestId("mobile-toc-scrim");
+			expect(scrim).toBeInTheDocument();
+
+			// Click the scrim to close
+			await userEvent.click(scrim);
+
+			// Wait for exit animations and verify it closes
+			await waitFor(() => {
+				const closedGroup = canvas.queryByRole("group", { hidden: true });
+				if (closedGroup) {
+					expect(closedGroup).toHaveAttribute("hidden");
 				}
 
-				// Open it
-				const mobileTocBtn = canvas.getByRole("button", {
-					name: /On this page/i,
-					hidden: true,
-				});
-				await userEvent.click(mobileTocBtn);
-
-				// Wait for it to appear
-				await waitFor(() => {
-					expect(canvas.getByRole("group", { hidden: true })).not.toHaveAttribute("hidden");
-				});
-
-				// Verify scrim is present
-				const scrim = canvas.getByTestId("mobile-toc-scrim");
-				expect(scrim).toBeInTheDocument();
-
-				// Click the scrim to close
-				await userEvent.click(scrim);
-
-				// Wait for exit animations and verify it closes
-				await waitFor(() => {
-					const closedGroup = canvas.queryByRole("group", { hidden: true });
-					if (closedGroup) {
-						expect(closedGroup).toHaveAttribute("hidden");
-					}
-					
-					// Verify scrim is gone
-					expect(canvas.queryByTestId("mobile-toc-scrim")).not.toBeInTheDocument();
-				});
-			},
-		);
+				// Verify scrim is gone
+				expect(
+					canvas.queryByTestId("mobile-toc-scrim"),
+				).not.toBeInTheDocument();
+			});
+		});
 
 		await step(
 			"Verify mobile TOC can be toggled by the 'On this page' button",
@@ -303,17 +307,23 @@ export const Mobile: Story = {
 
 				// 1. Open the TOC
 				await userEvent.click(mobileTocBtn);
-				expect(await canvas.findByRole("group", { hidden: true })).toBeInTheDocument();
+				expect(
+					await canvas.findByRole("group", { hidden: true }),
+				).toBeInTheDocument();
 
 				// 2. Close the TOC by clicking the button again
 				await userEvent.click(mobileTocBtn);
 				await waitFor(() => {
-					expect(canvas.queryByRole("group", { hidden: true })).not.toBeVisible();
+					expect(
+						canvas.queryByRole("group", { hidden: true }),
+					).not.toBeVisible();
 				});
 
 				// 3. Open it again
 				await userEvent.click(mobileTocBtn);
-				expect(await canvas.findByRole("group", { hidden: true })).toBeInTheDocument();
+				expect(
+					await canvas.findByRole("group", { hidden: true }),
+				).toBeInTheDocument();
 
 				// Cleanup: close it
 				await userEvent.click(mobileTocBtn);

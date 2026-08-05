@@ -6,6 +6,7 @@ import { blogSource } from "@/lib/collections/blog";
 import { BlogPostRoller } from "../components/blog/post-roller";
 import GlobalMDXRenderer from "../components/mdx-renderer";
 import { SOCIALS_NAVBAR } from "../components/nav-constants";
+import { Footer } from "../components/navigation/footer";
 import { Header } from "../components/navigation/header";
 import { defaultNavItems } from "../components/navigation/header/data";
 import { BlogSidebar } from "../components/sidebar";
@@ -62,6 +63,8 @@ const getPosts = createServerFn().handler(async () => {
 				src: meta.data.featured_image?.src ?? "",
 				blurHash: meta.data.featured_image?.imgData?.css,
 				altText: meta.data.featured_image?.altText,
+				height: meta.data.featured_image?.imgData?.height,
+				width: meta.data.featured_image?.imgData?.width,
 			},
 			categories: categories.length > 0 ? categories : undefined,
 			tags: tags.length > 0 ? tags : undefined,
@@ -125,6 +128,7 @@ function App() {
 					<BlogSidebar categories={meta.categories} tags={meta.tags} />
 				</div>
 			</div>
+			<Footer />
 		</>
 	);
 }

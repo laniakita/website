@@ -1,5 +1,5 @@
+"use client";
 import { Image } from "@unpic/react";
-
 export interface HeroBlurProps {
 	featured_image?: {
 		src: string;
@@ -27,7 +27,19 @@ export function HeroBlur({ featured_image }: HeroBlurProps) {
 					background={featured_image.base64}
 					height={featured_image.height}
 					width={featured_image.width}
-					//layout="constrained"
+					layout="constrained"
+					fallback="cloudflare"
+					options={{
+						cloudflare: {
+							domain: import.meta.env.VITE_CDN,
+						},
+					}}
+					operations={{
+						cloudflare: {
+							quality: 75,
+							format: "avif",
+						},
+					}}
 					className="overflow-hidden object-contain"
 				/>
 			) : (

@@ -55,14 +55,11 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 				/>
 				<HeadContent />
 			</head>
-			<body>
+			<body className="bg-muted">
 				<TanstackProvider>
 					<ThemeStoreProvider>
 						<NavScrollViewStoreProvider>
-							<ToCViewStoreProvider>
-								{children}
-								<Footer />
-							</ToCViewStoreProvider>
+							<ToCViewStoreProvider>{children}</ToCViewStoreProvider>
 						</NavScrollViewStoreProvider>
 					</ThemeStoreProvider>
 				</TanstackProvider>

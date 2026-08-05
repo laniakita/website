@@ -13,7 +13,7 @@ export function FooterRoot({
 	...props
 }: FooterRootProps) {
 	return (
-		<footer className={cn("relative w-full", className)} {...props}>
+		<footer className={cn("relative w-full @container", className)} {...props}>
 			<div
 				className={cn(
 					"relative flex w-full flex-col items-center justify-center overflow-hidden",
@@ -49,7 +49,7 @@ export function FooterContainer({
 	return (
 		<div
 			className={cn(
-				"flex flex-col items-center justify-center gap-4 md:px-6 md:pb-8",
+				"flex flex-col items-center justify-center gap-4 @xl:px-6 @xl:pb-8",
 				className,
 			)}
 			{...props}
@@ -67,7 +67,7 @@ export function FooterContent({
 	return (
 		<div
 			className={cn(
-				"relative w-full space-y-8 p-6 md:p-10 md:max-w-3xl", //md:rounded-md md:border md:border-border",
+				"relative w-full space-y-8 p-6 @xl:p-10 @xl:max-w-3xl", //md:rounded-md md:border md:border-border",
 				className,
 			)}
 			{...props}

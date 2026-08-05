@@ -25,7 +25,11 @@ export function FooterSocialIcons(props: FooterSocialIconsProps) {
 					className="flex basis-full items-center justify-center rounded border border-border p-2 text-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
 				>
 					<span
-						className={cn(item.iconName, "text-2xl md:text-3xl", item.textSize)}
+						className={cn(
+							item.iconName,
+							"text-2xl @xl:text-3xl",
+							item.textSize,
+						)}
 						aria-hidden="true"
 					/>
 					<span className="sr-only">{item.linkName}</span>

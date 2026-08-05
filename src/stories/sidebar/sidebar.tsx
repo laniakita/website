@@ -20,7 +20,7 @@ export function Sidebar({
 }: SidebarProps) {
 	return (
 		<div className="flex md:top-16">
-			<div className="flex w-full max-h-min  flex-col gap-6 bg-muted/40 md:border md:p-4 md:shadow-xl rounded-4xl">
+			<div className="flex w-full max-h-min border-secondary flex-col gap-6 md:border md:p-4 rounded-lg bg-background/40">
 				{infoBoxSlot}
 				{subscribeBoxSlot}
 				<div className="flex w-full flex-col items-center justify-center pb-4">

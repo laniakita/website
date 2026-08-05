@@ -1,6 +1,12 @@
 import type * as React from "react";
 import { Card } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+	SmoothTabsTrigger,
+	Tabs,
+	TabsContent,
+	TabsList,
+	TabsTrigger,
+} from "@/components/ui/tabs";
 
 export interface InfoBoxProps extends React.HTMLAttributes<HTMLDivElement> {
 	/** The main text or React node containing biographical or descriptive info. */
@@ -54,19 +60,13 @@ export function InfoBox({
 	return (
 		<Card className={`${className} py-0`}>
 			<Tabs defaultSelectedKey="info" className="w-full">
-				<TabsList className="w-full justify-start rounded-none rounded-t-lg border-b bg-muted/50 p-0 h-auto font-heading capitalize">
-					<TabsTrigger
-						id="info"
-						className="data-selected:bg-background rounded-none border-b-2 border-transparent data-selected:border-primary px-6 py-3"
-					>
+				<TabsList className="w-full justify-start rounded-none border-b-2 border-background bg-secondary px-6 pt-2 h-auto font-heading capitalize">
+					<SmoothTabsTrigger id="info">
 						<span className="icon-[ph--info] text-xl mr-2" /> info
-					</TabsTrigger>
-					<TabsTrigger
-						id="meta"
-						className="data-selected:bg-background rounded-none border-b-2 border-transparent data-selected:border-primary px-6 py-3"
-					>
+					</SmoothTabsTrigger>
+					<SmoothTabsTrigger id="meta">
 						<span className="icon-[ph--tag] text-xl mr-2" /> meta
-					</TabsTrigger>
+					</SmoothTabsTrigger>
 				</TabsList>
 				<TabsContent id="info" className="p-4 md:p-6 -mt-2">
 					<div className="prose dark:prose-invert max-w-none text-sm">

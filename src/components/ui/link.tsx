@@ -5,7 +5,7 @@ import * as React from "react";
 import { type LinkProps, Link as RACLink } from "react-aria-components";
 import { cn } from "@/lib/utils";
 
-interface BaseLinkProps extends LinkProps {
+export interface BaseLinkProps extends LinkProps {
 	/** The MIME media type of the linked resource */
 	type?: string;
 }
