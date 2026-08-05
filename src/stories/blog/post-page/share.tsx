@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Button } from "react-aria-components";
 import { Dialog, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import {
 	DropdownMenu,
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "react-aria-components";
 
 export interface MinPageData {
 	title: string;
@@ -95,25 +95,24 @@ export function ShareButton({ title, url }: { title: string; url: string }) {
 	return (
 		<>
 			<DropdownMenuTrigger>
-				<Button
-					className="z-10 flex flex-row items-center justify-center gap-2 rounded-full border border-ctp-mauve bg-ctp-mauve/10 px-8 py-2 font-mono font-black transition-colors hover:border-ctp-flamingo hover:bg-ctp-pink hover:text-ctp-base outline-none"
-				>
+				<Button className="z-10 flex flex-row items-center justify-center gap-2 rounded-full border border-primary text-primary bg-primary/10 px-8 py-2 font-mono font-black transition-colors hover:border-primary hover:bg-primary hover:text-primary-foreground outline-none">
 					<span className="icon-[ph--upload-bold] text-2xl" />
 					<span>share</span>
 				</Button>
 				<DropdownMenu
 					placement="bottom"
-					className="min-w-48 font-mono bg-ctp-base/90 backdrop-blur-md border-ctp-overlay0 dark:bg-ctp-base/50 dark:shadow-ctp-pink/30 p-1.5 shadow-lg"
+					offset={10}
+					className="rounded-xl min-w-48 font-mono bg-ctp-base/90 backdrop-blur-md border-ctp-overlay0 dark:bg-ctp-base/50 dark:shadow-ctp-pink/30 p-1.5 shadow-lg"
 				>
 					<DropdownMenuItem
 						onAction={handleCopy}
-						className="cursor-pointer hover:bg-ctp-pink hover:text-ctp-base gap-2 rounded-md"
+						className="cursor-pointer group hover:bg-primary hover:text-primary-foreground data-focused:bg-primary! data-focused:text-primary-foreground! gap-2 rounded-md"
 					>
-						<span className="icon-[ph--link] text-xl" />
+						<span className="icon-[ph--link] text-xl group-hover:text-primary-foreground group-data-focused:text-primary-foreground!" />
 						{isCopied ? "copied!" : "copy link"}
 					</DropdownMenuItem>
 
-					<DropdownMenuItem className="cursor-pointer hover:bg-[#1185FE] hover:text-white gap-2 rounded-md">
+					<DropdownMenuItem className="cursor-pointer hover:bg-[#1185FE] hover:text-white data-focused:bg-[#1185FE]! data-focused:text-white! gap-2 rounded-md">
 						<a
 							href={`https://bsky.app/intent/compose?text=${shareUnderChar(pageData, true)}`}
 							target="_blank"
@@ -129,13 +128,13 @@ export function ShareButton({ title, url }: { title: string; url: string }) {
 						onAction={() => {
 							setIsMastodonOpen(true);
 						}}
-						className="cursor-pointer hover:bg-[#563ACC] hover:text-white gap-2 rounded-md"
+						className="cursor-pointer hover:bg-[#563ACC] hover:text-white data-focused:bg-[#563ACC]! data-focused:text-white! gap-2 rounded-md"
 					>
 						<span className="icon-[fa6-brands--mastodon] text-xl" />
 						Mastodon
 					</DropdownMenuItem>
 
-					<DropdownMenuItem className="cursor-pointer hover:bg-[#0a66c2] hover:text-white gap-2 rounded-md">
+					<DropdownMenuItem className="cursor-pointer hover:bg-[#0a66c2] hover:text-white data-focused:bg-[#0a66c2]! data-focused:text-white! gap-2 rounded-md">
 						<a
 							href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(clientUrl)}`}
 							target="_blank"
@@ -147,7 +146,7 @@ export function ShareButton({ title, url }: { title: string; url: string }) {
 						</a>
 					</DropdownMenuItem>
 
-					<DropdownMenuItem className="cursor-pointer hover:bg-[#ff6719] hover:text-white gap-2 rounded-md">
+					<DropdownMenuItem className="cursor-pointer hover:bg-[#ff6719] hover:text-white data-focused:bg-[#ff6719]! data-focused:text-white! gap-2 rounded-md">
 						<a
 							href={`https://substack.com/notes?action=compose&message=${encodeURIComponent(clientTitle)} ${encodeURIComponent(clientUrl)}`}
 							target="_blank"
