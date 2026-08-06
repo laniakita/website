@@ -16,12 +16,14 @@ export interface PostHeaderProps {
 	tags?: CatTag[];
 	featured_image?: {
 		src: string;
-		height?: number;
-		width?: number;
-		base64?: string;
+		localHash: string;
+		imgData?: {
+			css: string;
+			height: number;
+			width: number;
+		};
 		altText?: string;
 		caption?: string;
-		hasImage?: boolean;
 	};
 	caption?: string;
 }
@@ -83,7 +85,7 @@ export function PostHeader(post: PostHeaderProps) {
 			</div>
 
 			<div className="flex size-full flex-col items-center justify-center">
-				{post.featured_image?.hasImage ? (
+				{post.featured_image?.src ? (
 					<figure className="relative flex size-full flex-col items-center justify-center gap-6">
 						<HeroBlur featured_image={post.featured_image} />
 						<p className="header-alt-text">

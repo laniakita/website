@@ -1,7 +1,4 @@
-import {
-	PostRoller,
-	type PostRollerProps,
-} from "$/src/stories/blog/post-roller";
+import { PostRoller, type PostRollerProps } from "@/stories/blog/post-roller";
 import { SidebarSubscribe } from "../sidebar/subscribe";
 
 /**

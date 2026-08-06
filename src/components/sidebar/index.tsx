@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Sidebar } from "$/src/stories/sidebar/sidebar";
+import { Sidebar } from "@/stories/sidebar/sidebar";
 import { sidebarSocialItems } from "./data";
 import { SidebarInfo } from "./info";
 import { SidebarSocials } from "./social";

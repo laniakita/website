@@ -44,7 +44,7 @@ export const Default: Story = {
 		expect(linuxCategory).toHaveAttribute("href", "/category/linux");
 
 		// Check for Tags
-		const bashTag = canvas.getByRole("link", { name: "#bash" });
+		const bashTag = canvas.getByRole("link", { name: "bash" });
 		expect(bashTag).toBeInTheDocument();
 		expect(bashTag).toHaveAttribute("href", "/tag/bash");
 	},

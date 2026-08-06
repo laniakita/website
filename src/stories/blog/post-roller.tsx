@@ -1,4 +1,5 @@
 import * as React from "react";
+import { CoreRoller } from "@/stories/core/core-roller";
 import { PostPreview, type PostPreviewProps } from "./post-preview";
 
 export interface PostRollerProps {
@@ -20,21 +21,17 @@ export function PostRoller({
 	injectAtIndex = 1,
 }: PostRollerProps) {
 	return (
-		<div className="flex items-center justify-center">
-			<div className="flex w-full max-w-3xl flex-col gap-4 md:gap-8">
-				{posts.map((post, idx) => {
-					const isInjectIndex = injectedComponent && idx === injectAtIndex;
+		<CoreRoller data-testid="post-roller">
+			{posts.map((post, idx) => {
+				const isInjectIndex = injectedComponent && idx === injectAtIndex;
 
-					return (
-						<React.Fragment key={`post-${post.url}`}>
-							{isInjectIndex && (
-								<div className="w-full">{injectedComponent}</div>
-							)}
-							<PostPreview {...post} />
-						</React.Fragment>
-					);
-				})}
-			</div>
-		</div>
+				return (
+					<React.Fragment key={`post-${post.url}`}>
+						{isInjectIndex && <div className="w-full">{injectedComponent}</div>}
+						<PostPreview {...post} />
+					</React.Fragment>
+				);
+			})}
+		</CoreRoller>
 	);
 }

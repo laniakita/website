@@ -4,13 +4,18 @@ import { Link } from "@/components/ui/link";
 /**
  * Represents a single category or tag item.
  */
+export enum CatTagType {
+	Category = "category",
+	Tag = "tag",
+}
+
 export interface CatTag {
 	/** The display title of the category or tag. */
 	title: string;
 	/** The URL path to navigate to when clicked. */
 	url: string;
 	/** Identifies whether this item is a Category or a Tag for styling purposes. */
-	type: "Category" | "Tag";
+	type: CatTagType | `${CatTagType}`;
 }
 
 export interface CatTagRollerProps {
@@ -38,10 +43,10 @@ export function CatTagRoller({ cats = [], tags = [] }: CatTagRollerProps) {
 					className="no-underline hover:no-underline"
 				>
 					<Badge
-						variant={item.type === "Tag" ? "secondary" : "default"}
+						variant={item.type === CatTagType.Tag ? "secondary" : "default"}
 						className="cursor-pointer"
 					>
-						{item.type === "Tag" ? "#" : ""}
+						{item.type === CatTagType.Tag ? "#" : ""}
 						{item.title}
 					</Badge>
 				</Link>

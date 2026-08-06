@@ -1,15 +1,4 @@
-import { Image } from "@unpic/react";
-import type * as React from "react";
-import { transform } from "unpic/providers/cloudflare";
-import {
-	Card,
-	CardContent,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
-import { Link } from "@/components/ui/link";
-import { Separator } from "@/components/ui/separator";
+import { CorePreview } from "@/stories/core/core-preview";
 import { type CatTag, CatTagRoller } from "./cat-tag-roller";
 
 /** The post data to display in the preview card. */
@@ -27,12 +16,15 @@ export interface PostPreviewProps {
 	/** An optional date indicating when the post was last updated. */
 	updated?: Date | string;
 	/** An optional cover image to display at the top of the card. */
-	featuredImage?: {
+	featured_image?: {
 		src: string;
+		localHash: string;
 		altText?: string;
-		height?: number;
-		width?: number;
-		blurHash?: string;
+		imgData?: {
+			css: string;
+			height: number;
+			width: number;
+		};
 	};
 	/** Categories associated with the post. */
 	categories?: CatTag[];
@@ -61,53 +53,21 @@ export function PostPreview(post: PostPreviewProps) {
 		description,
 		date,
 		updated,
-		featuredImage,
+		featured_image,
 		categories,
 		tags,
 	} = post;
 
 	return (
-		<Card
+		<CorePreview
+			url={url}
+			isExternal={false}
+			headline={headline}
+			subheadline={subheadline}
+			featured_image={featured_image}
 			data-testid="post-preview-card"
-			className="pt-6 flex basis-full flex-col overflow-hidden motion-safe:transition-colors duration-300 bg-transparent shadow-none rounded-lg border border-secondary"
-		>
-			{featuredImage?.src && (
-				<Link to={url} className="bg-muted">
-					{featuredImage.height && featuredImage.width ? (
-						<Image
-							src={featuredImage.src}
-							height={featuredImage.height}
-							width={featuredImage.width}
-							alt={featuredImage.altText ?? ""}
-							background={featuredImage.blurHash}
-							fallback="cloudflare"
-							options={{
-								cloudflare: {
-									domain: import.meta.env.VITE_CDN,
-								},
-							}}
-							operations={{
-								cloudflare: {
-									quality: 75,
-									format: "avif",
-								},
-							}}
-							layout="constrained"
-							className="-mt-6 object-cover h-full w-full"
-						/>
-					) : (
-						<Image
-							src={featuredImage.src}
-							layout="fullWidth"
-							alt={featuredImage.altText ?? ""}
-							className="-mt-6 object-cover h-full w-full"
-						/>
-					)}
-				</Link>
-			)}
-
-			<CardHeader className="gap-2">
-				<div className="flex flex-wrap gap-x-2 font-mono text-sm text-muted-foreground">
+			meta={
+				<div className="flex flex-wrap gap-x-2 font-mono text-sm">
 					{updated ? (
 						<p className="flex w-fit flex-wrap gap-x-2 rounded-full">
 							<strong>Updated:</strong> <span>{formatDate(updated)}</span>
@@ -118,29 +78,10 @@ export function PostPreview(post: PostPreviewProps) {
 						</p>
 					)}
 				</div>
-				<div>
-					<CardTitle className="text-2xl font-bold">
-						<Link to={url} className="text-card-foreground hover:underline">
-							{headline}
-						</Link>
-					</CardTitle>
-					{subheadline && (
-						<p className="text-lg text-muted-foreground mt-2">{subheadline}</p>
-					)}
-				</div>
-			</CardHeader>
-
-			<Separator />
-
-			<CardContent className="prose dark:prose-invert max-w-full text-pretty prose-p:my-0 prose-a:no-underline">
-				{description}
-			</CardContent>
-
-			<Separator />
-
-			<CardFooter className="pt-6">
-				<CatTagRoller cats={categories} tags={tags} />
-			</CardFooter>
-		</Card>
+			}
+			footer={<CatTagRoller cats={categories} tags={tags} />}
+		>
+			{description}
+		</CorePreview>
 	);
 }

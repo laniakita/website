@@ -9,71 +9,196 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as AboutRouteImport } from './routes/about'
+import { Route as coreRouteRouteImport } from './routes/(core)/route'
+import { Route as coreIndexRouteImport } from './routes/(core)/index'
+import { Route as coreBlogMetaRouteImport } from './routes/(core)/_blog-meta'
+import { Route as coreInfoRouteImport } from './routes/(core)/_info'
+import { Route as coreWorkRouteImport } from './routes/(core)/work'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as coreInfoAboutRouteImport } from './routes/(core)/_info.about'
+import { Route as coreInfoContactRouteImport } from './routes/(core)/_info.contact'
+import { Route as coreInfoCreditsRouteImport } from './routes/(core)/_info.credits'
+import { Route as ApiOgSplatRouteImport } from './routes/api/og/$'
+import { Route as coreBlogMetaCategoriesSlugRouteImport } from './routes/(core)/_blog-meta.categories.$slug'
+import { Route as coreBlogMetaTagsSlugRouteImport } from './routes/(core)/_blog-meta.tags.$slug'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const coreRouteRoute = coreRouteRouteImport.update({
+  id: '/(core)',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => rootRouteImport,
+const coreIndexRoute = coreIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => coreRouteRoute,
+} as any)
+const coreBlogMetaRoute = coreBlogMetaRouteImport.update({
+  id: '/_blog-meta',
+  getParentRoute: () => coreRouteRoute,
+} as any)
+const coreInfoRoute = coreInfoRouteImport.update({
+  id: '/_info',
+  getParentRoute: () => coreRouteRoute,
+} as any)
+const coreWorkRoute = coreWorkRouteImport.update({
+  id: '/work',
+  path: '/work',
+  getParentRoute: () => coreRouteRoute,
 } as any)
 const BlogSlugRoute = BlogSlugRouteImport.update({
   id: '/blog/$slug',
   path: '/blog/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const coreInfoAboutRoute = coreInfoAboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => coreInfoRoute,
+} as any)
+const coreInfoContactRoute = coreInfoContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => coreInfoRoute,
+} as any)
+const coreInfoCreditsRoute = coreInfoCreditsRouteImport.update({
+  id: '/credits',
+  path: '/credits',
+  getParentRoute: () => coreInfoRoute,
+} as any)
+const ApiOgSplatRoute = ApiOgSplatRouteImport.update({
+  id: '/api/og/$',
+  path: '/api/og/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const coreBlogMetaCategoriesSlugRoute =
+  coreBlogMetaCategoriesSlugRouteImport.update({
+    id: '/categories/$slug',
+    path: '/categories/$slug',
+    getParentRoute: () => coreBlogMetaRoute,
+  } as any)
+const coreBlogMetaTagsSlugRoute = coreBlogMetaTagsSlugRouteImport.update({
+  id: '/tags/$slug',
+  path: '/tags/$slug',
+  getParentRoute: () => coreBlogMetaRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/work': typeof coreWorkRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/': typeof coreIndexRoute
+  '/about': typeof coreInfoAboutRoute
+  '/contact': typeof coreInfoContactRoute
+  '/credits': typeof coreInfoCreditsRoute
+  '/api/og/$': typeof ApiOgSplatRoute
+  '/categories/$slug': typeof coreBlogMetaCategoriesSlugRoute
+  '/tags/$slug': typeof coreBlogMetaTagsSlugRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/work': typeof coreWorkRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/': typeof coreIndexRoute
+  '/about': typeof coreInfoAboutRoute
+  '/contact': typeof coreInfoContactRoute
+  '/credits': typeof coreInfoCreditsRoute
+  '/api/og/$': typeof ApiOgSplatRoute
+  '/categories/$slug': typeof coreBlogMetaCategoriesSlugRoute
+  '/tags/$slug': typeof coreBlogMetaTagsSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/(core)': typeof coreRouteRouteWithChildren
+  '/(core)/_blog-meta': typeof coreBlogMetaRouteWithChildren
+  '/(core)/_info': typeof coreInfoRouteWithChildren
+  '/(core)/work': typeof coreWorkRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/(core)/': typeof coreIndexRoute
+  '/(core)/_info/about': typeof coreInfoAboutRoute
+  '/(core)/_info/contact': typeof coreInfoContactRoute
+  '/(core)/_info/credits': typeof coreInfoCreditsRoute
+  '/api/og/$': typeof ApiOgSplatRoute
+  '/(core)/_blog-meta/categories/$slug': typeof coreBlogMetaCategoriesSlugRoute
+  '/(core)/_blog-meta/tags/$slug': typeof coreBlogMetaTagsSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/blog/$slug'
+  fullPaths:
+    | '/work'
+    | '/blog/$slug'
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/credits'
+    | '/api/og/$'
+    | '/categories/$slug'
+    | '/tags/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/blog/$slug'
-  id: '__root__' | '/' | '/about' | '/blog/$slug'
+  to:
+    | '/work'
+    | '/blog/$slug'
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/credits'
+    | '/api/og/$'
+    | '/categories/$slug'
+    | '/tags/$slug'
+  id:
+    | '__root__'
+    | '/(core)'
+    | '/(core)/_blog-meta'
+    | '/(core)/_info'
+    | '/(core)/work'
+    | '/blog/$slug'
+    | '/(core)/'
+    | '/(core)/_info/about'
+    | '/(core)/_info/contact'
+    | '/(core)/_info/credits'
+    | '/api/og/$'
+    | '/(core)/_blog-meta/categories/$slug'
+    | '/(core)/_blog-meta/tags/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
+  coreRouteRoute: typeof coreRouteRouteWithChildren
   BlogSlugRoute: typeof BlogSlugRoute
+  ApiOgSplatRoute: typeof ApiOgSplatRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/(core)': {
+      id: '/(core)'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof coreRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
-      parentRoute: typeof rootRouteImport
+    '/(core)/': {
+      id: '/(core)/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof coreIndexRouteImport
+      parentRoute: typeof coreRouteRoute
+    }
+    '/(core)/_blog-meta': {
+      id: '/(core)/_blog-meta'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof coreBlogMetaRouteImport
+      parentRoute: typeof coreRouteRoute
+    }
+    '/(core)/_info': {
+      id: '/(core)/_info'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof coreInfoRouteImport
+      parentRoute: typeof coreRouteRoute
+    }
+    '/(core)/work': {
+      id: '/(core)/work'
+      path: '/work'
+      fullPath: '/work'
+      preLoaderRoute: typeof coreWorkRouteImport
+      parentRoute: typeof coreRouteRoute
     }
     '/blog/$slug': {
       id: '/blog/$slug'
@@ -82,13 +207,103 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/(core)/_info/about': {
+      id: '/(core)/_info/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof coreInfoAboutRouteImport
+      parentRoute: typeof coreInfoRoute
+    }
+    '/(core)/_info/contact': {
+      id: '/(core)/_info/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof coreInfoContactRouteImport
+      parentRoute: typeof coreInfoRoute
+    }
+    '/(core)/_info/credits': {
+      id: '/(core)/_info/credits'
+      path: '/credits'
+      fullPath: '/credits'
+      preLoaderRoute: typeof coreInfoCreditsRouteImport
+      parentRoute: typeof coreInfoRoute
+    }
+    '/api/og/$': {
+      id: '/api/og/$'
+      path: '/api/og/$'
+      fullPath: '/api/og/$'
+      preLoaderRoute: typeof ApiOgSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(core)/_blog-meta/categories/$slug': {
+      id: '/(core)/_blog-meta/categories/$slug'
+      path: '/categories/$slug'
+      fullPath: '/categories/$slug'
+      preLoaderRoute: typeof coreBlogMetaCategoriesSlugRouteImport
+      parentRoute: typeof coreBlogMetaRoute
+    }
+    '/(core)/_blog-meta/tags/$slug': {
+      id: '/(core)/_blog-meta/tags/$slug'
+      path: '/tags/$slug'
+      fullPath: '/tags/$slug'
+      preLoaderRoute: typeof coreBlogMetaTagsSlugRouteImport
+      parentRoute: typeof coreBlogMetaRoute
+    }
   }
 }
 
+interface coreBlogMetaRouteChildren {
+  coreBlogMetaCategoriesSlugRoute: typeof coreBlogMetaCategoriesSlugRoute
+  coreBlogMetaTagsSlugRoute: typeof coreBlogMetaTagsSlugRoute
+}
+
+const coreBlogMetaRouteChildren: coreBlogMetaRouteChildren = {
+  coreBlogMetaCategoriesSlugRoute: coreBlogMetaCategoriesSlugRoute,
+  coreBlogMetaTagsSlugRoute: coreBlogMetaTagsSlugRoute,
+}
+
+const coreBlogMetaRouteWithChildren = coreBlogMetaRoute._addFileChildren(
+  coreBlogMetaRouteChildren,
+)
+
+interface coreInfoRouteChildren {
+  coreInfoAboutRoute: typeof coreInfoAboutRoute
+  coreInfoContactRoute: typeof coreInfoContactRoute
+  coreInfoCreditsRoute: typeof coreInfoCreditsRoute
+}
+
+const coreInfoRouteChildren: coreInfoRouteChildren = {
+  coreInfoAboutRoute: coreInfoAboutRoute,
+  coreInfoContactRoute: coreInfoContactRoute,
+  coreInfoCreditsRoute: coreInfoCreditsRoute,
+}
+
+const coreInfoRouteWithChildren = coreInfoRoute._addFileChildren(
+  coreInfoRouteChildren,
+)
+
+interface coreRouteRouteChildren {
+  coreBlogMetaRoute: typeof coreBlogMetaRouteWithChildren
+  coreInfoRoute: typeof coreInfoRouteWithChildren
+  coreWorkRoute: typeof coreWorkRoute
+  coreIndexRoute: typeof coreIndexRoute
+}
+
+const coreRouteRouteChildren: coreRouteRouteChildren = {
+  coreBlogMetaRoute: coreBlogMetaRouteWithChildren,
+  coreInfoRoute: coreInfoRouteWithChildren,
+  coreWorkRoute: coreWorkRoute,
+  coreIndexRoute: coreIndexRoute,
+}
+
+const coreRouteRouteWithChildren = coreRouteRoute._addFileChildren(
+  coreRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
+  coreRouteRoute: coreRouteRouteWithChildren,
   BlogSlugRoute: BlogSlugRoute,
+  ApiOgSplatRoute: ApiOgSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
