@@ -1,7 +1,7 @@
 import type * as React from "react";
+import type { FooterSocialItem } from "@/components/navigation/footer/data";
 import { Link } from "@/components/ui/link";
 import { cn } from "@/lib/utils";
-import type { FooterSocialItem } from "$/src/components/navigation/footer/data";
 
 export interface FooterSocialIconsProps
 	extends React.HTMLAttributes<HTMLDivElement> {

@@ -10,7 +10,6 @@ import { remarkImgProcessor } from "./src/scripts/remark-img-processor";
 export { blog, feed } from "./schema/blog";
 export { categories } from "./schema/categories";
 export { tags } from "./schema/tags";
-export { projects } from "./schema/projects";
 export { works } from "./schema/works";
 export { authors } from "./schema/authors";
 export { pages } from "./schema/pages";

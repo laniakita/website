@@ -66,23 +66,8 @@ const getPost = createServerFn({ method: "GET" })
 			};
 		});
 
-		const categories = post.data.categories
-			.map((c) => {
-				if (c.title && c.url) {
-					return { title: c.title, url: c.url, type: "Category" };
-				}
-				return undefined;
-			})
-			.filter((c): c is CatTag => c !== undefined);
-
-		const tags = post.data.tags
-			.map((c) => {
-				if (c.title && c.url) {
-					return { title: c.title, url: c.url, type: "Tag" };
-				}
-				return undefined;
-			})
-			.filter((c): c is CatTag => c !== undefined);
+		const categories = post.data.categories as CatTag[];
+		const tags = post.data.tags as CatTag[];
 
 		const RenderableMDX = await renderServerComponent(
 			<MDX components={components} />,
@@ -97,15 +82,7 @@ const getPost = createServerFn({ method: "GET" })
 				updated: post.data.updated,
 				author: post.data.author,
 				caption: post.data.caption,
-				featured_image: {
-					src: post.data.featured_image?.src ?? "",
-					base64: post.data.featured_image?.imgData?.css,
-					altText: post.data.featured_image?.altText,
-					caption: post.data.caption,
-					width: post.data.featured_image?.imgData?.width,
-					height: post.data.featured_image?.imgData?.height,
-					hasImage: !!post.data.featured_image?.src,
-				},
+				featured_image: post.data.featured_image,
 				categories,
 				tags,
 			},
@@ -117,6 +94,8 @@ const getPost = createServerFn({ method: "GET" })
 		};
 	});
 
+import { PostPageSkeleton } from "@/stories/skeletons/post-page-skeleton";
+
 export const Route = createFileRoute("/blog/$slug")({
 	loader: async ({ params: { slug } }) => {
 		const result = await getPost({ data: slug });
@@ -126,6 +105,7 @@ export const Route = createFileRoute("/blog/$slug")({
 		return result;
 	},
 	component: BlogRouteComponent,
+	pendingComponent: PostPageSkeleton,
 });
 
 function BlogRouteComponent() {

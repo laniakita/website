@@ -7,11 +7,20 @@ export const works = defineCollections({
 	schema: (ctx) => {
 		return z.object({
 			id: z.string(),
-			startDate: z.coerce.date(),
-			endDate: z.coerce.date().optional(),
+			date: z.coerce.date(),
+			updated: z.coerce.date().optional(),
 			title: z.string(),
-			domain: z.string(),
-			active: z.boolean(),
+			source: z.string().optional(),
+			type: z.enum(["client", "personal"]).default("personal"),
+			active: z.boolean().default(false),
+			links: z
+				.array(
+					z.object({
+						label: z.string(),
+						url: z.string(),
+					}),
+				)
+				.optional(),
 			tech: z.array(z.string()),
 			imageSrc: z.string().optional(),
 			altText: z.string().optional(),

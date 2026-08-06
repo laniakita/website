@@ -6,11 +6,11 @@ import {
 	RouterProvider,
 } from "@tanstack/react-router";
 import { expect, userEvent, waitFor, within } from "storybook/test";
+import { SOCIALS_NAVBAR } from "@/components/nav-constants";
+import { defaultNavItems } from "@/components/navigation/header/data";
 import { NavScrollViewStoreProvider } from "@/lib/providers/nav-scroll-view-store-provider";
 import { ThemeStoreProvider } from "@/lib/providers/theme-store-provider";
 import { ToCViewStoreProvider } from "@/lib/providers/toc-view-store-provider";
-import { SOCIALS_NAVBAR } from "$/src/components/nav-constants";
-import { defaultNavItems } from "$/src/components/navigation/header/data";
 import { PostPage } from "./post-page";
 
 const meta = {

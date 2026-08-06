@@ -5,8 +5,6 @@ import { expect, within } from "storybook/test";
 import { useToCViewStore } from "@/lib/providers/toc-view-store-provider";
 import {
 	TableOfContents,
-	TableOfContentsDesktopSkeleton,
-	TableOfContentsMobileSkeleton,
 } from "./table-of-contents";
 
 const mockNestedHeadings = [
@@ -86,10 +84,4 @@ export const Default: Story = {
 	},
 };
 
-export const DesktopSkeleton: StoryObj<typeof TableOfContentsDesktopSkeleton> = {
-	render: () => <TableOfContentsDesktopSkeleton />,
-};
 
-export const MobileSkeleton: StoryObj<typeof TableOfContentsMobileSkeleton> = {
-	render: () => <TableOfContentsMobileSkeleton />,
-};

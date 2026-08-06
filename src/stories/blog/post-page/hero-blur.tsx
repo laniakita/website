@@ -3,12 +3,14 @@ import { Image } from "@unpic/react";
 export interface HeroBlurProps {
 	featured_image?: {
 		src: string;
-		height?: number;
-		width?: number;
-		base64?: string;
+		localHash: string;
+		imgData?: {
+			css: string;
+			height: number;
+			width: number;
+		};
 		altText?: string;
 		caption?: string;
-		hasImage?: boolean;
 	};
 }
 
@@ -20,13 +22,13 @@ export function HeroBlur({ featured_image }: HeroBlurProps) {
 			className="relative m-0 flex size-full max-w-5xl items-center justify-center p-0"
 			data-testid="hero-blur-container"
 		>
-			{featured_image.height && featured_image.width ? (
+			{featured_image.imgData?.height && featured_image.imgData?.width ? (
 				<Image
 					src={featured_image.src}
 					alt={featured_image.altText ?? ""}
-					background={featured_image.base64}
-					height={featured_image.height}
-					width={featured_image.width}
+					background={featured_image.imgData.css}
+					height={featured_image.imgData.height}
+					width={featured_image.imgData.width}
 					layout="constrained"
 					fallback="cloudflare"
 					options={{

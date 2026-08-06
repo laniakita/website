@@ -1,4 +1,4 @@
-import { InfoBox, type InfoBoxProps } from "$/src/stories/sidebar/info-box";
+import { InfoBox, type InfoBoxProps } from "@/stories/sidebar/info-box";
 
 export function SidebarInfo({
 	className,

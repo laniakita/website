@@ -4,13 +4,16 @@ import { Footer } from "@/components/navigation/footer";
 // We import Header just for Storybook structure, but in a real app this might be in a layout
 import { Header, type HeaderProps } from "@/components/navigation/header";
 import { useToCViewStore } from "@/lib/providers/toc-view-store-provider";
-import { Comments, CommentsSkeleton } from "./comments";
+import { CommentsSkeleton } from "@/stories/skeletons/comments-skeleton";
+import {
+	TableOfContentsDesktopSkeleton,
+	TableOfContentsMobileSkeleton,
+} from "@/stories/skeletons/table-of-contents-skeleton";
+import { Comments } from "./comments";
 import { PostHeader, type PostHeaderProps } from "./post-header";
 import {
 	TableOfContentsDesktop,
-	TableOfContentsDesktopSkeleton,
 	TableOfContentsMobile,
-	TableOfContentsMobileSkeleton,
 	type ToCMenuProps,
 } from "./table-of-contents";
 

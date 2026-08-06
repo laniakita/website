@@ -7,11 +7,11 @@ import {
 } from "@tanstack/react-router";
 import { expect, within } from "storybook/test";
 import { Footer } from "@/components/navigation/footer";
-import { ThemeStoreProvider } from "@/lib/providers/theme-store-provider";
 import {
 	defaultFooterNavItems,
 	defaultFooterSocialItems,
-} from "$/src/components/navigation/footer/data";
+} from "@/components/navigation/footer/data";
+import { ThemeStoreProvider } from "@/lib/providers/theme-store-provider";
 
 // TanStack Router requires a router context for Links to work in Storybook
 const rootRoute = createRootRoute({

@@ -1,0 +1,58 @@
+import type { Meta, StoryObj } from "@storybook/react";
+import { WorkPreview } from "./work-preview";
+
+const meta = {
+	title: "Work/WorkPreview",
+	component: WorkPreview,
+	parameters: {
+		layout: "centered",
+	},
+} satisfies Meta<typeof WorkPreview>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+	args: {
+		id: "sample-work",
+		title: "Acme Corp Rebrand",
+		source: "https://acme.corp",
+		url: "/work/acme",
+		active: true,
+		date: "2023-01-15T00:00:00Z",
+		tech: ["Next.js", "Tailwind CSS", "TypeScript", "Framer Motion"],
+		featured_image: {
+			src: "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
+			localHash: "test",
+			altText: "A laptop showing code",
+		},
+		RenderableMDX: (
+			<p>
+				Redesigned the entire digital presence for Acme Corp. Included migrating
+				their legacy system to a modern web stack, improving performance scores
+				by 40% and user retention by 25%.
+			</p>
+		),
+	},
+	decorators: [
+		(Story) => (
+			<div className="w-full max-w-2xl p-4">
+				<Story />
+			</div>
+		),
+	],
+};
+
+export const Ongoing: Story = {
+	args: {
+		...Default.args,
+		title: "Open Source Initiative",
+		source: "https://opensource.org",
+		RenderableMDX: (
+			<p>
+				An ongoing effort to maintain and contribute to vital open source libraries.
+			</p>
+		),
+	},
+	decorators: Default.decorators,
+};

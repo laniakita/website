@@ -1,7 +1,7 @@
 import type * as React from "react";
+import type { FooterNavItem } from "@/components/navigation/footer/data";
 import { Link } from "@/components/ui/link";
 import { cn } from "@/lib/utils";
-import type { FooterNavItem } from "$/src/components/navigation/footer/data";
 
 export interface FooterNavBoxProps
 	extends React.HTMLAttributes<HTMLDivElement> {

@@ -7,6 +7,7 @@ import {
 	PutObjectCommand,
 	S3Client,
 } from "@aws-sdk/client-s3";
+import { blurhashToImageCssString } from "@unpic/placeholder";
 import mime from "mime-types";
 import { getPlaiceholder } from "plaiceholder";
 import type { AssetManifestEntry, ProcessAssetOptions } from "./types";
@@ -169,14 +170,11 @@ export async function batchUploadAssets(
 			) {
 				try {
 					const {
-						css: plaiceholderCss,
+						base64,
 						metadata: { width: plaiceholderWidth, height: plaiceholderHeight },
 					} = await getPlaiceholder(imageBuffer);
-					css = JSON.stringify({
-						...plaiceholderCss,
-						filter: "blur(20px)",
-						transform: "scale(1.1)",
-					});
+					css = base64;
+
 					width = plaiceholderWidth;
 					height = plaiceholderHeight;
 				} catch (err) {
