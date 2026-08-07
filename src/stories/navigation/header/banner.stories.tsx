@@ -20,12 +20,8 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
-		await expect(
-			canvas.getByText(/development environment/i),
-		).toBeInTheDocument();
-		await expect(
-			canvas.getByRole("link", { name: /back to safety/i }),
-		).toBeInTheDocument();
+		await expect(canvas.getByText(/development environment/i)).toBeInTheDocument();
+		await expect(canvas.getByRole("link", { name: /back to safety/i })).toBeInTheDocument();
 	},
 };
 
@@ -35,8 +31,6 @@ export const Hidden: Story = {
 	},
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
-		expect(
-			canvas.queryByText(/development environment/i),
-		).not.toBeInTheDocument();
+		expect(canvas.queryByText(/development environment/i)).not.toBeInTheDocument();
 	},
 };

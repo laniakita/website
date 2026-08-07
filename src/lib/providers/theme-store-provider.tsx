@@ -6,9 +6,7 @@ import { createThemeStore, type ThemeStore } from "../stores/theme-store";
 
 export type ThemeStoreApi = ReturnType<typeof createThemeStore>;
 
-export const ThemeStoreContext = createContext<ThemeStoreApi | undefined>(
-	undefined,
-);
+export const ThemeStoreContext = createContext<ThemeStoreApi | undefined>(undefined);
 
 export interface ThemeStoreProviderProps {
 	children: ReactNode;
@@ -20,11 +18,7 @@ export function ThemeStoreProvider({ children }: ThemeStoreProviderProps) {
 	if (!storeRef.current) {
 		storeRef.current = createThemeStore();
 	}
-	return (
-		<ThemeStoreContext.Provider value={storeRef.current}>
-			{children}
-		</ThemeStoreContext.Provider>
-	);
+	return <ThemeStoreContext.Provider value={storeRef.current}>{children}</ThemeStoreContext.Provider>;
 }
 
 export const useThemeStore = <T,>(selector: (store: ThemeStore) => T): T => {

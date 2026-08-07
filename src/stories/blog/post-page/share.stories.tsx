@@ -8,7 +8,7 @@ const meta = {
 	tags: ["autodocs"],
 	decorators: [
 		(Story) => (
-			<div className="flex h-[50vh] w-full items-center justify-center p-10 bg-background text-foreground">
+			<div className='flex h-[50vh] w-full items-center justify-center bg-background p-10 text-foreground'>
 				<Story />
 			</div>
 		),
@@ -25,7 +25,7 @@ export const Default: Story = {
 	},
 	play: async ({ canvasElement, step }) => {
 		const canvas = within(canvasElement);
-		
+
 		await step("Render share button", async () => {
 			const shareBtn = canvas.getByRole("button", { name: /share/i });
 			expect(shareBtn).toBeInTheDocument();
@@ -34,10 +34,10 @@ export const Default: Story = {
 		await step("Open dropdown menu", async () => {
 			const shareBtn = canvas.getByRole("button", { name: /share/i });
 			await userEvent.click(shareBtn);
-			
+
 			// Dropdown menu renders in a portal, so we query the document body
 			const body = within(document.body);
-			
+
 			// Verify that the menu items are present
 			const copyLink = await body.findByText(/copy link/i);
 			expect(copyLink).toBeInTheDocument();
@@ -59,7 +59,7 @@ export const Default: Story = {
 
 export const Skeleton: StoryObj<typeof ShareButtonSkeleton> = {
 	render: () => (
-		<div className="flex h-64 w-full items-center justify-center bg-background">
+		<div className='flex h-64 w-full items-center justify-center bg-background'>
 			<ShareButtonSkeleton />
 		</div>
 	),

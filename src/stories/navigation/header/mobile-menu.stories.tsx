@@ -1,25 +1,14 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import {
-	createMemoryHistory,
-	createRootRoute,
-	createRouter,
-	RouterProvider,
-} from "@tanstack/react-router";
+import { createMemoryHistory, createRootRoute, createRouter, RouterProvider } from "@tanstack/react-router";
 import { expect, userEvent, within } from "storybook/test";
-import {
-	defaultNavItems,
-	defaultSocialItems,
-} from "@/components/navigation/header/data";
+import { defaultNavItems, defaultSocialItems } from "@/components/navigation/header/data";
 import { ThemeStoreProvider } from "@/lib/providers/theme-store-provider";
 import { HeaderMobileMenu } from "./mobile-menu";
 
 const rootRoute = createRootRoute({
 	component: () => (
 		<ThemeStoreProvider>
-			<HeaderMobileMenu
-				navItems={defaultNavItems}
-				socialItems={defaultSocialItems}
-			/>
+			<HeaderMobileMenu navItems={defaultNavItems} socialItems={defaultSocialItems} />
 		</ThemeStoreProvider>
 	),
 });

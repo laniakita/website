@@ -17,7 +17,6 @@ export const Default: Story = {
 		id: "sample-work",
 		title: "Acme Corp Rebrand",
 		source: "https://acme.corp",
-		url: "/work/acme",
 		active: true,
 		date: "2023-01-15T00:00:00Z",
 		tech: ["Next.js", "Tailwind CSS", "TypeScript", "Framer Motion"],
@@ -28,15 +27,14 @@ export const Default: Story = {
 		},
 		RenderableMDX: (
 			<p>
-				Redesigned the entire digital presence for Acme Corp. Included migrating
-				their legacy system to a modern web stack, improving performance scores
-				by 40% and user retention by 25%.
+				Redesigned the entire digital presence for Acme Corp. Included migrating their legacy system to a modern web
+				stack, improving performance scores by 40% and user retention by 25%.
 			</p>
 		),
 	},
 	decorators: [
 		(Story) => (
-			<div className="w-full max-w-2xl p-4">
+			<div className='min-h-full w-full max-w-7xl p-8'>
 				<Story />
 			</div>
 		),
@@ -48,11 +46,7 @@ export const Ongoing: Story = {
 		...Default.args,
 		title: "Open Source Initiative",
 		source: "https://opensource.org",
-		RenderableMDX: (
-			<p>
-				An ongoing effort to maintain and contribute to vital open source libraries.
-			</p>
-		),
+		RenderableMDX: <p>An ongoing effort to maintain and contribute to vital open source libraries.</p>,
 	},
 	decorators: Default.decorators,
 };

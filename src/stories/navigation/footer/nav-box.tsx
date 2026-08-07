@@ -3,8 +3,7 @@ import type { FooterNavItem } from "@/components/navigation/footer/data";
 import { Link } from "@/components/ui/link";
 import { cn } from "@/lib/utils";
 
-export interface FooterNavBoxProps
-	extends React.HTMLAttributes<HTMLDivElement> {
+export interface FooterNavBoxProps extends React.HTMLAttributes<HTMLDivElement> {
 	title: string;
 	items: FooterNavItem[];
 }
@@ -12,23 +11,12 @@ export interface FooterNavBoxProps
 export function FooterNavBox(props: FooterNavBoxProps) {
 	return (
 		<div className={cn("size-min", props.className)} {...props}>
-			<nav
-				aria-label={props.title}
-				className="flex break-inside-avoid flex-col"
-			>
-				<h2 className="pb-2 text-xl font-heading capitalize font-extrabold text-foreground">
-					{props.title}
-				</h2>
-				<div className="flex flex-col space-y-1 text-lg">
+			<nav aria-label={props.title} className='flex break-inside-avoid flex-col'>
+				<h2 className='pb-2 font-extrabold font-heading text-foreground text-xl capitalize'>{props.title}</h2>
+				<div className='flex flex-col space-y-1 text-lg'>
 					{props.items?.map((item) => (
-						<Link
-							key={item.label}
-							to={item.to}
-							className="w-fit text-muted-foreground transition-colors hover:text-foreground capitalize"
-						>
-							{item.label.toLowerCase() === "atom/rss"
-								? "Atom/RSS"
-								: item.label.toLowerCase()}
+						<Link key={item.label} to={item.to} className='w-fit text-muted-foreground capitalize hover:text-primary'>
+							{item.label.toLowerCase() === "atom/rss" ? "Atom/RSS" : item.label.toLowerCase()}
 						</Link>
 					))}
 				</div>

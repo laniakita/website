@@ -6,13 +6,13 @@ export function ImgReplacer(props: React.ImgHTMLAttributes<HTMLImageElement>) {
 	const { "data-lqip": lqip, alt, src, ...rest } = props as any;
 
 	return (
-		<figure className="my-6 overflow-hidden rounded-md">
+		<figure className='my-6 overflow-hidden rounded-md'>
 			<Image
 				{...rest}
 				src={src}
 				alt={alt}
-				layout="constrained"
-				fallback="cloudflare"
+				layout='constrained'
+				fallback='cloudflare'
 				options={{
 					cloudflare: {
 						domain: import.meta.env.VITE_CDN,
@@ -25,13 +25,9 @@ export function ImgReplacer(props: React.ImgHTMLAttributes<HTMLImageElement>) {
 					},
 				}}
 				background={lqip}
-				className="m-auto"
+				className='m-auto'
 			/>
-			{alt && (
-				<figcaption className="font-mono text-xs text-center mt-2 text-muted-foreground">
-					{alt}
-				</figcaption>
-			)}
+			{alt && <figcaption className='mt-2 text-center font-mono text-muted-foreground text-xs'>{alt}</figcaption>}
 		</figure>
 	);
 }

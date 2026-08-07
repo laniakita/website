@@ -6,10 +6,8 @@ import { ThemeStoreProvider } from "@/lib/providers/theme-store-provider";
 // A wrapper to inject state if needed, though ThemeToggleSwitch reads from ThemeStoreProvider
 const ThemeSwitchWrapper = () => (
 	<ThemeStoreProvider>
-		<div className="flex flex-col items-center gap-4 p-8 border rounded-lg bg-background text-foreground">
-			<p className="text-sm text-muted-foreground">
-				The switch syncs with local storage and root document classes.
-			</p>
+		<div className='flex flex-col items-center gap-4 rounded-lg border bg-background p-8 text-foreground'>
+			<p className='text-muted-foreground text-sm'>The switch syncs with local storage and root document classes.</p>
 			<ThemeToggleSwitch />
 		</div>
 	</ThemeStoreProvider>

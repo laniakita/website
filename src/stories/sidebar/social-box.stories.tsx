@@ -1,10 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import {
-	createMemoryHistory,
-	createRootRoute,
-	createRouter,
-	RouterProvider,
-} from "@tanstack/react-router";
+import { createMemoryHistory, createRootRoute, createRouter, RouterProvider } from "@tanstack/react-router";
 import { expect, within } from "storybook/test";
 import { SocialBox } from "./social-box";
 
@@ -20,7 +15,7 @@ const meta = {
 				history: createMemoryHistory(),
 			});
 			return (
-				<div className="max-w-sm mx-auto">
+				<div className='mx-auto max-w-sm'>
 					<RouterProvider router={router} />
 				</div>
 			);

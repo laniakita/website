@@ -34,10 +34,7 @@ export function resolveAssetEntry(
 
 	const dotContentPath = path.join(process.cwd(), ".content");
 	if (imagePath.startsWith(dotContentPath)) {
-		imagePath = imagePath.replace(
-			dotContentPath,
-			path.join(process.cwd(), "content"),
-		);
+		imagePath = imagePath.replace(dotContentPath, path.join(process.cwd(), "content"));
 	}
 
 	const manifestKey = path.relative(process.cwd(), imagePath);

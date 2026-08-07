@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 function DialogTrigger({ ...props }: DialogTriggerPrimitiveProps) {
-	return <DialogTriggerPrimitive data-slot="dialog-trigger" {...props} />;
+	return <DialogTriggerPrimitive data-slot='dialog-trigger' {...props} />;
 }
 
 function DialogClose({
@@ -26,14 +26,7 @@ function DialogClose({
 	...props
 }: React.ComponentProps<typeof Button>) {
 	return (
-		<Button
-			slot="close"
-			data-slot="dialog-close"
-			variant={variant}
-			size={size}
-			className={cn(className)}
-			{...props}
-		/>
+		<Button slot='close' data-slot='dialog-close' variant={variant} size={size} className={cn(className)} {...props} />
 	);
 }
 
@@ -47,9 +40,9 @@ function DialogOverlay({
 }) {
 	return (
 		<ModalOverlayPrimitive
-			data-slot="dialog-overlay"
+			data-slot='dialog-overlay'
 			className={cn(
-				"fixed inset-0 isolate z-50 bg-black/30 duration-100 data-entering:animate-in data-entering:fade-in-0 data-exiting:animate-out data-exiting:fade-out-0 supports-backdrop-filter:backdrop-blur-sm",
+				"data-entering:fade-in-0 data-exiting:fade-out-0 fixed inset-0 isolate z-50 bg-black/30 duration-100 data-entering:animate-in data-exiting:animate-out supports-backdrop-filter:backdrop-blur-sm",
 				className,
 			)}
 			{...props}
@@ -74,25 +67,18 @@ function Dialog({
 	return (
 		<DialogOverlay isDismissable={isDismissable} {...props}>
 			<ModalPrimitive
-				data-slot="dialog-content"
+				data-slot='dialog-content'
 				className={cn(
-					"fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-6 rounded-4xl bg-popover p-6 text-sm text-popover-foreground shadow-xl ring-1 ring-foreground/5 duration-100 outline-none data-entering:animate-in data-entering:fade-in-0 data-entering:zoom-in-95 data-exiting:animate-out data-exiting:fade-out-0 data-exiting:zoom-out-95 sm:max-w-md dark:ring-foreground/10",
+					"data-entering:fade-in-0 data-entering:zoom-in-95 data-exiting:fade-out-0 data-exiting:zoom-out-95 fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-6 rounded-4xl bg-popover p-6 text-popover-foreground text-sm shadow-xl outline-none ring-1 ring-foreground/5 duration-100 data-entering:animate-in data-exiting:animate-out sm:max-w-md dark:ring-foreground/10",
 					className,
 				)}
 			>
-				<DialogPrimitive
-					data-slot="dialog"
-					className="[display:inherit] gap-[inherit] outline-none"
-				>
+				<DialogPrimitive data-slot='dialog' className='gap-[inherit] outline-none [display:inherit]'>
 					{children}
 					{showCloseButton && (
-						<DialogClose
-							variant="ghost"
-							className="absolute top-4 right-4 bg-secondary"
-							size="icon-sm"
-						>
+						<DialogClose variant='ghost' className='absolute top-4 right-4 bg-secondary' size='icon-sm'>
 							<XIcon />
-							<span className="sr-only">Close</span>
+							<span className='sr-only'>Close</span>
 						</DialogClose>
 					)}
 				</DialogPrimitive>
@@ -102,13 +88,7 @@ function Dialog({
 }
 
 function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
-	return (
-		<div
-			data-slot="dialog-header"
-			className={cn("flex flex-col gap-1.5", className)}
-			{...props}
-		/>
-	);
+	return <div data-slot='dialog-header' className={cn("flex flex-col gap-1.5", className)} {...props} />;
 }
 
 function DialogFooter({
@@ -121,45 +101,33 @@ function DialogFooter({
 }) {
 	return (
 		<div
-			data-slot="dialog-footer"
-			className={cn(
-				"flex flex-col-reverse gap-2 sm:flex-row sm:justify-end",
-				className,
-			)}
+			data-slot='dialog-footer'
+			className={cn("flex flex-col-reverse gap-2 sm:flex-row sm:justify-end", className)}
 			{...props}
 		>
 			{children}
-			{showCloseButton && <DialogClose variant="outline">Close</DialogClose>}
+			{showCloseButton && <DialogClose variant='outline'>Close</DialogClose>}
 		</div>
 	);
 }
 
-function DialogTitle({
-	className,
-	...props
-}: Omit<React.ComponentProps<typeof Heading>, "slot">) {
+function DialogTitle({ className, ...props }: Omit<React.ComponentProps<typeof Heading>, "slot">) {
 	return (
 		<Heading
-			slot="title"
-			data-slot="dialog-title"
-			className={cn(
-				"font-heading text-base leading-none font-medium",
-				className,
-			)}
+			slot='title'
+			data-slot='dialog-title'
+			className={cn("font-heading font-medium text-base leading-none", className)}
 			{...props}
 		/>
 	);
 }
 
-function DialogDescription({
-	className,
-	...props
-}: Omit<React.ComponentProps<"div">, "slot">) {
+function DialogDescription({ className, ...props }: Omit<React.ComponentProps<"div">, "slot">) {
 	return (
 		<div
-			data-slot="dialog-description"
+			data-slot='dialog-description'
 			className={cn(
-				"text-sm text-muted-foreground *:[a]:underline *:[a]:underline-offset-3 *:[a]:hover:text-foreground",
+				"text-muted-foreground text-sm *:[a]:underline *:[a]:underline-offset-3 *:[a]:hover:text-foreground",
 				className,
 			)}
 			{...props}

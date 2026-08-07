@@ -92,13 +92,13 @@ export function ThemeToggleSwitch({ className }: ThemeToggleSwitchProps) {
 	if (!mounted) {
 		return (
 			<Button
-				variant="ghost"
-				size="icon"
+				variant='ghost'
+				size='icon'
 				isDisabled
-				className={cn("w-9 h-9 opacity-50", className)}
-				aria-label="Theme toggle loading"
+				className={cn("h-9 w-9 opacity-50", className)}
+				aria-label='Theme toggle loading'
 			>
-				<span className="icon-[ph--monitor-fill] size-5" />
+				<span className='icon-[ph--monitor-fill] size-5' />
 			</Button>
 		);
 	}
@@ -117,15 +117,13 @@ export function ThemeToggleSwitch({ className }: ThemeToggleSwitchProps) {
 
 	return (
 		<Button
-			variant="ghost"
-			size="icon"
+			variant='ghost'
+			size='icon'
 			onPress={toggleTheme}
 			aria-label={`Current theme is ${labels[theme]}. Click to toggle.`}
 			className={cn("transition-all duration-300 hover:bg-muted", className)}
 		>
-			<span
-				className={cn(icons[theme], "size-5 transition-transform duration-300")}
-			/>
+			<span className={cn(icons[theme], "size-5 transition-transform duration-300")} />
 		</Button>
 	);
 }

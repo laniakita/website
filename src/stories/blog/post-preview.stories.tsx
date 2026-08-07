@@ -1,10 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import {
-	createMemoryHistory,
-	createRootRoute,
-	createRouter,
-	RouterProvider,
-} from "@tanstack/react-router";
+import { createMemoryHistory, createRootRoute, createRouter, RouterProvider } from "@tanstack/react-router";
 import { expect, within } from "storybook/test";
 import { PostPreview } from "./post-preview";
 
@@ -20,7 +15,7 @@ const meta = {
 				history: createMemoryHistory(),
 			});
 			return (
-				<div className="max-w-3xl mx-auto">
+				<div className='mx-auto max-w-3xl'>
 					<RouterProvider router={router} />
 				</div>
 			);
@@ -38,9 +33,8 @@ export const Default: Story = {
 		subheadline: "A subheadline that gives more context.",
 		description: (
 			<p>
-				This is a short description of the blog post. It could be rendered
-				Markdown or just standard text. Here is a little more text to show how
-				it wraps.
+				This is a short description of the blog post. It could be rendered Markdown or just standard text. Here is a
+				little more text to show how it wraps.
 			</p>
 		),
 		date: "2026-08-01",
@@ -48,9 +42,7 @@ export const Default: Story = {
 			src: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=2000",
 			altText: "Computer code on a screen",
 		},
-		categories: [
-			{ title: "Web Dev", url: "/category/web-dev", type: "Category" },
-		],
+		categories: [{ title: "Web Dev", url: "/category/web-dev", type: "Category" }],
 		tags: [
 			{ title: "react", url: "/tag/react", type: "Tag" },
 			{ title: "storybook", url: "/tag/storybook", type: "Tag" },
@@ -78,9 +70,7 @@ export const Default: Story = {
 		});
 		expect(headlineLink).toBeInTheDocument();
 
-		const subheadline = canvas.getByText(
-			/A subheadline that gives more context./i,
-		);
+		const subheadline = canvas.getByText(/A subheadline that gives more context./i);
 		expect(subheadline).toBeInTheDocument();
 	},
 };

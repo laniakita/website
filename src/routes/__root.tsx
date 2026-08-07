@@ -45,7 +45,7 @@ export const Route = createRootRoute({
 
 function RootDocument({ children }: { children: React.ReactNode }) {
 	return (
-		<html lang="en" suppressHydrationWarning>
+		<html lang='en' suppressHydrationWarning>
 			<head>
 				<script
 					// biome-ignore lint/security/noDangerouslySetInnerHtml: This is ok.
@@ -53,7 +53,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 				/>
 				<HeadContent />
 			</head>
-			<body className="bg-background dark:bg-muted">
+			<body className='bg-background dark:bg-muted'>
 				<TanstackProvider>
 					<ThemeStoreProvider>
 						<NavScrollViewStoreProvider>

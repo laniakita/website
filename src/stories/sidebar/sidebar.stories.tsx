@@ -1,10 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import {
-	createMemoryHistory,
-	createRootRoute,
-	createRouter,
-	RouterProvider,
-} from "@tanstack/react-router";
+import { createMemoryHistory, createRootRoute, createRouter, RouterProvider } from "@tanstack/react-router";
 import { expect, within } from "storybook/test";
 import { InfoBox } from "./info-box";
 import { Sidebar } from "./sidebar";
@@ -54,7 +49,7 @@ const meta = {
 				history: createMemoryHistory(),
 			});
 			return (
-				<div className="max-w-sm mx-auto">
+				<div className='mx-auto max-w-sm'>
 					<RouterProvider router={router} />
 				</div>
 			);
@@ -69,12 +64,7 @@ export const Default: Story = {
 	args: {
 		infoBoxSlot: (
 			<InfoBox
-				blogInfo={
-					<p>
-						A blog about life, Linux, and web development. Written by Lani
-						Akita.
-					</p>
-				}
+				blogInfo={<p>A blog about life, Linux, and web development. Written by Lani Akita.</p>}
 				categories={mockCategories}
 				tags={mockTags}
 			/>
@@ -96,8 +86,6 @@ export const Default: Story = {
 		).toBeInTheDocument();
 
 		// Check Social Box content
-		expect(
-			canvas.getByRole("link", { name: /Follow on Github!/i }),
-		).toBeInTheDocument();
+		expect(canvas.getByRole("link", { name: /Follow on Github!/i })).toBeInTheDocument();
 	},
 };

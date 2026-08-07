@@ -30,29 +30,25 @@ export interface HeaderLogoProps {
  * using CSS display classes (`dark:hidden` and `hidden dark:flex`).
  */
 export function HeaderLogo({
-	logoLight = <LogoLightmode title="Logo Light" />,
-	logoDark = <LogoDarkmode title="Logo Dark" />,
+	logoLight = <LogoLightmode title='Logo Light' />,
+	logoDark = <LogoDarkmode title='Logo Dark' />,
 	branding = (
 		<>
-			<span className="icon-[ph--leaf-fill] mr-2 size-6 text-primary" />
-			<span className="hidden sm:inline-block">Lani Akita</span>
+			<span className='icon-[ph--leaf-fill] mr-2 size-6 text-primary' />
+			<span className='hidden sm:inline-block'>Lani Akita</span>
 		</>
 	),
 }: HeaderLogoProps) {
 	return (
 		<Link
-			to="/"
-			aria-label="Home"
-			className="font-bold text-xl tracking-tight mr-4 flex items-center hover:opacity-80 transition-opacity"
+			to='/'
+			aria-label='Home'
+			className='mr-4 flex items-center font-bold text-xl tracking-tight transition-opacity hover:opacity-80'
 		>
 			{logoLight && logoDark ? (
-				<div className="relative flex items-center h-11 w-16">
-					<span className="dark:hidden absolute inset-0 flex items-center justify-center">
-						{logoLight}
-					</span>
-					<span className="hidden dark:flex absolute inset-0 items-center justify-center">
-						{logoDark}
-					</span>
+				<div className='relative flex h-11 w-16 items-center'>
+					<span className='absolute inset-0 flex items-center justify-center dark:hidden'>{logoLight}</span>
+					<span className='absolute inset-0 hidden items-center justify-center dark:flex'>{logoDark}</span>
 				</div>
 			) : (
 				branding

@@ -10,7 +10,9 @@ export const works = defineCollections({
 			date: z.coerce.date(),
 			updated: z.coerce.date().optional(),
 			title: z.string(),
-			source: z.string().optional(),
+			source: z
+				.string()
+				.default(`${ctx.path.split(".content").pop()?.split(".").shift()}`),
 			type: z.enum(["client", "personal"]).default("personal"),
 			active: z.boolean().default(false),
 			links: z
@@ -24,9 +26,6 @@ export const works = defineCollections({
 			tech: z.array(z.string()),
 			imageSrc: z.string().optional(),
 			altText: z.string().optional(),
-			url: z
-				.string()
-				.default(`${ctx.path.split(".content").pop()?.split(".").shift()}`),
 			featured_image: z
 				.object({
 					src: z.string(),

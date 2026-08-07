@@ -12,27 +12,11 @@ const meta = {
 	argTypes: {
 		variant: {
 			control: "select",
-			options: [
-				"default",
-				"destructive",
-				"outline",
-				"secondary",
-				"ghost",
-				"link",
-			],
+			options: ["default", "destructive", "outline", "secondary", "ghost", "link"],
 		},
 		size: {
 			control: "select",
-			options: [
-				"default",
-				"sm",
-				"lg",
-				"icon",
-				"xs",
-				"icon-xs",
-				"icon-sm",
-				"icon-lg",
-			],
+			options: ["default", "sm", "lg", "icon", "xs", "icon-xs", "icon-sm", "icon-lg"],
 		},
 		isDisabled: {
 			control: "boolean",
@@ -68,7 +52,7 @@ export const IconButton: Story = {
 	args: {
 		variant: "outline",
 		size: "icon",
-		children: <span className="icon-[ph--star-fill] size-4" />,
+		children: <span className='icon-[ph--star-fill] size-4' />,
 		"aria-label": "Star",
 	},
 };

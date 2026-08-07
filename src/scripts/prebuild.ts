@@ -15,9 +15,7 @@ import type { AssetManifestEntry } from "./asset-processor/types";
 async function getFiles(dir: string, ext: string[]): Promise<string[]> {
 	const dirents = await readdir(dir, { withFileTypes: true, recursive: true });
 	return dirents
-		.filter(
-			(dirent) => dirent.isFile() && ext.some((e) => dirent.name.endsWith(e)),
-		)
+		.filter((dirent) => dirent.isFile() && ext.some((e) => dirent.name.endsWith(e)))
 		.map((dirent) => path.join(dirent.parentPath, dirent.name));
 }
 
@@ -30,8 +28,7 @@ async function getFiles(dir: string, ext: string[]): Promise<string[]> {
  */
 async function loadLookups(dir: string) {
 	const files = await getFiles(dir, [".md", ".mdx"]);
-	const lookup: Record<string, { title: string; url: string; type: string }> =
-		{};
+	const lookup: Record<string, { title: string; url: string; type: string }> = {};
 
 	for (const file of files) {
 		const content = await Bun.file(file).text();
@@ -77,9 +74,7 @@ export async function processFrontmatter() {
 	// Clear .content/ if it exists
 	await rm(dotContentDir, { recursive: true, force: true });
 
-	const categoriesLookup = await loadLookups(
-		path.join(contentDir, "categories"),
-	);
+	const categoriesLookup = await loadLookups(path.join(contentDir, "categories"));
 	const tagsLookup = await loadLookups(path.join(contentDir, "tags"));
 
 	// Batch upload all assets first
@@ -92,11 +87,7 @@ export async function processFrontmatter() {
 		r2SecretKey: process.env.R2_SECRET_ACCESS_KEY || "",
 		r2PublicUrl: process.env.R2_PUBLIC_URL || "",
 	};
-	assetManifest = await batchUploadAssets(
-		assetsDir,
-		assetManifest,
-		uploadOptions,
-	);
+	assetManifest = await batchUploadAssets(assetsDir, assetManifest, uploadOptions);
 
 	// Get all files in content/
 	const allFiles = await readdir(contentDir, {
@@ -119,18 +110,14 @@ export async function processFrontmatter() {
 			if (data.imageSrc) {
 				// Resolve categories
 				if (data.catSlugs && Array.isArray(data.catSlugs)) {
-					const newCategories = data.catSlugs
-						.map((slug: string) => categoriesLookup[slug])
-						.filter(Boolean);
+					const newCategories = data.catSlugs.map((slug: string) => categoriesLookup[slug]).filter(Boolean);
 					data.categories = newCategories;
 					delete data.catSlugs;
 				}
 
 				// Resolve tags
 				if (data.tagSlugs && Array.isArray(data.tagSlugs)) {
-					const newTags = data.tagSlugs
-						.map((slug: string) => tagsLookup[slug])
-						.filter(Boolean);
+					const newTags = data.tagSlugs.map((slug: string) => tagsLookup[slug]).filter(Boolean);
 					data.tags = newTags;
 					delete data.tagSlugs;
 				}

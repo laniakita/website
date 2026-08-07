@@ -11,11 +11,7 @@ import {
 } from "@/stories/skeletons/table-of-contents-skeleton";
 import { Comments } from "./comments";
 import { PostHeader, type PostHeaderProps } from "./post-header";
-import {
-	TableOfContentsDesktop,
-	TableOfContentsMobile,
-	type ToCMenuProps,
-} from "./table-of-contents";
+import { TableOfContentsDesktop, TableOfContentsMobile, type ToCMenuProps } from "./table-of-contents";
 
 export interface PostPageProps extends PostHeaderProps {
 	/**
@@ -33,13 +29,13 @@ export function PostPage(props: PostPageProps) {
 	const { tocInView, setToCInView } = useToCViewStore((state) => state);
 
 	return (
-		<div className="flex size-full flex-col md:relative md:flex-row">
+		<div className='flex size-full flex-col md:relative md:flex-row'>
 			{/* Desktop ToC (will only show if useToCViewStore says so and screen is md+) */}
 			<ClientOnly fallback={<TableOfContentsDesktopSkeleton />}>
 				<TableOfContentsDesktop {...props.toc} />
 			</ClientOnly>
 
-			<div className="size-full min-w-0 flex flex-col">
+			<div className='flex size-full min-w-0 flex-col'>
 				<Header
 					navItems={props.header.navItems}
 					socialItems={props.header.socialItems}
@@ -54,11 +50,11 @@ export function PostPage(props: PostPageProps) {
 					<TableOfContentsMobile {...props.toc} />
 				</ClientOnly>
 
-				<main className="-mb-0.5 pt-20 md:pt-16  flex min-h-full w-full flex-col pb-10">
-					<article id="content">
+				<main className='-mb-0.5 flex min-h-full w-full flex-col pt-20 pb-10 md:pt-16'>
+					<article id='content'>
 						<PostHeader {...props} />
-						<div className="w-full px-6">
-							<div className="prose-protocol-omega mx-auto max-w-4xl md:max-w-2xl dark:prose-invert">
+						<div className='w-full px-6'>
+							<div className='prose-protocol-omega dark:prose-invert mx-auto max-w-4xl md:max-w-2xl'>
 								{props.MDXContent}
 							</div>
 						</div>

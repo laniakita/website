@@ -18,8 +18,8 @@ export const Default: Story = {
 			<div>
 				<h1>About Me</h1>
 				<p>
-					Welcome to my website. I am a software engineer passionate about
-					building robust and scalable web applications.
+					Welcome to my website. I am a software engineer passionate about building robust and scalable web
+					applications.
 				</p>
 				<h2>My Journey</h2>
 				<p>It all started when I wrote my first line of code...</p>

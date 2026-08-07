@@ -11,12 +11,9 @@ export interface CoreRollerProps {
  * A standardized container for rendering lists of previews (e.g. blog posts, work items).
  * Enforces consistent column-based flex layouts.
  */
-export function CoreRoller({
-	children,
-	"data-testid": testId = "core-roller",
-}: CoreRollerProps) {
+export function CoreRoller({ children, "data-testid": testId = "core-roller" }: CoreRollerProps) {
 	return (
-		<div className="flex size-full flex-col gap-6 w-full" data-testid={testId}>
+		<div className='flex size-full w-full flex-col gap-6' data-testid={testId}>
 			{children}
 		</div>
 	);

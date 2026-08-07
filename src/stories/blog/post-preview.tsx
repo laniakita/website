@@ -46,17 +46,7 @@ function formatDate(date: Date | string) {
  * title, date, excerpt, and associated tags/categories.
  */
 export function PostPreview(post: PostPreviewProps) {
-	const {
-		url,
-		headline,
-		subheadline,
-		description,
-		date,
-		updated,
-		featured_image,
-		categories,
-		tags,
-	} = post;
+	const { url, headline, subheadline, description, date, updated, featured_image, categories, tags } = post;
 
 	return (
 		<CorePreview
@@ -65,15 +55,15 @@ export function PostPreview(post: PostPreviewProps) {
 			headline={headline}
 			subheadline={subheadline}
 			featured_image={featured_image}
-			data-testid="post-preview-card"
+			data-testid='post-preview-card'
 			meta={
-				<div className="flex flex-wrap gap-x-2 font-mono text-sm">
+				<div className='flex flex-wrap gap-x-2 font-mono text-sm'>
 					{updated ? (
-						<p className="flex w-fit flex-wrap gap-x-2 rounded-full">
+						<p className='flex w-fit flex-wrap gap-x-2 rounded-full'>
 							<strong>Updated:</strong> <span>{formatDate(updated)}</span>
 						</p>
 					) : (
-						<p className="flex w-fit flex-wrap gap-x-2 rounded-full">
+						<p className='flex w-fit flex-wrap gap-x-2 rounded-full'>
 							<span>{formatDate(date)}</span>
 						</p>
 					)}

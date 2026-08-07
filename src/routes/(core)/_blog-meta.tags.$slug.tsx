@@ -22,21 +22,15 @@ const getTagPage = createServerFn({ method: "GET" })
 		}
 		const MDX = tag.data.body;
 
-		const RenderableMDX = await renderServerComponent(
-			<MDX components={components} />,
-		);
+		const RenderableMDX = await renderServerComponent(<MDX components={components} />);
 
 		const allPosts = blogSource.getPages();
 		const matchingPosts = allPosts
 			.filter((post) => {
-				return post.data.tags?.some(
-					(t) => t && "url" in t && t.url?.split("/").pop() === slug,
-				);
+				return post.data.tags?.some((t) => t && "url" in t && t.url?.split("/").pop() === slug);
 			})
 			.sort(
-				(a, b) =>
-					new Date(b.data.updated ?? b.data.date).getTime() -
-					new Date(a.data.updated ?? a.data.date).getTime(),
+				(a, b) => new Date(b.data.updated ?? b.data.date).getTime() - new Date(a.data.updated ?? a.data.date).getTime(),
 			);
 
 		const postsList = matchingPosts.map((meta) => {
@@ -47,9 +41,7 @@ const getTagPage = createServerFn({ method: "GET" })
 				url: meta.url,
 				headline: meta.data.headline ?? "",
 				subheadline: meta.data.subheadline,
-				description: (
-					<GlobalMDXRenderer>{meta.data.description ?? ""}</GlobalMDXRenderer>
-				),
+				description: <GlobalMDXRenderer>{meta.data.description ?? ""}</GlobalMDXRenderer>,
 				date: meta.data.date ?? "",
 				updated: meta.data.updated,
 				featured_image: meta.data.featured_image,
@@ -99,11 +91,7 @@ export const Route = createFileRoute("/(core)/_blog-meta/tags/$slug")({
 		const { RenderableMDX, pageData, RenderablePosts } = result;
 
 		return (
-			<MetaLayout
-				title={pageData.title ?? ""}
-				isTag={true}
-				RenderablePosts={RenderablePosts}
-			>
+			<MetaLayout title={pageData.title ?? ""} isTag={true} RenderablePosts={RenderablePosts}>
 				{RenderableMDX}
 			</MetaLayout>
 		);

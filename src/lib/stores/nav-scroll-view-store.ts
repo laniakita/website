@@ -15,9 +15,7 @@ export const defaultInitState: NavScrollViewState = {
 	inView: true,
 };
 
-export const createNavScrollViewStore = (
-	initState: NavScrollViewState = defaultInitState,
-) => {
+export const createNavScrollViewStore = (initState: NavScrollViewState = defaultInitState) => {
 	return createStore<NavScrollViewStore>()((set) => ({
 		...initState,
 		setNavInView: () => {

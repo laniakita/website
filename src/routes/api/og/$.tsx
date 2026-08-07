@@ -26,9 +26,7 @@ export const Route = createFileRoute("/api/og/$")({
 					`https://${import.meta.env.VITE_CDN}/branding/laniakita-logo-transparent-darkmode.svg`,
 				);
 
-				const bgSrc = await fetch(
-					`https://${import.meta.env.VITE_CDN}/branding/noise_shader_01.jpg`,
-				);
+				const bgSrc = await fetch(`https://${import.meta.env.VITE_CDN}/branding/noise_shader_01.jpg`);
 
 				const splatParts = params._splat?.split("/") ?? [];
 				const reqType = splatParts[0];
@@ -40,13 +38,8 @@ export const Route = createFileRoute("/api/og/$")({
 				let prefix: string | null | undefined = null;
 				let dynamic = true;
 
-				if (
-					modUrl ||
-					reqType === "home" ||
-					(reqType === "credits" && !modUrl)
-				) {
+				if (modUrl || reqType === "home" || (reqType === "credits" && !modUrl)) {
 					switch (reqType) {
-
 						case "blog": {
 							fetchedData = blogSource.getPage([modUrl]);
 							title = fetchedData?.data.headline;
@@ -54,9 +47,7 @@ export const Route = createFileRoute("/api/og/$")({
 							break;
 						}
 						case "credits": {
-							fetchedData = pagesSource.getPage(
-								["credits", modUrl].filter(Boolean),
-							);
+							fetchedData = pagesSource.getPage(["credits", modUrl].filter(Boolean));
 							title = fetchedData?.data.title;
 							prefix = "Credits";
 							break;
@@ -110,16 +101,16 @@ export const Route = createFileRoute("/api/og/$")({
 									objectPosition: "50% 50%",
 								}}
 								src={fetchedData.data.featured_image.src}
-								alt="Background"
+								alt='Background'
 							/>
 						</div>
 					) : (
 						<ImageGenTwo
 							logo={await logoSrc.arrayBuffer()}
 							bg={await bgSrc.arrayBuffer()}
-							bgFormat="jpeg"
+							bgFormat='jpeg'
 							title={title ?? ""}
-							logoFormat="svg"
+							logoFormat='svg'
 							dynamic={dynamic}
 							prefix={prefix ?? ""}
 							twitter={isTwitter}
@@ -140,9 +131,9 @@ export const Route = createFileRoute("/api/og/$")({
 								weight: 400,
 								generic: "monospace",
 								data: () =>
-									fetch(
-										`https://${import.meta.env.VITE_CDN}/fonts/0xProto-Regular.woff2`,
-									).then((res) => res.arrayBuffer()),
+									fetch(`https://${import.meta.env.VITE_CDN}/fonts/0xProto-Regular.woff2`).then((res) =>
+										res.arrayBuffer(),
+									),
 							},
 						],
 					},
@@ -190,7 +181,7 @@ function ImageGenTwo({
 				}}
 			>
 				<img
-					alt="background"
+					alt='background'
 					src={bgData}
 					style={{
 						opacity: 0.8,
@@ -212,11 +203,7 @@ function ImageGenTwo({
 						gap: "-1rem",
 					}}
 				>
-					<img
-						src={logoData}
-						alt="Logo for lanaiakita.com"
-						style={{ height: "50%" }}
-					/>
+					<img src={logoData} alt='Logo for lanaiakita.com' style={{ height: "50%" }} />
 				</div>
 			</div>
 		);
@@ -236,7 +223,7 @@ function ImageGenTwo({
 			}}
 		>
 			<img
-				alt="background"
+				alt='background'
 				src={bgData}
 				style={{
 					opacity: 0.8,
@@ -248,12 +235,7 @@ function ImageGenTwo({
 					objectFit: "cover",
 				}}
 			/>
-			<img
-				alt="logo"
-				src={logoData}
-				height={`20%`}
-				style={{ position: "absolute", right: 30, top: 30 }}
-			/>
+			<img alt='logo' src={logoData} height={`20%`} style={{ position: "absolute", right: 30, top: 30 }} />
 
 			{dynamic ? (
 				<div
@@ -314,9 +296,7 @@ function ImageGenTwo({
 						maxWidth: "80%",
 					}}
 				>
-					<h1 style={{ fontWeight: 900, fontSize: twitter ? 80 : 60 }}>
-						{title}
-					</h1>
+					<h1 style={{ fontWeight: 900, fontSize: twitter ? 80 : 60 }}>{title}</h1>
 				</div>
 			)}
 		</div>

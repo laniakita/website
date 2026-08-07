@@ -8,11 +8,8 @@ export interface PostRollerSkeletonProps {
 
 export function PostRollerSkeleton({ count = 3 }: PostRollerSkeletonProps) {
 	return (
-		<div
-			className="flex items-center justify-center w-full"
-			data-testid="post-roller-skeleton"
-		>
-			<div className="flex w-full max-w-3xl flex-col gap-4 md:gap-8">
+		<div className='flex w-full items-center justify-center' data-testid='post-roller-skeleton'>
+			<div className='flex w-full max-w-3xl flex-col gap-4 md:gap-8'>
 				{Array.from({ length: count }).map((_, i) => (
 					<React.Fragment
 						key={`skeleton-${

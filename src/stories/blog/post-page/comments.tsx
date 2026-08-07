@@ -19,25 +19,24 @@ export function Comments() {
 		: "https://giscus.catppuccin.com/themes/latte.css";
 
 	return (
-		<div className="p-6">
-			<div className="mx-auto size-full max-w-3xl md:max-w-2xl" data-testid="comments-container">
+		<div className='p-6'>
+			<div className='mx-auto size-full max-w-3xl md:max-w-2xl' data-testid='comments-container'>
 				<Giscus
-					id="comment"
-					repo="laniakita/website"
-					repoId="R_kgDOLYjaFQ"
-					category="Announcements"
-					categoryId="DIC_kwDOLYjaFc4Cf0F_"
-					mapping="pathname"
-					strict="0"
-					reactionsEnabled="1"
-					emitMetadata="1"
-					inputPosition="top"
+					id='comment'
+					repo='laniakita/website'
+					repoId='R_kgDOLYjaFQ'
+					category='Announcements'
+					categoryId='DIC_kwDOLYjaFc4Cf0F_'
+					mapping='pathname'
+					strict='0'
+					reactionsEnabled='1'
+					emitMetadata='1'
+					inputPosition='top'
 					theme={themePref}
-					lang="en"
-					loading="lazy"
+					lang='en'
+					loading='lazy'
 				/>
 			</div>
 		</div>
 	);
 }
-

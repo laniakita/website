@@ -3,11 +3,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "react-aria-components";
 import { Dialog, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import {
-	DropdownMenu,
-	DropdownMenuItem,
-	DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 export interface MinPageData {
 	title: string;
@@ -15,18 +11,13 @@ export interface MinPageData {
 	url: string;
 }
 
-export const shareUnderChar = (
-	minPageData: MinPageData | undefined,
-	isBsky?: boolean,
-) => {
+export const shareUnderChar = (minPageData: MinPageData | undefined, isBsky?: boolean) => {
 	if (!minPageData) return "";
 	const urlLen = isBsky ? 46 : 23;
 	const titleLen = minPageData.title.length;
 
 	if (urlLen + titleLen + 1 > 300) {
-		const titleSlice = minPageData.title
-			.slice(0, titleLen - urlLen - 3)
-			.split("");
+		const titleSlice = minPageData.title.slice(0, titleLen - urlLen - 3).split("");
 		titleSlice.push("...");
 		const titleTrunc = titleSlice.join("");
 		return encodeURIComponent(`${titleTrunc} ${minPageData.url}`);
@@ -95,31 +86,31 @@ export function ShareButton({ title, url }: { title: string; url: string }) {
 	return (
 		<>
 			<DropdownMenuTrigger>
-				<Button className="z-10 flex flex-row items-center justify-center gap-2 rounded-full border border-primary text-primary bg-primary/10 px-8 py-2 font-mono font-black transition-colors hover:border-primary hover:bg-primary hover:text-primary-foreground outline-none">
-					<span className="icon-[ph--upload-bold] text-2xl" />
+				<Button className='z-10 flex flex-row items-center justify-center gap-2 rounded-full border border-primary bg-primary/10 px-8 py-2 font-black font-mono text-primary outline-none transition-colors hover:border-primary hover:bg-primary hover:text-primary-foreground'>
+					<span className='icon-[ph--upload-bold] text-2xl' />
 					<span>share</span>
 				</Button>
 				<DropdownMenu
-					placement="bottom"
+					placement='bottom'
 					offset={10}
-					className="rounded-xl min-w-48 font-mono bg-ctp-base/90 backdrop-blur-md border-ctp-overlay0 dark:bg-ctp-base/50 dark:shadow-ctp-pink/30 p-1.5 shadow-lg"
+					className='min-w-48 rounded-xl border border-secondary bg-background/50 p-1.5 font-mono shadow-lg backdrop-blur-md'
 				>
 					<DropdownMenuItem
 						onAction={handleCopy}
-						className="cursor-pointer group hover:bg-primary hover:text-primary-foreground data-focused:bg-primary! data-focused:text-primary-foreground! gap-2 rounded-md"
+						className='group cursor-pointer gap-2 rounded-md hover:bg-primary hover:text-primary-foreground data-focused:bg-primary! data-focused:text-primary-foreground!'
 					>
-						<span className="icon-[ph--link] text-xl group-hover:text-primary-foreground group-data-focused:text-primary-foreground!" />
+						<span className='icon-[ph--link] text-xl group-hover:text-primary-foreground group-data-focused:text-primary-foreground!' />
 						{isCopied ? "copied!" : "copy link"}
 					</DropdownMenuItem>
 
-					<DropdownMenuItem className="cursor-pointer hover:bg-[#1185FE] hover:text-white data-focused:bg-[#1185FE]! data-focused:text-white! gap-2 rounded-md">
+					<DropdownMenuItem className='group cursor-pointer gap-2 rounded-md hover:bg-[#1185FE] hover:text-primary-foreground data-focused:bg-[#1185FE]! data-focused:text-primary-foreground!'>
 						<a
 							href={`https://bsky.app/intent/compose?text=${shareUnderChar(pageData, true)}`}
-							target="_blank"
-							rel="noreferrer"
-							className="flex w-full items-center gap-2"
+							target='_blank'
+							rel='noreferrer'
+							className='flex w-full items-center gap-2 group-hover:text-primary-foreground group-data-focused:text-primary-foreground!'
 						>
-							<span className="icon-[fa6-brands--bluesky] text-xl" />
+							<span className='icon-[fa6-brands--bluesky] text-xl group-hover:text-primary-foreground group-data-focused:text-primary-foreground!' />
 							Bluesky
 						</a>
 					</DropdownMenuItem>
@@ -128,32 +119,32 @@ export function ShareButton({ title, url }: { title: string; url: string }) {
 						onAction={() => {
 							setIsMastodonOpen(true);
 						}}
-						className="cursor-pointer hover:bg-[#563ACC] hover:text-white data-focused:bg-[#563ACC]! data-focused:text-white! gap-2 rounded-md"
+						className='group cursor-pointer gap-2 rounded-md hover:bg-[#563ACC] hover:text-primary-foreground data-focused:bg-[#563ACC]! data-focused:text-primary-foreground!'
 					>
-						<span className="icon-[fa6-brands--mastodon] text-xl" />
+						<span className='icon-[fa6-brands--mastodon] text-xl group-hover:text-primary-foreground group-data-focused:text-primary-foreground!' />
 						Mastodon
 					</DropdownMenuItem>
 
-					<DropdownMenuItem className="cursor-pointer hover:bg-[#0a66c2] hover:text-white data-focused:bg-[#0a66c2]! data-focused:text-white! gap-2 rounded-md">
+					<DropdownMenuItem className='group cursor-pointer gap-2 rounded-md hover:bg-[#0a66c2]! hover:text-primary-foreground data-focused:bg-[#0a66c2]! data-focused:text-primary-foreground!'>
 						<a
 							href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(clientUrl)}`}
-							target="_blank"
-							rel="noreferrer"
-							className="flex w-full items-center gap-2"
+							target='_blank'
+							rel='noreferrer'
+							className='flex w-full items-center gap-2 group-hover:text-primary-foreground group-data-focused:text-primary-foreground!'
 						>
-							<span className="icon-[fa6-brands--linkedin] text-xl" />
+							<span className='icon-[fa6-brands--linkedin] text-xl group-hover:text-primary-foreground group-data-focused:text-primary-foreground!' />
 							LinkedIn
 						</a>
 					</DropdownMenuItem>
 
-					<DropdownMenuItem className="cursor-pointer hover:bg-[#ff6719] hover:text-white data-focused:bg-[#ff6719]! data-focused:text-white! gap-2 rounded-md">
+					<DropdownMenuItem className='group cursor-pointer gap-2 rounded-md hover:bg-[#ff6719]! hover:text-primary-foreground data-focused:bg-[#ff6719]! data-focused:text-primary-foreground!'>
 						<a
 							href={`https://substack.com/notes?action=compose&message=${encodeURIComponent(clientTitle)} ${encodeURIComponent(clientUrl)}`}
-							target="_blank"
-							rel="noreferrer"
-							className="flex w-full items-center gap-2"
+							target='_blank'
+							rel='noreferrer'
+							className='flex w-full items-center gap-2 group-hover:text-primary-foreground group-data-focused:text-primary-foreground!'
 						>
-							<span className="icon-[simple-icons--substack] text-xl" />
+							<span className='icon-[simple-icons--substack] text-xl group-hover:text-primary-foreground group-data-focused:text-primary-foreground!' />
 							Substack
 						</a>
 					</DropdownMenuItem>
@@ -162,31 +153,25 @@ export function ShareButton({ title, url }: { title: string; url: string }) {
 
 			<Dialog isOpen={isMastodonOpen} onOpenChange={setIsMastodonOpen}>
 				<DialogHeader>
-					<DialogTitle className="sr-only">Share to Mastodon</DialogTitle>
+					<DialogTitle className='sr-only'>Share to Mastodon</DialogTitle>
 				</DialogHeader>
-				<div className="py-6">
-					<form onSubmit={shareToMastodon} className="flex flex-col gap-4">
-						<label
-							htmlFor="mastodon-instance"
-							className="font-semibold text-foreground"
-						>
-							mastodon_server:{" "}
-							{instanceInput.length > 0 ? instanceInput : DEFAULT_INSTANCE}
+				<div className='py-6'>
+					<form onSubmit={shareToMastodon} className='flex flex-col gap-4'>
+						<label htmlFor='mastodon-instance' className='font-semibold text-foreground'>
+							mastodon_server: {instanceInput.length > 0 ? instanceInput : DEFAULT_INSTANCE}
 						</label>
-						<div className="relative flex flex-row">
+						<div className='relative flex flex-row'>
 							<input
-								id="mastodon-instance"
-								name="mastodon-instance"
-								type="text"
-								placeholder={
-									instanceInput.length > 0 ? instanceInput : DEFAULT_INSTANCE
-								}
+								id='mastodon-instance'
+								name='mastodon-instance'
+								type='text'
+								placeholder={instanceInput.length > 0 ? instanceInput : DEFAULT_INSTANCE}
 								onChange={(e) => setInstanceInput(e.target.value)}
-								className="w-full rounded-l-lg border border-r-0 border-ctp-surface0 bg-background px-4 py-3 placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ctp-mauve"
+								className='w-full rounded-l-lg border border-ctp-surface0 border-r-0 bg-background px-4 py-3 placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ctp-mauve'
 							/>
 							<button
-								type="submit"
-								className="rounded-r-lg bg-ctp-mauve text-ctp-base px-6 font-bold hover:bg-ctp-pink transition-colors"
+								type='submit'
+								className='rounded-r-lg bg-ctp-mauve px-6 font-bold text-ctp-base transition-colors hover:bg-ctp-pink'
 							>
 								share
 							</button>
@@ -199,9 +184,9 @@ export function ShareButton({ title, url }: { title: string; url: string }) {
 }
 export function ShareButtonSkeleton() {
 	return (
-		<div className="z-10 flex h-10 w-32 animate-pulse flex-row items-center justify-center gap-2 rounded-full border border-ctp-mauve/50 bg-ctp-mauve/10 px-8 py-2">
-			<div className="size-6 animate-pulse rounded-full bg-ctp-mauve/40" />
-			<div className="h-4 w-12 animate-pulse rounded bg-ctp-mauve/40" />
+		<div className='z-10 flex h-10 w-32 animate-pulse flex-row items-center justify-center gap-2 rounded-full border border-ctp-mauve/50 bg-ctp-mauve/10 px-8 py-2'>
+			<div className='size-6 animate-pulse rounded-full bg-ctp-mauve/40' />
+			<div className='h-4 w-12 animate-pulse rounded bg-ctp-mauve/40' />
 		</div>
 	);
 }

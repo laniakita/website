@@ -1,8 +1,7 @@
 import type * as React from "react";
 import { cn } from "@/lib/utils";
 
-export interface FooterCopyrightProps
-	extends React.HTMLAttributes<HTMLDivElement> {
+export interface FooterCopyrightProps extends React.HTMLAttributes<HTMLDivElement> {
 	startYear?: number;
 	currentYear?: number;
 	authorName?: string;
@@ -15,12 +14,11 @@ export function FooterCopyright({
 	className,
 	...props
 }: FooterCopyrightProps) {
-	const yearDisplay =
-		startYear === currentYear ? currentYear : `${startYear}-${currentYear}`;
+	const yearDisplay = startYear === currentYear ? currentYear : `${startYear}-${currentYear}`;
 
 	return (
 		<div className={cn("text-xs", className)} {...props}>
-			<p className="text-center text-balance text-muted-foreground">
+			<p className='text-balance text-center text-muted-foreground'>
 				© {yearDisplay} {authorName}. All Rights Reserved.
 			</p>
 		</div>

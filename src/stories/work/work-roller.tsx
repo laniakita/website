@@ -1,4 +1,3 @@
-import { CoreRoller } from "@/stories/core/core-roller";
 import { WorkPreview, type WorkPreviewProps } from "./work-preview";
 
 export interface WorkRollerProps {
@@ -7,14 +6,14 @@ export interface WorkRollerProps {
 }
 
 /**
- * Renders a vertical list of work previews.
+ * Renders an editorial exhibition vertical list of work previews.
  */
 export function WorkRoller({ works }: WorkRollerProps) {
 	return (
-		<CoreRoller data-testid="work-roller">
-			{works.map((work) => (
-				<WorkPreview key={`work-${work.id}`} {...work} />
+		<div className='flex w-full flex-col gap-32 py-20 md:gap-48' data-testid='work-roller'>
+			{works.map((work, index) => (
+				<WorkPreview key={`work-${work.id}`} {...work} index={index} />
 			))}
-		</CoreRoller>
+		</div>
 	);
 }

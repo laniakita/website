@@ -17,12 +17,12 @@ export interface HeaderNavProps {
  */
 export function HeaderNav({ navItems }: HeaderNavProps) {
 	return (
-		<nav className="hidden lg:flex items-center gap-6">
+		<nav className='hidden items-center gap-6 lg:flex'>
 			{navItems.map((item) => (
 				<Link
 					key={item.label}
 					to={item.to}
-					className="z-51 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+					className='z-51 font-medium text-muted-foreground text-sm transition-colors hover:text-foreground'
 				>
 					{item.label}
 				</Link>
