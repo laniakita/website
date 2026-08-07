@@ -14,7 +14,7 @@ export function PostRollerSkeleton({ count = 3 }: PostRollerSkeletonProps) {
 					<React.Fragment
 						key={`skeleton-${
 							// biome-ignore lint/suspicious/noArrayIndexKey: it's a simple random number generated for keys
-							i * 3.14 * Math.random()
+							i
 						}`}
 					>
 						<PostPreviewSkeleton />

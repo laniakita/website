@@ -1,8 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { createMemoryHistory, createRootRoute, createRouter, RouterProvider } from "@tanstack/react-router";
 import { expect, userEvent, waitFor, within } from "storybook/test";
-import { SOCIALS_NAVBAR } from "@/components/nav-constants";
-import { defaultNavItems } from "@/components/navigation/header/data";
+import { MAIN_PAGES, SOCIALS_NAVBAR } from "@/components/nav-constants";
 import { NavScrollViewStoreProvider } from "@/lib/providers/nav-scroll-view-store-provider";
 import { ThemeStoreProvider } from "@/lib/providers/theme-store-provider";
 import { ToCViewStoreProvider } from "@/lib/providers/toc-view-store-provider";
@@ -45,12 +44,12 @@ export const Default: Story = {
 		subheadline: "Testing the entire page assembly",
 		author: "Lani",
 		date: "2026-08-01",
-		categories: [{ title: "Tech", type: "Category", url: "/category/tech" }],
-		tags: [{ title: "storybook", type: "Tag", url: "/tag/storybook" }],
+		categories: [{ title: "Tech", type: "category", url: "/category/tech" }],
+		tags: [{ title: "storybook", type: "tag", url: "/tag/storybook" }],
 		featured_image: {
 			src: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=1000",
 			altText: "Computer code on a screen",
-			hasImage: true,
+			localHash: "",
 			//width: 1000,
 			//height: 600,
 		},
@@ -65,7 +64,7 @@ export const Default: Story = {
 			],
 		},
 		header: {
-			navItems: defaultNavItems,
+			navItems: MAIN_PAGES,
 			socialItems: SOCIALS_NAVBAR,
 		},
 		MDXContent: (

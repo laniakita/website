@@ -1,13 +1,12 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { renderServerComponent } from "@tanstack/react-start/rsc";
-import type { ReactNode } from "react";
+import { type ReactNode, Suspense } from "react";
 import { useMDXComponents } from "@/components/mdx";
 import { blogSource } from "@/lib/collections/blog";
 import type { CatTag } from "@/stories/blog/cat-tag-roller";
 import { PostPage } from "@/stories/blog/post-page/post-page";
-import { SOCIALS_NAVBAR } from "../components/nav-constants";
-import { defaultNavItems } from "../components/navigation/header/data";
+import { MAIN_PAGES, SOCIALS_NAVBAR } from "../components/nav-constants";
 
 const getPost = createServerFn({ method: "GET" })
 	.validator((slug: string) => slug)
@@ -108,8 +107,9 @@ export const Route = createFileRoute("/blog/$slug")({
 		meta: getSeoMeta({
 			title: loaderData?.postData.headline,
 			description: descriptionTruncator(loaderData?.postData.description),
-			image: `/api/og/blog/${params.slug}`,
+			image: `/opengraph/blog/${params.slug}`,
 			imageAlt: descriptionTruncator(loaderData?.postData.featured_image?.altText),
+			lastModified: loaderData?.postData.updated ?? loaderData?.postData.date,
 		}),
 	}),
 	component: BlogRouteComponent,
@@ -129,11 +129,16 @@ function BlogRouteComponent() {
 	const { postData, toc, RenderableMDX } = Route.useLoaderData();
 
 	return (
-		<PostPage
-			{...postData}
-			toc={toc}
-			MDXContent={RenderableMDX}
-			header={{ navItems: defaultNavItems, socialItems: SOCIALS_NAVBAR }}
-		/>
+		<Suspense fallback={<PostPageSkeleton />}>
+			<PostPage
+				{...postData}
+				toc={toc}
+				MDXContent={RenderableMDX}
+				header={{
+					navItems: MAIN_PAGES,
+					socialItems: SOCIALS_NAVBAR,
+				}}
+			/>
+		</Suspense>
 	);
 }

@@ -1,6 +1,6 @@
-import type { NavItem } from "@/components/navigation/header/data";
+import type { NavItem } from "@/components/navigation/header";
 import { Link } from "@/components/ui/link";
-
+import { PendingLoader } from "./pending-loader";
 /**
  * Props for the HeaderNav component.
  */
@@ -22,9 +22,10 @@ export function HeaderNav({ navItems }: HeaderNavProps) {
 				<Link
 					key={item.label}
 					to={item.to}
-					className='z-51 font-medium text-muted-foreground text-sm transition-colors hover:text-foreground'
+					className='relative flex items-center font-medium text-muted-foreground text-sm capitalize transition-colors hover:text-foreground'
 				>
 					{item.label}
+					<PendingLoader to={item.to} className='m-0 size-3 p-0' />
 				</Link>
 			))}
 		</nav>

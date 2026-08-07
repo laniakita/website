@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { expect, within } from "storybook/test";
-import { defaultSocialItems } from "@/components/navigation/header/data";
+import { SOCIALS_NAVBAR } from "$/src/components/nav-constants";
 import { HeaderSocials } from "./socials";
 
 const meta = {
@@ -8,7 +8,7 @@ const meta = {
 	component: HeaderSocials,
 	tags: ["autodocs"],
 	args: {
-		socialItems: defaultSocialItems,
+		socialItems: SOCIALS_NAVBAR,
 	},
 } satisfies Meta<typeof HeaderSocials>;
 
@@ -19,7 +19,7 @@ export const Default: Story = {
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
 		const links = canvas.getAllByRole("link");
-		await expect(links.length).toBe(defaultSocialItems.length);
+		await expect(links.length).toBe(SOCIALS_NAVBAR.length);
 	},
 };
 

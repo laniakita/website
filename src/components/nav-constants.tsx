@@ -8,15 +8,18 @@ export const IPAD_TOC_ID = "horizontal-table-of-contents";
 
 const MAIN_PAGES_ARR = new Map([
 	["home", "/"],
-	["blog", "/blog"],
+	//["blog", "/blog"],
 	["about", "/about"],
 	["work", "/work"],
-	["projects", "/projects"],
+	//["projects", "/projects"],
 	["Atom/RSS", "/feed.xml"],
 	["contact", "/contact"],
 ]);
 
-export const MAIN_PAGES = Object.fromEntries(MAIN_PAGES_ARR);
+export const MAIN_PAGES = Object.entries(Object.fromEntries(MAIN_PAGES_ARR)).map(([key, value]) => ({
+	label: key,
+	to: value,
+}));
 
 export const SOCIALS_NAVBAR = [
 	/*

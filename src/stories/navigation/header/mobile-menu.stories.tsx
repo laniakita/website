@@ -1,14 +1,14 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { createMemoryHistory, createRootRoute, createRouter, RouterProvider } from "@tanstack/react-router";
 import { expect, userEvent, within } from "storybook/test";
-import { defaultNavItems, defaultSocialItems } from "@/components/navigation/header/data";
 import { ThemeStoreProvider } from "@/lib/providers/theme-store-provider";
+import { MAIN_PAGES, SOCIALS_NAVBAR } from "$/src/components/nav-constants";
 import { HeaderMobileMenu } from "./mobile-menu";
 
 const rootRoute = createRootRoute({
 	component: () => (
 		<ThemeStoreProvider>
-			<HeaderMobileMenu navItems={defaultNavItems} socialItems={defaultSocialItems} />
+			<HeaderMobileMenu navItems={MAIN_PAGES} socialItems={SOCIALS_NAVBAR} />
 		</ThemeStoreProvider>
 	),
 });

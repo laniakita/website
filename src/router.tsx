@@ -6,8 +6,9 @@ export function getRouter() {
 		routeTree,
 		scrollRestoration: true,
 		defaultPreload: "intent",
-		defaultPreloadStaleTime: 0,
 		defaultHashScrollIntoView: { behavior: "smooth" },
+		defaultStaleTime: 300_000,
+		defaultGcTime: 300_000,
 	});
 
 	return router;

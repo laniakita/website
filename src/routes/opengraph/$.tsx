@@ -6,7 +6,7 @@ import { categoriesSource } from "@/lib/collections/categories";
 import { pagesSource } from "@/lib/collections/pages";
 import { tagsSource } from "@/lib/collections/tags";
 
-export const Route = createFileRoute("/api/og/$")({
+export const Route = createFileRoute("/opengraph/$")({
 	server: {
 		handlers: {
 			GET: async ({ request, params }) => {
@@ -43,7 +43,7 @@ export const Route = createFileRoute("/api/og/$")({
 						case "blog": {
 							fetchedData = blogSource.getPage([modUrl]);
 							title = fetchedData?.data.headline;
-							prefix = "Dev Blog of Lani";
+							prefix = "Lani's Dev Blog";
 							break;
 						}
 						case "credits": {
@@ -136,6 +136,9 @@ export const Route = createFileRoute("/api/og/$")({
 									),
 							},
 						],
+						headers: {
+							"Cache-Control": "public, maxage=31536000, immutable",
+						},
 					},
 				);
 			},
