@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { BlogPostRoller } from "@/components/blog/post-roller";
 import { CatTagType } from "@/stories/blog/cat-tag-roller";
 import { MetaLayout } from "@/stories/blog-meta/meta-layout";
+import { MetaLayoutSkeleton } from "@/stories/skeletons/meta-layout-skeleton";
+import { MetaPostRoller } from "./meta-roller";
 
 const meta = {
 	title: "Blog-Meta/MetaLayout",
@@ -23,7 +24,7 @@ const mockPosts = [
 		categories: [{ title: "React", url: "/categories/react", type: CatTagType.Category }],
 		tags: [{ title: "performance", url: "/tags/performance", type: CatTagType.Tag }],
 		featured_image: {
-			src: "https://via.placeholder.com/600x400",
+			src: "https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?q=80&w=764&auto=format&fit=crop",
 			altText: "Placeholder",
 			localHash: "",
 		},
@@ -36,7 +37,7 @@ const mockPosts = [
 		categories: [{ title: "CSS", url: "/categories/css", type: CatTagType.Category }],
 		tags: [{ title: "design", url: "/tags/design", type: CatTagType.Tag }],
 		featured_image: {
-			src: "https://via.placeholder.com/600x400",
+			src: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=1169&auto=format&fit=crop",
 			altText: "Placeholder",
 			localHash: "",
 		},
@@ -47,7 +48,7 @@ export const CategoryLayout: Story = {
 	args: {
 		title: "React",
 		isTag: false,
-		RenderablePosts: <BlogPostRoller posts={mockPosts} />,
+		RenderablePosts: <MetaPostRoller posts={mockPosts} />,
 		children: (
 			<div>
 				<p>Everything you need to know about React, its ecosystem, and best practices.</p>
@@ -60,7 +61,7 @@ export const TagLayout: Story = {
 	args: {
 		title: "performance",
 		isTag: true,
-		RenderablePosts: <BlogPostRoller posts={[mockPosts[0]]} />, // Only one post for the tag
+		RenderablePosts: <MetaPostRoller posts={[mockPosts[0]]} />, // Only one post for the tag
 		children: (
 			<div>
 				<p>Articles focusing on web performance optimization techniques.</p>
@@ -85,8 +86,6 @@ export const EmptyPosts: Story = {
 		),
 	},
 };
-
-import { MetaLayoutSkeleton } from "@/stories/skeletons/meta-layout-skeleton";
 
 export const Skeleton: StoryObj<typeof MetaLayoutSkeleton> = {
 	render: () => <MetaLayoutSkeleton />,

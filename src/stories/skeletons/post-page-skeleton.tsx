@@ -1,7 +1,6 @@
-import { SOCIALS_NAVBAR } from "@/components/nav-constants";
+import { MAIN_PAGES, SOCIALS_NAVBAR } from "@/components/nav-constants";
 import { Footer } from "@/components/navigation/footer";
 import { Header } from "@/components/navigation/header";
-import { defaultNavItems } from "@/components/navigation/header/data";
 import { CommentsSkeleton } from "./comments-skeleton";
 import { PostHeaderSkeleton } from "./post-header-skeleton";
 import { TableOfContentsDesktopSkeleton, TableOfContentsMobileSkeleton } from "./table-of-contents-skeleton";
@@ -13,7 +12,7 @@ export function PostPageSkeleton() {
 
 			<div className='flex size-full min-w-0 flex-col'>
 				<Header
-					navItems={defaultNavItems}
+					navItems={MAIN_PAGES}
 					socialItems={SOCIALS_NAVBAR}
 					isPost={true}
 					tocInView={false}

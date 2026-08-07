@@ -24,7 +24,7 @@ export const Route = createRootRoute({
 			...getSeoMeta({
 				title: APP_DEFAULT_TITLE,
 				description: APP_DESCRIPTION,
-				image: "/api/og/home",
+				image: "/opengraph/home",
 			}),
 		],
 		links: [

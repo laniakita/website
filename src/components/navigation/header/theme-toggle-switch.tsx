@@ -121,7 +121,7 @@ export function ThemeToggleSwitch({ className }: ThemeToggleSwitchProps) {
 			size='icon'
 			onPress={toggleTheme}
 			aria-label={`Current theme is ${labels[theme]}. Click to toggle.`}
-			className={cn("transition-all duration-300 hover:bg-muted", className)}
+			className={cn("z-51 transition-all duration-300 hover:bg-muted", className)}
 		>
 			<span className={cn(icons[theme], "size-5 transition-transform duration-300")} />
 		</Button>

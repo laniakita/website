@@ -1,14 +1,14 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { createMemoryHistory, createRootRoute, createRouter, RouterProvider } from "@tanstack/react-router";
 import { Header } from "@/components/navigation/header";
-import { defaultNavItems, defaultSocialItems } from "@/components/navigation/header/data";
 import { ThemeStoreProvider } from "@/lib/providers/theme-store-provider";
+import { MAIN_PAGES, SOCIALS_NAVBAR } from "$/src/components/nav-constants";
 
 // TanStack Router requires a router context for Links to work in Storybook
 const rootRoute = createRootRoute({
 	component: () => (
 		<ThemeStoreProvider>
-			<Header navItems={defaultNavItems} socialItems={defaultSocialItems} />
+			<Header navItems={MAIN_PAGES} socialItems={SOCIALS_NAVBAR} />
 		</ThemeStoreProvider>
 	),
 });
@@ -41,7 +41,7 @@ export const PostLayout: Story = {
 			const rootRoute = createRootRoute({
 				component: () => (
 					<ThemeStoreProvider>
-						<Header navItems={defaultNavItems} socialItems={defaultSocialItems} isPost={true} tocInView={false} />
+						<Header navItems={MAIN_PAGES} socialItems={SOCIALS_NAVBAR} isPost={true} tocInView={false} />
 					</ThemeStoreProvider>
 				),
 			});
@@ -60,7 +60,7 @@ export const WithDevWarning: Story = {
 			const rootRoute = createRootRoute({
 				component: () => (
 					<ThemeStoreProvider>
-						<Header navItems={defaultNavItems} socialItems={defaultSocialItems} warnDev={true} />
+						<Header navItems={MAIN_PAGES} socialItems={SOCIALS_NAVBAR} warnDev={true} />
 					</ThemeStoreProvider>
 				),
 			});

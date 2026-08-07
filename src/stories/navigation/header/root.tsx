@@ -19,7 +19,7 @@ export function HeaderContainer({ children, className }: React.HTMLAttributes<HT
 	return (
 		<div
 			className={cn(
-				"container mx-auto flex h-16 items-center justify-between overflow-y-hidden px-4 sm:px-6",
+				"container relative z-10 mx-auto flex h-16 items-center justify-between overflow-y-hidden px-4 sm:px-6",
 				className,
 			)}
 		>

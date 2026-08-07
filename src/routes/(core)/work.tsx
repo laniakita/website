@@ -55,8 +55,6 @@ const getWorkPageData = createServerFn({ method: "GET" }).handler(async () => {
 	};
 });
 
-import { InfoLayoutSkeleton } from "@/stories/skeletons/info-layout-skeleton";
-
 export const Route = createFileRoute("/(core)/work")({
 	loader: async () => {
 		const result = await getWorkPageData();
@@ -67,7 +65,7 @@ export const Route = createFileRoute("/(core)/work")({
 		meta: getSeoMeta({
 			title: loaderData?.pageData.title,
 			description: loaderData?.pageData.description,
-			image: "/api/og/static/work",
+			image: "/opengraph/static/work",
 		}),
 	}),
 	component: () => {
@@ -89,5 +87,4 @@ export const Route = createFileRoute("/(core)/work")({
 			</main>
 		);
 	},
-	pendingComponent: InfoLayoutSkeleton,
 });

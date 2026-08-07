@@ -1,6 +1,7 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { renderServerComponent } from "@tanstack/react-start/rsc";
+import { Suspense } from "react";
 import { BlogPostRoller } from "@/components/blog/post-roller";
 import { useMDXComponents } from "@/components/mdx";
 import GlobalMDXRenderer from "@/components/mdx-renderer";
@@ -82,7 +83,7 @@ export const Route = createFileRoute("/(core)/_blog-meta/categories/$slug")({
 		meta: getSeoMeta({
 			title: loaderData?.pageData.title,
 			description: loaderData?.pageData.description,
-			image: `/api/og/categories/${params.slug}`,
+			image: `/opengraph/categories/${params.slug}`,
 		}),
 	}),
 	component: () => {
@@ -92,9 +93,11 @@ export const Route = createFileRoute("/(core)/_blog-meta/categories/$slug")({
 		const { RenderableMDX, pageData, RenderablePosts } = result;
 
 		return (
-			<MetaLayout title={pageData.title ?? ""} isTag={false} RenderablePosts={RenderablePosts}>
-				{RenderableMDX}
-			</MetaLayout>
+			<Suspense fallback={<MetaLayoutSkeleton />}>
+				<MetaLayout title={pageData.title ?? ""} isTag={false} RenderablePosts={RenderablePosts}>
+					{RenderableMDX}
+				</MetaLayout>
+			</Suspense>
 		);
 	},
 	pendingComponent: MetaLayoutSkeleton,

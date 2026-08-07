@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { renderServerComponent } from "@tanstack/react-start/rsc";
 import { compareDesc } from "date-fns";
+import { Suspense } from "react";
 import { BlogPostRoller } from "@/components/blog/post-roller";
 import GlobalMDXRenderer from "@/components/mdx-renderer";
 import { BlogSidebar } from "@/components/sidebar";
@@ -84,14 +85,29 @@ function App() {
 	const { PostRoller, meta } = Route.useLoaderData();
 
 	return (
-		<div className='m-auto flex size-full max-w-7xl flex-row gap-6 p-2 md:p-10'>
-			<main className='simple-color-trans m-auto flex flex-col justify-center gap-4 px-page-common pt-blog md:flex-row md:gap-6'>
-				<SidebarInfo className='md:hidden' categories={meta.categories} tags={meta.tags} />
-				{PostRoller}
-			</main>
-			<div className='hidden md:flex md:w-full md:max-w-xs lg:max-w-sm'>
-				<BlogSidebar categories={meta.categories} tags={meta.tags} />
+		<Suspense
+			fallback={
+				<div className='m-auto flex size-full max-w-7xl flex-row gap-6 p-2 md:p-10'>
+					<main className='simple-color-trans m-auto flex w-full flex-col justify-center gap-4 px-page-common pt-blog md:flex-row md:gap-6'>
+						<div className='w-full'>
+							<PostRollerSkeleton />
+						</div>
+					</main>
+					<div className='hidden md:flex md:w-full md:max-w-xs lg:max-w-sm'>
+						<SidebarSkeleton />
+					</div>
+				</div>
+			}
+		>
+			<div className='m-auto flex size-full max-w-7xl flex-row gap-6 p-2 md:p-10'>
+				<main className='simple-color-trans m-auto flex flex-col justify-center gap-4 px-page-common pt-blog md:flex-row md:gap-6'>
+					<SidebarInfo className='md:hidden' categories={meta.categories} tags={meta.tags} />
+					{PostRoller}
+				</main>
+				<div className='hidden md:flex md:w-full md:max-w-xs lg:max-w-sm'>
+					<BlogSidebar categories={meta.categories} tags={meta.tags} />
+				</div>
 			</div>
-		</div>
+		</Suspense>
 	);
 }
