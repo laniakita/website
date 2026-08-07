@@ -74,6 +74,7 @@ const getPost = createServerFn({ method: "GET" })
 		return {
 			postData: {
 				url: post.data.url,
+				description: post.data.description,
 				headline: post.data.headline,
 				subheadline: post.data.subheadline,
 				date: post.data.date,
@@ -93,6 +94,7 @@ const getPost = createServerFn({ method: "GET" })
 	});
 
 import { PostPageSkeleton } from "@/stories/skeletons/post-page-skeleton";
+import { getSeoMeta } from "../lib/utils/seo";
 
 export const Route = createFileRoute("/blog/$slug")({
 	loader: async ({ params: { slug } }) => {
@@ -102,9 +104,26 @@ export const Route = createFileRoute("/blog/$slug")({
 		}
 		return result;
 	},
+	head: ({ loaderData, params }) => ({
+		meta: getSeoMeta({
+			title: loaderData?.postData.headline,
+			description: descriptionTruncator(loaderData?.postData.description),
+			image: `/api/og/blog/${params.slug}`,
+			imageAlt: descriptionTruncator(loaderData?.postData.featured_image?.altText),
+		}),
+	}),
 	component: BlogRouteComponent,
 	pendingComponent: PostPageSkeleton,
 });
+
+function descriptionTruncator(descr: string | undefined) {
+	const maxLen = 200;
+	if (!descr) return "";
+	if (descr.length > maxLen) {
+		return `${descr.substring(0, maxLen - 3)}...`;
+	}
+	return descr;
+}
 
 function BlogRouteComponent() {
 	const { postData, toc, RenderableMDX } = Route.useLoaderData();
