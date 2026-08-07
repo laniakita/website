@@ -65,9 +65,7 @@ describe("remarkImgProcessor", () => {
 		// biome-ignore lint/suspicious/noExplicitAny: AST attributes
 		const mdImage = tree.children[0] as any;
 		expect(mdImage.url).toBe("https://mock.cdn/img.jpg");
-		expect(mdImage.data.hProperties?.["data-lqip"]).toBe(
-			'{"backgroundImage":"linear-gradient(to right, red, blue)"}',
-		);
+		expect(mdImage.data.hProperties?.["data-lqip"]).toBe('{"backgroundImage":"linear-gradient(to right, red, blue)"}');
 
 		// biome-ignore lint/suspicious/noExplicitAny: AST attributes
 		const jsxImg = tree.children[1] as any;

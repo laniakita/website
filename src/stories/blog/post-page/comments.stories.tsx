@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { expect, within } from "storybook/test";
 import { ThemeStoreProvider } from "@/lib/providers/theme-store-provider";
-import { Comments } from "./comments";
 import { CommentsSkeleton } from "@/stories/skeletons/comments-skeleton";
+import { Comments } from "./comments";
 
 const meta = {
 	title: "Blog/PostPage/Comments",

@@ -15,19 +15,15 @@ export interface PostRollerProps {
  * Renders a vertical list of post previews.
  * Allows injecting a custom component at a specific index within the list.
  */
-export function PostRoller({
-	posts,
-	injectedComponent,
-	injectAtIndex = 1,
-}: PostRollerProps) {
+export function PostRoller({ posts, injectedComponent, injectAtIndex = 1 }: PostRollerProps) {
 	return (
-		<CoreRoller data-testid="post-roller">
+		<CoreRoller data-testid='post-roller'>
 			{posts.map((post, idx) => {
 				const isInjectIndex = injectedComponent && idx === injectAtIndex;
 
 				return (
 					<React.Fragment key={`post-${post.url}`}>
-						{isInjectIndex && <div className="w-full">{injectedComponent}</div>}
+						{isInjectIndex && <div className='w-full'>{injectedComponent}</div>}
 						<PostPreview {...post} />
 					</React.Fragment>
 				);

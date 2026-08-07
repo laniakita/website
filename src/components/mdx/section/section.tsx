@@ -11,9 +11,7 @@ import {
 } from "react";
 import { useHash } from "@/components/use-hash";
 
-export default function SectionCore(
-	props: DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement>,
-) {
+export default function SectionCore(props: DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement>) {
 	const [ready, setReady] = useState(false);
 
 	useEffect(() => {
@@ -26,25 +24,19 @@ export default function SectionCore(
 	return <section {...props} />;
 }
 
-function SectionFn(
-	props: DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement>,
-) {
+function SectionFn(props: DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement>) {
 	const liRef = useRef<HTMLLIElement>(null);
 	const { hash } = useHash();
 
 	// biome-ignore lint/suspicious/noExplicitAny: nodes can be anything
 	const children = Children.toArray(props.children) as ReactElement<any>[];
-	const h2 =
-		children.find((c) => c.type === "h2" || c.props?.id === "footnote-label") ||
-		children[0];
+	const h2 = children.find((c) => c.type === "h2" || c.props?.id === "footnote-label") || children[0];
 	const ol =
 		children.find(
 			(c) =>
 				c.type === "ol" ||
 				c.props?.nodeName === "OL" ||
-				(c.props?.children &&
-					Array.isArray(c.props.children) &&
-					c.props.children[0]?.type === "li"),
+				(c.props?.children && Array.isArray(c.props.children) && c.props.children[0]?.type === "li"),
 		) || children[children.length - 1];
 
 	const currList = ol?.props?.children;

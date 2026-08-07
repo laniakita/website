@@ -5,32 +5,21 @@ export interface HeaderRootProps extends React.HTMLAttributes<HTMLElement> {
 	isSticky?: boolean;
 }
 
-export function HeaderRoot({
-	className,
-	isSticky = true,
-	children,
-	...props
-}: HeaderRootProps) {
+export function HeaderRoot({ className, isSticky = true, children, ...props }: HeaderRootProps) {
 	return (
-		<header
-			className={cn("z-50 w-full", isSticky && "sticky top-0", className)}
-			{...props}
-		>
-			<div className="nav-glassy-bg" />
-			<div className="nav-glassy-edge" />
+		<header className={cn("z-50 w-full", isSticky && "sticky top-0", className)} {...props}>
+			<div className='nav-glassy-bg' />
+			<div className='nav-glassy-edge' />
 			{children}
 		</header>
 	);
 }
 
-export function HeaderContainer({
-	children,
-	className,
-}: React.HTMLAttributes<HTMLDivElement>) {
+export function HeaderContainer({ children, className }: React.HTMLAttributes<HTMLDivElement>) {
 	return (
 		<div
 			className={cn(
-				"container mx-auto px-4 sm:px-6 h-16 flex items-center justify-between overflow-y-hidden",
+				"container mx-auto flex h-16 items-center justify-between overflow-y-hidden px-4 sm:px-6",
 				className,
 			)}
 		>

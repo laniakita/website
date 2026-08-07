@@ -1,12 +1,6 @@
 import { Image } from "@unpic/react";
 import type * as React from "react";
-import {
-	Card,
-	CardContent,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "@/components/ui/link";
 import { Separator } from "@/components/ui/separator";
 
@@ -52,18 +46,10 @@ export function CorePreview({
 	"data-testid": testId = "core-preview-card",
 }: CorePreviewProps) {
 	// Wrapper component to handle internal vs external links
-	const LinkWrapper = ({
-		className,
-		children,
-	}: { className?: string; children: React.ReactNode }) => {
+	const LinkWrapper = ({ className, children }: { className?: string; children: React.ReactNode }) => {
 		if (isExternal) {
 			return (
-				<a
-					href={url}
-					target="_blank"
-					rel="noreferrer noopener"
-					className={className}
-				>
+				<a href={url} target='_blank' rel='noreferrer noopener' className={className}>
 					{children}
 				</a>
 			);
@@ -76,9 +62,12 @@ export function CorePreview({
 	};
 
 	return (
-		<Card data-testid={testId} className="pt-6 flex basis-full flex-col overflow-hidden motion-safe:transition-colors duration-300 bg-transparent shadow-none rounded-lg border border-secondary">
+		<Card
+			data-testid={testId}
+			className='flex basis-full flex-col overflow-hidden rounded-lg border border-secondary bg-transparent pt-6 shadow-none duration-300 motion-safe:transition-colors'
+		>
 			{featured_image?.src && (
-				<LinkWrapper className="bg-muted">
+				<LinkWrapper className='bg-muted'>
 					{featured_image.imgData?.height && featured_image.imgData?.width ? (
 						<Image
 							src={featured_image.src}
@@ -86,7 +75,7 @@ export function CorePreview({
 							width={featured_image.imgData.width}
 							alt={featured_image.altText ?? ""}
 							background={featured_image.imgData.css}
-							fallback="cloudflare"
+							fallback='cloudflare'
 							options={{
 								cloudflare: {
 									domain: import.meta.env.VITE_CDN,
@@ -98,46 +87,40 @@ export function CorePreview({
 									format: "avif",
 								},
 							}}
-							layout="constrained"
-							className="-mt-6 object-cover h-full w-full"
+							layout='constrained'
+							className='-mt-6 h-full w-full object-cover'
 						/>
 					) : (
 						<Image
 							src={featured_image.src}
-							layout="fullWidth"
+							layout='fullWidth'
 							alt={featured_image.altText ?? ""}
-							className="-mt-6 object-cover h-full w-full"
+							className='-mt-6 h-full w-full object-cover'
 						/>
 					)}
 				</LinkWrapper>
 			)}
 
-			<CardHeader className="gap-2">
-				{meta && <div className="text-muted-foreground">{meta}</div>}
+			<CardHeader className='gap-2'>
+				{meta && <div className='text-muted-foreground'>{meta}</div>}
 				<div>
-					<CardTitle className="text-2xl font-bold">
-						<LinkWrapper className="text-card-foreground hover:underline">
-							{headline}
-						</LinkWrapper>
+					<CardTitle className='font-bold text-2xl'>
+						<LinkWrapper className='text-card-foreground hover:underline'>{headline}</LinkWrapper>
 					</CardTitle>
-					{subheadline && (
-						<div className="text-lg text-muted-foreground mt-2">
-							{subheadline}
-						</div>
-					)}
+					{subheadline && <div className='mt-2 text-lg text-muted-foreground'>{subheadline}</div>}
 				</div>
 			</CardHeader>
 
 			<Separator />
 
-			<CardContent className="prose dark:prose-invert max-w-full text-pretty prose-p:my-0 prose-a:no-underline">
+			<CardContent className='prose-protocol-omega prose-a:no-underline prose-p:first:mt-0 prose-p:last:mb-0'>
 				{children}
 			</CardContent>
 
 			{footer && (
 				<>
 					<Separator />
-					<CardFooter className="pt-6">{footer}</CardFooter>
+					<CardFooter className='pt-6'>{footer}</CardFooter>
 				</>
 			)}
 		</Card>

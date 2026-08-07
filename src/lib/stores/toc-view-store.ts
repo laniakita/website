@@ -15,9 +15,7 @@ export const defaultInitState: ToCViewState = {
 	tocInView: true,
 };
 
-export const createToCViewStore = (
-	initState: ToCViewState = defaultInitState,
-) => {
+export const createToCViewStore = (initState: ToCViewState = defaultInitState) => {
 	return createStore<ToCViewStore>()((set) => ({
 		...initState,
 		setToCInView: () => {

@@ -69,9 +69,7 @@ const getPost = createServerFn({ method: "GET" })
 		const categories = post.data.categories as CatTag[];
 		const tags = post.data.tags as CatTag[];
 
-		const RenderableMDX = await renderServerComponent(
-			<MDX components={components} />,
-		);
+		const RenderableMDX = await renderServerComponent(<MDX components={components} />);
 
 		return {
 			postData: {

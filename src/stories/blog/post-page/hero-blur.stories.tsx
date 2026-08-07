@@ -8,7 +8,7 @@ const meta = {
 	tags: ["autodocs"],
 	decorators: [
 		(Story) => (
-			<div className="max-w-3xl mx-auto h-100">
+			<div className='mx-auto h-100 max-w-3xl'>
 				<Story />
 			</div>
 		),

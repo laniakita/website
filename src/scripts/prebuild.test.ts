@@ -1,12 +1,4 @@
-import {
-	afterEach,
-	beforeEach,
-	describe,
-	expect,
-	it,
-	type Mock,
-	mock,
-} from "bun:test";
+import { afterEach, beforeEach, describe, expect, it, type Mock, mock } from "bun:test";
 import type { Dirent } from "node:fs";
 import fs from "node:fs";
 import { readdir, rm } from "node:fs/promises";
@@ -32,9 +24,7 @@ describe("prebuild script", () => {
 		mock.restore();
 		spyOn(S3Client.prototype, "send").mockResolvedValue({} as never);
 
-		const mockReaddir = readdir as unknown as Mock<
-			(path: Parameters<typeof readdir>[0]) => Promise<Dirent[]>
-		>;
+		const mockReaddir = readdir as unknown as Mock<(path: Parameters<typeof readdir>[0]) => Promise<Dirent[]>>;
 		const mockRm = rm as Mock<typeof rm>;
 		const mockGetPlaiceholder = getPlaiceholder as Mock<typeof getPlaiceholder>;
 		mockReaddir.mockClear();
@@ -75,9 +65,7 @@ type: tag
 
 		const mockBunFile = spyOn(Bun, "file");
 		const mockBunWrite = spyOn(Bun, "write");
-		const mockReaddir = readdir as unknown as Mock<
-			(path: Parameters<typeof readdir>[0]) => Promise<Dirent[]>
-		>;
+		const mockReaddir = readdir as unknown as Mock<(path: Parameters<typeof readdir>[0]) => Promise<Dirent[]>>;
 		const mockGetPlaiceholder = getPlaiceholder as Mock<typeof getPlaiceholder>;
 
 		const mockExistsSync = spyOn(fs, "existsSync");
@@ -89,9 +77,7 @@ type: tag
 			return !p.includes("content/posts/content/assets");
 		});
 
-		mockReadFileSync.mockImplementation(((
-			filepath: fs.PathOrFileDescriptor,
-		) => {
+		mockReadFileSync.mockImplementation(((filepath: fs.PathOrFileDescriptor) => {
 			const p = filepath.toString();
 			if (p.includes("test.jpg")) {
 				return Buffer.from("fake-image-data");
@@ -102,104 +88,100 @@ type: tag
 
 		mockWriteFileSync.mockImplementation(() => {});
 
-		mockReaddir.mockImplementation(
-			async (dir: Parameters<typeof readdir>[0]) => {
-				const p = dir.toString();
-				if (p.endsWith("assets"))
-					return [
-						{
-							isFile: () => true,
-							name: "test.jpg",
-							parentPath: p,
-						} as unknown as Dirent,
-					];
-				if (p.endsWith("categories"))
-					return [
-						{
-							isFile: () => true,
-							name: "tech.md",
-							parentPath: p,
-						} as unknown as Dirent,
-					];
-				if (p.endsWith("tags"))
-					return [
-						{
-							isFile: () => true,
-							name: "js.md",
-							parentPath: p,
-						} as unknown as Dirent,
-					];
-				if (p.endsWith("posts"))
-					return [
-						{
-							isFile: () => true,
-							name: "post1.md",
-							parentPath: p,
-						} as unknown as Dirent,
-					];
-				if (p.endsWith("content"))
-					return [
-						{
-							isFile: () => true,
-							name: "tech.md",
-							parentPath: `${p}/categories`,
-						} as unknown as Dirent,
-						{
-							isFile: () => true,
-							name: "js.md",
-							parentPath: `${p}/tags`,
-						} as unknown as Dirent,
-						{
-							isFile: () => true,
-							name: "post1.md",
-							parentPath: `${p}/posts`,
-						} as unknown as Dirent,
-						{
-							isFile: () => true,
-							name: "test.jpg",
-							parentPath: `${p}/assets`,
-						} as unknown as Dirent,
-					];
-				return [];
-			},
-		);
+		mockReaddir.mockImplementation(async (dir: Parameters<typeof readdir>[0]) => {
+			const p = dir.toString();
+			if (p.endsWith("assets"))
+				return [
+					{
+						isFile: () => true,
+						name: "test.jpg",
+						parentPath: p,
+					} as unknown as Dirent,
+				];
+			if (p.endsWith("categories"))
+				return [
+					{
+						isFile: () => true,
+						name: "tech.md",
+						parentPath: p,
+					} as unknown as Dirent,
+				];
+			if (p.endsWith("tags"))
+				return [
+					{
+						isFile: () => true,
+						name: "js.md",
+						parentPath: p,
+					} as unknown as Dirent,
+				];
+			if (p.endsWith("posts"))
+				return [
+					{
+						isFile: () => true,
+						name: "post1.md",
+						parentPath: p,
+					} as unknown as Dirent,
+				];
+			if (p.endsWith("content"))
+				return [
+					{
+						isFile: () => true,
+						name: "tech.md",
+						parentPath: `${p}/categories`,
+					} as unknown as Dirent,
+					{
+						isFile: () => true,
+						name: "js.md",
+						parentPath: `${p}/tags`,
+					} as unknown as Dirent,
+					{
+						isFile: () => true,
+						name: "post1.md",
+						parentPath: `${p}/posts`,
+					} as unknown as Dirent,
+					{
+						isFile: () => true,
+						name: "test.jpg",
+						parentPath: `${p}/assets`,
+					} as unknown as Dirent,
+				];
+			return [];
+		});
 
-		mockBunFile.mockImplementation(
-			(filepath: string | URL | number | Uint8Array | ArrayBufferLike) => {
-				const p = filepath.toString();
-				if (p.includes("asset-manifest.json"))
-					return {
-						exists: async () => !p.includes("content/posts/content/assets"),
-						json: async () => ({}),
-					} as unknown as BunFile;
-				if (p.includes("tech.md"))
-					return {
-						text: async () => mockCategoryContent,
-						arrayBuffer: async () => Buffer.from(mockCategoryContent).buffer,
-					} as unknown as BunFile;
-				if (p.includes("js.md"))
-					return {
-						text: async () => mockTagContent,
-						arrayBuffer: async () => Buffer.from(mockTagContent).buffer,
-					} as unknown as BunFile;
-				if (p.includes("post1.md"))
-					return {
-						text: async () => mockPostContent,
-						arrayBuffer: async () => Buffer.from(mockPostContent).buffer,
-					} as unknown as BunFile;
-				if (p.includes("test.jpg"))
-					return {
-						exists: async () => !p.includes("content/posts/content/assets"),
-						arrayBuffer: async () => Buffer.from("fake-image-data").buffer,
-						text: async () => "",
-					} as unknown as BunFile;
+		mockBunFile.mockImplementation((filepath: string | URL | number | Uint8Array | ArrayBufferLike) => {
+			const p = filepath.toString();
+			if (p.includes("asset-manifest.json"))
 				return {
 					exists: async () => !p.includes("content/posts/content/assets"),
-					text: async () => "",
-					arrayBuffer: async () => new ArrayBuffer(0),
+					json: async () => ({}),
 				} as unknown as BunFile;
-			},
-		);
+			if (p.includes("tech.md"))
+				return {
+					text: async () => mockCategoryContent,
+					arrayBuffer: async () => Buffer.from(mockCategoryContent).buffer,
+				} as unknown as BunFile;
+			if (p.includes("js.md"))
+				return {
+					text: async () => mockTagContent,
+					arrayBuffer: async () => Buffer.from(mockTagContent).buffer,
+				} as unknown as BunFile;
+			if (p.includes("post1.md"))
+				return {
+					text: async () => mockPostContent,
+					arrayBuffer: async () => Buffer.from(mockPostContent).buffer,
+				} as unknown as BunFile;
+			if (p.includes("test.jpg"))
+				return {
+					exists: async () => !p.includes("content/posts/content/assets"),
+					arrayBuffer: async () => Buffer.from("fake-image-data").buffer,
+					text: async () => "",
+				} as unknown as BunFile;
+			return {
+				exists: async () => !p.includes("content/posts/content/assets"),
+				text: async () => "",
+				arrayBuffer: async () => new ArrayBuffer(0),
+			} as unknown as BunFile;
+		});
 
 		mockBunWrite.mockResolvedValue(0);
 
@@ -218,9 +200,7 @@ type: tag
 
 		// Verify Bun.write was called with updated frontmatter
 		expect(mockBunWrite).toHaveBeenCalled();
-		const postWriteCall = mockBunWrite.mock.calls.find((call) =>
-			call[0].toString().includes("post1.md"),
-		);
+		const postWriteCall = mockBunWrite.mock.calls.find((call) => call[0].toString().includes("post1.md"));
 		expect(postWriteCall).toBeDefined();
 		if (postWriteCall) {
 			const [writtenPath, writtenContent] = postWriteCall;
@@ -233,9 +213,7 @@ type: tag
 			expect(contentStr).toContain("JavaScript");
 			expect(contentStr).toContain("featured_image:");
 			expect(contentStr).toMatch(/src: 'https:\/\/assets\.mock\/test\.jpg'/);
-			expect(contentStr).toContain(
-				'{"backgroundImage":"mock-css","filter":"blur(20px)","transform":"scale(1.1)"}',
-			);
+			expect(contentStr).toContain('{"backgroundImage":"mock-css","filter":"blur(20px)","transform":"scale(1.1)"}');
 		}
 	});
 
@@ -253,9 +231,7 @@ Post body`;
 
 		const mockBunFile = spyOn(Bun, "file");
 		const mockBunWrite = spyOn(Bun, "write");
-		const mockReaddir = readdir as unknown as Mock<
-			(path: Parameters<typeof readdir>[0]) => Promise<Dirent[]>
-		>;
+		const mockReaddir = readdir as unknown as Mock<(path: Parameters<typeof readdir>[0]) => Promise<Dirent[]>>;
 		const mockGetPlaiceholder = getPlaiceholder as Mock<typeof getPlaiceholder>;
 
 		const mockExistsSync = spyOn(fs, "existsSync");
@@ -266,9 +242,7 @@ Post body`;
 			return !p.includes("content/posts/content/assets");
 		});
 
-		mockReadFileSync.mockImplementation(((
-			filepath: fs.PathOrFileDescriptor,
-		) => {
+		mockReadFileSync.mockImplementation(((filepath: fs.PathOrFileDescriptor) => {
 			const p = filepath.toString();
 			if (p.includes("test.jpg")) {
 				return Buffer.from("fake-image-data");
@@ -277,73 +251,69 @@ Post body`;
 			// biome-ignore lint/suspicious/noExplicitAny: its a test
 		}) as any);
 
-		mockReaddir.mockImplementation(
-			async (dir: Parameters<typeof readdir>[0]) => {
-				const p = dir.toString();
-				if (p.endsWith("assets"))
-					return [
-						{
-							isFile: () => true,
-							name: "test.jpg",
-							parentPath: p,
-						} as unknown as Dirent,
-					];
-				if (p.endsWith("posts"))
-					return [
-						{
-							isFile: () => true,
-							name: "post1.md",
-							parentPath: p,
-						} as unknown as Dirent,
-					];
-				if (p.endsWith("content"))
-					return [
-						{
-							isFile: () => true,
-							name: "post1.md",
-							parentPath: `${p}/posts`,
-						} as unknown as Dirent,
-					];
-				return [];
-			},
-		);
+		mockReaddir.mockImplementation(async (dir: Parameters<typeof readdir>[0]) => {
+			const p = dir.toString();
+			if (p.endsWith("assets"))
+				return [
+					{
+						isFile: () => true,
+						name: "test.jpg",
+						parentPath: p,
+					} as unknown as Dirent,
+				];
+			if (p.endsWith("posts"))
+				return [
+					{
+						isFile: () => true,
+						name: "post1.md",
+						parentPath: p,
+					} as unknown as Dirent,
+				];
+			if (p.endsWith("content"))
+				return [
+					{
+						isFile: () => true,
+						name: "post1.md",
+						parentPath: `${p}/posts`,
+					} as unknown as Dirent,
+				];
+			return [];
+		});
 
-		mockBunFile.mockImplementation(
-			(filepath: string | URL | number | Uint8Array | ArrayBufferLike) => {
-				const p = filepath.toString();
-				if (p.includes("asset-manifest.json"))
-					return {
-						exists: async () => !p.includes("content/posts/content/assets"),
-						json: async () => ({
-							"content/assets/test.jpg": {
-								localHash: expectedHash,
-								src: "https://assets.mock/assets/some-hash.jpg",
-								imgData: {
-									css: '{"backgroundImage":"mock-css"}',
-									width: 800,
-									height: 600,
-								},
-							},
-						}),
-					} as unknown as BunFile;
-				if (p.includes("post1.md"))
-					return {
-						text: async () => mockPostContent,
-						arrayBuffer: async () => Buffer.from(mockPostContent).buffer,
-					} as unknown as BunFile;
-				if (p.includes("test.jpg"))
-					return {
-						exists: async () => !p.includes("content/posts/content/assets"),
-						arrayBuffer: async () => Buffer.from("fake-image-data").buffer,
-						text: async () => "",
-					} as unknown as BunFile;
+		mockBunFile.mockImplementation((filepath: string | URL | number | Uint8Array | ArrayBufferLike) => {
+			const p = filepath.toString();
+			if (p.includes("asset-manifest.json"))
 				return {
 					exists: async () => !p.includes("content/posts/content/assets"),
-					text: async () => "",
-					arrayBuffer: async () => new ArrayBuffer(0),
+					json: async () => ({
+						"content/assets/test.jpg": {
+							localHash: expectedHash,
+							src: "https://assets.mock/assets/some-hash.jpg",
+							imgData: {
+								css: '{"backgroundImage":"mock-css"}',
+								width: 800,
+								height: 600,
+							},
+						},
+					}),
 				} as unknown as BunFile;
-			},
-		);
+			if (p.includes("post1.md"))
+				return {
+					text: async () => mockPostContent,
+					arrayBuffer: async () => Buffer.from(mockPostContent).buffer,
+				} as unknown as BunFile;
+			if (p.includes("test.jpg"))
+				return {
+					exists: async () => !p.includes("content/posts/content/assets"),
+					arrayBuffer: async () => Buffer.from("fake-image-data").buffer,
+					text: async () => "",
+				} as unknown as BunFile;
+			return {
+				exists: async () => !p.includes("content/posts/content/assets"),
+				text: async () => "",
+				arrayBuffer: async () => new ArrayBuffer(0),
+			} as unknown as BunFile;
+		});
 
 		mockBunWrite.mockResolvedValue(0);
 
@@ -354,17 +324,13 @@ Post body`;
 
 		// Bun.write SHOULD be called, but with the exact same content or copied buffer
 		expect(mockBunWrite).toHaveBeenCalled();
-		const postWriteCall = mockBunWrite.mock.calls.find((call) =>
-			call[0].toString().includes("post1.md"),
-		);
+		const postWriteCall = mockBunWrite.mock.calls.find((call) => call[0].toString().includes("post1.md"));
 		expect(postWriteCall).toBeDefined();
 
 		if (postWriteCall) {
 			const [writtenPath, writtenContent] = postWriteCall;
 			expect(writtenPath.toString()).toContain(".content/posts/post1.md");
-			expect(writtenContent.toString()).toContain(
-				'{"backgroundImage":"mock-css"}',
-			);
+			expect(writtenContent.toString()).toContain('{"backgroundImage":"mock-css"}');
 		}
 	});
 });

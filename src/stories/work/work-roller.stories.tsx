@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { Ongoing as OngoingStory, Default as WorkPreviewStory } from "./work-preview.stories";
 import { WorkRoller } from "./work-roller";
-import { Default as WorkPreviewStory, Ongoing as OngoingStory } from "./work-preview.stories";
 
 const meta = {
 	title: "Work/WorkRoller",
@@ -15,15 +15,12 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
 	args: {
-		works: [
-			WorkPreviewStory.args!,
-			OngoingStory.args!,
-		],
+		works: [WorkPreviewStory.args!, OngoingStory.args!],
 	},
 	decorators: [
 		(Story) => (
-			<div className="w-full max-w-3xl p-4">
-				<Story />
+			<div className='w-full max-w-3xl p-4'>
+				<Story key={Math.random().toString()} />
 			</div>
 		),
 	],

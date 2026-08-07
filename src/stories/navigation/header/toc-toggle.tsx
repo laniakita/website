@@ -5,8 +5,7 @@ import { cn } from "@/lib/utils";
 /**
  * Props for the HeaderTocToggle component.
  */
-export interface HeaderTocToggleProps
-	extends React.HTMLAttributes<HTMLButtonElement> {
+export interface HeaderTocToggleProps extends React.HTMLAttributes<HTMLButtonElement> {
 	/**
 	 * Determines if the current page is a post. If false, the toggle is not rendered.
 	 */
@@ -26,28 +25,23 @@ export interface HeaderTocToggleProps
  * A toggle button for the Table of Contents on post pages.
  * Animates its visibility based on whether the TOC is already in view on the page.
  */
-export function HeaderTocToggle({
-	isPost,
-	tocInView,
-	onTocToggle,
-	...props
-}: HeaderTocToggleProps) {
+export function HeaderTocToggle({ isPost, tocInView, onTocToggle, ...props }: HeaderTocToggleProps) {
 	if (!isPost) return null;
 
 	return (
 		<Button
-			variant="ghost"
-			size="icon"
+			variant='ghost'
+			size='icon'
 			className={cn(
-				"md:flex hidden transition-all duration-300",
-				tocInView ? "w-0 opacity-0 p-0 overflow-hidden" : "w-9 opacity-100",
+				"hidden transition-all duration-300 md:flex",
+				tocInView ? "w-0 overflow-hidden p-0 opacity-0" : "w-9 opacity-100",
 				props.className,
 			)}
 			onPress={onTocToggle}
-			aria-label="Toggle Table of Contents"
+			aria-label='Toggle Table of Contents'
 			aria-expanded={tocInView}
 		>
-			<span className="icon-[ph--sidebar-simple-fill] size-6 shrink-0" />
+			<span className='icon-[ph--sidebar-simple-fill] size-6 shrink-0' />
 		</Button>
 	);
 }

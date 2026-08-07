@@ -12,8 +12,7 @@ import { fumadocsMdx } from "fumadocs-mdx/vite";
 import { defineConfig } from "vite";
 import svgr from "vite-plugin-svgr";
 
-const dirname =
-	import.meta.dirname || path.dirname(fileURLToPath(import.meta.url));
+const dirname = import.meta.dirname || path.dirname(fileURLToPath(import.meta.url));
 
 const isTestOrStorybook = process.env.STORYBOOK || process.env.VITEST;
 

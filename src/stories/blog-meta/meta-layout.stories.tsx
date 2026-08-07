@@ -18,15 +18,10 @@ const mockPosts = [
 	{
 		headline: "Understanding React Server Components",
 		url: "/blog/understanding-rsc",
-		description:
-			"A deep dive into how React Server Components work under the hood.",
+		description: "A deep dive into how React Server Components work under the hood.",
 		date: "2023-10-01",
-		categories: [
-			{ title: "React", url: "/categories/react", type: CatTagType.Category },
-		],
-		tags: [
-			{ title: "performance", url: "/tags/performance", type: CatTagType.Tag },
-		],
+		categories: [{ title: "React", url: "/categories/react", type: CatTagType.Category }],
+		tags: [{ title: "performance", url: "/tags/performance", type: CatTagType.Tag }],
 		featured_image: {
 			src: "https://via.placeholder.com/600x400",
 			altText: "Placeholder",
@@ -36,12 +31,9 @@ const mockPosts = [
 	{
 		headline: "Mastering Tailwind CSS",
 		url: "/blog/mastering-tailwind",
-		description:
-			"Tips and tricks for building beautiful UIs with Tailwind CSS.",
+		description: "Tips and tricks for building beautiful UIs with Tailwind CSS.",
 		date: "2023-09-15",
-		categories: [
-			{ title: "CSS", url: "/categories/css", type: CatTagType.Category },
-		],
+		categories: [{ title: "CSS", url: "/categories/css", type: CatTagType.Category }],
 		tags: [{ title: "design", url: "/tags/design", type: CatTagType.Tag }],
 		featured_image: {
 			src: "https://via.placeholder.com/600x400",
@@ -58,10 +50,7 @@ export const CategoryLayout: Story = {
 		RenderablePosts: <BlogPostRoller posts={mockPosts} />,
 		children: (
 			<div>
-				<p>
-					Everything you need to know about React, its ecosystem, and best
-					practices.
-				</p>
+				<p>Everything you need to know about React, its ecosystem, and best practices.</p>
 			</div>
 		),
 	},

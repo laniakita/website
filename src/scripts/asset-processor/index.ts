@@ -2,12 +2,7 @@ import crypto from "node:crypto";
 import fs from "node:fs";
 import { readdir } from "node:fs/promises";
 import path from "node:path";
-import {
-	DeleteObjectCommand,
-	PutObjectCommand,
-	S3Client,
-} from "@aws-sdk/client-s3";
-import { blurhashToImageCssString } from "@unpic/placeholder";
+import { DeleteObjectCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import mime from "mime-types";
 import { getPlaiceholder } from "plaiceholder";
 import type { AssetManifestEntry, ProcessAssetOptions } from "./types";
@@ -149,9 +144,7 @@ export async function batchUploadAssets(
 					} catch (_) {
 						const urlParts = cachedImage.src.split("/");
 						oldFileName =
-							urlParts.length >= 2
-								? `${urlParts[urlParts.length - 2]}/${urlParts[urlParts.length - 1]}`
-								: oldFileName;
+							urlParts.length >= 2 ? `${urlParts[urlParts.length - 2]}/${urlParts[urlParts.length - 1]}` : oldFileName;
 					}
 				}
 				if (oldFileName) {
@@ -163,11 +156,7 @@ export async function batchUploadAssets(
 			let width: number | undefined;
 			let height: number | undefined;
 
-			if (
-				options.generatePlaiceholder &&
-				(mimeType.startsWith("image/") ||
-					mimeType === "application/octet-stream")
-			) {
+			if (options.generatePlaiceholder && (mimeType.startsWith("image/") || mimeType === "application/octet-stream")) {
 				try {
 					const {
 						base64,
@@ -178,28 +167,18 @@ export async function batchUploadAssets(
 					width = plaiceholderWidth;
 					height = plaiceholderHeight;
 				} catch (err) {
-					console.log(
-						`[info] Skipping plaiceholder generation for ${manifestKey}: ${err}`,
-					);
+					console.log(`[info] Skipping plaiceholder generation for ${manifestKey}: ${err}`);
 				}
 			}
 
-			let fileName = path
-				.relative(assetsDir, imagePath)
-				.split(path.sep)
-				.join("/");
+			let fileName = path.relative(assetsDir, imagePath).split(path.sep).join("/");
 
 			if (fileName.startsWith("..")) {
 				const ext = path.extname(imagePath);
 				fileName = `assets/${localHash}${ext}`;
 			}
 
-			const success = await uploadToR2(
-				fileName,
-				imageBuffer,
-				mimeType,
-				options,
-			);
+			const success = await uploadToR2(fileName, imageBuffer, mimeType, options);
 
 			if (success) {
 				const publicUrl = options.r2PublicUrl;
@@ -224,10 +203,7 @@ export async function batchUploadAssets(
 	}
 
 	if (hasChanges) {
-		fs.writeFileSync(
-			"asset-manifest.json",
-			JSON.stringify(assetManifest, null, 2),
-		);
+		fs.writeFileSync("asset-manifest.json", JSON.stringify(assetManifest, null, 2));
 		console.log(`[success] Wrote updated asset-manifest.json`);
 	}
 

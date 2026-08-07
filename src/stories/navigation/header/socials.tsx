@@ -20,16 +20,16 @@ export function HeaderSocials({ socialItems }: HeaderSocialsProps) {
 	if (!socialItems || socialItems.length === 0) return null;
 
 	return (
-		<div className="hidden sm:flex items-center gap-1">
+		<div className='hidden items-center gap-1 sm:flex'>
 			{socialItems.map((social) => (
 				<LinkButton
 					key={social.title}
-					variant="ghost"
-					size="icon"
-					className="text-muted-foreground hover:text-foreground"
+					variant='ghost'
+					size='icon'
+					className='text-muted-foreground hover:text-foreground'
 					href={social.url}
-					target="_blank"
-					rel="noreferrer"
+					target='_blank'
+					rel='noreferrer'
 					aria-label={social.linkName}
 				>
 					<span className={cn(social.iconName, "size-5")} />

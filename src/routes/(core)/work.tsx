@@ -15,13 +15,9 @@ const getWorkPageData = createServerFn({ method: "GET" }).handler(async () => {
 	}
 
 	const PageMDX = page.data.body;
-	const RenderablePageMDX = await renderServerComponent(
-		<PageMDX components={components} />,
-	);
+	const RenderablePageMDX = await renderServerComponent(<PageMDX components={components} />);
 
-	const works = worksSource
-		.getPages()
-		.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+	const works = worksSource.getPages().sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
 	// Map through works and render their MDX
 	const renderableWorks = await Promise.all(
@@ -32,21 +28,22 @@ const getWorkPageData = createServerFn({ method: "GET" }).handler(async () => {
 				id: work.data.id,
 				title: work.data.title,
 				source: work.data.source,
-				url: work.data.url,
 				type: work.data.type,
 				active: work.data.active,
 				date: work.data.date,
 				tech: work.data.tech,
 				links: work.data.links,
 				featured_image: work.data.featured_image,
-				RenderableMDX: <WorkMDX components={components} />,
+				RenderableMDX: (
+					<div className='prose-protocol-omega text-pretty prose-p:first:mt-0 prose-p:last:mb-0'>
+						<WorkMDX components={components} />
+					</div>
+				),
 			};
 		}),
 	);
 
-	const RenderableWorkRoller = await renderServerComponent(
-		<WorkRoller works={renderableWorks} />,
-	);
+	const RenderableWorkRoller = await renderServerComponent(<WorkRoller works={renderableWorks} />);
 
 	return {
 		pageData: {
@@ -74,22 +71,17 @@ export const Route = createFileRoute("/(core)/work")({
 		}),
 	}),
 	component: () => {
-		const { pageData, RenderablePageMDX, RenderableWorkRoller } =
-			Route.useLoaderData();
+		const { pageData, RenderablePageMDX, RenderableWorkRoller } = Route.useLoaderData();
 
 		return (
-			<main className="common-padding w-full max-w-3xl m-auto pt-10">
-				<div className="flex flex-col items-center justify-center gap-4 md:gap-6 w-full">
-					<div className="flex w-full flex-col gap-4 rounded-md border border-ctp-surface0 p-8 dark:border-ctp-base motion-safe:simple-color-trans dark:bg-ctp-midnight bg-ctp-base shadow-sm">
+			<main className='common-padding m-auto w-full max-w-7xl pt-10'>
+				<div className='flex w-full flex-col items-center justify-center gap-4 md:gap-6'>
+					<div className='motion-safe:simple-color-trans flex w-full flex-col gap-4 rounded-md border border-ctp-surface0 bg-ctp-base p-8 shadow-sm dark:border-ctp-base dark:bg-ctp-midnight'>
 						<div>
-							<h1 className="text-3xl font-black md:text-4xl">
-								{pageData.title}
-							</h1>
+							<h1 className='font-black text-3xl md:text-4xl'>{pageData.title}</h1>
 						</div>
-						<div className="h-px w-full rounded bg-ctp-surface0 dark:bg-ctp-base" />
-						<div className="prose-protocol-omega w-full max-w-sm prose-p:my-0">
-							{RenderablePageMDX}
-						</div>
+						<div className='h-px w-full rounded bg-ctp-surface0 dark:bg-ctp-base' />
+						<div className='prose-protocol-omega prose-p:my-0 w-full max-w-xl text-lg'>{RenderablePageMDX}</div>
 					</div>
 
 					{RenderableWorkRoller}

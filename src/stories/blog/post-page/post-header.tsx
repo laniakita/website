@@ -36,79 +36,64 @@ export function PostHeader(post: PostHeaderProps) {
 	const urlSlug = post.url.split("/").pop() ?? "";
 
 	return (
-		<header className="z-0 pt-post-page">
-			<div className="flex w-full flex-col items-center justify-center gap-2 px-6 pb-6 lg:pb-10">
-				<div className="w-full max-w-3xl font-mono md:max-w-2xl">
+		<header className='z-0'>
+			<div className='flex w-full flex-col items-center justify-center gap-2 px-6 pb-6 lg:pb-10'>
+				<div className='w-full max-w-3xl font-mono md:max-w-2xl'>
 					<CatTagRoller cats={post.categories} tags={post.tags} />
 				</div>
 
-				<h1 id={urlSlug} className="post-headline">
+				<h1 id={urlSlug} className='post-headline'>
 					{post.headline}
 				</h1>
 
-				{post.subheadline && (
-					<h2 className="post-subheadline">{post.subheadline}</h2>
-				)}
+				{post.subheadline && <h2 className='post-subheadline'>{post.subheadline}</h2>}
 
-				<div className="flex w-full max-w-4xl flex-wrap items-center gap-x-[0.5ch] font-mono text-xs md:max-w-2xl lg:text-sm">
+				<div className='flex w-full max-w-4xl flex-wrap items-center gap-x-[0.5ch] font-mono text-xs md:max-w-2xl lg:text-sm'>
 					<p>
 						By{" "}
-						<Link to="/about" className="font-semibold capitalize">
+						<Link to='/about' className='font-semibold capitalize'>
 							{authorName}
 						</Link>
 					</p>
-					<span className="font-light">|</span>
+					<span className='font-light'>|</span>
 					{post.updated ? (
-						<p
-							itemProp="dateModified"
-							itemScope
-							itemType="http://schema.org/Date"
-							className="flex flex-wrap gap-x-2"
-						>
+						<p itemProp='dateModified' itemScope itemType='http://schema.org/Date' className='flex flex-wrap gap-x-2'>
 							<span>Updated:</span>
 							<PostDate date={post.updated} />
 						</p>
 					) : (
-						<p
-							itemProp="datePublished"
-							itemScope
-							itemType="http://schema.org/Date"
-						>
+						<p itemProp='datePublished' itemScope itemType='http://schema.org/Date'>
 							<PostDate date={post.date} />
 						</p>
 					)}
 				</div>
 
-				<div className="flex w-full max-w-4xl items-center justify-start pt-3 md:max-w-2xl lg:pt-7">
+				<div className='flex w-full max-w-4xl items-center justify-start pt-3 md:max-w-2xl lg:pt-7'>
 					<ShareButton title={post.headline} url={post.url} />
 				</div>
 			</div>
 
-			<div className="flex size-full flex-col items-center justify-center">
+			<div className='flex size-full flex-col items-center justify-center'>
 				{post.featured_image?.src ? (
-					<figure className="relative flex size-full flex-col items-center justify-center gap-6">
+					<figure className='relative flex size-full flex-col items-center justify-center gap-6'>
 						<HeroBlur featured_image={post.featured_image} />
-						<p className="header-alt-text">
-							<span className="w-full max-w-4xl md:max-w-2xl">
-								{post.featured_image.altText}
-							</span>
+						<p className='header-alt-text'>
+							<span className='w-full max-w-4xl md:max-w-2xl'>{post.featured_image.altText}</span>
 						</p>
-						<figcaption className="header-caption">
-							<span className="max-w-4xl md:max-w-2xl">
-								{post.featured_image.caption}
-							</span>
+						<figcaption className='header-caption'>
+							<span className='max-w-4xl md:max-w-2xl'>{post.featured_image.caption}</span>
 						</figcaption>
 					</figure>
 				) : post.caption ? (
 					<div>
-						<p className="header-caption">
-							<span className="max-w-4xl md:max-w-2xl">{post.caption}</span>
+						<p className='header-caption'>
+							<span className='max-w-4xl md:max-w-2xl'>{post.caption}</span>
 						</p>
 					</div>
 				) : null}
 
-				<div className="flex size-full w-full items-center justify-center px-6">
-					<div className="mt-6 w-full max-w-4xl rounded bg-ctp-text py-px md:max-w-2xl lg:mt-10" />
+				<div className='flex size-full w-full items-center justify-center px-6'>
+					<div className='mt-6 w-full max-w-4xl rounded bg-ctp-text py-px md:max-w-2xl lg:mt-10' />
 				</div>
 			</div>
 		</header>

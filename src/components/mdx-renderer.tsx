@@ -1,6 +1,6 @@
 "use client";
 import Markdown from "markdown-to-jsx/react";
-import { Link } from "./ui/link";
+import Anchors from "./mdx/anchor-tags";
 
 export default function GlobalMDXRenderer({ children }: { children: string }) {
 	return (
@@ -8,7 +8,7 @@ export default function GlobalMDXRenderer({ children }: { children: string }) {
 			options={{
 				forceBlock: true,
 				overrides: {
-					a: Link,
+					a: Anchors,
 				},
 			}}
 		>

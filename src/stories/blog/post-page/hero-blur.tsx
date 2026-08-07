@@ -19,8 +19,8 @@ export function HeroBlur({ featured_image }: HeroBlurProps) {
 
 	return (
 		<picture
-			className="relative m-0 flex size-full max-w-5xl items-center justify-center p-0"
-			data-testid="hero-blur-container"
+			className='relative m-0 flex size-full max-w-5xl items-center justify-center p-0'
+			data-testid='hero-blur-container'
 		>
 			{featured_image.imgData?.height && featured_image.imgData?.width ? (
 				<Image
@@ -29,8 +29,8 @@ export function HeroBlur({ featured_image }: HeroBlurProps) {
 					background={featured_image.imgData.css}
 					height={featured_image.imgData.height}
 					width={featured_image.imgData.width}
-					layout="constrained"
-					fallback="cloudflare"
+					layout='constrained'
+					fallback='cloudflare'
 					options={{
 						cloudflare: {
 							domain: import.meta.env.VITE_CDN,
@@ -42,14 +42,14 @@ export function HeroBlur({ featured_image }: HeroBlurProps) {
 							format: "avif",
 						},
 					}}
-					className="overflow-hidden object-contain"
+					className='overflow-hidden object-contain'
 				/>
 			) : (
 				<Image
 					src={featured_image.src}
 					alt={featured_image.altText ?? ""}
-					layout="fullWidth"
-					className="overflow-hidden object-contain"
+					layout='fullWidth'
+					className='overflow-hidden object-contain'
 				/>
 			)}
 		</picture>

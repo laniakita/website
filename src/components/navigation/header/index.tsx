@@ -103,31 +103,19 @@ export function Header({
 				warnDevBannerDescription={warnDevBannerDescription}
 				warnDevBannerReturnText={warnDevBannerReturnText}
 			/>
-			<HeaderContainer className=" min-w-full">
-				<div className="flex items-center gap-2 md:gap-4 lg:gap-6">
-					<HeaderTocToggle
-						isPost={isPost}
-						tocInView={tocInView}
-						onTocToggle={onTocToggle}
-					/>
-					<HeaderLogo
-						logoLight={logoLight}
-						logoDark={logoDark}
-						branding={branding}
-					/>
+			<HeaderContainer className='min-w-full'>
+				<div className='flex items-center gap-2 md:gap-4 lg:gap-6'>
+					<HeaderTocToggle isPost={isPost} tocInView={tocInView} onTocToggle={onTocToggle} />
+					<HeaderLogo logoLight={logoLight} logoDark={logoDark} branding={branding} />
 					<HeaderNav navItems={navItems} />
 				</div>
 
-				<div className="flex items-center gap-2 sm:gap-4">
+				<div className='flex items-center gap-2 sm:gap-4'>
 					<HeaderSocials socialItems={socialItems} />
 					{/* Separator */}
-					<div className="hidden sm:block h-6 w-px bg-border mx-1" />
+					<div className='mx-1 hidden h-6 w-px bg-border sm:block' />
 					<ThemeToggleSwitch />
-					<HeaderMobileMenu
-						navItems={navItems}
-						socialItems={socialItems}
-						className="lg:hidden"
-					/>
+					<HeaderMobileMenu navItems={navItems} socialItems={socialItems} className='lg:hidden' />
 				</div>
 			</HeaderContainer>
 		</HeaderRoot>

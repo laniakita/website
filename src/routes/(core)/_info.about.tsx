@@ -14,9 +14,7 @@ const getAboutPage = createServerFn({ method: "GET" }).handler(async () => {
 
 	const MDX = page.data.body;
 
-	const RenderableMDX = await renderServerComponent(
-		<MDX components={components} />,
-	);
+	const RenderableMDX = await renderServerComponent(<MDX components={components} />);
 
 	return {
 		pageData: {

@@ -23,16 +23,16 @@ const postSchema = (ctx: { path: string; source: string }) => {
 		categories: z
 			.array(
 				z.object({
-					title: z.string().or(z.undefined()),
-					url: z.string().or(z.undefined()),
+					title: z.string(),
+					url: z.string(),
 					type: z.string(),
 				}),
 			)
-			.default([{ title: undefined, url: undefined, type: "category" }]),
+			.optional(),
 		tagSlugs: z.array(z.string()).optional(),
 		tags: z
 			.array(z.object({ title: z.string(), url: z.string(), type: z.string() }))
-			.default([{ title: "", url: "", type: "tag" }]),
+			.optional(),
 		keywords: z.array(z.string()).optional(),
 		url: z
 			.string()

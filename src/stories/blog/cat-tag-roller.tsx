@@ -30,22 +30,22 @@ export interface CatTagRollerProps {
  * Categories are typically highlighted, while tags use a secondary style.
  */
 export function CatTagRoller({ cats = [], tags = [] }: CatTagRollerProps) {
+	cats.forEach((t) => {
+		t.type = CatTagType.Category;
+	});
+	tags.forEach((t) => {
+		t.type = CatTagType.Tag;
+	});
+
 	const combined = [...cats, ...tags];
 
 	if (combined.length === 0) return null;
 
 	return (
-		<div className="flex flex-wrap gap-2 font-mono text-sm">
+		<div className='flex flex-wrap gap-2 font-mono text-sm'>
 			{combined.map((item, _idx) => (
-				<Link
-					key={`${item.type}-${item.title}-${item.url}`}
-					to={item.url}
-					className="no-underline hover:no-underline"
-				>
-					<Badge
-						variant={item.type === CatTagType.Tag ? "secondary" : "default"}
-						className="cursor-pointer"
-					>
+				<Link key={`${item.type}-${item.title}-${item.url}`} to={item.url} className='no-underline hover:no-underline'>
+					<Badge variant={item.type === CatTagType.Tag ? "secondary" : "default"} className='cursor-pointer'>
 						{item.type === CatTagType.Tag ? "#" : ""}
 						{item.title}
 					</Badge>

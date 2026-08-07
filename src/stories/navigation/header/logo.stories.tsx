@@ -1,10 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import {
-	createMemoryHistory,
-	createRootRoute,
-	createRouter,
-	RouterProvider,
-} from "@tanstack/react-router";
+import { createMemoryHistory, createRootRoute, createRouter, RouterProvider } from "@tanstack/react-router";
 import * as React from "react";
 import { expect, within } from "storybook/test";
 import LogoDarkmode from "@/assets/laniakita-logo-transparent-darkmode.svg?react";
@@ -52,8 +47,8 @@ export const Default: Story = {
 
 export const WithImages: Story = {
 	args: {
-		logoLight: <LogoLightmode title="Logo Light" />,
-		logoDark: <LogoDarkmode title="Logo Dark" />,
+		logoLight: <LogoLightmode title='Logo Light' />,
+		logoDark: <LogoDarkmode title='Logo Dark' />,
 	},
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);

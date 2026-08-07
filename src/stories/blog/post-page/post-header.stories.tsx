@@ -1,10 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import {
-	createMemoryHistory,
-	createRootRoute,
-	createRouter,
-	RouterProvider,
-} from "@tanstack/react-router";
+import { createMemoryHistory, createRootRoute, createRouter, RouterProvider } from "@tanstack/react-router";
 import { expect, within } from "storybook/test";
 import { PostHeader } from "./post-header";
 
@@ -51,9 +46,7 @@ export const Default: Story = {
 		const headline = canvas.getByText("Building Modern Web Applications");
 		expect(headline).toBeInTheDocument();
 
-		const subheadline = canvas.getByText(
-			"A comprehensive guide to TanStack and Shadcn",
-		);
+		const subheadline = canvas.getByText("A comprehensive guide to TanStack and Shadcn");
 		expect(subheadline).toBeInTheDocument();
 
 		const date = canvas.getByText(/(Aug 1st|Jul 31st), 2026/);

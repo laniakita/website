@@ -16,11 +16,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
 	args: {
-		blogInfo: (
-			<p>
-				A blog about life, Linux, and web development. Written by Lani Akita.
-			</p>
-		),
+		blogInfo: <p>A blog about life, Linux, and web development. Written by Lani Akita.</p>,
 		categories: [
 			{ title: "Linux", url: "/category/linux" },
 			{ title: "Web Development", url: "/category/web-development" },

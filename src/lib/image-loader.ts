@@ -8,11 +8,7 @@ export type ImageUrlBuilderOptions = {
  * Custom Cloudflare Image Resizing loader for @unpic/react
  * Transforms standard R2 asset URLs into Cloudflare Image Resizing URLs
  */
-export function cloudflareLoader({
-	src,
-	width,
-	quality,
-}: ImageUrlBuilderOptions): string {
+export function cloudflareLoader({ src, width, quality }: ImageUrlBuilderOptions): string {
 	try {
 		const url = new URL(src);
 		// Transform to Cloudflare Image Resizing URL format

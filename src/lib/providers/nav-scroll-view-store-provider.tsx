@@ -2,24 +2,17 @@
 
 import { createContext, type ReactNode, useContext, useRef } from "react";
 import { useStore } from "zustand";
-import {
-	createNavScrollViewStore,
-	type NavScrollViewStore,
-} from "../stores/nav-scroll-view-store";
+import { createNavScrollViewStore, type NavScrollViewStore } from "../stores/nav-scroll-view-store";
 
 export type NavScrollViewStoreApi = ReturnType<typeof createNavScrollViewStore>;
 
-export const NavScrollViewStoreContext = createContext<
-	NavScrollViewStoreApi | undefined
->(undefined);
+export const NavScrollViewStoreContext = createContext<NavScrollViewStoreApi | undefined>(undefined);
 
 export interface NavScrollViewStoreProviderProps {
 	children: ReactNode;
 }
 
-export function NavScrollViewStoreProvider({
-	children,
-}: NavScrollViewStoreProviderProps) {
+export function NavScrollViewStoreProvider({ children }: NavScrollViewStoreProviderProps) {
 	const navScrollViewStoreRef = useRef<NavScrollViewStoreApi>(null!);
 
 	if (!navScrollViewStoreRef.current) {
@@ -32,14 +25,10 @@ export function NavScrollViewStoreProvider({
 	);
 }
 
-export const useNavScrollViewStore = <T,>(
-	selector: (store: NavScrollViewStore) => T,
-): T => {
+export const useNavScrollViewStore = <T,>(selector: (store: NavScrollViewStore) => T): T => {
 	const navScrollViewStoreContext = useContext(NavScrollViewStoreContext);
 	if (!navScrollViewStoreContext) {
-		throw new Error(
-			`useNavScrollViewStore must be used within NavScrollViewStoreProvider`,
-		);
+		throw new Error(`useNavScrollViewStore must be used within NavScrollViewStoreProvider`);
 	}
 	return useStore(navScrollViewStoreContext, selector);
 };

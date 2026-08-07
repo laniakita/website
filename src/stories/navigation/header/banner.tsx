@@ -42,12 +42,9 @@ export function HeaderBanner({
 	if (!warnDev || !productionUrl) return null;
 
 	return (
-		<div className="bg-red-600 text-white dark:bg-red-900 dark:text-red-50 text-xs font-medium px-4 py-1 text-center">
+		<div className='bg-red-600 px-4 py-1 text-center font-medium text-white text-xs dark:bg-red-900 dark:text-red-50'>
 			{warnDevBannerDescription}{" "}
-			<RACLink
-				href={productionUrl}
-				className="underline underline-offset-2 hover:opacity-80 transition-opacity"
-			>
+			<RACLink href={productionUrl} className='underline underline-offset-2 transition-opacity hover:opacity-80'>
 				{warnDevBannerReturnText}
 			</RACLink>
 		</div>

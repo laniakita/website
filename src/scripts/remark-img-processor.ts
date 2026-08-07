@@ -64,15 +64,8 @@ export function remarkImgProcessor(options: RemarkImgProcessorOptions = {}) {
 							}
 						}
 					}
-				} else if (
-					node.type === "mdxJsxFlowElement" ||
-					node.type === "mdxJsxTextElement"
-				) {
-					if (
-						node.name === "img" ||
-						node.name === "Image" ||
-						node.name === "video"
-					) {
+				} else if (node.type === "mdxJsxFlowElement" || node.type === "mdxJsxTextElement") {
+					if (node.name === "img" || node.name === "Image" || node.name === "video") {
 						// biome-ignore lint/suspicious/noExplicitAny: AST nodes are too dynamic for strict types
 						const srcAttr = node.attributes?.find((a: any) => a.name === "src");
 						if (srcAttr && typeof srcAttr.value === "string") {

@@ -1,9 +1,5 @@
 import type { Register } from "@tanstack/react-start";
-import {
-	createStartHandler,
-	defaultStreamHandler,
-	type RequestOptions,
-} from "@tanstack/react-start/server";
+import { createStartHandler, defaultStreamHandler, type RequestOptions } from "@tanstack/react-start/server";
 import { createServerEntry } from "@tanstack/react-start/server-entry";
 
 const startHandler = createStartHandler({
@@ -12,10 +8,7 @@ const startHandler = createStartHandler({
 });
 
 export default createServerEntry({
-	fetch: async (
-		request: Request,
-		opts?: RequestOptions<Register> | undefined,
-	) => {
+	fetch: async (request: Request, opts?: RequestOptions<Register> | undefined) => {
 		const allowedOrigin = process.env.CDN_ORIGIN;
 
 		if (request.method === "OPTIONS") {

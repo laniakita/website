@@ -11,14 +11,8 @@ import { SidebarSubscribe } from "../sidebar/subscribe";
  */
 export function BlogPostRoller({
 	posts,
-	injectedComponent = <SidebarSubscribe className="block lg:hidden" />,
+	injectedComponent = <SidebarSubscribe className='block lg:hidden' />,
 	injectAtIndex = 1,
 }: PostRollerProps) {
-	return (
-		<PostRoller
-			posts={posts}
-			injectedComponent={injectedComponent}
-			injectAtIndex={injectAtIndex}
-		/>
-	);
+	return <PostRoller posts={posts} injectedComponent={injectedComponent} injectAtIndex={injectAtIndex} />;
 }

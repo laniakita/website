@@ -19,11 +19,7 @@ export function PostDate({ date, tag }: PostDateProps) {
 	}
 
 	return (
-		<time
-			itemProp="uploadDate"
-			dateTime={new Date(date).toISOString()}
-			suppressHydrationWarning
-		>
+		<time itemProp='uploadDate' dateTime={new Date(date).toISOString()} suppressHydrationWarning>
 			{localTime}
 		</time>
 	);

@@ -1,17 +1,8 @@
 "use client";
-import {
-	type DetailedHTMLProps,
-	type HTMLAttributes,
-	useEffect,
-	useId,
-	useRef,
-	useState,
-} from "react";
+import { type DetailedHTMLProps, type HTMLAttributes, useEffect, useId, useRef, useState } from "react";
 import CopyBtn, { handlePreScrollDefault } from "./copy-button";
 
-export default function DefaultBlock(
-	props: DetailedHTMLProps<HTMLAttributes<HTMLPreElement>, HTMLPreElement>,
-) {
+export default function DefaultBlock(props: DetailedHTMLProps<HTMLAttributes<HTMLPreElement>, HTMLPreElement>) {
 	const [isCopied, setIsCopied] = useState<boolean | null>(false);
 	const preRef = useRef<HTMLPreElement>(null!);
 	const btnRef = useRef<HTMLButtonElement>(null!);
@@ -30,7 +21,7 @@ export default function DefaultBlock(
 	}, []);
 
 	return (
-		<div className="relative my-[calc(24em/14)]">
+		<div className='relative my-[calc(24em/14)]'>
 			<CopyBtn
 				preRef={preRef}
 				btnRef={btnRef}
@@ -46,7 +37,7 @@ export default function DefaultBlock(
 					handlePreScrollDefault(btnRef);
 				}}
 				{...props}
-				className="my-0"
+				className='my-0'
 			></pre>
 		</div>
 	);

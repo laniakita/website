@@ -3,9 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { useEffect } from "react";
 import { expect, within } from "storybook/test";
 import { useToCViewStore } from "@/lib/providers/toc-view-store-provider";
-import {
-	TableOfContents,
-} from "./table-of-contents";
+import { TableOfContents } from "./table-of-contents";
 
 const mockNestedHeadings = [
 	{ title: "Introduction", url: "#introduction", depth: 1 },
@@ -45,15 +43,15 @@ const meta = {
 			<NavScrollViewStoreProvider>
 				<ToCViewStoreProvider>
 					<StoreInitializer>
-						<div className="relative min-h-[150vh] w-full max-w-5xl mx-auto flex">
+						<div className='relative mx-auto flex min-h-[150vh] w-full max-w-5xl'>
 							{/* Fake content to allow scrolling and intersection observing */}
-							<div className="flex-1 p-8 space-y-[40vh]">
-								<h1 id="introduction">Introduction</h1>
+							<div className='flex-1 space-y-[40vh] p-8'>
+								<h1 id='introduction'>Introduction</h1>
 								<p>Scroll down to see the intersection observer in action.</p>
-								<h2 id="getting-started">Getting Started</h2>
-								<h3 id="installation">Installation</h3>
-								<h2 id="usage">Usage</h2>
-								<h1 id="advanced">Advanced</h1>
+								<h2 id='getting-started'>Getting Started</h2>
+								<h3 id='installation'>Installation</h3>
+								<h2 id='usage'>Usage</h2>
+								<h1 id='advanced'>Advanced</h1>
 							</div>
 							{/* TOC */}
 							<Story />
@@ -83,5 +81,3 @@ export const Default: Story = {
 		expect(introLink).toBeInTheDocument();
 	},
 };
-
-

@@ -34,8 +34,6 @@ export const Hidden: Story = {
 	},
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
-		expect(
-			canvas.queryByRole("button", { name: /toggle table of contents/i }),
-		).not.toBeInTheDocument();
+		expect(canvas.queryByRole("button", { name: /toggle table of contents/i })).not.toBeInTheDocument();
 	},
 };

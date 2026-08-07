@@ -1,27 +1,16 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import {
-	createMemoryHistory,
-	createRootRoute,
-	createRouter,
-	RouterProvider,
-} from "@tanstack/react-router";
+import { createMemoryHistory, createRootRoute, createRouter, RouterProvider } from "@tanstack/react-router";
 import { expect, within } from "storybook/test";
 import { Footer } from "@/components/navigation/footer";
-import {
-	defaultFooterNavItems,
-	defaultFooterSocialItems,
-} from "@/components/navigation/footer/data";
+import { defaultFooterNavItems, defaultFooterSocialItems } from "@/components/navigation/footer/data";
 import { ThemeStoreProvider } from "@/lib/providers/theme-store-provider";
 
 // TanStack Router requires a router context for Links to work in Storybook
 const rootRoute = createRootRoute({
 	component: () => (
 		<ThemeStoreProvider>
-			<div className="min-h-screen flex flex-col justify-end bg-background p-4">
-				<Footer
-					navItems={defaultFooterNavItems}
-					socialItems={defaultFooterSocialItems}
-				/>
+			<div className='flex min-h-screen flex-col justify-end bg-background p-4'>
+				<Footer navItems={defaultFooterNavItems} socialItems={defaultFooterSocialItems} />
 			</div>
 		</ThemeStoreProvider>
 	),
@@ -85,13 +74,8 @@ export const CustomData: Story = {
 			const rootRoute = createRootRoute({
 				component: () => (
 					<ThemeStoreProvider>
-						<div className="min-h-screen flex flex-col justify-end bg-background p-4">
-							<Footer
-								navItems={customNav}
-								socialItems={customSocials}
-								startYear={2020}
-								authorName="Acme Corp"
-							/>
+						<div className='flex min-h-screen flex-col justify-end bg-background p-4'>
+							<Footer navItems={customNav} socialItems={customSocials} startYear={2020} authorName='Acme Corp' />
 						</div>
 					</ThemeStoreProvider>
 				),
