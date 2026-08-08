@@ -114,5 +114,8 @@
 			"sharp",
 			"workerd"
 		]
+	},
+	"patchedDependencies": {
+		"@storybook/addon-mcp@0.7.0": "patches/@storybook%2Faddon-mcp@0.7.0.patch"
 	}
 }

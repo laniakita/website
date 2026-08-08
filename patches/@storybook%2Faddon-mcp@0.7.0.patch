@@ -1,0 +1,25 @@
+diff --git a/dist/preset.js b/dist/preset.js
+index 956b95c52be84d114c53e587b717b44a3683c8bd..43eeacb1493d741b12cfb37af359cb3e257c7652 100644
+--- a/dist/preset.js
++++ b/dist/preset.js
+@@ -2084,17 +2084,14 @@ const mcpServerHandler = async ({ req, res, options, addonOptions, endpoint = DE
+ 	};
+ 	const response = await transport.respond(webRequest, addonContext);
+ 	if (response) {
+-		const body = await response.arrayBuffer();
+-		await webResponseToServerResponse(compositionAuth.hadAuthError(webRequest) ? new Response("401 - Unauthorized", {
++		const finalResponse = compositionAuth.hadAuthError(webRequest) ? new Response("401 - Unauthorized", {
+ 			status: 401,
+ 			headers: {
+ 				"Content-Type": "text/plain",
+ 				"WWW-Authenticate": compositionAuth.buildWwwAuthenticate(origin)
+ 			}
+-		}) : new Response(body, {
+-			status: response.status,
+-			headers: response.headers
+-		}), res);
++		}) : response;
++		await webResponseToServerResponse(finalResponse, res);
+ 	}
+ };
+ /**
