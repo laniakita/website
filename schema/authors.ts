@@ -6,7 +6,8 @@ export const authors = defineCollections({
 	type: "doc",
 	schema: (ctx) => {
 		return z.object({
-			date: z.coerce.date().default(new Date()),
+			createdAt: z.coerce.date().default(new Date()),
+			lastModified: z.coerce.date().optional(),
 			name: z.string(),
 			bluesky: z.string().optional(),
 			mastodon: z.string().optional(),

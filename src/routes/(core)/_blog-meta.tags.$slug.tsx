@@ -31,7 +31,7 @@ const getTagPage = createServerFn({ method: "GET" })
 				return post.data.tags?.some((t) => t && "url" in t && t.url?.split("/").pop() === slug);
 			})
 			.sort(
-				(a, b) => new Date(b.data.updated ?? b.data.date).getTime() - new Date(a.data.updated ?? a.data.date).getTime(),
+				(a, b) => new Date(b.data.lastModified ?? b.data.createdAt).getTime() - new Date(a.data.lastModified ?? a.data.createdAt).getTime(),
 			);
 
 		const postsList = matchingPosts.map((meta) => {
@@ -43,8 +43,8 @@ const getTagPage = createServerFn({ method: "GET" })
 				headline: meta.data.headline ?? "",
 				subheadline: meta.data.subheadline,
 				description: <GlobalMDXRenderer>{meta.data.description ?? ""}</GlobalMDXRenderer>,
-				date: meta.data.date ?? "",
-				updated: meta.data.updated,
+				createdAt: meta.data.createdAt ?? "",
+				lastModified: meta.data.lastModified,
 				featured_image: meta.data.featured_image,
 				categories,
 				tags,

@@ -10,8 +10,8 @@ export interface PostHeaderProps {
 	headline: string;
 	subheadline?: string;
 	author?: string;
-	date: string | Date;
-	updated?: string | Date;
+	createdAt: string | Date;
+	lastModified?: string | Date;
 	categories?: CatTag[];
 	tags?: CatTag[];
 	featured_image?: {
@@ -56,14 +56,14 @@ export function PostHeader(post: PostHeaderProps) {
 						</Link>
 					</p>
 					<span className='font-light'>|</span>
-					{post.updated ? (
+					{post.lastModified ? (
 						<p itemProp='dateModified' itemScope itemType='http://schema.org/Date' className='flex flex-wrap gap-x-2'>
 							<span>Updated:</span>
-							<PostDate date={post.updated} />
+							<PostDate date={post.lastModified} />
 						</p>
 					) : (
 						<p itemProp='datePublished' itemScope itemType='http://schema.org/Date'>
-							<PostDate date={post.date} />
+							<PostDate date={post.createdAt} />
 						</p>
 					)}
 				</div>

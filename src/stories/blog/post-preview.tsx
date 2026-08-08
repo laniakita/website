@@ -12,9 +12,9 @@ export interface PostPreviewProps {
 	/** The excerpt or short description of the post content. */
 	description: React.ReactNode;
 	/** The original publication date of the post. */
-	date: Date | string;
-	/** An optional date indicating when the post was last updated. */
-	updated?: Date | string;
+	createdAt: Date | string;
+	/** An optional date indicating when the post was last modified. */
+	lastModified?: Date | string;
 	/** An optional cover image to display at the top of the card. */
 	featured_image?: {
 		src: string;
@@ -46,7 +46,7 @@ function formatDate(date: Date | string) {
  * title, date, excerpt, and associated tags/categories.
  */
 export function PostPreview(post: PostPreviewProps) {
-	const { url, headline, subheadline, description, date, updated, featured_image, categories, tags } = post;
+	const { url, headline, subheadline, description, createdAt, lastModified, featured_image, categories, tags } = post;
 
 	return (
 		<CorePreview
@@ -58,13 +58,13 @@ export function PostPreview(post: PostPreviewProps) {
 			data-testid='post-preview-card'
 			meta={
 				<div className='flex flex-wrap gap-x-2 font-mono text-sm'>
-					{updated ? (
+					{lastModified ? (
 						<p className='flex w-fit flex-wrap gap-x-2 rounded-full'>
-							<strong>Updated:</strong> <span>{formatDate(updated)}</span>
+							<strong>Updated:</strong> <span>{formatDate(lastModified)}</span>
 						</p>
 					) : (
 						<p className='flex w-fit flex-wrap gap-x-2 rounded-full'>
-							<span>{formatDate(date)}</span>
+							<span>{formatDate(createdAt)}</span>
 						</p>
 					)}
 				</div>

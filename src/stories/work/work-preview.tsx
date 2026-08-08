@@ -49,8 +49,10 @@ export interface WorkPreviewProps {
 	type?: string;
 	/** Is the link active/valid? */
 	active: boolean;
-	/** Date of work */
-	date: Date | string;
+	/** Date of creation */
+	createdAt: Date | string;
+	/** Optional date indicating when the work was last modified */
+	lastModified?: Date | string;
 	/** Optional cover image */
 	featured_image?: {
 		src: string;
@@ -157,7 +159,7 @@ export function WorkPreview({
 						"supports-[mix-blend-mode:difference]:text-foreground-diff",
 					)}
 				>
-					{formatDate(data.date)}
+					{formatDate(data.lastModified ?? data.createdAt)}
 				</div>
 
 				{/* Title */}

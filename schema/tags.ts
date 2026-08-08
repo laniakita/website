@@ -16,7 +16,8 @@ export const tags = defineCollections({
 					`${ctx.path.split("/").pop()?.split(".").shift()?.toLowerCase()}`,
 				),
 			type: z.string().optional(),
-			date: z.coerce.date().default(new Date()),
+			createdAt: z.coerce.date().default(new Date()),
+			lastModified: z.coerce.date().optional(),
 			url: z
 				.string()
 				.default(

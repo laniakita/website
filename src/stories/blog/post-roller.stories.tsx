@@ -8,7 +8,7 @@ const mockPosts = [
 		url: "/blog/first-post",
 		headline: "First Post",
 		description: <p>This is the first post.</p>,
-		date: "2026-08-01",
+		createdAt: "2026-08-01",
 		categories: [{ title: "News", url: "/category/news", type: "Category" as const }],
 	},
 	{
@@ -19,14 +19,14 @@ const mockPosts = [
 			altText: "Computer code on a screen",
 		},
 		description: <p>This is the second post.</p>,
-		date: "2026-08-02",
+		createdAt: "2026-08-02",
 		categories: [{ title: "Updates", url: "/category/updates", type: "Category" as const }],
 	},
 	{
 		url: "/blog/third-post",
 		headline: "Third Post",
 		description: <p>This is the third post.</p>,
-		date: "2026-08-03",
+		createdAt: "2026-08-03",
 	},
 ];
 

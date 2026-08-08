@@ -27,7 +27,8 @@ const getInfoPage = createServerFn({ method: "GET" })
 			pageData: {
 				title: page.data.title,
 				description: page.data.description,
-				date: page.data.date,
+				createdAt: page.data.createdAt,
+				lastModified: page.data.lastModified,
 			},
 			RenderableMDX,
 		};
@@ -49,7 +50,7 @@ export const Route = createFileRoute("/(core)/_info/$")({
 			title: loaderData?.pageData.title,
 			description: loaderData?.pageData.description,
 			image: `/opengraph/static/${params._splat}`,
-			lastModified: loaderData?.pageData.date,
+			lastModified: loaderData?.pageData.lastModified ?? loaderData?.pageData.createdAt,
 		}),
 	}),
 	component: () => {
