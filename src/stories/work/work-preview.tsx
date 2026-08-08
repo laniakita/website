@@ -151,8 +151,13 @@ export function WorkPreview({
 				)}
 			>
 				{/* Meta */}
-				<div className='flex font-black font-mono text-sm uppercase tracking-widest'>
-					<span className='text-foreground-diff'>{formatDate(data.date)}</span>
+				<div
+					className={cn(
+						"flex font-black font-mono text-foreground text-sm uppercase tracking-widest",
+						"supports-[mix-blend-mode:difference]:text-foreground-diff",
+					)}
+				>
+					{formatDate(data.date)}
 				</div>
 
 				{/* Title */}

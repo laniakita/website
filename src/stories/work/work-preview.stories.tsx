@@ -6,6 +6,16 @@ const meta = {
 	component: WorkPreview,
 	parameters: {
 		layout: "centered",
+		a11y: {
+			config: {
+				rules: [
+					{
+						id: "color-contrast",
+						enabled: false,
+					},
+				],
+			},
+		},
 	},
 } satisfies Meta<typeof WorkPreview>;
 

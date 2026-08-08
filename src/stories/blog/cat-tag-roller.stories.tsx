@@ -24,10 +24,10 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
 	args: {
-		cats: [{ title: "Linux", url: "/category/linux", type: "Category" }],
+		cats: [{ title: "Linux", url: "/category/linux", type: "category" }],
 		tags: [
-			{ title: "bash", url: "/tag/bash", type: "Tag" },
-			{ title: "tutorial", url: "/tag/tutorial", type: "Tag" },
+			{ title: "bash", url: "/tag/bash", type: "tag" },
+			{ title: "tutorial", url: "/tag/tutorial", type: "tag" },
 		],
 	},
 	play: async ({ canvasElement }) => {
@@ -39,7 +39,7 @@ export const Default: Story = {
 		expect(linuxCategory).toHaveAttribute("href", "/category/linux");
 
 		// Check for Tags
-		const bashTag = canvas.getByRole("link", { name: "bash" });
+		const bashTag = canvas.getByRole("link", { name: "#bash" });
 		expect(bashTag).toBeInTheDocument();
 		expect(bashTag).toHaveAttribute("href", "/tag/bash");
 	},

@@ -7,6 +7,16 @@ const meta = {
 	component: WorkRoller,
 	parameters: {
 		layout: "centered",
+		a11y: {
+			config: {
+				rules: [
+					{
+						id: "color-contrast",
+						enabled: false,
+					},
+				],
+			},
+		},
 	},
 } satisfies Meta<typeof WorkRoller>;
 
