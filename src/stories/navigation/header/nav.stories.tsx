@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { createMemoryHistory, createRootRoute, createRouter, RouterProvider } from "@tanstack/react-router";
 import { expect, within } from "storybook/test";
-import { defaultNavItems } from "@/components/navigation/header/data";
+import { MAIN_PAGES } from "$/src/components/nav-constants";
 import { HeaderNav } from "./nav";
 
 const rootRoute = createRootRoute({
-	component: () => <HeaderNav navItems={defaultNavItems} />,
+	component: () => <HeaderNav navItems={MAIN_PAGES} />,
 });
 const router = createRouter({
 	routeTree: rootRoute,
@@ -28,6 +28,6 @@ export const Default: Story = {
 		const canvas = within(canvasElement);
 		const links = await canvas.findAllByRole("link");
 		await expect(links.length).toBeGreaterThan(0);
-		await expect(links[0]).toHaveTextContent(defaultNavItems[0].label);
+		await expect(links[0]).toHaveTextContent(MAIN_PAGES[0].label);
 	},
 };

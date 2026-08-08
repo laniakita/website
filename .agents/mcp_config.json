@@ -1,0 +1,14 @@
+{
+    "mcpServers": {
+        "shadcn": {
+            "args": [
+                "shadcn@latest",
+                "mcp"
+            ],
+            "command": "bunx"
+        },
+        "storybook": {
+            "serverUrl": "http://localhost:6006/mcp"
+        }
+    }
+}
