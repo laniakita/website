@@ -20,7 +20,7 @@ const mockPosts = [
 		headline: "Understanding React Server Components",
 		url: "/blog/understanding-rsc",
 		description: "A deep dive into how React Server Components work under the hood.",
-		date: "2023-10-01",
+		createdAt: "2023-10-01",
 		categories: [{ title: "React", url: "/categories/react", type: CatTagType.Category }],
 		tags: [{ title: "performance", url: "/tags/performance", type: CatTagType.Tag }],
 		featured_image: {
@@ -33,7 +33,7 @@ const mockPosts = [
 		headline: "Mastering Tailwind CSS",
 		url: "/blog/mastering-tailwind",
 		description: "Tips and tricks for building beautiful UIs with Tailwind CSS.",
-		date: "2023-09-15",
+		createdAt: "2023-09-15",
 		categories: [{ title: "CSS", url: "/categories/css", type: CatTagType.Category }],
 		tags: [{ title: "design", url: "/tags/design", type: CatTagType.Tag }],
 		featured_image: {

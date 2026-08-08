@@ -17,7 +17,7 @@ const getWorkPageData = createServerFn({ method: "GET" }).handler(async () => {
 	const PageMDX = page.data.body;
 	const RenderablePageMDX = await renderServerComponent(<PageMDX components={components} />);
 
-	const works = worksSource.getPages().sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+	const works = worksSource.getPages().sort((a, b) => (b.data.lastModified ?? b.data.createdAt).valueOf() - (a.data.lastModified ?? a.data.createdAt).valueOf());
 
 	// Map through works and render their MDX
 	const renderableWorks = await Promise.all(
@@ -30,7 +30,8 @@ const getWorkPageData = createServerFn({ method: "GET" }).handler(async () => {
 				source: work.data.source,
 				type: work.data.type,
 				active: work.data.active,
-				date: work.data.date,
+				createdAt: work.data.createdAt,
+				lastModified: work.data.lastModified,
 				tech: work.data.tech,
 				links: work.data.links,
 				featured_image: work.data.featured_image,

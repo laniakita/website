@@ -28,7 +28,7 @@ export const Default: Story = {
 		title: "Acme Corp Rebrand",
 		source: "https://acme.corp",
 		active: true,
-		date: "2023-01-15T00:00:00Z",
+		createdAt: "2023-01-15T00:00:00Z",
 		tech: ["Next.js", "Tailwind CSS", "TypeScript", "Framer Motion"],
 		featured_image: {
 			src: "https://images.unsplash.com/photo-1498050108023-c5249f4df085",

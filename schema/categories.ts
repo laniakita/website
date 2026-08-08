@@ -16,7 +16,8 @@ export const categories = defineCollections({
 					`${ctx.path.split("/").pop()?.split(".").shift()?.toLowerCase()}`,
 				),
 			type: z.string().default("category"),
-			date: z.coerce.date().default(new Date()),
+			createdAt: z.coerce.date().default(new Date()),
+			lastModified: z.coerce.date().optional(),
 			url: z
 				.string()
 				.default(

@@ -28,7 +28,7 @@ export const Default: Story = {
 		headline: "Building Modern Web Applications",
 		subheadline: "A comprehensive guide to TanStack and Shadcn",
 		author: "Lani",
-		date: "2026-08-01",
+		createdAt: "2026-08-01",
 		categories: [{ title: "Tech", type: "Category", url: "/category/tech" }],
 		tags: [{ title: "tanstack", type: "Tag", url: "/tag/tanstack" }],
 		featured_image: {

@@ -37,7 +37,7 @@ export const Default: Story = {
 				little more text to show how it wraps.
 			</p>
 		),
-		date: "2026-08-01",
+		createdAt: "2026-08-01",
 		featuredImage: {
 			src: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=2000",
 			altText: "Computer code on a screen",

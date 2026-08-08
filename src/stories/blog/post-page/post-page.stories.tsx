@@ -43,7 +43,7 @@ export const Default: Story = {
 		headline: "Full Blog Post Page Render",
 		subheadline: "Testing the entire page assembly",
 		author: "Lani",
-		date: "2026-08-01",
+		createdAt: "2026-08-01",
 		categories: [{ title: "Tech", type: "category", url: "/category/tech" }],
 		tags: [{ title: "storybook", type: "tag", url: "/tag/storybook" }],
 		featured_image: {

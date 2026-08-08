@@ -7,8 +7,8 @@ export const works = defineCollections({
 	schema: (ctx) => {
 		return z.object({
 			id: z.string(),
-			date: z.coerce.date(),
-			updated: z.coerce.date().optional(),
+			createdAt: z.coerce.date(),
+			lastModified: z.coerce.date().optional(),
 			title: z.string(),
 			source: z
 				.string()

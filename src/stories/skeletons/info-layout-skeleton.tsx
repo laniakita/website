@@ -5,7 +5,7 @@ export function InfoLayoutSkeleton() {
 		<main className='w-full pt-10' data-testid='info-layout-skeleton'>
 			<article className='flex size-full flex-col items-center justify-center'>
 				<div className='padding-post flex min-h-full w-full items-center justify-center'>
-					<div className='w-full max-w-3xl px-0'>
+					<div className='min-w-full max-w-3xl px-0'>
 						<InfoContentSkeleton />
 					</div>
 				</div>
@@ -16,7 +16,7 @@ export function InfoLayoutSkeleton() {
 
 export function InfoContentSkeleton() {
 	return (
-		<div className='w-full space-y-8'>
+		<div className='min-w-full space-y-8'>
 			<div>
 				<Skeleton className='mb-6 h-12 w-64' />
 				<div className='space-y-3'>
@@ -29,7 +29,7 @@ export function InfoContentSkeleton() {
 			</div>
 
 			<div>
-				<Skeleton className='mt-8 mb-4 h-8 w-48' />
+				<Skeleton className='mt-8 mb-4 h-8 w-full' />
 				<div className='space-y-3'>
 					<Skeleton className='h-5 w-[98%]' />
 					<Skeleton className='h-5 w-[90%]' />
