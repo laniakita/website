@@ -3,8 +3,9 @@
 import { Image } from "@unpic/react";
 import { motion, useScroll, useSpring, useTransform } from "motion/react";
 import type * as React from "react";
-import { useRef } from "react";
+import { Suspense, useRef } from "react";
 import { Link } from "@/components/ui/link";
+import { TextBlockSkeleton } from "@/stories/skeletons/text-block-skeleton";
 import { Separator } from "$/src/components/ui/separator";
 import { cn } from "$/src/lib/utils";
 
@@ -261,7 +262,7 @@ export function WorkPreview({
 						{/* <div className='work-glassy-edge @3xl:hidden' /> */}
 
 						<div className='relative z-10 flex w-full flex-col gap-y-4'>
-							{data.RenderableMDX}
+							<Suspense fallback={<TextBlockSkeleton />}>{data.RenderableMDX}</Suspense>
 							<Separator />
 							{/* Footer (Tech & Links) */}
 							<div className={cn("flex w-full flex-col gap-4", isEven ? "items-start" : "items-start @3xl:items-end")}>

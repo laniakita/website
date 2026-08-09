@@ -1,5 +1,6 @@
-import type { ReactNode } from "react";
+import { type ReactNode, Suspense } from "react";
 import { Separator } from "@/components/ui/separator";
+import { TextBlockSkeleton } from "@/stories/skeletons/text-block-skeleton";
 
 export interface WorkPageHeroProps {
 	/** Title of the page (e.g. "Work") */
@@ -32,7 +33,9 @@ export function WorkPageHero({ title, description }: WorkPageHeroProps) {
 					<div className='font-mono @md/header:text-2xs text-3xs text-primary uppercase tracking-widest'>
 						&gt; INITIALIZING REMARKS
 					</div>
-					<div className='prose-protocol-omega prose-p:my-0 w-full max-w-xl'>{description}</div>
+					<div className='prose-protocol-omega prose-p:my-0 w-full max-w-xl'>
+						<Suspense fallback={<TextBlockSkeleton className='max-w-xl py-2' />}>{description}</Suspense>
+					</div>
 				</div>
 			</div>
 		</div>
