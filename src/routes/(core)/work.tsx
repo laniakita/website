@@ -5,6 +5,7 @@ import { useMDXComponents } from "@/components/mdx";
 import { pagesSource } from "@/lib/collections/pages";
 import { worksSource } from "@/lib/collections/works";
 import { getSeoMeta } from "@/lib/utils/seo";
+import { WorkPageSkeleton } from "@/stories/skeletons/work-page-skeleton";
 import { WorkPage } from "@/stories/work/work-page";
 
 const getWorkPageData = createServerFn({ method: "GET" }).handler(async () => {
@@ -63,6 +64,7 @@ const getWorkPageData = createServerFn({ method: "GET" }).handler(async () => {
 });
 
 export const Route = createFileRoute("/(core)/work")({
+	pendingComponent: WorkPageSkeleton,
 	loader: async () => {
 		const result = await getWorkPageData();
 		if (!result) throw notFound();

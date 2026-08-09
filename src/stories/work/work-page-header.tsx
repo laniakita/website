@@ -14,7 +14,7 @@ export interface WorkPageHeaderProps {
 export function WorkPageHeader({ title, totalWorks, description }: WorkPageHeaderProps) {
 	return (
 		<header
-			className='@container/header mb-16 flex w-full flex-col @lg/page:gap-16 gap-8 md:mb-24 @4xl/page:pt-4'
+			className='@container/header mb-16 flex w-full flex-col @lg/page:gap-16 gap-8 @4xl/page:pt-4 md:mb-24'
 			data-testid='work-page-header'
 		>
 			<div className='@4xl/header:px-8 px-2 pt-4'>
