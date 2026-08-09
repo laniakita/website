@@ -16,7 +16,9 @@ import type { PostPreviewProps } from "@/stories/blog/post-preview";
 const getPosts = createServerFn().handler(async () => {
 	const res = blogSource
 		.getPages()
-		.sort((a, b) => compareDesc(new Date(a.data.lastModified ?? a.data.createdAt), new Date(b.data.lastModified ?? b.data.createdAt)));
+		.sort((a, b) =>
+			compareDesc(new Date(a.data.lastModified ?? a.data.createdAt), new Date(b.data.lastModified ?? b.data.createdAt)),
+		);
 	const posts = res.map((meta) => {
 		const categories = meta.data.categories as CatTag[];
 		const tags = meta.data.tags as CatTag[];

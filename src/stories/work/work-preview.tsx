@@ -142,186 +142,191 @@ export function WorkPreview({
 	};
 
 	return (
-		<div ref={ref} className='group relative grid w-full grid-cols-1 px-4 py-10 lg:grid-cols-2 lg:gap-x-24'>
-			{/* 1. Title Block */}
-			<motion.div
-				style={{ y: titleY }}
-				className={cn(
-					"z-20 flex w-full flex-col items-start mix-blend-difference",
-					isEven ? "lg:col-start-1 lg:text-left" : "lg:col-start-2 lg:items-end lg:text-right",
-					"lg:row-start-1 lg:self-end",
-				)}
-			>
-				{/* Meta */}
-				<div
+		<div className='@container w-full'>
+			<div ref={ref} className='group relative grid w-full @3xl:grid-cols-2 grid-cols-1 @3xl:gap-x-24 py-10'>
+				{/* 1. Title Block */}
+				<motion.div
+					style={{ y: titleY }}
 					className={cn(
-						"flex font-black font-mono text-foreground text-sm uppercase tracking-widest",
-						"supports-[mix-blend-mode:difference]:text-foreground-diff",
+						"z-20 flex w-full flex-col items-start @3xl:px-0 px-2 mix-blend-difference",
+						isEven ? "@3xl:col-start-1 @3xl:text-left" : "@3xl:col-start-2 @3xl:items-end @3xl:text-right",
+						"@3xl:row-start-1 @3xl:self-end",
 					)}
 				>
-					{formatDate(data.lastModified ?? data.createdAt)}
-				</div>
-
-				{/* Title */}
-				<h2
-					className={cn(
-						"mb-4 text-balance font-black font-heading",
-						"text-6xl leading-[0.9] tracking-tighter md:text-8xl",
-					)}
-				>
-					<LinkWrapper
+					{/* Meta */}
+					<div
 						className={cn(
-							"text-foreground no-underline group-has-[.image-target:hover]:underline",
-							"supports-[mix-blend-mode:difference]:text-foreground-diff",
-							"supports-[mix-blend-mode:difference]:group-has-[.image-target:hover]:text-primary-diff",
-							"supports-[mix-blend-mode:difference]:hover:text-primary-diff",
+							"flex font-mono text-2xs text-primary uppercase tracking-widest supports-[mix-blend-mode:difference]:text-primary-diff",
+							"before:mr-1 before:content-['>']",
+							!isEven && "@3xl:before:content-none @3xl:after:ml-1 @3xl:after:content-['<']",
 						)}
 					>
-						<span className='relative'>{data.title}</span>
-					</LinkWrapper>
-				</h2>
-			</motion.div>
-
-			{/* 2. Image Parallax Container */}
-			<motion.div
-				style={{ y: imageY }}
-				className={cn(
-					"image-target relative z-10 -mt-16 w-full overflow-hidden rounded-sm",
-					"bg-ctp-surface0 shadow-xl lg:mt-0 lg:self-center dark:bg-ctp-crust",
-					isEven ? "lg:col-start-2" : "lg:col-start-1",
-					"lg:row-span-2 lg:row-start-1",
-				)}
-			>
-				{data.featured_image?.src ? (
-					<LinkWrapper className='block h-full w-full'>
-						{data.featured_image.imgData?.height && data.featured_image.imgData?.width ? (
-							<Image
-								src={data.featured_image.src}
-								height={data.featured_image.imgData.height}
-								width={data.featured_image.imgData.width}
-								alt={data.featured_image.altText ?? ""}
-								background={data.featured_image.imgData.css}
-								fallback='cloudflare'
-								options={{
-									cloudflare: {
-										domain: import.meta.env.VITE_CDN,
-									},
-								}}
-								operations={{
-									cloudflare: {
-										quality: 75,
-										format: "auto",
-									},
-								}}
-								layout='constrained'
-								className={cn(
-									"h-auto w-full object-contain grayscale-[0.3]",
-									"transition-all duration-700 hover:grayscale-0",
-								)}
-							/>
-						) : (
-							<Image
-								src={data.featured_image.src}
-								layout='fullWidth'
-								alt={data.featured_image.altText ?? ""}
-								className={cn(
-									"h-auto w-full object-contain grayscale-[0.3]",
-									"transition-all duration-700 hover:grayscale-0",
-								)}
-							/>
-						)}
-					</LinkWrapper>
-				) : (
-					<div className='flex aspect-video w-full items-center justify-center text-muted-foreground'>
-						<span className='icon-[ph--image] text-4xl opacity-20' />
+						{formatDate(data.lastModified ?? data.createdAt)}
 					</div>
-				)}
-			</motion.div>
 
-			{/* 3. Description Plaque */}
-			<motion.div
-				style={{ y: descY }}
-				className={cn(
-					"z-30 -mt-20 flex w-full flex-col lg:mt-0",
-					isEven ? "lg:col-start-1 lg:items-start" : "lg:col-start-2 lg:items-end lg:text-right",
-					"px-4 lg:row-start-2 lg:self-start lg:px-0",
-				)}
-			>
-				{/* Glassmorphic card for mobile legibility, transparent on desktop */}
-				<div
+					{/* Title */}
+					<h2
+						className={cn(
+							"mb-4 text-balance font-black font-heading",
+							"wrap-break-word @2xl:text-6xl @3xl:text-7xl @xl:text-5xl text-4xl leading-[0.9] tracking-tighter",
+						)}
+					>
+						<LinkWrapper
+							className={cn(
+								"text-foreground no-underline group-has-[.image-target:hover]:underline",
+								"supports-[mix-blend-mode:difference]:text-foreground-diff",
+								"supports-[mix-blend-mode:difference]:group-has-[.image-target:hover]:text-primary-diff",
+								"supports-[mix-blend-mode:difference]:hover:text-primary-diff",
+							)}
+						>
+							<span className='relative'>{data.title}</span>
+						</LinkWrapper>
+					</h2>
+				</motion.div>
+
+				{/* 2. Image Parallax Container */}
+				<motion.div
+					style={{ y: imageY }}
 					className={cn(
-						"relative flex w-full flex-col overflow-hidden rounded-xl",
-						"p-6 shadow-2xl lg:rounded-none lg:p-0 lg:shadow-none",
+						"image-target relative z-10 -mt-10 w-full overflow-hidden rounded-sm",
+						"@3xl:mt-0 @3xl:self-center bg-ctp-surface0 shadow-xl dark:bg-ctp-crust",
+						isEven ? "@3xl:col-start-2" : "@3xl:col-start-1",
+						"@3xl:row-span-2 @3xl:row-start-1",
 					)}
 				>
-					{/* High-tech glass backgrounds (mobile only) */}
-					<div className='work-glassy-bg lg:hidden' />
-					<div className='work-glassy-edge lg:hidden' />
-
-					<div className='relative z-10 flex w-full flex-col gap-y-4'>
-						{data.RenderableMDX}
-						<Separator />
-						{/* Footer (Tech & Links) */}
-						<div className={cn("flex w-full flex-col gap-4", isEven ? "items-start" : "items-start lg:items-end")}>
-							<div className={cn("flex flex-wrap gap-2", isEven ? "justify-start" : "justify-start lg:justify-end")}>
-								{data.tech.map((tag) => (
-									<span
-										key={`tech-${tag}`}
-										className={cn(
-											"rounded-md bg-secondary px-3 py-1",
-											"font-mono font-semibold text-secondary-foreground",
-											"text-xs shadow-sm lg:shadow-none",
-										)}
-									>
-										{tag}
-									</span>
-								))}
-							</div>
-							{data.links && data.links.length > 0 && (
-								<>
-									<Separator />
-									<div
-										className={cn(
-											"mt-2 flex flex-wrap gap-6",
-											isEven ? "justify-start" : "justify-start lg:justify-end",
-										)}
-									>
-										{data.links.map((link) =>
-											link.url.startsWith("http") ? (
-												<a
-													key={link.url}
-													href={link.url}
-													target='_blank'
-													rel='noreferrer'
-													className={cn(
-														"font-mono text-sm uppercase tracking-widest",
-														"underline decoration-muted-foreground",
-														"underline-offset-4 hover:decoration-foreground",
-													)}
-												>
-													{link.label}
-												</a>
-											) : (
-												<Link
-													key={link.url}
-													to={link.url}
-													className={cn(
-														"font-mono text-sm uppercase tracking-widest",
-														"underline decoration-muted-foreground",
-														"underline-offset-4 hover:decoration-foreground",
-													)}
-												>
-													{link.label}
-												</Link>
-											),
-										)}
-									</div>
-								</>
+					{data.featured_image?.src ? (
+						<LinkWrapper className='block h-full w-full'>
+							{data.featured_image.imgData?.height && data.featured_image.imgData?.width ? (
+								<Image
+									src={data.featured_image.src}
+									height={data.featured_image.imgData.height}
+									width={data.featured_image.imgData.width}
+									alt={data.featured_image.altText ?? ""}
+									background={data.featured_image.imgData.css}
+									fallback='cloudflare'
+									options={{
+										cloudflare: {
+											domain: import.meta.env.VITE_CDN,
+										},
+									}}
+									operations={{
+										cloudflare: {
+											quality: 75,
+											format: "auto",
+										},
+									}}
+									layout='constrained'
+									className={cn(
+										"h-auto w-full object-contain grayscale-[0.3]",
+										"transition-all duration-700 hover:grayscale-0",
+									)}
+								/>
+							) : (
+								<Image
+									src={data.featured_image.src}
+									layout='fullWidth'
+									alt={data.featured_image.altText ?? ""}
+									className={cn(
+										"h-auto w-full object-contain grayscale-[0.3]",
+										"transition-all duration-700 hover:grayscale-0",
+									)}
+								/>
 							)}
+						</LinkWrapper>
+					) : (
+						<div className='flex aspect-video w-full items-center justify-center text-muted-foreground'>
+							<span className='icon-[ph--image] text-4xl opacity-20' />
+						</div>
+					)}
+				</motion.div>
+
+				{/* 3. Description Plaque */}
+				<motion.div
+					style={{ y: descY }}
+					className={cn(
+						"z-30 -mt-10 @3xl:mt-0 flex w-full flex-col",
+						isEven ? "@3xl:col-start-1 @3xl:items-start" : "@3xl:col-start-2 @3xl:items-end @3xl:text-right",
+						"@3xl:row-start-2 @3xl:self-start @3xl:px-0 px-2",
+					)}
+				>
+					{/* Glassmorphic card for mobile legibility, transparent on desktop */}
+					<div
+						className={cn(
+							"relative flex w-full flex-col overflow-hidden rounded-xl",
+							"@3xl:rounded-none @3xl:p-0 p-4 @3xl:shadow-none shadow-2xl",
+						)}
+					>
+						{/* High-tech glass backgrounds (mobile only) */}
+						<div className='work-glassy-bg @3xl:hidden' />
+						{/* <div className='work-glassy-edge @3xl:hidden' /> */}
+
+						<div className='relative z-10 flex w-full flex-col gap-y-4'>
+							{data.RenderableMDX}
+							<Separator />
+							{/* Footer (Tech & Links) */}
+							<div className={cn("flex w-full flex-col gap-4", isEven ? "items-start" : "items-start @3xl:items-end")}>
+								<div
+									className={cn("flex flex-wrap gap-1", isEven ? "justify-start" : "justify-start @3xl:justify-end")}
+								>
+									{data.tech.map((tag) => (
+										<span
+											key={`tech-${tag}`}
+											className={cn(
+												"rounded-sm border border-secondary px-1.5 py-0.5",
+												"font-mono text-secondary-foreground",
+												"text-2xs @3xl:shadow-none shadow-sm",
+											)}
+										>
+											{tag}
+										</span>
+									))}
+								</div>
+								{data.links && data.links.length > 0 && (
+									<>
+										<Separator />
+										<div
+											className={cn(
+												"mt-2 flex flex-wrap gap-6",
+												isEven ? "justify-start" : "justify-start @3xl:justify-end",
+											)}
+										>
+											{data.links.map((link) =>
+												link.url.startsWith("http") ? (
+													<a
+														key={link.url}
+														href={link.url}
+														target='_blank'
+														rel='noreferrer'
+														className={cn(
+															"font-mono text-sm uppercase tracking-widest",
+															"underline decoration-muted-foreground",
+															"underline-offset-4 hover:decoration-foreground",
+														)}
+													>
+														{link.label}
+													</a>
+												) : (
+													<Link
+														key={link.url}
+														to={link.url}
+														className={cn(
+															"font-mono text-sm uppercase tracking-widest",
+															"underline decoration-muted-foreground",
+															"underline-offset-4 hover:decoration-foreground",
+														)}
+													>
+														{link.label}
+													</Link>
+												),
+											)}
+										</div>
+									</>
+								)}
+							</div>
 						</div>
 					</div>
-				</div>
-			</motion.div>
+				</motion.div>
+			</div>
 		</div>
 	);
 }
