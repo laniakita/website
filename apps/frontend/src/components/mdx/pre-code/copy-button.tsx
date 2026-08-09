@@ -1,32 +1,34 @@
 import { type Dispatch, type RefObject, type SetStateAction, useId } from "react";
 import { Button } from "../../ui/button";
 
-export const handlePreScrollDefault = (btnRef: RefObject<HTMLButtonElement>) => {
-	if (btnRef?.current !== undefined) {
+export const handlePreScrollDefault = (btnRef: RefObject<HTMLButtonElement | null>) => {
+	if (btnRef?.current) {
 		btnRef.current.style.opacity = "0";
 		setTimeout(() => {
-			btnRef.current.style.opacity = "100%";
+			if (btnRef.current) btnRef.current.style.opacity = "100%";
 		}, 500);
 	}
 };
 
 export const handlePreScroll = (
-	btnRef: RefObject<HTMLButtonElement>,
+	btnRef: RefObject<HTMLButtonElement | null>,
 	insideCollapsedBlock?: boolean,
 	isExpanded?: boolean,
 ) => {
-	if (btnRef?.current !== undefined) {
+	if (btnRef?.current) {
 		if (!insideCollapsedBlock || isExpanded === true) {
 			btnRef.current.style.pointerEvents = "none";
 			btnRef.current.style.opacity = "0";
 			setTimeout(() => {
-				btnRef.current.style.pointerEvents = "auto";
-				btnRef.current.style.opacity = "100%";
+				if (btnRef.current) {
+					btnRef.current.style.pointerEvents = "auto";
+					btnRef.current.style.opacity = "100%";
+				}
 			}, 500);
 		} else if (insideCollapsedBlock && !isExpanded) {
 			btnRef.current.style.opacity = "0";
 			setTimeout(() => {
-				btnRef.current.style.opacity = "20%";
+				if (btnRef.current) btnRef.current.style.opacity = "20%";
 			}, 500);
 		}
 	}
@@ -41,8 +43,8 @@ export default function CopyBtn({
 	special,
 	isExpanded,
 }: {
-	preRef: RefObject<HTMLPreElement>;
-	btnRef: RefObject<HTMLButtonElement>;
+	preRef: RefObject<HTMLPreElement | null>;
+	btnRef: RefObject<HTMLButtonElement | null>;
 	setIsCopied: Dispatch<SetStateAction<boolean | null>>;
 	topPos?: string;
 	isCopied: boolean | null;
@@ -51,7 +53,7 @@ export default function CopyBtn({
 }) {
 	const getId = useId();
 	const handleCopyClick = () => {
-		const code = preRef.current.innerText;
+		const code = preRef.current?.innerText;
 		if (code) {
 			navigator.clipboard.writeText(code);
 			setIsCopied(true);

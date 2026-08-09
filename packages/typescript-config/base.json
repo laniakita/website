@@ -5,17 +5,25 @@
     "jsx": "react-jsx",
     "module": "ESNext",
     "lib": ["ES2024", "DOM", "DOM.Iterable"],
-    /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
+    "composite": false,
+    "declaration": false,
+    "declarationMap": false,
+    "esModuleInterop": true,
+    "inlineSources": false,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
     "noEmit": true,
-    /* Linting */
+    "moduleDetection": "force",
+
     "skipLibCheck": true,
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+    "noUncheckedIndexedAccess": true,
   }
 }

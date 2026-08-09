@@ -1,8 +1,0 @@
-{
-  "extends": "./packages/typescript-config/base.json",
-  "files": [],
-  "references": [
-    { "path": "./packages/typescript-config" },
-    { "path": "./apps/frontend" }
-  ]
-}

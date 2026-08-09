@@ -20,6 +20,7 @@
       "dependsOn": ["^build"]
     },
     "cf-typegen": {},
+    "generate-routes": {},
     "storybook": {
       "cache": false,
       "persistent": true

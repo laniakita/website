@@ -13,7 +13,7 @@ export interface NavScrollViewStoreProviderProps {
 }
 
 export function NavScrollViewStoreProvider({ children }: NavScrollViewStoreProviderProps) {
-	const navScrollViewStoreRef = useRef<NavScrollViewStoreApi>(null!);
+	const navScrollViewStoreRef = useRef<NavScrollViewStoreApi | null>(null);
 
 	if (!navScrollViewStoreRef.current) {
 		navScrollViewStoreRef.current = createNavScrollViewStore();

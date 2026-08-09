@@ -143,7 +143,7 @@ export function WorkPreview({
 	};
 
 	return (
-		<div className='@container w-full'>
+		<div className='@container w-full min-w-full'>
 			<div ref={ref} className='group relative grid w-full @3xl:grid-cols-2 grid-cols-1 @3xl:gap-x-24 py-10'>
 				{/* 1. Title Block */}
 				<motion.div

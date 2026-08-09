@@ -51,7 +51,11 @@ export function PostHeader(post: PostHeaderProps) {
 				<div className='flex w-full max-w-4xl flex-wrap items-center gap-x-[0.5ch] font-mono text-xs md:max-w-2xl lg:text-sm'>
 					<p>
 						By{" "}
-						<Link to='/about' className='font-semibold capitalize'>
+						<Link
+							// biome-ignore lint/suspicious/noExplicitAny: Valid anchor
+							to={"/about" as any}
+							className='font-semibold capitalize'
+						>
 							{authorName}
 						</Link>
 					</p>

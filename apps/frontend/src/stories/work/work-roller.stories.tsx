@@ -6,7 +6,7 @@ const meta = {
 	title: "Work/WorkRoller",
 	component: WorkRoller,
 	parameters: {
-		layout: "centered",
+		layout: "fullscreen",
 		a11y: {
 			config: {
 				rules: [
@@ -25,7 +25,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
 	args: {
-		works: [WorkPreviewStory.args!, OngoingStory.args!],
+		works: [WorkPreviewStory.args, OngoingStory.args],
 	},
 	decorators: [
 		(Story) => (

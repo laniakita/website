@@ -1,26 +1,29 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { createMemoryHistory, createRootRoute, createRouter, RouterProvider } from "@tanstack/react-router";
 import { expect, within } from "storybook/test";
+import { CatTagType } from "./cat-tag-roller";
+import type { PostPreviewProps } from "./post-preview";
 import { PostRoller } from "./post-roller";
 
-const mockPosts = [
+const mockPosts: PostPreviewProps[] = [
 	{
 		url: "/blog/first-post",
 		headline: "First Post",
 		description: <p>This is the first post.</p>,
 		createdAt: "2026-08-01",
-		categories: [{ title: "News", url: "/category/news", type: "Category" as const }],
+		categories: [{ title: "News", url: "/category/news", type: CatTagType.Category }],
 	},
 	{
 		url: "/blog/second-post",
 		headline: "Second Post",
-		featuredImage: {
+		featured_image: {
 			src: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=2000",
+			localHash: "",
 			altText: "Computer code on a screen",
 		},
 		description: <p>This is the second post.</p>,
 		createdAt: "2026-08-02",
-		categories: [{ title: "Updates", url: "/category/updates", type: "Category" as const }],
+		categories: [{ title: "Updates", url: "/category/updates", type: CatTagType.Category }],
 	},
 	{
 		url: "/blog/third-post",

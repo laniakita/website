@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { createMemoryHistory, createRootRoute, createRouter, RouterProvider } from "@tanstack/react-router";
 import { expect, within } from "storybook/test";
+import { CatTagType } from "./cat-tag-roller";
 import { PostPreview } from "./post-preview";
 
 const meta = {
@@ -38,14 +39,15 @@ export const Default: Story = {
 			</p>
 		),
 		createdAt: "2026-08-01",
-		featuredImage: {
+		featured_image: {
 			src: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=2000",
+			localHash: "",
 			altText: "Computer code on a screen",
 		},
-		categories: [{ title: "Web Dev", url: "/category/web-dev", type: "Category" }],
+		categories: [{ title: "Web Dev", url: "/category/web-dev", type: CatTagType.Category }],
 		tags: [
-			{ title: "react", url: "/tag/react", type: "Tag" },
-			{ title: "storybook", url: "/tag/storybook", type: "Tag" },
+			{ title: "react", url: "/tag/react", type: CatTagType.Tag },
+			{ title: "storybook", url: "/tag/storybook", type: CatTagType.Tag },
 		],
 	},
 	play: async ({ canvasElement }) => {

@@ -1,4 +1,4 @@
-import type { SocialItem } from "@/components/navigation/header/data";
+import type { SocialItem } from "@/components/navigation/header";
 import { LinkButton } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
