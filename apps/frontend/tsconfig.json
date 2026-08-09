@@ -1,6 +1,6 @@
 {
   "extends": "@lani/typescript-config/base.json",
-  "include": ["**/*.ts", "**/*.tsx"],
+  "include": ["**/*.ts", "**/*.tsx", ".source/*.ts"],
   "exclude": [
     "node_modules"
   ],
@@ -13,7 +13,7 @@
       "./worker-configuration.d.ts",
       "node",
       "vite/client",
-      "bun"
-    ]
+      "bun",
+    ],
   }
 }

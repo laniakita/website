@@ -277,7 +277,6 @@ export const Mobile: Story = {
 		});
 
 		await step("Verify mobile TOC can be toggled by the 'On this page' button", async () => {
-			const _bodyCanvas = within(document.body);
 			const mobileTocBtn = canvas.getByRole("button", {
 				name: /On this page/i,
 				hidden: true,

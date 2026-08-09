@@ -61,7 +61,7 @@ export const TagLayout: Story = {
 	args: {
 		title: "performance",
 		isTag: true,
-		RenderablePosts: <MetaPostRoller posts={[mockPosts[0]]} />, // Only one post for the tag
+		RenderablePosts: <MetaPostRoller posts={mockPosts.slice(0, 1)} />, // Only one post for the tag
 		children: (
 			<div>
 				<p>Articles focusing on web performance optimization techniques.</p>

@@ -7,7 +7,7 @@ const meta = {
 	title: "Work/WorkPageHeader",
 	component: WorkPageHeader,
 	parameters: {
-		layout: "centered",
+		layout: "fullscreen",
 		a11y: {
 			config: {
 				rules: [

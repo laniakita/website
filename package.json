@@ -8,6 +8,7 @@
 		"packages/*"
 	],
 	"scripts": {
+		"build:prebuild": "turbo run build:prebuild",
 		"build": "turbo run build",
 		"preview": "turbo run preview",
 		"dev": "turbo run dev",
@@ -16,6 +17,7 @@
 		"typecheck": "turbo run typecheck",
 		"format": "biome format",
 		"cf-typegen": "turbo run cf-typegen",
+		"generate-routes": "turbo run generate-routes",
 		"storybook": "turbo run storybook",
 		"build-storybook": "turbo run build-storybook"
 	},

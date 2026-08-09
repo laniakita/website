@@ -4,8 +4,6 @@
 import { motion } from "motion/react";
 import { type Dispatch, type SetStateAction, Suspense, useCallback, useEffect, useId, useRef } from "react";
 
-const _TW_SPACING = 0.25;
-
 export const MED_SCREEN = 768; // px
 const MD_MAX_TOC_WIDTH = "md:max-w-76";
 const LG_MAX_TOC_WIDTH = "lg:max-w-92";

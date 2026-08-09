@@ -7,7 +7,7 @@ import LogoLightmode from "@/assets/laniakita-logo-transparent-lightmode.svg?rea
 import { HeaderLogo } from "./logo";
 
 // We must allow args to be passed in, so we wrap it inside a component that takes args
-const LogoWithRouter = (args: any) => {
+const LogoWithRouter = (args: React.ComponentProps<typeof HeaderLogo>) => {
 	const router = React.useMemo(() => {
 		const rootRoute = createRootRoute({
 			component: () => <HeaderLogo {...args} />,

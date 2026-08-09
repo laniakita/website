@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { createMemoryHistory, createRootRoute, createRouter, RouterProvider } from "@tanstack/react-router";
 import { expect, within } from "storybook/test";
+import { CatTagType } from "../cat-tag-roller";
 import { PostHeader } from "./post-header";
 
 const meta = {
@@ -29,13 +30,13 @@ export const Default: Story = {
 		subheadline: "A comprehensive guide to TanStack and Shadcn",
 		author: "Lani",
 		createdAt: "2026-08-01",
-		categories: [{ title: "Tech", type: "Category", url: "/category/tech" }],
-		tags: [{ title: "tanstack", type: "Tag", url: "/tag/tanstack" }],
+		categories: [{ title: "Tech", type: CatTagType.Category, url: "/category/tech" }],
+		tags: [{ title: "tanstack", type: CatTagType.Tag, url: "/tag/tanstack" }],
 		featured_image: {
 			src: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=1000",
+			localHash: "",
 			altText: "Computer code on a screen",
 			caption: "A beautiful stock photo of code",
-			hasImage: true,
 			//width: 1000,
 			//height: 600,
 		},

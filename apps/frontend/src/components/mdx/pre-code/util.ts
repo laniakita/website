@@ -16,17 +16,11 @@ export const codeCollapser = (props: React.DetailedHTMLProps<React.HTMLAttribute
 	if ((props.children as ReactElement).type === "code") {
 		const codeBlock = props.children as PreCodeBlock;
 		if (typeof codeBlock.props.children !== "string" && codeBlock.props.children?.[0]?.type === "div") {
+			const lastChild = codeBlock.props.children[codeBlock.props.children.length - 1];
 			if (
-				"data-line-number" in
-					(codeBlock.props.children[codeBlock.props.children.length - 1].props as NumberedCodeBlockProps) &&
-				parseInt(
-					(codeBlock.props.children[codeBlock.props.children.length - 1].props as NumberedCodeBlockProps)[
-						"data-line-number"
-					],
-					10,
-				) -
-					20 >=
-					40
+				lastChild &&
+				"data-line-number" in (lastChild.props as NumberedCodeBlockProps) &&
+				parseInt((lastChild.props as NumberedCodeBlockProps)["data-line-number"], 10) - 20 >= 40
 			) {
 				return {
 					...codeBlock,

@@ -5,7 +5,7 @@ const meta = {
 	title: "Work/WorkPreview",
 	component: WorkPreview,
 	parameters: {
-		layout: "centered",
+		layout: "fullscreen",
 		a11y: {
 			config: {
 				rules: [
@@ -44,7 +44,7 @@ export const Default: Story = {
 	},
 	decorators: [
 		(Story) => (
-			<div className='min-h-full w-full max-w-7xl p-8'>
+			<div className='w-full max-w-7xl p-8'>
 				<Story />
 			</div>
 		),

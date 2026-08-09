@@ -7,12 +7,7 @@ export default function ExpandableBlock(props: DetailedHTMLProps<HTMLAttributes<
 	const [isJavaScriptEnabled, setIsJavaScriptEnabled] = useState(false);
 
 	useEffect(() => {
-		try {
-			eval(";"); // This line will throw an error if JavaScript is disabled
-			setIsJavaScriptEnabled(true);
-		} catch {
-			// No need to set state here, it's already false by default
-		}
+		setIsJavaScriptEnabled(true);
 	}, []);
 
 	return isJavaScriptEnabled ? <ExpandableBlockComponent {...props} /> : <pre {...props} />;
@@ -23,9 +18,9 @@ function ExpandableBlockComponent(props: DetailedHTMLProps<HTMLAttributes<HTMLPr
 	const [isCopied, setIsCopied] = useState<boolean | null>(false);
 	const [isExpanded, setIsExpanded] = useState(initExpanded);
 	const [codeHeight, setCodeHeight] = useState(0);
-	const codeBlockRef = useRef<HTMLElement>(null!);
-	const preRef = useRef<HTMLPreElement>(null!);
-	const btnRef = useRef<HTMLButtonElement>(null!);
+	const codeBlockRef = useRef<HTMLElement | null>(null);
+	const preRef = useRef<HTMLPreElement | null>(null);
+	const btnRef = useRef<HTMLButtonElement | null>(null);
 	const blockSerial = useId();
 	const blockId = `expandable-codesnippet${blockSerial}container`;
 	const preId = `expandable-codesnippet${blockSerial}`;
@@ -33,10 +28,8 @@ function ExpandableBlockComponent(props: DetailedHTMLProps<HTMLAttributes<HTMLPr
 	const [topPos, setTopPos] = useState("top-2");
 
 	useEffect(() => {
-		//console.log(preRef.current);
-		//console.log(preRef.current.getClientRects());
-		if (preRef?.current !== undefined) {
-			if ((preRef?.current?.getClientRects()?.[0]?.height ?? 0) < 70) {
+		if (preRef?.current) {
+			if ((preRef.current.getClientRects()?.[0]?.height ?? 0) < 70) {
 				setTopPos("top-2");
 			} else {
 				setTopPos("top-4");
@@ -47,10 +40,10 @@ function ExpandableBlockComponent(props: DetailedHTMLProps<HTMLAttributes<HTMLPr
 	useEffect(() => {
 		// init codeHeight
 		if (!initExpanded) {
-			if (codeHeight <= 0 && codeBlockRef.current.offsetHeight > codeHeight) {
+			if (codeHeight <= 0 && codeBlockRef.current && codeBlockRef.current.offsetHeight > codeHeight) {
 				setCodeHeight(codeBlockRef.current.offsetHeight);
 			}
-			if (codeHeight > 0) codeBlockRef.current.style.height = `${codeHeight}px`;
+			if (codeHeight > 0 && codeBlockRef.current) codeBlockRef.current.style.height = `${codeHeight}px`;
 		}
 	}, [codeHeight, initExpanded]);
 
@@ -59,9 +52,8 @@ function ExpandableBlockComponent(props: DetailedHTMLProps<HTMLAttributes<HTMLPr
 		// get expanded height;
 		// timeout necessary, otherwise it uses the collapsed height
 		setTimeout(() => {
-			//console.log('await getting height');
-			setCodeHeight(preRef.current.offsetHeight);
-			btnRef.current.style.opacity = "100%";
+			if (preRef.current) setCodeHeight(preRef.current.offsetHeight);
+			if (btnRef.current) btnRef.current.style.opacity = "100%";
 		}, 50);
 	};
 
@@ -69,7 +61,7 @@ function ExpandableBlockComponent(props: DetailedHTMLProps<HTMLAttributes<HTMLPr
 		<figure
 			ref={codeBlockRef}
 			id={blockId}
-			className={`relative my-6 overflow-y-hidden motion-safe:[transition:_height_0.8s_ease]`}
+			className={"relative my-6 overflow-y-hidden motion-safe:[transition:height_0.8s_ease]"}
 		>
 			{initExpanded ? (
 				<CopyBtn
@@ -78,11 +70,11 @@ function ExpandableBlockComponent(props: DetailedHTMLProps<HTMLAttributes<HTMLPr
 					setIsCopied={setIsCopied}
 					topPos={topPos}
 					isCopied={isCopied}
-					special={`pointer-events-none`}
+					special={"pointer-events-none"}
 					isExpanded={isExpanded}
 				/>
 			) : (
-				<div id={overlayId} className={`pointer-events-none absolute inset-0`}>
+				<div id={overlayId} className={"pointer-events-none absolute inset-0"}>
 					<CopyBtn
 						preRef={preRef}
 						btnRef={btnRef}
@@ -94,13 +86,14 @@ function ExpandableBlockComponent(props: DetailedHTMLProps<HTMLAttributes<HTMLPr
 					/>
 
 					<div
-						className={`absolute ${isExpanded ? "hidden" : ""} inset-x-0 bottom-0 flex size-full max-h-[80%] items-center justify-center overflow-x-auto rounded-b-lg border border-ctp-surface0 border-t-0 bg-ctp-mantle/20 bg-gradient-to-b from-transparent to-ctp-base text-center text-ctp-overlay0 dark:to-ctp-midnight`}
+						className={`absolute ${isExpanded ? "hidden" : ""} inset-x-0 bottom-0 flex size-full max-h-[80%] items-center justify-center overflow-x-auto rounded-b-lg border border-ctp-surface0 border-t-0 bg-ctp-mantle/20 bg-linear-to-b from-transparent to-ctp-base text-center text-ctp-overlay0 dark:to-ctp-midnight`}
 					>
 						<button
+							type='button'
 							onClick={() => {
 								handleExpand();
 							}}
-							className='pointer-events-auto flex w-fit flex-row items-center rounded-lg border border-ctp-mauve bg-ctp-mauve/10 p-4 font-mono text-ctp-mauve text-sm shadow-lg backdrop-blur-sm hover:border-ctp-pink hover:bg-ctp-pink/10 hover:text-ctp-pink hover:shadow-xl hover:backdrop-blur motion-safe:[transition:_color_0.3s,_border_0.3s,_box-shadow_0.3s,_backdrop-filter_0.3s,_background_0.3s]'
+							className='pointer-events-auto flex w-fit flex-row items-center rounded-lg border border-ctp-mauve bg-ctp-mauve/10 p-4 font-mono text-ctp-mauve text-sm shadow-lg backdrop-blur-sm hover:border-ctp-pink hover:bg-ctp-pink/10 hover:text-ctp-pink hover:shadow-xl hover:backdrop-blur motion-safe:[transition:color_0.3s,border_0.3s,box-shadow_0.3s,backdrop-filter_0.3s,background_0.3s]'
 						>
 							{`</> show code`}
 						</button>

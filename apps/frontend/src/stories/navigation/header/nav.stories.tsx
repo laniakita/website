@@ -28,6 +28,9 @@ export const Default: Story = {
 		const canvas = within(canvasElement);
 		const links = await canvas.findAllByRole("link");
 		await expect(links.length).toBeGreaterThan(0);
-		await expect(links[0]).toHaveTextContent(MAIN_PAGES[0].label);
+		const firstLink = links[0];
+		if (firstLink && MAIN_PAGES[0]) {
+			await expect(firstLink).toHaveTextContent(MAIN_PAGES[0].label);
+		}
 	},
 };

@@ -8,7 +8,7 @@
 	"scripts": {
 		"dev": "vite dev --port 3000",
 		"generate-routes": "tsr generate",
-		"prebuild": "bun run src/scripts/prebuild.ts",
+		"build:prebuild": "bun run src/scripts/prebuild.ts",
 		"build": "vite build",
 		"preview": "vite preview",
 		"format": "biome format",

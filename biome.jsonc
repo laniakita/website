@@ -1,5 +1,6 @@
 {
 	"$schema": "https://biomejs.dev/schemas/2.5.7/schema.json",
+	"root": true,
 	"vcs": {
 		"enabled": false,
 		"clientKind": "git",
@@ -8,9 +9,17 @@
 	"files": {
 		"ignoreUnknown": false,
 		"includes": [
+			/* Default */
 			"**/.vscode/**/*",
 			"!archive",
-
+			"!bun.lock",
+			/* @lani/frontend */
+			"**/src/**/*",
+			"**/vite.config.ts",
+			"!**/src/routeTree.gen.ts",
+			"!**/src/styles.css",
+			"!**/content",
+			"!**/assets/**/*"
 		]
 	},
 	"formatter": {
@@ -34,7 +43,10 @@
 				"noSvgWithoutTitle": "info"
 			},
 			"nursery": {
-				"useSortedClasses": "error"
+				"useSortedClasses": {
+					"level": "error",
+					"fix": "safe"
+				}
 			}
 		}
 	},

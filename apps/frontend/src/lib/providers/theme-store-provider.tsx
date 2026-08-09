@@ -13,7 +13,7 @@ export interface ThemeStoreProviderProps {
 }
 
 export function ThemeStoreProvider({ children }: ThemeStoreProviderProps) {
-	const storeRef = useRef<ThemeStoreApi>(null!);
+	const storeRef = useRef<ThemeStoreApi | null>(null);
 
 	if (!storeRef.current) {
 		storeRef.current = createThemeStore();

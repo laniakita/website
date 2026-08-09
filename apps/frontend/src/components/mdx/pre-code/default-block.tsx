@@ -4,15 +4,15 @@ import CopyBtn, { handlePreScrollDefault } from "./copy-button";
 
 export default function DefaultBlock(props: DetailedHTMLProps<HTMLAttributes<HTMLPreElement>, HTMLPreElement>) {
 	const [isCopied, setIsCopied] = useState<boolean | null>(false);
-	const preRef = useRef<HTMLPreElement>(null!);
-	const btnRef = useRef<HTMLButtonElement>(null!);
+	const preRef = useRef<HTMLPreElement | null>(null);
+	const btnRef = useRef<HTMLButtonElement | null>(null);
 	const blockSerial = useId();
 	const preId = `codesnippet${blockSerial}`;
 	const [topPos, setTopPos] = useState("top-2");
 
 	useEffect(() => {
-		if (preRef?.current !== undefined) {
-			if ((preRef?.current?.getClientRects()?.[0]?.height ?? 0) < 70) {
+		if (preRef?.current) {
+			if ((preRef.current.getClientRects()?.[0]?.height ?? 0) < 70) {
 				setTopPos("top-2");
 			} else {
 				setTopPos("top-4");

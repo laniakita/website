@@ -13,7 +13,7 @@ export interface ToCViewStoreProviderProps {
 }
 
 export function ToCViewStoreProvider({ children }: ToCViewStoreProviderProps) {
-	const tocViewStoreRef = useRef<ToCViewStoreApi>(null!);
+	const tocViewStoreRef = useRef<ToCViewStoreApi | null>(null);
 
 	if (!tocViewStoreRef.current) {
 		tocViewStoreRef.current = createToCViewStore();

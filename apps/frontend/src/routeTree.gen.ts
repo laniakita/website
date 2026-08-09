@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as coreRouteRouteImport } from './routes/(core)/route'
+import { Route as AtomDotxmlRouteImport } from './routes/atom[.]xml'
 import { Route as coreIndexRouteImport } from './routes/(core)/index'
 import { Route as coreBlogMetaRouteImport } from './routes/(core)/_blog-meta'
 import { Route as coreInfoRouteImport } from './routes/(core)/_info'
@@ -22,6 +23,11 @@ import { Route as coreBlogMetaTagsSlugRouteImport } from './routes/(core)/_blog-
 
 const coreRouteRoute = coreRouteRouteImport.update({
   id: '/(core)',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AtomDotxmlRoute = AtomDotxmlRouteImport.update({
+  id: '/atom.xml',
+  path: '/atom.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const coreIndexRoute = coreIndexRouteImport.update({
@@ -70,6 +76,7 @@ const coreBlogMetaTagsSlugRoute = coreBlogMetaTagsSlugRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
+  '/atom.xml': typeof AtomDotxmlRoute
   '/work': typeof coreWorkRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/opengraph/$': typeof OpengraphSplatRoute
@@ -79,6 +86,7 @@ export interface FileRoutesByFullPath {
   '/tags/$slug': typeof coreBlogMetaTagsSlugRoute
 }
 export interface FileRoutesByTo {
+  '/atom.xml': typeof AtomDotxmlRoute
   '/work': typeof coreWorkRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/opengraph/$': typeof OpengraphSplatRoute
@@ -90,6 +98,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/(core)': typeof coreRouteRouteWithChildren
+  '/atom.xml': typeof AtomDotxmlRoute
   '/(core)/_blog-meta': typeof coreBlogMetaRouteWithChildren
   '/(core)/_info': typeof coreInfoRouteWithChildren
   '/(core)/work': typeof coreWorkRoute
@@ -103,6 +112,7 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/atom.xml'
     | '/work'
     | '/blog/$slug'
     | '/opengraph/$'
@@ -112,6 +122,7 @@ export interface FileRouteTypes {
     | '/tags/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/atom.xml'
     | '/work'
     | '/blog/$slug'
     | '/opengraph/$'
@@ -122,6 +133,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/(core)'
+    | '/atom.xml'
     | '/(core)/_blog-meta'
     | '/(core)/_info'
     | '/(core)/work'
@@ -135,6 +147,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   coreRouteRoute: typeof coreRouteRouteWithChildren
+  AtomDotxmlRoute: typeof AtomDotxmlRoute
   BlogSlugRoute: typeof BlogSlugRoute
   OpengraphSplatRoute: typeof OpengraphSplatRoute
 }
@@ -146,6 +159,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: ''
       preLoaderRoute: typeof coreRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/atom.xml': {
+      id: '/atom.xml'
+      path: '/atom.xml'
+      fullPath: '/atom.xml'
+      preLoaderRoute: typeof AtomDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/(core)/': {
@@ -260,6 +280,7 @@ const coreRouteRouteWithChildren = coreRouteRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   coreRouteRoute: coreRouteRouteWithChildren,
+  AtomDotxmlRoute: AtomDotxmlRoute,
   BlogSlugRoute: BlogSlugRoute,
   OpengraphSplatRoute: OpengraphSplatRoute,
 }
