@@ -4,12 +4,21 @@
   "workspaces": {
     "": {
       "name": "web",
+      "devDependencies": {
+        "@biomejs/biome": "2.5.7",
+        "turbo": "^2.10.9",
+        "typescript": "^7.0.2",
+      },
+    },
+    "apps/frontend": {
+      "name": "@lani/frontend",
       "dependencies": {
         "@atproto/api": "^0.20.37",
         "@fontsource-variable/inter-tight": "^5.3.0",
         "@fontsource-variable/lora": "^5.3.0",
         "@fontsource-variable/playfair-display": "^5.3.0",
         "@giscus/react": "^3.1.0",
+        "@lani/typescript-config": "workspace:*",
         "@phosphor-icons/react": "^2.1.10",
         "@tailwindcss/vite": "^4.3.3",
         "@tanstack/react-devtools": "^0.10.9",
@@ -25,6 +34,9 @@
         "fumadocs-mdx": "^15.2.2",
         "fumadocs-ui": "^16.14.0",
         "gray-matter": "^4.0.3",
+        "highlight.js": "^11.9.0",
+        "lowlight": "^3.3.0",
+        "lucide-react": "^0.475.0",
         "markdown-to-jsx": "^9.10.2",
         "motion": "^13.0.0",
         "react": "^19.2.8",
@@ -35,6 +47,7 @@
         "tailwindcss": "^4.3.3",
         "takumi-js": "^2.5.9",
         "tw-animate-css": "^1.4.0",
+        "zod": "^3.24.2",
         "zustand": "^5.0.14",
       },
       "devDependencies": {
@@ -50,10 +63,12 @@
         "@iconify-json/ph": "^1.2.2",
         "@iconify-json/simple-icons": "^1.2.93",
         "@iconify/tailwind4": "^1.2.3",
+        "@lani/typescript-config": "workspace:*",
         "@storybook/addon-a11y": "^10.5.6",
         "@storybook/addon-docs": "^10.5.6",
         "@storybook/addon-mcp": "^0.7.0",
         "@storybook/addon-vitest": "^10.5.6",
+        "@storybook/react": "^10.5.6",
         "@storybook/tanstack-react": "^10.5.6",
         "@storybook/test-runner": "^0.24.4",
         "@tailwindcss/typography": "^0.5.20",
@@ -66,6 +81,7 @@
         "@types/node": "^26.1.2",
         "@types/react": "^19.2.18",
         "@types/react-dom": "^19.2.4",
+        "@types/unist": "^3.0.3",
         "@unpic/placeholder": "^0.1.2",
         "@vitejs/plugin-react": "^6.0.5",
         "@vitejs/plugin-rsc": "^0.5.32",
@@ -83,7 +99,6 @@
         "remark-stringify": "^11.0.0",
         "sharp": "^0.35.3",
         "storybook": "^10.5.6",
-        "turbo": "^2.10.9",
         "typescript": "^7.0.2",
         "unified": "^11.0.5",
         "unist-util-visit": "^5.1.0",
@@ -92,6 +107,10 @@
         "vitest": "^4.1.10",
         "wrangler": "^4.119.0",
       },
+    },
+    "packages/typescript-config": {
+      "name": "@lani/typescript-config",
+      "version": "0.0.0",
     },
   },
   "patchedDependencies": {
@@ -509,6 +528,10 @@
     "@jridgewell/sourcemap-codec": ["@jridgewell/sourcemap-codec@1.5.5", "", {}, "sha512-cYQ9310grqxueWbl+WuIUIaiUaDcj7WOq5fVhEljNVgRfOUhY9fy2zTvfoqWsnebh8Sl70VScFbICvJnLKB0Og=="],
 
     "@jridgewell/trace-mapping": ["@jridgewell/trace-mapping@0.3.31", "", { "dependencies": { "@jridgewell/resolve-uri": "^3.1.0", "@jridgewell/sourcemap-codec": "^1.4.14" } }, "sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw=="],
+
+    "@lani/frontend": ["@lani/frontend@workspace:apps/frontend"],
+
+    "@lani/typescript-config": ["@lani/typescript-config@workspace:packages/typescript-config"],
 
     "@lit-labs/ssr-dom-shim": ["@lit-labs/ssr-dom-shim@1.6.0", "", {}, "sha512-VHb0ALPMTlgKjM6yIxxoQNnpKyUKLD04VzeQdsiXkMqkvYlAHxq9glGLmgbb889/1GsohSOAjvQYoiBppXFqrQ=="],
 
@@ -2016,7 +2039,7 @@
 
     "lru-cache": ["lru-cache@5.1.1", "", { "dependencies": { "yallist": "^3.0.2" } }, "sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w=="],
 
-    "lucide-react": ["lucide-react@1.28.0", "", { "peerDependencies": { "react": "^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0" } }, "sha512-fARAFJULsGuDDydjp6+6blekG/sBIM29TerzLjc9bQUKAcEfrSc4ZQKb25KRz4OMKd87cZTb5dgq0w/T6KufVg=="],
+    "lucide-react": ["lucide-react@0.475.0", "", { "peerDependencies": { "react": "^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0" } }, "sha512-NJzvVu1HwFVeZ+Gwq2q00KygM1aBhy/ZrhY9FsAgJtpB+E4R7uxRk9M2iKvHa6/vNxZydIB59htha4c2vvwvVg=="],
 
     "lz-string": ["lz-string@1.5.0", "", { "bin": { "lz-string": "bin/bin.js" } }, "sha512-h5bgJWpxJNswbU7qCrV0tIKQCaS3blPDrqKWx+QxzuzL1zGUzij9XCWLrSLsJPu5t+eWA/ycetzYAO5IOMcWAQ=="],
 
@@ -2985,6 +3008,8 @@
     "fumadocs-mdx/magic-string": ["magic-string@1.1.0", "", { "dependencies": { "@jridgewell/sourcemap-codec": "^1.5.5" } }, "sha512-kS3VHe0nEPST2saQV4Rbkchcd3UBRkVTQHo1D3h/ZTwFDhai/mfKkmtPAtD129EOI7K3HlHIsFOt0WrI2/oU9g=="],
 
     "fumadocs-mdx/zod": ["zod@4.4.3", "", {}, "sha512-ytENFjIJFl2UwYglde2jchW2Hwm4GJFLDiSXWdTrJQBIN9Fcyp7n4DhxJEiWNAJMV1/BqWfW/kkg71UDcHJyTQ=="],
+
+    "fumadocs-ui/lucide-react": ["lucide-react@1.28.0", "", { "peerDependencies": { "react": "^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0" } }, "sha512-fARAFJULsGuDDydjp6+6blekG/sBIM29TerzLjc9bQUKAcEfrSc4ZQKb25KRz4OMKd87cZTb5dgq0w/T6KufVg=="],
 
     "fumadocs-ui/motion": ["motion@12.43.0", "", { "dependencies": { "framer-motion": "^12.43.0", "tslib": "^2.4.0" }, "peerDependencies": { "@emotion/is-prop-valid": "*", "react": "^18.0.0 || ^19.0.0", "react-dom": "^18.0.0 || ^19.0.0" }, "optionalPeers": ["@emotion/is-prop-valid", "react", "react-dom"] }, "sha512-BQgQbSa9Hn3/mtbib0MK53y6JSANa+YKUKlaYnWzAVDH424RYQ5LVpV3pNiWH00BA2z4ojsSdMzqT7g2FQwjuQ=="],
 

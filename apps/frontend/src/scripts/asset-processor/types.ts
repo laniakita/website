@@ -29,13 +29,13 @@ export interface ProcessAssetOptions {
 	/** Whether to generate a Low Quality Image Placeholder (LQIP) for images. */
 	generatePlaiceholder?: boolean;
 	/** Cloudflare R2 endpoint URL. */
-	r2Endpoint: string;
+	endpoint: string;
 	/** Target R2 bucket name. */
-	r2Bucket: string;
+	bucket: string;
 	/** R2 access key ID. */
-	r2AccessKey: string;
+	accessKey: string;
 	/** R2 secret access key. */
-	r2SecretKey: string;
+	secretKey: string;
 	/** Public URL prefix where the R2 bucket is exposed. */
-	r2PublicUrl: string;
+	publicUrl: string;
 }

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://v2-10-9.turborepo.dev/schema.json",
+  "globalEnv": ["NODE_ENV"],
+  "ui": "stream",
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"]
+    },
+    "preview": {
+      "dependsOn": ["^build"],
+      "persistent": true
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "lint": {},
+    "check": {},
+    "typecheck": {
+      "dependsOn": ["^build"]
+    },
+    "cf-typegen": {},
+    "storybook": {
+      "cache": false,
+      "persistent": true
+    },
+    "build-storybook": {},
+    "deploy": {
+      "dependsOn": ["^build"]
+    }
+  }
+}

@@ -1,37 +1,8 @@
 {
-  "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": [
-    "node_modules",
-    "archive"
-  ],
-  "compilerOptions": {
-    "target": "ES2024",
-    "jsx": "react-jsx",
-    "module": "ESNext",
-    "paths": {
-      "$/*": ["./*"],
-      "@/*": ["./src/*"]
-    },
-    "lib": ["ES2024", "DOM", "DOM.Iterable"],
-    "types": [
-        "./worker-configuration.d.ts",
-        "node",
-        "vite/client",
-        "bun"
-    ],
-
-    /* Bundler mode */
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "verbatimModuleSyntax": true,
-    "noEmit": true,
-
-    /* Linting */
-    "skipLibCheck": true,
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
-  }
+  "extends": "./packages/typescript-config/base.json",
+  "files": [],
+  "references": [
+    { "path": "./packages/typescript-config" },
+    { "path": "./apps/frontend" }
+  ]
 }

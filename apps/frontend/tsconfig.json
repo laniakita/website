@@ -1,0 +1,19 @@
+{
+  "extends": "@lani/typescript-config/base.json",
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": [
+    "node_modules"
+  ],
+  "compilerOptions": {
+    "paths": {
+      "$/*": ["./*"],
+      "@/*": ["./src/*"]
+    },
+    "types": [
+      "./worker-configuration.d.ts",
+      "node",
+      "vite/client",
+      "bun"
+    ]
+  }
+}

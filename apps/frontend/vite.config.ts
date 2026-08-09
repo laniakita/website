@@ -50,15 +50,9 @@ const config = defineConfig({
 				// source: https://github.com/TanStack/router/issues/5795#issuecomment-3761285233
 				exclude: [
 					"@tanstack/start-server-core",
-					//"@tanstack/start-client-core",
-					//"@tanstack/start-storage-context",
 					"@tanstack/react-start",
 					"@tanstack/react-start/client",
 					"@tanstack/react-start/server",
-					//"@tanstack/router-core",
-					//"@tanstack/history",
-					//"seroval",
-					//"seroval-plugins",
 					"lucide-react",
 				],
 			},
