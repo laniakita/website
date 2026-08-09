@@ -33,15 +33,15 @@ describe("prebuild script", () => {
 		mockRm.mockResolvedValue(undefined);
 
 		// Set up environment variables
-		process.env.R2_ENDPOINT_URL = "https://mock.endpoint";
-		process.env.R2_PUBLIC_URL = "https://assets.mock";
-		process.env.R2_BUCKET_NAME = "mock-bucket";
+		process.env.BUCKET_ENDPOINT = "https://mock.endpoint";
+		process.env.BUCKET_PUBLIC_URL = "https://assets.mock";
+		process.env.BUCKET_NAME = "mock-bucket";
 	});
 
 	afterEach(() => {
-		delete process.env.R2_ENDPOINT_URL;
-		delete process.env.R2_PUBLIC_URL;
-		delete process.env.R2_BUCKET_NAME;
+		delete process.env.BUCKET_ENDPOINT;
+		delete process.env.BUCKET_PUBLIC_URL;
+		delete process.env.BUCKET_NAME;
 	});
 
 	it("should process frontmatter and upload image when hash changes", async () => {

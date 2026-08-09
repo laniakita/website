@@ -30,22 +30,22 @@ async function uploadToR2(
 	mimeType: string,
 	options: ProcessAssetOptions,
 ): Promise<boolean> {
-	if (!options.r2Endpoint) {
-		console.warn("[warn] r2Endpoint not set. Skipping upload for:", fileName);
+	if (!options.endpoint) {
+		console.warn("[warn] endpoint not set. Skipping upload for:", fileName);
 		return false;
 	}
 
 	const client = new S3Client({
 		region: "auto",
-		endpoint: options.r2Endpoint,
+		endpoint: options.endpoint,
 		credentials: {
-			accessKeyId: options.r2AccessKey,
-			secretAccessKey: options.r2SecretKey,
+			accessKeyId: options.accessKey,
+			secretAccessKey: options.secretKey,
 		},
 	});
 
 	const command = new PutObjectCommand({
-		Bucket: options.r2Bucket,
+		Bucket: options.bucket,
 		Key: fileName,
 		Body: buffer,
 		ContentType: mimeType,
@@ -67,19 +67,19 @@ async function uploadToR2(
  * @param options - R2 connection options.
  */
 async function deleteFromR2(fileName: string, options: ProcessAssetOptions) {
-	if (!options.r2Endpoint) return;
+	if (!options.endpoint) return;
 
 	const client = new S3Client({
 		region: "auto",
-		endpoint: options.r2Endpoint,
+		endpoint: options.endpoint,
 		credentials: {
-			accessKeyId: options.r2AccessKey,
-			secretAccessKey: options.r2SecretKey,
+			accessKeyId: options.accessKey,
+			secretAccessKey: options.secretKey,
 		},
 	});
 
 	const command = new DeleteObjectCommand({
-		Bucket: options.r2Bucket,
+		Bucket: options.bucket,
 		Key: fileName,
 	});
 
@@ -127,9 +127,9 @@ export async function batchUploadAssets(
 			console.log(`[info] Uploading new/changed asset: ${manifestKey}...`);
 
 			if (cachedImage?.localHash && cachedImage?.src) {
-				const publicUrl = options.r2PublicUrl;
+				const publicUrl = options.publicUrl;
 				let oldFileName = cachedImage.src;
-				const bucketName = options.r2Bucket;
+				const bucketName = options.bucket;
 				if (publicUrl && oldFileName.startsWith(`${publicUrl}/`)) {
 					oldFileName = oldFileName.substring(publicUrl.length + 1);
 					if (oldFileName.startsWith(`${bucketName}/`)) {
@@ -181,7 +181,7 @@ export async function batchUploadAssets(
 			const success = await uploadToR2(fileName, imageBuffer, mimeType, options);
 
 			if (success) {
-				const publicUrl = options.r2PublicUrl;
+				const publicUrl = options.publicUrl;
 				const entry: AssetManifestEntry = {
 					localHash,
 					src: `${publicUrl}/${fileName}`,

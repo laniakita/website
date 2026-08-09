@@ -81,11 +81,11 @@ export async function processFrontmatter() {
 	const assetsDir = path.join(contentDir, "assets");
 	const uploadOptions = {
 		generatePlaiceholder: true,
-		r2Endpoint: process.env.R2_ENDPOINT_URL || "",
-		r2Bucket: process.env.R2_BUCKET_NAME || "",
-		r2AccessKey: process.env.R2_ACCESS_KEY_ID || "",
-		r2SecretKey: process.env.R2_SECRET_ACCESS_KEY || "",
-		r2PublicUrl: process.env.R2_PUBLIC_URL || "",
+		endpoint: process.env.BUCKET_ENDPOINT || "",
+		bucket: process.env.BUCKET_NAME || "",
+		accessKey: process.env.BUCKET_ACCESS_KEY_ID || "",
+		secretKey: process.env.BUCKET_SECRET_ACCESS_KEY || "",
+		publicUrl: process.env.BUCKET_PUBLIC_URL || "",
 	};
 	assetManifest = await batchUploadAssets(assetsDir, assetManifest, uploadOptions);
 
