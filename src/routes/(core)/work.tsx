@@ -5,7 +5,7 @@ import { useMDXComponents } from "@/components/mdx";
 import { pagesSource } from "@/lib/collections/pages";
 import { worksSource } from "@/lib/collections/works";
 import { getSeoMeta } from "@/lib/utils/seo";
-import { WorkRoller } from "@/stories/work/work-roller";
+import { WorkPage } from "@/stories/work/work-page";
 
 const getWorkPageData = createServerFn({ method: "GET" }).handler(async () => {
 	const components = useMDXComponents();
@@ -17,12 +17,23 @@ const getWorkPageData = createServerFn({ method: "GET" }).handler(async () => {
 	const PageMDX = page.data.body;
 	const RenderablePageMDX = await renderServerComponent(<PageMDX components={components} />);
 
-	const works = worksSource.getPages().sort((a, b) => (b.data.lastModified ?? b.data.createdAt).valueOf() - (a.data.lastModified ?? a.data.createdAt).valueOf());
+	const works = worksSource
+		.getPages()
+		.sort(
+			(a, b) =>
+				(b.data.lastModified ?? b.data.createdAt).valueOf() - (a.data.lastModified ?? a.data.createdAt).valueOf(),
+		);
 
 	// Map through works and render their MDX
 	const renderableWorks = await Promise.all(
 		works.map(async (work) => {
 			const WorkMDX = work.data.body;
+
+			const RenderableMDX = await renderServerComponent(
+				<div className='prose-protocol-omega text-pretty prose-p:first:mt-0 prose-p:last:mb-0'>
+					<WorkMDX components={components} />
+				</div>,
+			);
 
 			return {
 				id: work.data.id,
@@ -35,24 +46,19 @@ const getWorkPageData = createServerFn({ method: "GET" }).handler(async () => {
 				tech: work.data.tech,
 				links: work.data.links,
 				featured_image: work.data.featured_image,
-				RenderableMDX: (
-					<div className='prose-protocol-omega text-pretty prose-p:first:mt-0 prose-p:last:mb-0'>
-						<WorkMDX components={components} />
-					</div>
-				),
+				RenderableMDX,
 			};
 		}),
 	);
-
-	const RenderableWorkRoller = await renderServerComponent(<WorkRoller works={renderableWorks} />);
 
 	return {
 		pageData: {
 			title: page.data.title,
 			description: page.data.description,
+			totalWorks: works.length,
 		},
 		RenderablePageMDX,
-		RenderableWorkRoller,
+		renderableWorks,
 	};
 });
 
@@ -70,22 +76,15 @@ export const Route = createFileRoute("/(core)/work")({
 		}),
 	}),
 	component: () => {
-		const { pageData, RenderablePageMDX, RenderableWorkRoller } = Route.useLoaderData();
+		const { pageData, RenderablePageMDX, renderableWorks } = Route.useLoaderData();
 
 		return (
-			<main className='common-padding m-auto w-full max-w-7xl pt-10'>
-				<div className='flex w-full flex-col items-center justify-center gap-4 md:gap-6'>
-					<div className='motion-safe:simple-color-trans flex w-full flex-col gap-4 rounded-md border border-ctp-surface0 bg-ctp-base p-8 shadow-sm dark:border-ctp-base dark:bg-ctp-midnight'>
-						<div>
-							<h1 className='font-black text-3xl md:text-4xl'>{pageData.title}</h1>
-						</div>
-						<div className='h-px w-full rounded bg-ctp-surface0 dark:bg-ctp-base' />
-						<div className='prose-protocol-omega prose-p:my-0 w-full max-w-xl text-lg'>{RenderablePageMDX}</div>
-					</div>
-
-					{RenderableWorkRoller}
-				</div>
-			</main>
+			<WorkPage
+				title={pageData.title}
+				totalWorks={pageData.totalWorks}
+				description={RenderablePageMDX}
+				works={renderableWorks}
+			/>
 		);
 	},
 });

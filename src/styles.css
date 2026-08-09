@@ -25,6 +25,7 @@
   --ctp-sky: oklch(0.682 0.145 235.382);
   --ctp-sapphire: oklch(0.648 0.107 212.889);
   --ctp-blue: oklch(0.559 0.226 262.087);
+  --ctp-blue-diff: oklch(0.702343 0.149373 73.2951);
   --ctp-lavender: oklch(0.664 0.175 273.135);
   --ctp-text: oklch(0.435 0.043 279.325);
   --ctp-text-diff: oklch(0.716 0.030 105.0);
@@ -50,7 +51,7 @@
   --primary: oklch(from var(--ctp-blue) calc(l - 0.05) c h);
   --primary-light: var(--ctp-sky);
   --primary-foreground: var(--ctp-base);
-  --primary-diff: var(--ctp-pink-diff);
+  --primary-diff: var(--ctp-blue-diff);
   --secondary: var(--ctp-surface0);
   --secondary-foreground: var(--ctp-text);
   --muted: var(--ctp-crust);
@@ -95,6 +96,7 @@ body,
   --ctp-pink-diff: oklch(0.914 0.0788 326.2);
   --ctp-mauve: oklch(0.787 0.119 304.769);
   --ctp-red: oklch(0.756 0.13 2.764);
+  --ctp-red-diff: oklch(0.8034 0.1243 357.58);
   --ctp-maroon: oklch(0.782 0.09 8.848);
   --ctp-peach: oklch(0.824 0.101 52.629);
   --ctp-yellow: oklch(0.919 0.07 86.528);
@@ -127,7 +129,7 @@ body,
   --popover-foreground: var(--ctp-text);
   --primary: var(--ctp-red);
   --primary-light: var(--ctp-pink);
-  --primary-diff: var(--ctp-pink-diff);
+  --primary-diff: var(--ctp-red-diff);
   --primary-foreground: var(--ctp-base);
   --secondary: var(--ctp-surface1);
   --secondary-foreground: var(--ctp-text);
@@ -227,6 +229,10 @@ body,
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+  --text-3xs: 0.55rem;
+  --text-3xs--line-height: 0.8rem;
+  --text-2xs: 0.625rem;
+  --text-2xs--line-height: 1rem;
 }
 
 @layer base {
@@ -255,9 +261,9 @@ body,
 @utility nav-glassy-edge {
   @apply pointer-events-none absolute inset-0 h-full transform-[translateY(100%)] bg-background/30 [backdrop-filter:blur(8px)_brightness(110%)_saturate(120%)] mask-[linear-gradient(to_bottom,black_0_3px,transparent_3px)] dark:[backdrop-filter:blur(8px)_brightness(140%)_saturate(120%)];
 }
-
+/* mask-[linear-gradient(to_bottom,black_0%_50%,transparent_50%_100%)] */
 @utility work-glassy-bg {
-  @apply pointer-events-none absolute inset-0 h-[200%] [backdrop-filter:blur(16px)_brightness(98%)_saturate(140%)] mask-[linear-gradient(to_bottom,black_0%_50%,transparent_50%_100%)] bg-background/60 rounded-xl;
+  @apply pointer-events-none absolute inset-0 h-full [backdrop-filter:blur(16px)_brightness(98%)_saturate(140%)]  bg-background/60 border border-primary/30 rounded-xl;
 }
 
 @utility work-glassy-edge {

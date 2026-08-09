@@ -31,7 +31,9 @@ const getTagPage = createServerFn({ method: "GET" })
 				return post.data.tags?.some((t) => t && "url" in t && t.url?.split("/").pop() === slug);
 			})
 			.sort(
-				(a, b) => new Date(b.data.lastModified ?? b.data.createdAt).getTime() - new Date(a.data.lastModified ?? a.data.createdAt).getTime(),
+				(a, b) =>
+					new Date(b.data.lastModified ?? b.data.createdAt).getTime() -
+					new Date(a.data.lastModified ?? a.data.createdAt).getTime(),
 			);
 
 		const postsList = matchingPosts.map((meta) => {
