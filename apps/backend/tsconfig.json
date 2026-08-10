@@ -1,0 +1,17 @@
+{
+  "extends": "@lani/typescript-config/base.json",
+  "include": ["src", "worker-configuration.d.ts"],
+  "exclude": ["node_modules", "dist", "tests"],
+  "compilerOptions": {
+    "jsx": "react",
+    "jsxFactory": "Html.createElement",
+    "jsxFragmentFactory": "Html.Fragment",
+    "types": [
+      "./worker-configuration.d.ts",
+      "node",
+      "bun-types"
+    ],
+    "noUnusedLocals": false,
+    "noUnusedParameters": false
+  }
+}

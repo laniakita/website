@@ -73,7 +73,7 @@ Now, the main reason for rebuilding my personal site was simply because it no lo
 
 While the latter condition was solved by simply setting this site up in a monorepo (I used [Turborepo](https://turbo.build/) for that), everything else meant becoming quite adventurous with this project’s stack. I specifically chose technologies that would push me well beyond my comfort zone to both learn and to integrate. That ultimately meant leaving the ease and familiarity of [Svelte](https://svelte.dev/) and [SvelteKit](https://kit.svelte.dev/) to build this site with tools I’d once found overcomplicated and confusing—React and Next.js.
 
-Likewise, it also meant learning a subfield of programming that I was once wholly intimidated by, graphics. In effect, I used [Three.js](https://threejs.org/), [React Three Fiber](https://docs.pmnd.rs/react-three-fiber/getting-started/introduction), and even some [GLSL](<https://www.khronos.org/opengl/wiki/Core_Language_(GLSL)>) to add some fun WebGL-flare. This can be seen in the shader on the landing page, and also [this mini-game](/projects/bot-clicker) that almost became such a page. I also happened to stumble upon [Zustand](https://zustand-demo.pmnd.rs/), a lightweight state management system for React, which integrated with the latter very well.
+Likewise, it also meant learning a subfield of programming that I was once wholly intimidated by, graphics. In effect, I used [Three.js](https://threejs.org/), [React Three Fiber](https://docs.pmnd.rs/react-three-fiber/getting-started/introduction), and even some [GLSL](<https://www.khronos.org/opengl/wiki/Core_Language_(GLSL)>) to add some fun WebGL-flare. This can be seen in the shader on the landing page, and also [this mini-game](/work/bot-clicker) that almost became such a page. I also happened to stumble upon [Zustand](https://zustand-demo.pmnd.rs/), a lightweight state management system for React, which integrated with the latter very well.
 
 <details open>
 
@@ -515,7 +515,7 @@ Initially, I was going to try to create most of this site in it. This would mean
 
 Now, for Google Docs or anything that falls firmly in the _software_ category, those supposed _drawbacks_, are just the baseline expectation. No one expects something so heavy to load instantly. However, for something much closer to a traditional website, like a blog? _Oh, those are drawbacks._
 
-As such, I made the tough decision to be much more selective about where and how I use the Three.js canvas. The landing page I felt was an important place to demonstrate my knowledge of both it & GLSL shaders, so that’s what I put there. However, because it is the landing page, I did my best to create as simple a scene as possible; shaving bandwidth down as much as I could. Because originally I was going to do [something much heavier](/projects/bot-clicker), but shifted gears once I’d realized _how heavy_.
+As such, I made the tough decision to be much more selective about where and how I use the Three.js canvas. The landing page I felt was an important place to demonstrate my knowledge of both it & GLSL shaders, so that’s what I put there. However, because it is the landing page, I did my best to create as simple a scene as possible; shaving bandwidth down as much as I could. Because originally I was going to do [something much heavier](/work/bot-clicker), but shifted gears once I’d realized _how heavy_.
 
 However, because this site renders its content much more traditionally, I was able to make heavy use of server components, experimenting with their weirdness to my hearts content.
 
@@ -563,7 +563,7 @@ How could you not!? It’s got a cute bear as a mascot!
 
 It’s incredibly minimal (feeling more like an extension of React’s Context API), which makes learning it, and integrating it rather painless.
 
-In addition, because it comes from Poimandres, it integrates superbly into a `react-three/fiber` scene, with minimal performance impact. You can see it in action on their demo site, or you can see how I used it for my _toy_-clicker game, [bot-clicker](/projects/bot-clicker), on its project page.
+In addition, because it comes from Poimandres, it integrates superbly into a `react-three/fiber` scene, with minimal performance impact. You can see it in action on their demo site, or you can see how I used it for my _toy_-clicker game, [bot-clicker](/work/bot-clicker), on its project page.
 
 However, integrating Zustand with React Three isn’t the only way to use it, of course. The theme toggle in the navbar actually relies on it. While I’m persisting the theme state via the localStorage API, rather than with Zustand’s [Persist middleware](https://docs.pmnd.rs/zustand/integrations/persisting-store-data), it’s kept in memory via a zustand store.
 

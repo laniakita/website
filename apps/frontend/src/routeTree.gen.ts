@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as coreRouteRouteImport } from './routes/(core)/route'
 import { Route as AtomDotxmlRouteImport } from './routes/atom[.]xml'
+import { Route as OpengraphRouteImport } from './routes/opengraph'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as coreIndexRouteImport } from './routes/(core)/index'
@@ -18,7 +19,6 @@ import { Route as coreBlogMetaRouteImport } from './routes/(core)/_blog-meta'
 import { Route as coreInfoRouteImport } from './routes/(core)/_info'
 import { Route as coreWorkRouteImport } from './routes/(core)/work'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
-import { Route as OpengraphSplatRouteImport } from './routes/opengraph/$'
 import { Route as coreInfoSplatRouteImport } from './routes/(core)/_info.$'
 import { Route as coreBlogMetaCategoriesSlugRouteImport } from './routes/(core)/_blog-meta.categories.$slug'
 import { Route as coreBlogMetaTagsSlugRouteImport } from './routes/(core)/_blog-meta.tags.$slug'
@@ -30,6 +30,11 @@ const coreRouteRoute = coreRouteRouteImport.update({
 const AtomDotxmlRoute = AtomDotxmlRouteImport.update({
   id: '/atom.xml',
   path: '/atom.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OpengraphRoute = OpengraphRouteImport.update({
+  id: '/opengraph',
+  path: '/opengraph',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
@@ -65,11 +70,6 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
   path: '/blog/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const OpengraphSplatRoute = OpengraphSplatRouteImport.update({
-  id: '/opengraph/$',
-  path: '/opengraph/$',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const coreInfoSplatRoute = coreInfoSplatRouteImport.update({
   id: '/$',
   path: '/$',
@@ -89,11 +89,11 @@ const coreBlogMetaTagsSlugRoute = coreBlogMetaTagsSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/atom.xml': typeof AtomDotxmlRoute
+  '/opengraph': typeof OpengraphRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/work': typeof coreWorkRoute
   '/blog/$slug': typeof BlogSlugRoute
-  '/opengraph/$': typeof OpengraphSplatRoute
   '/': typeof coreIndexRoute
   '/$': typeof coreInfoSplatRoute
   '/categories/$slug': typeof coreBlogMetaCategoriesSlugRoute
@@ -101,11 +101,11 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/atom.xml': typeof AtomDotxmlRoute
+  '/opengraph': typeof OpengraphRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/work': typeof coreWorkRoute
   '/blog/$slug': typeof BlogSlugRoute
-  '/opengraph/$': typeof OpengraphSplatRoute
   '/': typeof coreIndexRoute
   '/$': typeof coreInfoSplatRoute
   '/categories/$slug': typeof coreBlogMetaCategoriesSlugRoute
@@ -115,13 +115,13 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/(core)': typeof coreRouteRouteWithChildren
   '/atom.xml': typeof AtomDotxmlRoute
+  '/opengraph': typeof OpengraphRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/(core)/_blog-meta': typeof coreBlogMetaRouteWithChildren
   '/(core)/_info': typeof coreInfoRouteWithChildren
   '/(core)/work': typeof coreWorkRoute
   '/blog/$slug': typeof BlogSlugRoute
-  '/opengraph/$': typeof OpengraphSplatRoute
   '/(core)/': typeof coreIndexRoute
   '/(core)/_info/$': typeof coreInfoSplatRoute
   '/(core)/_blog-meta/categories/$slug': typeof coreBlogMetaCategoriesSlugRoute
@@ -131,11 +131,11 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/atom.xml'
+    | '/opengraph'
     | '/robots.txt'
     | '/sitemap.xml'
     | '/work'
     | '/blog/$slug'
-    | '/opengraph/$'
     | '/'
     | '/$'
     | '/categories/$slug'
@@ -143,11 +143,11 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/atom.xml'
+    | '/opengraph'
     | '/robots.txt'
     | '/sitemap.xml'
     | '/work'
     | '/blog/$slug'
-    | '/opengraph/$'
     | '/'
     | '/$'
     | '/categories/$slug'
@@ -156,13 +156,13 @@ export interface FileRouteTypes {
     | '__root__'
     | '/(core)'
     | '/atom.xml'
+    | '/opengraph'
     | '/robots.txt'
     | '/sitemap.xml'
     | '/(core)/_blog-meta'
     | '/(core)/_info'
     | '/(core)/work'
     | '/blog/$slug'
-    | '/opengraph/$'
     | '/(core)/'
     | '/(core)/_info/$'
     | '/(core)/_blog-meta/categories/$slug'
@@ -172,10 +172,10 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   coreRouteRoute: typeof coreRouteRouteWithChildren
   AtomDotxmlRoute: typeof AtomDotxmlRoute
+  OpengraphRoute: typeof OpengraphRoute
   RobotsDottxtRoute: typeof RobotsDottxtRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   BlogSlugRoute: typeof BlogSlugRoute
-  OpengraphSplatRoute: typeof OpengraphSplatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -192,6 +192,13 @@ declare module '@tanstack/react-router' {
       path: '/atom.xml'
       fullPath: '/atom.xml'
       preLoaderRoute: typeof AtomDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/opengraph': {
+      id: '/opengraph'
+      path: '/opengraph'
+      fullPath: '/opengraph'
+      preLoaderRoute: typeof OpengraphRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/robots.txt': {
@@ -241,13 +248,6 @@ declare module '@tanstack/react-router' {
       path: '/blog/$slug'
       fullPath: '/blog/$slug'
       preLoaderRoute: typeof BlogSlugRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/opengraph/$': {
-      id: '/opengraph/$'
-      path: '/opengraph/$'
-      fullPath: '/opengraph/$'
-      preLoaderRoute: typeof OpengraphSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/(core)/_info/$': {
@@ -321,10 +321,10 @@ const coreRouteRouteWithChildren = coreRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   coreRouteRoute: coreRouteRouteWithChildren,
   AtomDotxmlRoute: AtomDotxmlRoute,
+  OpengraphRoute: OpengraphRoute,
   RobotsDottxtRoute: RobotsDottxtRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   BlogSlugRoute: BlogSlugRoute,
-  OpengraphSplatRoute: OpengraphSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

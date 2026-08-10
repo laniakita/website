@@ -37,6 +37,11 @@ const config = defineConfig({
 				rsc: {
 					enabled: true,
 				},
+				prerender: {
+					enabled: true,
+					crawlLinks: true,
+					filter: ({ path }) => !path.startsWith("/works") && !path.startsWith("/work/"),
+				},
 			}),
 		!isTestOrStorybook && rsc(),
 		svgr(),

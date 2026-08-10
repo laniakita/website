@@ -3,6 +3,7 @@ import { compareDesc } from "date-fns";
 import { toXML } from "jstoxml";
 import type { MDXComponents } from "mdx/types.js";
 import { feedSource } from "@/lib/collections/blog";
+import { getOgImageUrls } from "@/lib/utils/seo";
 import type { CatTag } from "@/stories/blog/cat-tag-roller";
 import { BLOG_DESCRIPTION } from "../manifest";
 
@@ -51,6 +52,11 @@ export const Route = createFileRoute("/atom.xml")({
 						const resCats = catTagXmlRoller({ data: post.data.categories as CatTag[], hostUrl: HOST_URL });
 						const resTags = catTagXmlRoller({ data: post.data.tags as CatTag[], hostUrl: HOST_URL });
 
+						const ogUrls = await getOgImageUrls({
+							title: post.data.headline,
+							prefix: "Lani's Dev Blog",
+							dynamic: true,
+						});
 						const imgEmbed = post.data.featured_image
 							? `
           						<figure>
@@ -60,7 +66,7 @@ export const Route = createFileRoute("/atom.xml")({
        						`
 							: `
           						<figure>
-            						<img src="${HOST_URL}/opengraph${post.url}" alt="${post.data.headline}" />
+            						<img src="${ogUrls.default}" alt="${post.data.headline}" />
             						<figcaption>${post.data.caption ?? post.data.subheadline ?? post.data.headline}</figcaption>
           						</figure>
         					`;

@@ -70,11 +70,11 @@ export const Route = createFileRoute("/(core)/work")({
 		if (!result) throw notFound();
 		return result;
 	},
-	head: ({ loaderData }) => ({
-		meta: getSeoMeta({
+	head: async ({ loaderData }) => ({
+		meta: await getSeoMeta({
 			title: loaderData?.pageData.title,
 			description: loaderData?.pageData.description,
-			image: "/opengraph/static/work",
+			ogParams: { title: loaderData?.pageData.title ?? "Work", dynamic: false },
 		}),
 	}),
 	component: () => {

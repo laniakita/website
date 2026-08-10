@@ -45,11 +45,15 @@ export const Route = createFileRoute("/(core)/_info/$")({
 		}
 		return result;
 	},
-	head: ({ loaderData, params }) => ({
-		meta: getSeoMeta({
+	head: async ({ loaderData, params }) => ({
+		meta: await getSeoMeta({
 			title: loaderData?.pageData.title,
 			description: loaderData?.pageData.description,
-			image: `/opengraph/static/${params._splat}`,
+			ogParams: {
+				title: loaderData?.pageData.title ?? "Info",
+				prefix: params._splat === "credits" ? "Credits" : undefined,
+				dynamic: params._splat === "credits",
+			},
 			lastModified: loaderData?.pageData.lastModified ?? loaderData?.pageData.createdAt,
 		}),
 	}),

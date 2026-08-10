@@ -15,5 +15,7 @@
       "vite/client",
       "bun",
     ],
+    "noUnusedLocals": false,
+    "noUnusedParameters": false
   }
 }
