@@ -1,3 +1,5 @@
+import type { NavItem } from "@/components/navigation/header";
+
 export const THEME_SWITCH_REGEX = /darkmode-button/;
 export const NAV_MAIN_MOBILE_CONTAINER_ID = "nav-main-mobile-container";
 export const NAV_MAIN_MOBILE_MENU_IO_ID = "nav-main-mobile-menu-button";
@@ -6,20 +8,19 @@ export const NAV_MAIN_ID = "main-nav";
 export const TOC_NAV_ID = "toc-nav-container";
 export const IPAD_TOC_ID = "horizontal-table-of-contents";
 
-const MAIN_PAGES_ARR = new Map([
-	["home", "/"],
-	//["blog", "/blog"],
-	["about", "/about"],
-	["work", "/work"],
-	//["projects", "/projects"],
-	["Atom/RSS", "/feed.xml"],
-	["contact", "/contact"],
-]);
-
-export const MAIN_PAGES = Object.entries(Object.fromEntries(MAIN_PAGES_ARR)).map(([key, value]) => ({
-	label: key,
-	to: value,
-}));
+export const MAIN_PAGES: NavItem[] = [
+	{ label: "home", to: "/" },
+	{ label: "about", to: "/about" },
+	{ label: "work", to: "/work" },
+	{
+		label: "Atom/RSS",
+		to: "/atom.xml",
+		type: "application/atom+xml",
+		target: "_blank",
+		rel: "alternate",
+	},
+	{ label: "contact", to: "/contact" },
+];
 
 export const SOCIALS_NAVBAR = [
 	/*

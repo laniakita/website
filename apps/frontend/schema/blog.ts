@@ -6,7 +6,7 @@ import rehypeFnCitationSpacer from "rehype-fn-citation-spacer";
 import remarkGfm from "remark-gfm";
 import * as z from "zod";
 import { descriptionHelper } from "./description-helper";
-import { remarkImgProcessor } from "../src/scripts/remark-img-processor";
+import { remarkImgProcessor, type RemarkImgProcessorOptions } from "../src/scripts/remark-img-processor";
 
 const postSchema = (ctx: { path: string; source: string }) => {
 	return z.object({
@@ -76,8 +76,9 @@ export const feed = defineCollections({
 	schema: postSchema,
 	mdxOptions: applyMdxPreset({
 		rehypeCodeOptions: false,
+		remarkImageOptions: false,
 		// biome-ignore lint/suspicious/noExplicitAny: We don't have the exported type.
-		remarkPlugins: (v: any) => [remarkGfm, [remarkImgProcessor, { generateLqip: false }], ...v],
+		remarkPlugins: (v: any) => [remarkGfm, [remarkImgProcessor, { addLqipAttribute: false } satisfies RemarkImgProcessorOptions], ...v],
 		// biome-ignore lint/suspicious/noExplicitAny: We don't have the exported type.
 		rehypePlugins: (v: any) => [rehypeFnCitationSpacer, ...v],
 	}),

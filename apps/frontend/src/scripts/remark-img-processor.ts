@@ -40,7 +40,7 @@ export interface RemarkImgProcessorOptions {
  * @returns A unified transformer function.
  */
 export function remarkImgProcessor(options: RemarkImgProcessorOptions = {}) {
-	const addLqipAttribute = options.addLqipAttribute ?? true;
+	const addLqipAttribute = options.addLqipAttribute == null ? true : options.addLqipAttribute;
 
 	// The second argument to a unified plugin transformer is a VFile.
 	return (tree: Node, file: { path: string }) => {

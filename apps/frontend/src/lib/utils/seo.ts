@@ -7,6 +7,15 @@ export interface SeoMetaOptions {
 	authors?: string[];
 }
 
+export function getOgImageUrls(image: string, lastModified?: number | string | Date) {
+	const rawVersion = lastModified instanceof Date ? lastModified.getTime() : lastModified;
+	const version = rawVersion ?? Date.now();
+	return {
+		default: `${image}?v=${version}`,
+		twitter: `${image}?twitter=true&v=${version}`,
+	};
+}
+
 export function getSeoMeta(options: SeoMetaOptions = {}) {
 	const {
 		title = "laniakita.com",
@@ -17,8 +26,7 @@ export function getSeoMeta(options: SeoMetaOptions = {}) {
 		imageAlt = "Blog post header",
 	} = options;
 
-	// Normalize lastModified to a clean string or timestamp number
-	const version = lastModified instanceof Date ? lastModified.getTime() : lastModified;
+	const ogUrls = getOgImageUrls(image, lastModified);
 
 	return [
 		{ title },
@@ -28,7 +36,7 @@ export function getSeoMeta(options: SeoMetaOptions = {}) {
 		{ property: "og:title", content: title },
 		{ property: "og:description", content: description },
 		{ property: "og:image:alt", content: imageAlt },
-		{ property: "og:image:url", content: `${image}?v=${version}` },
+		{ property: "og:image:url", content: ogUrls.default },
 		{ property: "og:image:type", content: "image/png" },
 		{ property: "og:image:width", content: "1200" },
 		{ property: "og:image:height", content: "630" },
@@ -36,7 +44,7 @@ export function getSeoMeta(options: SeoMetaOptions = {}) {
 		{ name: "twitter:card", content: "summary_large_image" },
 		{ name: "twitter:title", content: title },
 		{ name: "twitter:description", content: description },
-		{ name: "twitter:image:url", content: `${image}?twitter=true&v=${version}` },
+		{ name: "twitter:image:url", content: ogUrls.twitter },
 		{ name: "twitter:image:type", content: "image/png" },
 		{ name: "twitter:image:alt", content: imageAlt },
 		{ name: "twitter:image:width", content: "1600" },

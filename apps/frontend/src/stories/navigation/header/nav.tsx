@@ -22,6 +22,9 @@ export function HeaderNav({ navItems }: HeaderNavProps) {
 				<Link
 					key={item.label}
 					to={item.to}
+					target={item.target}
+					rel={item.rel}
+					type={item.type}
 					className='relative flex items-center font-medium text-muted-foreground text-sm capitalize transition-colors hover:text-foreground'
 				>
 					{item.label}

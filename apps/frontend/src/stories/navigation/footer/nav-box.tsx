@@ -15,7 +15,14 @@ export function FooterNavBox(props: FooterNavBoxProps) {
 				<h2 className='pb-2 font-extrabold font-heading text-foreground text-xl capitalize'>{props.title}</h2>
 				<div className='flex flex-col space-y-1 text-lg'>
 					{props.items?.map((item) => (
-						<Link key={item.label} to={item.to} className='w-fit text-muted-foreground capitalize hover:text-primary'>
+						<Link
+							key={item.label}
+							to={item.to}
+							target={item.target}
+							rel={item.rel}
+							type={item.type}
+							className='w-fit text-muted-foreground capitalize hover:text-primary'
+						>
 							{item.label.toLowerCase() === "atom/rss" ? "Atom/RSS" : item.label.toLowerCase()}
 						</Link>
 					))}
