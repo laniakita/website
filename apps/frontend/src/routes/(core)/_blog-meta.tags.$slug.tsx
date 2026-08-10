@@ -81,11 +81,15 @@ export const Route = createFileRoute("/(core)/_blog-meta/tags/$slug")({
 		if (!result) throw notFound();
 		return result;
 	},
-	head: ({ loaderData, params }) => ({
-		meta: getSeoMeta({
+	head: async ({ loaderData }) => ({
+		meta: await getSeoMeta({
 			title: loaderData?.pageData.title,
 			description: loaderData?.pageData.description,
-			image: `/opengraph/tags/${params.slug}`,
+			ogParams: {
+				title: loaderData?.pageData.title ?? "Tags",
+				prefix: "Tags",
+				dynamic: true,
+			},
 		}),
 	}),
 	component: () => {

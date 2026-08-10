@@ -1,32 +1,48 @@
+export interface OgParams {
+	title: string;
+	prefix?: string;
+	dynamic?: boolean;
+}
+
 export interface SeoMetaOptions {
 	title?: string;
 	description?: string;
 	lastModified?: number | string | Date;
-	image?: string;
+	ogParams?: OgParams;
 	imageAlt?: string;
 	authors?: string[];
 }
 
-export function getOgImageUrls(image: string, lastModified?: number | string | Date) {
-	const rawVersion = lastModified instanceof Date ? lastModified.getTime() : lastModified;
-	const version = rawVersion ?? Date.now();
+export async function getOgImageUrls(ogParams: OgParams) {
+	const { title, prefix, dynamic = true } = ogParams;
+
+	const defaultUrlParams = new URLSearchParams();
+	defaultUrlParams.set("title", title);
+	if (prefix) defaultUrlParams.set("prefix", prefix);
+	defaultUrlParams.set("dynamic", String(dynamic));
+
+	const twitterUrlParams = new URLSearchParams();
+	twitterUrlParams.set("title", title);
+	if (prefix) twitterUrlParams.set("prefix", prefix);
+	twitterUrlParams.set("dynamic", String(dynamic));
+	twitterUrlParams.set("twitter", "true");
+
 	return {
-		default: `${image}?v=${version}`,
-		twitter: `${image}?twitter=true&v=${version}`,
+		default: `/opengraph?${defaultUrlParams.toString()}`,
+		twitter: `/opengraph?${twitterUrlParams.toString()}`,
 	};
 }
 
-export function getSeoMeta(options: SeoMetaOptions = {}) {
+export async function getSeoMeta(options: SeoMetaOptions = {}) {
 	const {
 		title = "laniakita.com",
 		description = "Lani's corner on the web",
-		lastModified = Date.now(),
 		authors = ["Lani Akita"],
-		image = "/opengraph/static/home",
+		ogParams = { title: "Home", dynamic: false },
 		imageAlt = "Blog post header",
 	} = options;
 
-	const ogUrls = getOgImageUrls(image, lastModified);
+	const ogUrls = await getOgImageUrls(ogParams);
 
 	return [
 		{ title },

@@ -103,11 +103,15 @@ export const Route = createFileRoute("/blog/$slug")({
 		}
 		return result;
 	},
-	head: ({ loaderData, params }) => ({
-		meta: getSeoMeta({
+	head: async ({ loaderData }) => ({
+		meta: await getSeoMeta({
 			title: loaderData?.postData.headline,
 			description: descriptionTruncator(loaderData?.postData.description),
-			image: `/opengraph/blog/${params.slug}`,
+			ogParams: {
+				title: loaderData?.postData.headline ?? "",
+				prefix: "Lani's Dev Blog",
+				dynamic: true,
+			},
 			imageAlt: descriptionTruncator(loaderData?.postData.featured_image?.altText),
 			lastModified: loaderData?.postData.lastModified ?? loaderData?.postData.createdAt,
 		}),

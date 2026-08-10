@@ -14,9 +14,9 @@ const XML_OPTS = {
 export const Route = createFileRoute("/sitemap.xml")({
 	server: {
 		handlers: {
-			GET() {
+			async GET() {
 				const HOST_URL = import.meta.env.VITE_APP_URL ?? "https://laniakita.com";
-				const routes = getDynamicRoutePaths();
+				const routes = await getDynamicRoutePaths();
 
 				const urlset = {
 					_name: "urlset",

@@ -1,11 +1,11 @@
 import { compareDesc } from "date-fns";
-import { blogSource } from "@/lib/collections/blog";
-import { categoriesSource } from "@/lib/collections/categories";
-import { pagesSource } from "@/lib/collections/pages";
-import { tagsSource } from "@/lib/collections/tags";
-import { worksSource } from "@/lib/collections/works";
-import { getOgImageUrls } from "@/lib/utils/seo";
 import { parseTitleFromFilename } from "../../../schema/image-extractor";
+import { blogSource } from "../collections/blog";
+import { categoriesSource } from "../collections/categories";
+import { pagesSource } from "../collections/pages";
+import { tagsSource } from "../collections/tags";
+import { worksSource } from "../collections/works";
+import { getOgImageUrls, type OgParams } from "../utils/seo";
 
 export interface ImageEntry {
 	src: string;
@@ -59,19 +59,24 @@ function collectPostImages(page: any): ImageEntry[] {
 	return images;
 }
 
-function buildRouteEntry(url: string, baseOgImage: string, lastMod?: string | Date, images?: ImageEntry[]): RouteEntry {
-	const variants = getOgImageUrls(baseOgImage, lastMod);
+async function buildRouteEntry(
+	url: string,
+	ogParams: OgParams,
+	lastMod?: string | Date,
+	images?: ImageEntry[],
+): Promise<RouteEntry> {
+	const variants = await getOgImageUrls(ogParams);
 	return {
 		url,
 		lastMod,
-		ogImage: baseOgImage,
+		ogImage: variants.default,
 		ogImageVariants: variants,
 		ogImages: [variants.default, variants.twitter],
 		images,
 	};
 }
 
-export function getDynamicRoutePaths(): RouteEntry[] {
+export async function getDynamicRoutePaths(): Promise<RouteEntry[]> {
 	const routes: RouteEntry[] = [];
 
 	// Collect work images for /work route
@@ -87,9 +92,9 @@ export function getDynamicRoutePaths(): RouteEntry[] {
 
 	// 1. Static Core Routes
 	routes.push(
-		buildRouteEntry("/", "/opengraph/static/home"),
-		buildRouteEntry("/blog", "/opengraph/static/blog"),
-		buildRouteEntry("/work", "/opengraph/static/work", undefined, workImages),
+		await buildRouteEntry("/", { title: "Home", dynamic: false }),
+		await buildRouteEntry("/blog", { title: "Blog", dynamic: false }),
+		await buildRouteEntry("/work", { title: "Work", dynamic: false }, undefined, workImages),
 	);
 
 	// 2. Blog Posts
@@ -97,21 +102,36 @@ export function getDynamicRoutePaths(): RouteEntry[] {
 		const slug = page.slugs.join("/");
 		const lastMod = page.data.lastModified ?? page.data.createdAt;
 		const images = collectPostImages(page);
-		routes.push(buildRouteEntry(`/blog/${slug}`, `/opengraph/blog/${slug}`, lastMod, images));
+		routes.push(
+			await buildRouteEntry(
+				`/blog/${slug}`,
+				{ title: page.data.headline ?? page.data.title, prefix: "Lani's Dev Blog", dynamic: true },
+				lastMod,
+				images,
+			),
+		);
 	}
 
 	// 3. Categories
 	for (const page of sortPagesByDate(categoriesSource.getPages())) {
 		const slug = page.slugs.join("/");
 		const lastMod = page.data.lastModified ?? page.data.createdAt;
-		routes.push(buildRouteEntry(`/blog/categories/${slug}`, `/opengraph/categories/${slug}`, lastMod));
+		routes.push(
+			await buildRouteEntry(
+				`/blog/categories/${slug}`,
+				{ title: page.data.title, prefix: "Categories", dynamic: true },
+				lastMod,
+			),
+		);
 	}
 
 	// 4. Tags
 	for (const page of sortPagesByDate(tagsSource.getPages())) {
 		const slug = page.slugs.join("/");
 		const lastMod = page.data.lastModified ?? page.data.createdAt;
-		routes.push(buildRouteEntry(`/blog/tags/${slug}`, `/opengraph/tags/${slug}`, lastMod));
+		routes.push(
+			await buildRouteEntry(`/blog/tags/${slug}`, { title: page.data.title, prefix: "Tags", dynamic: true }, lastMod),
+		);
 	}
 
 	// 5. Info / Static Pages
@@ -121,7 +141,15 @@ export function getDynamicRoutePaths(): RouteEntry[] {
 		if (!routes.some((r) => r.url === url)) {
 			const lastMod = page.data.lastModified ?? page.data.createdAt;
 			const images = collectPostImages(page);
-			routes.push(buildRouteEntry(url, `/opengraph/static/${slug}`, lastMod, images));
+			const isCredits = slug === "credits";
+			routes.push(
+				await buildRouteEntry(
+					url,
+					{ title: page.data.title, prefix: isCredits ? "Credits" : undefined, dynamic: isCredits },
+					lastMod,
+					images,
+				),
+			);
 		}
 	}
 

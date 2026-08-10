@@ -23,10 +23,12 @@
 	},
 	"dependencies": {
 		"@atproto/api": "^0.20.37",
+		"@elysiajs/eden": "^1.4.9",
 		"@fontsource-variable/inter-tight": "^5.3.0",
 		"@fontsource-variable/lora": "^5.3.0",
 		"@fontsource-variable/playfair-display": "^5.3.0",
 		"@giscus/react": "^3.1.0",
+		"@lani/backend": "workspace:*",
 		"@lani/typescript-config": "workspace:*",
 		"@phosphor-icons/react": "^2.1.10",
 		"@tailwindcss/vite": "^4.3.3",
