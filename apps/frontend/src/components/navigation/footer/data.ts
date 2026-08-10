@@ -3,6 +3,9 @@ import { SOCIALS_FULL } from "../../nav-constants";
 export interface FooterNavItem {
 	label: string;
 	to: string;
+	target?: string;
+	rel?: string;
+	type?: string;
 }
 
 export interface FooterSocialItem {

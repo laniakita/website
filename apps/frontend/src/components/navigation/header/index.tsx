@@ -22,6 +22,18 @@ export interface NavItem {
 	 * The destination URL or route path.
 	 */
 	to: string;
+	/**
+	 * Target window for link navigation (e.g. "_blank").
+	 */
+	target?: string;
+	/**
+	 * Relationship between current page and target resource (e.g. "alternate").
+	 */
+	rel?: string;
+	/**
+	 * The MIME media type of the target resource (e.g. "application/atom+xml").
+	 */
+	type?: string;
 }
 
 /**

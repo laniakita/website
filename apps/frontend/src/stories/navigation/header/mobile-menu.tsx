@@ -41,9 +41,12 @@ function MobileMenuContent({
 						{(activeMatch) => (
 							<Link
 								to={item.to}
+								target={item.target}
+								rel={item.rel}
+								type={item.type}
 								className='relative flex w-fit items-center gap-3 font-semibold text-3xl text-foreground capitalize transition-colors hover:text-primary'
 								onPress={() => {
-									if (activeMatch) {
+									if (activeMatch || item.target === "_blank") {
 										close();
 									}
 								}}
