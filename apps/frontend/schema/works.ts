@@ -1,5 +1,6 @@
 import { defineCollections } from "fumadocs-mdx/config";
 import * as z from "zod";
+import { extractImagesFromMdx } from "./image-extractor";
 
 export const works = defineCollections({
 	type: "doc",
@@ -40,6 +41,18 @@ export const works = defineCollections({
 					altText: z.string().optional(),
 				})
 				.optional(),
+			inlineImages: z
+				.array(
+					z.object({
+						src: z.string(),
+						alt: z.string().optional(),
+						title: z.string().optional(),
+					}),
+				)
+				.default(() => {
+					return extractImagesFromMdx(ctx.source, ctx.path);
+				}),
 		});
 	},
 });
+

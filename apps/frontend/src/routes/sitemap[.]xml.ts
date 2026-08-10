@@ -22,6 +22,7 @@ export const Route = createFileRoute("/sitemap.xml")({
 					_name: "urlset",
 					_attrs: {
 						xmlns: "http://www.sitemaps.org/schemas/sitemap/0.9",
+						"xmlns:image": "http://www.google.com/schemas/sitemap-image/1.1",
 					},
 					_content: routes.map((route) => {
 						const urlContent: Array<Record<string, unknown>> = [
@@ -34,6 +35,26 @@ export const Route = createFileRoute("/sitemap.xml")({
 							urlContent.push({
 								lastmod: new Date(route.lastMod).toISOString(),
 							});
+						}
+
+						if (route.images?.length) {
+							for (const img of route.images) {
+								const imageContent: Array<Record<string, unknown>> = [
+									{
+										"image:loc": img.src.startsWith("http") ? img.src : `${HOST_URL}${img.src}`,
+									},
+								];
+								if (img.title) {
+									imageContent.push({ "image:title": img.title });
+								}
+								if (img.alt) {
+									imageContent.push({ "image:caption": img.alt });
+								}
+								urlContent.push({
+									_name: "image:image",
+									_content: imageContent,
+								});
+							}
 						}
 
 						return {

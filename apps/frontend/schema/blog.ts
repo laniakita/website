@@ -6,6 +6,7 @@ import rehypeFnCitationSpacer from "rehype-fn-citation-spacer";
 import remarkGfm from "remark-gfm";
 import * as z from "zod";
 import { descriptionHelper } from "./description-helper";
+import { extractImagesFromMdx } from "./image-extractor";
 import { remarkImgProcessor, type RemarkImgProcessorOptions } from "../src/scripts/remark-img-processor";
 
 const postSchema = (ctx: { path: string; source: string }) => {
@@ -61,6 +62,17 @@ const postSchema = (ctx: { path: string; source: string }) => {
 				altText: z.string().optional(),
 			})
 			.optional(),
+		inlineImages: z
+			.array(
+				z.object({
+					src: z.string(),
+					alt: z.string().optional(),
+					title: z.string().optional(),
+				}),
+			)
+			.default(() => {
+				return extractImagesFromMdx(ctx.source, ctx.path);
+			}),
 	});
 };
 
