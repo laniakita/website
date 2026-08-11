@@ -1,5 +1,6 @@
 import { OgVariant, type OpenGraphBody } from "@/lib/api";
 
+// biome-ignore lint/suspicious/noExplicitAny: necessary due to generic type constraints
 type DistributiveOmit<T, K extends keyof any> = T extends any ? Omit<T, K> : never;
 
 export type OgParams = DistributiveOmit<OpenGraphBody, "twitter" | "version">;

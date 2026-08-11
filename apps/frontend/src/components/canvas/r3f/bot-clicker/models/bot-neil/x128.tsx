@@ -45,6 +45,7 @@ interface GLTFAction extends AnimationClip {
 //type ContextType = Record<string, React.ForwardRefExoticComponent<JSX.IntrinsicElements['mesh']>>
 
 export function Neilx128({ props, isPlay }: BotProps) {
+	// biome-ignore lint/style/noNonNullAssertion: necessary for r3f ref
 	const group = useRef<Group>(null!);
 	const { nodes, materials, animations } = useGLTF(
 		"/bot-clicker/assets/models/bot-neil/bn-x128.glb",

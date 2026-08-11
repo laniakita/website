@@ -4,7 +4,7 @@ import type { NavItem, SocialItem } from "@/components/navigation/header";
 import { Button, LinkButton } from "@/components/ui/button";
 import { Link } from "@/components/ui/link";
 import { PopoverTrigger } from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
+import { cn } from "$/src/lib/utils/cn";
 import { PendingLoader } from "./pending-loader";
 /**
  * Props for the HeaderMobileMenu component.

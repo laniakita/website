@@ -19,6 +19,7 @@ import { Route as coreBlogMetaRouteImport } from './routes/(core)/_blog-meta'
 import { Route as coreInfoRouteImport } from './routes/(core)/_info'
 import { Route as coreWorkRouteImport } from './routes/(core)/work'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as WorksBotClickerRouteImport } from './routes/works/bot-clicker'
 import { Route as coreInfoSplatRouteImport } from './routes/(core)/_info.$'
 import { Route as coreBlogMetaCategoriesSlugRouteImport } from './routes/(core)/_blog-meta.categories.$slug'
 import { Route as coreBlogMetaTagsSlugRouteImport } from './routes/(core)/_blog-meta.tags.$slug'
@@ -71,6 +72,11 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
   path: '/blog/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WorksBotClickerRoute = WorksBotClickerRouteImport.update({
+  id: '/works/bot-clicker',
+  path: '/works/bot-clicker',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const coreInfoSplatRoute = coreInfoSplatRouteImport.update({
   id: '/$',
   path: '/$',
@@ -100,6 +106,7 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/work': typeof coreWorkRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/works/bot-clicker': typeof WorksBotClickerRoute
   '/': typeof coreIndexRoute
   '/$': typeof coreInfoSplatRoute
   '/categories/$slug': typeof coreBlogMetaCategoriesSlugRoute
@@ -113,6 +120,7 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/work': typeof coreWorkRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/works/bot-clicker': typeof WorksBotClickerRoute
   '/': typeof coreIndexRoute
   '/$': typeof coreInfoSplatRoute
   '/categories/$slug': typeof coreBlogMetaCategoriesSlugRoute
@@ -130,6 +138,7 @@ export interface FileRoutesById {
   '/(core)/_info': typeof coreInfoRouteWithChildren
   '/(core)/work': typeof coreWorkRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/works/bot-clicker': typeof WorksBotClickerRoute
   '/(core)/': typeof coreIndexRoute
   '/(core)/_info/$': typeof coreInfoSplatRoute
   '/(core)/_blog-meta/categories/$slug': typeof coreBlogMetaCategoriesSlugRoute
@@ -145,6 +154,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/work'
     | '/blog/$slug'
+    | '/works/bot-clicker'
     | '/'
     | '/$'
     | '/categories/$slug'
@@ -158,6 +168,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/work'
     | '/blog/$slug'
+    | '/works/bot-clicker'
     | '/'
     | '/$'
     | '/categories/$slug'
@@ -174,6 +185,7 @@ export interface FileRouteTypes {
     | '/(core)/_info'
     | '/(core)/work'
     | '/blog/$slug'
+    | '/works/bot-clicker'
     | '/(core)/'
     | '/(core)/_info/$'
     | '/(core)/_blog-meta/categories/$slug'
@@ -188,6 +200,7 @@ export interface RootRouteChildren {
   RobotsDottxtRoute: typeof RobotsDottxtRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   BlogSlugRoute: typeof BlogSlugRoute
+  WorksBotClickerRoute: typeof WorksBotClickerRoute
   WorksShadersNoise01Route: typeof WorksShadersNoise01Route
 }
 
@@ -261,6 +274,13 @@ declare module '@tanstack/react-router' {
       path: '/blog/$slug'
       fullPath: '/blog/$slug'
       preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/works/bot-clicker': {
+      id: '/works/bot-clicker'
+      path: '/works/bot-clicker'
+      fullPath: '/works/bot-clicker'
+      preLoaderRoute: typeof WorksBotClickerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/(core)/_info/$': {
@@ -345,6 +365,7 @@ const rootRouteChildren: RootRouteChildren = {
   RobotsDottxtRoute: RobotsDottxtRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   BlogSlugRoute: BlogSlugRoute,
+  WorksBotClickerRoute: WorksBotClickerRoute,
   WorksShadersNoise01Route: WorksShadersNoise01Route,
 }
 export const routeTree = rootRouteImport

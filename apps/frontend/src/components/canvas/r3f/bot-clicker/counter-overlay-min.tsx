@@ -1,6 +1,9 @@
 "use client";
 import { useLocation, useNavigate, useSearch } from "@tanstack/react-router";
 import { Suspense, useState } from "react";
+import { Link } from "@/components/ui/link";
+import { cn } from "@/lib/utils/cn";
+import styles from "./bot-clicker.module.css";
 import TextSplitterUltra from "./components/text-splitter-ultra";
 import { useHajClickerStore } from "./store";
 
@@ -16,16 +19,27 @@ export default function CounterOverlayMin({ model }: { model: string }) {
 			<Suspense>
 				{searchParams.play === "true" && (
 					<>
-						<div className='ctp-mocha pointer-events-none absolute right-4 bottom-4 z-2 flex w-fit touch-none flex-col items-end gap-2 -space-y-4 text-right text-ctp-text lg:right-10 lg:bottom-10'>
+						<div
+							className={cn(
+								"pointer-events-none absolute right-4 bottom-4 z-2 flex w-fit touch-none flex-col items-end gap-2 -space-y-4 text-right lg:right-10 lg:bottom-10",
+								styles.mocha,
+								styles.counterContainer,
+							)}
+						>
 							<p className='font-black text-xl uppercase'>{`${model} Clicker Counter`}</p>
-							<p className='font-black text-3xl text-ctp-mauve'>{String(clickNum).padStart(11, "0")}</p>
+							<p className={cn("font-black text-3xl", styles.counterValue)}>{String(clickNum).padStart(11, "0")}</p>
 						</div>
 						<button
 							type='button'
 							onClick={() => {
+								// biome-ignore lint/suspicious/noExplicitAny: necessary due to dynamic search params
 								navigate({ to: location.pathname, search: (prev: any) => ({ ...prev, play: undefined }) });
 							}}
-							className='ctp-mocha absolute top-4 left-4 z-2 border border-ctp-surface0 bg-ctp-midnight px-4 py-1 backdrop-blur-sm hover:border-ctp-mauve hover:bg-ctp-mauve hover:text-ctp-base lg:top-10 lg:left-10'
+							className={cn(
+								"absolute top-4 left-4 z-2 border px-4 py-1 backdrop-blur-sm lg:top-10 lg:left-10",
+								styles.mocha,
+								styles.backButton,
+							)}
 						>
 							back
 						</button>
@@ -38,20 +52,26 @@ export default function CounterOverlayMin({ model }: { model: string }) {
 						{/* safety blur + play button + warn menu */}
 						<div className='absolute inset-0 z-1 h-full bg-black/30 backdrop-blur-xl' />
 						{(isPlayWarn as unknown) === true && (
-							<div className='absolute inset-0 z-10 flex h-full items-center justify-center bg-ctp-midnight/30 backdrop-blur-xl'>
+							<div
+								className={cn(
+									"absolute inset-0 z-10 flex h-full items-center justify-center backdrop-blur-xl",
+									styles.warningContainer,
+								)}
+							>
 								<div className='flex max-w-xs flex-col items-center justify-center gap-10 md:max-w-md'>
 									<div className='font-black text-sm uppercase md:text-base'>
 										{`EPILEPSY WARNING: Bot Clicker features flashing lights and sounds that may cause an epileptic seizure! Do not
                 play Bot Clicker if you've ever been diagnosed with and or believe you might have EPILEPSY.`}
 									</div>
-									<div className='flex w-full flex-row items-center justify-between gap-4 text-ctp-base'>
+									<div className={cn("flex w-full flex-row items-center justify-between gap-4", styles.warningText)}>
 										<button
 											onClick={(): void => {
 												setIsPlayWarn(false);
+												// biome-ignore lint/suspicious/noExplicitAny: necessary due to dynamic search params
 												navigate({ to: location.pathname, search: (prev: any) => ({ ...prev, play: "true" }) });
 											}}
 											type='button'
-											className='w-full rounded-full border border-ctp-surface0 bg-ctp-green/80 py-2 hover:bg-ctp-green'
+											className={cn("w-full rounded-full border py-2", styles.playButtonWarning)}
 										>
 											Play Bot Clicker
 										</button>
@@ -60,7 +80,7 @@ export default function CounterOverlayMin({ model }: { model: string }) {
 												setIsPlayWarn(false);
 											}}
 											type='button'
-											className='w-full rounded-full border border-ctp-surface0 bg-ctp-red/80 py-2 hover:bg-ctp-red'
+											className={cn("w-full rounded-full border py-2", styles.cancelButtonWarning)}
 										>
 											Cancel
 										</button>
@@ -69,13 +89,23 @@ export default function CounterOverlayMin({ model }: { model: string }) {
 							</div>
 						)}
 
-						<div className='ctp-mocha absolute right-4 bottom-4 z-2 flex flex-col items-end gap-4 text-ctp-text lg:right-10 lg:bottom-10'>
+						<div
+							className={cn(
+								"absolute right-4 bottom-4 z-2 flex flex-col items-end gap-4 lg:right-10 lg:bottom-10",
+								styles.mocha,
+								styles.counterContainer,
+							)}
+						>
 							<button
 								onClick={() => {
 									setIsPlayWarn(true);
 								}}
 								type='button'
-								className='w-full animate-fade-in rounded-full border border-ctp-surface0 bg-ctp-midnight/80 py-2 font-mono text-ctp-mauve text-lg capitalize opacity-0 backdrop-blur-md hover:border-ctp-mauve'
+								className={cn(
+									"w-full rounded-full border py-2 font-mono text-lg capitalize opacity-0 backdrop-blur-md",
+									styles.playButtonMain,
+									styles.animateFadeIn,
+								)}
 							>
 								play bot clicker
 							</button>
@@ -86,26 +116,32 @@ export default function CounterOverlayMin({ model }: { model: string }) {
 										textIn={`${model} Clicker Counter`}
 										spanRole='heading'
 										level={3}
-										charClass='motion-safe:animate-upDog [transform:_translateY(100%)] inline-block'
+										charClass={cn("inline-block [transform:_translateY(100%)]", styles.animateUpDog)}
 									/>
 								</h3>
-								<h3 className='overflow-hidden font-black text-3xl text-ctp-red uppercase'>
+								<h3 className={cn("overflow-hidden font-black text-3xl uppercase", styles.counterValueRed)}>
 									<TextSplitterUltra
 										className='inline-flex'
 										textIn={String(clickNum).padStart(11, "0")}
 										spanRole='heading'
 										level={3}
-										charClass='motion-safe:animate-upDog [transform:_translateY(100%)] inline-block'
+										charClass={cn("inline-block [transform:_translateY(100%)]", styles.animateUpDog)}
 									/>
 								</h3>
 							</div>
 						</div>
 					</>
 				)}
-				<div className='ctp-mocha absolute bottom-4 left-4 z-2 lg:bottom-10 lg:left-10'>
-					<a target='_blank' href='/credits/bot-clicker' className='underline' rel='noreferrer'>
+				<div className={cn("absolute bottom-4 left-4 z-2 lg:bottom-10 lg:left-10", styles.mocha)}>
+					<Link
+						target='_blank'
+						// biome-ignore lint/suspicious/noExplicitAny: necessary for dynamic info routes
+						to={"/credits/bot-clicker" as any}
+						className='underline'
+						rel='noreferrer'
+					>
 						Credits
-					</a>
+					</Link>
 				</div>
 			</Suspense>
 		</>

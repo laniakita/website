@@ -1,6 +1,6 @@
 import type * as React from "react";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { cn } from "$/src/lib/utils/cn";
 
 /**
  * Props for the HeaderTocToggle component.

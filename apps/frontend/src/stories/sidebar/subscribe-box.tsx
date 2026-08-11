@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "@/components/ui/link";
-import { cn } from "$/src/lib/utils";
+import { cn } from "$/src/lib/utils/cn";
 
 export interface SubscribeBoxProps extends React.HTMLAttributes<HTMLDivElement> {}
 

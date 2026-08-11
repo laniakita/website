@@ -7,7 +7,7 @@ import { Suspense, useRef } from "react";
 import { Link } from "@/components/ui/link";
 import { TextBlockSkeleton } from "@/stories/skeletons/text-block-skeleton";
 import { Separator } from "$/src/components/ui/separator";
-import { cn } from "$/src/lib/utils";
+import { cn } from "$/src/lib/utils/cn";
 
 /**
  * Configuration options for the parallax scroll effect.

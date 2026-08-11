@@ -1,0 +1,100 @@
+.mocha {
+	--ctp-text: rgb(205, 214, 244);
+	--ctp-mauve: rgb(203, 166, 247);
+	--ctp-red: rgb(243, 139, 168);
+	--ctp-base: rgb(30, 30, 46);
+	--ctp-surface0: rgb(49, 50, 68);
+	--ctp-midnight: #07070d;
+	--ctp-green: rgb(166, 227, 161);
+}
+
+.counterContainer {
+	color: var(--ctp-text);
+}
+
+.counterValue {
+	color: var(--ctp-mauve);
+}
+
+.counterValueRed {
+	color: var(--ctp-red);
+}
+
+.backButton {
+	border-color: var(--ctp-surface0);
+	background-color: var(--ctp-midnight);
+}
+
+.backButton:hover {
+	border-color: var(--ctp-mauve);
+	background-color: var(--ctp-mauve);
+	color: var(--ctp-base);
+}
+
+.warningBackdrop {
+	background-color: rgba(7, 7, 13, 0.3); /* midnight/30 */
+}
+
+.warningContainer {
+	background-color: rgba(7, 7, 13, 0.3); /* midnight/30 */
+}
+
+.warningText {
+	color: var(--ctp-base);
+}
+
+.playButtonWarning {
+	background-color: rgba(166, 227, 161, 0.8); /* green/80 */
+	border-color: var(--ctp-surface0);
+}
+
+.playButtonWarning:hover {
+	background-color: var(--ctp-green);
+}
+
+.cancelButtonWarning {
+	background-color: rgba(243, 139, 168, 0.8); /* red/80 */
+	border-color: var(--ctp-surface0);
+}
+
+.cancelButtonWarning:hover {
+	background-color: var(--ctp-red);
+}
+
+.playButtonMain {
+	background-color: rgba(7, 7, 13, 0.8); /* midnight/80 */
+	border-color: var(--ctp-surface0);
+	color: var(--ctp-mauve);
+}
+
+.playButtonMain:hover {
+	border-color: var(--ctp-mauve);
+}
+
+@keyframes fadeIn {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+@keyframes upDog {
+	0% {
+		transform: translateY(140%);
+	}
+	100% {
+		transform: translateY(0%);
+	}
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.animateFadeIn {
+		animation: fadeIn 0.8s ease forwards;
+	}
+
+	.animateUpDog {
+		animation: upDog 1.5s ease 1s forwards;
+	}
+}

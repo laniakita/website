@@ -13,7 +13,7 @@ import {
 	Modal as ModalPrimitive,
 } from "react-aria-components";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { cn } from "$/src/lib/utils/cn";
 
 function DialogTrigger({ ...props }: DialogTriggerPrimitiveProps) {
 	return <DialogTriggerPrimitive data-slot='dialog-trigger' {...props} />;

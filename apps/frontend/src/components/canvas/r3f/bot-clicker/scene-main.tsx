@@ -12,6 +12,7 @@ import Neils from "./neil2";
 import { useHajClickerStore } from "./store";
 
 export default function BotClickerScene({ isEmbed }: { isEmbed?: boolean }) {
+	// biome-ignore lint/style/noNonNullAssertion: necessary for r3f ref
 	const ref = useRef(null!);
 	const [windowWidth, setWindowWidth] = useState(0);
 	const [viewMobile, setViewMobile] = useState(false);
@@ -38,7 +39,7 @@ export default function BotClickerScene({ isEmbed }: { isEmbed?: boolean }) {
 	return (
 		<div
 			ref={ref}
-			className={`relative flex size-full min-h-[34rem] items-center justify-center overflow-hidden ${isEmbed ? "max-h-96 max-w-7xl" : "[height:_100dvh] lg:max-h-screen"}`}
+			className={`relative flex size-full min-h-136 items-center justify-center overflow-hidden ${isEmbed ? "max-h-96 max-w-7xl" : "h-dvh lg:max-h-screen"}`}
 		>
 			<CounterOverlayMin model='Bot' />
 			<Suspense>
@@ -72,6 +73,7 @@ export default function BotClickerScene({ isEmbed }: { isEmbed?: boolean }) {
 }
 
 function BotClickerMain({ viewMobile }: { viewMobile: boolean }) {
+	// biome-ignore lint/style/noNonNullAssertion: necessary for r3f ref
 	const starRef = useRef<Points>(null!);
 	const { a11yPrefersState } = useUserPreferences();
 	const searchParams = useSearch({ strict: false }) as { play?: string };

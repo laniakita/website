@@ -3,7 +3,7 @@
 import { createLink } from "@tanstack/react-router";
 import * as React from "react";
 import { type LinkProps, Link as RACLink } from "react-aria-components";
-import { cn } from "@/lib/utils";
+import { cn } from "$/src/lib/utils/cn";
 
 export interface BaseLinkProps extends LinkProps {
 	/** The MIME media type of the linked resource */
