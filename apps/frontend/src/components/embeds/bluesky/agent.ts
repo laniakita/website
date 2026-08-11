@@ -1,3 +1,4 @@
+"use client";
 import { Agent, CredentialSession } from "@atproto/api";
 
 const session = new CredentialSession(new URL("https://public.api.bsky.app"));

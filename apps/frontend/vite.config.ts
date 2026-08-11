@@ -18,6 +18,9 @@ const isTestOrStorybook = process.env.STORYBOOK || process.env.VITEST;
 
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 const config = defineConfig({
+	define: {
+		__BUILD_DATE__: JSON.stringify(new Date().toISOString()),
+	},
 	resolve: {
 		tsconfigPaths: true,
 	},

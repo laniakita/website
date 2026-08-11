@@ -24,6 +24,12 @@
       "skillPath": "skills/turborepo/SKILL.md",
       "computedHash": "a1ee68f55f7d232fbe095554f55e22c2080429a8a37c28adceaabad5fbe8a927"
     },
+    "valibot": {
+      "source": "open-circle/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/valibot/SKILL.md",
+      "computedHash": "6798b923c1bbe9b07cb8c40470ada09c377d666045caefda90d95577e16e8744"
+    },
     "workers-best-practices": {
       "source": "cloudflare/skills",
       "sourceType": "github",

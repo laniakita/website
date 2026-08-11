@@ -2,6 +2,7 @@ import { TanStackDevtools } from "@tanstack/react-devtools";
 import { createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { TanstackProvider } from "fumadocs-core/framework/tanstack";
+import { OgVariant } from "@/lib/api";
 import { NavScrollViewStoreProvider } from "@/lib/providers/nav-scroll-view-store-provider";
 import { ThemeStoreProvider } from "@/lib/providers/theme-store-provider";
 import { ToCViewStoreProvider } from "@/lib/providers/toc-view-store-provider";
@@ -24,7 +25,8 @@ export const Route = createRootRoute({
 			...(await getSeoMeta({
 				title: APP_DEFAULT_TITLE,
 				description: APP_DESCRIPTION,
-				ogParams: { title: "Home", dynamic: false },
+				ogParams: { variant: OgVariant.Home },
+				lastModified: new Date(),
 			})),
 		],
 		links: [

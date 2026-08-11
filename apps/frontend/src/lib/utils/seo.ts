@@ -1,57 +1,76 @@
-export interface OgParams {
-	title: string;
-	prefix?: string;
-	dynamic?: boolean;
-}
+import { OgVariant, type OpenGraphBody } from "@/lib/api";
+
+type DistributiveOmit<T, K extends keyof any> = T extends any ? Omit<T, K> : never;
+
+export type OgParams = DistributiveOmit<OpenGraphBody, "twitter" | "version">;
 
 export interface SeoMetaOptions {
+	lastModified: Date;
 	title?: string;
 	description?: string;
-	lastModified?: number | string | Date;
 	ogParams?: OgParams;
 	imageAlt?: string;
 	authors?: string[];
 }
 
-export async function getOgImageUrls(ogParams: OgParams) {
-	const { title, prefix, dynamic = true } = ogParams;
+export async function getOgImageUrls(ogParams: OgParams, version: string) {
+	const buildParams = (isTwitter: boolean) => {
+		const params = new URLSearchParams();
+		params.set("variant", ogParams.variant);
+		params.set("version", version);
+		if (isTwitter) {
+			params.set("twitter", "true");
+		}
 
-	const defaultUrlParams = new URLSearchParams();
-	defaultUrlParams.set("title", title);
-	if (prefix) defaultUrlParams.set("prefix", prefix);
-	defaultUrlParams.set("dynamic", String(dynamic));
+		const p = ogParams;
+		if (p.variant === OgVariant.Static) {
+			params.set("title", p.title);
+		} else if (p.variant === OgVariant.Dynamic) {
+			params.set("title", p.title);
+			if (p.prefix) params.set("prefix", p.prefix);
+		} else if (p.variant === OgVariant.Image) {
+			params.set("imageUrl", p.imageUrl);
+		}
 
-	const twitterUrlParams = new URLSearchParams();
-	twitterUrlParams.set("title", title);
-	if (prefix) twitterUrlParams.set("prefix", prefix);
-	twitterUrlParams.set("dynamic", String(dynamic));
-	twitterUrlParams.set("twitter", "true");
+		return params.toString();
+	};
 
 	return {
-		default: `/opengraph?${defaultUrlParams.toString()}`,
-		twitter: `/opengraph?${twitterUrlParams.toString()}`,
+		default: `/opengraph?${buildParams(false)}`,
+		twitter: `/opengraph?${buildParams(true)}`,
 	};
 }
 
-export async function getSeoMeta(options: SeoMetaOptions = {}) {
+export async function getSeoMeta(options: SeoMetaOptions) {
 	const {
+		lastModified,
 		title = "laniakita.com",
 		description = "Lani's corner on the web",
 		authors = ["Lani Akita"],
-		ogParams = { title: "Home", dynamic: false },
+		ogParams = { variant: OgVariant.Home },
 		imageAlt = "Blog post header",
 	} = options;
 
-	const ogUrls = await getOgImageUrls(ogParams);
+	const version = lastModified.getTime().toString();
+	const ogUrls = await getOgImageUrls(ogParams, version);
+
+	function descriptionTruncator(descr: string | undefined) {
+		const maxLen = 200;
+		if (!descr) return "";
+		if (descr.length > maxLen) {
+			return `${descr.substring(0, maxLen - 3)}...`;
+		}
+		return descr;
+	}
 
 	return [
 		{ title },
 		...authors.map((authr) => ({ name: "author", content: authr })),
-		{ name: "description", content: description },
+		{ name: "description", content: descriptionTruncator(description) },
 		// Open Graph
 		{ property: "og:title", content: title },
-		{ property: "og:description", content: description },
-		{ property: "og:image:alt", content: imageAlt },
+		{ property: "og:description", content: descriptionTruncator(description) },
+		{ property: "og:image:alt", content: descriptionTruncator(imageAlt) },
 		{ property: "og:image:url", content: ogUrls.default },
 		{ property: "og:image:type", content: "image/png" },
 		{ property: "og:image:width", content: "1200" },
@@ -59,10 +78,10 @@ export async function getSeoMeta(options: SeoMetaOptions = {}) {
 		// Twitter
 		{ name: "twitter:card", content: "summary_large_image" },
 		{ name: "twitter:title", content: title },
-		{ name: "twitter:description", content: description },
+		{ name: "twitter:description", content: descriptionTruncator(description) },
 		{ name: "twitter:image:url", content: ogUrls.twitter },
 		{ name: "twitter:image:type", content: "image/png" },
-		{ name: "twitter:image:alt", content: imageAlt },
+		{ name: "twitter:image:alt", content: descriptionTruncator(imageAlt) },
 		{ name: "twitter:image:width", content: "1600" },
 		{ name: "twitter:image:height", content: "900" },
 	];

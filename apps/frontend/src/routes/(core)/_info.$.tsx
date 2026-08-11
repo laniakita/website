@@ -3,6 +3,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { renderServerComponent } from "@tanstack/react-start/rsc";
 import { setResponseHeader } from "@tanstack/react-start/server";
 import { useMDXComponents } from "@/components/mdx";
+import { OgVariant } from "@/lib/api";
 import { pagesSource } from "@/lib/collections/pages";
 import { getSeoMeta } from "@/lib/utils/seo";
 import { InfoContentSkeleton } from "@/stories/skeletons/info-layout-skeleton";
@@ -49,12 +50,20 @@ export const Route = createFileRoute("/(core)/_info/$")({
 		meta: await getSeoMeta({
 			title: loaderData?.pageData.title,
 			description: loaderData?.pageData.description,
-			ogParams: {
-				title: loaderData?.pageData.title ?? "Info",
-				prefix: params._splat === "credits" ? "Credits" : undefined,
-				dynamic: params._splat === "credits",
-			},
-			lastModified: loaderData?.pageData.lastModified ?? loaderData?.pageData.createdAt,
+			ogParams:
+				params._splat === "credits"
+					? {
+							variant: OgVariant.Dynamic,
+							title: loaderData?.pageData.title ?? "Info",
+							prefix: "Credits",
+						}
+					: {
+							variant: OgVariant.Static,
+							title: loaderData?.pageData.title ?? "Info",
+						},
+			lastModified: new Date(
+				loaderData?.pageData.lastModified ?? loaderData?.pageData.createdAt ?? __BUILD_DATE__,
+			),
 		}),
 	}),
 	component: () => {

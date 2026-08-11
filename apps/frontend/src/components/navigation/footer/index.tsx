@@ -4,11 +4,12 @@ import { FooterNavBox } from "@/stories/navigation/footer/nav-box";
 import { FooterBackdrop, FooterContainer, FooterContent, FooterRoot } from "@/stories/navigation/footer/root";
 import { FooterSocialBox } from "@/stories/navigation/footer/social-box";
 import { FooterSocialIcons } from "@/stories/navigation/footer/social-icons";
-import { defaultFooterNavItems, defaultFooterSocialItems, type FooterNavItem, type FooterSocialItem } from "./data";
+import { MAIN_PAGES, SOCIALS_FULL } from "../../nav-constants";
+import type { NavItem, SocialItem } from "../types";
 
 export interface FooterProps extends React.HTMLAttributes<HTMLElement> {
-	navItems?: FooterNavItem[];
-	socialItems?: FooterSocialItem[];
+	navItems?: NavItem[];
+	socialItems?: SocialItem[];
 	startYear?: number;
 	authorName?: string;
 	wrapperClassName?: string;
@@ -19,8 +20,8 @@ export interface FooterProps extends React.HTMLAttributes<HTMLElement> {
  * Composes the pure UI sub-components into the main application layout.
  */
 export function Footer({
-	navItems = defaultFooterNavItems,
-	socialItems = defaultFooterSocialItems,
+	navItems = MAIN_PAGES,
+	socialItems = SOCIALS_FULL,
 	startYear = 2024,
 	authorName = "Lani Akita",
 	className,

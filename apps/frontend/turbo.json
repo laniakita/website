@@ -27,10 +27,12 @@
         "CDN_DOMAIN",
         "VITE_CDN",
         "VITE_APP_URL",
+        "VITE_BACKEND_URL"
       ],
       "passThroughEnv": [
         "VITE_APP_URL",
         "VITE_CDN",
+        "VITE_BACKEND_URL"
       ],
       "inputs": [
         "$TURBO_DEFAULT$",

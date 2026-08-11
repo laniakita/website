@@ -16,7 +16,6 @@ const getTagPage = createServerFn({ method: "GET" })
 	.validator((slug: string) => slug)
 	.handler(async ({ data: slug }) => {
 		const tag = tagsSource.getPage([slug]);
-		console.log(slug);
 		const components = useMDXComponents();
 		if (!tag) {
 			return null;
@@ -73,6 +72,7 @@ const getTagPage = createServerFn({ method: "GET" })
 		};
 	});
 
+import { OgVariant } from "@/lib/api";
 import { MetaLayoutSkeleton } from "@/stories/skeletons/meta-layout-skeleton";
 
 export const Route = createFileRoute("/(core)/_blog-meta/tags/$slug")({
@@ -86,10 +86,11 @@ export const Route = createFileRoute("/(core)/_blog-meta/tags/$slug")({
 			title: loaderData?.pageData.title,
 			description: loaderData?.pageData.description,
 			ogParams: {
+				variant: OgVariant.Dynamic,
 				title: loaderData?.pageData.title ?? "Tags",
 				prefix: "Tags",
-				dynamic: true,
 			},
+			lastModified: new Date(__BUILD_DATE__),
 		}),
 	}),
 	component: () => {

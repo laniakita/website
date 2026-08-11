@@ -73,6 +73,7 @@ const getCategoryPage = createServerFn({ method: "GET" })
 		};
 	});
 
+import { OgVariant } from "@/lib/api";
 import { MetaLayoutSkeleton } from "@/stories/skeletons/meta-layout-skeleton";
 
 export const Route = createFileRoute("/(core)/_blog-meta/categories/$slug")({
@@ -86,10 +87,11 @@ export const Route = createFileRoute("/(core)/_blog-meta/categories/$slug")({
 			title: loaderData?.pageData.title,
 			description: loaderData?.pageData.description,
 			ogParams: {
+				variant: OgVariant.Dynamic,
 				title: loaderData?.pageData.title ?? "Categories",
 				prefix: "Categories",
-				dynamic: true,
 			},
+			lastModified: new Date(__BUILD_DATE__),
 		}),
 	}),
 	component: () => {
