@@ -48,6 +48,7 @@ export interface BotProps {
 }
 
 export function Neilx512({ props, isPlay }: BotProps) {
+	// biome-ignore lint/style/noNonNullAssertion: necessary for r3f ref
 	const group = useRef<Group>(null!);
 	const { nodes, materials, animations } = useGLTF(
 		"/bot-clicker/assets/models/bot-neil/bn-x512.glb",

@@ -1,5 +1,5 @@
 import type { HTMLAttributes } from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "$/src/lib/utils/cn";
 import { WorkPreviewSkeleton } from "./work-preview-skeleton";
 
 export interface WorkRollerSkeletonProps extends HTMLAttributes<HTMLDivElement> {

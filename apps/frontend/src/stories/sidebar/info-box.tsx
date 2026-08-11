@@ -1,7 +1,7 @@
 import type * as React from "react";
 import { Card } from "@/components/ui/card";
 import { SmoothTabsTrigger, Tabs, TabsContent, TabsList } from "@/components/ui/tabs";
-import { cn } from "$/src/lib/utils";
+import { cn } from "$/src/lib/utils/cn";
 
 export interface InfoBoxProps extends React.HTMLAttributes<HTMLDivElement> {
 	/** The main text or React node containing biographical or descriptive info. */

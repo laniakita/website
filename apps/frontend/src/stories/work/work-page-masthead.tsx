@@ -1,6 +1,6 @@
 import type { HTMLAttributes } from "react";
 import { Separator } from "@/components/ui/separator";
-import { cn } from "$/src/lib/utils";
+import { cn } from "$/src/lib/utils/cn";
 
 export interface WorkPageMastheadProps extends HTMLAttributes<HTMLDivElement> {
 	/** Total count of works/expeditions to display */

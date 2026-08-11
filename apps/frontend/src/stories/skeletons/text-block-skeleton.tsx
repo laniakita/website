@@ -1,6 +1,6 @@
 import type { HTMLAttributes } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { cn } from "$/src/lib/utils";
+import { cn } from "$/src/lib/utils/cn";
 
 export interface TextBlockSkeletonProps extends HTMLAttributes<HTMLDivElement> {
 	/** Optional number of text lines (default: 3) */

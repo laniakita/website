@@ -1,5 +1,5 @@
 import type * as React from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "$/src/lib/utils/cn";
 
 export interface FooterRootProps extends React.HTMLAttributes<HTMLElement> {
 	/** Optional extra wrapper class */

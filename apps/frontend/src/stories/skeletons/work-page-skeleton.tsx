@@ -1,5 +1,5 @@
 import type { HTMLAttributes } from "react";
-import { cn } from "$/src/lib/utils";
+import { cn } from "$/src/lib/utils/cn";
 import { WorkPageHeaderSkeleton } from "./work-page-header-skeleton";
 import { WorkRollerSkeleton } from "./work-roller-skeleton";
 

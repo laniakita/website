@@ -15,11 +15,16 @@ export default function TextSplitterUltra({
 	...spanProps
 }: TextSplitterUltraProps) {
 	return (
-		<span aria-label={textIn} role={spanRole} aria-level={level} {...spanProps}>
+		<span role={spanRole} {...spanProps}>
+			{/* Visually hidden text for screen readers */}
+			<span className='sr-only'>{textIn}</span>
+
+			{/* Split characters hidden from screen readers to prevent reading letter-by-letter */}
 			{textIn.split("").map((char, index) => {
 				return (
 					<span
-						key={`${char}-${textIn.indexOf(char)}-${Math.random() * 10}`}
+						key={char}
+						aria-hidden='true'
 						className={`${char === " " ? "mx-[0.2rem]" : ""} ${charClass}`}
 						style={{ animationDelay: `${0.5 + index / 10}s` }}
 					>

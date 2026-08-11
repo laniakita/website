@@ -3,8 +3,7 @@ import { A11y, useUserPreferences } from "@react-three/a11y";
 import { Detailed } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useSearch } from "@tanstack/react-router";
-/* eslint-disable no-multi-assign -- it's easier this way  */
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import type { LOD } from "three";
 import { Audio, AudioListener, AudioLoader, Cache, MathUtils } from "three";
 import { Neilx128 } from "./models/bot-neil/x128";
@@ -24,10 +23,18 @@ export default function Zuns({
 	viewMobile: boolean;
 }) {
 	const easing = (x: number) => Math.sqrt(1 - (x - 1) ** 2);
+	const baseId = useId();
 	return (
 		<>
 			{Array.from({ length: count }, (_, i) => (
-				<ZunSetup key={i} index={i} z={Math.round(easing(i / count) * depth)} speed={speed} viewMobile={viewMobile} />
+				<ZunSetup
+					// biome-ignore lint/suspicious/noArrayIndexKey: we have useId not just the index
+					key={`${baseId}-${i}`}
+					index={i}
+					z={Math.round(easing(i / count) * depth)}
+					speed={speed}
+					viewMobile={viewMobile}
+				/>
 			))}
 		</>
 	);
@@ -49,7 +56,6 @@ function ZunSetup({ z, speed, index, viewMobile }: { z: number; speed: number; i
 	const { viewport, camera } = useThree((state) => state);
 	const { width, height } = viewport.getCurrentViewport(camera, [0, 0, -z]);
 
-	// eslint-disable-next-line -- don't need setData
 	const [data] = useState({
 		y: MathUtils.randFloatSpread(height * 2),
 		x: MathUtils.randFloatSpread(2),
@@ -130,6 +136,7 @@ function ZunSetup({ z, speed, index, viewMobile }: { z: number; speed: number; i
 			// neil go up
 			ref.current?.position.set(
 				index === 0 ? 0 : data.x * width,
+				// biome-ignore lint/suspicious/noAssignInExpressions: beyond normal react concerns
 				(data.y += a11yPrefersState.prefersReducedMotion ? 0 : delta * speed),
 				-z,
 			);
@@ -138,8 +145,10 @@ function ZunSetup({ z, speed, index, viewMobile }: { z: number; speed: number; i
 		// rotate neil
 		if (!a11yPrefersState.prefersReducedMotion) {
 			ref.current?.rotation.set(
+				// biome-ignore lint/suspicious/noAssignInExpressions: beyond normal react concerns
 				(data.rX += delta / data.spin),
 				Math.sin(index * 1000 + state.clock.elapsedTime / 10) * Math.PI,
+				// biome-ignore lint/suspicious/noAssignInExpressions: beyond normal react concerns
 				(data.rZ += delta / data.spin),
 			);
 		}
@@ -168,22 +177,19 @@ function ZunSetup({ z, speed, index, viewMobile }: { z: number; speed: number; i
 	}, [searchParams.play]);
 
 	return (
-		<>
-			{/* eslint-disable-next-line -- react-three a11y only gives a few roles */}
-			<A11y role='image' description="Oscar Creativo's Bot Neil on a spacewalk">
-				{!viewMobile ? (
-					<Detailed ref={ref} distances={[0, 65, 80]} onClick={handleBotClick} scale={0.001}>
-						<Neilx512 isPlay={isAnimate} />
-						<Neilx256 isPlay={isAnimate} />
-						<Neilx128 isPlay={isAnimate} />
-					</Detailed>
-				) : (
-					<Detailed ref={ref} distances={[0, 65]} onClick={handleBotClick} scale={0.001}>
-						<Neilx256 isPlay={isAnimate} />
-						<Neilx128 isPlay={isAnimate} />
-					</Detailed>
-				)}
-			</A11y>
-		</>
+		<A11y role='image' description="Oscar Creativo's Bot Neil on a spacewalk">
+			{!viewMobile ? (
+				<Detailed ref={ref} distances={[0, 65, 80]} onClick={handleBotClick} scale={0.001}>
+					<Neilx512 isPlay={isAnimate} />
+					<Neilx256 isPlay={isAnimate} />
+					<Neilx128 isPlay={isAnimate} />
+				</Detailed>
+			) : (
+				<Detailed ref={ref} distances={[0, 65]} onClick={handleBotClick} scale={0.001}>
+					<Neilx256 isPlay={isAnimate} />
+					<Neilx128 isPlay={isAnimate} />
+				</Detailed>
+			)}
+		</A11y>
 	);
 }

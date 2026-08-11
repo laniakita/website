@@ -16,7 +16,7 @@ import {
 	Separator as SeparatorPrimitive,
 	SubmenuTrigger as SubmenuTriggerPrimitive,
 } from "react-aria-components";
-import { cn } from "@/lib/utils";
+import { cn } from "$/src/lib/utils/cn";
 
 function DropdownMenuTrigger({ ...props }: React.ComponentProps<typeof MenuTriggerPrimitive>) {
 	return <MenuTriggerPrimitive data-slot='dropdown-menu-trigger' {...props} />;

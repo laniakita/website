@@ -1,5 +1,5 @@
 import type { HTMLAttributes } from "react";
-import { cn } from "$/src/lib/utils";
+import { cn } from "$/src/lib/utils/cn";
 import { WorkPageHeroSkeleton } from "./work-page-hero-skeleton";
 import { WorkPageMastheadSkeleton } from "./work-page-masthead-skeleton";
 

@@ -1,7 +1,7 @@
 import type { HTMLAttributes } from "react";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
-import { cn } from "$/src/lib/utils";
+import { cn } from "$/src/lib/utils/cn";
 
 function MastHeadSeparator() {
 	return (

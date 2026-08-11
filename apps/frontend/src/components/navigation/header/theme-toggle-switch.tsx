@@ -3,8 +3,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useThemeStore } from "@/lib/providers/theme-store-provider";
-import { cn } from "@/lib/utils";
 import type { ThemeMode } from "$/src/lib/stores/theme-store";
+import { cn } from "$/src/lib/utils/cn";
 
 /**
  * Props for the ThemeToggleSwitch component.
