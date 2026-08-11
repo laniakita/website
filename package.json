@@ -25,13 +25,18 @@
 	"devDependencies": {
 		"@biomejs/biome": "2.5.7",
 		"@types/jstoxml": "^5.0.0",
+		"@types/three": "^0.185.4",
 		"turbo": "^2.10.9",
-		"typescript": "^7.0.2"
+		"typescript": "^7.0.2",
+		"vite-plugin-glsl": "^1.6.1"
 	},
 	"patchedDependencies": {
 		"@storybook/addon-mcp@0.7.0": "patches/@storybook%2Faddon-mcp@0.7.0.patch"
 	},
 	"dependencies": {
-		"jstoxml": "^7.1.1"
+		"@react-three/drei": "^10.7.8",
+		"@react-three/fiber": "^9.7.0",
+		"jstoxml": "^7.1.1",
+		"three": "^0.185.1"
 	}
 }

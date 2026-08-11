@@ -31,6 +31,8 @@
 		"@lani/backend": "workspace:*",
 		"@lani/typescript-config": "workspace:*",
 		"@phosphor-icons/react": "^2.1.10",
+		"@react-three/a11y": "^3.0.0",
+		"@react-three/postprocessing": "^3.0.5",
 		"@tailwindcss/vite": "^4.3.3",
 		"@tanstack/react-devtools": "^0.10.9",
 		"@tanstack/react-router": "^1.170.19",

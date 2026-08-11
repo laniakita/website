@@ -61,9 +61,7 @@ export const Route = createFileRoute("/(core)/_info/$")({
 							variant: OgVariant.Static,
 							title: loaderData?.pageData.title ?? "Info",
 						},
-			lastModified: new Date(
-				loaderData?.pageData.lastModified ?? loaderData?.pageData.createdAt ?? __BUILD_DATE__,
-			),
+			lastModified: new Date(loaderData?.pageData.lastModified ?? loaderData?.pageData.createdAt ?? __BUILD_DATE__),
 		}),
 	}),
 	component: () => {

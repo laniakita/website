@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { createMemoryHistory, createRootRoute, createRouter, RouterProvider } from "@tanstack/react-router";
 import { expect, within } from "storybook/test";
+import { MAIN_PAGES, SOCIALS_FULL } from "@/components/nav-constants";
 import { Footer } from "@/components/navigation/footer";
-import { defaultFooterNavItems, defaultFooterSocialItems } from "@/components/navigation/footer/data";
 import { ThemeStoreProvider } from "@/lib/providers/theme-store-provider";
 
 // TanStack Router requires a router context for Links to work in Storybook
@@ -10,7 +10,7 @@ const rootRoute = createRootRoute({
 	component: () => (
 		<ThemeStoreProvider>
 			<div className='flex min-h-screen flex-col justify-end bg-background p-4'>
-				<Footer navItems={defaultFooterNavItems} socialItems={defaultFooterSocialItems} />
+				<Footer navItems={MAIN_PAGES} socialItems={SOCIALS_FULL} />
 			</div>
 		</ThemeStoreProvider>
 	),

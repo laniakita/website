@@ -1,6 +1,18 @@
 "use client";
-import { BlueskyEmbedCore } from "./mod";
+
+import { lazy, Suspense } from "react";
+
+const BlueskyEmbedCore = lazy(async () => {
+	if (import.meta.env.SSR) {
+		return Promise.resolve({ default: () => <></> });
+	}
+	return import("./mod").then((mod) => ({ default: mod.BlueskyEmbedCore }));
+});
 
 export default function BlueskyEmbed({ postUrl }: { postUrl: string }) {
-	return <BlueskyEmbedCore postUrl={postUrl} />;
+	return (
+		<Suspense fallback={null}>
+			<BlueskyEmbedCore postUrl={postUrl} />
+		</Suspense>
+	);
 }
