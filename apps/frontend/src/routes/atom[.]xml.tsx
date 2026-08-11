@@ -2,8 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { compareDesc } from "date-fns";
 import { toXML } from "jstoxml";
 import type { MDXComponents } from "mdx/types.js";
+import { OgVariant } from "@/lib/api";
 import { feedSource } from "@/lib/collections/blog";
-import { getOgImageUrls } from "@/lib/utils/seo";
+import { getOgImageUrls, type OgParams } from "@/lib/utils/seo";
 import type { CatTag } from "@/stories/blog/cat-tag-roller";
 import { BLOG_DESCRIPTION } from "../manifest";
 
@@ -18,9 +19,10 @@ const XML_OPTS = {
 export const Route = createFileRoute("/atom.xml")({
 	server: {
 		handlers: {
-			async GET() {
+			async GET({ request }) {
 				const TS_START_VERSION = "1.168.37";
-				const HOST_URL = import.meta.env.VITE_APP_URL ?? "http://localhost:3000";
+				const url = new URL(request.url);
+				const HOST_URL = url.origin;
 
 				const posts = feedSource
 					.getPages()
@@ -52,11 +54,13 @@ export const Route = createFileRoute("/atom.xml")({
 						const resCats = catTagXmlRoller({ data: post.data.categories as CatTag[], hostUrl: HOST_URL });
 						const resTags = catTagXmlRoller({ data: post.data.tags as CatTag[], hostUrl: HOST_URL });
 
-						const ogUrls = await getOgImageUrls({
-							title: post.data.headline,
-							prefix: "Lani's Dev Blog",
-							dynamic: true,
-						});
+						const postDate = new Date(post.data.lastModified ?? post.data.createdAt);
+						const version = postDate.getTime().toString();
+						const ogParams: OgParams = post.data.featured_image
+							? { variant: OgVariant.Image, imageUrl: post.data.featured_image.src }
+							: { variant: OgVariant.Dynamic, title: post.data.headline, prefix: "Lani's Dev Blog" };
+
+						const ogUrls = await getOgImageUrls(ogParams, version);
 						const imgEmbed = post.data.featured_image
 							? `
           						<figure>

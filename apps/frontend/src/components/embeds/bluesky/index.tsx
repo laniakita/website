@@ -1,10 +1,6 @@
-import { Suspense } from "react";
+"use client";
 import { BlueskyEmbedCore } from "./mod";
 
 export default function BlueskyEmbed({ postUrl }: { postUrl: string }) {
-	return (
-		<Suspense fallback={null}>
-			<BlueskyEmbedCore postUrl={postUrl} />
-		</Suspense>
-	);
+	return <BlueskyEmbedCore postUrl={postUrl} />;
 }

@@ -1,49 +1,47 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { eden } from "@/lib/api";
+import { BACKEND_URL, OgVariant, type OpenGraphBody } from "@/lib/api";
 
 export const Route = createFileRoute("/opengraph")({
 	server: {
 		handlers: {
 			async GET({ request }) {
 				const url = new URL(request.url);
+				const variant = url.searchParams.get("variant") ?? "static";
 				const title = url.searchParams.get("title") ?? "Lani Akita";
-				const prefix = url.searchParams.get("prefix") ?? undefined;
-				const dynamicParam = url.searchParams.get("dynamic");
+				const prefix = url.searchParams.get("prefix") ?? "Lani Akita";
+				let imageUrl = url.searchParams.get("imageUrl") ?? "";
+				const version = url.searchParams.get("version") ?? "1";
 				const twitterParam = url.searchParams.get("twitter");
-
-				const dynamic = dynamicParam !== null ? dynamicParam === "true" : true;
 				const twitter = twitterParam !== null ? twitterParam === "true" : false;
+
+				if (imageUrl && !imageUrl.startsWith("http")) {
+					const baseUrl = import.meta.env.VITE_APP_URL || url.origin;
+					imageUrl = `${baseUrl}${imageUrl.startsWith("/") ? "" : "/"}${imageUrl}`;
+				}
+
+				let body: OpenGraphBody;
+
+				if (variant === OgVariant.Home) {
+					body = { variant: OgVariant.Home, twitter, version };
+				} else if (variant === OgVariant.Image) {
+					body = { variant: OgVariant.Image, imageUrl, twitter, version };
+				} else if (variant === OgVariant.Dynamic) {
+					body = { variant: OgVariant.Dynamic, title, prefix, twitter, version };
+				} else {
+					body = { variant: OgVariant.Static, title, twitter, version };
+				}
 
 				const token = process.env.OG_AUTH_TOKEN ?? "default-dev-secret";
 
-				const response = await eden.api.v1.opengraph.post({
-					title,
-					prefix,
-					dynamic,
-					twitter,
-					$headers: {
+				const res = await fetch(`${BACKEND_URL}/api/v1/opengraph`, {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
 						authorization: `Bearer ${token}`,
 					},
+					body: JSON.stringify(body),
 				});
-
-				if (response.error) {
-					return new Response(JSON.stringify(response.error), {
-						status: response.status ?? 500,
-						headers: { "Content-Type": "application/json" },
-					});
-				}
-
-				const data = response.data as unknown;
-				if (data instanceof Blob || data instanceof ArrayBuffer) {
-					return new Response(data, {
-						headers: {
-							"Content-Type": "image/png",
-							"Cache-Control": "public, max-age=31536000, immutable",
-						},
-					});
-				}
-
-				return new Response("Invalid image data received", { status: 500 });
+				return res;
 			},
 		},
 	},

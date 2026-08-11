@@ -2,6 +2,7 @@ import { createFileRoute, notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { renderServerComponent } from "@tanstack/react-start/rsc";
 import { useMDXComponents } from "@/components/mdx";
+import { OgVariant } from "@/lib/api";
 import { pagesSource } from "@/lib/collections/pages";
 import { worksSource } from "@/lib/collections/works";
 import { getSeoMeta } from "@/lib/utils/seo";
@@ -74,7 +75,8 @@ export const Route = createFileRoute("/(core)/work")({
 		meta: await getSeoMeta({
 			title: loaderData?.pageData.title,
 			description: loaderData?.pageData.description,
-			ogParams: { title: loaderData?.pageData.title ?? "Work", dynamic: false },
+			ogParams: { variant: OgVariant.Static, title: loaderData?.pageData.title ?? "Work" },
+			lastModified: new Date(__BUILD_DATE__),
 		}),
 	}),
 	component: () => {

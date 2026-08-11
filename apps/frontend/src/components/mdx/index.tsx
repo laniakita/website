@@ -7,6 +7,7 @@ import { ImgReplacer } from "./post-img";
 import PreCodeV2 from "./pre-code/codeblock-v2";
 import SectionCore from "./section/section";
 
+/* */
 export function getMDXComponents(components?: MDXComponents) {
 	return {
 		...defaultMdxComponents,

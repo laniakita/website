@@ -3,6 +3,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { renderServerComponent } from "@tanstack/react-start/rsc";
 import { type ReactNode, Suspense } from "react";
 import { useMDXComponents } from "@/components/mdx";
+import { OgVariant } from "@/lib/api";
 import { blogSource } from "@/lib/collections/blog";
 import type { CatTag } from "@/stories/blog/cat-tag-roller";
 import { PostPage } from "@/stories/blog/post-page/post-page";
@@ -103,19 +104,30 @@ export const Route = createFileRoute("/blog/$slug")({
 		}
 		return result;
 	},
-	head: async ({ loaderData }) => ({
-		meta: await getSeoMeta({
-			title: loaderData?.postData.headline,
-			description: descriptionTruncator(loaderData?.postData.description),
-			ogParams: {
-				title: loaderData?.postData.headline ?? "",
-				prefix: "Lani's Dev Blog",
-				dynamic: true,
-			},
-			imageAlt: descriptionTruncator(loaderData?.postData.featured_image?.altText),
-			lastModified: loaderData?.postData.lastModified ?? loaderData?.postData.createdAt,
-		}),
-	}),
+	head: async ({ loaderData }) => {
+		const rawDate = loaderData?.postData.lastModified ?? loaderData?.postData.createdAt ?? new Date();
+		const lastModified = new Date(rawDate);
+		const featuredImageSrc = loaderData?.postData.featured_image?.src;
+
+		return {
+			meta: await getSeoMeta({
+				title: loaderData?.postData.headline,
+				description: descriptionTruncator(loaderData?.postData.description),
+				ogParams: featuredImageSrc
+					? {
+							variant: OgVariant.Image,
+							imageUrl: featuredImageSrc,
+						}
+					: {
+							variant: OgVariant.Dynamic,
+							title: loaderData?.postData.headline ?? "",
+							prefix: "Lani's Dev Blog",
+						},
+				imageAlt: descriptionTruncator(loaderData?.postData.featured_image?.altText),
+				lastModified,
+			}),
+		};
+	},
 	component: BlogRouteComponent,
 	pendingComponent: PostPageSkeleton,
 });
