@@ -10,6 +10,7 @@ import rsc from "@vitejs/plugin-rsc";
 import { playwright } from "@vitest/browser-playwright";
 import { fumadocsMdx } from "fumadocs-mdx/vite";
 import { defineConfig } from "vite";
+import glsl from "vite-plugin-glsl";
 import svgr from "vite-plugin-svgr";
 
 const dirname = import.meta.dirname || path.dirname(fileURLToPath(import.meta.url));
@@ -49,6 +50,7 @@ const config = defineConfig({
 		!isTestOrStorybook && rsc(),
 		svgr(),
 		viteReact(),
+		glsl(),
 	],
 	environments: {
 		rsc: {

@@ -44,4 +44,12 @@ export interface SocialItem {
 	 * An accessible name for the screen reader (e.g., "Github!").
 	 */
 	linkName: string;
+	/**
+	 * Optional text size classes for the icon.
+	 */
+	textSize?: string;
+	/**
+	 * Optional alternate text size classes.
+	 */
+	textSizeAlt?: string;
 }

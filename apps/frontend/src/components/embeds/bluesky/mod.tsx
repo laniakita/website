@@ -1,5 +1,6 @@
 "use client";
 import type { AppBskyFeedDefs, AppBskyFeedGetPostThread } from "@atproto/api";
+import { Agent, CredentialSession } from "@atproto/api";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
 
@@ -16,7 +17,8 @@ export const BlueskyEmbedCore = ({ postUrl }: { postUrl: string }) => {
 		}
 
 		async function fetchAgent(url: string) {
-			const atpAgent = await import("./agent").then((mod) => mod.atpAgent);
+			const session = new CredentialSession(new URL("https://public.api.bsky.app"));
+			const atpAgent = new Agent(session);
 
 			const { postUri, actorHandle } = urlUtil(url);
 			const authorDID = await atpAgent.app.bsky.actor.getProfile({ actor: actorHandle }).then((res) => res.data.did);

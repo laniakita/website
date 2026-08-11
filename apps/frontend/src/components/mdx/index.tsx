@@ -24,7 +24,7 @@ export function getMDXComponents(components?: MDXComponents) {
 		h5: (props) => <Heading as='h5' {...props} />,
 		h6: (props) => <Heading as='h6' {...props} />,
 		...components,
-	} satisfies MDXComponents;
+	} as MDXComponents;
 }
 
 export const useMDXComponents = getMDXComponents;

@@ -9,6 +9,9 @@ import { HeaderContainer, HeaderRoot } from "@/stories/navigation/header/root";
 import { HeaderSocials } from "@/stories/navigation/header/socials";
 import { HeaderTocToggle } from "@/stories/navigation/header/toc-toggle";
 import type { NavItem, SocialItem } from "../types";
+
+export type { NavItem, SocialItem };
+
 import { ThemeToggleSwitch } from "./theme-toggle-switch";
 
 /**

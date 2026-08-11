@@ -22,6 +22,7 @@ import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as coreInfoSplatRouteImport } from './routes/(core)/_info.$'
 import { Route as coreBlogMetaCategoriesSlugRouteImport } from './routes/(core)/_blog-meta.categories.$slug'
 import { Route as coreBlogMetaTagsSlugRouteImport } from './routes/(core)/_blog-meta.tags.$slug'
+import { Route as WorksShadersNoise01RouteImport } from './routes/works/shaders.noise.01'
 
 const coreRouteRoute = coreRouteRouteImport.update({
   id: '/(core)',
@@ -86,6 +87,11 @@ const coreBlogMetaTagsSlugRoute = coreBlogMetaTagsSlugRouteImport.update({
   path: '/tags/$slug',
   getParentRoute: () => coreBlogMetaRoute,
 } as any)
+const WorksShadersNoise01Route = WorksShadersNoise01RouteImport.update({
+  id: '/works/shaders/noise/01',
+  path: '/works/shaders/noise/01',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/atom.xml': typeof AtomDotxmlRoute
@@ -98,6 +104,7 @@ export interface FileRoutesByFullPath {
   '/$': typeof coreInfoSplatRoute
   '/categories/$slug': typeof coreBlogMetaCategoriesSlugRoute
   '/tags/$slug': typeof coreBlogMetaTagsSlugRoute
+  '/works/shaders/noise/01': typeof WorksShadersNoise01Route
 }
 export interface FileRoutesByTo {
   '/atom.xml': typeof AtomDotxmlRoute
@@ -110,6 +117,7 @@ export interface FileRoutesByTo {
   '/$': typeof coreInfoSplatRoute
   '/categories/$slug': typeof coreBlogMetaCategoriesSlugRoute
   '/tags/$slug': typeof coreBlogMetaTagsSlugRoute
+  '/works/shaders/noise/01': typeof WorksShadersNoise01Route
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -126,6 +134,7 @@ export interface FileRoutesById {
   '/(core)/_info/$': typeof coreInfoSplatRoute
   '/(core)/_blog-meta/categories/$slug': typeof coreBlogMetaCategoriesSlugRoute
   '/(core)/_blog-meta/tags/$slug': typeof coreBlogMetaTagsSlugRoute
+  '/works/shaders/noise/01': typeof WorksShadersNoise01Route
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -140,6 +149,7 @@ export interface FileRouteTypes {
     | '/$'
     | '/categories/$slug'
     | '/tags/$slug'
+    | '/works/shaders/noise/01'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/atom.xml'
@@ -152,6 +162,7 @@ export interface FileRouteTypes {
     | '/$'
     | '/categories/$slug'
     | '/tags/$slug'
+    | '/works/shaders/noise/01'
   id:
     | '__root__'
     | '/(core)'
@@ -167,6 +178,7 @@ export interface FileRouteTypes {
     | '/(core)/_info/$'
     | '/(core)/_blog-meta/categories/$slug'
     | '/(core)/_blog-meta/tags/$slug'
+    | '/works/shaders/noise/01'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -176,6 +188,7 @@ export interface RootRouteChildren {
   RobotsDottxtRoute: typeof RobotsDottxtRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   BlogSlugRoute: typeof BlogSlugRoute
+  WorksShadersNoise01Route: typeof WorksShadersNoise01Route
 }
 
 declare module '@tanstack/react-router' {
@@ -271,6 +284,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof coreBlogMetaTagsSlugRouteImport
       parentRoute: typeof coreBlogMetaRoute
     }
+    '/works/shaders/noise/01': {
+      id: '/works/shaders/noise/01'
+      path: '/works/shaders/noise/01'
+      fullPath: '/works/shaders/noise/01'
+      preLoaderRoute: typeof WorksShadersNoise01RouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -325,6 +345,7 @@ const rootRouteChildren: RootRouteChildren = {
   RobotsDottxtRoute: RobotsDottxtRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   BlogSlugRoute: BlogSlugRoute,
+  WorksShadersNoise01Route: WorksShadersNoise01Route,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
