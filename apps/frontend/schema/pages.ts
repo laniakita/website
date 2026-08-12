@@ -4,6 +4,9 @@ import * as z from "zod";
 export const pages = defineCollections({
 	dir: "./.content/pages",
 	type: "doc",
+	postprocess: {
+		includeProcessedMarkdown: true
+	},
 	schema: (ctx) => {
 		return z.object({
 			title: z.string(),
