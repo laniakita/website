@@ -1,9 +1,9 @@
 "use client";
-import { A11y, useUserPreferences } from "@react-three/a11y";
+import { useUserPreferences } from "@react-three/a11y";
 import { Detailed } from "@react-three/drei";
-import { useFrame, useThree } from "@react-three/fiber";
+import { type ThreeEvent, useFrame, useThree } from "@react-three/fiber";
 import { useSearch } from "@tanstack/react-router";
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { LOD } from "three";
 import { Audio, AudioListener, AudioLoader, Cache, MathUtils } from "three";
 import { Neilx128 } from "./models/bot-neil/x128";
@@ -23,13 +23,12 @@ export default function Zuns({
 	viewMobile: boolean;
 }) {
 	const easing = (x: number) => Math.sqrt(1 - (x - 1) ** 2);
-	const baseId = useId();
 	return (
 		<>
 			{Array.from({ length: count }, (_, i) => (
 				<ZunSetup
-					// biome-ignore lint/suspicious/noArrayIndexKey: we have useId not just the index
-					key={`${baseId}-${i}`}
+					// biome-ignore lint/suspicious/noArrayIndexKey: stable array size
+					key={`bot-zun-${i}`}
 					index={i}
 					z={Math.round(easing(i / count) * depth)}
 					speed={speed}
@@ -47,6 +46,7 @@ const audioLoader = new AudioLoader();
 Cache.enabled = true;
 
 function ZunSetup({ z, speed, index, viewMobile }: { z: number; speed: number; index: number; viewMobile: boolean }) {
+	const isActive = !viewMobile || index < 30;
 	const searchParams = useSearch({ strict: false }) as { play?: string };
 	const { addClickToCount } = useHajClickerStore((state) => state);
 	const ref = useRef<LOD>(null);
@@ -64,7 +64,8 @@ function ZunSetup({ z, speed, index, viewMobile }: { z: number; speed: number; i
 		rZ: Math.random() * Math.PI,
 	});
 	if (canSound) camera.add(listener);
-	const handleBotClick = (/*e: ThreeEvent<MouseEvent>*/): void => {
+	const handleBotClick = (e: ThreeEvent<MouseEvent>): void => {
+		e.stopPropagation();
 		if (searchParams.play !== "true") {
 			return;
 		}
@@ -131,6 +132,8 @@ function ZunSetup({ z, speed, index, viewMobile }: { z: number; speed: number; i
 	};
 
 	useFrame((state, delta) => {
+		if (!isActive) return;
+
 		// stops if not current tab
 		if (delta < 0.1) {
 			// neil go up
@@ -147,7 +150,7 @@ function ZunSetup({ z, speed, index, viewMobile }: { z: number; speed: number; i
 			ref.current?.rotation.set(
 				// biome-ignore lint/suspicious/noAssignInExpressions: beyond normal react concerns
 				(data.rX += delta / data.spin),
-				Math.sin(index * 1000 + state.clock.elapsedTime / 10) * Math.PI,
+				Math.sin(index * 1000 + state.elapsed / 10) * Math.PI,
 				// biome-ignore lint/suspicious/noAssignInExpressions: beyond normal react concerns
 				(data.rZ += delta / data.spin),
 			);
@@ -177,19 +180,10 @@ function ZunSetup({ z, speed, index, viewMobile }: { z: number; speed: number; i
 	}, [searchParams.play]);
 
 	return (
-		<A11y role='image' description="Oscar Creativo's Bot Neil on a spacewalk">
-			{!viewMobile ? (
-				<Detailed ref={ref} distances={[0, 65, 80]} onClick={handleBotClick} scale={0.001}>
-					<Neilx512 isPlay={isAnimate} />
-					<Neilx256 isPlay={isAnimate} />
-					<Neilx128 isPlay={isAnimate} />
-				</Detailed>
-			) : (
-				<Detailed ref={ref} distances={[0, 65]} onClick={handleBotClick} scale={0.001}>
-					<Neilx256 isPlay={isAnimate} />
-					<Neilx128 isPlay={isAnimate} />
-				</Detailed>
-			)}
-		</A11y>
+		<Detailed ref={ref} distances={[0, 65, 80]} onClick={handleBotClick} scale={0.001} visible={isActive}>
+			<Neilx512 key='512' isPlay={isAnimate} />
+			<Neilx256 key='256' isPlay={isAnimate} />
+			<Neilx128 key='128' isPlay={isAnimate} />
+		</Detailed>
 	);
 }

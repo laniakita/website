@@ -23,7 +23,7 @@
 		"build-storybook": "turbo run build-storybook"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.5.7",
+		"@biomejs/biome": "^2.5.8",
 		"@types/jstoxml": "^5.0.0",
 		"@types/three": "^0.185.4",
 		"turbo": "^2.10.9",
@@ -31,12 +31,11 @@
 		"vite-plugin-glsl": "^1.6.1"
 	},
 	"patchedDependencies": {
-		"@storybook/addon-mcp@0.7.0": "patches/@storybook%2Faddon-mcp@0.7.0.patch"
+		"@storybook/addon-mcp@0.7.0": "patches/@storybook%2Faddon-mcp@0.7.0.patch",
+		"@react-three/drei@11.0.0-alpha.5": "patches/@react-three%2Fdrei@11.0.0-alpha.5.patch",
+		"@react-three/a11y@3.0.0": "patches/@react-three%2Fa11y@3.0.0.patch"
 	},
 	"dependencies": {
-		"@react-three/drei": "^10.7.8",
-		"@react-three/fiber": "^9.7.0",
-		"jstoxml": "^7.1.1",
-		"three": "^0.185.1"
+		"jstoxml": "^7.1.1"
 	}
 }

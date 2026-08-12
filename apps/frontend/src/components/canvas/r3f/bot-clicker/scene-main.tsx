@@ -1,15 +1,33 @@
 "use client";
 import { A11yAnnouncer, A11yUserPreferences, useUserPreferences } from "@react-three/a11y";
-import { BakeShadows, Preload, Stars } from "@react-three/drei";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { Bloom, EffectComposer } from "@react-three/postprocessing";
+import { Preload } from "@react-three/drei";
+import { BakeShadows, Stars } from "@react-three/drei/webgpu";
+import { useFrame } from "@react-three/fiber";
+import { Canvas, useRenderPipeline } from "@react-three/fiber/webgpu";
 import { useSearch } from "@tanstack/react-router";
-/* eslint-disable react/no-unknown-property -- r3f */
 import { Suspense, useEffect, useRef, useState } from "react";
-import type { Points } from "three";
+import { type InstancedMesh, LinearSRGBColorSpace, Matrix4 } from "three";
+import {
+	attribute,
+	blendScreen,
+	cameraViewMatrix,
+	emissive,
+	Fn,
+	float,
+	max,
+	modelWorldMatrix,
+	mrt,
+	mul,
+	output,
+	sin,
+	vec2,
+	vec4,
+} from "three/tsl";
+import type { Node } from "three/webgpu";
 import CounterOverlayMin from "./counter-overlay-min";
 import Neils from "./neil2";
 import { useHajClickerStore } from "./store";
+import { UnrealBloomNode } from "./unreal-bloom-node";
 
 export default function BotClickerScene({ isEmbed }: { isEmbed?: boolean }) {
 	// biome-ignore lint/style/noNonNullAssertion: necessary for r3f ref
@@ -45,8 +63,7 @@ export default function BotClickerScene({ isEmbed }: { isEmbed?: boolean }) {
 			<Suspense>
 				<Canvas
 					eventSource={ref}
-					flat
-					gl={{ antialias: false }}
+					renderer={{ LinearSRGBColorSpace }}
 					dpr={[1, 1.5]}
 					camera={{ position: [0, 0, 10], fov: 20, near: 0.01 }}
 					style={{
@@ -74,11 +91,49 @@ export default function BotClickerScene({ isEmbed }: { isEmbed?: boolean }) {
 
 function BotClickerMain({ viewMobile }: { viewMobile: boolean }) {
 	// biome-ignore lint/style/noNonNullAssertion: necessary for r3f ref
-	const starRef = useRef<Points>(null!);
+	const starRef = useRef<InstancedMesh>(null!);
 	const { a11yPrefersState } = useUserPreferences();
 	const searchParams = useSearch({ strict: false }) as { play?: string };
 	const { clickNum } = useHajClickerStore((state) => state);
 	const [playing, setPlaying] = useState(false);
+
+	const initStars = (node: InstancedMesh | null) => {
+		if (node) {
+			starRef.current = node;
+			if (node.instanceMatrix) {
+				const dummy = new Matrix4();
+				for (let i = 0; i < node.count; i++) {
+					node.setMatrixAt(i, dummy);
+				}
+				node.instanceMatrix.needsUpdate = true;
+			}
+			node.frustumCulled = false;
+
+			// FIX: Patch the Drei WebGPU Stars material scaleNode to prevent division by zero / negative depth
+			// biome-ignore lint/suspicious/noExplicitAny: patching internal material
+			if (node.material && !(node.material as any).userData.patched) {
+				// biome-ignore lint/suspicious/noExplicitAny: patching internal material
+				const material = node.material as any;
+				material.userData.patched = true;
+
+				const particleSize = attribute("size", "float");
+
+				material.scaleNode = Fn(() => {
+					const worldPos = modelWorldMatrix.mul(vec4(material.positionNode, 1));
+					const viewPos = cameraViewMatrix.mul(worldPos);
+					// Clamp the depth so it never hits 0 (which causes Infinity/NaN and blows out the screen)
+					const depth = max(viewPos.z.negate(), 0.1);
+					const distanceAttenuation = float(30).div(depth);
+					const timeScale = float(3.5).add(sin(material._time.add(100)).mul(0.3));
+					// @ts-expect-error: Three.js TSL typings for AttributeNode and mul() have intersection issues
+					const size = mul(particleSize, distanceAttenuation).mul(timeScale).mul(0.04);
+					return vec2(size);
+				})();
+
+				material.needsUpdate = true;
+			}
+		}
+	};
 
 	const gameSpeedCalc = () => {
 		let gameSpeed = 0.1;
@@ -110,20 +165,47 @@ function BotClickerMain({ viewMobile }: { viewMobile: boolean }) {
 	return (
 		<>
 			<Neils viewMobile={viewMobile} speed={gameSpeedCalc()} count={viewMobile ? 30 : 60} />
-			<Suspense>
+			<Suspense fallback={null}>
 				{searchParams.play === "true" && (
 					<>
-						<Stars ref={starRef} />
+						<Stars ref={initStars} />
 						<spotLight decay={1.05} power={40} position={[0, 0, 10]} />
 						<BakeShadows />
-						<EffectComposer enableNormalPass={false} multisampling={0}>
-							<Bloom luminanceThreshold={0.2} luminanceSmoothing={0.25} mipmapBlur intensity={14} />
-						</EffectComposer>
+						<WebGPUEffects />
 					</>
 				)}
 			</Suspense>
 			<color attach='background' args={["black"]} />
-			<Suspense>{searchParams.play !== "true" && <hemisphereLight intensity={1.4} />}</Suspense>
+			<Suspense fallback={null}>{searchParams.play !== "true" && <hemisphereLight intensity={1.4} />}</Suspense>
 		</>
 	);
+}
+
+function WebGPUEffects() {
+	useRenderPipeline(
+		({ renderPipeline, passes }) => {
+			if (!renderPipeline) return;
+			const scenePassColor = passes.scenePass.getTextureNode().toInspector("color");
+			const emissivePass = passes.scenePass.getTextureNode("emissive");
+
+			const bloomPass = new UnrealBloomNode(emissivePass, {
+				intensity: 2,
+				radius: 0.85,
+				luminanceThreshold: 0.2,
+				luminanceSmoothing: 0.25,
+				levels: 8,
+				mipmapBlur: true,
+			}) as unknown as Node<"vec4">;
+			renderPipeline.outputNode = blendScreen(scenePassColor, bloomPass);
+		},
+		({ passes }) => {
+			passes.scenePass.setMRT(
+				mrt({
+					output,
+					emissive,
+				}),
+			);
+		},
+	);
+	return null;
 }
