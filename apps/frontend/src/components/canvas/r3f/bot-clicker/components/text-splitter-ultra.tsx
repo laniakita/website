@@ -1,4 +1,4 @@
-import type { ComponentProps } from "react";
+import { type ComponentProps, useId } from "react";
 
 interface TextSplitterUltraProps extends ComponentProps<"span"> {
 	textIn: string;
@@ -14,6 +14,7 @@ export default function TextSplitterUltra({
 	level,
 	...spanProps
 }: TextSplitterUltraProps) {
+	const baseId = useId();
 	return (
 		<span role={spanRole} {...spanProps}>
 			{/* Visually hidden text for screen readers */}
@@ -23,7 +24,8 @@ export default function TextSplitterUltra({
 			{textIn.split("").map((char, index) => {
 				return (
 					<span
-						key={char}
+						// biome-ignore lint/suspicious/noArrayIndexKey: we're using the char + index
+						key={`${baseId}-${char}-${index}`}
 						aria-hidden='true'
 						className={`${char === " " ? "mx-[0.2rem]" : ""} ${charClass}`}
 						style={{ animationDelay: `${0.5 + index / 10}s` }}

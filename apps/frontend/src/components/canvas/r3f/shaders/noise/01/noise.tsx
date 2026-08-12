@@ -61,9 +61,9 @@ export function NoiseShader01Core() {
 	);
 
 	useFrame((state) => {
-		const { clock } = state;
+		const { elapsed } = state;
 		if (!meshRef.current) return;
-		(meshRef.current.material as NoiseShaderMaterialProps).uniforms.u_time.value = 0.4 * clock.getElapsedTime();
+		(meshRef.current.material as NoiseShaderMaterialProps).uniforms.u_time.value = 0.4 * elapsed;
 
 		if (PLANE_ASPECT > VIEW_ASPECT) {
 			meshRef.current.scale.setX(PLANE_ASPECT / VIEW_ASPECT);

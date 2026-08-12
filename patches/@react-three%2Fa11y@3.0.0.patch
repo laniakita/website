@@ -1,0 +1,62 @@
+diff --git a/dist/a11y.cjs.development.js b/dist/a11y.cjs.development.js
+index 0961c03dd465e23e2a6b972d6764f62dbbeb9c1e..bc220b6050f95ef418c25c86679fab413f022004 100644
+--- a/dist/a11y.cjs.development.js
++++ b/dist/a11y.cjs.development.js
+@@ -209,7 +209,7 @@ var Html = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
+       el = _React$useState[0];
+ 
+   var root = React.useMemo(function () {
+-    return ReactDOM.createRoot(el);
++    return el.__reactRoot || (el.__reactRoot = ReactDOM.createRoot(el));
+   }, [el]);
+   var group = React.useRef(null);
+   var oldZoom = React.useRef(0);
+@@ -773,7 +773,7 @@ var A11yDebuger = function A11yDebuger(_ref) {
+       el = _useState[0];
+ 
+   var root = React__default.useMemo(function () {
+-    return ReactDOM.createRoot(el);
++    return el.__reactRoot || (el.__reactRoot = ReactDOM.createRoot(el));
+   }, [el]);
+ 
+   var _useState2 = React.useState({}),
+@@ -822,7 +822,7 @@ var A11yDebuger = function A11yDebuger(_ref) {
+     }; //@ts-ignore
+ 
+ 
+-    var root = ReactDOM.createRoot(domStructureRef.current);
++    var root = domStructureRef.current.__reactRoot || (domStructureRef.current.__reactRoot = ReactDOM.createRoot(domStructureRef.current));
+     console.log('enregistre ev');
+     document.addEventListener('focus', selectActiveEl, true);
+     var superinterval = window.setInterval(function () {
+diff --git a/dist/a11y.esm.js b/dist/a11y.esm.js
+index 187d5d7508841731b5721d063d09e78e4c0743a2..092a025988bb387ee218d077e5af8aab1170fad9 100644
+--- a/dist/a11y.esm.js
++++ b/dist/a11y.esm.js
+@@ -202,7 +202,7 @@ var Html = /*#__PURE__*/forwardRef(function (_ref, ref) {
+       el = _React$useState[0];
+ 
+   var root = useMemo(function () {
+-    return ReactDOM.createRoot(el);
++    return el.__reactRoot || (el.__reactRoot = ReactDOM.createRoot(el));
+   }, [el]);
+   var group = useRef(null);
+   var oldZoom = useRef(0);
+@@ -766,7 +766,7 @@ var A11yDebuger = function A11yDebuger(_ref) {
+       el = _useState[0];
+ 
+   var root = React__default.useMemo(function () {
+-    return ReactDOM.createRoot(el);
++    return el.__reactRoot || (el.__reactRoot = ReactDOM.createRoot(el));
+   }, [el]);
+ 
+   var _useState2 = useState({}),
+@@ -815,7 +815,7 @@ var A11yDebuger = function A11yDebuger(_ref) {
+     }; //@ts-ignore
+ 
+ 
+-    var root = ReactDOM.createRoot(domStructureRef.current);
++    var root = domStructureRef.current.__reactRoot || (domStructureRef.current.__reactRoot = ReactDOM.createRoot(domStructureRef.current));
+     console.log('enregistre ev');
+     document.addEventListener('focus', selectActiveEl, true);
+     var superinterval = window.setInterval(function () {
