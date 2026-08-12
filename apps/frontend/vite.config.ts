@@ -34,6 +34,7 @@ const config = defineConfig({
 					name: "ssr",
 					childEnvironments: ["rsc"],
 				},
+				inspectorPort: 9230,
 			}),
 		tailwindcss(),
 		!isTestOrStorybook &&

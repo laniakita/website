@@ -135,7 +135,6 @@ export function WorkPreview({
 				</a>
 			);
 		}
-		console.log(targetUrl);
 		if (targetUrl.startsWith("/works/")) {
 			return (
 				<Link to={targetUrl} target='_blank' className={cn("links font-bold underline", className)}>

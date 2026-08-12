@@ -4,10 +4,34 @@
 @import "@fontsource-variable/playfair-display";
 @import "@fontsource-variable/inter-tight";
 
-
 @custom-variant dark (&:is(.dark *));
 @plugin "@tailwindcss/typography";
 @plugin "@iconify/tailwind4";
+
+@font-face {
+  font-family: '0xProto';
+  src: url('/fonts/0xProto-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: '0xProto';
+  src: url('/fonts/0xProto-Italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: '0xProto';
+  src: url('/fonts/0xProto-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 
 :root {
   /* Catppuccin Latte */
@@ -187,7 +211,9 @@ body,
   --color-ctp-crust: var(--ctp-crust);
   --font-sans: "Inter Tight", ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
     'Segoe UI Symbol', 'Noto Color Emoji';
-  --font-heading: "Playfair Display Variable", serif;
+  --font-heading: var(--font-sans);
+  --font-mono: "0xProto", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+    monospace;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -337,18 +363,6 @@ body,
 
   aside {
     @apply rounded-lg border border-ctp-blue bg-ctp-blue/10 p-6 font-mono text-sm shadow-lg dark:border-ctp-sky dark:bg-ctp-sky/5 dark:text-ctp-sky;
-  }
-
-  #footnote-label {
-    clip: auto !important;
-    overflow: hidden !important;
-    display: block !important;
-    position: relative !important;
-    width: 100% !important;
-    height: 1px !important;
-    margin-top: 3rem !important;
-    margin-bottom: 3rem !important;
-    background-color: var(--color-ctp-subtext0) !important;
   }
 
   :where(h1, h2, h3, h4, h5, h6) code {
@@ -620,30 +634,35 @@ body,
   }
 
   h1 {
+    font-family: var(--font-heading);
     a {
       font-weight: 900;
     }
   }
 
   h2 {
+    font-family: var(--font-heading);
     a {
       font-weight: 900;
     }
   }
 
   h3 {
+    font-family: var(--font-heading);
     a {
       font-weight: 900;
     }
   }
 
   h4 {
+    font-family: var(--font-heading);
     a {
       font-weight: 900;
     }
   }
 
   h5 {
+    font-family: var(--font-heading);
     a {
       font-weight: 900;
     }
