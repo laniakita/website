@@ -1,32 +1,85 @@
 // biome-ignore lint/correctness/noUnusedImports: necessary for @elysiajs/html
 import { Html, html } from "@elysia/html";
+import init, { type FontLoader, Renderer, setGlyphCacheMaxBytes } from "@takumi-rs/wasm";
+import wasmModule from "@takumi-rs/wasm/auto";
 import { googleFonts } from "takumi-js/helpers";
 import { ImageResponse } from "takumi-js/response";
 import { OgVariant, type OpenGraphBody } from "./config-schema";
 
+let rendererInstance: Renderer | null = null;
+let initPromise: Promise<void> | null = null;
+
+let logoBuffer: ArrayBuffer | null = null;
+let defaultBgBuffer: ArrayBuffer | null = null;
+let fontBuffer: ArrayBuffer | null = null;
+let googleFontList: FontLoader[] = [];
+
+async function setupRendererAndAssets(env: Env | undefined, baseUrl: string) {
+	if (rendererInstance) return;
+	if (initPromise) return initPromise;
+
+	initPromise = (async () => {
+		await (init as unknown as (opts: { module_or_path: unknown }) => Promise<void>)({ module_or_path: wasmModule });
+		setGlyphCacheMaxBytes(64 * 1024 * 1024);
+		rendererInstance = new (Renderer as unknown as new (opts: { cacheMaxBytes: number }) => Renderer)({
+			cacheMaxBytes: 64 * 1024 * 1024,
+		});
+
+		const fetchAsset = async (path: string) => {
+			if (env?.ASSETS) {
+				const res = await env.ASSETS.fetch(new Request(new URL(path, baseUrl)));
+				return res.arrayBuffer();
+			}
+			const res = await fetch(`${baseUrl}${path}`);
+			return res.arrayBuffer();
+		};
+
+		const [logo, bg, font, gFonts] = await Promise.all([
+			fetchAsset("/laniakita-logo-transparent-darkmode.svg"),
+			fetchAsset("/noise_shader_01.jpg"),
+			fetchAsset("/0xProto-Regular.ttf"),
+			googleFonts([
+				{
+					name: "Playfair Display",
+					weight: [400, 700],
+					style: "italic",
+				},
+			]),
+		]);
+
+		logoBuffer = logo;
+		defaultBgBuffer = bg;
+		fontBuffer = font;
+		googleFontList = gFonts;
+	})().catch((err) => {
+		initPromise = null;
+		throw err;
+	});
+
+	return initPromise;
+}
+
 export async function imageGenerator({
+	env,
 	baseUrl,
 	body,
 	size,
 }: {
+	env?: Env;
 	baseUrl: string;
 	body: OpenGraphBody;
 	size: { width: number; height: number };
 }) {
-	const fetchAsset = async (path: string) => {
-		const res = await fetch(`${baseUrl}${path}`);
-		return res.arrayBuffer();
-	};
+	await setupRendererAndAssets(env, baseUrl);
 
-	const [logoBuffer, bgBuffer, fontBuffer] = await Promise.all([
-		fetchAsset("/laniakita-logo-transparent-darkmode.svg"),
-		body.variant === "image"
-			? fetch(body.imageUrl).then((res) => res.arrayBuffer())
-			: fetchAsset("/noise_shader_01.jpg"),
-		fetchAsset("/0xProto-Regular.ttf"),
-	]);
+	if (!logoBuffer || !defaultBgBuffer || !fontBuffer || !rendererInstance) {
+		throw new Error("Assets or renderer not initialized");
+	}
 
-	const res = new ImageResponse(
+	const bgBuffer =
+		body.variant === "image" ? await fetch(body.imageUrl).then((res) => res.arrayBuffer()) : defaultBgBuffer;
+
+	return new ImageResponse(
 		<OpenGraphImage
 			body={body}
 			logo={logoBuffer}
@@ -36,14 +89,9 @@ export async function imageGenerator({
 		/>,
 		{
 			...size,
+			renderer: rendererInstance,
 			fonts: [
-				...(await googleFonts([
-					{
-						name: "Playfair Display",
-						weight: [400, 700],
-						style: "italic",
-					},
-				])),
+				...googleFontList,
 				{
 					name: "0xProto",
 					weight: 400,
@@ -56,7 +104,6 @@ export async function imageGenerator({
 			},
 		},
 	);
-	return res;
 }
 
 export function OpenGraphImage({
