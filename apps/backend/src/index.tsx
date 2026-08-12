@@ -30,19 +30,20 @@ export const app = new Elysia({ adapter: CloudflareAdapter })
 				"",
 				async (context) => {
 					const { body, request } = context;
+					const env = (request as unknown as { env: Env }).env;
 					const twitter = body.twitter;
 					const size = {
 						width: twitter ? 1600 : 1200,
 						height: twitter ? 900 : 630,
 					};
 					const baseUrl = new URL(request.url).origin;
-					const res = await imageGenerator({ baseUrl, body, size });
-					console.log(res);
-					return res;
+					return await imageGenerator({ env, baseUrl, body, size });
 				},
 				{
-					beforeHandle({ bearer, set }) {
-						const expectedToken = process.env.OG_AUTH_TOKEN;
+					beforeHandle(context) {
+						const { bearer, set, request } = context;
+						const env = (request as unknown as { env: Env }).env;
+						const expectedToken = env?.OG_AUTH_TOKEN;
 						if (!bearer || bearer !== expectedToken) {
 							set.status = 401;
 							return { error: "Unauthorized" };
@@ -61,4 +62,10 @@ export const app = new Elysia({ adapter: CloudflareAdapter })
 	.compile();
 
 export type App = typeof app;
-export default app;
+
+export default {
+	fetch(request: Request, env: Env, _ctx: ExecutionContext) {
+		(request as unknown as { env: Env }).env = env;
+		return app.fetch(request);
+	},
+};
