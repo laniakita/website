@@ -14,9 +14,9 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
 	args: {
+		title: "About Me",
 		children: (
 			<div>
-				<h1>About Me</h1>
 				<p>
 					Welcome to my website. I am a software engineer passionate about building robust and scalable web
 					applications.

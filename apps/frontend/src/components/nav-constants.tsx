@@ -20,6 +20,7 @@ export const MAIN_PAGES: NavItem[] = [
 		rel: "alternate",
 	},
 	{ label: "contact", to: "/contact" },
+	{ label: "credits", to: "/credits" },
 ];
 
 export const SOCIALS_NAVBAR = [
