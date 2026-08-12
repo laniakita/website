@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { BACKEND_URL, OgVariant, type OpenGraphBody } from "@/lib/api";
 
-export const Route = createFileRoute("/opengraph")({
+export const Route = createFileRoute("/api/opengraph")({
 	server: {
 		handlers: {
 			async GET({ request }) {
