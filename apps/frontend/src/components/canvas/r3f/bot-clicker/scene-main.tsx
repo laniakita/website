@@ -171,7 +171,7 @@ function BotClickerMain({ viewMobile }: { viewMobile: boolean }) {
 						<Stars ref={initStars} />
 						<spotLight decay={1.05} power={40} position={[0, 0, 10]} />
 						<BakeShadows />
-						<WebGPUEffects />
+						<Effects />
 					</>
 				)}
 			</Suspense>
@@ -181,7 +181,7 @@ function BotClickerMain({ viewMobile }: { viewMobile: boolean }) {
 	);
 }
 
-function WebGPUEffects() {
+function Effects() {
 	useRenderPipeline(
 		({ renderPipeline, passes }) => {
 			if (!renderPipeline) return;
