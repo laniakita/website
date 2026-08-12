@@ -6,6 +6,7 @@ import { useMDXComponents } from "@/components/mdx";
 import { OgVariant } from "@/lib/api";
 import { pagesSource } from "@/lib/collections/pages";
 import { getSeoMeta } from "@/lib/utils/seo";
+import { InfoLayout } from "@/stories/info/info-layout";
 import { InfoContentSkeleton } from "@/stories/skeletons/info-layout-skeleton";
 
 const getInfoPage = createServerFn({ method: "GET" })
@@ -65,8 +66,8 @@ export const Route = createFileRoute("/(core)/_info/$")({
 		}),
 	}),
 	component: () => {
-		const { RenderableMDX } = Route.useLoaderData();
-		return <>{RenderableMDX}</>;
+		const { RenderableMDX, pageData } = Route.useLoaderData();
+		return <InfoLayout title={pageData.title}>{RenderableMDX}</InfoLayout>;
 	},
 	pendingComponent: InfoContentSkeleton,
 });
