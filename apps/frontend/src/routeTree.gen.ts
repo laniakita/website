@@ -11,13 +11,13 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as coreRouteRouteImport } from './routes/(core)/route'
 import { Route as AtomDotxmlRouteImport } from './routes/atom[.]xml'
-import { Route as OpengraphRouteImport } from './routes/opengraph'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as coreIndexRouteImport } from './routes/(core)/index'
 import { Route as coreBlogMetaRouteImport } from './routes/(core)/_blog-meta'
 import { Route as coreInfoRouteImport } from './routes/(core)/_info'
 import { Route as coreWorkRouteImport } from './routes/(core)/work'
+import { Route as ApiOpengraphRouteImport } from './routes/api.opengraph'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as WorksBotClickerRouteImport } from './routes/works/bot-clicker'
 import { Route as coreInfoSplatRouteImport } from './routes/(core)/_info.$'
@@ -32,11 +32,6 @@ const coreRouteRoute = coreRouteRouteImport.update({
 const AtomDotxmlRoute = AtomDotxmlRouteImport.update({
   id: '/atom.xml',
   path: '/atom.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OpengraphRoute = OpengraphRouteImport.update({
-  id: '/opengraph',
-  path: '/opengraph',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
@@ -66,6 +61,11 @@ const coreWorkRoute = coreWorkRouteImport.update({
   id: '/work',
   path: '/work',
   getParentRoute: () => coreRouteRoute,
+} as any)
+const ApiOpengraphRoute = ApiOpengraphRouteImport.update({
+  id: '/api/opengraph',
+  path: '/api/opengraph',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const BlogSlugRoute = BlogSlugRouteImport.update({
   id: '/blog/$slug',
@@ -101,10 +101,10 @@ const WorksShadersNoise01Route = WorksShadersNoise01RouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/atom.xml': typeof AtomDotxmlRoute
-  '/opengraph': typeof OpengraphRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/work': typeof coreWorkRoute
+  '/api/opengraph': typeof ApiOpengraphRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/works/bot-clicker': typeof WorksBotClickerRoute
   '/': typeof coreIndexRoute
@@ -115,10 +115,10 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/atom.xml': typeof AtomDotxmlRoute
-  '/opengraph': typeof OpengraphRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/work': typeof coreWorkRoute
+  '/api/opengraph': typeof ApiOpengraphRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/works/bot-clicker': typeof WorksBotClickerRoute
   '/': typeof coreIndexRoute
@@ -131,12 +131,12 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/(core)': typeof coreRouteRouteWithChildren
   '/atom.xml': typeof AtomDotxmlRoute
-  '/opengraph': typeof OpengraphRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/(core)/_blog-meta': typeof coreBlogMetaRouteWithChildren
   '/(core)/_info': typeof coreInfoRouteWithChildren
   '/(core)/work': typeof coreWorkRoute
+  '/api/opengraph': typeof ApiOpengraphRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/works/bot-clicker': typeof WorksBotClickerRoute
   '/(core)/': typeof coreIndexRoute
@@ -149,10 +149,10 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/atom.xml'
-    | '/opengraph'
     | '/robots.txt'
     | '/sitemap.xml'
     | '/work'
+    | '/api/opengraph'
     | '/blog/$slug'
     | '/works/bot-clicker'
     | '/'
@@ -163,10 +163,10 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/atom.xml'
-    | '/opengraph'
     | '/robots.txt'
     | '/sitemap.xml'
     | '/work'
+    | '/api/opengraph'
     | '/blog/$slug'
     | '/works/bot-clicker'
     | '/'
@@ -178,12 +178,12 @@ export interface FileRouteTypes {
     | '__root__'
     | '/(core)'
     | '/atom.xml'
-    | '/opengraph'
     | '/robots.txt'
     | '/sitemap.xml'
     | '/(core)/_blog-meta'
     | '/(core)/_info'
     | '/(core)/work'
+    | '/api/opengraph'
     | '/blog/$slug'
     | '/works/bot-clicker'
     | '/(core)/'
@@ -196,9 +196,9 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   coreRouteRoute: typeof coreRouteRouteWithChildren
   AtomDotxmlRoute: typeof AtomDotxmlRoute
-  OpengraphRoute: typeof OpengraphRoute
   RobotsDottxtRoute: typeof RobotsDottxtRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  ApiOpengraphRoute: typeof ApiOpengraphRoute
   BlogSlugRoute: typeof BlogSlugRoute
   WorksBotClickerRoute: typeof WorksBotClickerRoute
   WorksShadersNoise01Route: typeof WorksShadersNoise01Route
@@ -218,13 +218,6 @@ declare module '@tanstack/react-router' {
       path: '/atom.xml'
       fullPath: '/atom.xml'
       preLoaderRoute: typeof AtomDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/opengraph': {
-      id: '/opengraph'
-      path: '/opengraph'
-      fullPath: '/opengraph'
-      preLoaderRoute: typeof OpengraphRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/robots.txt': {
@@ -268,6 +261,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/work'
       preLoaderRoute: typeof coreWorkRouteImport
       parentRoute: typeof coreRouteRoute
+    }
+    '/api/opengraph': {
+      id: '/api/opengraph'
+      path: '/api/opengraph'
+      fullPath: '/api/opengraph'
+      preLoaderRoute: typeof ApiOpengraphRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/blog/$slug': {
       id: '/blog/$slug'
@@ -361,9 +361,9 @@ const coreRouteRouteWithChildren = coreRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   coreRouteRoute: coreRouteRouteWithChildren,
   AtomDotxmlRoute: AtomDotxmlRoute,
-  OpengraphRoute: OpengraphRoute,
   RobotsDottxtRoute: RobotsDottxtRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  ApiOpengraphRoute: ApiOpengraphRoute,
   BlogSlugRoute: BlogSlugRoute,
   WorksBotClickerRoute: WorksBotClickerRoute,
   WorksShadersNoise01Route: WorksShadersNoise01Route,

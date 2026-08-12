@@ -37,8 +37,8 @@ export async function getOgImageUrls(ogParams: OgParams, version: string) {
 	};
 
 	return {
-		default: `/opengraph?${buildParams(false)}`,
-		twitter: `/opengraph?${buildParams(true)}`,
+		default: `/api/opengraph?${buildParams(false)}`,
+		twitter: `/api/opengraph?${buildParams(true)}`,
 	};
 }
 
