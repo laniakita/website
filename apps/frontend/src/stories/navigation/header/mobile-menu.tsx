@@ -105,7 +105,7 @@ export function HeaderMobileMenu({ navItems, socialItems, className }: HeaderMob
 				containerPadding={0}
 				offset={16}
 				crossOffset={0}
-				className='data-entering:fade-in-0 data-exiting:fade-out-0 z-50 h-[calc(100dvh-4rem)] w-full max-w-full rounded-none border-x-0 border-b-0 bg-background/95 backdrop-blur-md duration-200 data-entering:animate-in data-exiting:animate-out dark:bg-background/95'
+				className='data-entering:fade-in-0 data-exiting:fade-out-0 z-50 h-[calc(100dvh-4rem)] w-full max-w-full rounded-none border-x-0 border-b-0 bg-background/80 backdrop-blur-md duration-200 data-entering:animate-in data-exiting:animate-out dark:bg-muted/80'
 			>
 				<Dialog aria-label='Navigation Menu' className='h-full w-full outline-none'>
 					{({ close }) => <MobileMenuContent navItems={navItems} socialItems={socialItems} close={close} />}

@@ -9,6 +9,7 @@ import {
 	useRef,
 	useState,
 } from "react";
+import { Separator } from "@/components/ui/separator";
 import { useHash } from "@/components/use-hash";
 
 export default function SectionCore(props: DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement>) {
@@ -43,22 +44,25 @@ function SectionFn(props: DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLEle
 	const listItems = Children.toArray(currList) as ReactElement<HTMLLIElement>[];
 
 	return (
-		<section {...props}>
-			{h2}
-			<ol>
-				{listItems.map((item) =>
-					item.props ? (
-						<li
-							key={item.props.id}
-							ref={liRef}
-							{...(item.props as unknown as LiHTMLAttributes<HTMLLIElement>)}
-							className={`relative ${hash.substring(1) === item.props.id ? "after:pointer-events-none after:absolute after:-inset-y-2 after:-right-4 after:-left-10 after:rounded-lg after:border after:border-ctp-mauve after:bg-ctp-mauve/20 after:opacity-100 after:transition-opacity after:duration-500" : "after:opacity-0"}`}
-						/>
-					) : (
-						""
-					),
-				)}
-			</ol>
-		</section>
+		<>
+			<Separator className='border-primary/30 border-t' />
+			<section {...props}>
+				{h2}
+				<ol>
+					{listItems.map((item) =>
+						item.props ? (
+							<li
+								key={item.props.id}
+								ref={liRef}
+								{...(item.props as unknown as LiHTMLAttributes<HTMLLIElement>)}
+								className={`relative ${hash.substring(1) === item.props.id ? "after:pointer-events-none after:absolute after:-inset-y-2 after:-right-4 after:-left-10 after:rounded-lg after:border after:border-ctp-mauve after:bg-ctp-mauve/20 after:opacity-100 after:transition-opacity after:duration-500" : "after:opacity-0"}`}
+							/>
+						) : (
+							""
+						),
+					)}
+				</ol>
+			</section>
+		</>
 	);
 }

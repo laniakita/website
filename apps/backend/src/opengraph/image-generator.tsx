@@ -1,83 +1,39 @@
 // biome-ignore lint/correctness/noUnusedImports: necessary for @elysiajs/html
 import { Html, html } from "@elysia/html";
-import init, { type FontLoader, Renderer, setGlyphCacheMaxBytes } from "@takumi-rs/wasm";
-import wasmModule from "@takumi-rs/wasm/auto";
 import { googleFonts } from "takumi-js/helpers";
 import { ImageResponse } from "takumi-js/response";
 import { OgVariant, type OpenGraphBody } from "./config-schema";
 
-let rendererInstance: Renderer | null = null;
-let initPromise: Promise<void> | null = null;
-
-let logoBuffer: ArrayBuffer | null = null;
-let defaultBgBuffer: ArrayBuffer | null = null;
-let fontBuffer: ArrayBuffer | null = null;
-let googleFontList: FontLoader[] = [];
-
-async function setupRendererAndAssets(env: Env | undefined, baseUrl: string) {
-	if (rendererInstance) return;
-	if (initPromise) return initPromise;
-
-	initPromise = (async () => {
-		await (init as unknown as (opts: { module_or_path: unknown }) => Promise<void>)({ module_or_path: wasmModule });
-		setGlyphCacheMaxBytes(64 * 1024 * 1024);
-		rendererInstance = new (Renderer as unknown as new (opts: { cacheMaxBytes: number }) => Renderer)({
-			cacheMaxBytes: 64 * 1024 * 1024,
-		});
-
-		const fetchAsset = async (path: string) => {
-			if (env?.ASSETS) {
-				const res = await env.ASSETS.fetch(new Request(new URL(path, baseUrl)));
-				return res.arrayBuffer();
-			}
-			const res = await fetch(`${baseUrl}${path}`);
-			return res.arrayBuffer();
-		};
-
-		const [logo, bg, font, gFonts] = await Promise.all([
-			fetchAsset("/laniakita-logo-transparent-darkmode.svg"),
-			fetchAsset("/noise_shader_01.jpg"),
-			fetchAsset("/0xProto-Regular.ttf"),
-			googleFonts([
-				{
-					name: "Playfair Display",
-					weight: [400, 700],
-					style: "italic",
-				},
-			]),
-		]);
-
-		logoBuffer = logo;
-		defaultBgBuffer = bg;
-		fontBuffer = font;
-		googleFontList = gFonts;
-	})().catch((err) => {
-		initPromise = null;
-		throw err;
-	});
-
-	return initPromise;
-}
+// Shared across requests: dedupes concurrent fetches of the same URL and reuses the bytes.
+const imageCache = new Map<string, Promise<ArrayBuffer>>();
 
 export async function imageGenerator({
-	env,
 	baseUrl,
 	body,
 	size,
+	env,
 }: {
-	env?: Env;
+	env: Env;
 	baseUrl: string;
 	body: OpenGraphBody;
 	size: { width: number; height: number };
 }) {
-	await setupRendererAndAssets(env, baseUrl);
+	const fetchAsset = async (path: string) => {
+		if (env?.ASSETS) {
+			const res = await env.ASSETS.fetch(new Request(new URL(path, baseUrl)));
+			return res.arrayBuffer();
+		}
+		const res = await fetch(`${baseUrl}${path}`);
+		return res.arrayBuffer();
+	};
 
-	if (!logoBuffer || !defaultBgBuffer || !fontBuffer || !rendererInstance) {
-		throw new Error("Assets or renderer not initialized");
-	}
-
-	const bgBuffer =
-		body.variant === "image" ? await fetch(body.imageUrl).then((res) => res.arrayBuffer()) : defaultBgBuffer;
+	const [logoBuffer, bgBuffer, fontBuffer] = await Promise.all([
+		fetchAsset("/laniakita-logo-transparent-darkmode.svg"),
+		body.variant === "image"
+			? fetch(body.imageUrl).then((res) => res.arrayBuffer())
+			: fetchAsset("/noise_shader_01.jpg"),
+		fetchAsset("/0xProto-Regular.ttf"),
+	]);
 
 	return new ImageResponse(
 		<OpenGraphImage
@@ -89,9 +45,14 @@ export async function imageGenerator({
 		/>,
 		{
 			...size,
-			renderer: rendererInstance,
 			fonts: [
-				...googleFontList,
+				...(await googleFonts([
+					{
+						name: "Inter Tight",
+						weight: 900,
+						style: "normal",
+					},
+				])),
 				{
 					name: "0xProto",
 					weight: 400,
@@ -99,6 +60,9 @@ export async function imageGenerator({
 					data: fontBuffer,
 				},
 			],
+			images: {
+				fetchCache: imageCache,
+			},
 			headers: {
 				"Cache-Control": "public, max-age=31536000, immutable",
 			},
@@ -160,7 +124,7 @@ export function OpenGraphImage({
 						alignItems: "center",
 						justifyContent: "center",
 						position: "relative",
-						fontFamily: "Playfair Display",
+						fontFamily: "Inter Tight",
 						backgroundColor: "black",
 					}}
 				>
@@ -202,7 +166,7 @@ export function OpenGraphImage({
 						alignItems: "center",
 						justifyContent: "center",
 						position: "relative",
-						fontFamily: "Playfair Display",
+						fontFamily: "Inter Tight",
 						backgroundColor: "black",
 					}}
 				>
@@ -277,7 +241,7 @@ export function OpenGraphImage({
 						alignItems: "center",
 						justifyContent: "center",
 						position: "relative",
-						fontFamily: "Playfair Display",
+						fontFamily: "Inter Tight",
 						backgroundColor: "black",
 					}}
 				>

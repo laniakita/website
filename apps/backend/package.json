@@ -11,7 +11,7 @@
   "scripts": {
     "deploy": "bunx wrangler deploy",
     "dev": "bunx wrangler dev",
-    "start": "bunx wrangler dev",
+    "preview": "bunx wrangler dev",
     "typecheck": "tsc --noEmit",
     "cf-typegen": "bunx wrangler types"
   },
@@ -29,6 +29,7 @@
     "@sinclair/typebox": "^0.34.13",
     "@types/node": "^26.2.0",
     "@types/react": "^19.2.18",
-    "wrangler": "^4.120.1"
+    "typescript": "catalog:",
+    "wrangler": "catalog:"
   }
 }

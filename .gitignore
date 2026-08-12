@@ -3,6 +3,9 @@
 .env
 .cache
 
+# server output
+server
+
 # tmp
 archive/
 

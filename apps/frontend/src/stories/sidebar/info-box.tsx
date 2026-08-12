@@ -1,7 +1,8 @@
 import type * as React from "react";
 import { Card } from "@/components/ui/card";
+import { Link } from "@/components/ui/link";
 import { SmoothTabsTrigger, Tabs, TabsContent, TabsList } from "@/components/ui/tabs";
-import { cn } from "$/src/lib/utils/cn";
+import { cn } from "@/lib/utils/cn";
 
 export interface InfoBoxProps extends React.HTMLAttributes<HTMLDivElement> {
 	/** The main text or React node containing biographical or descriptive info. */
@@ -14,17 +15,25 @@ export interface InfoBoxProps extends React.HTMLAttributes<HTMLDivElement> {
 	//className?: string;
 }
 
-function SimpleRoller({ title, items }: { title: string; items: { title: string; url: string }[] }) {
+function SimpleRoller({
+	title,
+	items,
+	addHashTag,
+}: {
+	title: string;
+	items: { title: string; url: string }[];
+	addHashTag?: boolean;
+}) {
 	if (!items || items.length === 0) return null;
 	return (
 		<div className='mb-4'>
 			<h3 className='mb-2 font-bold font-heading'>{title}</h3>
-			<div className='flex flex-wrap gap-2 text-muted-foreground text-sm'>
+			<div className='flex flex-wrap gap-1 gap-y-0'>
 				{items.map((item, idx) => (
 					<span key={`${item.url}`}>
-						<a href={item.url} className='hover:text-foreground hover:underline'>
-							{item.title}
-						</a>
+						<Link to={item.url} className='font-mono text-xs'>
+							{addHashTag ? `#${item.title}` : item.title}
+						</Link>
 						{idx < items.length - 1 && <span>,</span>}
 					</span>
 				))}
@@ -54,7 +63,7 @@ export function InfoBox({ blogInfo, categories, tags, className }: InfoBoxProps)
 				</TabsContent>
 				<TabsContent id='meta' className='-mt-2 p-4 md:p-6'>
 					<SimpleRoller title='Categories' items={categories} />
-					<SimpleRoller title='Tags' items={tags} />
+					<SimpleRoller title='Tags' items={tags} addHashTag />
 				</TabsContent>
 			</Tabs>
 		</Card>
