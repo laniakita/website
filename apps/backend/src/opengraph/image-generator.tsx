@@ -13,7 +13,8 @@ export async function imageGenerator({
 	size,
 	env,
 }: {
-	env: Env;
+	// biome-ignore lint/suspicious/noExplicitAny: clashes with Cloudflare worker env types
+	env: any;
 	baseUrl: string;
 	body: OpenGraphBody;
 	size: { width: number; height: number };

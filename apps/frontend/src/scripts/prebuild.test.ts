@@ -39,9 +39,12 @@ describe("prebuild script", () => {
 	});
 
 	afterEach(() => {
-		delete process.env.BUCKET_ENDPOINT;
-		delete process.env.BUCKET_PUBLIC_URL;
-		delete process.env.BUCKET_NAME;
+		// biome-ignore lint/suspicious/noExplicitAny: Clashes with global env.
+		delete (process.env as any).BUCKET_ENDPOINT;
+		// biome-ignore lint/suspicious/noExplicitAny: Clashes with global env.
+		delete (process.env as any).BUCKET_PUBLIC_URL;
+		// biome-ignore lint/suspicious/noExplicitAny: Clashes with global env.
+		delete (process.env as any).BUCKET_NAME;
 	});
 
 	it("should process frontmatter and upload image when hash changes", async () => {
