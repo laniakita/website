@@ -2,7 +2,7 @@
 id: d1fa986f-813e-4ff0-9342-db842c5d4a76
 type: Post
 createdAt: 2025-01-05T08:28:46Z
-lastModified: 2025-01-10T08:17:26Z
+lastModified: 2026-08-13T00:50:45Z
 catSlugs:
   - linux
   - security
@@ -43,7 +43,9 @@ Sure, perhaps you vowed this would be the year you'd stop distrohopping[^distroh
 
 <summary>[INFO]: Changelog</summary>
 
-**Jan, 9th**: Added notes on updating nix flakes, what a flake.lock file is, how to override nix flake inputs, and other fun, clarifying notes. See: [#7bb10d9](https://github.com/laniakita/website/commit/7bb10d9dd5d6d422fdb899d7f8b939b4e478a12f), [#5dfc95e](https://github.com/laniakita/website/commit/5dfc95e350a76920ae2fd60058a0700ea71338ce), [#e533186](https://github.com/laniakita/website/commit/e533186d55bb371a117e7c76fd30fa2ba3397f2d).
+**Aug, 12th, 2026**: Fixed flake installation commands and safe reboot commands. Thank you to [raldone01](https://github.com/raldone01) and [benjaminrich](https://github.com/benjaminrich) for their feedback!
+
+**Jan, 9th, 2025**: Added notes on updating nix flakes, what a flake.lock file is, how to override nix flake inputs, and other fun, clarifying notes. See: [#7bb10d9](https://github.com/laniakita/website/commit/7bb10d9dd5d6d422fdb899d7f8b939b4e478a12f), [#5dfc95e](https://github.com/laniakita/website/commit/5dfc95e350a76920ae2fd60058a0700ea71338ce), [#e533186](https://github.com/laniakita/website/commit/e533186d55bb371a117e7c76fd30fa2ba3397f2d).
 
 </details>
 
@@ -1308,7 +1310,7 @@ hint-02: You can find the status and commit hashes of the latest builds of all t
 With a clean `flake update`, that's the go-ahead to perform the magical install command.
 
 ```console noLineNumbers
-# nixos-install --root /mnt --no-root-passwd --flake /mnt/etc/nixos#nixos
+# nixos-install --root /mnt --no-root-passwd --flake /mnt/etc/nixos#my-nixos-machine
 ```
 
 Be warned though, this step could take a while (even assuming no compilation errors). As such, now's probably a good time to stretch your legs and get some fresh air. You've probably been sitting here reading this guide for a while now, so, maybe relax your eyes, and go enjoy a refreshment of some kind (a cup of tea, coffee, etc.). That way, if there are any unexpected errors (likely syntax, like a forgotten semi-colon), you'll at least be better prepared to deal with it...
@@ -1346,7 +1348,11 @@ Installation finished!
 Once that's all set, it's finally time to reboot. You can do that safely[^installing-nixos-with-flakes-and-lvm-on-luks] like so:
 
 ```console noLineNumbers
-# umount -R /mnt sudo swapoff -L NIXOS_SWAP sudo vgchange -a n lvmroot sudo cryptsetup close /dev/mapper/cryptroot reboot
+# umount -R /mnt
+# sudo swapoff -L NIXSWAP
+# sudo vgchange -a n lvmroot
+# sudo cryptsetup close /dev/mapper/cryptroot
+# reboot
 ```
 
 Or dangerously via a simple: `$ reboot`
