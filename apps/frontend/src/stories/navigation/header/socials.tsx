@@ -20,7 +20,7 @@ export function HeaderSocials({ socialItems }: HeaderSocialsProps) {
 	if (!socialItems || socialItems.length === 0) return null;
 
 	return (
-		<div className='hidden items-center gap-1 sm:flex'>
+		<div className='@md/navbar:flex hidden items-center gap-1'>
 			{socialItems.map((social) => (
 				<LinkButton
 					key={social.title}

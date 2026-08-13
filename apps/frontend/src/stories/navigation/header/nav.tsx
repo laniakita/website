@@ -17,7 +17,7 @@ export interface HeaderNavProps {
  */
 export function HeaderNav({ navItems }: HeaderNavProps) {
 	return (
-		<nav className='hidden items-center gap-6 lg:flex'>
+		<nav className='@4xl/navbar:flex hidden items-center gap-6'>
 			{navItems.map((item) => (
 				<Link
 					key={item.label}
