@@ -116,7 +116,7 @@ export function Header({
 				<div className='flex items-center gap-2 sm:gap-4'>
 					<HeaderSocials socialItems={socialItems} />
 					{/* Separator */}
-					<div className='mx-1 hidden h-6 w-px bg-border sm:block' />
+					<div className='mx-1 @md/navbar:block hidden h-6 w-px bg-border' />
 					<ThemeToggleSwitch />
 					<HeaderMobileMenu navItems={navItems} socialItems={socialItems} className='lg:hidden' />
 				</div>
