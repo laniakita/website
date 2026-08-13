@@ -48,7 +48,7 @@ function SimpleRoller({
  */
 export function InfoBox({ blogInfo, categories, tags, className }: InfoBoxProps) {
 	return (
-		<Card className={cn("bg-background py-0", className)}>
+		<Card className={cn("rounded-md bg-background py-0 shadow-none", className)}>
 			<Tabs defaultSelectedKey='info' className='w-full'>
 				<TabsList className='h-auto w-full justify-start rounded-none border-background border-b-2 bg-secondary px-6 pt-2 font-heading capitalize'>
 					<SmoothTabsTrigger id='info'>
@@ -59,7 +59,7 @@ export function InfoBox({ blogInfo, categories, tags, className }: InfoBoxProps)
 					</SmoothTabsTrigger>
 				</TabsList>
 				<TabsContent id='info' className='-mt-2 p-4 md:p-6'>
-					<div className='prose dark:prose-invert max-w-none text-sm'>{blogInfo}</div>
+					<div className='prose-protocol-omega text-sm prose-p:first:mt-0 prose-p:last:mb-0'>{blogInfo}</div>
 				</TabsContent>
 				<TabsContent id='meta' className='-mt-2 p-4 md:p-6'>
 					<SimpleRoller title='Categories' items={categories} />
