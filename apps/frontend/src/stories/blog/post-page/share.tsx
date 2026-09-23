@@ -1,9 +1,23 @@
 "use client";
 
+import { useForm } from "@tanstack/react-form";
 import { useEffect, useState } from "react";
-import { Button } from "react-aria-components";
+import * as v from "valibot";
 import { Dialog, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { DropdownMenu, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Button } from "$/src/components/ui/button";
+import { Field, FieldError, FieldGroup, FieldLabel } from "$/src/components/ui/field";
+import { Input } from "$/src/components/ui/input";
+
+const DEFAULT_INSTANCE = "mastodon.social";
+
+const mastadonInstanceFormSchema = v.object({
+	instance: v.pipe(
+		v.string(),
+		v.trim(),
+		v.transform((val) => val || DEFAULT_INSTANCE),
+	),
+});
 
 export interface MinPageData {
 	title: string;
@@ -25,12 +39,9 @@ export const shareUnderChar = (minPageData: MinPageData | undefined, isBsky?: bo
 	return `${encodeURIComponent(minPageData.title)} ${encodeURIComponent(minPageData.url)}`;
 };
 
-const DEFAULT_INSTANCE = "mastodon.social";
-
 export function ShareButton({ title, url }: { title: string; url: string }) {
 	const [isCopied, setIsCopied] = useState(false);
 	const [isMastodonOpen, setIsMastodonOpen] = useState(false);
-	const [instanceInput, setInstanceInput] = useState(DEFAULT_INSTANCE);
 
 	// Optional fallback if props aren't passed
 	const [clientUrl, setClientUrl] = useState(url);
@@ -45,15 +56,6 @@ export function ShareButton({ title, url }: { title: string; url: string }) {
 		}
 	}, [url, title]);
 
-	useEffect(() => {
-		if (typeof window !== "undefined") {
-			const cachedInstance = localStorage.getItem("mastodon-instance");
-			if (cachedInstance && cachedInstance.length > 0) {
-				setInstanceInput(cachedInstance);
-			}
-		}
-	}, []);
-
 	const pageData = { title: clientTitle, url: clientUrl };
 
 	const handleCopy = () => {
@@ -64,24 +66,20 @@ export function ShareButton({ title, url }: { title: string; url: string }) {
 		}, 2000);
 	};
 
-	const shareToMastodon = (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-		const formData = new FormData(e.currentTarget);
-		const userInstance = formData.get("mastodon-instance");
-		let targetInstance = DEFAULT_INSTANCE;
-
-		if (typeof userInstance === "string" && userInstance.length > 0) {
-			localStorage.setItem("mastodon-instance", userInstance);
-			targetInstance = userInstance;
-		} else {
-			const cached = localStorage.getItem("mastodon-instance");
-			if (cached) targetInstance = cached;
-		}
-
-		const returnUrl = `https://${targetInstance}/share?text=${encodeURIComponent(clientTitle)}%0A%0A${encodeURIComponent(clientUrl)}`;
-		window.open(returnUrl, "_blank", "noreferrer=true")?.focus();
-		setIsMastodonOpen(false);
-	};
+	const form = useForm({
+		defaultValues: {
+			instance: (typeof window !== "undefined" ? localStorage.getItem("mastodon-instance") : null) || DEFAULT_INSTANCE,
+		},
+		validators: {
+			onSubmit: mastadonInstanceFormSchema,
+		},
+		onSubmit: async ({ value }) => {
+			localStorage.setItem("mastodon-instance", value.instance);
+			const returnUrl = `https://${value.instance}/share?text=${encodeURIComponent(clientTitle)}%0A%0A${encodeURIComponent(clientUrl)}`;
+			window.open(returnUrl, "_blank", "noreferrer=true")?.focus();
+			setIsMastodonOpen(false);
+		},
+	});
 
 	return (
 		<>
@@ -151,33 +149,54 @@ export function ShareButton({ title, url }: { title: string; url: string }) {
 				</DropdownMenu>
 			</DropdownMenuTrigger>
 
-			<Dialog isOpen={isMastodonOpen} onOpenChange={setIsMastodonOpen}>
-				<DialogHeader>
-					<DialogTitle className='sr-only'>Share to Mastodon</DialogTitle>
-				</DialogHeader>
-				<div className='py-6'>
-					<form onSubmit={shareToMastodon} className='flex flex-col gap-4'>
-						<label htmlFor='mastodon-instance' className='font-semibold text-foreground'>
-							mastodon_server: {instanceInput.length > 0 ? instanceInput : DEFAULT_INSTANCE}
-						</label>
-						<div className='relative flex flex-row'>
-							<input
-								id='mastodon-instance'
-								name='mastodon-instance'
-								type='text'
-								placeholder={instanceInput.length > 0 ? instanceInput : DEFAULT_INSTANCE}
-								onChange={(e) => setInstanceInput(e.target.value)}
-								className='w-full rounded-l-lg border border-ctp-surface0 border-r-0 bg-background px-4 py-3 placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ctp-mauve'
-							/>
-							<button
-								type='submit'
-								className='rounded-r-lg bg-ctp-mauve px-6 font-bold text-ctp-base transition-colors hover:bg-ctp-pink'
-							>
-								share
-							</button>
-						</div>
-					</form>
-				</div>
+			<Dialog isOpen={isMastodonOpen} onOpenChange={setIsMastodonOpen} className='bg-card/80'>
+				<form
+					id='mastadon-instance-form'
+					onSubmit={(e) => {
+						e.preventDefault();
+						form.handleSubmit();
+					}}
+				>
+					<DialogHeader>
+						<DialogTitle>Share to Mastodon</DialogTitle>
+					</DialogHeader>
+					<FieldGroup className='mt-4'>
+						<form.Field
+							name='instance'
+							// biome-ignore lint/correctness/noChildrenProp: part of tanstack form
+							children={(field) => {
+								const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+								return (
+									<Field data-invalid={isInvalid}>
+										<FieldLabel htmlFor={field.name} className='font-semibold text-foreground'>
+											mastodon server
+										</FieldLabel>
+										<div className='relative flex flex-row'>
+											<Input
+												id={field.name}
+												name={field.name}
+												type='text'
+												value={field.state.value}
+												placeholder={DEFAULT_INSTANCE}
+												onBlur={field.handleBlur}
+												onChange={(e) => field.handleChange(e.target.value)}
+												aria-invalid={isInvalid}
+												autoComplete='off'
+											/>
+											<Button
+												type='submit'
+												className='absolute top-1 right-1 h-7 bg-ctp-mauve px-6 font-bold font-mono text-ctp-base transition-colors hover:bg-ctp-pink'
+											>
+												share
+											</Button>
+										</div>
+										{isInvalid && <FieldError errors={field.state.meta.errors} />}
+									</Field>
+								);
+							}}
+						/>
+					</FieldGroup>
+				</form>
 			</Dialog>
 		</>
 	);
