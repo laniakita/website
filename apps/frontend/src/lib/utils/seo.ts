@@ -46,7 +46,7 @@ export async function getSeoMeta(options: SeoMetaOptions) {
 	const {
 		lastModified,
 		title = "laniakita.com",
-		description = "Lani's corner on the web",
+		description = "Lani's dev blog.",
 		authors = ["Lani Akita"],
 		ogParams = { variant: OgVariant.Home },
 		imageAlt = "Blog post header",

@@ -3,8 +3,8 @@
  * https://developers.cloudflare.com/workers/wrangler/configuration/
  */
 {
-	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "backend",
+	"$schema": "../../node_modules/wrangler/config-schema.json",
+	"name": "laniakita-backend",
 	"main": "src/index.tsx",
 	"compatibility_date": "2026-08-10",
 	"observability": {
