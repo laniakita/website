@@ -23,9 +23,7 @@
 	},
 	"dependencies": {
 		"@atproto/api": "^0.20.37",
-		"@elysiajs/eden": "^1.4.9",
 		"@giscus/react": "^3.1.0",
-		"@lani/backend": "workspace:*",
 		"@react-three/a11y": "^3.0.0",
 		"@react-three/drei": "^11.0.0-alpha.5",
 		"@react-three/fiber": "^10.0.0-alpha.3",
@@ -51,8 +49,10 @@
 		"react-aria-components": "^1.20.0",
 		"react-dom": "^19.2.8",
 		"shadcn": "^4.16.1",
+		"takumi-js": "^2.14.0",
 		"three": "^0.185.1",
 		"three-stdlib": "^2.36.1",
+		"valibot": "^1.5.0",
 		"zod": "^3.24.2",
 		"zustand": "^5.0.14"
 	},

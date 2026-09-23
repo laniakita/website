@@ -1,4 +1,4 @@
-import { OgVariant, type OpenGraphBody } from "@/lib/api";
+import { OgVariant, type OpenGraphBody } from "@/lib/opengraph";
 
 // biome-ignore lint/suspicious/noExplicitAny: necessary due to generic type constraints
 type DistributiveOmit<T, K extends keyof any> = T extends any ? Omit<T, K> : never;

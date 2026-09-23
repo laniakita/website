@@ -73,7 +73,7 @@ const getCategoryPage = createServerFn({ method: "GET" })
 		};
 	});
 
-import { OgVariant } from "@/lib/api";
+import { OgVariant } from "@/lib/opengraph";
 import { MetaLayoutSkeleton } from "@/stories/skeletons/meta-layout-skeleton";
 
 export const Route = createFileRoute("/(core)/_blog-meta/categories/$slug")({

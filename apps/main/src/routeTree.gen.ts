@@ -17,7 +17,7 @@ import { Route as coreIndexRouteImport } from './routes/(core)/index'
 import { Route as coreBlogMetaRouteImport } from './routes/(core)/_blog-meta'
 import { Route as coreInfoRouteImport } from './routes/(core)/_info'
 import { Route as coreWorkRouteImport } from './routes/(core)/work'
-import { Route as ApiOpengraphRouteImport } from './routes/api.opengraph'
+import { Route as ApiOpengraphRouteImport } from './routes/api/opengraph'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as WorksBotClickerRouteImport } from './routes/works/bot-clicker'
 import { Route as coreInfoSplatRouteImport } from './routes/(core)/_info.$'
@@ -371,12 +371,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}

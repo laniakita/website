@@ -1,7 +1,7 @@
-import { OgVariant } from "@lani/backend/schema";
 import { createFileRoute } from "@tanstack/react-router";
 import { lazy, Suspense } from "react";
 import { worksSource } from "@/lib/collections/works";
+import { OgVariant } from "@/lib/opengraph";
 import { getSeoMeta } from "@/lib/utils/seo";
 
 const NoiseShader01 = lazy(() => {
