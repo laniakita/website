@@ -1,8 +1,85 @@
-// biome-ignore lint/correctness/noUnusedImports: necessary for @elysiajs/html
-import { Html, html } from "@elysia/html";
+import { createFileRoute } from "@tanstack/react-router";
 import { googleFonts } from "takumi-js/helpers";
 import { ImageResponse } from "takumi-js/response";
-import { OgVariant, type OpenGraphBody } from "./config-schema";
+import * as v from "valibot";
+
+export const Route = createFileRoute("/api/opengraph")({
+	server: {
+		handlers: {
+			async GET({ request }) {
+				const url = new URL(request.url);
+				const variant = url.searchParams.get("variant") ?? "static";
+				const title = url.searchParams.get("title") ?? "Lani Akita";
+				const prefix = url.searchParams.get("prefix") ?? "Lani Akita";
+				let imageUrl = url.searchParams.get("imageUrl") ?? "";
+				const version = url.searchParams.get("version") ?? "1";
+				const twitterParam = url.searchParams.get("twitter");
+				const twitter = twitterParam !== null ? twitterParam === "true" : false;
+
+				if (imageUrl && !imageUrl.startsWith("http")) {
+					const baseUrl = import.meta.env.VITE_APP_URL || url.origin;
+					imageUrl = `${baseUrl}${imageUrl.startsWith("/") ? "" : "/"}${imageUrl}`;
+				}
+
+				let body: OpenGraphBody;
+
+				if (variant === OgVariant.Home) {
+					body = { variant: OgVariant.Home, twitter, version };
+				} else if (variant === OgVariant.Image) {
+					body = { variant: OgVariant.Image, imageUrl, twitter, version };
+				} else if (variant === OgVariant.Dynamic) {
+					body = { variant: OgVariant.Dynamic, title, prefix, twitter, version };
+				} else {
+					body = { variant: OgVariant.Static, title, twitter, version };
+				}
+			},
+		},
+	},
+});
+export enum OgVariant {
+	Home = "home",
+	Static = "static",
+	Dynamic = "dynamic",
+	Image = "image",
+}
+
+export const BaseOgSchema = {
+	twitter: v.optional(v.boolean(), false),
+	version: v.string(),
+};
+
+export const HomeOgSchema = v.object({
+	variant: v.literal(OgVariant.Home),
+	...BaseOgSchema,
+});
+
+export const StaticOgSchema = v.object({
+	variant: v.literal(OgVariant.Static),
+	title: v.pipe(v.string(), v.maxLength(200)),
+	...BaseOgSchema,
+});
+
+export const DynamicOgSchema = v.object({
+	variant: v.literal(OgVariant.Dynamic),
+	title: v.pipe(v.string(), v.maxLength(200)),
+	prefix: v.pipe(v.string(), v.maxLength(200)),
+	...BaseOgSchema,
+});
+
+export const ImageOgSchema = v.object({
+	variant: v.literal(OgVariant.Image),
+	imageUrl: v.pipe(v.string(), v.url()),
+	...BaseOgSchema,
+});
+
+export const OpenGraphRequestSchema = v.variant("variant", [
+	HomeOgSchema,
+	StaticOgSchema,
+	DynamicOgSchema,
+	ImageOgSchema,
+]);
+
+export type OpenGraphRequest = v.InferOutput<typeof OpenGraphRequestSchema>;
 
 // Shared across requests: dedupes concurrent fetches of the same URL and reuses the bytes.
 const imageCache = new Map<string, Promise<ArrayBuffer>>();
