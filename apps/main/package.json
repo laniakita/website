@@ -1,5 +1,5 @@
 {
-	"name": "@lani/frontend",
+	"name": "@lani/main",
 	"private": true,
 	"type": "module",
 	"imports": {

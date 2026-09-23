@@ -1,0 +1,27 @@
+{
+  "name": "@ahiakea/infra",
+  "version": "0.0.0",
+  "private": true,
+  "main": "src/index.ts",
+  "scripts": {
+    "pulumi:up": "pulumi up",
+    "pulumi:preview": "pulumi preview",
+    "pulumi:destroy": "pulumi destroy",
+    "pulumi:refresh": "pulumi refresh",
+    "check": "biome check --unsafe --fix",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf node_modules"
+  },
+  "dependencies": {
+    "@pulumi/cloudflare": "^6.19.0",
+    "@pulumi/command": "^1.2.1",
+    "@pulumi/pulumi": "^3.142.0"
+  },
+  "devDependencies": {
+    "@lani/typescript-config": "workspace:*",
+    "@turbo/gen": "catalog:",
+    "@types/bun": "catalog:",
+    "@types/node": "catalog:",
+    "typescript": "catalog:"
+  }
+}
