@@ -4,7 +4,7 @@
 		"@biomejs/biome": "^2.5.8",
 		"turbo": "^2.10.9"
 	},
-	"packageManager": "bun@1.3.14",
+	"packageManager": "bun@1.4.0",
 	"patchedDependencies": {
 		"@storybook/addon-mcp@0.7.0": "patches/@storybook%2Faddon-mcp@0.7.0.patch",
 		"@react-three/drei@11.0.0-alpha.5": "patches/@react-three%2Fdrei@11.0.0-alpha.5.patch",
@@ -24,7 +24,18 @@
 		"cf-typegen": "turbo run cf-typegen",
 		"generate-routes": "turbo run generate-routes",
 		"storybook": "turbo run storybook",
-		"build-storybook": "turbo run build-storybook"
+		"build-storybook": "turbo run build-storybook",
+		"pulumi:up": "turbo run pulumi:up",
+		"pulumi:destroy": "turbo run pulumi:destroy",
+		"pulumi:preview": "turbo run pulumi:preview",
+		"pulumi:refresh": "turbo run pulumi:refresh",
+		"db:push": "turbo run db:push",
+		"db:generate": "turbo run db:generate",
+		"db:migrate": "turbo run db:migrate",
+		"db:check": "turbo run db:check",
+		"db:up": "turbo run db:up",
+		"db:studio": "turbo run db:studio",
+		"clean": "turbo run clean && rm -rf node_modules && bun pm cache rm && bun i",
 	},
 	"type": "module",
 	"workspaces": {
@@ -33,8 +44,11 @@
 			"packages/*"
 		],
 		"catalog":  {
-			"wrangler": "^4.122.0",
-			"typescript": "^7.0.2"
+			"@types/bun": "1.4.2",
+			"@turbo/gen": "^2.9.15",
+			"@types/node": "^26.2.0",
+			"typescript": "^7.0.2",
+			"wrangler": "^4.122.0"
 		}
 	}
 }

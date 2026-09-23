@@ -1,0 +1,19 @@
+{
+  "$schema": "https://v2-10-12.turborepo.dev/schema.json",
+  "extends": ["//"],
+  "tasks": {
+    "pulumi:up": {
+      "cache": false
+    },
+    "pulumi:preview": {
+      "cache": false,
+      "persistent": false
+    },
+    "pulumi:destroy": {
+      "cache": false
+    },
+    "pulumi:refresh": {
+      "cache": false
+    }
+  }
+}

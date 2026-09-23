@@ -6,7 +6,7 @@ import { categoriesSource } from "../collections/categories";
 import { pagesSource } from "../collections/pages";
 import { tagsSource } from "../collections/tags";
 import { worksSource } from "../collections/works";
-import { getOgImageUrls, type OgParams } from "../utils/seo";
+import { getOgImageUrls, type OgParams } from "./seo";
 
 /**
  * Represents an image associated with a route, such as featured or inline post images.
