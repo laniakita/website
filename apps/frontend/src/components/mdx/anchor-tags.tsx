@@ -10,6 +10,9 @@ export default function Anchors(props: AnchorHTMLAttributes<HTMLAnchorElement>) 
 			return <a {...props} target='_blank' rel='noopener noreferrer nofollow' />;
 		}
 	}
+	if (props.href?.includes(".xml")) {
+		return <a {...props} target='_blank' rel='noopener noreferrer nofollow' type='application/rss+xml' />;
+	}
 
 	if (props.href?.includes("#")) {
 		return <a href={props.href} {...props} />;
