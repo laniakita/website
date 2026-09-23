@@ -1,8 +1,8 @@
-import { OgVariant } from "@lani/backend/schema";
 import { createFileRoute } from "@tanstack/react-router";
 import { lazy, Suspense } from "react";
 import { HajClickerStoreProvider } from "@/components/canvas/r3f/bot-clicker/store";
 import { worksSource } from "@/lib/collections/works";
+import { OgVariant } from "@/lib/opengraph";
 import { getSeoMeta } from "@/lib/utils/seo";
 
 // We use lazy to prevent server-side evaluation of Three.js code which requires window

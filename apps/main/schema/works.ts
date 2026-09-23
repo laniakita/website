@@ -2,7 +2,6 @@ import { defineCollections } from "fumadocs-mdx/config";
 import * as z from "zod";
 import { extractImagesFromMdx } from "./image-extractor";
 import matter from "gray-matter";
-import path from "node:path";
 import { descriptionHelper } from "./description-helper";
 
 export const works = defineCollections({

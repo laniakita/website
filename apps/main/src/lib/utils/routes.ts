@@ -1,6 +1,6 @@
 import { compareDesc } from "date-fns";
+import { OgVariant } from "@/lib/opengraph";
 import { parseTitleFromFilename } from "../../../schema/image-extractor";
-import { OgVariant } from "../api";
 import { blogSource } from "../collections/blog";
 import { categoriesSource } from "../collections/categories";
 import { pagesSource } from "../collections/pages";

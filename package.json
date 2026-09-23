@@ -35,7 +35,7 @@
 		"db:check": "turbo run db:check",
 		"db:up": "turbo run db:up",
 		"db:studio": "turbo run db:studio",
-		"clean": "turbo run clean && rm -rf node_modules && bun pm cache rm && bun i",
+		"clean": "turbo run clean && rm -rf node_modules && bun pm cache rm && bun i"
 	},
 	"type": "module",
 	"workspaces": {
