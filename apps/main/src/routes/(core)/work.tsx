@@ -1,6 +1,7 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { renderServerComponent } from "@tanstack/react-start/rsc";
+import { compareDesc } from "date-fns";
 import { useMDXComponents } from "@/components/mdx";
 import { pagesSource } from "@/lib/collections/pages";
 import { worksSource } from "@/lib/collections/works";
@@ -21,12 +22,10 @@ const getWorkPageData = createServerFn({ method: "GET" }).handler(async () => {
 
 	const works = worksSource
 		.getPages()
-		.sort(
-			(a, b) =>
-				(b.data.lastModified ?? b.data.createdAt).valueOf() - (a.data.lastModified ?? a.data.createdAt).valueOf(),
+		.sort((a, b) =>
+			compareDesc(new Date(a.data.lastModified ?? a.data.createdAt), new Date(b.data.lastModified ?? b.data.createdAt)),
 		);
 
-	// Map through works and render their MDX
 	const renderableWorks = await Promise.all(
 		works.map(async (work) => {
 			const { body: WorkMDX } = await work.data.load();
