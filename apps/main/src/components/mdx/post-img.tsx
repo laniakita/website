@@ -1,23 +1,22 @@
 "use client";
 import { Image } from "@unpic/react";
+import { normalizePublicAssetUrl } from "../../lib/utils/assets";
 
 export function ImgReplacer(props: React.ImgHTMLAttributes<HTMLImageElement>) {
-	// biome-ignore lint/suspicious/noExplicitAny: MDX props are too dynamic
-	const { "data-lqip": lqip, alt, src, ...rest } = props as any;
+	// biome-ignore lint/suspicious/noExplicitAny: MDX props are dynamic
+	const { "data-lqip": lqip, alt, src, width, height, ...rest } = props as any;
+	const cleanSrc = typeof src === "string" ? normalizePublicAssetUrl(src) : src;
 
 	return (
 		<figure className='my-6 overflow-hidden rounded-md'>
 			<Image
 				{...rest}
-				src={src}
+				src={cleanSrc}
 				alt={alt}
+				width={width ? Number(width) : undefined}
+				height={height ? Number(height) : undefined}
 				layout='constrained'
-				fallback='cloudflare'
-				options={{
-					cloudflare: {
-						domain: import.meta.env.VITE_CDN,
-					},
-				}}
+				fallback={import.meta.env.DEV ? undefined : "cloudflare"}
 				operations={{
 					cloudflare: {
 						quality: 75,

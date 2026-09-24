@@ -18,7 +18,7 @@ const getPost = createServerFn({ method: "GET" })
 			return null;
 		}
 
-		const MDX = post.data.body;
+		const { body: MDX, toc } = await post.data.load();
 
 		function extractHtmlFromNode(node: ReactNode): string {
 			if (typeof node === "string" || typeof node === "number") {
@@ -54,7 +54,7 @@ const getPost = createServerFn({ method: "GET" })
 		}
 
 		const flatHeadings: { id: string; content: string }[] = [];
-		const nestedHeadings = post.data.toc.map((item) => {
+		const nestedHeadings = toc.map((item) => {
 			const { depth, url, title } = item;
 			const titleHtml = extractHtmlFromNode(title);
 			flatHeadings.push({ id: url.substring(1), content: titleHtml });

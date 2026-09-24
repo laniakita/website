@@ -77,7 +77,7 @@ export const Route = createRootRoute({
 	}),
 	shellComponent: RootDocument,
 	errorComponent: ({ error }) => {
-		return <div>An error occurred: {error.message}</div>;
+		return <div>An error occurred: {error instanceof Error ? error.message : String(error)}</div>;
 	},
 	notFoundComponent: () => {
 		return <div>404</div>;

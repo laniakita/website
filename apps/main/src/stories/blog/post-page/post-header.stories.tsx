@@ -34,7 +34,6 @@ export const Default: Story = {
 		tags: [{ title: "tanstack", type: CatTagType.Tag, url: "/tag/tanstack" }],
 		featured_image: {
 			src: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=1000",
-			localHash: "",
 			altText: "Computer code on a screen",
 			caption: "A beautiful stock photo of code",
 			//width: 1000,

@@ -41,7 +41,6 @@ export const Default: Story = {
 		createdAt: "2026-08-01",
 		featured_image: {
 			src: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=2000",
-			localHash: "",
 			altText: "Computer code on a screen",
 		},
 		categories: [{ title: "Web Dev", url: "/category/web-dev", type: CatTagType.Category }],

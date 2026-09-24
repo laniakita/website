@@ -25,7 +25,8 @@ import {
 	Vector2,
 } from "three/webgpu";
 
-const _quadMesh = new QuadMesh();
+// biome-ignore lint/suspicious/noExplicitAny: QuadMesh typing in Three 0.186
+const _quadMesh = new QuadMesh(undefined as any);
 const _size = new Vector2();
 
 // biome-ignore lint/suspicious/noExplicitAny: TSL types are highly dynamic
@@ -130,7 +131,7 @@ export class UnrealBloomNode extends TempNode {
 
 	/**
 	 * Constructs a new bloom effect.
-	 * 
+	 *
 	 * @param node - The input node.
 	 * @param [options] - The options.
 	 * @param [options.intensity=1.0] - The bloom intensity.
@@ -383,5 +384,3 @@ export class UnrealBloomNode extends TempNode {
 		for (const mat of this._upsampleMaterials) mat.dispose();
 	}
 }
-
-

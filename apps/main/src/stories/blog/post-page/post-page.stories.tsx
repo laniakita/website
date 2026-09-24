@@ -49,7 +49,6 @@ export const Default: Story = {
 		featured_image: {
 			src: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=1000",
 			altText: "Computer code on a screen",
-			localHash: "",
 			//width: 1000,
 			//height: 600,
 		},

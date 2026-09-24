@@ -24,7 +24,6 @@ export const Default: Story = {
 			src: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=1000",
 			altText: "Computer code on a screen",
 			imgData: undefined,
-			localHash: "",
 			//width: 1000,
 			//height: 600,
 			//imgData: {

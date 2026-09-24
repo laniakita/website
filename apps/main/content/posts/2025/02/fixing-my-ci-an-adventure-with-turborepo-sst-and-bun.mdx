@@ -24,7 +24,7 @@ keywords:
 author: lani
 headline: 'How I Broke (my own) Production & How I Fixed it 4 Hours Later'
 subheadline: 'An Adventure in Deploying Next.js Apps with Bun, Turborepo, and SST from a CI'
-imageSrc: ../../../assets/images/non-oc/artem-horovenko-pipes.jpg
+imageSrc: ../../../../public/images/non-oc/artem-horovenko-pipes.jpg
 altText: 'Source: Artem Horovenko (via Unsplash). On the left side of the image, there are two adjacent pairs of large blue tubes, aligned vertically, and running from the left to the center of the image, featuring a convex-fairing, and a grate over their respective openings. In the background we can see more large blue tubes, curving left and right, with steel cages and catwalks adjacent to them. On the right side of the image, there are six large green tubes, placed vertically, and spaced tightly together, running from top to bottom of the image.'
 caption: The internet is not something that you just dump something on. It's not a big truck. It's a series of tubes. - Sen. Ted Stevens (R-Alaska).
 ---
@@ -37,7 +37,7 @@ Since I finally managed to break the CI/CD pipeline for this site, I've been thi
 
 At around 0600 Zulu time on February 21st, I rebased this site's production branch with main, and pushed two of my latest commits. One updated my `flake.nix` inputs (updated `flake.lock`), the other was a simple fix to the cards on the landing page. About 30 minutes later I received the following email.
 
-![Screenshot of a GitHub Action notification email on the status of the Production Build Action workflow run, that informed me that all jobs have failed. The info box states: laniakita is building for production / SST-Deploy-Production Failed in 30 minutes and 37 seconds](../../../assets/images/oc/2025/03/production-action-failed-timeout-email.png)
+![Screenshot of a GitHub Action notification email on the status of the Production Build Action workflow run, that informed me that all jobs have failed. The info box states: laniakita is building for production / SST-Deploy-Production Failed in 30 minutes and 37 seconds](../../../../public/images/oc/2025/03/production-action-failed-timeout-email.png)
 
 What followed was what I can only describe as _an adventure_.
 
@@ -53,15 +53,15 @@ Debugging is an _Art_. While I'm not the world's greatest detective, I am pretty
 
 The first thing I did was look into the [workflow logs](https://github.com/laniakita/website/actions/runs/13448074321/job/37577491756), where I discovered our first Point of Interest (POI), the timeout error.
 
-![Screenshot of Production Build Action #41 at the Deploy step (point of failure). At line 1 collapses the next 11 lines into a single `Run bun sst deploy --stage=production --verbose`. Lines 12 - 35 showcase normal behavior for SST + Turborepo so far. Line 36 states `Error: The action 'Deploy' has timed out after 30 minutes.](../../../assets/images/oc/2025/03/production-deploy-logs-41.png)
+![Screenshot of Production Build Action #41 at the Deploy step (point of failure). At line 1 collapses the next 11 lines into a single `Run bun sst deploy --stage=production --verbose`. Lines 12 - 35 showcase normal behavior for SST + Turborepo so far. Line 36 states `Error: The action 'Deploy' has timed out after 30 minutes.](../../../../public/images/oc/2025/03/production-deploy-logs-41.png)
 
 Given my experience with the beta version of SSTv3 (`Ion`), an occasional timeout on `sst deploy` wasn't entirely unexpected. It's why I set `timeout-minutes: 30` on the _Deploy_ step in the first place. So, I decided to give it another go.
 
-![Screenshot of Production Build #41 attempt 02, showing a locked sst state error, failing the Deploy step](../../../assets/images/oc/2025/03/prod-build-log-41-attmpt-2.png)
+![Screenshot of Production Build #41 attempt 02, showing a locked sst state error, failing the Deploy step](../../../../public/images/oc/2025/03/prod-build-log-41-attmpt-2.png)
 
 This gave a _Locked state error_, since the previous deploy attempt didn't get to _gracefully_ cancel deployment to AWS. So, following the error message's guidance, I ran `sst unlock` from my terminal and tried again.
 
-![Screenshot of Production Build #41 attempt 03, getting stuck building @website/web.](../../../assets/images/oc/2025/03/prod-build-log-41-attempt-3.png)
+![Screenshot of Production Build #41 attempt 03, getting stuck building @website/web.](../../../../public/images/oc/2025/03/prod-build-log-41-attempt-3.png)
 
 _Huh._ I was audibly stunned. Watching this attempt go by, I was confounded why it was stuck at the same place as the first attempt. At about a minute and 23 seconds in, I pulled the plug.
 
@@ -71,7 +71,7 @@ While that might seem pre-emptive, compared to a _successful_ production run up 
 
 I was feeling puzzled, until I was suddenly struck with _genius_. I would simply perform the equivalent of _unplugging and plugging it back in again_ via running `sst remove` and `sst deploy`, _magically_ solving my problems! **_What could go wrong?_**
 
-![Screenshot of Production Build #41 attempt 04, showing the attempt at lines 51-53 to build @website/web, and the inevitable hang at lines 74 where it finished creating the MonitorMetricsSchedule scheduler](../../../assets/images/oc/2025/03/prod-build-log-41-hang.png)
+![Screenshot of Production Build #41 attempt 04, showing the attempt at lines 51-53 to build @website/web, and the inevitable hang at lines 74 where it finished creating the MonitorMetricsSchedule scheduler](../../../../public/images/oc/2025/03/prod-build-log-41-hang.png)
 
 While I was grateful that _attempt 04_ displayed some signs of life, at about 4 minutes into the Deploy however, it was clear something had _gone wrong_. So, I pulled the plug on this attempt too.
 
@@ -95,11 +95,11 @@ At the time, I figured that was good-enough, and a dev CI/CD would be something 
 
 As I was reeling from terror, I decided to try an emergency dependencies update of Node.js and Turbo. I didn't have any evidence that they weren't the cause of the problems, but a cheap hail-mary attempt seemed worth a shot.
 
-![Screenshot of Production Build #42, showing the same hang at lines 74-75 where it finishes creating the MonitorMetricsSchedule scheduler before getting stuck](../../../assets/images/oc/2025/03/prod-build-log-42-hang.png)
+![Screenshot of Production Build #42, showing the same hang at lines 74-75 where it finishes creating the MonitorMetricsSchedule scheduler before getting stuck](../../../../public/images/oc/2025/03/prod-build-log-42-hang.png)
 
 _No dice._ As a follow-up, I wondered if re-creating `bun.lock` might help, so I tried that too.
 
-![Screenshot of Production Build #43, stuck in the same place](../../../assets/images/oc/2025/03/prod-build-log-43.png)
+![Screenshot of Production Build #43, stuck in the same place](../../../../public/images/oc/2025/03/prod-build-log-43.png)
 
 As you can imagine, that didn't work either.
 
@@ -107,11 +107,11 @@ As you can imagine, that didn't work either.
 
 If updating dependencies wasn't working, perhaps pinning them to an older version might help. I decided `sst` might be playing a role here, so I rolled it back, and ran the CI again.
 
-![Screenshot of Production Build #44, showing a locked sst state error, (again) failing the Deploy step](../../../assets/images/oc/2025/03/prod-build-log-44-oops.png)
+![Screenshot of Production Build #44, showing a locked sst state error, (again) failing the Deploy step](../../../../public/images/oc/2025/03/prod-build-log-44-oops.png)
 
 _Oops_. I correct the _Lock_ once more, and sent through my final _hail mary_ attempt for the evening.
 
-![Screenshot of Production Build #45, hanging once more at line 73-75, with the canceled message below it.](../../../assets/images/oc/2025/03/prod-build-log-45-sigh.png)
+![Screenshot of Production Build #45, hanging once more at line 73-75, with the canceled message below it.](../../../../public/images/oc/2025/03/prod-build-log-45-sigh.png)
 
 _Sigh_. I let out a pained sigh. _This is gonna require **thinking**, isn't it?_, I whined to myself. So, I took a break for a couple of hours, and contemplated.
 
@@ -177,7 +177,7 @@ So, with a foolish grin, I pulled the website down with `sst remove`, because I 
 
 Since everything worked locally, I figured either it would _just work_ in the CI runner, or if it didn't, I could just further reduce the barriers to the build step like I did earlier. So, I rebased _main_ onto _production_ and pushed things through.
 
-![Screenshot of production build #46. Showing a very familiar problem (hanging).](../../../assets/images/oc/2025/03/prod-build-log-46.png)
+![Screenshot of production build #46. Showing a very familiar problem (hanging).](../../../../public/images/oc/2025/03/prod-build-log-46.png)
 
 Unsurprisingly, things did not _just work_. However, I did have an inkling of what I was doing this time around, so I got to work.
 
@@ -217,7 +217,7 @@ Then I altered the tasks array somewhat back to what it was (which failed locall
 
 This gave an interesting result.
 
-![Screenshot showing prebuild and test tasks completed, but getting stuck on MonitorMetricsSchedule again](../../../assets/images/oc/2025/03/prod-build-log-47.png)
+![Screenshot showing prebuild and test tasks completed, but getting stuck on MonitorMetricsSchedule again](../../../../public/images/oc/2025/03/prod-build-log-47.png)
 
 While I wasn't _enthusiastic_ about what I saw, it was an interesting result. In hindsight, this might've worked, I think I just got nervous around the two-minute mark and assumed the worse. Still, I pressed on.
 
@@ -250,7 +250,7 @@ export const web = new sst.aws.Nextjs("Web", {
 
 This gave me the result I was working so hard towards.
 
-![Screenshot of production build #48, showcasing a successful run with all job steps complete.](../../../assets/images/oc/2025/03/prod-build-log-48-success.png)
+![Screenshot of production build #48, showcasing a successful run with all job steps complete.](../../../../public/images/oc/2025/03/prod-build-log-48-success.png)
 
 _I did it! I did the thing!_ I was ecstatic for the rest of the evening, basking in victory. It's just unfortunate this did not last into the next day when I setup the _dev_ workflow. My attempt at integrating the lesson I had just learned.
 
@@ -258,7 +258,7 @@ _I did it! I did the thing!_ I was ecstatic for the rest of the evening, basking
 
 In setting up the _dev_ Action Workflow (about two weeks ago at the time of writing), I hit a painfully familiar snag—after hitting a few _unrelated_ snags, of course.
 
-![Screenshot of the process it took to get the dev action working.](../../../assets/images/oc/2025/03/a-new-adventure.png)
+![Screenshot of the process it took to get the dev action working.](../../../../public/images/oc/2025/03/a-new-adventure.png)
 
 Let me preface with: this _adventure_ wasn't as bad as it looks. In order:
 
@@ -352,7 +352,7 @@ I also altered the _Dev_ workflow to run `bun run deploy:dev` (the script in the
 
 This worked perfectly.
 
-![Screenshot showing a perfect run from Dev Build Action #7. Every step has a check mark, finishing in just under three minutes.](../../../assets/images/oc/2025/03/dev-build-log-7-perfect.png)
+![Screenshot showing a perfect run from Dev Build Action #7. Every step has a check mark, finishing in just under three minutes.](../../../../public/images/oc/2025/03/dev-build-log-7-perfect.png)
 
 This worked _so perfectly_, I've had consistent deployments with it no problem over the last week and a half or so. There is one caveat, which leads us to our next section.
 
@@ -413,11 +413,11 @@ Likewise, I edited the scripts in the root `package.json` once more.
 
 I pushed everything from my local terminal, and was surprised to see a little green check mark against my hesitant commit message.
 
-![Screenshot of my commit into main with the message: refactor: test if sst deploy command hangs in CI. A green check mark appears below it with a 1/1 informing me that it completed the workflow successfully](../../../assets/images/oc/2025/03/a-perfect-test.png)
+![Screenshot of my commit into main with the message: refactor: test if sst deploy command hangs in CI. A green check mark appears below it with a 1/1 informing me that it completed the workflow successfully](../../../../public/images/oc/2025/03/a-perfect-test.png)
 
 I then sent several more changes through, to test whether that was a fluke. It was not.
 
-![Screenshot showing my latest commits all deployed perfectly, no hangups.](../../../assets/images/oc/2025/03/not-a-fluke.png)
+![Screenshot showing my latest commits all deployed perfectly, no hangups.](../../../../public/images/oc/2025/03/not-a-fluke.png)
 
 Given everything _just works_, like it should. Like it did before, **for months**, leading up to this. I'll admit to feeling a _little_ vexed that evening, but more so just relieved.
 
@@ -425,7 +425,7 @@ Given everything _just works_, like it should. Like it did before, **for months*
 
 > This was an adventure. This was too much adventure. I want off Mr. Bone's Wild Adventure.
 
-![Screenshot of Mr. Bone's Wild Ride, created by an anonymous Roller Coaster Tycoon 2 player. The front left side of the image features a dark gray sign with the phrase THE RIDE NEVER ENDS in red lettering, placed into a square of green grass, perpendicular to the roller coaster tracks to the left of it. On the right side of the image, a giant skeleton holding a large top hat, statically performs a tipping gesture to incoming riders.](../../../assets/images/non-oc/mr-bones-ride-never-ends.jpg)
+![Screenshot of Mr. Bone's Wild Ride, created by an anonymous Roller Coaster Tycoon 2 player. The front left side of the image features a dark gray sign with the phrase THE RIDE NEVER ENDS in red lettering, placed into a square of green grass, perpendicular to the roller coaster tracks to the left of it. On the right side of the image, a giant skeleton holding a large top hat, statically performs a tipping gesture to incoming riders.](../../../../public/images/non-oc/mr-bones-ride-never-ends.jpg)
 
 If the internet is like a series of tubes, then the _wild ride_ I just endured can be blamed on a jammed tube, a criss-crossed tube, and a return tube.
 

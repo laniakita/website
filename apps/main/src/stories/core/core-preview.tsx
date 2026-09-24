@@ -20,7 +20,8 @@ export interface CorePreviewProps {
 	/** An optional cover image to display at the top of the card */
 	featured_image?: {
 		src: string;
-		localHash?: string;
+		width?: number;
+		height?: number;
 		altText?: string;
 		imgData?: {
 			css: string;
@@ -61,6 +62,9 @@ export function CorePreview({
 		);
 	};
 
+	const imgWidth = featured_image?.width ?? featured_image?.imgData?.width;
+	const imgHeight = featured_image?.height ?? featured_image?.imgData?.height;
+
 	return (
 		<Card
 			data-testid={testId}
@@ -68,19 +72,14 @@ export function CorePreview({
 		>
 			{featured_image?.src && (
 				<LinkWrapper className='bg-muted'>
-					{featured_image.imgData?.height && featured_image.imgData?.width ? (
+					{imgWidth && imgHeight ? (
 						<Image
 							src={featured_image.src}
-							height={featured_image.imgData.height}
-							width={featured_image.imgData.width}
+							height={imgHeight}
+							width={imgWidth}
 							alt={featured_image.altText ?? ""}
-							background={featured_image.imgData.css}
-							fallback='cloudflare'
-							options={{
-								cloudflare: {
-									domain: import.meta.env.VITE_CDN,
-								},
-							}}
+							background={featured_image.imgData?.css}
+							fallback={import.meta.env.DEV ? undefined : "cloudflare"}
 							operations={{
 								cloudflare: {
 									quality: 75,

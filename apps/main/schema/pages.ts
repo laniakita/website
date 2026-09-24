@@ -3,7 +3,7 @@ import * as v from "valibot";
 import { defaultCreatedAt, optionalDate } from "./shared";
 
 export const pages = defineCollections({
-	dir: "./.content/pages",
+	dir: "./content/pages",
 	type: "doc",
 	postprocess: {
 		includeProcessedMarkdown: true,
@@ -16,9 +16,8 @@ export const pages = defineCollections({
 			lastModified: optionalDate,
 			url: v.optional(
 				v.string(),
-				() => `${ctx.path.split(".content").pop()?.split(".").shift()}`,
+				() => `${ctx.path.split("content").pop()?.split(".").shift()}`,
 			),
 		});
 	},
 });
-

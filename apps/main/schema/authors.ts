@@ -3,7 +3,7 @@ import * as v from "valibot";
 import { defaultCreatedAt, optionalDate } from "./shared";
 
 export const authors = defineCollections({
-	dir: "./.content/authors",
+	dir: "./content/authors",
 	type: "doc",
 	schema: (ctx) => {
 		return v.object({
@@ -15,9 +15,8 @@ export const authors = defineCollections({
 			github: v.optional(v.string()),
 			url: v.optional(
 				v.string(),
-				() => `${ctx.path.split(".content").pop()?.split(".").shift()}`,
+				() => `${ctx.path.split("content").pop()?.split(".").shift()}`,
 			),
 		});
 	},
 });
-

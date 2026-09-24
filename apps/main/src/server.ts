@@ -4,7 +4,6 @@ import { createServerEntry } from "@tanstack/react-start/server-entry";
 
 const startHandler = createStartHandler({
 	handler: defaultStreamHandler,
-	transformAssets: process.env.CDN_ORIGIN || "",
 });
 
 export default createServerEntry({

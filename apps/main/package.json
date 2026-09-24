@@ -8,7 +8,6 @@
 	"scripts": {
 		"dev": "vite dev --port 3000",
 		"generate-routes": "tsr generate",
-		"build:prebuild": "bun run src/scripts/prebuild.ts",
 		"build": "vite build",
 		"preview": "vite preview",
 		"format": "biome format",
@@ -20,7 +19,7 @@
 		"build-storybook": "storybook build",
 		"test-storybook": "test-storybook",
 		"cf-typegen": "wrangler types",
-		"clean": "rm -rfv dist node_modules .turbo .tanstack .wrangler .content .source"
+		"clean": "rm -rfv dist node_modules .turbo .tanstack .wrangler .source"
 	},
 	"dependencies": {
 		"@atproto/api": "^0.20.44",
@@ -57,7 +56,6 @@
 		"zustand": "^5.0.15"
 	},
 	"devDependencies": {
-		"@aws-sdk/client-s3": "^3.1139.0",
 		"@biomejs/biome": "2.5.14",
 		"@chromatic-com/storybook": "^5.3.1",
 		"@cloudflare/vite-plugin": "^1.58.0",
@@ -89,7 +87,6 @@
 		"@types/bun": "^1.4.2",
 		"@types/jstoxml": "^5.0.0",
 		"@types/mdx": "^2.0.14",
-		"@types/mime-types": "^3.0.1",
 		"@types/node": "^26.6.2",
 		"@types/react": "^19.3.0",
 		"@types/react-dom": "^19.3.0",
@@ -104,8 +101,6 @@
 		"clsx": "^2.1.1",
 		"highlight.js": "^11.12.0",
 		"lowlight": "^3.3.0",
-		"mime-types": "^3.0.2",
-		"plaiceholder": "^3.0.0",
 		"playwright": "^1.63.0",
 		"rehype-fn-citation-spacer": "^1.0.1",
 		"rehype-highlight": "^7.0.2",
@@ -114,7 +109,6 @@
 		"remark-mdx": "^3.1.1",
 		"remark-parse": "^11.0.0",
 		"remark-stringify": "^11.0.0",
-		"sharp": "^0.35.4",
 		"storybook": "^10.6.0",
 		"tailwind-merge": "^3.7.0",
 		"tailwindcss": "^4.3.3",

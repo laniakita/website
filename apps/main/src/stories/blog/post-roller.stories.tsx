@@ -18,7 +18,6 @@ const mockPosts: PostPreviewProps[] = [
 		headline: "Second Post",
 		featured_image: {
 			src: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=2000",
-			localHash: "",
 			altText: "Computer code on a screen",
 		},
 		description: <p>This is the second post.</p>,
