@@ -51,6 +51,17 @@
         "CLOUDFLARE_API_TOKEN"
       ],
     },
+    "deploy:production": {
+      "dependsOn": [
+        "^build"
+      ],
+      "env": [
+        "CLOUDFLARE_API_TOKEN"
+      ],
+      "passThroughEnv": [
+        "CLOUDFLARE_API_TOKEN"
+      ],
+    },
     "clean": {
       "cache": false
     }

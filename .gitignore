@@ -65,6 +65,8 @@ certificates/
 .vercel
 secrets.env
 
+delete-pages.sh
+
 # sst
 .sst
 .open-next
