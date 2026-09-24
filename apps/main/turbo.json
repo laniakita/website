@@ -1,42 +1,23 @@
 {
-  "$schema": "https://v2-11-3.turborepo.dev/schema.json",
+  "$schema": "https://turborepo.dev/schema.json",
   "extends": ["//"],
   "tasks": {
-    "build:prebuild": {
-      "outputs": [".content/**", "asset-manifest.json"],
-      "env": [
-        "BUCKET_ENDPOINT",
-        "BUCKET_PUBLIC_URL",
-        "BUCKET_NAME",
-        "BUCKET_ACCESS_KEY_ID",
-        "BUCKET_SECRET_ACCESS_KEY",
-      ],
-      "inputs": [
-        "$TURBO_DEFAULT$",
-        ".env*",
-      ]
-    },
     "build": {
-      "dependsOn": ["build:prebuild"],
       "outputs": [
         "dist/**",
         ".output/**"
       ],
       "env": [
-        "CDN_ORIGIN",
-        "CDN_DOMAIN",
-        "VITE_CDN",
         "VITE_APP_URL",
         "VITE_BACKEND_URL"
       ],
       "passThroughEnv": [
         "VITE_APP_URL",
-        "VITE_CDN",
         "VITE_BACKEND_URL"
       ],
       "inputs": [
         "$TURBO_DEFAULT$",
-        ".env*",
+        ".env*"
       ]
     },
     "preview": {
@@ -45,9 +26,6 @@
     "build-storybook": {
       "outputs": [
         "storybook-static/**"
-      ],
-      "env": [
-        "STORYBOOK_VITE_CDN"
       ],
       "inputs": [
         "$TURBO_DEFAULT$",

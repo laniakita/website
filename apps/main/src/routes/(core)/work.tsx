@@ -29,7 +29,7 @@ const getWorkPageData = createServerFn({ method: "GET" }).handler(async () => {
 	// Map through works and render their MDX
 	const renderableWorks = await Promise.all(
 		works.map(async (work) => {
-			const WorkMDX = work.data.body;
+			const { body: WorkMDX } = await work.data.load();
 
 			const RenderableMDX = await renderServerComponent(
 				<div className='prose-protocol-omega text-pretty prose-p:first:mt-0 prose-p:last:mb-0'>

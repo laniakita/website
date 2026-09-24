@@ -125,7 +125,6 @@ function BotClickerMain({ viewMobile }: { viewMobile: boolean }) {
 					const depth = max(viewPos.z.negate(), 0.1);
 					const distanceAttenuation = float(30).div(depth);
 					const timeScale = float(3.5).add(sin(material._time.add(100)).mul(0.3));
-					// @ts-expect-error: Three.js TSL typings for AttributeNode and mul() have intersection issues
 					const size = mul(particleSize, distanceAttenuation).mul(timeScale).mul(0.04);
 					return vec2(size);
 				})();

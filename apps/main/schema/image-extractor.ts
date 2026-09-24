@@ -1,24 +1,8 @@
-import fs from "node:fs";
 import path from "node:path";
 import { remark } from "remark";
 import remarkMdx from "remark-mdx";
 import { visit } from "unist-util-visit";
-import { resolveAssetEntry } from "../src/scripts/asset-processor/resolver";
-import type { AssetManifestEntry } from "../src/scripts/asset-processor/types";
-
-let assetManifestCache: Record<string, AssetManifestEntry> | null = null;
-
-function getManifest(): Record<string, AssetManifestEntry> {
-	if (!assetManifestCache) {
-		const manifestPath = path.join(process.cwd(), "asset-manifest.json");
-		try {
-			assetManifestCache = JSON.parse(fs.readFileSync(manifestPath, "utf-8"));
-		} catch {
-			assetManifestCache = {};
-		}
-	}
-	return assetManifestCache || {};
-}
+import { normalizePublicAssetUrl } from "../src/lib/utils/assets";
 
 /**
  * Parses a filename (kebab-case or snake_case) into a human-readable title.
@@ -53,7 +37,6 @@ export interface ExtractedImage {
 export function extractImagesFromMdx(source: string, filePath: string): ExtractedImage[] {
 	if (!source) return [];
 
-	const manifest = getManifest();
 	const extracted: ExtractedImage[] = [];
 
 	try {
@@ -62,14 +45,7 @@ export function extractImagesFromMdx(source: string, filePath: string): Extracte
 		// biome-ignore lint/suspicious/noExplicitAny: AST nodes are dynamic
 		visit(tree, (node: any) => {
 			if (node.type === "image" && typeof node.url === "string") {
-				let resolvedSrc = node.url;
-				if (!resolvedSrc.startsWith("http")) {
-					const entry = resolveAssetEntry(node.url, filePath, manifest);
-					if (entry) {
-						resolvedSrc = entry.src;
-					}
-				}
-
+				const resolvedSrc = normalizePublicAssetUrl(node.url);
 				const alt = node.alt || undefined;
 				const title = node.title || parseTitleFromFilename(node.url);
 
@@ -83,14 +59,7 @@ export function extractImagesFromMdx(source: string, filePath: string): Extracte
 					// biome-ignore lint/suspicious/noExplicitAny: AST attributes are dynamic
 					const srcAttr = node.attributes?.find((a: any) => a.name === "src");
 					if (srcAttr && typeof srcAttr.value === "string") {
-						let resolvedSrc = srcAttr.value;
-						if (!resolvedSrc.startsWith("http")) {
-							const entry = resolveAssetEntry(srcAttr.value, filePath, manifest);
-							if (entry) {
-								resolvedSrc = entry.src;
-							}
-						}
-
+						const resolvedSrc = normalizePublicAssetUrl(srcAttr.value);
 						// biome-ignore lint/suspicious/noExplicitAny: AST attributes are dynamic
 						const altAttr = node.attributes?.find((a: any) => a.name === "alt");
 						// biome-ignore lint/suspicious/noExplicitAny: AST attributes are dynamic

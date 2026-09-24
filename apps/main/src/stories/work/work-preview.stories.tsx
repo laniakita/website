@@ -32,7 +32,6 @@ export const Default: Story = {
 		tech: ["Next.js", "Tailwind CSS", "TypeScript", "Framer Motion"],
 		featured_image: {
 			src: "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
-			localHash: "test",
 			altText: "A laptop showing code",
 		},
 		RenderableMDX: (

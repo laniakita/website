@@ -57,7 +57,8 @@ export interface WorkPreviewProps {
 	/** Optional cover image */
 	featured_image?: {
 		src: string;
-		localHash?: string;
+		width?: number;
+		height?: number;
 		altText?: string;
 		imgData?: {
 			css: string;
@@ -204,42 +205,41 @@ export function WorkPreview({
 				>
 					{data.featured_image?.src ? (
 						<LinkWrapper className='block h-full w-full'>
-							{data.featured_image.imgData?.height && data.featured_image.imgData?.width ? (
-								<Image
-									src={data.featured_image.src}
-									height={data.featured_image.imgData.height}
-									width={data.featured_image.imgData.width}
-									alt={data.featured_image.altText ?? ""}
-									background={data.featured_image.imgData.css}
-									fallback='cloudflare'
-									options={{
-										cloudflare: {
-											domain: import.meta.env.VITE_CDN,
-										},
-									}}
-									operations={{
-										cloudflare: {
-											quality: 75,
-											format: "auto",
-										},
-									}}
-									layout='constrained'
-									className={cn(
-										"h-auto w-full object-contain grayscale-[0.3]",
-										"transition-all duration-700 hover:grayscale-0",
-									)}
-								/>
-							) : (
-								<Image
-									src={data.featured_image.src}
-									layout='fullWidth'
-									alt={data.featured_image.altText ?? ""}
-									className={cn(
-										"h-auto w-full object-contain grayscale-[0.3]",
-										"transition-all duration-700 hover:grayscale-0",
-									)}
-								/>
-							)}
+							{(() => {
+								const imgWidth = data.featured_image?.width ?? data.featured_image?.imgData?.width;
+								const imgHeight = data.featured_image?.height ?? data.featured_image?.imgData?.height;
+								return imgWidth && imgHeight ? (
+									<Image
+										src={data.featured_image.src}
+										height={imgHeight}
+										width={imgWidth}
+										alt={data.featured_image.altText ?? ""}
+										background={data.featured_image.imgData?.css}
+										fallback={import.meta.env.DEV ? undefined : "cloudflare"}
+										operations={{
+											cloudflare: {
+												quality: 75,
+												format: "auto",
+											},
+										}}
+										layout='constrained'
+										className={cn(
+											"h-auto w-full object-contain grayscale-[0.3]",
+											"transition-all duration-700 hover:grayscale-0",
+										)}
+									/>
+								) : (
+									<Image
+										src={data.featured_image.src}
+										layout='fullWidth'
+										alt={data.featured_image.altText ?? ""}
+										className={cn(
+											"h-auto w-full object-contain grayscale-[0.3]",
+											"transition-all duration-700 hover:grayscale-0",
+										)}
+									/>
+								);
+							})()}
 						</LinkWrapper>
 					) : (
 						<div className='flex aspect-video w-full items-center justify-center text-muted-foreground'>

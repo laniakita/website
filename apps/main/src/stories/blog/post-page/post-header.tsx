@@ -16,7 +16,8 @@ export interface PostHeaderProps {
 	tags?: CatTag[];
 	featured_image?: {
 		src: string;
-		localHash: string;
+		width?: number;
+		height?: number;
 		imgData?: {
 			css: string;
 			height: number;

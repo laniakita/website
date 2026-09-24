@@ -24,23 +24,25 @@ export const Route = createFileRoute("/atom.xml")({
 				const url = new URL(request.url);
 				const HOST_URL = url.origin;
 
+				const toDate = (d?: Date | string) => (d ? new Date(d) : new Date(0));
+
 				const posts = feedSource
 					.getPages()
 					.sort((a, b) =>
 						compareDesc(
-							new Date(a.data.lastModified ?? a.data.createdAt),
-							new Date(b.data.lastModified ?? b.data.createdAt),
+							toDate(a.data.lastModified ?? a.data.createdAt),
+							toDate(b.data.lastModified ?? b.data.createdAt),
 						),
 					)
 					.slice(0, 10);
 
-				const buildDate =
-					(posts[0]?.data.lastModified ?? posts[0]?.data.createdAt)?.toISOString() ?? new Date().toISOString();
+				const rawBuildDate = posts[0]?.data.lastModified ?? posts[0]?.data.createdAt;
+				const buildDate = (rawBuildDate ? new Date(rawBuildDate) : new Date()).toISOString();
 
-				const components = useDefaultMDXComponents();
+				const components = useDefaultMDXComponents(HOST_URL);
 				const postEntry = await Promise.all(
 					posts.map(async (post) => {
-						const MDX = post.data.body;
+						const { body: MDX } = await post.data.load();
 						const ReactDomServer = await import("react-dom/server");
 						let html = ReactDomServer.renderToStaticMarkup(<MDX components={components} />);
 						// Strip React 19 auto-injected resource hints (preloads, etc.) from island output.
@@ -54,18 +56,22 @@ export const Route = createFileRoute("/atom.xml")({
 						const resCats = catTagXmlRoller({ data: post.data.categories as CatTag[], hostUrl: HOST_URL });
 						const resTags = catTagXmlRoller({ data: post.data.tags as CatTag[], hostUrl: HOST_URL });
 
-						const postDate = new Date(post.data.lastModified ?? post.data.createdAt);
+						const rawPostDate = post.data.lastModified ?? post.data.createdAt;
+						const postDate = rawPostDate ? new Date(rawPostDate) : new Date();
 						const version = postDate.getTime().toString();
-						const ogParams: OgParams = post.data.featured_image
-							? { variant: OgVariant.Image, imageUrl: post.data.featured_image.src }
+						const featSrc = post.data.featured_image?.src;
+						const absoluteFeatSrc = featSrc && !featSrc.startsWith("http") ? `${HOST_URL}${featSrc}` : featSrc;
+
+						const ogParams: OgParams = absoluteFeatSrc
+							? { variant: OgVariant.Image, imageUrl: absoluteFeatSrc }
 							: { variant: OgVariant.Dynamic, title: post.data.headline, prefix: "Lani's Dev Blog" };
 
 						const ogUrls = await getOgImageUrls(ogParams, version);
 						const imgEmbed = post.data.featured_image
 							? `
           						<figure>
-            						<img src="${post.data.featured_image.src}" alt="${post.data.featured_image.altText}" />
-            						<figcaption>${post.data.caption}</figcaption>
+            						<img src="${absoluteFeatSrc}" alt="${post.data.featured_image.altText ?? ""}" />
+            						<figcaption>${post.data.caption ?? ""}</figcaption>
           						</figure>
        						`
 							: `
@@ -94,7 +100,7 @@ export const Route = createFileRoute("/atom.xml")({
 								id: `${HOST_URL}${post.url}`,
 							},
 							{
-								updated: new Date(post.data.lastModified ?? post.data.createdAt).toISOString(),
+								updated: postDate.toISOString(),
 							},
 							resCats,
 							resTags,
@@ -224,11 +230,12 @@ function catTagXmlRoller(props: { data?: CatTag[]; hostUrl: string }) {
 	return res;
 }
 
-function useDefaultMDXComponents(_?: MDXComponents) {
+function useDefaultMDXComponents(hostUrl: string) {
 	return {
-		img: (props) => {
+		img: ({ src, ...props }) => {
+			const fullUrl = typeof src === "string" && !src.startsWith("http") ? `${hostUrl}${src}` : src;
 			// biome-ignore lint/a11y/useAltText: included in props
-			return <img {...props} />;
+			return <img src={fullUrl} {...props} />;
 		},
 	} satisfies MDXComponents;
 }

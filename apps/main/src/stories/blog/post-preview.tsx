@@ -18,8 +18,10 @@ export interface PostPreviewProps {
 	/** An optional cover image to display at the top of the card. */
 	featured_image?: {
 		src: string;
-		localHash: string;
+		width?: number;
+		height?: number;
 		altText?: string;
+		caption?: string;
 		imgData?: {
 			css: string;
 			height: number;

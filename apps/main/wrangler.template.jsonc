@@ -10,6 +10,10 @@
 		"nodejs_compat"
 	],
 	"main": "@tanstack/react-start/server-entry",
+	"assets": {
+		"directory": "./dist/client",
+		"binding": "ASSETS"
+	},
 	"observability": {
 		"enabled": true
 	},
@@ -21,12 +25,6 @@
 			"database_id": "{{STAGING_DATABASE_ID}}",
 			"migrations_dir": "drizzle",
 			"migrations_pattern": "drizzle/*/migration.sql"
-		}
-	],
-	"r2_buckets": [
-		{
-			"binding": "LANI_BUCKET_PUBLIC",
-			"bucket_name": "{{STAGING_BUCKET_PUBLIC_NAME}}"
 		}
 	],
 	"kv_namespaces": [
@@ -66,12 +64,6 @@
 					"migrations_dir": "drizzle",
 					"migrations_pattern": "drizzle/*/migration.sql"
 				}
-			],
-			"r2_buckets": [
-				{
-					"binding": "LANI_BUCKET_PUBLIC",
-					"bucket_name": "{{PRODUCTION_BUCKET_PUBLIC_NAME}}"
-				},
 			],
 			"kv_namespaces": [
 				{

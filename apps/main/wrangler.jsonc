@@ -10,6 +10,10 @@
 		"nodejs_compat"
 	],
 	"main": "@tanstack/react-start/server-entry",
+	"assets": {
+		"directory": "./dist/client",
+		"binding": "ASSETS"
+	},
 	"observability": {
 		"enabled": true
 	},
