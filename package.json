@@ -1,7 +1,7 @@
 {
 	"name": "@lani/website",
 	"devDependencies": {
-		"@biomejs/biome": "^2.5.8",
+		"@biomejs/biome": "^2.5.14",
 		"turbo": "^2.10.9"
 	},
 	"packageManager": "bun@1.4.0",

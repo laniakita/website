@@ -1,29 +1,29 @@
 import { defineCollections } from "fumadocs-mdx/config";
 import matter from "gray-matter";
-import * as z from "zod";
+import * as v from "valibot";
 import { descriptionHelper } from "./description-helper";
+import { defaultCreatedAt, optionalDate } from "./shared";
 
 export const tags = defineCollections({
 	dir: "./.content/tags",
 	type: "doc",
 	schema: (ctx) => {
-		return z.object({
-			id: z.string().optional(),
-			title: z.string().default("tag"),
-			slug: z
-				.string()
-				.default(
-					`${ctx.path.split("/").pop()?.split(".").shift()?.toLowerCase()}`,
-				),
-			type: z.string().optional(),
-			createdAt: z.coerce.date().default(new Date()),
-			lastModified: z.coerce.date().optional(),
-			url: z
-				.string()
-				.default(
+		return v.object({
+			id: v.optional(v.string()),
+			title: v.optional(v.string(), "tag"),
+			slug: v.optional(
+				v.string(),
+				() => `${ctx.path.split("/").pop()?.split(".").shift()?.toLowerCase()}`,
+			),
+			type: v.optional(v.string()),
+			createdAt: defaultCreatedAt,
+			lastModified: optionalDate,
+			url: v.optional(
+				v.string(),
+				() =>
 					`${ctx.path.split(".content").pop()?.split(".").shift()?.toLowerCase()}`,
-				),
-			description: z.string().default(() => {
+			),
+			description: v.optional(v.string(), () => {
 				const content = matter(ctx.source);
 				const url = `${ctx.path.split(".content").pop()?.split(".").shift()?.toLowerCase()}`;
 				return (
@@ -33,3 +33,4 @@ export const tags = defineCollections({
 		});
 	},
 });
+

@@ -1,46 +1,43 @@
 import path from "node:path";
-import { applyMdxPreset } from "fumadocs-mdx/config";
-import { defineCollections } from "fumadocs-mdx/config";
+import { applyMdxPreset, defineCollections } from "fumadocs-mdx/config";
 import matter from "gray-matter";
 import rehypeFnCitationSpacer from "rehype-fn-citation-spacer";
 import remarkGfm from "remark-gfm";
-import * as z from "zod";
+import * as v from "valibot";
+import {
+	remarkImgProcessor,
+	type RemarkImgProcessorOptions,
+} from "../src/scripts/remark-img-processor";
 import { descriptionHelper } from "./description-helper";
-import { extractImagesFromMdx } from "./image-extractor";
-import { remarkImgProcessor, type RemarkImgProcessorOptions } from "../src/scripts/remark-img-processor";
+import {
+	coerceDate,
+	featuredImageSchema,
+	inlineImagesSchema,
+	optionalDate,
+	taxonomyItemSchema,
+} from "./shared";
 
 const postSchema = (ctx: { path: string; source: string }) => {
-	return z.object({
-		id: z.string(),
-		headline: z.string(),
-		subheadline: z.string().optional(),
-		createdAt: z.coerce.date(),
-		lastModified: z.coerce.date().optional(),
-		author: z.string(),
-		imageSrc: z.string().optional(),
-		altText: z.string().optional(),
-		caption: z.string().optional(),
-		catSlugs: z.array(z.string()).optional(),
-		categories: z
-			.array(
-				z.object({
-					title: z.string(),
-					url: z.string(),
-					type: z.string(),
-				}),
-			)
-			.optional(),
-		tagSlugs: z.array(z.string()).optional(),
-		tags: z
-			.array(z.object({ title: z.string(), url: z.string(), type: z.string() }))
-			.optional(),
-		keywords: z.array(z.string()).optional(),
-		url: z
-			.string()
-			.default(
-				path.join("/blog", `${ctx.path.split("/").pop()?.split(".").shift()}`),
-			),
-		description: z.string().default(() => {
+	return v.object({
+		id: v.string(),
+		headline: v.string(),
+		subheadline: v.optional(v.string()),
+		createdAt: coerceDate,
+		lastModified: optionalDate,
+		author: v.string(),
+		imageSrc: v.optional(v.string()),
+		altText: v.optional(v.string()),
+		caption: v.optional(v.string()),
+		catSlugs: v.optional(v.array(v.string())),
+		categories: v.optional(v.array(taxonomyItemSchema)),
+		tagSlugs: v.optional(v.array(v.string())),
+		tags: v.optional(v.array(taxonomyItemSchema)),
+		keywords: v.optional(v.array(v.string())),
+		url: v.optional(
+			v.string(),
+			() => path.join("/blog", `${ctx.path.split("/").pop()?.split(".").shift()}`),
+		),
+		description: v.optional(v.string(), () => {
 			const content = matter(ctx.source);
 			const url = path.join(
 				"/blog",
@@ -48,31 +45,8 @@ const postSchema = (ctx: { path: string; source: string }) => {
 			);
 			return descriptionHelper(content.content, url) ?? "Post description";
 		}),
-		featured_image: z
-			.object({
-				src: z.string(),
-				localHash: z.string(),
-				imgData: z
-					.object({
-						css: z.string(),
-						height: z.number(),
-						width: z.number(),
-					})
-					.optional(),
-				altText: z.string().optional(),
-			})
-			.optional(),
-		inlineImages: z
-			.array(
-				z.object({
-					src: z.string(),
-					alt: z.string().optional(),
-					title: z.string().optional(),
-				}),
-			)
-			.default(() => {
-				return extractImagesFromMdx(ctx.source, ctx.path);
-			}),
+		featured_image: featuredImageSchema,
+		inlineImages: inlineImagesSchema(ctx),
 	});
 };
 
@@ -90,8 +64,16 @@ export const feed = defineCollections({
 		rehypeCodeOptions: false,
 		remarkImageOptions: false,
 		// biome-ignore lint/suspicious/noExplicitAny: We don't have the exported type.
-		remarkPlugins: (v: any) => [remarkGfm, [remarkImgProcessor, { addLqipAttribute: false } satisfies RemarkImgProcessorOptions], ...v],
+		remarkPlugins: (v: any) => [
+			remarkGfm,
+			[
+				remarkImgProcessor,
+				{ addLqipAttribute: false } satisfies RemarkImgProcessorOptions,
+			],
+			...v,
+		],
 		// biome-ignore lint/suspicious/noExplicitAny: We don't have the exported type.
 		rehypePlugins: (v: any) => [rehypeFnCitationSpacer, ...v],
 	}),
 });
+
