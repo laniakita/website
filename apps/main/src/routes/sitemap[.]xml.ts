@@ -1,3 +1,4 @@
+import { env } from "cloudflare:workers";
 import { createFileRoute } from "@tanstack/react-router";
 import { toXML } from "jstoxml";
 import { getDynamicRoutePaths } from "@/lib/utils/routes";
@@ -15,7 +16,7 @@ export const Route = createFileRoute("/sitemap.xml")({
 	server: {
 		handlers: {
 			async GET() {
-				const HOST_URL = import.meta.env.VITE_APP_URL ?? "https://laniakita.com";
+				const HOST_URL = env.APP_URL;
 				const routes = await getDynamicRoutePaths();
 
 				const urlset = {

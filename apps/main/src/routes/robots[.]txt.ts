@@ -1,10 +1,11 @@
+import { env } from "cloudflare:workers";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/robots.txt")({
 	server: {
 		handlers: {
 			GET() {
-				const HOST_URL = import.meta.env.VITE_APP_URL ?? "https://laniakita.com";
+				const HOST_URL = env.APP_URL;
 				const content = ["User-agent: *", "Allow: /", "", `Sitemap: ${HOST_URL}/sitemap.xml`].join("\n");
 
 				return new Response(content, {

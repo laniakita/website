@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import { expect, userEvent, within } from "storybook/test";
 import { InfoBox } from "./info-box";
 
@@ -15,6 +15,11 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+	parameters: {
+		viewport: {
+			defaultViewport: "desktop",
+		},
+	},
 	args: {
 		blogInfo: <p>A blog about life, Linux, and web development. Written by Lani Akita.</p>,
 		categories: [
@@ -41,7 +46,17 @@ export const Default: Story = {
 		const categoryLink = await canvas.findByRole("link", { name: "Linux" });
 		expect(categoryLink).toBeVisible();
 
-		const tagLink = await canvas.findByRole("link", { name: "tutorial" });
+		const tagLink = await canvas.findByRole("link", { name: "#tutorial" });
 		expect(tagLink).toBeVisible();
 	},
+};
+
+export const OnMobile: Story = {
+	parameters: {
+		viewport: {
+			defaultViewport: "iphone14",
+		},
+	},
+	args: Default.args,
+	play: Default.play,
 };

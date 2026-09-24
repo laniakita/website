@@ -7,7 +7,9 @@
 	"packageManager": "bun@1.4.0",
 	"patchedDependencies": {
 		"@react-three/a11y@3.0.0": "patches/@react-three%2Fa11y@3.0.0.patch",
-		"@storybook/addon-mcp@10.6.0": "patches/@storybook%2Faddon-mcp@10.6.0.patch"
+		"@storybook/addon-mcp@10.6.0": "patches/@storybook%2Faddon-mcp@10.6.0.patch",
+		"@storybook/tanstack-react@10.6.0": "patches/@storybook%2Ftanstack-react@10.6.0.patch",
+		"@storybook/addon-vitest@10.6.0": "patches/@storybook%2Faddon-vitest@10.6.0.patch"
 	},
 	"private": true,
 	"scripts": {

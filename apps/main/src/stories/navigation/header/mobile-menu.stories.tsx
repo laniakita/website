@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import { createMemoryHistory, createRootRoute, createRouter, RouterProvider } from "@tanstack/react-router";
 import { expect, userEvent, within } from "storybook/test";
 import { ThemeStoreProvider } from "@/lib/providers/theme-store-provider";
@@ -23,6 +23,11 @@ const meta = {
 	title: "Navigation/Header/MobileMenu",
 	component: MobileMenuWithRouter,
 	tags: ["autodocs"],
+	parameters: {
+		viewport: {
+			defaultViewport: "iphone14",
+		},
+	},
 } satisfies Meta<typeof MobileMenuWithRouter>;
 
 export default meta;
@@ -45,5 +50,18 @@ export const Default: Story = {
 
 		const links = within(dialog).getAllByRole("link");
 		await expect(links.length).toBeGreaterThan(0);
+	},
+};
+
+export const OnTablet: Story = {
+	parameters: {
+		viewport: {
+			defaultViewport: "ipad",
+		},
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const button = await canvas.findByRole("button", { name: /open menu/i });
+		await expect(button).toBeInTheDocument();
 	},
 };

@@ -68,18 +68,8 @@ export const Route = createFileRoute("/atom.xml")({
 
 						const ogUrls = await getOgImageUrls(ogParams, version);
 						const imgEmbed = post.data.featured_image
-							? `
-          						<figure>
-            						<img src="${absoluteFeatSrc}" alt="${post.data.featured_image.altText ?? ""}" />
-            						<figcaption>${post.data.caption ?? ""}</figcaption>
-          						</figure>
-       						`
-							: `
-          						<figure>
-            						<img src="${ogUrls.default}" alt="${post.data.headline}" />
-            						<figcaption>${post.data.caption ?? post.data.subheadline ?? post.data.headline}</figcaption>
-          						</figure>
-        					`;
+							? `<figure><img src="${absoluteFeatSrc}" alt="${post.data.featured_image.altText ?? ""}" /><figcaption>${post.data.caption ?? ""}</figcaption></figure>`
+							: `<figure><img src="${ogUrls.default}" alt="${post.data.headline}" /><figcaption>${post.data.caption ?? post.data.subheadline ?? post.data.headline}</figcaption></figure>`;
 
 						const res = [
 							{

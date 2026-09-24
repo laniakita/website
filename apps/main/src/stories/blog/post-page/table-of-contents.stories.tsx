@@ -1,5 +1,5 @@
 "use client";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import { useEffect } from "react";
 import { expect, within } from "storybook/test";
 import { useToCViewStore } from "@/lib/providers/toc-view-store-provider";

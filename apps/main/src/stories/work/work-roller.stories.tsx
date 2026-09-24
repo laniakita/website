@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import { Ongoing as OngoingStory, Default as WorkPreviewStory } from "./work-preview.stories";
 import { WorkRoller } from "./work-roller";
 

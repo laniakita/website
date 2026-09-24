@@ -1,8 +1,18 @@
 import '../src/styles.css'
 import type { Preview } from '@storybook/tanstack-react'
+import { INITIAL_VIEWPORTS, MINIMAL_VIEWPORTS } from 'storybook/viewport'
 
 const preview: Preview = {
+  initialGlobals: {
+    viewport: { value: 'desktop', isRotated: false },
+  },
   parameters: {
+    viewport: {
+      options: {
+        ...INITIAL_VIEWPORTS,
+        ...MINIMAL_VIEWPORTS,
+      },
+    },
     controls: {
       matchers: {
        color: /(background|color)$/i,

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import { expect, within } from "storybook/test";
 import { SOCIALS_NAVBAR } from "$/src/components/nav-constants";
 import { HeaderSocials } from "./socials";
@@ -7,6 +7,18 @@ const meta = {
 	title: "Navigation/Header/Socials",
 	component: HeaderSocials,
 	tags: ["autodocs"],
+	parameters: {
+		viewport: {
+			defaultViewport: "desktop",
+		},
+	},
+	decorators: [
+		(Story) => (
+			<div className='@container/navbar w-full'>
+				<Story />
+			</div>
+		),
+	],
 	args: {
 		socialItems: SOCIALS_NAVBAR,
 	},

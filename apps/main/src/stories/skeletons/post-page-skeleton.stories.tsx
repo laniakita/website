@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import { expect, within } from "storybook/test";
 import { ThemeStoreProvider } from "@/lib/providers/theme-store-provider";
 import { PostPageSkeleton } from "./post-page-skeleton";

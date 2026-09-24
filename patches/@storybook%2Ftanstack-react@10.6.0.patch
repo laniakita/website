@@ -1,0 +1,61 @@
+diff --git a/dist/_browser-chunks/chunk-HRV4LMK3.js b/dist/_browser-chunks/chunk-HRV4LMK3.js
+index df55fae85a0b051842ca579c29c6f91a31a76f0d..5d895f33599589e37eeaab38580d7971914a4568 100644
+--- a/dist/_browser-chunks/chunk-HRV4LMK3.js
++++ b/dist/_browser-chunks/chunk-HRV4LMK3.js
+@@ -36,6 +36,23 @@ import {
+   interpolatePath,
+   joinPaths
+ } from "@tanstack/react-router";
++function toPathInterpolationSegments(path) {
++  return path.split("/").filter(Boolean).map((part) => {
++    if (part === "$") {
++      return [2, "_splat", "/", void 0];
++    }
++    if (part.startsWith("$")) {
++      return [1, part.slice(1), "/", ""];
++    }
++    return `/${part}`;
++  });
++}
++function interpolateStoryPath(path, params) {
++  if (interpolatePath.length >= 2) {
++    return interpolatePath(path, toPathInterpolationSegments(path), params);
++  }
++  return interpolatePath({ path, params }).interpolatedPath;
++}
+ var MAX_PARENT_WALK = 50;
+ function findRootRoute(route) {
+   let current = route;
+@@ -122,7 +139,7 @@ function resolveStoryLeaf(tree, {
+   if (path) {
+     let bound = boundRouteId ? byId.get(boundRouteId) : void 0;
+     if (bound) {
+-      let boundCandidate = mountPathFor(bound), boundInterpolated = params ? interpolatePath({ path: boundCandidate, params }).interpolatedPath : boundCandidate;
++      let boundCandidate = mountPathFor(bound), boundInterpolated = params ? interpolateStoryPath(boundCandidate, params) : boundCandidate;
+       if (boundCandidate === path || boundInterpolated === path)
+         return bound;
+     }
+@@ -130,7 +147,7 @@ function resolveStoryLeaf(tree, {
+     for (let route of byId.values()) {
+       if (route === root)
+         continue;
+-      let candidate = mountPathFor(route), isLiteral = candidate === path, interpolated = params ? interpolatePath({ path: candidate, params }).interpolatedPath : candidate;
++      let candidate = mountPathFor(route), isLiteral = candidate === path, interpolated = params ? interpolateStoryPath(candidate, params) : candidate;
+       if (!isLiteral && interpolated !== path)
+         continue;
+       (isLiteral === bestLiteral ? candidate.length > bestMatchLength : isLiteral) && (bestMatch = route, bestLiteral = isLiteral, bestMatchLength = candidate.length);
+@@ -178,10 +195,10 @@ function createStoryRouter({
+   context,
+   routerContext
+ }) {
+-  let routerParameters = context.parameters.tanstack?.router ?? {}, { tree, leaf } = resolveTree(Story, context), routeTree = tree.root, inferredPath = routerParameters?.path || leaf.fullPath || (leaf.id ? normalizeFileRoutePath(leaf.id) : void 0) || mountPathFor(leaf), resolvedPath = interpolatePath2({
+-    path: inferredPath,
+-    params: routerParameters?.params ?? {}
+-  }).interpolatedPath, search = routerParameters?.query ? defaultStringifySearch(routerParameters.query) : "";
++  let routerParameters = context.parameters.tanstack?.router ?? {}, { tree, leaf } = resolveTree(Story, context), routeTree = tree.root, inferredPath = routerParameters?.path || leaf.fullPath || (leaf.id ? normalizeFileRoutePath(leaf.id) : void 0) || mountPathFor(leaf), resolvedPath = interpolateStoryPath(
++    inferredPath,
++    routerParameters?.params ?? {}
++  ), search = routerParameters?.query ? defaultStringifySearch(routerParameters.query) : "";
+   search && (resolvedPath += search);
+   let history = createMemoryHistory({
+     initialEntries: [resolvedPath]

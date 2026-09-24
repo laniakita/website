@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import { createMemoryHistory, createRootRoute, createRouter, RouterProvider } from "@tanstack/react-router";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import { MAIN_PAGES, SOCIALS_NAVBAR } from "@/components/nav-constants";
@@ -297,6 +297,9 @@ export const Mobile: Story = {
 
 			// Cleanup: close it
 			await userEvent.click(mobileTocBtn);
+			await waitFor(() => {
+				expect(canvas.queryByRole("group", { hidden: true })).not.toBeVisible();
+			});
 		});
 	},
 };

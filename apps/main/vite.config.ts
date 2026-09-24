@@ -53,6 +53,9 @@ const config = defineConfig({
 		viteReact(),
 		glsl(),
 	],
+	optimizeDeps: {
+		include: ["storybook/viewport"],
+	},
 	environments: {
 		rsc: {
 			optimizeDeps: {
