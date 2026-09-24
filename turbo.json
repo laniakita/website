@@ -1,15 +1,25 @@
 {
   "$schema": "https://turborepo.dev/schema.json",
-  "globalEnv": ["NODE_ENV"],
+  "globalEnv": [
+    "NODE_ENV"
+  ],
   "ui": "stream",
   "tasks": {
-    
     "build": {
-      "dependsOn": ["^build"],
-      "env": ["CLOUDFLARE_API_TOKEN"] 
+      "dependsOn": [
+        "^build"
+      ],
+      "env": [
+        "CLOUDFLARE_API_TOKEN"
+      ],
+      "passThroughEnv": [
+        "CLOUDFLARE_API_TOKEN"
+      ]
     },
     "preview": {
-      "dependsOn": ["^build"],
+      "dependsOn": [
+        "^build"
+      ],
       "persistent": true
     },
     "dev": {
@@ -19,7 +29,9 @@
     "lint": {},
     "check": {},
     "typecheck": {
-      "dependsOn": ["^build"]
+      "dependsOn": [
+        "^build"
+      ]
     },
     "cf-typegen": {},
     "generate-routes": {},
@@ -29,7 +41,15 @@
     },
     "build-storybook": {},
     "deploy": {
-      "dependsOn": ["^build"]
+      "dependsOn": [
+        "^build"
+      ],
+      "env": [
+        "CLOUDFLARE_API_TOKEN"
+      ],
+      "passThroughEnv": [
+        "CLOUDFLARE_API_TOKEN"
+      ],
     },
     "clean": {
       "cache": false
