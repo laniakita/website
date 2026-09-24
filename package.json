@@ -6,9 +6,8 @@
 	},
 	"packageManager": "bun@1.4.0",
 	"patchedDependencies": {
-		"@storybook/addon-mcp@0.7.0": "patches/@storybook%2Faddon-mcp@0.7.0.patch",
-		"@react-three/drei@11.0.0-alpha.5": "patches/@react-three%2Fdrei@11.0.0-alpha.5.patch",
-		"@react-three/a11y@3.0.0": "patches/@react-three%2Fa11y@3.0.0.patch"
+		"@react-three/a11y@3.0.0": "patches/@react-three%2Fa11y@3.0.0.patch",
+		"@storybook/addon-mcp@10.6.0": "patches/@storybook%2Faddon-mcp@10.6.0.patch"
 	},
 	"private": true,
 	"scripts": {

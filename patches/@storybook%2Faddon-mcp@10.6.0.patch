@@ -1,0 +1,20 @@
+diff --git a/dist/preset.js b/dist/preset.js
+index 1c5da32cf07b01edf92f61607b2ad3c840fc52c4..1613c5b7947d74c4e6448d1619301354b8a8845a 100644
+--- a/dist/preset.js
++++ b/dist/preset.js
+@@ -738,13 +738,13 @@ var transport, origin, initialize, disableTelemetry, a11yEnabled, reviewGates, i
+     localAccess
+   }, response = await transport.respond(webRequest, addonContext);
+   if (response) {
+-    let body = await response.arrayBuffer(), finalResponse = compositionAuth.hadAuthError(webRequest) ? new Response("401 - Unauthorized", {
++    const finalResponse = compositionAuth.hadAuthError(webRequest) ? new Response("401 - Unauthorized", {
+       status: 401,
+       headers: {
+         "Content-Type": "text/plain",
+         "WWW-Authenticate": compositionAuth.buildWwwAuthenticate(origin)
+       }
+-    }) : new Response(body, { status: response.status, headers: response.headers });
++    }) : response;
+     await webResponseToServerResponse(finalResponse, res);
+   }
+ };
