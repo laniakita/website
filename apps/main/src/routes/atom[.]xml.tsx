@@ -1,3 +1,4 @@
+import { env } from "cloudflare:workers";
 import { createFileRoute } from "@tanstack/react-router";
 import { compareDesc } from "date-fns";
 import { toXML } from "jstoxml";
@@ -19,10 +20,9 @@ const XML_OPTS = {
 export const Route = createFileRoute("/atom.xml")({
 	server: {
 		handlers: {
-			async GET({ request }) {
+			async GET() {
 				const TS_START_VERSION = "1.168.37";
-				const url = new URL(request.url);
-				const HOST_URL = url.origin;
+				const HOST_URL = env.APP_URL;
 
 				const toDate = (d?: Date | string) => (d ? new Date(d) : new Date(0));
 
