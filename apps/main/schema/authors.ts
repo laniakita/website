@@ -1,20 +1,23 @@
 import { defineCollections } from "fumadocs-mdx/config";
-import * as z from "zod";
+import * as v from "valibot";
+import { defaultCreatedAt, optionalDate } from "./shared";
 
 export const authors = defineCollections({
 	dir: "./.content/authors",
 	type: "doc",
 	schema: (ctx) => {
-		return z.object({
-			createdAt: z.coerce.date().default(new Date()),
-			lastModified: z.coerce.date().optional(),
-			name: z.string(),
-			bluesky: z.string().optional(),
-			mastodon: z.string().optional(),
-			github: z.string().optional(),
-			url: z
-				.string()
-				.default(`${ctx.path.split(".content").pop()?.split(".").shift()}`),
+		return v.object({
+			createdAt: defaultCreatedAt,
+			lastModified: optionalDate,
+			name: v.string(),
+			bluesky: v.optional(v.string()),
+			mastodon: v.optional(v.string()),
+			github: v.optional(v.string()),
+			url: v.optional(
+				v.string(),
+				() => `${ctx.path.split(".content").pop()?.split(".").shift()}`,
+			),
 		});
 	},
 });
+

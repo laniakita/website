@@ -1,4 +1,3 @@
-"use server";
 import { createMiddleware } from "@tanstack/react-start";
 
 export const AUTH_HEADER_AUTHORIZATION = "authorization";

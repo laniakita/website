@@ -1,64 +1,51 @@
 import { defineCollections } from "fumadocs-mdx/config";
-import * as z from "zod";
-import { extractImagesFromMdx } from "./image-extractor";
 import matter from "gray-matter";
+import * as v from "valibot";
 import { descriptionHelper } from "./description-helper";
+import {
+	coerceDate,
+	featuredImageSchema,
+	inlineImagesSchema,
+	optionalDate,
+} from "./shared";
 
 export const works = defineCollections({
 	type: "doc",
 	dir: "./.content/works",
 	schema: (ctx) => {
-		return z.object({
-			id: z.string(),
-			createdAt: z.coerce.date(),
-			lastModified: z.coerce.date().optional(),
-			title: z.string(),
-			source: z
-				.string()
-				.default(`${ctx.path.split(".content").pop()?.split(".").shift()}`),
-			type: z.enum(["client", "personal"]).default("personal"),
-			active: z.boolean().default(false),
-			links: z
-				.array(
-					z.object({
-						label: z.string(),
-						url: z.string(),
+		return v.object({
+			id: v.string(),
+			createdAt: coerceDate,
+			lastModified: optionalDate,
+			title: v.string(),
+			source: v.optional(
+				v.string(),
+				() => `${ctx.path.split(".content").pop()?.split(".").shift()}`,
+			),
+			type: v.optional(v.picklist(["client", "personal"]), "personal"),
+			active: v.optional(v.boolean(), false),
+			links: v.optional(
+				v.array(
+					v.object({
+						label: v.string(),
+						url: v.string(),
 					}),
-				)
-				.optional(),
-			tech: z.array(z.string()),
-			imageSrc: z.string().optional(),
-			altText: z.string().optional(),
-					description: z.string().default(() => {
-						const content = matter(ctx.source);
-						return descriptionHelper(content.content, ctx.path, true ) ?? "Works description";
-					}),
-			featured_image: z
-				.object({
-					src: z.string(),
-					localHash: z.string(),
-					imgData: z
-						.object({
-							css: z.string(),
-							height: z.number(),
-							width: z.number(),
-						})
-						.optional(),
-					altText: z.string().optional(),
-				})
-				.optional(),
-			inlineImages: z
-				.array(
-					z.object({
-						src: z.string(),
-						alt: z.string().optional(),
-						title: z.string().optional(),
-					}),
-				)
-				.default(() => {
-					return extractImagesFromMdx(ctx.source, ctx.path);
-				}),
+				),
+			),
+			tech: v.array(v.string()),
+			imageSrc: v.optional(v.string()),
+			altText: v.optional(v.string()),
+			description: v.optional(v.string(), () => {
+				const content = matter(ctx.source);
+				return (
+					descriptionHelper(content.content, ctx.path, true) ??
+					"Works description"
+				);
+			}),
+			featured_image: featuredImageSchema,
+			inlineImages: inlineImagesSchema(ctx),
 		});
 	},
 });
+
 

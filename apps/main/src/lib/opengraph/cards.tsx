@@ -76,30 +76,10 @@ export function OpenGraphCard({
 							flexDirection: "column",
 							alignItems: "center",
 							justifyContent: "center",
-							gap: "2rem",
-							padding: "3rem",
-							backgroundColor: "rgba(14, 14, 23, 0.75)",
-							border: "2px solid #1e1e2e",
-							borderRadius: "1.5rem",
+							gap: "-1rem",
 						}}
 					>
-						<img
-							src={logoSrc}
-							alt='Lani Akita Logo'
-							style={{
-								height: twitter ? "220px" : "180px",
-							}}
-						/>
-						<span
-							style={{
-								fontFamily: "0xProto, monospace",
-								fontSize: twitter ? "36px" : "28px",
-								color: "#a6adc8",
-								letterSpacing: "0.08em",
-							}}
-						>
-							laniakita.com
-						</span>
+						<img src={logoSrc} alt='Logo for lanaiakita.com' style={{ height: "50%" }} />
 					</div>
 				</div>
 			);
@@ -108,27 +88,27 @@ export function OpenGraphCard({
 			return (
 				<div
 					style={{
-						position: "relative",
-						display: "flex",
 						width: "100%",
 						height: "100%",
+						display: "flex",
 						alignItems: "center",
 						justifyContent: "center",
-						backgroundColor: "#07070D",
-						fontFamily: "Inter Tight, sans-serif",
+						position: "relative",
+						fontFamily: "Inter Tight",
+						backgroundColor: "black",
 					}}
 				>
 					<img
-						alt='Background Texture'
+						alt='background'
 						src={bgSrc}
 						style={{
+							opacity: 0.8,
 							position: "absolute",
 							top: 0,
 							left: 0,
-							width: "100%",
-							height: "100%",
+							bottom: 0,
+							right: 0,
 							objectFit: "cover",
-							opacity: 0.85,
 						}}
 					/>
 
@@ -136,61 +116,41 @@ export function OpenGraphCard({
 						style={{
 							display: "flex",
 							flexDirection: "column",
+							gap: "-2.25rem",
 							alignItems: "flex-start",
 							justifyContent: "center",
-							backgroundColor: "#0e0e17",
-							border: "2px solid #1e1e2e",
-							borderRadius: "1.25rem",
-							padding: twitter ? "3.5rem 4.5rem" : "2.75rem 3.5rem",
-							maxWidth: "86%",
 							color: "#cdd6f4",
+							padding: "1.25rem 3rem",
+							backgroundColor: "#07070D",
+							border: "0.15rem solid #1e1e2e",
+							borderRadius: "0.375rem",
+							maxWidth: "80%",
 						}}
 					>
-						<div
+						<h2
 							style={{
-								display: "flex",
-								alignItems: "center",
-								justifyContent: "space-between",
-								width: "100%",
+								fontWeight: 400,
+								fontFamily: "monospace",
+								fontSize: twitter ? "50px" : "40px",
+								textTransform: "lowercase",
 							}}
 						>
-							<span
-								style={{
-									fontFamily: "0xProto, monospace",
-									fontSize: twitter ? "46px" : "36px",
-									color: "#89b4fa",
-									fontWeight: 400,
-								}}
-							>
-								{prefix}:
-							</span>
-							<img
-								src={logoSrc}
-								alt='Logo'
-								style={{
-									height: twitter ? "52px" : "42px",
-									opacity: 0.8,
-								}}
-							/>
-						</div>
-
+							{prefix}:
+						</h2>
 						<div
 							style={{
 								width: "100%",
-								height: "2px",
-								backgroundColor: "#313244",
-								margin: twitter ? "1.75rem 0" : "1.25rem 0",
+								height: "0.15rem",
+								backgroundColor: "#1e1e2e",
+								borderRadius: "0.375rem",
 							}}
 						/>
-
 						<h1
 							style={{
 								display: "flex",
 								fontWeight: 900,
-								fontSize: twitter ? "76px" : "58px",
-								lineHeight: 1.15,
-								margin: 0,
-								color: "#cdd6f4",
+								fontSize: twitter ? "80px" : "60px",
+								textWrap: title.length > 14 ? "balance" : "wrap",
 							}}
 						>
 							{title}
@@ -202,84 +162,44 @@ export function OpenGraphCard({
 			return (
 				<div
 					style={{
-						position: "relative",
-						display: "flex",
 						width: "100%",
 						height: "100%",
+						display: "flex",
 						alignItems: "center",
 						justifyContent: "center",
-						backgroundColor: "#07070D",
-						fontFamily: "Inter Tight, sans-serif",
+						position: "relative",
+						fontFamily: "Inter Tight",
+						backgroundColor: "black",
 					}}
 				>
 					<img
-						alt='Background Texture'
+						alt='background'
 						src={bgSrc}
 						style={{
+							opacity: 0.8,
 							position: "absolute",
 							top: 0,
 							left: 0,
-							width: "100%",
-							height: "100%",
+							bottom: 0,
+							right: 0,
 							objectFit: "cover",
-							opacity: 0.85,
 						}}
 					/>
 
 					<div
 						style={{
 							display: "flex",
-							flexDirection: "column",
 							alignItems: "center",
 							justifyContent: "center",
-							backgroundColor: "#0e0e17",
-							border: "2px solid #1e1e2e",
-							borderRadius: "1.25rem",
-							padding: twitter ? "4rem 5rem" : "3rem 4rem",
-							maxWidth: "86%",
 							color: "#cdd6f4",
-							gap: "1.5rem",
+							padding: "1.25rem 3rem",
+							backgroundColor: "#07070D",
+							border: "0.15rem solid #1e1e2e",
+							borderRadius: "0.375rem",
+							maxWidth: "80%",
 						}}
 					>
-						<h1
-							style={{
-								display: "flex",
-								textAlign: "center",
-								fontWeight: 900,
-								fontSize: twitter ? "82px" : "64px",
-								lineHeight: 1.15,
-								margin: 0,
-								color: "#cdd6f4",
-							}}
-						>
-							{title}
-						</h1>
-						<div
-							style={{
-								display: "flex",
-								alignItems: "center",
-								gap: "0.75rem",
-								marginTop: "0.5rem",
-							}}
-						>
-							<img
-								src={logoSrc}
-								alt='Logo'
-								style={{
-									height: "36px",
-									opacity: 0.7,
-								}}
-							/>
-							<span
-								style={{
-									fontFamily: "0xProto, monospace",
-									fontSize: twitter ? "28px" : "22px",
-									color: "#6c7086",
-								}}
-							>
-								laniakita.com
-							</span>
-						</div>
+						<h1 style={{ fontWeight: 900, fontSize: twitter ? "80px" : "60px" }}>{title}</h1>
 					</div>
 				</div>
 			);
