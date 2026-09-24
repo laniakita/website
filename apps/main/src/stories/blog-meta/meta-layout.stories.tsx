@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import { CatTagType } from "@/stories/blog/cat-tag-roller";
 import { MetaLayout } from "@/stories/blog-meta/meta-layout";
 import { MetaLayoutSkeleton } from "@/stories/skeletons/meta-layout-skeleton";

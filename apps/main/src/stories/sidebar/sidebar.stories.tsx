@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import { createMemoryHistory, createRootRoute, createRouter, RouterProvider } from "@tanstack/react-router";
 import { expect, within } from "storybook/test";
 import { InfoBox } from "./info-box";
@@ -61,6 +61,11 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+	parameters: {
+		viewport: {
+			defaultViewport: "desktop",
+		},
+	},
 	args: {
 		infoBoxSlot: (
 			<InfoBox
@@ -88,4 +93,24 @@ export const Default: Story = {
 		// Check Social Box content
 		expect(canvas.getByRole("link", { name: /Follow on Github!/i })).toBeInTheDocument();
 	},
+};
+
+export const OnMobile: Story = {
+	parameters: {
+		viewport: {
+			defaultViewport: "iphone14",
+		},
+	},
+	args: Default.args,
+	play: Default.play,
+};
+
+export const OnTablet: Story = {
+	parameters: {
+		viewport: {
+			defaultViewport: "ipad",
+		},
+	},
+	args: Default.args,
+	play: Default.play,
 };

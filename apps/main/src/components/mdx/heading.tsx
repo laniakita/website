@@ -1,6 +1,6 @@
 "use client";
 
-import { CopyCheckIcon, LinkIcon } from "lucide-react";
+import { LinkIcon, SealCheckIcon } from "@phosphor-icons/react";
 import { Children, type ComponentPropsWithoutRef, isValidElement, type ReactNode } from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { useCopyButton } from "@/lib/utils/use-copy-button";
@@ -60,7 +60,7 @@ export function Heading<T extends Types = "h1">({ as, ...props }: HeadingProps<T
 					"not-prose shrink-0 bg-transparent text-foreground opacity-0 transition-opacity hover:bg-primary hover:text-primary-foreground group-hover/heading:opacity-50 dark:hover:bg-primary",
 				)}
 			>
-				{isChecked ? <CopyCheckIcon className='size-4' /> : <LinkIcon className='size-4' />}
+				{isChecked ? <SealCheckIcon className='size-4' /> : <LinkIcon className='size-4' />}
 			</Button>
 		</As>
 	);

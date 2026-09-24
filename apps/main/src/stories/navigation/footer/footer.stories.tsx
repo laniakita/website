@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import { createMemoryHistory, createRootRoute, createRouter, RouterProvider } from "@tanstack/react-router";
 import { expect, within } from "storybook/test";
 import { MAIN_PAGES, SOCIALS_FULL } from "@/components/nav-constants";
@@ -36,6 +36,11 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+	parameters: {
+		viewport: {
+			defaultViewport: "desktop",
+		},
+	},
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
 
@@ -56,6 +61,15 @@ export const Default: Story = {
 		const copyrightElements = canvas.getAllByText(/All Rights Reserved/i);
 		expect(copyrightElements.length).toBeGreaterThan(0);
 	},
+};
+
+export const OnMobile: Story = {
+	parameters: {
+		viewport: {
+			defaultViewport: "iphone14",
+		},
+	},
+	play: Default.play,
 };
 
 export const CustomData: Story = {

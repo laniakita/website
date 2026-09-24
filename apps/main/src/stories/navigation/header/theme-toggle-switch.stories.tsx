@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import { expect, userEvent, within } from "storybook/test";
 import { ThemeToggleSwitch } from "@/components/navigation/header/theme-toggle-switch";
 import { ThemeStoreProvider } from "@/lib/providers/theme-store-provider";

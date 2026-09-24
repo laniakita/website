@@ -37,12 +37,12 @@
 		}
 	],
 	"vars": {
-		"BASE_DOMAIN": "localhost"
+		"APP_URL": "http://localhost:3000"
 	},
 	"env": {
 		"production": {
 			"vars": {
-				"BASE_DOMAIN": "laniakita.com"
+				"APP_URL": "https://laniakita.com"
 			}
 		}
 	}

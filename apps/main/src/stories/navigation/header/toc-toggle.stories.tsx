@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/tanstack-react";
 import { expect, fn, userEvent, within } from "storybook/test";
 import { HeaderTocToggle } from "./toc-toggle";
 
@@ -17,6 +17,11 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+	parameters: {
+		viewport: {
+			defaultViewport: "desktop",
+		},
+	},
 	play: async ({ canvasElement, args }) => {
 		const canvas = within(canvasElement);
 		const button = canvas.getByRole("button", {
