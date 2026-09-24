@@ -63,11 +63,11 @@ const config = defineConfig({
 				// to prevent issues with virtual imports (#tanstack-router-entry, etc.)
 				// source: https://github.com/TanStack/router/issues/5795#issuecomment-3761285233
 				exclude: [
-					"@tanstack/start-server-core",
-					"@tanstack/react-start",
-					"@tanstack/react-start/client",
-					"@tanstack/react-start/server",
-					"lucide-react",
+					//"@tanstack/start-server-core",
+					//"@tanstack/react-start",
+					//"@tanstack/react-start/client",
+					//"@tanstack/react-start/server",
+					//"lucide-react",
 				],
 			},
 		},
