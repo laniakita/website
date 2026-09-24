@@ -46,6 +46,7 @@ const config = defineConfig({
 					enabled: true,
 					crawlLinks: true,
 					filter: ({ path }) => !path.startsWith("/works") && !path.startsWith("/work/"),
+					autoStaticPathsDiscovery: true,
 				},
 			}),
 		!isTestOrStorybook && rsc(),
@@ -55,22 +56,6 @@ const config = defineConfig({
 	],
 	optimizeDeps: {
 		include: ["storybook/viewport"],
-	},
-	environments: {
-		rsc: {
-			optimizeDeps: {
-				// Exclude TanStack Start packages from Vite's dependency optimization
-				// to prevent issues with virtual imports (#tanstack-router-entry, etc.)
-				// source: https://github.com/TanStack/router/issues/5795#issuecomment-3761285233
-				exclude: [
-					//"@tanstack/start-server-core",
-					//"@tanstack/react-start",
-					//"@tanstack/react-start/client",
-					//"@tanstack/react-start/server",
-					//"lucide-react",
-				],
-			},
-		},
 	},
 	test: {
 		projects: [
