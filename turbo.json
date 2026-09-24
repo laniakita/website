@@ -3,6 +3,7 @@
   "globalEnv": ["NODE_ENV"],
   "ui": "stream",
   "tasks": {
+    
     "build": {
       "dependsOn": ["^build"]
     },
@@ -28,6 +29,9 @@
     "build-storybook": {},
     "deploy": {
       "dependsOn": ["^build"]
+    },
+    "clean": {
+      "cache": false
     }
   }
 }
