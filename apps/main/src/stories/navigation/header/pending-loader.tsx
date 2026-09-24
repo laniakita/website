@@ -1,5 +1,5 @@
+import { CircleNotchIcon } from "@phosphor-icons/react";
 import { useMatchRoute } from "@tanstack/react-router";
-import { Loader2 } from "lucide-react";
 import * as React from "react";
 import { cn } from "$/src/lib/utils/cn";
 
@@ -26,7 +26,7 @@ export function PendingLoader({ to, className, onResolved }: PendingLoaderProps)
 
 	return (
 		<span className='absolute -right-1 translate-x-full'>
-			<Loader2 className={cn("animate-spin text-muted-foreground", className)} />
+			<CircleNotchIcon className={cn("animate-spin text-muted-foreground", className)} />
 		</span>
 	);
 }

@@ -57,7 +57,7 @@ export default function CopyBtn({
 		if (code) {
 			navigator.clipboard.writeText(code);
 			setIsCopied(true);
-			console.log("copied code to clipboard");
+			//console.log("copied code to clipboard");
 		} else {
 			setIsCopied(null);
 			console.error("error: failed to copy code to clipboard (<pre/>.innerText not found)");
