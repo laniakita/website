@@ -7,7 +7,7 @@ export interface HeaderRootProps extends React.HTMLAttributes<HTMLElement> {
 
 export function HeaderRoot({ className, isSticky = true, children, ...props }: HeaderRootProps) {
 	return (
-		<header className={cn("@container/navbar z-50 w-full", isSticky && "sticky top-0", className)} {...props}>
+		<header className={cn("@container/navbar relative z-50 w-full", isSticky && "sticky top-0", className)} {...props}>
 			<div className='nav-glassy-bg' />
 			<div className='nav-glassy-edge' />
 			{children}
@@ -19,7 +19,7 @@ export function HeaderContainer({ children, className }: React.HTMLAttributes<HT
 	return (
 		<div
 			className={cn(
-				"relative z-10 mx-auto flex h-16 items-center justify-between overflow-y-hidden @md/navbar:px-6 px-4",
+				"relative z-10 mx-auto flex min-h-16 items-center justify-between overflow-y-hidden @md/navbar:px-6 px-4",
 				className,
 			)}
 		>

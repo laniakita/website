@@ -281,7 +281,7 @@ body,
 }
 
 @utility nav-glassy-bg {
-  @apply pointer-events-none absolute inset-0 h-[200%] [backdrop-filter:blur(8px)_brightness(95%)_saturate(160%)] mask-[linear-gradient(to_bottom,black_0%_50%,transparent_50%_100%)];
+  @apply pointer-events-none absolute inset-0 bg-background/10 h-[200%] [-webkit-backdrop-filter:blur(8px)_brightness(95%)_saturate(160%)] mask-[linear-gradient(to_bottom,black_0%_50%,transparent_50%_100%)];
 }
 
 @utility nav-glassy-edge {
