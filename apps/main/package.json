@@ -15,7 +15,7 @@
     "check": "biome check",
     "typecheck": "tsc --noEmit",
     "deploy": "wrangler deploy",
-    "deploy:production": "wrangler deploy --env production",
+    "deploy:preview": "wrangler preview",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "test-storybook": "test-storybook",

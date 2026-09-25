@@ -20,7 +20,17 @@ export const Route = createRootRoute({
 			},
 			{
 				name: "viewport",
-				content: "width=device-width, initial-scale=1",
+				content: "width=device-width, initial-scale=1, viewport-fit=cover",
+			},
+			{
+				name: "theme-color",
+				media: "(prefers-color-scheme: dark)",
+				content: "oklch(0.243 0.03 283.911)",
+			},
+			{
+				name: "theme-color",
+				media: "(prefers-color-scheme: light)",
+				content: "oklch(0.958 0.006 264.532)",
 			},
 			...(await getSeoMeta({
 				title: APP_DEFAULT_TITLE,

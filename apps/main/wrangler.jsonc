@@ -17,12 +17,17 @@
 	"observability": {
 		"enabled": true,
 		"head_sampling_rate": 1,
+		"redact_query_string": false,
 		"logs": {
 			"enabled": true,
-			"invocation_logs": true
+			"head_sampling_rate": 1,
+			"invocation_logs": true,
+			"persist": true
 		},
 		"traces": {
-			"enabled": false
+			"enabled": false,
+			"head_sampling_rate": 1,
+			"persist": true
 		}
 	},
 	"upload_source_maps": true,
@@ -46,6 +51,29 @@
 	],
 	"vars": {
 		"APP_URL": "https://laniakita.com"
+	},
+	"previews": {
+		"vars": {
+			"APP_URL": "https://preview.laniakita.com"
+		},
+		"ratelimits": [
+			{
+				"name": "RATE_LIMITER_GLOBAL",
+				"namespace_id": "1001",
+				"simple": {
+					"limit": 300,
+					"period": 60
+				}
+			},
+			{
+				"name": "RATE_LIMITER_OG",
+				"namespace_id": "1001",
+				"simple": {
+					"limit": 24,
+					"period": 60
+				}
+			}
+		]
 	},
 	"env": {
 		"local": {

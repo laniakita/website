@@ -41,9 +41,6 @@
     },
     "build-storybook": {},
     "deploy": {
-      "dependsOn": [
-        "^build"
-      ],
       "env": [
         "CLOUDFLARE_API_TOKEN"
       ],
@@ -51,10 +48,7 @@
         "CLOUDFLARE_API_TOKEN"
       ],
     },
-    "deploy:production": {
-      "dependsOn": [
-        "^build"
-      ],
+    "deploy:preview": {
       "env": [
         "CLOUDFLARE_API_TOKEN"
       ],

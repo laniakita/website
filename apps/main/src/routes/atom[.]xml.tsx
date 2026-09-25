@@ -21,7 +21,7 @@ export const Route = createFileRoute("/atom.xml")({
 	server: {
 		handlers: {
 			async GET() {
-				const TS_START_VERSION = "1.168.37";
+				const TS_START_VERSION = "1.168.58";
 				const HOST_URL = env.APP_URL;
 
 				const toDate = (d?: Date | string) => (d ? new Date(d) : new Date(0));

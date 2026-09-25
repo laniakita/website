@@ -106,7 +106,7 @@ export function Header({
 				warnDevBannerDescription={warnDevBannerDescription}
 				warnDevBannerReturnText={warnDevBannerReturnText}
 			/>
-			<HeaderContainer className='min-w-full'>
+			<HeaderContainer className='min-w-full pt-[env(safe-area-inset-top,0px)]'>
 				<div className='flex items-center gap-2 md:gap-4 lg:gap-6'>
 					<HeaderTocToggle isPost={isPost} tocInView={tocInView} onTocToggle={onTocToggle} />
 					<HeaderLogo logoLight={logoLight} logoDark={logoDark} branding={branding} />

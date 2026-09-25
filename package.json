@@ -20,7 +20,7 @@
 		"lint": "turbo run lint",
 		"check": "turbo run check",
 		"deploy": "turbo run deploy",
-		"deploy:production": "turbo run deploy:production",
+		"deploy:preview": "turbo run deploy:preview",
 		"typecheck": "turbo run typecheck",
 		"format": "biome format",
 		"cf-typegen": "turbo run cf-typegen",

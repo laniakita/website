@@ -31,8 +31,13 @@
         ".env*"
       ]
     },
+    "deploy:preview": {
+      "env": ["CLOUDFLARE_API_TOKEN"],
+      "passThroughEnv": [
+        "CLOUDFLARE_API_TOKEN"
+      ],
+    },
     "deploy": {
-      "dependsOn": ["build"],
       "env": ["CLOUDFLARE_API_TOKEN"],
       "passThroughEnv": [
         "CLOUDFLARE_API_TOKEN"
