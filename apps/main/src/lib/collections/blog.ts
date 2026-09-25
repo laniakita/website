@@ -11,7 +11,7 @@ export const blogSource = loader({
 });
 
 export const feedSource = loader({
-	baseUrl: "/feed",
+	baseUrl: "/blog",
 	source: toFumadocsSource(feed, []),
 	slugs(file) {
 		return [file.data.url.substring(6)];
